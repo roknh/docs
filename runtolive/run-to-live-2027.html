@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run To Live 2027 — Run Far Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter+Tight:wght@300;400;500;600;700;800&family=Archivo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #fafaf7;
+    --flame: #ff3d00;
+    --ember: #ff6b1a;
+    --gold: #ffb800;
+    --blood: #c41e3a;
+    --smoke: #1a1a1a;
+    --ash: #2a2a2a;
+    --line: rgba(255, 61, 0, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter Tight', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+
+  /* Grain overlay – ubiquitous texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* Section base */
+  section {
+    position: relative;
+    padding: 120px 6vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Page number indicator */
+  .page-tag {
+    position: absolute;
+    top: 50px;
+    left: 6vw;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--flame);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 5;
+  }
+
+  .page-tag::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--flame);
+  }
+
+  /* Section padding tăng top để chừa chỗ cho page-tag */
+  section:not(.cover):not(.final) {
+    padding-top: 140px;
+  }
+
+  /* === SECTION 1: COVER === */
+  .cover {
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(255, 61, 0, 0.35), transparent 50%),
+      radial-gradient(ellipse at 10% 80%, rgba(196, 30, 58, 0.25), transparent 50%),
+      var(--ink);
+    padding: 0 6vw;
+    justify-content: space-between;
+    padding-top: 8vh;
+    padding-bottom: 5vh;
+  }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+
+  .cover-top .brand {
+    color: var(--flame);
+  }
+
+  .cover-top .date {
+    text-align: right;
+    color: var(--paper);
+    opacity: 0.7;
+    line-height: 1.8;
+  }
+
+  .cover-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 0;
+  }
+
+  .cover-eyebrow {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 30px;
+    animation: fadeUp 1s ease-out;
+  }
+
+  .cover h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(72px, 14vw, 220px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    animation: fadeUp 1.2s ease-out 0.2s both;
+  }
+
+  .cover h1 .accent {
+    background: linear-gradient(90deg, var(--flame), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+  }
+
+  .cover h1 .stroke {
+    -webkit-text-stroke: 2px var(--paper);
+    color: transparent;
+    display: inline-block;
+  }
+
+  .cover-year {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(56px, 9vw, 160px);
+    line-height: 1;
+    color: var(--flame);
+    margin-bottom: 40px;
+    animation: fadeUp 1.2s ease-out 0.4s both;
+  }
+
+  .cover-tagline {
+    max-width: 700px;
+    animation: fadeUp 1.2s ease-out 0.6s both;
+  }
+
+  .cover-tagline .en {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: clamp(20px, 2.4vw, 32px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .cover-tagline .vn {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(15px, 1.4vw, 19px);
+    color: var(--paper);
+    opacity: 0.65;
+    line-height: 1.4;
+  }
+
+  .cover-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    animation: fadeUp 1.2s ease-out 0.8s both;
+  }
+
+  .cover-bottom .org {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 360px;
+    opacity: 0.85;
+  }
+
+  .cover-bottom .org strong {
+    color: var(--flame);
+    font-weight: 700;
+  }
+
+  .cover-bottom .scroll-cue {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--gold);
+  }
+
+  .cover-bottom .scroll-cue::after {
+    content: '↓';
+    font-size: 18px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Diagonal slash decoration */
+  .slash {
+    position: absolute;
+    background: var(--flame);
+    transform-origin: center;
+  }
+
+  .cover .slash-1 {
+    width: 200px;
+    height: 4px;
+    top: 50%;
+    right: -50px;
+    transform: rotate(-30deg);
+    opacity: 0.6;
+  }
+
+  /* === SECTION 2: THE IDEA === */
+  .idea {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .section-label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--flame);
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label .num {
+    background: var(--flame);
+    color: var(--paper);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .idea-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .idea h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(44px, 6vw, 96px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  .idea h2 .highlight {
+    color: var(--flame);
+  }
+
+  .idea-body p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+    max-width: 520px;
+  }
+
+  .idea-body p.vn {
+    font-style: italic;
+    color: var(--ash);
+    opacity: 0.7;
+    font-size: 16px;
+  }
+
+  .quote-block {
+    border-left: 4px solid var(--flame);
+    padding: 40px 40px 30px;
+    margin-top: 50px;
+    background: rgba(255, 61, 0, 0.04);
+    position: relative;
+  }
+
+  .quote-block::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    font-family: 'Anton', sans-serif;
+    font-size: 80px;
+    color: var(--flame);
+    opacity: 0.2;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .quote-block .en,
+  .quote-block .vn {
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-block .en {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .quote-block .vn {
+    font-family: 'Inter Tight', sans-serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ash);
+    opacity: 0.75;
+  }
+
+  /* === SECTION 3: VISION === */
+  .vision {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .vision-header {
+    max-width: 1100px;
+    margin-bottom: 80px;
+  }
+
+  .vision h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 7vw, 110px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  .vision h2 .stroke {
+    -webkit-text-stroke: 2px var(--paper);
+    color: transparent;
+  }
+
+  .vision-intro {
+    font-size: 20px;
+    line-height: 1.5;
+    max-width: 700px;
+    opacity: 0.85;
+    margin-bottom: 12px;
+  }
+
+  .vision-intro.vn {
+    font-style: italic;
+    opacity: 0.55;
+    font-size: 16px;
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .value-card {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 50px 35px;
+    position: relative;
+    transition: all 0.4s ease;
+    background: linear-gradient(135deg, rgba(255, 61, 0, 0.02), transparent);
+  }
+
+  .value-card:hover {
+    border-color: var(--flame);
+    transform: translateY(-8px);
+    background: linear-gradient(135deg, rgba(255, 61, 0, 0.08), transparent);
+  }
+
+  .value-card .icon {
+    font-size: 42px;
+    margin-bottom: 30px;
+  }
+
+  .value-card .num {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-family: 'Anton', sans-serif;
+    font-size: 48px;
+    color: var(--flame);
+    opacity: 0.2;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .value-card h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 42px;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+    color: var(--flame);
+  }
+
+  .value-card p {
+    font-size: 16px;
+    line-height: 1.5;
+    opacity: 0.8;
+  }
+
+  /* === SECTION 4: HUMAN JOURNEYS === */
+  .journeys {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 120px 0;
+  }
+
+  .journeys .container {
+    padding: 0 6vw;
+  }
+
+  .journeys h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 7.5vw, 130px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  .journeys h2 .highlight {
+    color: var(--flame);
+    font-style: italic;
+  }
+
+  .journeys-intro {
+    font-size: 18px;
+    max-width: 600px;
+    margin-bottom: 80px;
+    line-height: 1.5;
+  }
+
+  .journeys-intro .vn {
+    display: block;
+    margin-top: 8px;
+    font-style: italic;
+    opacity: 0.6;
+    font-size: 15px;
+  }
+
+  /* Horizontal scroll ticker for journey moments */
+  .journey-ticker {
+    overflow: hidden;
+    margin: 0 -6vw 80px;
+    padding: 30px 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .journey-ticker-inner {
+    display: flex;
+    gap: 60px;
+    white-space: nowrap;
+    animation: ticker 35s linear infinite;
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .journey-ticker-inner span {
+    display: inline-flex;
+    align-items: center;
+    gap: 60px;
+  }
+
+  .journey-ticker-inner span::after {
+    content: '★';
+    color: var(--flame);
+    font-size: 28px;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .journeys-list {
+    padding: 0 6vw;
+  }
+
+  .journey-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 200px;
+    align-items: center;
+    padding: 32px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .journey-item:hover {
+    padding-left: 20px;
+    background: rgba(255, 61, 0, 0.04);
+  }
+
+  .journey-item .emoji {
+    font-size: 36px;
+  }
+
+  .journey-item .text {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 2.5vw, 32px);
+    letter-spacing: -0.01em;
+  }
+
+  .journey-item .tag {
+    text-align: right;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--flame);
+    text-transform: uppercase;
+  }
+
+  /* === SECTION 5: IMPACT === */
+  .impact {
+    background:
+      linear-gradient(180deg, var(--ink) 0%, var(--smoke) 100%);
+    color: var(--paper);
+    position: relative;
+  }
+
+  .impact::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60vh;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 61, 0, 0.25), transparent 60%);
+    pointer-events: none;
+  }
+
+  .impact .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .impact h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 7vw, 110px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 60px;
+  }
+
+  .impact h2 .stroke {
+    -webkit-text-stroke: 2px var(--flame);
+    color: transparent;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-bottom: 80px;
+  }
+
+  .stat {
+    border-top: 3px solid var(--flame);
+    padding-top: 30px;
+  }
+
+  .stat .number {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(46px, 5.5vw, 84px);
+    line-height: 1;
+    color: var(--flame);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .stat .label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1.4;
+    opacity: 0.9;
+  }
+
+  .impact-footnote {
+    font-family: 'Inter Tight', sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    opacity: 0.5;
+    margin-bottom: 60px;
+  }
+
+  .social-impact {
+    background: linear-gradient(135deg, var(--flame), var(--blood));
+    padding: 60px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .social-impact::before {
+    content: 'SOCIAL';
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(100px, 14vw, 180px);
+    color: rgba(0, 0, 0, 0.08);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    pointer-events: none;
+  }
+
+  .social-impact .label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .social-impact h3 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: clamp(24px, 3vw, 38px);
+    line-height: 1.2;
+    max-width: 750px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .social-impact .vn {
+    font-style: italic;
+    font-size: 16px;
+    opacity: 0.85;
+    max-width: 700px;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  /* === SECTION 6: AUDIENCE === */
+  .audience {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .audience-header {
+    margin-bottom: 80px;
+    max-width: 1000px;
+  }
+
+  .audience h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 7vw, 110px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  .audience h2 .highlight { color: var(--flame); }
+
+  .audience-intro {
+    font-size: 19px;
+    line-height: 1.5;
+    max-width: 700px;
+  }
+
+  .audience-intro .vn {
+    display: block;
+    margin-top: 12px;
+    font-style: italic;
+    opacity: 0.6;
+    font-size: 16px;
+  }
+
+  .audience-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 2px solid var(--ink);
+  }
+
+  .audience-card {
+    padding: 50px 40px;
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+    transition: background 0.3s ease;
+  }
+
+  .audience-card:nth-child(odd) {
+    border-right: 2px solid var(--ink);
+  }
+
+  .audience-card:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .audience-card .icon {
+    font-size: 42px;
+    margin-bottom: 24px;
+  }
+
+  .audience-card h3 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+
+  .audience-card p {
+    font-size: 15px;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
+  .audience-card .stat-tag {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-family: 'Anton', sans-serif;
+    font-size: 28px;
+    color: var(--flame);
+    line-height: 1;
+  }
+
+  /* === SECTION 7: 2027 THEME === */
+  .theme {
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .theme::before {
+    content: 'RUN FAR TOGETHER';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Anton', sans-serif;
+    font-size: 22vw;
+    color: rgba(255, 61, 0, 0.05);
+    line-height: 1;
+    white-space: nowrap;
+    letter-spacing: -0.03em;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .theme-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .theme .eyebrow {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 40px;
+  }
+
+  .theme h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(60px, 12vw, 200px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+  }
+
+  .theme h2 .accent {
+    background: linear-gradient(90deg, var(--flame), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .theme-tagline {
+    max-width: 750px;
+    margin: 0 auto 80px;
+  }
+
+  .theme-tagline .en {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.3;
+    margin-bottom: 16px;
+  }
+
+  .theme-tagline .vn {
+    font-family: 'Inter Tight', sans-serif;
+    font-style: italic;
+    font-size: 17px;
+    opacity: 0.6;
+    line-height: 1.4;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+  }
+
+  .pillar {
+    padding: 40px 25px;
+    border: 1px solid rgba(255, 61, 0, 0.3);
+    text-align: left;
+    background: rgba(255, 61, 0, 0.03);
+    transition: all 0.4s ease;
+  }
+
+  .pillar:hover {
+    background: var(--flame);
+    color: var(--ink);
+    transform: translateY(-6px);
+  }
+
+  .pillar .icon {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  .pillar h4 {
+    font-family: 'Anton', sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+  }
+
+  .pillar p {
+    font-size: 15px;
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  /* === SECTION 8: WHAT'S NEXT === */
+  .next {
+    background: var(--paper);
+    color: var(--ink);
+    position: relative;
+  }
+
+  .next-header {
+    margin-bottom: 80px;
+  }
+
+  .next .eyebrow {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--flame);
+    margin-bottom: 30px;
+  }
+
+  .next h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 7vw, 110px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .next h2 .accent { color: var(--flame); }
+
+  .next-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .next-item {
+    padding: 50px 50px 50px 0;
+    border-top: 1px solid var(--ink);
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+  }
+
+  .next-item:nth-child(even) {
+    padding-left: 50px;
+    padding-right: 0;
+    border-left: 1px solid var(--ink);
+  }
+
+  .next-item:last-child,
+  .next-item:nth-last-child(2):nth-child(odd) {
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .next-item .number {
+    font-family: 'Anton', sans-serif;
+    font-size: 56px;
+    color: var(--flame);
+    line-height: 0.9;
+    min-width: 80px;
+  }
+
+  .next-item h4 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .next-item p {
+    font-size: 15px;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+
+  .next-closer {
+    margin-top: 80px;
+    padding: 50px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(28px, 4vw, 56px);
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .next-closer .accent { color: var(--flame); }
+
+  /* === SECTION 9: MEDIA POWER === */
+  .media {
+    background:
+      linear-gradient(180deg, var(--smoke) 0%, var(--ink) 100%);
+    color: var(--paper);
+    position: relative;
+  }
+
+  .media-header {
+    margin-bottom: 60px;
+    max-width: 1000px;
+  }
+
+  .media h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 7vw, 110px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  .media h2 .stroke {
+    -webkit-text-stroke: 2px var(--flame);
+    color: transparent;
+  }
+
+  .media-intro {
+    font-size: 19px;
+    line-height: 1.5;
+    max-width: 700px;
+    opacity: 0.85;
+  }
+
+  .media-intro .vn {
+    display: block;
+    margin-top: 12px;
+    font-style: italic;
+    opacity: 0.55;
+    font-size: 16px;
+  }
+
+  .channels {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+
+  .channel {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 30px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .channel:hover {
+    border-color: var(--flame);
+    background: rgba(255, 61, 0, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .channel .icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .channel h4 {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--flame);
+    margin-bottom: 12px;
+  }
+
+  .channel p {
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0.7;
+  }
+
+  .media-quote {
+    border-top: 2px solid var(--flame);
+    padding-top: 40px;
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(28px, 3.5vw, 48px);
+    line-height: 1.1;
+    text-transform: uppercase;
+    max-width: 900px;
+    letter-spacing: -0.01em;
+  }
+
+  .media-quote .accent { color: var(--flame); }
+
+  /* === SECTION 10: PARTNERSHIP === */
+  .partnership {
+    background: var(--paper);
+    color: var(--ink);
+    position: relative;
+  }
+
+  .partnership-hero {
+    margin-bottom: 80px;
+  }
+
+  .partnership .eyebrow {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.4em;
+    color: var(--flame);
+    margin-bottom: 30px;
+  }
+
+  .partnership h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(48px, 7.5vw, 130px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  .partnership h2 .highlight {
+    color: var(--flame);
+    font-style: italic;
+  }
+
+  .partnership-intro {
+    font-size: 19px;
+    line-height: 1.5;
+    max-width: 750px;
+  }
+
+  .partnership-intro .vn {
+    display: block;
+    margin-top: 12px;
+    font-style: italic;
+    opacity: 0.6;
+    font-size: 16px;
+  }
+
+  .partner-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+  }
+
+  .partner-block h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 42px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    letter-spacing: -0.01em;
+    border-bottom: 3px solid var(--flame);
+    padding-bottom: 12px;
+    display: inline-block;
+  }
+
+  .partner-list {
+    list-style: none;
+  }
+
+  .partner-list li {
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+  }
+
+  .partner-list li:hover {
+    padding-left: 12px;
+    color: var(--flame);
+  }
+
+  .partner-list .marker {
+    color: var(--flame);
+    font-weight: 900;
+    font-size: 18px;
+    min-width: 24px;
+  }
+
+  /* === FINAL CTA === */
+  .final {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    padding: 140px 6vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 50%, rgba(255, 61, 0, 0.2), transparent 50%),
+      radial-gradient(circle at 70% 50%, rgba(255, 184, 0, 0.15), transparent 50%);
+  }
+
+  .final-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .final h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(52px, 9vw, 160px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  .final h2 .accent {
+    background: linear-gradient(90deg, var(--flame), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .final .vn {
+    font-family: 'Inter Tight', sans-serif;
+    font-style: italic;
+    font-size: clamp(18px, 2vw, 24px);
+    opacity: 0.7;
+    margin-bottom: 80px;
+  }
+
+  .contact-block {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    padding-top: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .contact-item {
+    text-align: left;
+  }
+
+  .contact-item .label {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--flame);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .contact-item .value {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--paper);
+  }
+
+  .final-mark {
+    margin-top: 100px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    opacity: 0.4;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 900px) {
+    section { padding: 80px 6vw; }
+    .idea-grid,
+    .audience-cards,
+    .next-items,
+    .partner-blocks { grid-template-columns: 1fr; gap: 40px; }
+    .audience-card:nth-child(odd) { border-right: none; }
+    .next-item:nth-child(even) {
+      padding-left: 0;
+      border-left: none;
+    }
+    .values-grid,
+    .pillars-grid,
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .channels { grid-template-columns: 1fr 1fr; }
+    .journey-item { grid-template-columns: 50px 1fr; }
+    .journey-item .tag { display: none; }
+    .cover-bottom { flex-direction: column; align-items: flex-start; gap: 30px; }
+    .cover-top { font-size: 10px; }
+    .contact-block { flex-direction: column; gap: 30px; align-items: center; }
+    .contact-item { text-align: center; }
+  }
+
+  @media (max-width: 500px) {
+    .values-grid, .pillars-grid, .stats-grid, .channels {
+      grid-template-columns: 1fr;
+    }
+    .quote-block { padding: 24px 24px; }
+    .social-impact { padding: 40px 30px; }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== 1. COVER ========== -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="brand">★ MIRACLE ENTERTAINMENT GROUP<br>× THU THIEM MANAGEMENT AUTHORITY</div>
+    <div class="date">SUNDAY · APRIL 11<br>METROPOLE THU THIEM<br>HO CHI MINH CITY · VIETNAM</div>
+  </div>
+
+  <div class="cover-main">
+    <div class="cover-eyebrow">HALF MARATHON · SPONSORSHIP PROPOSAL</div>
+    <h1>
+      RUN <span class="stroke">TO</span><br>
+      <span class="accent">LIVE</span>
+    </h1>
+    <div class="cover-year">2027</div>
+    <div class="cover-tagline">
+      <div class="en">NOT JUST A RACE.<br>A HUMAN MOVEMENT.</div>
+      <div class="vn">Không chỉ là giải chạy. Đây là một hành trình con người.</div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="org">
+      <strong>RUN FAR TOGETHER</strong> · CÙNG CHẠY XA<br>
+      A city-scale gathering where sport becomes emotion, connection and culture.
+    </div>
+    <div class="scroll-cue">SCROLL TO BEGIN</div>
+  </div>
+
+  <div class="slash slash-1"></div>
+</section>
+
+<!-- ========== 2. THE IDEA ========== -->
+<section class="idea">
+  <div class="page-tag">PAGE 02 · THE IDEA</div>
+  <div class="idea-grid">
+    <div>
+      <div class="section-label"><span class="num">01</span>THE IDEA</div>
+      <h2>RUN TO LIVE IS A <span class="highlight">HUMAN</span> PLATFORM</h2>
+    </div>
+    <div class="idea-body">
+      <p>Run To Live is not designed as a race. It is designed as a shared human experience through movement.</p>
+      <p class="vn">Run To Live không đơn thuần là một giải chạy. Đây là một trải nghiệm kết nối con người thông qua vận động.</p>
+      <p>Over time, it has grown into a city-scale gathering where sport becomes emotion, connection, and culture.</p>
+      <p class="vn">Qua từng mùa giải, sự kiện trở thành nơi thể thao, cảm xúc và văn hóa giao thoa.</p>
+
+      <div class="quote-block">
+        <div class="en">We don't just run to compete. We run to connect.</div>
+        <div class="vn">Chúng ta không chạy để thi đấu. Chúng ta chạy để kết nối.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3. VISION ========== -->
+<section class="vision">
+  <div class="page-tag">PAGE 03 · VISION</div>
+  <div class="vision-header">
+    <div class="section-label"><span class="num">02</span>VISION</div>
+    <h2>A RACE BORN IN VIETNAM, <span class="stroke">BUILT FOR THE REGION.</span></h2>
+    <p class="vision-intro">Run To Live is evolving into one of Southeast Asia's most meaningful running experiences — where sport becomes a cultural language.</p>
+    <p class="vision-intro vn">Run To Live đang phát triển thành một trong những trải nghiệm chạy bộ giàu cảm xúc nhất khu vực — nơi thể thao trở thành ngôn ngữ văn hóa.</p>
+  </div>
+
+  <div class="values-grid">
+    <div class="value-card">
+      <span class="num">01</span>
+      <div class="icon">🔥</div>
+      <h3>MOVE</h3>
+      <p>Inspire active living and a sustainable movement culture across cities.</p>
+    </div>
+    <div class="value-card">
+      <span class="num">02</span>
+      <div class="icon">🤝</div>
+      <h3>CONNECT</h3>
+      <p>Build real human connection between runners, cultures and communities.</p>
+    </div>
+    <div class="value-card">
+      <span class="num">03</span>
+      <div class="icon">🌏</div>
+      <h3>ELEVATE</h3>
+      <p>Position Ho Chi Minh City as a defining regional lifestyle destination.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4. HUMAN JOURNEYS ========== -->
+<section class="journeys">
+  <div class="container">
+    <div class="page-tag">PAGE 04 · HUMAN JOURNEYS</div>
+    <div class="section-label"><span class="num">03</span>HUMAN JOURNEYS</div>
+    <h2>EVERY RUNNER<br>IS A <span class="highlight">STORY</span></h2>
+    <p class="journeys-intro">
+      Every step is personal. Every finish line is emotional.
+      <span class="vn">Mỗi bước chạy là một câu chuyện. Mỗi vạch đích là một cảm xúc.</span>
+    </p>
+  </div>
+
+  <div class="journey-ticker">
+    <div class="journey-ticker-inner">
+      <span>EVERY STEP MATTERS</span>
+      <span>CÙNG CHẠY XA</span>
+      <span>RUN FAR TOGETHER</span>
+      <span>MỖI BƯỚC LÀ MỘT CÂU CHUYỆN</span>
+      <span>EVERY STEP MATTERS</span>
+      <span>CÙNG CHẠY XA</span>
+      <span>RUN FAR TOGETHER</span>
+      <span>MỖI BƯỚC LÀ MỘT CÂU CHUYỆN</span>
+    </div>
+  </div>
+
+  <div class="journeys-list">
+    <div class="journey-item">
+      <div class="emoji">👨‍👩‍👧</div>
+      <div class="text">Families finishing together</div>
+      <div class="tag">Connection</div>
+    </div>
+    <div class="journey-item">
+      <div class="emoji">⚡</div>
+      <div class="text">People breaking personal limits</div>
+      <div class="tag">Performance</div>
+    </div>
+    <div class="journey-item">
+      <div class="emoji">👟</div>
+      <div class="text">First-time runners achieving milestones</div>
+      <div class="tag">Beginning</div>
+    </div>
+    <div class="journey-item">
+      <div class="emoji">🙌</div>
+      <div class="text">Communities supporting each other</div>
+      <div class="tag">Community</div>
+    </div>
+    <div class="journey-item">
+      <div class="emoji">🌆</div>
+      <div class="text">A city experienced through movement</div>
+      <div class="tag">Culture</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="quote-block" style="margin-top:80px;">
+      <div class="en">The value of sport is not performance. It is people.</div>
+      <div class="vn">Giá trị của thể thao không nằm ở thành tích. Mà nằm ở con người.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. IMPACT ========== -->
+<section class="impact">
+  <div class="container">
+    <div class="page-tag">PAGE 05 · IMPACT</div>
+    <div class="section-label"><span class="num">04</span>IMPACT</div>
+    <h2>BEYOND <span class="stroke">NUMBERS</span></h2>
+
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="number" data-target="16690" data-suffix="+">16,690+</div>
+        <div class="label">Runners from<br>25+ Countries</div>
+      </div>
+      <div class="stat">
+        <div class="number" data-target="700000" data-suffix="+">700K+</div>
+        <div class="label">Digital<br>Engagements</div>
+      </div>
+      <div class="stat">
+        <div class="number" data-target="60" data-suffix="+">60+</div>
+        <div class="label">Partners &<br>Communities</div>
+      </div>
+      <div class="stat">
+        <div class="number">M+</div>
+        <div class="label">Millions of<br>Media Impressions</div>
+      </div>
+    </div>
+
+    <p class="impact-footnote">* Combined data across previous editions</p>
+
+    <div class="social-impact">
+      <div class="label">★ SOCIAL IMPACT</div>
+      <h3>All proceeds from previous editions are reinvested into education programs for children in Vietnam's highland regions.</h3>
+      <p class="vn">Toàn bộ lợi nhuận các mùa trước được tái đầu tư cho các hoạt động thiện nguyện tại Việt Nam. Run To Live tạo ra tác động vượt ra ngoài thể thao.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 6. AUDIENCE ========== -->
+<section class="audience">
+  <div class="page-tag">PAGE 06 · AUDIENCE</div>
+  <div class="audience-header">
+    <div class="section-label"><span class="num">05</span>AUDIENCE</div>
+    <h2>A FAST-GROWING<br>URBAN <span class="highlight">LIFESTYLE</span> COMMUNITY</h2>
+    <p class="audience-intro">
+      Run To Live reaches a new generation of urban audiences who value health, experience, and meaningful connection.
+      <span class="vn">Run To Live kết nối thế hệ đô thị mới — những người coi trọng sức khỏe, trải nghiệm và kết nối.</span>
+    </p>
+  </div>
+
+  <div class="audience-cards">
+    <div class="audience-card">
+      <span class="stat-tag">01</span>
+      <div class="icon">👥</div>
+      <h3>Professionals · Entrepreneurs · Creatives · Expats</h3>
+      <p>The driving demographic — ages 18 to 45 — actively shaping the city's lifestyle culture.</p>
+    </div>
+    <div class="audience-card">
+      <span class="stat-tag">02</span>
+      <div class="icon">🏙</div>
+      <h3>Urban Lifestyle & Wellness-Driven Community</h3>
+      <p>Health, mindfulness and design-led living are core to how this audience spends time and money.</p>
+    </div>
+    <div class="audience-card">
+      <span class="stat-tag">03</span>
+      <div class="icon">🏃</div>
+      <h3>Active Participants in Fitness & Experience Culture</h3>
+      <p>Not passive consumers — they show up, train, travel for events and share their journeys publicly.</p>
+    </div>
+    <div class="audience-card">
+      <span class="stat-tag">04</span>
+      <div class="icon">🌏</div>
+      <h3>International & Culturally Open Audience</h3>
+      <p>A bridge between Vietnam and the region — open to global brands and cross-cultural experiences.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 7. 2027 THEME ========== -->
+<section class="theme">
+  <div class="page-tag" style="color: var(--gold);">PAGE 07 · 2027 THEME</div>
+  <div class="theme-content">
+    <div class="eyebrow">★ THE 2027 EDITION ★</div>
+    <h2>RUN FAR<br><span class="accent">TOGETHER</span></h2>
+
+    <div class="theme-tagline">
+      <div class="en">Distance is not what defines a run.<br>Connection is.</div>
+      <div class="vn">Khoảng cách không định nghĩa hành trình. Mà là sự đồng hành.</div>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar">
+        <div class="icon">🔥</div>
+        <h4>HEALTH</h4>
+        <p>Sustainable movement culture — building an active urban Vietnam.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">🤝</div>
+        <h4>CULTURE</h4>
+        <p>Cross-cultural connection through sport — runners across borders.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">🌏</div>
+        <h4>HUMANITY</h4>
+        <p>Long-term social impact through running and community giving.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 8. WHAT'S NEXT ========== -->
+<section class="next">
+  <div class="page-tag">PAGE 08 · WHAT'S NEXT</div>
+  <div class="next-header">
+    <div class="eyebrow">★ 2027 EDITION</div>
+    <h2>WHAT'S <span class="accent">NEXT</span></h2>
+  </div>
+
+  <div class="next-items">
+    <div class="next-item">
+      <div class="number">01</div>
+      <div>
+        <h4>🎯 15,000+ Participants Target</h4>
+        <p>Scaling participation while elevating the on-ground experience.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="number">02</div>
+      <div>
+        <h4>📍 Metropole Thu Thiem</h4>
+        <p>The new urban landmark of Ho Chi Minh City — race village & finish line.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="number">03</div>
+      <div>
+        <h4>🌍 Expanded International Reach</h4>
+        <p>Growing the global running network and cross-border participation.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="number">04</div>
+      <div>
+        <h4>✨ Elevated Race Experience</h4>
+        <p>New activations, premium hospitality and runner-first design.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="number">05</div>
+      <div>
+        <h4>🎥 Stronger Storytelling</h4>
+        <p>Deeper digital reach with content series, films and creator collabs.</p>
+      </div>
+    </div>
+    <div class="next-item">
+      <div class="number">06</div>
+      <div>
+        <h4>🏛 A Defining Cultural Event</h4>
+        <p>Run To Live is becoming a signature event for modern Vietnam.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="next-closer">
+    Run To Live is becoming a <span class="accent">defining cultural event</span> for modern Vietnam.
+  </div>
+</section>
+
+<!-- ========== 9. MEDIA POWER ========== -->
+<section class="media">
+  <div class="page-tag">PAGE 09 · MEDIA POWER</div>
+  <div class="media-header">
+    <div class="section-label"><span class="num">07</span>MEDIA POWER</div>
+    <h2>A MULTI-LAYER<br><span class="stroke">STORYTELLING</span> ECOSYSTEM</h2>
+    <p class="media-intro">
+      Run To Live connects mainstream media, digital platforms, and global running communities into one unified narrative.
+      <span class="vn">Run To Live kết nối truyền hình, nền tảng số và cộng đồng chạy bộ quốc tế trong một hệ sinh thái truyền thông thống nhất.</span>
+    </p>
+  </div>
+
+  <div class="channels">
+    <div class="channel">
+      <div class="icon">📺</div>
+      <h4>National TV</h4>
+      <p>VTV · HTV mainstream broadcast</p>
+    </div>
+    <div class="channel">
+      <div class="icon">📰</div>
+      <h4>Press</h4>
+      <p>VnExpress · Tuổi Trẻ · lifestyle & sports</p>
+    </div>
+    <div class="channel">
+      <div class="icon">🏃</div>
+      <h4>Running Community</h4>
+      <p>Athletes · clubs · race networks</p>
+    </div>
+    <div class="channel">
+      <div class="icon">📱</div>
+      <h4>Digital Creators</h4>
+      <p>Lifestyle · wellness · sport platforms</p>
+    </div>
+    <div class="channel">
+      <div class="icon">🌏</div>
+      <h4>Global Networks</h4>
+      <p>International running ecosystem</p>
+    </div>
+  </div>
+
+  <div class="media-quote">
+    From visibility to emotion — <span class="accent">Run To Live builds stories people remember.</span>
+  </div>
+</section>
+
+<!-- ========== 10. PARTNERSHIP ========== -->
+<section class="partnership">
+  <div class="page-tag">PAGE 10 · PARTNERSHIP</div>
+  <div class="partnership-hero">
+    <div class="eyebrow">★ PARTNER WITH US</div>
+    <h2>CO-CREATING<br><span class="highlight">IMPACT</span></h2>
+    <p class="partnership-intro">
+      Run To Live is a platform where brands become part of real human experiences — not just visibility.
+      <span class="vn">Run To Live là nền tảng giúp thương hiệu trở thành một phần của trải nghiệm con người — không chỉ là hiển thị.</span>
+    </p>
+  </div>
+
+  <div class="partner-blocks">
+    <div class="partner-block">
+      <h3>Partner Value</h3>
+      <ul class="partner-list">
+        <li><span class="marker">✨</span> Access to fast-growing urban lifestyle audience</li>
+        <li><span class="marker">📣</span> Strong national + digital amplification</li>
+        <li><span class="marker">🤝</span> Emotional, story-driven brand integration</li>
+        <li><span class="marker">🌏</span> Alignment with ESG & wellness values</li>
+        <li><span class="marker">🎯</span> Authentic on-ground + digital activation</li>
+      </ul>
+    </div>
+    <div class="partner-block">
+      <h3>Activation Zones</h3>
+      <ul class="partner-list">
+        <li><span class="marker">→</span> Race experience integration</li>
+        <li><span class="marker">→</span> Community engagement campaigns</li>
+        <li><span class="marker">→</span> On-ground brand activations</li>
+        <li><span class="marker">→</span> Digital storytelling & content series</li>
+        <li><span class="marker">→</span> Social impact collaborations</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FINAL CTA ========== -->
+<section class="final">
+  <div class="final-content">
+    <h2>EVERY STEP<br>CREATES <span class="accent">CONNECTION</span></h2>
+    <p class="vn">"Mỗi bước chạy tạo nên một kết nối."</p>
+
+    <div class="contact-block">
+      <div class="contact-item">
+        <div class="label">★ Email</div>
+        <div class="value">info@runtolive.vn</div>
+      </div>
+      <div class="contact-item">
+        <div class="label">★ Website</div>
+        <div class="value">runtolive.vn</div>
+      </div>
+      <div class="contact-item">
+        <div class="label">★ Race Day</div>
+        <div class="value">April 11, 2027</div>
+      </div>
+    </div>
+
+    <div class="final-mark">RUN TO LIVE 2027 · RUN FAR TOGETHER · CÙNG CHẠY XA</div>
+  </div>
+</section>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('section > *').forEach(el => {
+    if (!el.classList.contains('page-tag') && !el.classList.contains('slash')) {
+      el.classList.add('reveal');
+      observer.observe(el);
+    }
+  });
+</script>
+
+</body>
+</html>
