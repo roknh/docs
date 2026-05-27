@@ -161,6 +161,7 @@
         <a href="#fr13" class="nav-link"><span class="nav-num">FR-13</span><span class="nav-title">AI đồng hành nhân viên</span></a>
         <a href="#fr14" class="nav-link"><span class="nav-num">FR-14</span><span class="nav-title">Quy trình &amp; xác nhận qua App</span></a>
         <a href="#fr15" class="nav-link"><span class="nav-num">FR-15</span><span class="nav-title">AI hỗ trợ ban lãnh đạo</span></a>
+        <a href="#fr16" class="nav-link"><span class="nav-num">FR-16</span><span class="nav-title">Nền tảng &amp; Đồng bộ đa thiết bị</span></a>
       <a href="#mvp" class="nav-link"><span class="nav-num">★</span><span class="nav-title">Khuyến nghị MVP</span></a>
       <a href="#huong" class="nav-link"><span class="nav-num">◆</span><span class="nav-title">Định hướng SP</span></a>
       <a href="#tamnhin" class="nav-link"><span class="nav-num">∞</span><span class="nav-title">Tầm nhìn tương lai</span></a>
@@ -491,6 +492,41 @@
           <div class="fr-row"><span class="fr-code">FR-15.17</span><span class="fr-func">Bám sát tiến độ thực thi của quyết định đã duyệt</span><span class="prio p2">P2</span></div>
           <div class="fr-row"><span class="fr-code">FR-15.18</span><span class="fr-func">Cập nhật trạng thái tự động về kênh BOD</span><span class="prio p2">P2</span></div>
           <div class="fr-row"><span class="fr-code">FR-15.19</span><span class="fr-func">Đối chiếu kết quả thực tế với dự đoán ban đầu (đóng vòng học hỏi)</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="fr16" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-16</span>
+        <h2>Nền tảng &amp; Đồng bộ đa thiết bị</h2>
+      </div>
+      <p class="note">App phải hiện diện trên cả ba nền tảng và đồng bộ liền mạch — người dùng chuyển giữa điện thoại, máy tính và trình duyệt mà không mất ngữ cảnh.</p>
+        <div class="subhead">Mobile app</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-16.1</span><span class="fr-func">Ứng dụng iOS (iPhone, iPad)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.2</span><span class="fr-func">Ứng dụng Android</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.3</span><span class="fr-func">Push notification gốc của nền tảng (APNs/FCM)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.4</span><span class="fr-func">Hoạt động nền: nhận tin khi app đóng, tải trước khi mở</span><span class="prio p1">P1</span></div>
+        </div>
+        <div class="subhead">Desktop app</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-16.5</span><span class="fr-func">Ứng dụng desktop Windows</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.6</span><span class="fr-func">Ứng dụng desktop macOS</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.7</span><span class="fr-func">Thông báo hệ thống, chạy nền ở khay (system tray)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.8</span><span class="fr-func">Phím tắt bàn phím, kéo-thả file để gửi</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Web app</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-16.9</span><span class="fr-func">Web app chạy trên trình duyệt (không cần cài đặt)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.10</span><span class="fr-func">Đăng nhập qua quét mã QR từ app mobile (kiểu Telegram/Zalo Web)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.11</span><span class="fr-func">Hỗ trợ thông báo trình duyệt (Web Push)</span><span class="prio p1">P1</span></div>
+        </div>
+        <div class="subhead">Đồng bộ đa thiết bị</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-16.12</span><span class="fr-func">Đăng nhập đồng thời nhiều thiết bị, đồng bộ realtime tin nhắn</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.13</span><span class="fr-func">Đồng bộ trạng thái đã đọc/chưa đọc giữa các thiết bị</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.14</span><span class="fr-func">Đồng bộ nháp tin, ghim, lưu trữ, cấu hình thông báo</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-16.15</span><span class="fr-func">Quản lý phiên: xem và đăng xuất từng thiết bị (gắn FR-1.7)</span><span class="prio p1">P1</span></div>
         </div>
     </section>
 
