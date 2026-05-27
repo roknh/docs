@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đặc tả Yêu cầu Chức năng — App Chat Nội Bộ</title>
+<style>
+  :root {
+    --bg: #fbfbfd;
+    --surface: #ffffff;
+    --ink: #1d1d1f;
+    --ink-soft: #6e6e73;
+    --ink-faint: #86868b;
+    --line: #e3e3e6;
+    --accent: #0071e3;
+    --accent-soft: #e8f1fd;
+    --p0: #1d1d1f;
+    --p1: #0071e3;
+    --p2: #86868b;
+    --radius: 18px;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.011em;
+  }
+
+  /* ---- Layout ---- */
+  .wrap { display: grid; grid-template-columns: 264px 1fr; max-width: 1180px; margin: 0 auto; }
+
+  /* ---- Sidebar nav ---- */
+  .sidebar {
+    position: sticky; top: 0; align-self: start; height: 100vh;
+    overflow-y: auto; padding: 48px 20px 48px 32px;
+    border-right: 1px solid var(--line);
+  }
+  .side-brand { font-size: 13px; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 24px; }
+  .nav-link {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 7px 12px; border-radius: 9px; text-decoration: none;
+    color: var(--ink-soft); transition: background .15s, color .15s;
+  }
+  .nav-link:hover { background: var(--accent-soft); color: var(--accent); }
+  .nav-link.active { background: var(--accent-soft); color: var(--accent); }
+  .nav-num { font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 38px; color: var(--ink-faint); }
+  .nav-link:hover .nav-num, .nav-link.active .nav-num { color: var(--accent); }
+  .nav-title { font-size: 13.5px; font-weight: 450; }
+
+  /* ---- Main ---- */
+  main { padding: 0 64px 120px; min-width: 0; }
+
+  /* ---- Hero ---- */
+  .hero { padding: 96px 0 72px; border-bottom: 1px solid var(--line); margin-bottom: 64px; }
+  .hero .eyebrow { font-size: 14px; font-weight: 600; color: var(--accent); letter-spacing: 0.02em; margin-bottom: 18px; }
+  .hero h1 { font-size: 52px; line-height: 1.07; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 24px; }
+  .hero p { font-size: 20px; color: var(--ink-soft); max-width: 620px; font-weight: 400; letter-spacing: -0.01em; }
+  .hero .meta { display: flex; gap: 28px; margin-top: 40px; flex-wrap: wrap; }
+  .hero .meta-item { }
+  .hero .meta-k { font-size: 12px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+  .hero .meta-v { font-size: 16px; font-weight: 500; margin-top: 2px; }
+
+  .legend { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+  .legend-pill { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); background: var(--surface); border: 1px solid var(--line); padding: 7px 14px; border-radius: 999px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.p0 { background: var(--p0); }
+  .dot.p1 { background: var(--p1); }
+  .dot.p2 { background: var(--p2); }
+
+  /* ---- FR sections ---- */
+  .fr-section { margin-bottom: 72px; scroll-margin-top: 32px; }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+  .sec-num { font-size: 14px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+  .sec-head h2 { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  .note { font-size: 15.5px; color: var(--ink-soft); margin: 14px 0 26px; max-width: 720px; padding-left: 16px; border-left: 3px solid var(--accent-soft); }
+
+  .subhead { font-size: 13px; font-weight: 600; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; margin: 30px 0 12px; }
+
+  .fr-table { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .fr-row {
+    display: grid; grid-template-columns: 92px 1fr 52px; align-items: center;
+    gap: 20px; padding: 15px 24px; border-bottom: 1px solid var(--line);
+    transition: background .12s;
+  }
+  .fr-row:last-child { border-bottom: none; }
+  .fr-row:hover { background: #f7f9fc; }
+  .fr-code { font-size: 13px; font-weight: 600; color: var(--ink-faint); font-variant-numeric: tabular-nums; letter-spacing: 0; }
+  .fr-func { font-size: 15.5px; color: var(--ink); }
+  .prio { font-size: 12px; font-weight: 700; text-align: center; padding: 3px 0; border-radius: 6px; letter-spacing: 0.02em; }
+  .prio.p0 { color: #fff; background: var(--p0); }
+  .prio.p1 { color: #fff; background: var(--p1); }
+  .prio.p2 { color: var(--ink-soft); background: #efeff1; }
+
+  /* ---- Prose sections ---- */
+  .prose-section { margin-bottom: 72px; scroll-margin-top: 32px; padding-top: 40px; border-top: 1px solid var(--line); }
+  .lead { font-size: 18px; color: var(--ink-soft); margin: 18px 0 24px; max-width: 720px; }
+  .prose-list { list-style: none; max-width: 760px; }
+  .prose-list li { font-size: 15.5px; padding: 14px 0 14px 28px; border-bottom: 1px solid var(--line); position: relative; color: var(--ink); }
+  .prose-list li::before { content: "—"; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+  .prose-list li:last-child { border-bottom: none; }
+  .muted { font-size: 14.5px; color: var(--ink-faint); margin-top: 18px; }
+
+  .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .model-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+  .model-card h3 { font-size: 19px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .model-card p { font-size: 15px; color: var(--ink-soft); }
+
+  /* ---- Vision ---- */
+  .vision-h3 { font-size: 20px; font-weight: 600; margin: 40px 0 12px; letter-spacing: -0.015em; }
+  .vision p { font-size: 16px; color: var(--ink); max-width: 760px; margin-bottom: 8px; }
+  .trend-list { counter-reset: t; list-style: none; max-width: 780px; margin-top: 8px; }
+  .trend-list li { counter-increment: t; position: relative; padding: 16px 0 16px 52px; border-bottom: 1px solid var(--line); font-size: 15.5px; color: var(--ink-soft); }
+  .trend-list li strong { color: var(--ink); }
+  .trend-list li::before { content: counter(t); position: absolute; left: 0; top: 16px; width: 30px; height: 30px; background: var(--accent-soft); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .trend-list li:last-child { border-bottom: none; }
+
+  .loop { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; margin: 18px 0 22px; }
+  .loop-step { font-size: 14px; font-weight: 600; color: var(--ink); background: var(--accent-soft); padding: 8px 16px; border-radius: 999px; }
+  .loop-arrow { color: var(--ink-faint); font-size: 16px; }
+  .loop-back { flex-basis: 100%; font-size: 13px; color: var(--ink-faint); margin-top: 8px; font-style: italic; }
+
+  .principle { background: var(--ink); color: #fff; border-radius: var(--radius); padding: 32px; margin-top: 36px; }
+  .principle-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #9d9da3; }
+  .principle p { font-size: 20px; font-weight: 500; color: #fff; margin-top: 10px; max-width: 680px; letter-spacing: -0.01em; }
+
+  footer { text-align: center; padding: 48px 0 0; color: var(--ink-faint); font-size: 13px; border-top: 1px solid var(--line); margin-top: 80px; }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 940px) {
+    .wrap { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    main { padding: 0 28px 80px; }
+    .hero h1 { font-size: 38px; }
+    .model-grid { grid-template-columns: 1fr; }
+    .fr-row { grid-template-columns: 76px 1fr 48px; gap: 12px; padding: 14px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside class="sidebar">
+    <div class="side-brand">Mục lục</div>
+    <nav>
+        <a href="#fr1" class="nav-link"><span class="nav-num">FR-1</span><span class="nav-title">Xác thực &amp; Tài khoản</span></a>
+        <a href="#fr2" class="nav-link"><span class="nav-num">FR-2</span><span class="nav-title">Nhắn tin 1-1</span></a>
+        <a href="#fr3" class="nav-link"><span class="nav-num">FR-3</span><span class="nav-title">Nhóm</span></a>
+        <a href="#fr4" class="nav-link"><span class="nav-num">FR-4</span><span class="nav-title">Kênh broadcast</span></a>
+        <a href="#fr5" class="nav-link"><span class="nav-num">FR-5</span><span class="nav-title">Media &amp; Tệp</span></a>
+        <a href="#fr6" class="nav-link"><span class="nav-num">FR-6</span><span class="nav-title">Tìm kiếm</span></a>
+        <a href="#fr7" class="nav-link"><span class="nav-num">FR-7</span><span class="nav-title">Thông báo</span></a>
+        <a href="#fr8" class="nav-link"><span class="nav-num">FR-8</span><span class="nav-title">Tổ chức hội thoại</span></a>
+        <a href="#fr9" class="nav-link"><span class="nav-num">FR-9</span><span class="nav-title">Quản trị &amp; Tuân thủ</span></a>
+        <a href="#fr10" class="nav-link"><span class="nav-num">FR-10</span><span class="nav-title">Voice &amp; Video Call</span></a>
+        <a href="#fr11" class="nav-link"><span class="nav-num">FR-11</span><span class="nav-title">AI hỗ trợ nhân viên</span></a>
+        <a href="#fr12" class="nav-link"><span class="nav-num">FR-12</span><span class="nav-title">Mạng xã hội doanh nghiệp</span></a>
+        <a href="#fr13" class="nav-link"><span class="nav-num">FR-13</span><span class="nav-title">AI đồng hành nhân viên</span></a>
+        <a href="#fr14" class="nav-link"><span class="nav-num">FR-14</span><span class="nav-title">Quy trình &amp; xác nhận qua App</span></a>
+        <a href="#fr15" class="nav-link"><span class="nav-num">FR-15</span><span class="nav-title">AI hỗ trợ ban lãnh đạo</span></a>
+      <a href="#mvp" class="nav-link"><span class="nav-num">★</span><span class="nav-title">Khuyến nghị MVP</span></a>
+      <a href="#huong" class="nav-link"><span class="nav-num">◆</span><span class="nav-title">Định hướng SP</span></a>
+      <a href="#tamnhin" class="nav-link"><span class="nav-num">∞</span><span class="nav-title">Tầm nhìn tương lai</span></a>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <div class="eyebrow">Đặc tả Yêu cầu Chức năng</div>
+      <h1>App Chat Nội Bộ Doanh Nghiệp</h1>
+      <p>Benchmark từ Telegram, lọc lại theo bối cảnh doanh nghiệp — ưu tiên kiểm soát, phân quyền và tuân thủ. Trải dài từ chat lõi tới vòng quyết định lãnh đạo.</p>
+      <div class="meta">
+        <div class="meta-item"><div class="meta-k">Phạm vi</div><div class="meta-v">15 nhóm chức năng</div></div>
+        <div class="meta-item"><div class="meta-k">Benchmark</div><div class="meta-v">Telegram · Zalo</div></div>
+        <div class="meta-item"><div class="meta-k">Tài liệu</div><div class="meta-v">Functional only</div></div>
+      </div>
+      <div class="legend">
+        <span class="legend-pill"><span class="dot p0"></span>P0 — Bắt buộc MVP</span>
+        <span class="legend-pill"><span class="dot p1"></span>P1 — Quan trọng, sau MVP</span>
+        <span class="legend-pill"><span class="dot p2"></span>P2 — Nice-to-have / phase sau</span>
+      </div>
+    </header>
+
+    <section id="fr1" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-1</span>
+        <h2>Xác thực &amp; Tài khoản</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-1.1</span><span class="fr-func">Đăng nhập bằng số điện thoại + OTP (SSO/email tổ chức là tùy chọn bổ sung)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-1.2</span><span class="fr-func">Đăng xuất, đăng xuất khỏi tất cả thiết bị</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-1.3</span><span class="fr-func">Tùy chọn xác thực 2 lớp (2FA)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-1.4</span><span class="fr-func">Quản lý hồ sơ: tên hiển thị, avatar, chức danh, phòng ban, số nội bộ</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-1.5</span><span class="fr-func">Trạng thái hiện diện: online / away / busy / offline (tự đặt hoặc tự động)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-1.6</span><span class="fr-func">Câu trạng thái tùy chỉnh (&quot;Đang họp đến 15h&quot;)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-1.7</span><span class="fr-func">Quản lý phiên đăng nhập: xem danh sách thiết bị đang đăng nhập</span><span class="prio p1">P1</span></div>
+        </div>
+    </section>
+
+    <section id="fr2" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-2</span>
+        <h2>Nhắn tin 1-1</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-2.1</span><span class="fr-func">Gửi/nhận tin văn bản realtime</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.2</span><span class="fr-func">Định dạng văn bản: in đậm, nghiêng, gạch, code, link</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.3</span><span class="fr-func">Emoji, sticker, GIF</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.4</span><span class="fr-func">Trạng thái tin: đang gửi → đã gửi → đã nhận → đã đọc</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.5</span><span class="fr-func">Báo &quot;đang nhập…&quot;</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.6</span><span class="fr-func">Reply (trích dẫn) một tin nhắn cụ thể</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.7</span><span class="fr-func">Forward tin sang hội thoại khác</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.8</span><span class="fr-func">Sửa tin đã gửi (hiện nhãn &quot;đã chỉnh sửa&quot;)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.9</span><span class="fr-func">Thu hồi tin (xóa phía mình / thu hồi cả hai phía)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.10</span><span class="fr-func">Reaction bằng emoji</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.11</span><span class="fr-func">Sao chép, chuyển tiếp, lưu tin</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-2.12</span><span class="fr-func">Hiển thị thời gian gửi, gom nhóm theo ngày</span><span class="prio p0">P0</span></div>
+        </div>
+    </section>
+
+    <section id="fr3" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-3</span>
+        <h2>Nhóm</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-3.1</span><span class="fr-func">Tạo nhóm: tên, ảnh, mô tả</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.2</span><span class="fr-func">Thêm/xóa thành viên</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.3</span><span class="fr-func">Vai trò trong nhóm: chủ nhóm, quản trị viên, thành viên</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.4</span><span class="fr-func">Phân quyền chi tiết: ai được gửi, thêm người, ghim, đổi thông tin, xóa tin người khác</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.5</span><span class="fr-func">Ghim tin nhắn (nhiều tin, có danh sách ghim)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.6</span><span class="fr-func">Mention @người, @all, @here</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.7</span><span class="fr-func">Link/QR mời tham gia (giới hạn theo domain email, đặt hạn dùng)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.8</span><span class="fr-func">Topics/luồng thảo luận con trong nhóm lớn</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.9</span><span class="fr-func">Danh sách thành viên kèm vai trò, tìm kiếm thành viên</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-3.10</span><span class="fr-func">Nhật ký hệ thống (&quot;A đã thêm B&quot;, &quot;C đã rời nhóm&quot;)</span><span class="prio p1">P1</span></div>
+        </div>
+    </section>
+
+    <section id="fr4" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-4</span>
+        <h2>Kênh broadcast (một chiều)</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-4.1</span><span class="fr-func">Tạo kênh chỉ admin được đăng (HR, ban giám đốc, thông báo công ty)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-4.2</span><span class="fr-func">Thành viên chỉ đọc + reaction (tùy chính sách)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-4.3</span><span class="fr-func">Đếm lượt xem mỗi bài</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-4.4</span><span class="fr-func">Bật phần bình luận tách riêng nếu cần</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="fr5" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-5</span>
+        <h2>Media &amp; Tệp</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-5.1</span><span class="fr-func">Gửi ảnh (xem trước, phóng to)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.2</span><span class="fr-func">Gửi video (phát trong app)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.3</span><span class="fr-func">Ghi âm và gửi voice message</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.4</span><span class="fr-func">Gửi tài liệu (PDF, Office, zip…)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.5</span><span class="fr-func">Album nhiều ảnh trong một tin</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.6</span><span class="fr-func">Xem trước tài liệu trong app không cần tải về</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.7</span><span class="fr-func">Thư viện media của hội thoại (gom ảnh/video/file đã gửi)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.8</span><span class="fr-func">Giới hạn dung lượng và loại tệp theo chính sách</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-5.9</span><span class="fr-func">Tải tệp về thiết bị</span><span class="prio p0">P0</span></div>
+        </div>
+    </section>
+
+    <section id="fr6" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-6</span>
+        <h2>Tìm kiếm</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-6.1</span><span class="fr-func">Tìm trong một hội thoại</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-6.2</span><span class="fr-func">Tìm toàn cục: theo người, theo nhóm, theo nội dung</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-6.3</span><span class="fr-func">Lọc kết quả theo loại (ảnh, file, link, voice)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-6.4</span><span class="fr-func">Nhảy tới đúng vị trí tin trong lịch sử</span><span class="prio p1">P1</span></div>
+        </div>
+    </section>
+
+    <section id="fr7" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-7</span>
+        <h2>Thông báo</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-7.1</span><span class="fr-func">Push notification trên mobile và web</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-7.2</span><span class="fr-func">Cấu hình thông báo theo từng hội thoại (mute 1h / 8h / đến sáng)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-7.3</span><span class="fr-func">Thông báo riêng cho mention dù đã tắt nhóm</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-7.4</span><span class="fr-func">Đếm số tin chưa đọc (badge)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-7.5</span><span class="fr-func">Chế độ không làm phiền theo khung giờ</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-7.6</span><span class="fr-func">Xem nhanh và trả lời nhanh từ thông báo</span><span class="prio p1">P1</span></div>
+        </div>
+    </section>
+
+    <section id="fr8" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-8</span>
+        <h2>Tổ chức hội thoại</h2>
+      </div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-8.1</span><span class="fr-func">Danh sách hội thoại sắp theo tin mới nhất</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-8.2</span><span class="fr-func">Ghim hội thoại quan trọng lên đầu</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-8.3</span><span class="fr-func">Đánh dấu đã đọc / chưa đọc</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-8.4</span><span class="fr-func">Lưu trữ (archive) hội thoại</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-8.5</span><span class="fr-func">Thư mục/nhãn phân loại hội thoại</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-8.6</span><span class="fr-func">Tin nhắn đã lưu (&quot;Saved Messages&quot; — ghi chú cá nhân)</span><span class="prio p1">P1</span></div>
+        </div>
+    </section>
+
+    <section id="fr9" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-9</span>
+        <h2>Quản trị &amp; Tuân thủ (đặc thù nội bộ)</h2>
+      </div>
+      <p class="note">Đây là phần phân biệt một app chat nội bộ nghiêm túc với việc &quot;clone Telegram&quot;. Telegram không có nhóm chức năng này.</p>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-9.1</span><span class="fr-func">Bảng điều khiển admin: danh sách người dùng, nhóm, kênh</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-9.2</span><span class="fr-func">Phân quyền theo vai trò và theo cây tổ chức (RBAC)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-9.3</span><span class="fr-func">Audit log: ghi nhận gửi/sửa/xóa/forward, đăng nhập, thay đổi quyền</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-9.4</span><span class="fr-func">Chính sách lưu trữ dữ liệu (giữ/tự xóa tin sau X ngày)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-9.5</span><span class="fr-func">Xuất hội thoại khi cần (thanh tra, tranh chấp lao động)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-9.6</span><span class="fr-func">Khóa/giải phóng tài khoản, buộc đăng xuất</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-9.7</span><span class="fr-func">Tuân thủ Nghị định 13/2023 về dữ liệu cá nhân (đồng ý, quyền truy cập, xóa dữ liệu)</span><span class="prio p0">P0</span></div>
+          <div class="fr-row"><span class="fr-code">FR-9.8</span><span class="fr-func">Danh bạ tự đồng bộ theo phòng ban từ hệ thống nhân sự</span><span class="prio p1">P1</span></div>
+        </div>
+    </section>
+
+    <section id="fr10" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-10</span>
+        <h2>Voice &amp; Video Call</h2>
+      </div>
+      <p class="note">Hạ tầng phức tạp và tốn kém — khuyến nghị để Phase sau.</p>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-10.1</span><span class="fr-func">Gọi 1-1 audio</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-10.2</span><span class="fr-func">Gọi 1-1 video</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-10.3</span><span class="fr-func">Gọi nhóm / voice chat</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-10.4</span><span class="fr-func">Chia sẻ màn hình</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="fr11" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-11</span>
+        <h2>AI hỗ trợ nhân viên</h2>
+      </div>
+        <div class="subhead">Hỗ trợ trong hội thoại (giá trị cao, làm trước)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-11.1</span><span class="fr-func">Tóm tắt hội thoại có nhiều tin chưa đọc</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.2</span><span class="fr-func">Tóm tắt theo chủ đề/ngày, trích quyết định và việc cần làm</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.3</span><span class="fr-func">Soạn thảo &amp; viết lại (lịch sự/ngắn gọn/trang trọng), sửa chính tả</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.4</span><span class="fr-func">Dịch tin nhắn (Việt–Anh và ngôn ngữ khác) ngay trong luồng chat</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.5</span><span class="fr-func">Trích xuất việc cần làm từ nội dung chat → gợi ý tạo task/nhắc lịch</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Trợ lý tri thức nội bộ (giá trị cao, cần đầu tư dữ liệu)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-11.6</span><span class="fr-func">Trợ lý hỏi–đáp nội bộ dựa trên tài liệu công ty (HR, quy chế)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.7</span><span class="fr-func">Tìm kiếm ngữ nghĩa bằng ngôn ngữ tự nhiên</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.8</span><span class="fr-func">Trích dẫn nguồn (link tài liệu gốc) trong mọi câu trả lời của trợ lý</span><span class="prio p1">P1</span></div>
+        </div>
+        <div class="subhead">AI hỗ trợ chat bằng giọng nói</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-11.9</span><span class="fr-func">STT — chuyển voice message thành văn bản tự động (nghe nhanh, tìm kiếm được)</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.10</span><span class="fr-func">TTS — đọc tin nhắn thành giọng nói (rảnh tay khi di chuyển)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.11</span><span class="fr-func">Chat bằng giọng nói với trợ lý AI (nói thay vì gõ)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.12</span><span class="fr-func">Tóm tắt một loạt voice message dài</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.13</span><span class="fr-func">Nhận diện ngôn ngữ + dịch voice (nói tiếng Việt → văn bản tiếng Anh)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.14</span><span class="fr-func">Lệnh thoại đơn giản (&quot;gửi cho phòng kế toán file hôm qua&quot;)</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Tự động hóa &amp; tích hợp (Phase sau)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-11.15</span><span class="fr-func">Bot AI theo phòng ban (IT/HR/pháp chế), escalate lên người thật khi không chắc</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.16</span><span class="fr-func">Họp &amp; cuộc gọi: ghi âm → transcript → biên bản và việc cần làm</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.17</span><span class="fr-func">Nhắc việc thông minh theo cam kết trong chat</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-11.18</span><span class="fr-func">Smart reply: gợi ý 2-3 câu trả lời nhanh theo ngữ cảnh</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="fr12" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-12</span>
+        <h2>Mạng xã hội doanh nghiệp (kiểu Zalo)</h2>
+      </div>
+      <p class="note">Biến app từ &quot;công cụ nhắn tin&quot; thành &quot;không gian gắn kết nội bộ&quot;. Lớp này làm tăng đáng kể độ phức tạp vận hành (kiểm duyệt, văn hóa, quyền hiển thị) — khuyến nghị Phase 2 trở đi, sau khi chat lõi đã ổn định.</p>
+        <div class="subhead">Bảng tin &amp; nội dung xã hội</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-12.1</span><span class="fr-func">Bảng tin nội bộ (newsfeed): đăng status, ảnh, video — toàn công ty hoặc theo phòng ban</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.2</span><span class="fr-func">Reaction, bình luận, chia sẻ bài viết</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.3</span><span class="fr-func">Khoảnh khắc/Story (nội dung tồn tại 24h)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.4</span><span class="fr-func">Vinh danh nhân viên, chúc mừng sinh nhật, thông báo người mới (tự động/thủ công)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.5</span><span class="fr-func">Khảo sát/bình chọn (poll) nội bộ</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.6</span><span class="fr-func">Sự kiện công ty: lịch, đăng ký tham gia, nhắc lịch</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.7</span><span class="fr-func">Quyền hiển thị bài viết theo phòng ban/nhóm/toàn công ty</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Danh bạ &amp; hồ sơ kiểu social</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-12.8</span><span class="fr-func">Trang cá nhân nhân viên: kỹ năng, dự án, thông tin liên hệ</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.9</span><span class="fr-func">Gợi ý kết nối đồng nghiệp (cùng phòng ban, cùng dự án)</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Mini app &amp; tiện ích nội bộ</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-12.10</span><span class="fr-func">Mini app/tiện ích trong app: đặt phòng họp, xin nghỉ phép, tra cứu lương (kiểu Zalo Mini App)</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Kiểm duyệt nội dung</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-12.11</span><span class="fr-func">Báo cáo bài viết, admin gỡ bài</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-12.12</span><span class="fr-func">Hàng đợi duyệt cho bài nhạy cảm trước khi đăng</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="fr13" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-13</span>
+        <h2>AI đồng hành nhân viên (trợ lý sâu)</h2>
+      </div>
+      <p class="note">Biến AI từ &quot;công cụ trong khung chat&quot; thành &quot;đồng nghiệp ảo&quot; hỗ trợ công việc hằng ngày. Phụ thuộc vào kho tri thức nội bộ (FR-11.6) và quyền truy cập theo RBAC.</p>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-13.1</span><span class="fr-func">Trợ lý cá nhân: quản lý việc cần làm, nhắc lịch, tóm tắt ngày làm việc</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-13.2</span><span class="fr-func">Onboarding nhân viên mới: bot dẫn dắt quy trình, trả lời câu hỏi, checklist</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-13.3</span><span class="fr-func">Soạn nháp văn bản hành chính (email, tờ trình, biên bản) theo mẫu công ty</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-13.4</span><span class="fr-func">Tra cứu chính sách/quy chế theo ngữ cảnh câu hỏi</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-13.5</span><span class="fr-func">Gợi ý chuyên gia nội bộ (&quot;ai trong công ty rành về X?&quot;)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-13.6</span><span class="fr-func">Hỏi–đáp dữ liệu công việc bằng ngôn ngữ tự nhiên (báo cáo nhanh)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-13.7</span><span class="fr-func">Coaching giao tiếp: gợi ý cách viết phản hồi khó (từ chối, nhắc việc) khéo léo</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="fr14" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-14</span>
+        <h2>Quy trình &amp; xác nhận qua App (định hướng dài hạn)</h2>
+      </div>
+      <p class="note">Biến app từ &quot;nơi nói chuyện&quot; thành &quot;nơi việc được hoàn thành&quot;. Đây là điểm khác biệt lớn nhất so với Telegram/Zalo, và là hướng tạo giá trị lâu dài nhất cho doanh nghiệp. Gắn chặt với audit log (FR-9.3) và tích hợp hệ thống nội bộ.</p>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-14.1</span><span class="fr-func">Quy trình duyệt (approval flow): xin nghỉ, tạm ứng, mua sắm, ký tài liệu — đề xuất → duyệt → xác nhận trong chat</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-14.2</span><span class="fr-func">Nút hành động trong tin nhắn (Đồng ý / Từ chối / Yêu cầu chỉnh sửa) thay cho trả lời bằng chữ</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-14.3</span><span class="fr-func">AI tự sinh đơn từ từ hội thoại (&quot;em xin nghỉ thứ 6&quot; → tạo đơn nghỉ phép chờ duyệt)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-14.4</span><span class="fr-func">Xác nhận có truy vết: ai duyệt, lúc nào, trạng thái — gắn audit log</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-14.5</span><span class="fr-func">Chữ ký số / xác nhận điện tử cho tài liệu nội bộ</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-14.6</span><span class="fr-func">Giao việc &amp; theo dõi: tạo task từ chat, nhắc hạn, báo hoàn thành</span><span class="prio p1">P1</span></div>
+          <div class="fr-row"><span class="fr-code">FR-14.7</span><span class="fr-func">Tích hợp quy trình với hệ thống nội bộ (HRM, ERP, kế toán)</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="fr15" class="fr-section">
+      <div class="sec-head">
+        <span class="sec-num">FR-15</span>
+        <h2>AI hỗ trợ ban lãnh đạo (BOD) — vòng quyết định khép kín</h2>
+      </div>
+      <p class="note">Tầng cao nhất: AI phục vụ lãnh đạo theo trọn vòng từ báo cáo → phân tích → dự đoán → ra quyết định → triển khai → theo dõi. Giá trị cốt lõi: app chat là nơi đóng vòng decision loop. Định hướng dài hạn, nền tảng là FR-9 (audit/RBAC) + FR-14 (workflow).</p>
+        <div class="subhead">Báo cáo (Report)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-15.1</span><span class="fr-func">Dashboard điều hành trong app</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.2</span><span class="fr-func">Hỏi số liệu bằng ngôn ngữ tự nhiên (&quot;doanh thu beauty tháng này vs tháng trước&quot;)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.3</span><span class="fr-func">Báo cáo định kỳ tự sinh, đẩy vào kênh BOD mỗi sáng</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.4</span><span class="fr-func">Cảnh báo ngoại lệ chủ động (chi phí vượt ngưỡng, chỉ số tụt)</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Phân tích (Analytic)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-15.5</span><span class="fr-func">AI giải thích &quot;tại sao&quot; đằng sau con số, không chỉ hiển thị</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.6</span><span class="fr-func">So sánh chéo phòng ban/dự án/kỳ</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.7</span><span class="fr-func">Phát hiện xu hướng và bất thường tự động</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Dự đoán (Predict)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-15.8</span><span class="fr-func">Dự báo dòng tiền, doanh thu, nhân sự</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.9</span><span class="fr-func">Mô phỏng kịch bản &quot;nếu–thì&quot; (tăng giá 10% thì sao)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.10</span><span class="fr-func">Cảnh báo sớm rủi ro (khách rời, dự án trễ hạn)</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Ra quyết định (Decide)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-15.11</span><span class="fr-func">AI tổng hợp phương án kèm ưu/nhược, khuyến nghị có dẫn nguồn</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.12</span><span class="fr-func">Phòng họp quyết định: bỏ phiếu, ghi nhận đồng thuận trong chat</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.13</span><span class="fr-func">Decision log: lưu vết lý do và bối cảnh mỗi quyết định</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Triển khai (Execute)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-15.14</span><span class="fr-func">Quyết định → tự sinh giao việc xuống phòng ban liên quan</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.15</span><span class="fr-func">Nút &quot;phê duyệt &amp; triển khai&quot; kích hoạt workflow (gắn FR-14)</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.16</span><span class="fr-func">Phân rã mục tiêu thành đầu việc có người chịu trách nhiệm</span><span class="prio p2">P2</span></div>
+        </div>
+        <div class="subhead">Theo dõi (Monitor)</div>
+        <div class="fr-table">
+          <div class="fr-row"><span class="fr-code">FR-15.17</span><span class="fr-func">Bám sát tiến độ thực thi của quyết định đã duyệt</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.18</span><span class="fr-func">Cập nhật trạng thái tự động về kênh BOD</span><span class="prio p2">P2</span></div>
+          <div class="fr-row"><span class="fr-code">FR-15.19</span><span class="fr-func">Đối chiếu kết quả thực tế với dự đoán ban đầu (đóng vòng học hỏi)</span><span class="prio p2">P2</span></div>
+        </div>
+    </section>
+
+    <section id="mvp" class="prose-section">
+      <div class="sec-head"><span class="sec-num">★</span><h2>Khuyến nghị phạm vi MVP</h2></div>
+      <p class="lead">Để bản đầu không bị phình, đề xuất:</p>
+      <ul class="prose-list">
+        <li><strong>Đưa vào MVP (P0):</strong> FR-1 đến FR-3 (cốt lõi nhắn tin &amp; nhóm), FR-5 cơ bản (ảnh/file), FR-6.1, FR-7 cơ bản, FR-8.1, và toàn bộ FR-9 mức P0 — quản trị &amp; tuân thủ không cắt được vì là lý do tồn tại của app nội bộ.</li>
+        <li><strong>Đăng nhập:</strong> ưu tiên số điện thoại + OTP (FR-1.1) cho hợp thói quen kiểu Zalo/Telegram. Số điện thoại vẫn cần ánh xạ về danh tính nhân viên (admin gắn số với tài khoản tổ chức) để giữ phân quyền RBAC và danh bạ đồng bộ. Cân nhắc chi phí SMS OTP và phương án dự phòng (gọi đọc mã, hoặc OTP qua Zalo).</li>
+        <li><strong>Cắt khỏi bản đầu:</strong> Kênh broadcast (FR-4), Topics (FR-3.8), Voice/Video (FR-10) — các thứ "kiểu Telegram" nhưng không bắt buộc.</li>
+        <li><strong>AI làm trước 3 thứ:</strong> Tóm tắt hội thoại (FR-11.1), Trợ lý hỏi–đáp có dẫn nguồn (FR-11.6 + FR-11.8), Dịch tin (FR-11.4) — giá trị cảm nhận rõ, demo được ngay.</li>
+        <li><strong>AI giọng nói:</strong> STT (FR-11.9) đáng làm sớm vì voice message rất phổ biến ở thị trường Việt.</li>
+        <li><strong>Lớp mạng xã hội (FR-12):</strong> để Phase 2 trở đi. Nếu muốn thử sớm, chọn poll nội bộ (FR-12.5) và chúc mừng/vinh danh (FR-12.4) làm "mồi".</li>
+        <li><strong>AI đồng hành (FR-13):</strong> onboarding bot (FR-13.2) và soạn nháp văn bản hành chính (FR-13.3) là hai thứ ROI rõ.</li>
+        <li><strong>Quy trình &amp; xác nhận (FR-14):</strong> giá trị cao nhất. Bắt đầu từ một quy trình đơn giản (xin nghỉ phép) với nút hành động + truy vết, rồi mở rộng dần.</li>
+      </ul>
+    </section>
+
+    <section id="huong" class="prose-section">
+      <div class="sec-head"><span class="sec-num">◆</span><h2>Định hướng sản phẩm: hai mô hình</h2></div>
+      <p class="lead">Bộ FR này cho phép đi theo một trong hai hướng, nên chốt sớm vì nó chi phối scope:</p>
+      <div class="model-grid">
+        <div class="model-card">
+          <h3>Slack / Teams nội bộ</h3>
+          <p>Trọng tâm là chat, nhóm, tích hợp công việc và AI hỗ trợ. Lớp social tối giản. Phù hợp nếu mục tiêu là công cụ làm việc.</p>
+        </div>
+        <div class="model-card">
+          <h3>Zalo doanh nghiệp</h3>
+          <p>Chat + bảng tin + mini app + danh bạ social, hướng tới một "siêu ứng dụng" nội bộ. Phù hợp nếu mục tiêu là không gian gắn kết toàn công ty.</p>
+        </div>
+      </div>
+      <p class="muted">Cả hai đều chung nền móng P0 (FR-1, 2, 3, 9). Khác biệt nằm ở việc đầu tư FR-12 nông hay sâu.</p>
+    </section>
+
+    <section id="tamnhin" class="prose-section vision">
+      <div class="sec-head"><span class="sec-num">∞</span><h2>Tầm nhìn &amp; Định hướng tương lai</h2></div>
+      <p class="lead">Tổng hợp xu hướng ngành và định hướng dài hạn, làm khung tư duy cho lộ trình sản phẩm.</p>
+
+      <h3 class="vision-h3">Chuyển dịch cốt lõi: từ "nói chuyện" sang "thực thi"</h3>
+      <p>Ứng dụng chat đang dịch chuyển từ công cụ trao đổi sang lớp giao diện chính để xử lý công việc. AI agent không còn chỉ chờ câu hỏi mà chủ động thực thi tác vụ, ghi nhớ ngữ cảnh và dự đoán bước tiếp theo. Đây là cơ sở chiến lược cho FR-14 (workflow) và FR-15 (BOD).</p>
+
+      <h3 class="vision-h3">Bảy xu hướng định hình tương lai</h3>
+      <ol class="trend-list">
+        <li><strong>Agentic workflow</strong> — chat điều phối quy trình đa bước xuyên hệ thống, với tính tự chủ có giới hạn và giám sát con người bắt buộc ở khâu tác động cao.</li>
+        <li><strong>Chat chủ động (proactive)</strong> — app tự khởi tạo hội thoại theo tín hiệu kinh doanh thay vì chờ người dùng tìm đến.</li>
+        <li><strong>Đa phương thức (multimodal)</strong> — xử lý thẳng ảnh, PDF, bảng biểu, voice; giảm bước "mô tả lại".</li>
+        <li><strong>Voice-first</strong> — giọng nói thành đầu vào ngang hàng với chữ. Lợi thế bản địa rõ ở thị trường Việt.</li>
+        <li><strong>AI như "đồng nghiệp"</strong> — thước đo dịch từ "trả lời đúng" sang "số giờ-người được giải phóng".</li>
+        <li><strong>Quản trị &amp; ranh giới</strong> — điều kiện sống còn: phân quyền, tách biệt nhiệm vụ, dấu vết kiểm toán. Lý do FR-9 là nền.</li>
+        <li><strong>Theo chiều dọc ngành</strong> — AI hiểu nghiệp vụ đặc thù thay vì trợ lý chung chung.</li>
+      </ol>
+
+      <h3 class="vision-h3">Vòng quyết định khép kín cho lãnh đạo (FR-15)</h3>
+      <div class="loop">
+        <span class="loop-step">Report</span><span class="loop-arrow">→</span>
+        <span class="loop-step">Analytic</span><span class="loop-arrow">→</span>
+        <span class="loop-step">Predict</span><span class="loop-arrow">→</span>
+        <span class="loop-step">Decide</span><span class="loop-arrow">→</span>
+        <span class="loop-step">Execute</span><span class="loop-arrow">→</span>
+        <span class="loop-step">Monitor</span>
+        <span class="loop-back">↺ đối chiếu kết quả với dự đoán</span>
+      </div>
+      <p>Báo cáo và phân tích cho thấy hiện trạng và lý do; dự đoán cho thấy tương lai khả dĩ; quyết định được đưa ra (bởi con người) và lưu vết; triển khai chảy thẳng thành giao việc; theo dõi đối chiếu kết quả thực tế với dự đoán ban đầu để học hỏi cho vòng sau.</p>
+
+      <h3 class="vision-h3">Lợi thế cạnh tranh dài hạn</h3>
+      <p>Khác biệt bền vững <strong>không</strong> nằm ở việc sao chép tính năng chat của Telegram/Zalo, mà ở việc biến chat thành <strong>lớp điều phối quy trình có kiểm soát</strong> — nơi FR-9 + FR-13 + FR-14 + FR-15 hội tụ. Đây là thứ các nền tảng consumer không làm được vì không sinh ra cho nghiệp vụ và tuân thủ doanh nghiệp.</p>
+
+      <div class="principle">
+        <span class="principle-label">Nguyên tắc xuyên suốt</span>
+        <p>AI soạn nháp, phân tích và khuyến nghị — con người quyết định và chịu trách nhiệm. Mức độ tự chủ của AI tỷ lệ nghịch với mức tác động của hành động.</p>
+      </div>
+    </section>
+
+    <footer>Đặc tả Yêu cầu Chức năng — App Chat Nội Bộ · Tài liệu chức năng, chưa bàn kiến trúc kỹ thuật</footer>
+  </main>
+</div>
+
+<script>
+  // Scrollspy đơn giản cho nav
+  const links = document.querySelectorAll('.nav-link');
+  const map = {};
+  links.forEach(l => { const id = l.getAttribute('href').slice(1); map[id] = l; });
+  const sections = document.querySelectorAll('section[id]');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = map[e.target.id];
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
