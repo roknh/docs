@@ -689,7 +689,89 @@
     background: var(--gray-900); border-radius: 3px; opacity: 0.2;
   }
 
-  /* ============ MAIN TABS (Overview / Danh sách) ============ */
+  /* ============ BOOKING ============ */
+  .booking-summary {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 12px 12px 10px;
+  }
+  .booking-stat {
+    text-align: center;
+    border-right: 1px solid var(--gray-200);
+  }
+  .booking-stat:last-child { border-right: none; }
+  .booking-stat-num {
+    font-size: 22px; font-weight: 700; line-height: 1;
+    margin-bottom: 3px;
+  }
+  .booking-stat-label {
+    font-size: 10px; color: var(--gray-500); font-weight: 500;
+  }
+
+  .booking-card {
+    background: #fff; border-radius: var(--radius);
+    box-shadow: var(--shadow-sm); overflow: hidden;
+    border: 1px solid var(--gray-200);
+  }
+  .booking-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .booking-time-slot {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .booking-time {
+    font-size: 16px; font-weight: 700; color: var(--gray-900);
+    min-width: 46px;
+  }
+  .booking-service-name {
+    font-size: 13px; color: var(--primary); font-weight: 600;
+  }
+  .booking-status {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 12px;
+    white-space: nowrap;
+  }
+  .booking-status.bk-arrived {
+    background: var(--primary-bg); color: var(--primary);
+  }
+  .booking-status.bk-pending {
+    background: var(--warning-bg); color: var(--warning);
+  }
+  .booking-status.bk-cancelled {
+    background: var(--gray-100); color: var(--gray-500);
+  }
+  .booking-card-body {
+    padding: 10px 14px;
+  }
+  .booking-cust-name {
+    font-size: 15px; font-weight: 600; color: var(--gray-800);
+    margin-bottom: 6px;
+  }
+  .booking-cust-info {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 6px; flex-wrap: wrap;
+  }
+  .booking-detail-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--gray-600);
+  }
+  .booking-alert {
+    padding: 8px 14px;
+    background: #FFF3E0; color: #E65100;
+    font-size: 12px; font-weight: 600;
+    border-top: 1px solid #FFE0B2;
+  }
+  .bk-pending-card {
+    border-color: #FFE082;
+  }
+  .bk-cancelled-card {
+    opacity: 0.55;
+  }
+
+  /* ============ MAIN TABS (Overview / KH checkin / Booking) ============ */
   .main-tabs {
     display: flex;
     background: #fff;
@@ -698,8 +780,8 @@
   }
   .main-tab {
     flex: 1; text-align: center;
-    padding: 12px 8px;
-    font-size: 14px; font-weight: 500;
+    padding: 12px 4px;
+    font-size: 13px; font-weight: 500;
     color: var(--gray-500);
     cursor: pointer;
     border-bottom: 3px solid transparent;
@@ -763,13 +845,16 @@
 
       <div class="location-bar">📍 Buôn Ma Thuột — Hôm nay 04/06/2026</div>
 
-      <!-- ===== MAIN TABS: Tổng quan / Danh sách ===== -->
+      <!-- ===== MAIN TABS: Tổng quan / KH checkin / Booking ===== -->
       <div class="main-tabs">
         <div class="main-tab active" onclick="switchMainTab(this, 'overview-panel')">
           📊 Tổng quan
         </div>
         <div class="main-tab" onclick="switchMainTab(this, 'list-panel')">
-          📋 Danh sách <span class="main-tab-count">12</span>
+          KH checkin <span class="main-tab-count">12</span>
+        </div>
+        <div class="main-tab" onclick="switchMainTab(this, 'booking-panel')">
+          Booking <span class="main-tab-count">8</span>
         </div>
       </div>
 
@@ -1079,6 +1164,172 @@
 
       </div>
       </div><!-- end list-panel -->
+
+      <!-- ===== TAB 3: BOOKING ===== -->
+      <div id="booking-panel" class="main-panel">
+        <!-- Booking summary -->
+        <div class="booking-summary">
+          <div class="booking-stat">
+            <div class="booking-stat-num" style="color:var(--primary)">8</div>
+            <div class="booking-stat-label">Tổng booking</div>
+          </div>
+          <div class="booking-stat">
+            <div class="booking-stat-num" style="color:var(--primary)">5</div>
+            <div class="booking-stat-label">Đã đến</div>
+          </div>
+          <div class="booking-stat">
+            <div class="booking-stat-num" style="color:var(--danger)">2</div>
+            <div class="booking-stat-label">Chưa đến</div>
+          </div>
+          <div class="booking-stat">
+            <div class="booking-stat-num" style="color:var(--gray-500)">1</div>
+            <div class="booking-stat-label">Huỷ</div>
+          </div>
+        </div>
+
+        <!-- Booking filter tabs -->
+        <div class="filter-tabs">
+          <div class="tab active">Tất cả <span class="count">8</span></div>
+          <div class="tab">Đã đến <span class="count">5</span></div>
+          <div class="tab">Chưa đến <span class="count">2</span></div>
+          <div class="tab">Huỷ <span class="count">1</span></div>
+        </div>
+
+        <div class="customer-list">
+
+          <!-- Booking 1: Đã đến — KH cũ VIP -->
+          <div class="booking-card">
+            <div class="booking-card-header">
+              <div class="booking-time-slot">
+                <span class="booking-time">09:00</span>
+                <span class="booking-service-name">Phun môi châu Âu</span>
+              </div>
+              <span class="booking-status bk-arrived">✓ Đã đến</span>
+            </div>
+            <div class="booking-card-body">
+              <div class="booking-cust-name">Lê Thị Mỹ Linh</div>
+              <div class="booking-cust-info">
+                <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
+                <span style="font-size:12px;color:var(--gray-500)">Mã: 0234567893136</span>
+              </div>
+              <div class="booking-detail-row">
+                <span>NV phục vụ: <strong>Nguyễn Thị Huyền</strong></span>
+                <span style="color:var(--primary);font-weight:600">Checkin 09:30</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking 2: Đã đến — KH cũ -->
+          <div class="booking-card">
+            <div class="booking-card-header">
+              <div class="booking-time-slot">
+                <span class="booking-time">09:30</span>
+                <span class="booking-service-name">Trẻ hoá da Laser</span>
+              </div>
+              <span class="booking-status bk-arrived">✓ Đã đến</span>
+            </div>
+            <div class="booking-card-body">
+              <div class="booking-cust-name">Nguyễn Thị Trang</div>
+              <div class="booking-cust-info">
+                <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
+                <span style="font-size:12px;color:var(--gray-500)">Mã: 0834567893908</span>
+              </div>
+              <div class="booking-detail-row">
+                <span>NV tư vấn: <strong>Ng. Thị Mỹ Loan</strong></span>
+                <span style="color:var(--primary);font-weight:600">Checkin 10:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking 3: Chưa đến — KH cũ, sắp tới giờ -->
+          <div class="booking-card bk-pending-card">
+            <div class="booking-card-header">
+              <div class="booking-time-slot">
+                <span class="booking-time">10:30</span>
+                <span class="booking-service-name">Tiêm Filler môi</span>
+              </div>
+              <span class="booking-status bk-pending">⏳ Chưa đến</span>
+            </div>
+            <div class="booking-card-body">
+              <div class="booking-cust-name">Đặng Thị Thuỷ</div>
+              <div class="booking-cust-info">
+                <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
+                <span class="card-tag tag-has-treatment" style="font-size:10px;padding:2px 6px">◎ Còn LT</span>
+              </div>
+              <div class="booking-detail-row">
+                <span>NV: <strong>Trần Thị Mai</strong></span>
+                <span style="color:var(--warning);font-weight:600;font-size:12px">Còn 0 phút</span>
+              </div>
+            </div>
+            <div class="booking-alert">
+              ⚠️ Đã đến giờ hẹn — KH chưa đến
+            </div>
+          </div>
+
+          <!-- Booking 4: Chưa đến — KH mới, chiều -->
+          <div class="booking-card bk-pending-card">
+            <div class="booking-card-header">
+              <div class="booking-time-slot">
+                <span class="booking-time">14:00</span>
+                <span class="booking-service-name">Cắt mí mắt</span>
+              </div>
+              <span class="booking-status bk-pending">⏳ Chưa đến</span>
+            </div>
+            <div class="booking-card-body">
+              <div class="booking-cust-name">Lý Thị Ngọc Hân</div>
+              <div class="booking-cust-info">
+                <span class="card-tag tag-new" style="font-size:10px;padding:2px 6px">★ KH mới</span>
+                <span style="font-size:12px;color:var(--gray-500)">SĐT: 0909 123 456</span>
+              </div>
+              <div class="booking-detail-row">
+                <span>NV tư vấn: <strong>Ng. Thị Như</strong></span>
+                <span style="color:var(--gray-500);font-size:12px">Còn 3h30'</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking 5: Đã đến -->
+          <div class="booking-card">
+            <div class="booking-card-header">
+              <div class="booking-time-slot">
+                <span class="booking-time">08:00</span>
+                <span class="booking-service-name">Tiêm Filler cằm</span>
+              </div>
+              <span class="booking-status bk-arrived">✓ Đã đến</span>
+            </div>
+            <div class="booking-card-body">
+              <div class="booking-cust-name">Võ Ngọc Ánh</div>
+              <div class="booking-cust-info">
+                <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
+                <span style="font-size:12px;color:var(--gray-500)">Mã: 0901234567890</span>
+              </div>
+              <div class="booking-detail-row">
+                <span>NV: <strong>Trần Thị Mai</strong></span>
+                <span style="color:var(--primary);font-weight:600">Checkin 08:00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking 6: Huỷ -->
+          <div class="booking-card bk-cancelled-card">
+            <div class="booking-card-header">
+              <div class="booking-time-slot">
+                <span class="booking-time">09:00</span>
+                <span class="booking-service-name">Chăm sóc da chuyên sâu</span>
+              </div>
+              <span class="booking-status bk-cancelled">✕ Huỷ</span>
+            </div>
+            <div class="booking-card-body">
+              <div class="booking-cust-name" style="color:var(--gray-400);text-decoration:line-through">Trần Minh Châu</div>
+              <div class="booking-cust-info">
+                <span style="font-size:12px;color:var(--gray-400)">Lý do: KH bận, xin dời lịch</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- end booking-panel -->
+
       <div class="home-indicator"></div>
     </div>
   </div>
