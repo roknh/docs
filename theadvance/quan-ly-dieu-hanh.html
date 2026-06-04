@@ -689,6 +689,48 @@
     background: var(--gray-900); border-radius: 3px; opacity: 0.2;
   }
 
+  /* ============ FILTER DROPDOWN ============ */
+  .filter-dropdown {
+    padding: 12px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .filter-group { display: flex; flex-direction: column; gap: 4px; }
+  .filter-label {
+    font-size: 12px; font-weight: 600; color: var(--gray-600);
+  }
+  .filter-select {
+    width: 100%; height: 36px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px; padding: 0 10px;
+    font-size: 13px; color: var(--gray-800);
+    background: var(--gray-50); outline: none;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23757575' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  .filter-actions {
+    display: flex; gap: 8px; padding-top: 4px;
+  }
+  .filter-action-btn {
+    flex: 1; height: 36px; border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer;
+  }
+  .filter-reset {
+    background: var(--gray-100); color: var(--gray-600);
+  }
+  .filter-apply {
+    background: var(--primary); color: #fff;
+  }
+  .filter-btn.active {
+    background: var(--primary); color: #fff;
+    border-color: var(--primary);
+  }
+  .filter-btn svg { display: block; }
+
   /* ============ BOOKING ============ */
   .booking-summary {
     display: grid; grid-template-columns: repeat(4, 1fr);
@@ -840,7 +882,52 @@
         <div class="search-wrap">
           <input type="text" placeholder="Tìm theo tên, Mã KH...">
         </div>
-        <button class="filter-btn">☰</button>
+        <button class="filter-btn" onclick="toggleFilter(this)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        </button>
+      </div>
+
+      <!-- Filter dropdown -->
+      <div class="filter-dropdown" id="filterDropdown" style="display:none">
+        <div class="filter-group">
+          <label class="filter-label">NV thực hiện</label>
+          <select class="filter-select">
+            <option>Tất cả</option>
+            <option>Nguyễn Thị Huyền</option>
+            <option>Trần Thị Mai</option>
+            <option>Lê Văn Tuấn</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Người ĐH/BLD</label>
+          <select class="filter-select">
+            <option>Tất cả</option>
+            <option>Nguyễn Thị Huyền</option>
+            <option>Trần Văn Minh</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">BQL</label>
+          <select class="filter-select">
+            <option>Tất cả</option>
+            <option>8435 - Ng. Thị Như</option>
+            <option>9578 - Ng. Thị Mỹ Loan</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Nhóm KH</label>
+          <select class="filter-select">
+            <option>Tất cả</option>
+            <option>Nhóm 1 (VIP)</option>
+            <option>Nhóm 2</option>
+            <option>Nhóm 3</option>
+            <option>Nhóm 4</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button class="filter-action-btn filter-reset" onclick="toggleFilter(this)">Đặt lại</button>
+          <button class="filter-action-btn filter-apply" onclick="toggleFilter(this)">Áp dụng</button>
+        </div>
       </div>
 
       <div class="location-bar">📍 Buôn Ma Thuột — Hôm nay 04/06/2026</div>
@@ -955,6 +1042,98 @@
                 <span class="pct">67%</span>
               </div>
               <div class="section-revenue">400,000,000 ₫</div>
+            </div>
+          </div>
+
+          <!-- NHÓM KH -->
+          <div class="overview-section os-group" style="margin-top:8px">
+            <div class="overview-section-header" style="background:#E8EAF6;color:#283593">
+              <div class="section-count">
+                <span style="font-weight:600">Nhóm KH</span>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#283593">Số KH checkin</span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:#283593"></span>
+                Nhóm 1 (VIP)
+              </span>
+              <span class="sub-value">
+                <strong style="color:#283593">3</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:#5C6BC0"></span>
+                Nhóm 2
+              </span>
+              <span class="sub-value">
+                <strong>4</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:#9FA8DA"></span>
+                Nhóm 3
+              </span>
+              <span class="sub-value">
+                <strong>3</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:var(--gray-400)"></span>
+                Nhóm 4
+              </span>
+              <span class="sub-value">
+                <strong>2</strong>
+              </span>
+            </div>
+          </div>
+
+          <!-- TG GẮN BÓ -->
+          <div class="overview-section os-loyalty" style="margin-top:8px">
+            <div class="overview-section-header" style="background:#FFF8E1;color:#F57F17">
+              <div class="section-count">
+                <span style="font-weight:600">TG Gắn bó</span>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#F57F17">Số KH checkin</span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:var(--danger)"></span>
+                Mới (lần đầu)
+              </span>
+              <span class="sub-value">
+                <strong style="color:var(--danger)">4</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:var(--warning)"></span>
+                &lt; 6 tháng
+              </span>
+              <span class="sub-value">
+                <strong>2</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:var(--blue)"></span>
+                6 tháng – 2 năm
+              </span>
+              <span class="sub-value">
+                <strong>3</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:var(--primary)"></span>
+                &gt; 2 năm
+              </span>
+              <span class="sub-value">
+                <strong style="color:var(--primary)">3</strong>
+              </span>
             </div>
           </div>
         </div>
@@ -1903,6 +2082,18 @@ function switchMainTab(el, panelId) {
   frame.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   frame.querySelector('#' + panelId).classList.add('active');
+}
+function toggleFilter(el) {
+  const frame = el.closest('.phone-frame');
+  const dd = frame.querySelector('.filter-dropdown');
+  const btn = frame.querySelector('.filter-btn');
+  if (dd.style.display === 'none') {
+    dd.style.display = 'flex';
+    btn.classList.add('active');
+  } else {
+    dd.style.display = 'none';
+    btn.classList.remove('active');
+  }
 }
 </script>
 </body>
