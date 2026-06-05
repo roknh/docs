@@ -623,7 +623,7 @@
   .ai-potential-score {
     display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
   }
-  .ai-potential-score .stars { font-size: 14px; letter-spacing: 2px; }
+  .ai-potential-score .stars { font-size: 14px; letter-spacing: 2px; color: #E65100; }
   .ai-potential-score .level { font-size: 14px; font-weight: 700; }
   .ai-potential-score .level.high { color: var(--primary); }
   .ai-potential-score .level.medium { color: var(--warning); }
@@ -811,6 +811,98 @@
   }
   .bk-cancelled-card {
     opacity: 0.55;
+  }
+
+  /* ============ BOOKING GROUP OVERVIEW ============ */
+  .bk-group-overview {
+    padding: 12px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .bk-group-title {
+    font-size: 12px; font-weight: 600; color: var(--gray-500);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .bk-group-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .bk-group-table thead th {
+    padding: 6px 4px;
+    font-size: 10px; font-weight: 600;
+    color: var(--gray-500); text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 2px solid var(--gray-200);
+    text-align: center;
+  }
+  .bk-group-table thead th:first-child {
+    text-align: left; padding-left: 8px;
+  }
+  .bk-group-table tbody tr {
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .bk-group-table tbody tr:last-child {
+    border-bottom: none;
+  }
+  .bk-group-table tbody td {
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 13px; font-weight: 600;
+  }
+  .bk-group-table tbody td:first-child {
+    text-align: left; padding-left: 8px;
+  }
+  .bk-gt-label {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600;
+  }
+  .bk-gt-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .bk-gt-total { color: var(--gray-800); }
+  .bk-gt-arrived { color: var(--primary); }
+  .bk-gt-pending { color: var(--warning); }
+  .bk-gt-cancelled { color: var(--gray-400); }
+  .bk-gt-zero { color: var(--gray-300); font-weight: 400; }
+
+  /* AI Star rating on list cards */
+  .ai-stars {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 10px; font-weight: 600;
+    padding: 2px 7px; border-radius: 10px;
+    background: #fff;
+    color: #E65100;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .ai-stars .star-icons {
+    font-size: 10px; letter-spacing: 0.5px; line-height: 1;
+  }
+  .ai-stars .star-empty {
+    color: #ccc;
+  }
+
+  /* Group badge on booking cards */
+  .bk-group-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px; border-radius: 6px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .bk-group-badge.bg-g1 {
+    background: #E8EAF6; color: #283593; border: 1px solid #C5CAE9;
+  }
+  .bk-group-badge.bg-g2 {
+    background: #E8EAF6; color: #5C6BC0; border: 1px solid #C5CAE9;
+  }
+  .bk-group-badge.bg-g3 {
+    background: #F5F5F5; color: #9FA8DA; border: 1px solid var(--gray-300);
+  }
+  .bk-group-badge.bg-g4 {
+    background: #F5F5F5; color: var(--gray-500); border: 1px solid var(--gray-300);
   }
 
   /* ============ MAIN TABS (Overview / KH checkin / Booking) ============ */
@@ -1055,11 +1147,20 @@
             </div>
             <div class="overview-sub-row">
               <span class="sub-label">
-                <span class="sub-dot" style="background:#283593"></span>
-                Nhóm 1 (VIP)
+                <span class="sub-dot" style="background:var(--orange)"></span>
+                Mới
               </span>
               <span class="sub-value">
-                <strong style="color:#283593">3</strong>
+                <strong style="color:var(--orange)">4</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:#283593"></span>
+                Nhóm 1
+              </span>
+              <span class="sub-value">
+                <strong style="color:#283593">2</strong>
               </span>
             </div>
             <div class="overview-sub-row">
@@ -1068,25 +1169,25 @@
                 Nhóm 2
               </span>
               <span class="sub-value">
-                <strong>4</strong>
-              </span>
-            </div>
-            <div class="overview-sub-row">
-              <span class="sub-label">
-                <span class="sub-dot" style="background:#9FA8DA"></span>
-                Nhóm 3
-              </span>
-              <span class="sub-value">
                 <strong>3</strong>
               </span>
             </div>
             <div class="overview-sub-row">
               <span class="sub-label">
-                <span class="sub-dot" style="background:var(--gray-400)"></span>
-                Nhóm 4
+                <span class="sub-dot" style="background:#9FA8DA"></span>
+                Nhóm 3 (VIP)
               </span>
               <span class="sub-value">
-                <strong>2</strong>
+                <strong style="color:#9FA8DA">2</strong>
+              </span>
+            </div>
+            <div class="overview-sub-row">
+              <span class="sub-label">
+                <span class="sub-dot" style="background:var(--gray-400)"></span>
+                Nhóm 4 (VIP)
+              </span>
+              <span class="sub-value">
+                <strong>1</strong>
               </span>
             </div>
           </div>
@@ -1156,7 +1257,10 @@
         <!-- Card 1: Đang Làm — VIP, KH cũ, còn LT, có HĐ -->
         <div class="customer-card">
           <div class="card-header vip">
-            <span>Lê Thị Mỹ Linh</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>Lê Thị Mỹ Linh</span>
+              <span class="ai-stars"><span class="star-icons">★★★★★</span></span>
+            </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span class="card-status" style="background:var(--st-treating)"><span class="dot"></span> Đang Làm</span>
               <span class="arrow">›</span>
@@ -1164,6 +1268,7 @@
           </div>
           <div class="card-tags">
             <span class="card-tag tag-returning">↩ KH cũ</span>
+            <span class="bk-group-badge bg-g1">Nhóm 1</span>
             <span class="card-tag tag-has-treatment">◎ Còn LT</span>
             <span class="card-tag tag-invoiced">₫ Có HĐ</span>
           </div>
@@ -1194,7 +1299,10 @@
         <!-- Card 2: Đang TV — KH cũ, hết LT, có HĐ -->
         <div class="customer-card">
           <div class="card-header normal">
-            <span>Nguyễn Thị Trang</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>Nguyễn Thị Trang</span>
+              <span class="ai-stars"><span class="star-icons">★★★★<span class="star-empty">★</span></span></span>
+            </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span class="card-status" style="background:var(--st-consulting)"><span class="dot"></span> Đang TV</span>
               <span class="arrow">›</span>
@@ -1202,6 +1310,7 @@
           </div>
           <div class="card-tags">
             <span class="card-tag tag-returning">↩ KH cũ</span>
+            <span class="bk-group-badge bg-g1">Nhóm 1</span>
             <span class="card-tag tag-no-treatment">○ Hết liệu trình</span>
             <span class="card-tag tag-invoiced">₫ Có HĐ</span>
           </div>
@@ -1232,7 +1341,10 @@
         <!-- Card 3: Đang đợi — KH mới, chờ lâu, chưa có HĐ -->
         <div class="customer-card">
           <div class="card-header alert">
-            <span>Trần Thị Mỹ Hằng</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>Trần Thị Mỹ Hằng</span>
+              <span class="ai-stars"><span class="star-icons">★★★<span class="star-empty">★★</span></span></span>
+            </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span class="card-status" style="background:var(--st-waiting)"><span class="dot"></span> Đang đợi</span>
               <span class="arrow">›</span>
@@ -1269,7 +1381,10 @@
         <!-- Card 4: Đang đợi — KH mới, có HĐ -->
         <div class="customer-card">
           <div class="card-header new-cust">
-            <span>Phạm Thị Hoa</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>Phạm Thị Hoa</span>
+              <span class="ai-stars"><span class="star-icons">★★<span class="star-empty">★★★</span></span></span>
+            </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span class="card-status" style="background:var(--st-waiting)"><span class="dot"></span> Đang đợi</span>
               <span class="arrow">›</span>
@@ -1306,7 +1421,10 @@
         <!-- Card 5: Xong — KH cũ, còn LT -->
         <div class="customer-card" style="opacity:0.7">
           <div class="card-header" style="background:var(--gray-500)">
-            <span>Võ Ngọc Ánh</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span>Võ Ngọc Ánh</span>
+              <span class="ai-stars"><span class="star-icons">★★★★<span class="star-empty">★</span></span></span>
+            </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span class="card-status" style="background:rgba(255,255,255,0.25)">✓ Xong</span>
               <span class="arrow">›</span>
@@ -1314,6 +1432,7 @@
           </div>
           <div class="card-tags">
             <span class="card-tag tag-returning">↩ KH cũ</span>
+            <span class="bk-group-badge bg-g2">Nhóm 2</span>
             <span class="card-tag tag-has-treatment">◎ Còn LT</span>
             <span class="card-tag tag-invoiced">₫ Có HĐ</span>
           </div>
@@ -1346,24 +1465,57 @@
 
       <!-- ===== TAB 3: BOOKING ===== -->
       <div id="booking-panel" class="main-panel">
-        <!-- Booking summary -->
-        <div class="booking-summary">
-          <div class="booking-stat">
-            <div class="booking-stat-num" style="color:var(--primary)">8</div>
-            <div class="booking-stat-label">Tổng booking</div>
-          </div>
-          <div class="booking-stat">
-            <div class="booking-stat-num" style="color:var(--primary)">5</div>
-            <div class="booking-stat-label">Đã đến</div>
-          </div>
-          <div class="booking-stat">
-            <div class="booking-stat-num" style="color:var(--danger)">2</div>
-            <div class="booking-stat-label">Chưa đến</div>
-          </div>
-          <div class="booking-stat">
-            <div class="booking-stat-num" style="color:var(--gray-500)">1</div>
-            <div class="booking-stat-label">Huỷ</div>
-          </div>
+        <!-- Booking: Tổng quan nhóm KH -->
+        <div class="bk-group-overview">
+          <div class="bk-group-title">👥 Nhóm KH booking hôm nay</div>
+          <table class="bk-group-table">
+            <thead>
+              <tr>
+                <th>Nhóm</th>
+                <th>Tổng</th>
+                <th>Đã đến</th>
+                <th>Chưa đến</th>
+                <th>Huỷ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="bk-gt-label"><span class="bk-gt-dot" style="background:var(--orange)"></span>KH mới</span></td>
+                <td class="bk-gt-total">2</td>
+                <td class="bk-gt-zero">0</td>
+                <td class="bk-gt-pending">1</td>
+                <td class="bk-gt-cancelled">1</td>
+              </tr>
+              <tr>
+                <td><span class="bk-gt-label"><span class="bk-gt-dot" style="background:#283593"></span>Nhóm 1</span></td>
+                <td class="bk-gt-total">3</td>
+                <td class="bk-gt-arrived">2</td>
+                <td class="bk-gt-pending">1</td>
+                <td class="bk-gt-zero">0</td>
+              </tr>
+              <tr>
+                <td><span class="bk-gt-label"><span class="bk-gt-dot" style="background:#5C6BC0"></span>Nhóm 2</span></td>
+                <td class="bk-gt-total">2</td>
+                <td class="bk-gt-arrived">2</td>
+                <td class="bk-gt-zero">0</td>
+                <td class="bk-gt-zero">0</td>
+              </tr>
+              <tr>
+                <td><span class="bk-gt-label"><span class="bk-gt-dot" style="background:#9FA8DA"></span>Nhóm 3</span></td>
+                <td class="bk-gt-total">1</td>
+                <td class="bk-gt-arrived">1</td>
+                <td class="bk-gt-zero">0</td>
+                <td class="bk-gt-zero">0</td>
+              </tr>
+              <tr>
+                <td><span class="bk-gt-label"><span class="bk-gt-dot" style="background:var(--gray-400)"></span>Nhóm 4</span></td>
+                <td class="bk-gt-zero">0</td>
+                <td class="bk-gt-zero">0</td>
+                <td class="bk-gt-zero">0</td>
+                <td class="bk-gt-zero">0</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- Booking filter tabs -->
@@ -1386,10 +1538,11 @@
               <span class="booking-status bk-arrived">✓ Đã đến</span>
             </div>
             <div class="booking-card-body">
-              <div class="booking-cust-name">Lê Thị Mỹ Linh</div>
+              <div class="booking-cust-name">Lê Thị Mỹ Linh <span class="ai-stars" style="vertical-align:middle"><span class="star-icons">★★★★★</span></span></div>
               <div class="booking-cust-info">
                 <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
-                <span style="font-size:12px;color:var(--gray-500)">Mã: 0234567893136</span>
+                <span class="bk-group-badge bg-g1">Nhóm 1</span>
+                <span style="font-size:12px;color:var(--gray-500)">0234567893136</span>
               </div>
               <div class="booking-detail-row">
                 <span>NV phục vụ: <strong>Nguyễn Thị Huyền</strong></span>
@@ -1408,10 +1561,11 @@
               <span class="booking-status bk-arrived">✓ Đã đến</span>
             </div>
             <div class="booking-card-body">
-              <div class="booking-cust-name">Nguyễn Thị Trang</div>
+              <div class="booking-cust-name">Nguyễn Thị Trang <span class="ai-stars" style="vertical-align:middle"><span class="star-icons">★★★★<span class="star-empty">★</span></span></span></div>
               <div class="booking-cust-info">
                 <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
-                <span style="font-size:12px;color:var(--gray-500)">Mã: 0834567893908</span>
+                <span class="bk-group-badge bg-g1">Nhóm 1</span>
+                <span style="font-size:12px;color:var(--gray-500)">0834567893908</span>
               </div>
               <div class="booking-detail-row">
                 <span>NV tư vấn: <strong>Ng. Thị Mỹ Loan</strong></span>
@@ -1430,9 +1584,10 @@
               <span class="booking-status bk-pending">⏳ Chưa đến</span>
             </div>
             <div class="booking-card-body">
-              <div class="booking-cust-name">Đặng Thị Thuỷ</div>
+              <div class="booking-cust-name">Đặng Thị Thuỷ <span class="ai-stars" style="vertical-align:middle"><span class="star-icons">★★★★<span class="star-empty">★</span></span></span></div>
               <div class="booking-cust-info">
                 <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
+                <span class="bk-group-badge bg-g2">Nhóm 2</span>
                 <span class="card-tag tag-has-treatment" style="font-size:10px;padding:2px 6px">◎ Còn LT</span>
               </div>
               <div class="booking-detail-row">
@@ -1455,7 +1610,7 @@
               <span class="booking-status bk-pending">⏳ Chưa đến</span>
             </div>
             <div class="booking-card-body">
-              <div class="booking-cust-name">Lý Thị Ngọc Hân</div>
+              <div class="booking-cust-name">Lý Thị Ngọc Hân <span class="ai-stars" style="vertical-align:middle"><span class="star-icons">★★★<span class="star-empty">★★</span></span></span></div>
               <div class="booking-cust-info">
                 <span class="card-tag tag-new" style="font-size:10px;padding:2px 6px">★ KH mới</span>
                 <span style="font-size:12px;color:var(--gray-500)">SĐT: 0909 123 456</span>
@@ -1477,10 +1632,11 @@
               <span class="booking-status bk-arrived">✓ Đã đến</span>
             </div>
             <div class="booking-card-body">
-              <div class="booking-cust-name">Võ Ngọc Ánh</div>
+              <div class="booking-cust-name">Võ Ngọc Ánh <span class="ai-stars" style="vertical-align:middle"><span class="star-icons">★★★★<span class="star-empty">★</span></span></span></div>
               <div class="booking-cust-info">
                 <span class="card-tag tag-returning" style="font-size:10px;padding:2px 6px">↩ KH cũ</span>
-                <span style="font-size:12px;color:var(--gray-500)">Mã: 0901234567890</span>
+                <span class="bk-group-badge bg-g2">Nhóm 2</span>
+                <span style="font-size:12px;color:var(--gray-500)">0901234567890</span>
               </div>
               <div class="booking-detail-row">
                 <span>NV: <strong>Trần Thị Mai</strong></span>
@@ -1499,7 +1655,7 @@
               <span class="booking-status bk-cancelled">✕ Huỷ</span>
             </div>
             <div class="booking-card-body">
-              <div class="booking-cust-name" style="color:var(--gray-400);text-decoration:line-through">Trần Minh Châu</div>
+              <div class="booking-cust-name" style="color:var(--gray-400);text-decoration:line-through">Trần Minh Châu <span class="ai-stars" style="vertical-align:middle;opacity:0.5"><span class="star-icons">★★<span class="star-empty">★★★</span></span></span></div>
               <div class="booking-cust-info">
                 <span style="font-size:12px;color:var(--gray-400)">Lý do: KH bận, xin dời lịch</span>
               </div>
