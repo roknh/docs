@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playbook Survey &amp; Personas — TheAdvance</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  body {
+    background: #ffffff;
+    color: #1d1d1f;
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    overflow-x: hidden;
+  }
+
+  /* ── Nav ── */
+  .global-nav {
+    background: #000; height: 44px;
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    position: sticky; top: 0; z-index: 100; padding: 0 16px; overflow-x: auto;
+  }
+  .global-nav a {
+    color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 400;
+    letter-spacing: -0.12px; text-decoration: none; white-space: nowrap; transition: color 0.2s;
+  }
+  .global-nav a:hover { color: #fff; }
+  .global-nav .nav-brand {
+    font-size: 14px; font-weight: 600; letter-spacing: -0.224px; color: #fff;
+  }
+  .global-nav .nav-sep { color: #7a7a7a; font-size: 12px; }
+
+  /* ── Tiles ── */
+  .tile { padding: 80px 24px; }
+  .tile--white { background: #fff; color: #1d1d1f; }
+  .tile--parchment { background: #f5f5f7; color: #1d1d1f; }
+  .tile--dark { background: #1d1d1f; color: #f5f5f7; }
+  .tile--dark-2 { background: #272729; color: #f5f5f7; }
+  .tile--dark-3 { background: #161617; color: #f5f5f7; }
+
+  .inner { max-width: 1000px; margin: 0 auto; }
+
+  /* ── Hero ── */
+  .hero { text-align: center; padding: 96px 24px 80px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .tile--dark .eyebrow, .tile--dark-2 .eyebrow { color: #2997ff; }
+  .tile--white .eyebrow, .tile--parchment .eyebrow { color: #0066cc; }
+
+  .hero h1 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 56px; font-weight: 600; line-height: 1.07; letter-spacing: -0.28px;
+    max-width: 780px; margin: 0 auto 16px;
+  }
+  .hero .hero-sub {
+    font-size: 21px; font-weight: 400; line-height: 1.381; letter-spacing: 0.231px;
+    max-width: 640px; margin: 0 auto 32px;
+  }
+  .tile--dark .hero-sub { color: #a1a1a6; }
+
+  /* ── Tags ── */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .tag {
+    font-size: 14px; font-weight: 400; letter-spacing: -0.224px;
+    border-radius: 9999px; padding: 6px 14px; line-height: 1.29;
+  }
+  .tile--dark .tag { color: #f5f5f7; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); }
+  .tile--white .tag, .tile--parchment .tag { color: #1d1d1f; background: #f5f5f7; border: 1px solid #e0e0e0; }
+
+  /* ── Section headers ── */
+  .section-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .tile--white .section-label, .tile--parchment .section-label { color: #6e6e73; }
+  .tile--dark .section-label, .tile--dark-2 .section-label, .tile--dark-3 .section-label { color: #86868b; }
+
+  h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px; font-weight: 600; line-height: 1.1; margin-bottom: 20px;
+    letter-spacing: -0.374px;
+  }
+  h3 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 28px; font-weight: 600; line-height: 1.14; margin: 40px 0 16px;
+    letter-spacing: -0.28px;
+  }
+  h4 {
+    font-size: 21px; font-weight: 600; line-height: 1.19; margin: 28px 0 12px;
+    letter-spacing: -0.28px;
+  }
+  p { margin-bottom: 14px; }
+
+  /* ── Numbered header ── */
+  .num-circle {
+    flex: 0 0 auto; width: 52px; height: 52px; border-radius: 9999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: "SF Pro Display", system-ui; font-size: 21px;
+    font-weight: 600; line-height: 1;
+  }
+  .tile--white .num-circle, .tile--parchment .num-circle { background: #1d1d1f; color: #fff; }
+  .tile--dark .num-circle, .tile--dark-2 .num-circle, .tile--dark-3 .num-circle { background: #fff; color: #1d1d1f; }
+
+  .section-head {
+    display: flex; align-items: flex-start; gap: 20px;
+    margin-bottom: 40px; padding-bottom: 28px;
+  }
+  .tile--white .section-head, .tile--parchment .section-head { border-bottom: 1px solid #e0e0e0; }
+  .tile--dark .section-head, .tile--dark-2 .section-head, .tile--dark-3 .section-head { border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .section-head-text { flex: 1; }
+  .section-head-text h2 { margin-bottom: 4px; }
+  .sh-sub { font-size: 17px; font-weight: 400; line-height: 1.47; }
+  .tile--white .sh-sub, .tile--parchment .sh-sub { color: #6e6e73; }
+  .tile--dark .sh-sub, .tile--dark-2 .sh-sub, .tile--dark-3 .sh-sub { color: #a1a1a6; }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; margin: 18px 0 24px; font-size: 15px; }
+  th, td { text-align: left; padding: 12px 14px; vertical-align: top; }
+
+  .tile--white th, .tile--parchment th {
+    background: #f5f5f7; font-weight: 600; border-bottom: 2px solid #d2d2d7;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #6e6e73;
+  }
+  .tile--white td, .tile--parchment td { border-bottom: 1px solid #e0e0e0; }
+  .tile--white tbody tr:hover, .tile--parchment tbody tr:hover { background: rgba(0,0,0,0.02); }
+
+  .tile--dark th, .tile--dark-2 th, .tile--dark-3 th {
+    background: rgba(255,255,255,0.05); font-weight: 600; border-bottom: 2px solid rgba(255,255,255,0.2);
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #86868b;
+  }
+  .tile--dark td, .tile--dark-2 td, .tile--dark-3 td { border-bottom: 1px solid rgba(255,255,255,0.08); color: #f5f5f7; }
+  .tile--dark tbody tr:hover, .tile--dark-2 tbody tr:hover, .tile--dark-3 tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+  /* ── Callout ── */
+  .callout { border-radius: 18px; padding: 24px; margin: 24px 0; }
+  .tile--white .callout, .tile--parchment .callout { background: #f5f5f7; border: 1px solid #e0e0e0; }
+  .tile--dark .callout, .tile--dark-2 .callout, .tile--dark-3 .callout { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); }
+  .callout-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .tile--white .callout-label, .tile--parchment .callout-label { color: #0066cc; }
+  .tile--dark .callout-label, .tile--dark-2 .callout-label, .tile--dark-3 .callout-label { color: #2997ff; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* ── Cards ── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 24px 0; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 24px 0; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 24px 0; }
+  .card { border-radius: 18px; padding: 28px; }
+  .tile--white .card, .tile--parchment .card { background: #fff; border: 1px solid #e0e0e0; }
+  .tile--dark .card, .tile--dark-2 .card, .tile--dark-3 .card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); }
+  .card-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700; margin-bottom: 16px;
+    font-family: "SF Pro Display", system-ui;
+  }
+  .tile--parchment .card-icon { background: #1d1d1f; color: #fff; }
+  .tile--dark .card-icon, .tile--dark-2 .card-icon, .tile--dark-3 .card-icon { background: #fff; color: #1d1d1f; }
+  .tile--white .card-icon { background: #1d1d1f; color: #fff; }
+  .card-title {
+    font-family: "SF Pro Display", system-ui; font-size: 21px;
+    font-weight: 600; margin-bottom: 8px; letter-spacing: -0.28px;
+  }
+  .card-desc { font-size: 15px; line-height: 1.47; }
+  .tile--parchment .card-desc { color: #6e6e73; }
+  .tile--dark .card-desc, .tile--dark-2 .card-desc, .tile--dark-3 .card-desc { color: #a1a1a6; }
+  .tile--white .card-desc { color: #6e6e73; }
+
+  /* ── Persona badges ── */
+  .persona-badge {
+    display: inline-block; padding: 4px 12px; border-radius: 9999px;
+    font-size: 12px; font-weight: 600; margin-right: 4px; margin-bottom: 4px;
+  }
+  .p-exp { background: rgba(90,200,250,0.15); color: #30b0c7; }
+  .p-loyal { background: rgba(0,102,204,0.12); color: #0066cc; }
+  .p-vip { background: rgba(175,82,222,0.12); color: #af52de; }
+  .p-result { background: rgba(52,199,89,0.12); color: #34c759; }
+  .p-social { background: rgba(255,149,0,0.12); color: #ff9500; }
+  .p-male { background: rgba(88,86,214,0.12); color: #5856d6; }
+
+  .tile--dark .p-exp { background: rgba(90,200,250,0.15); color: #5ac8fa; }
+  .tile--dark .p-loyal { background: rgba(41,151,255,0.15); color: #2997ff; }
+  .tile--dark .p-vip { background: rgba(191,90,242,0.15); color: #bf5af2; }
+  .tile--dark .p-result { background: rgba(52,199,89,0.15); color: #34c759; }
+  .tile--dark .p-social { background: rgba(255,149,0,0.15); color: #ff9500; }
+  .tile--dark .p-male { background: rgba(88,86,214,0.15); color: #7d7aff; }
+
+  .tile--dark-2 .p-exp { background: rgba(90,200,250,0.15); color: #5ac8fa; }
+  .tile--dark-2 .p-loyal { background: rgba(41,151,255,0.15); color: #2997ff; }
+  .tile--dark-2 .p-vip { background: rgba(191,90,242,0.15); color: #bf5af2; }
+  .tile--dark-2 .p-result { background: rgba(52,199,89,0.15); color: #34c759; }
+  .tile--dark-2 .p-social { background: rgba(255,149,0,0.15); color: #ff9500; }
+  .tile--dark-2 .p-male { background: rgba(88,86,214,0.15); color: #7d7aff; }
+
+  .tile--dark-3 .p-exp { background: rgba(90,200,250,0.15); color: #5ac8fa; }
+  .tile--dark-3 .p-loyal { background: rgba(41,151,255,0.15); color: #2997ff; }
+  .tile--dark-3 .p-vip { background: rgba(191,90,242,0.15); color: #bf5af2; }
+  .tile--dark-3 .p-result { background: rgba(52,199,89,0.15); color: #34c759; }
+  .tile--dark-3 .p-social { background: rgba(255,149,0,0.15); color: #ff9500; }
+  .tile--dark-3 .p-male { background: rgba(88,86,214,0.15); color: #7d7aff; }
+
+  /* ── CHS health dots ── */
+  .chs-dot {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+  .chs-green { background: #34c759; }
+  .chs-yellow { background: #ffcc00; }
+  .chs-orange { background: #ff9500; }
+  .chs-red { background: #ff3b30; }
+  .chs-black { background: #636366; }
+
+  /* ── Score bar ── */
+  .score-bar-wrap { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+  .score-bar { flex: 1; height: 8px; border-radius: 4px; overflow: hidden; }
+  .tile--white .score-bar, .tile--parchment .score-bar { background: #e0e0e0; }
+  .tile--dark .score-bar, .tile--dark-2 .score-bar { background: rgba(255,255,255,0.1); }
+  .score-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+
+  /* ── Script block ── */
+  .script-block {
+    border-radius: 14px; padding: 20px 24px; margin: 16px 0;
+    font-size: 15px; line-height: 1.6; font-style: italic;
+  }
+  .tile--white .script-block, .tile--parchment .script-block {
+    background: #f0f5ff; border-left: 4px solid #0066cc; color: #1d1d1f;
+  }
+  .tile--dark .script-block, .tile--dark-2 .script-block, .tile--dark-3 .script-block {
+    background: rgba(41,151,255,0.08); border-left: 4px solid #2997ff; color: #f5f5f7;
+  }
+  .script-block .script-who {
+    font-style: normal; font-weight: 600; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block;
+  }
+  .tile--white .script-who, .tile--parchment .script-who { color: #0066cc; }
+  .tile--dark .script-who, .tile--dark-2 .script-who, .tile--dark-3 .script-who { color: #2997ff; }
+
+  /* ── Warning block ── */
+  .warn-block {
+    border-radius: 14px; padding: 20px 24px; margin: 16px 0;
+    font-size: 15px; line-height: 1.6;
+  }
+  .tile--white .warn-block, .tile--parchment .warn-block {
+    background: #fff5f5; border-left: 4px solid #ff3b30; color: #1d1d1f;
+  }
+  .tile--dark .warn-block, .tile--dark-2 .warn-block, .tile--dark-3 .warn-block {
+    background: rgba(255,59,48,0.08); border-left: 4px solid #ff453a; color: #f5f5f7;
+  }
+  .warn-label {
+    font-weight: 600; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 6px; display: block;
+  }
+  .tile--white .warn-label, .tile--parchment .warn-label { color: #ff3b30; }
+  .tile--dark .warn-label, .tile--dark-2 .warn-label, .tile--dark-3 .warn-label { color: #ff453a; }
+
+  /* ── Matrix cell colors ── */
+  .mx-green { background: rgba(52,199,89,0.08); }
+  .mx-yellow { background: rgba(255,204,0,0.08); }
+  .mx-orange { background: rgba(255,149,0,0.10); }
+  .mx-red { background: rgba(255,59,48,0.08); }
+  .mx-gray { background: rgba(142,142,147,0.08); }
+
+  .tile--dark .mx-green { background: rgba(52,199,89,0.10); }
+  .tile--dark .mx-yellow { background: rgba(255,204,0,0.10); }
+  .tile--dark .mx-orange { background: rgba(255,149,0,0.12); }
+  .tile--dark .mx-red { background: rgba(255,59,48,0.10); }
+  .tile--dark .mx-gray { background: rgba(142,142,147,0.10); }
+
+  /* ── Lists ── */
+  ul, ol { margin: 12px 0 18px 22px; }
+  li { margin-bottom: 8px; }
+  .tile--dark li, .tile--dark-2 li, .tile--dark-3 li { color: #f5f5f7; }
+
+  /* ── Code/Rule block ── */
+  .rule-block {
+    font-family: "SF Mono", Monaco, Consolas, monospace;
+    font-size: 13px; padding: 24px; margin: 20px 0;
+    white-space: pre; overflow-x: auto; line-height: 1.7; border-radius: 12px;
+  }
+  .tile--white .rule-block, .tile--parchment .rule-block { background: #f5f5f7; border: 1px solid #e0e0e0; color: #1d1d1f; }
+  .tile--dark .rule-block, .tile--dark-2 .rule-block, .tile--dark-3 .rule-block { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #f5f5f7; }
+
+  /* ── Footer ── */
+  .site-footer { padding: 40px 20px; text-align: center; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 834px) {
+    .hero h1 { font-size: 36px; }
+    .hero .hero-sub { font-size: 17px; }
+    h2 { font-size: 28px; }
+    h3 { font-size: 21px; }
+    .tile { padding: 56px 20px; }
+    .hero { padding: 72px 20px 56px; }
+    .card-grid, .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
+    .whw-grid { grid-template-columns: 1fr !important; }
+    .whw-grid > div { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .whw-grid > div:last-child { border-bottom: none; }
+    .compare-grid { grid-template-columns: 1fr !important; }
+    .compare-arrow { display: none; }
+    table { font-size: 13px; display: block; overflow-x: auto; }
+    th, td { padding: 10px 10px; }
+    .rule-block { font-size: 11px; padding: 16px; }
+    .section-head { flex-direction: column; gap: 12px; }
+    .num-circle { width: 44px; height: 44px; font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="global-nav">
+  <a href="index.html" class="nav-brand">TheAdvance</a>
+  <span class="nav-sep">/</span>
+  <a href="#why">T&#7841;i sao</a>
+  <a href="#personas">Personas</a>
+  <a href="#surveys">Surveys</a>
+  <a href="#actions-survey">Actions Survey</a>
+  <a href="#actions-persona">Actions Persona</a>
+  <a href="#matrix">Ma tr&#7853;n</a>
+  <a href="#automation">CRM Rules</a>
+  <a href="#kpi">KPI</a>
+</nav>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  HERO                                        -->
+<!-- ════════════════════════════════════════════ -->
+<section class="tile tile--dark hero">
+  <div class="eyebrow">TheAdvance &mdash; Playbook</div>
+  <h1>Survey &amp; Customer Personas</h1>
+  <p class="hero-sub">H&#7879; th&#7889;ng kh&#7843;o s&aacute;t &amp; ph&acirc;n nh&oacute;m kh&aacute;ch h&agrave;ng cho doanh nghi&#7879;p th&#7849;m m&#7929;. T&#7915; nh&#7853;n di&#7879;n persona &rarr; &#273;o l&#432;&#7901;ng h&agrave;i l&ograve;ng &rarr; h&agrave;nh &#273;&#7897;ng c&#7909; th&#7875;.</p>
+  <div class="tag-row">
+    <span class="tag">6 Personas</span>
+    <span class="tag">7 Lo&#7841;i Survey</span>
+    <span class="tag">Customer Health Score</span>
+    <span class="tag">CRM Automation</span>
+    <span class="tag">Playbook H&agrave;nh &#272;&#7897;ng</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  WHY — TẠI SAO CẦN PERSONAS & SURVEY         -->
+<!-- ════════════════════════════════════════════ -->
+<section id="why" class="tile tile--white">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle" style="background:#ff3b30; color:#fff;">!</div>
+      <div class="section-head-text">
+        <h2>V&#7845;n &#273;&#7873; hi&#7879;n t&#7841;i</h2>
+        <p class="sh-sub">Nh&#7919;ng &ldquo;&#273;i&#7875;m m&ugrave;&rdquo; &#273;ang khi&#7871;n doanh nghi&#7879;p th&#7849;m m&#7929; m&#7845;t kh&aacute;ch m&agrave; kh&ocirc;ng bi&#7871;t t&#7841;i sao</p>
+      </div>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card" style="border-top: 3px solid #ff3b30;">
+        <div class="card-title">Kh&ocirc;ng bi&#7871;t kh&aacute;ch l&agrave; ai</div>
+        <p class="card-desc">M&#7885;i kh&aacute;ch &#273;&#432;&#7907;c &#273;&#7889;i x&#7917; gi&#7889;ng nhau &mdash; ng&#432;&#7901;i chi 2 tri&#7879;u v&agrave; ng&#432;&#7901;i chi 20 tri&#7879;u nh&#7853;n c&ugrave;ng 1 tin nh&#7855;n broadcast, c&ugrave;ng 1 c&aacute;ch ch&#259;m s&oacute;c. K&#7871;t qu&#7843;: kh&aacute;ch VIP c&#7843;m th&#7845;y kh&ocirc;ng &#273;&#432;&#7907;c coi tr&#7885;ng, kh&aacute;ch m&#7899;i b&#7883; push qu&aacute; nhi&#7873;u.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid #ff9500;">
+        <div class="card-title">M&#7845;t kh&aacute;ch &ldquo;im l&#7863;ng&rdquo;</div>
+        <p class="card-desc">Kh&aacute;ch kh&ocirc;ng h&agrave;i l&ograve;ng nh&#432;ng kh&ocirc;ng n&oacute;i &mdash; h&#7885; ch&#7881; &#273;&#417;n gi&#7843;n l&agrave; kh&ocirc;ng quay l&#7841;i. Kh&ocirc;ng c&oacute; h&#7879; th&#7889;ng thu th&#7853;p feedback, doanh nghi&#7879;p ch&#7881; bi&#7871;t khi &#273;&atilde; qu&aacute; mu&#7897;n.</p>
+      </div>
+      <div class="card" style="border-top: 3px solid #ffcc00;">
+        <div class="card-title">Ph&#7843;n &#7913;ng ch&#7853;m &amp; th&#7909; &#273;&#7897;ng</div>
+        <p class="card-desc">Kh&ocirc;ng c&oacute; c&#417; ch&#7871; c&#7843;nh b&aacute;o s&#7899;m. Qu&#7843;n l&yacute; ch&#7881; bi&#7871;t kh&aacute;ch b&#7887; &#273;i khi nh&igrave;n b&aacute;o c&aacute;o retention cu&#7889;i th&aacute;ng &mdash; l&uacute;c &#273;&oacute; &#273;&atilde; m&#7845;t 30&ndash;60 ng&agrave;y v&agrave;ng &#273;&#7875; c&#7913;u kh&aacute;ch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY — START WITH WHY -->
+<section class="tile tile--dark">
+  <div class="inner">
+    <div class="whw-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 0 -24px;">
+
+      <!-- WHY -->
+      <div style="padding: 48px 32px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08);">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(255,59,48,0.12); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+          <span style="font-size: 36px; font-weight: 700; color: #ff453a; font-family: 'SF Pro Display', system-ui;">?</span>
+        </div>
+        <div class="eyebrow" style="color: #ff453a;">WHY &mdash; T&#7841;i sao</div>
+        <h3 style="font-size: 24px; margin: 12px 0 16px; color: #f5f5f7;">Doanh nghi&#7879;p th&#7849;m m&#7929; &#273;ang &ldquo;m&ugrave;&rdquo; v&#7873; kh&aacute;ch h&agrave;ng</h3>
+        <p style="font-size: 15px; color: #a1a1a6; line-height: 1.5;">
+          <strong style="color:#f5f5f7;">70% kh&aacute;ch r&#7901;i &#273;i</strong> kh&ocirc;ng ph&#7843;i v&igrave; d&#7883;ch v&#7909; k&eacute;m &mdash; m&agrave; v&igrave; c&#7843;m th&#7845;y <strong style="color:#f5f5f7;">kh&ocirc;ng &#273;&#432;&#7907;c hi&#7875;u</strong>. H&#7885; kh&ocirc;ng n&oacute;i l&yacute; do, ch&#7881; im l&#7863;ng bi&#7871;n m&#7845;t. Kh&ocirc;ng c&oacute; h&#7879; th&#7889;ng l&#7855;ng nghe &rarr; kh&ocirc;ng ph&aacute;t hi&#7879;n v&#7845;n &#273;&#7873; &rarr; kh&ocirc;ng th&#7875; s&#7917;a &rarr; ti&#7871;p t&#7909;c m&#7845;t kh&aacute;ch.
+        </p>
+        <div class="callout" style="text-align: left; margin-top: 24px;">
+          <p style="font-size: 14px; margin: 0; color: #a1a1a6;">
+            <strong style="color:#ff453a;">V&ograve;ng x&#7845;u:</strong><br>
+            Kh&ocirc;ng hi&#7875;u kh&aacute;ch &rarr; Ch&#259;m s&oacute;c sai c&aacute;ch &rarr; Kh&aacute;ch kh&ocirc;ng h&agrave;i l&ograve;ng &rarr; Kh&aacute;ch r&#7901;i &#273;i im l&#7863;ng &rarr; Kh&ocirc;ng bi&#7871;t t&#7841;i sao &rarr; L&#7863;p l&#7841;i
+          </p>
+        </div>
+      </div>
+
+      <!-- HOW -->
+      <div style="padding: 48px 32px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08);">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(41,151,255,0.12); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+          <span style="font-size: 36px; font-weight: 700; color: #2997ff; font-family: 'SF Pro Display', system-ui;">&#8644;</span>
+        </div>
+        <div class="eyebrow" style="color: #2997ff;">HOW &mdash; Gi&#7843;i quy&#7871;t b&#7857;ng c&aacute;ch n&agrave;o</div>
+        <h3 style="font-size: 24px; margin: 12px 0 16px; color: #f5f5f7;">2 c&ocirc;ng c&#7909;: Personas + Survey</h3>
+        <p style="font-size: 15px; color: #a1a1a6; line-height: 1.5;">
+          <strong style="color:#2997ff;">Personas</strong> gi&uacute;p <strong style="color:#f5f5f7;">nh&#7853;n di&#7879;n</strong> kh&aacute;ch l&agrave; ai, mu&#7889;n g&igrave;, s&#7907; g&igrave; &mdash; &#273;&#7875; ch&#259;m s&oacute;c &#273;&uacute;ng c&aacute;ch.<br><br>
+          <strong style="color:#2997ff;">Survey</strong> gi&uacute;p <strong style="color:#f5f5f7;">l&#7855;ng nghe</strong> li&ecirc;n t&#7909;c, ph&aacute;t hi&#7879;n v&#7845;n &#273;&#7873; <em>tr&#432;&#7899;c khi</em> kh&aacute;ch r&#7901;i &#273;i &mdash; v&agrave; h&agrave;nh &#273;&#7897;ng k&#7883;p th&#7901;i.
+        </p>
+        <div class="callout" style="text-align: left; margin-top: 24px;">
+          <p style="font-size: 14px; margin: 0; color: #a1a1a6;">
+            <strong style="color:#2997ff;">V&ograve;ng t&#7889;t:</strong><br>
+            Hi&#7875;u kh&aacute;ch (Persona) &rarr; Ch&#259;m &#273;&uacute;ng c&aacute;ch &rarr; L&#7855;ng nghe (Survey) &rarr; Ph&aacute;t hi&#7879;n s&#7899;m &rarr; H&agrave;nh &#273;&#7897;ng ngay &rarr; Kh&aacute;ch h&agrave;i l&ograve;ng &rarr; Trung th&agrave;nh + Gi&#7899;i thi&#7879;u
+          </p>
+        </div>
+      </div>
+
+      <!-- WHAT -->
+      <div style="padding: 48px 32px; text-align: center;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(52,199,89,0.12); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+          <span style="font-size: 36px; font-weight: 700; color: #34c759; font-family: 'SF Pro Display', system-ui;">&#10003;</span>
+        </div>
+        <div class="eyebrow" style="color: #34c759;">WHAT &mdash; C&#7909; th&#7875; l&agrave;m g&igrave;</div>
+        <h3 style="font-size: 24px; margin: 12px 0 16px; color: #f5f5f7;">H&#7879; th&#7889;ng ho&agrave;n ch&#7881;nh trong playbook n&agrave;y</h3>
+        <ul style="text-align: left; font-size: 15px; color: #a1a1a6; line-height: 1.7; list-style: none; margin-left: 0;">
+          <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">6 Personas</strong> &mdash; ph&acirc;n lo&#7841;i kh&aacute;ch t&#7921; &#273;&#7897;ng t&#7915; d&#7919; li&#7879;u</li>
+          <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">7 lo&#7841;i Survey</strong> &mdash; &#273;&uacute;ng l&uacute;c, &#273;&uacute;ng k&ecirc;nh, &#273;&uacute;ng &#273;&#7897; d&agrave;i</li>
+          <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">Health Score</strong> &mdash; &#273;i&#7875;m s&#7913;c kh&#7887;e 0&ndash;100 cho m&#7895;i kh&aacute;ch</li>
+          <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">Playbook h&agrave;nh &#273;&#7897;ng</strong> &mdash; l&agrave;m g&igrave; sau m&#7895;i k&#7871;t qu&#7843;</li>
+          <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">CRM Rules</strong> &mdash; t&#7921; &#273;&#7897;ng ho&aacute; trong h&#7879; th&#7889;ng</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY — ĐẶC THÙ NGÀNH THẨM MỸ -->
+<section class="tile tile--parchment">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">&#9733;</div>
+      <div class="section-head-text">
+        <h2>&#272;&#7863;c th&ugrave; ng&agrave;nh Th&#7849;m m&#7929;</h2>
+        <p class="sh-sub">T&#7841;i sao kh&ocirc;ng th&#7875; &aacute;p d&#7909;ng survey ki&#7875;u F&amp;B hay Retail &mdash; v&agrave; c&#7847;n l&agrave;m kh&aacute;c th&#7871; n&agrave;o</p>
+      </div>
+    </div>
+
+    <div class="card-grid-2">
+      <div class="card">
+        <div class="card-title">M&#7889;i quan h&#7879; c&#7843;m x&uacute;c, kh&ocirc;ng ph&#7843;i giao d&#7883;ch</div>
+        <p class="card-desc">Kh&aacute;ch th&#7849;m m&#7929; <strong>g&#7855;n b&oacute; v&#7899;i con ng&#432;&#7901;i</strong> (KTV, b&aacute;c s&#297;), kh&ocirc;ng ch&#7881; v&#7899;i d&#7883;ch v&#7909;. M&#7845;t KTV quen = m&#7845;t kh&aacute;ch. Survey ph&#7843;i &#273;o c&#7843; m&#7889;i quan h&#7879; ch&#7913; kh&ocirc;ng ch&#7881; s&#7843;n ph&#7849;m.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">K&#7871;t qu&#7843; c&#7847;n th&#7901;i gian</div>
+        <p class="card-desc">Kh&aacute;c v&#7899;i &#259;n ph&#7903; (bi&#7871;t ngon li&#7873;n), k&#7871;t qu&#7843; th&#7849;m m&#7929; <strong>c&#7847;n 2&ndash;8 tu&#7847;n</strong> m&#7899;i th&#7845;y. H&#7887;i ngay sau bu&#7893;i ch&#7881; &#273;o &#273;&#432;&#7907;c tr&#7843;i nghi&#7879;m, kh&ocirc;ng &#273;o &#273;&#432;&#7907;c k&#7871;t qu&#7843;. C&#7847;n survey nhi&#7873;u th&#7901;i &#273;i&#7875;m.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Kh&aacute;ch ng&#7841;i n&oacute;i th&#7853;t tr&#432;&#7899;c m&#7863;t</div>
+        <p class="card-desc">Kh&aacute;ch Vi&#7879;t Nam <strong>ng&#7841;i t&#7915; ch&#7889;i tr&#7921;c ti&#7871;p</strong>, nh&#7845;t l&agrave; v&#7899;i ng&#432;&#7901;i &#273;&atilde; ch&#7841;m v&agrave;o da m&#7863;t m&igrave;nh. H&#7887;i tr&#432;&#7899;c m&#7863;t KTV lu&ocirc;n &#273;&#432;&#7907;c 5 sao &mdash; feedback th&#7853;t ch&#7881; n&oacute;i &#273;&#432;&#7907;c qua <strong>k&ecirc;nh ri&ecirc;ng t&#432;</strong>.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Kho&#7843;ng c&aacute;ch chi ti&ecirc;u r&#7845;t l&#7899;n</div>
+        <p class="card-desc">Kh&aacute;ch 2 tri&#7879;u/l&#7847;n v&agrave; kh&aacute;ch 30 tri&#7879;u/th&aacute;ng <strong>c&oacute; k&#7923; v&#7885;ng ho&agrave;n to&agrave;n kh&aacute;c</strong>. Kh&ocirc;ng th&#7875; d&ugrave;ng 1 b&#7897; survey, 1 c&aacute;ch ch&#259;m s&oacute;c cho t&#7845;t c&#7843;. Personas gi&uacute;p c&aacute; nh&acirc;n ho&aacute; m&agrave; kh&ocirc;ng c&#7847;n g&#7845;p 6 l&#7847;n nh&acirc;n s&#7921;.</p>
+      </div>
+    </div>
+
+    <h3>Kh&ocirc;ng c&oacute; Personas &amp; Survey th&igrave; sao?</h3>
+    <div class="compare-grid" style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: start; margin: 24px 0;">
+      <div class="card" style="border-top: 3px solid #ff3b30;">
+        <div class="card-title" style="color: #ff3b30;">Kh&ocirc;ng c&oacute;</div>
+        <ul style="font-size: 15px; color: #6e6e73; line-height: 1.7;">
+          <li>Ch&#259;m s&oacute;c &#273;&#7891;ng lo&#7841;t, ai c&#361;ng nh&#432; ai</li>
+          <li>Ch&#7881; bi&#7871;t kh&aacute;ch r&#7901;i khi nh&igrave;n b&aacute;o c&aacute;o cu&#7889;i th&aacute;ng</li>
+          <li>KTV b&#7883; &#273;&aacute;nh gi&aacute; t&#7879; nh&#432;ng kh&ocirc;ng ai bi&#7871;t</li>
+          <li>Marketing g&#7917;i broadcast &rarr; kh&aacute;ch VIP b&#7921;c m&igrave;nh</li>
+          <li>Kh&ocirc;ng bi&#7871;t t&#7841;i sao kh&aacute;ch kh&ocirc;ng quay l&#7841;i</li>
+          <li>Win-back b&#7857;ng c&#7843;m t&iacute;nh, may r&#7911;i</li>
+        </ul>
+      </div>
+      <div class="compare-arrow" style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 32px; color: #86868b; padding-top: 40px;">&#8594;</div>
+      <div class="card" style="border-top: 3px solid #34c759;">
+        <div class="card-title" style="color: #34c759;">C&oacute; h&#7879; th&#7889;ng</div>
+        <ul style="font-size: 15px; color: #6e6e73; line-height: 1.7;">
+          <li>Ch&#259;m s&oacute;c theo &#273;&uacute;ng persona, &#273;&uacute;ng k&#7923; v&#7885;ng</li>
+          <li>Ph&aacute;t hi&#7879;n b&#7845;t m&atilde;n trong <strong>2 gi&#7901;</strong>, kh&ocirc;ng ph&#7843;i 2 th&aacute;ng</li>
+          <li>KTV nh&#7853;n feedback k&#7883;p th&#7901;i &#273;&#7875; c&#7843;i thi&#7879;n</li>
+          <li>Marketing 1:1 theo persona &rarr; kh&aacute;ch c&#7843;m th&#7845;y &#273;&#432;&#7907;c hi&#7875;u</li>
+          <li>D&#7919; li&#7879;u r&otilde; r&agrave;ng: ai r&#7901;i, t&#7841;i sao, c&#7913;u &#273;&#432;&#7907;c kh&ocirc;ng</li>
+          <li>Win-back c&oacute; k&#7883;ch b&#7843;n theo l&yacute; do c&#7909; th&#7875;</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">K&#7871;t lu&#7853;n</div>
+      <p><strong>Personas</strong> tr&#7843; l&#7901;i: <em>&ldquo;Kh&aacute;ch n&agrave;y l&agrave; ai, c&#7847;n g&igrave;, s&#7907; g&igrave;?&rdquo;</em></p>
+      <p><strong>Survey</strong> tr&#7843; l&#7901;i: <em>&ldquo;Kh&aacute;ch n&agrave;y &#273;ang c&#7843;m th&#7845;y th&#7871; n&agrave;o, ngay l&uacute;c n&agrave;y?&rdquo;</em></p>
+      <p style="margin-bottom: 0;"><strong>K&#7871;t h&#7907;p c&#7843; hai</strong> = bi&#7871;t ch&iacute;nh x&aacute;c <strong>l&agrave;m g&igrave;, cho ai, l&uacute;c n&agrave;o</strong> &mdash; v&agrave; &#273;&oacute; l&agrave; to&agrave;n b&#7897; n&#7897;i dung c&#7911;a playbook n&agrave;y.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  01 — PERSONAS                               -->
+<!-- ════════════════════════════════════════════ -->
+<section id="personas" class="tile tile--white">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">01</div>
+      <div class="section-head-text">
+        <h2>Customer Personas</h2>
+        <p class="sh-sub">6 nh&oacute;m kh&aacute;ch h&agrave;ng &#273;i&#7875;n h&igrave;nh ng&agrave;nh th&#7849;m m&#7929; &mdash; suy lu&#7853;n t&#7915; h&agrave;nh vi, kh&ocirc;ng h&#7887;i tr&#7921;c ti&#7871;p</p>
+      </div>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card">
+        <div class="card-icon" style="background:#5ac8fa; color:#fff;">P1</div>
+        <div class="card-title">Ch&#7883; Lan &ldquo;Tr&#7843;i nghi&#7879;m&rdquo;</div>
+        <p class="card-desc"><strong>25&ndash;32 tu&#7893;i</strong> &middot; L&#7847;n &#273;&#7847;u l&agrave;m th&#7849;m m&#7929;, t&igrave;m hi&#7875;u qua MXH, hay so s&aacute;nh gi&aacute;</p>
+        <p class="card-desc"><strong>Chi ti&ecirc;u:</strong> 2&ndash;5tr/l&#7847;n &middot; <strong>T&#7847;n su&#7845;t:</strong> Th&#7845;p (1&ndash;2 l&#7847;n r&#7891;i xem)</p>
+        <p class="card-desc"><strong>K&#7923; v&#7885;ng:</strong> An to&agrave;n, kh&ocirc;ng &#273;au, gi&aacute; h&#7907;p l&yacute;, &#273;&#432;&#7907;c t&#432; v&#7845;n k&#7929;</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#0066cc; color:#fff;">P2</div>
+        <div class="card-title">Ch&#7883; H&#432;&#417;ng &ldquo;Quen thu&#7897;c&rdquo;</div>
+        <p class="card-desc"><strong>28&ndash;38 tu&#7893;i</strong> &middot; &#272;&atilde; l&agrave;m v&agrave;i n&#417;i, bi&#7871;t m&igrave;nh mu&#7889;n g&igrave;, &#273;&#7871;n v&igrave; tin KTV c&#7909; th&#7875;</p>
+        <p class="card-desc"><strong>Chi ti&ecirc;u:</strong> 5&ndash;10tr/th&aacute;ng &middot; <strong>T&#7847;n su&#7845;t:</strong> &#272;&#7873;u (1&ndash;2 l&#7847;n/th&aacute;ng)</p>
+        <p class="card-desc"><strong>K&#7923; v&#7885;ng:</strong> KTV quen, kh&ocirc;ng &#273;&#7893;i ng&#432;&#7901;i, nh&#7899; l&#7883;ch s&#7917; da</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#af52de; color:#fff;">P3</div>
+        <div class="card-title">Ch&#7883; Mai &ldquo;VIP k&iacute;n &#273;&aacute;o&rdquo;</div>
+        <p class="card-desc"><strong>35&ndash;50 tu&#7893;i</strong> &middot; Thu nh&#7853;p cao, c&#7921;c k&#7923; coi tr&#7885;ng ri&ecirc;ng t&#432;, kh&ocirc;ng mu&#7889;n ai bi&#7871;t</p>
+        <p class="card-desc"><strong>Chi ti&ecirc;u:</strong> 15&ndash;30tr/th&aacute;ng &middot; <strong>T&#7847;n su&#7845;t:</strong> Cao (2&ndash;4 l&#7847;n/th&aacute;ng)</p>
+        <p class="card-desc"><strong>K&#7923; v&#7885;ng:</strong> Ri&ecirc;ng t&#432; tuy&#7879;t &#273;&#7889;i, ph&ograve;ng VIP, kh&ocirc;ng ch&#7901;</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#34c759; color:#fff;">P4</div>
+        <div class="card-title">Ch&#7883; Th&#7843;o &ldquo;K&#7871;t qu&#7843;&rdquo;</div>
+        <p class="card-desc"><strong>30&ndash;42 tu&#7893;i</strong> &middot; T&#432; duy logic, mu&#7889;n th&#7845;y s&#7889; li&#7879;u before/after, hay h&#7887;i c&#417; ch&#7871;</p>
+        <p class="card-desc"><strong>Chi ti&ecirc;u:</strong> 8&ndash;15tr/th&aacute;ng &middot; <strong>T&#7847;n su&#7845;t:</strong> &#272;&#7873;u &#273;&#7863;n</p>
+        <p class="card-desc"><strong>K&#7923; v&#7885;ng:</strong> B&#7857;ng ch&#7913;ng khoa h&#7885;c, &#7843;nh before/after, timeline k&#7871;t qu&#7843;</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#ff9500; color:#fff;">P5</div>
+        <div class="card-title">B&#7841;n Linh &ldquo;Social Proof&rdquo;</div>
+        <p class="card-desc"><strong>22&ndash;30 tu&#7893;i</strong> &middot; Hay chia s&#7867; MXH, &#273;i theo trend, quy&#7871;t &#273;&#7883;nh nhanh nh&#432;ng c&#361;ng b&#7887; nhanh</p>
+        <p class="card-desc"><strong>Chi ti&ecirc;u:</strong> 3&ndash;8tr/l&#7847;n &middot; <strong>T&#7847;n su&#7845;t:</strong> Kh&ocirc;ng &#273;&#7873;u, theo trend</p>
+        <p class="card-desc"><strong>K&#7923; v&#7885;ng:</strong> Tr&#7843;i nghi&#7879;m &ldquo;&#273;&aacute;ng post&rdquo;, kh&ocirc;ng gian &#273;&#7865;p, qu&agrave; t&#7863;ng</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#5856d6; color:#fff;">P6</div>
+        <div class="card-title">Anh Minh &ldquo;Nam gi&#7899;i&rdquo;</div>
+        <p class="card-desc"><strong>28&ndash;45 tu&#7893;i</strong> &middot; M&#7899;i ti&#7871;p c&#7853;n th&#7849;m m&#7929;, ng&#7841;i h&#7887;i, mu&#7889;n nhanh g&#7885;n</p>
+        <p class="card-desc"><strong>Chi ti&ecirc;u:</strong> 5&ndash;12tr/l&#7847;n &middot; <strong>T&#7847;n su&#7845;t:</strong> Th&#7845;p, c&#7847;n push nh&#7865;</p>
+        <p class="card-desc"><strong>K&#7923; v&#7885;ng:</strong> Quy tr&igrave;nh nhanh, &iacute;t n&oacute;i chuy&#7879;n, kh&ocirc;ng ph&aacute;n x&eacute;t</p>
+      </div>
+    </div>
+
+    <h3>Ma tr&#7853;n Persona &times; H&agrave;nh vi</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>H&agrave;nh vi</th>
+          <th><span class="persona-badge p-exp">P1</span></th>
+          <th><span class="persona-badge p-loyal">P2</span></th>
+          <th><span class="persona-badge p-vip">P3</span></th>
+          <th><span class="persona-badge p-result">P4</span></th>
+          <th><span class="persona-badge p-social">P5</span></th>
+          <th><span class="persona-badge p-male">P6</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>&#272;&#7885;c review tr&#432;&#7899;c khi &#273;&#7871;n</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;</td><td>&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;&#9733;</td></tr>
+        <tr><td>Quan t&acirc;m gi&aacute;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;</td></tr>
+        <tr><td>Trung th&agrave;nh KTV</td><td>&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;</td><td>&#9733;&#9733;</td></tr>
+        <tr><td>Ph&#7843;n h&#7891;i survey</td><td>&#9733;&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;</td></tr>
+        <tr><td>Gi&#7899;i thi&#7879;u b&#7841;n b&egrave;</td><td>&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;</td></tr>
+        <tr><td>Nh&#7841;y c&#7843;m th&#7901;i gian ch&#7901;</td><td>&#9733;&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;&#9733;&#9733;</td><td>&#9733;&#9733;</td><td>&#9733;</td><td>&#9733;&#9733;&#9733;</td></tr>
+      </tbody>
+    </table>
+
+    <h3>X&aacute;c &#273;&#7883;nh Persona t&#7921; &#273;&#7897;ng</h3>
+    <div class="callout">
+      <div class="callout-label">Nguy&ecirc;n t&#7855;c</div>
+      <p>Kh&ocirc;ng h&#7887;i kh&aacute;ch &ldquo;b&#7841;n thu&#7897;c nh&oacute;m n&agrave;o&rdquo; &mdash; <strong>suy lu&#7853;n t&#7915; d&#7919; li&#7879;u</strong>. K&#7871;t h&#7907;p CRM data (t&#7847;n su&#7845;t, chi ti&ecirc;u, k&ecirc;nh booking) + survey responses &#273;&#7875; scoring. Persona <strong>c&oacute; th&#7875; thay &#273;&#7893;i</strong> theo th&#7901;i gian: P1 &rarr; P2 &rarr; P3 l&agrave; l&#7897; tr&igrave;nh t&#7921; nhi&ecirc;n.</p>
+    </div>
+    <div class="rule-block">Persona Score = w1(Spending) + w2(Frequency) + w3(Channel Pref)
+               + w4(Survey Responses) + w5(Loyalty Signals)
+
+M&#7895;i kh&aacute;ch nh&#7853;n &#273;i&#7875;m cho t&#7915;ng persona &rarr; l&#7845;y persona &#273;i&#7875;m cao nh&#7845;t.
+Re-evaluate m&#7895;i khi visit_count t&#259;ng ho&#7863;c sau m&#7895;i survey.</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  02 — SURVEYS                                -->
+<!-- ════════════════════════════════════════════ -->
+<section id="surveys" class="tile tile--dark">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">02</div>
+      <div class="section-head-text">
+        <h2>H&#7879; Th&#7889;ng Survey</h2>
+        <p class="sh-sub">7 lo&#7841;i kh&#7843;o s&aacute;t, &#273;&uacute;ng th&#7901;i &#273;i&#7875;m, &#273;&uacute;ng k&ecirc;nh, &#273;&uacute;ng &#273;&#7897; d&agrave;i</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">5 nguy&ecirc;n t&#7855;c v&agrave;ng</div>
+      <ol>
+        <li><strong>Ng&#7855;n h&#417;n b&#7841;n ngh&#297;</strong> &mdash; t&#7889;i &#273;a 3&ndash;5 c&acirc;u, d&#432;&#7899;i 60 gi&acirc;y</li>
+        <li><strong>&#272;&uacute;ng th&#7901;i &#273;i&#7875;m</strong> &mdash; kh&ocirc;ng h&#7887;i l&uacute;c thanh to&aacute;n hay v&#7897;i</li>
+        <li><strong>K&ecirc;nh ri&ecirc;ng t&#432;</strong> &mdash; App/Zalo, kh&ocirc;ng bao gi&#7901; h&#7887;i tr&#432;&#7899;c m&#7863;t nh&acirc;n vi&ecirc;n</li>
+        <li><strong>C&oacute; gi&aacute; tr&#7883; cho kh&aacute;ch</strong> &mdash; &ldquo;Gi&uacute;p ch&uacute;ng t&ocirc;i ph&#7909;c v&#7909; b&#7841;n t&#7889;t h&#417;n&rdquo;</li>
+        <li><strong>Ph&#7843;n h&#7891;i ngay</strong> &mdash; &#273;&aacute;nh gi&aacute; th&#7845;p &#8658; h&agrave;nh &#273;&#7897;ng trong 24h</li>
+      </ol>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Lo&#7841;i Survey</th>
+          <th>Th&#7901;i &#273;i&#7875;m</th>
+          <th>S&#7889; c&acirc;u</th>
+          <th>K&ecirc;nh</th>
+          <th>M&#7909;c &#273;&iacute;ch</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>S1</strong></td><td>Onboarding</td><td>Sau l&#7847;n &#273;&#7847;u (D+1)</td><td>4&ndash;5</td><td>App / Zalo</td><td>Hi&#7875;u k&#7923; v&#7885;ng, x&aacute;c &#273;&#7883;nh persona</td></tr>
+        <tr><td><strong>S2</strong></td><td>Post-Service Quick</td><td>2h sau m&#7895;i bu&#7893;i</td><td>2&ndash;3</td><td>App Push</td><td>H&agrave;i l&ograve;ng t&#7913;c th&igrave;, ph&aacute;t hi&#7879;n s&#7921; c&#7889;</td></tr>
+        <tr><td><strong>S3</strong></td><td>Treatment Progress</td><td>Gi&#7919;a li&#7879;u tr&igrave;nh (50%)</td><td>4&ndash;5</td><td>Zalo OA</td><td>&#272;&aacute;nh gi&aacute; k&#7871;t qu&#7843; gi&#7919;a ch&#7915;ng</td></tr>
+        <tr><td><strong>S4</strong></td><td>Treatment Complete</td><td>K&#7871;t th&uacute;c li&#7879;u tr&igrave;nh (D+7)</td><td>5&ndash;6</td><td>App / Zalo</td><td>&#272;&aacute;nh gi&aacute; t&#7893;ng th&#7875;, NPS, t&aacute;i mua</td></tr>
+        <tr><td><strong>S5</strong></td><td>Relationship Check</td><td>3 th&aacute;ng/l&#7847;n</td><td>3&ndash;4</td><td>App</td><td>S&#7913;c kh&#7887;e m&#7889;i quan h&#7879;</td></tr>
+        <tr><td><strong>S6</strong></td><td>Win-back</td><td>60 ng&agrave;y kh&ocirc;ng &#273;&#7871;n</td><td>3</td><td>Zalo CN / Telesale</td><td>L&yacute; do r&#7901;i, c&#417; h&#7897;i k&eacute;o l&#7841;i</td></tr>
+        <tr><td><strong>S7</strong></td><td>NPS Quarterly</td><td>M&#7895;i qu&yacute;, m&#7851;u ng&#7851;u nhi&ecirc;n</td><td>2</td><td>App</td><td>Benchmark NPS to&agrave;n h&#7879; th&#7889;ng</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Chi ti&#7871;t n&#7897;i dung Survey</h3>
+
+    <!-- S1 -->
+    <h4>S1 &mdash; Onboarding Survey</h4>
+    <p style="color:#a1a1a6; font-style:italic;">&ldquo;C&#7843;m &#417;n ch&#7883; &#273;&atilde; gh&eacute; &mdash; gi&uacute;p em hi&#7875;u ch&#7883; h&#417;n nh&eacute;!&rdquo;</p>
+    <table>
+      <thead><tr><th>C&acirc;u</th><th>N&#7897;i dung</th><th>Lo&#7841;i</th><th>M&#7909;c &#273;&iacute;ch</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Ch&#7883; bi&#7871;t &#273;&#7871;n spa qua &#273;&acirc;u?</td><td>MC: MXH / B&#7841;n gi&#7899;i thi&#7879;u / Google / &#272;i ngang / Kh&aacute;c</td><td>Tracking ngu&#7891;n</td></tr>
+        <tr><td>2</td><td>&#272;i&#7873;u ch&#7883; quan t&acirc;m nh&#7845;t khi ch&#7885;n spa?</td><td>Ch&#7885;n 2: K&#7871;t qu&#7843; / Gi&aacute; / KTV gi&#7887;i / Kh&ocirc;ng gian / Ti&#7879;n l&#7907;i / An to&agrave;n</td><td>X&aacute;c &#273;&#7883;nh persona</td></tr>
+        <tr><td>3</td><td>Tr&#7843;i nghi&#7879;m l&#7847;n &#273;&#7847;u th&#7871; n&agrave;o?</td><td>5 emoji stars</td><td>H&agrave;i l&ograve;ng ban &#273;&#7847;u</td></tr>
+        <tr><td>4</td><td>C&oacute; &#273;i&#7873;u g&igrave; mu&#7889;n kh&aacute;c h&#417;n?</td><td>Text ng&#7855;n (optional)</td><td>Feedback m&#7903;</td></tr>
+        <tr><td>5</td><td>Mu&#7889;n nh&#7853;n &#432;u &#273;&atilde;i &amp; tips qua App?</td><td>Yes / No</td><td>Consent marketing</td></tr>
+      </tbody>
+    </table>
+
+    <!-- S2 -->
+    <h4>S2 &mdash; Post-Service Quick</h4>
+    <p style="color:#a1a1a6; font-style:italic;">&ldquo;Bu&#7893;i h&ocirc;m nay th&#7871; n&agrave;o ch&#7883; &#417;i?&rdquo; &mdash; T&#7893;ng th&#7901;i gian: 10&ndash;15 gi&acirc;y</p>
+    <table>
+      <thead><tr><th>C&acirc;u</th><th>N&#7897;i dung</th><th>Lo&#7841;i</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Ch&#7883; h&agrave;i l&ograve;ng bu&#7893;i h&ocirc;m nay?</td><td>5 sao (b&#7855;t bu&#7897;c)</td></tr>
+        <tr><td>2</td><td>Nh&acirc;n vi&ecirc;n ph&#7909;c v&#7909; t&#7889;t kh&ocirc;ng?</td><td>&#128077; / &#128078; (optional)</td></tr>
+        <tr><td>3</td><td>Chia s&#7867; th&ecirc;m?</td><td>Text ng&#7855;n (&#7849;n m&#7863;c &#273;&#7883;nh)</td></tr>
+      </tbody>
+    </table>
+
+    <!-- S3 -->
+    <h4>S3 &mdash; Treatment Progress</h4>
+    <p style="color:#a1a1a6; font-style:italic;">&ldquo;H&agrave;nh tr&igrave;nh c&#7911;a ch&#7883; &#273;ang &#273;&#7871;n &#273;&acirc;u r&#7891;i?&rdquo;</p>
+    <table>
+      <thead><tr><th>C&acirc;u</th><th>N&#7897;i dung</th><th>Lo&#7841;i</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>K&#7871;t qu&#7843; c&oacute; nh&#432; k&#7923; v&#7885;ng?</td><td>V&#432;&#7907;t / &#272;&uacute;ng / Ch&#432;a r&otilde; / Th&#7845;t v&#7885;ng</td></tr>
+        <tr><td>2</td><td>&#272;i&#7873;u h&agrave;i l&ograve;ng nh&#7845;t?</td><td>MC: K&#7871;t qu&#7843; / KTV / Kh&ocirc;ng gian / L&#7883;ch linh ho&#7841;t / T&#432; v&#7845;n</td></tr>
+        <tr><td>3</td><td>&#272;i&#7873;u mu&#7889;n c&#7843;i thi&#7879;n?</td><td>MC: Ch&#7901; / Gi&#7843;i th&iacute;ch / K&#7871;t qu&#7843; / Gi&aacute; / Kh&aacute;c</td></tr>
+        <tr><td>4</td><td>Mu&#7889;n trao &#273;&#7893;i th&ecirc;m v&#7899;i qu&#7843;n l&yacute;?</td><td>C&oacute; / Kh&ocirc;ng</td></tr>
+        <tr><td>5</td><td>C&acirc;n nh&#7855;c ti&#7871;p t&#7909;c?</td><td>Ch&#7855;c ch&#7855;n / &#272;ang suy ngh&#297; / C&oacute; th&#7875; d&#7915;ng</td></tr>
+      </tbody>
+    </table>
+
+    <!-- S4 -->
+    <h4>S4 &mdash; Treatment Complete</h4>
+    <p style="color:#a1a1a6; font-style:italic;">&ldquo;Ch&uacute;c m&#7915;ng ch&#7883; ho&agrave;n th&agrave;nh! Chia s&#7867; gi&uacute;p em nh&eacute;&rdquo;</p>
+    <table>
+      <thead><tr><th>C&acirc;u</th><th>N&#7897;i dung</th><th>Lo&#7841;i</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>K&#7871;t qu&#7843; so v&#7899;i k&#7923; v&#7885;ng ban &#273;&#7847;u?</td><td>1&ndash;10 scale</td></tr>
+        <tr><td>2</td><td>Tr&#7843;i nghi&#7879;m t&#7893;ng th&#7875;?</td><td>1&ndash;10 scale</td></tr>
+        <tr><td>3</td><td><strong>NPS:</strong> Gi&#7899;i thi&#7879;u cho b&#7841;n b&egrave;?</td><td>0&ndash;10</td></tr>
+        <tr><td>4</td><td>Y&#7871;u t&#7889; &#7845;n t&#432;&#7907;ng nh&#7845;t?</td><td>MC ch&#7885;n nhi&#7873;u</td></tr>
+        <tr><td>5</td><td>Quan t&acirc;m d&#7883;ch v&#7909; m&#7899;i?</td><td>C&oacute; / &#272;&#7875; suy ngh&#297; / Kh&ocirc;ng</td></tr>
+        <tr><td>6</td><td>G&oacute;p &yacute; t&#7921; do</td><td>Text</td></tr>
+      </tbody>
+    </table>
+
+    <!-- S6 -->
+    <h4>S6 &mdash; Win-back Survey</h4>
+    <p style="color:#a1a1a6; font-style:italic;">&ldquo;Ch&#7883; &#417;i, l&acirc;u r&#7891;i kh&ocirc;ng g&#7863;p &mdash; em c&oacute; l&agrave;m g&igrave; sai kh&ocirc;ng?&rdquo; &mdash; K&egrave;m voucher 200K</p>
+    <table>
+      <thead><tr><th>C&acirc;u</th><th>N&#7897;i dung</th><th>Lo&#7841;i</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>L&yacute; do ch&#432;a gh&eacute; l&#7841;i?</td><td>MC: B&#7853;n / Ch&#432;a c&#7847;n / Chuy&#7875;n n&#417;i / Ch&#432;a h&agrave;i l&ograve;ng / T&agrave;i ch&iacute;nh / Kh&aacute;c</td></tr>
+        <tr><td>2</td><td>&#272;i&#7873;u g&igrave; khi&#7871;n ch&#7883; quay l&#7841;i?</td><td>MC: &#431;u &#273;&atilde;i / KTV gi&#7887;i / D&#7883;ch v&#7909; m&#7899;i / Linh ho&#7841;t gi&#7901; / Kh&aacute;c</td></tr>
+        <tr><td>3</td><td>Mu&#7889;n em g&#7885;i t&#432; v&#7845;n?</td><td>C&oacute; / Nh&#7855;n tin / Kh&ocirc;ng</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  03 — CUSTOMER HEALTH SCORE                  -->
+<!-- ════════════════════════════════════════════ -->
+<section class="tile tile--parchment">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">03</div>
+      <div class="section-head-text">
+        <h2>Customer Health Score</h2>
+        <p class="sh-sub">&#272;i&#7875;m s&#7913;c kh&#7887;e kh&aacute;ch h&agrave;ng &mdash; thang 0&ndash;100, k&#7871;t h&#7907;p 5 y&#7871;u t&#7889;</p>
+      </div>
+    </div>
+
+    <div class="rule-block">CHS = (NPS &times; 0.25) + (Frequency Score &times; 0.20) + (Satisfaction Avg &times; 0.25)
+    + (Engagement Score &times; 0.15) + (Spending Trend &times; 0.15)</div>
+
+    <table>
+      <thead><tr><th>Th&agrave;nh ph&#7847;n</th><th>C&aacute;ch t&iacute;nh</th><th>Ngu&#7891;n</th><th>Tr&#7885;ng s&#7889;</th></tr></thead>
+      <tbody>
+        <tr><td>NPS</td><td>&#272;i&#7875;m NPS g&#7847;n nh&#7845;t, quy v&#7873; 0&ndash;100</td><td>Survey S4, S7</td><td>25%</td></tr>
+        <tr><td>Frequency</td><td>T&#7847;n su&#7845;t th&#7921;c t&#7871; vs k&#7923; v&#7885;ng theo persona</td><td>CRM data</td><td>20%</td></tr>
+        <tr><td>Satisfaction</td><td>Trung b&igrave;nh 5 l&#7847;n &#273;&aacute;nh gi&aacute; g&#7847;n nh&#7845;t</td><td>Survey S2</td><td>25%</td></tr>
+        <tr><td>Engagement</td><td>M&#7903; app + &#273;&#7885;c tin + d&ugrave;ng voucher + reply survey</td><td>App analytics</td><td>15%</td></tr>
+        <tr><td>Spending Trend</td><td>T&#259;ng/gi&#7919;/gi&#7843;m chi ti&ecirc;u 3 th&aacute;ng</td><td>CRM data</td><td>15%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Ph&acirc;n nh&oacute;m theo CHS</h3>
+    <div class="card-grid">
+      <div class="card" style="border-left: 4px solid #34c759;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span class="chs-dot chs-green"></span>
+          <span class="card-title" style="margin:0;">80&ndash;100 &mdash; Promoter</span>
+        </div>
+        <p class="card-desc">M&#7901;i referral, m&#7901;i review Google, upsell premium, VIP Circle</p>
+      </div>
+      <div class="card" style="border-left: 4px solid #ffcc00;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span class="chs-dot chs-yellow"></span>
+          <span class="card-title" style="margin:0;">60&ndash;79 &mdash; Healthy</span>
+        </div>
+        <p class="card-desc">Duy tr&igrave; ch&#7841;m &#273;&#7873;u, g&#7907;i &yacute; d&#7883;ch v&#7909; m&#7899;i, theo d&otilde;i xu h&#432;&#7899;ng</p>
+      </div>
+      <div class="card" style="border-left: 4px solid #ff9500;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span class="chs-dot chs-orange"></span>
+          <span class="card-title" style="margin:0;">40&ndash;59 &mdash; At Risk</span>
+        </div>
+        <p class="card-desc">T&#259;ng t&#7847;n su&#7845;t ch&#7841;m, &#432;u &#273;&atilde;i c&aacute; nh&acirc;n, qu&#7843;n l&yacute; g&#7885;i h&#7887;i th&#259;m</p>
+      </div>
+      <div class="card" style="border-left: 4px solid #ff3b30;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span class="chs-dot chs-red"></span>
+          <span class="card-title" style="margin:0;">20&ndash;39 &mdash; Danger</span>
+        </div>
+        <p class="card-desc">Alert qu&#7843;n l&yacute;, g&#7885;i ngay, special offer, xin feedback tr&#7921;c ti&#7871;p</p>
+      </div>
+      <div class="card" style="border-left: 4px solid #636366;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+          <span class="chs-dot chs-black"></span>
+          <span class="card-title" style="margin:0;">0&ndash;19 &mdash; Lost</span>
+        </div>
+        <p class="card-desc">Win-back campaign 1 l&#7847;n, n&#7871;u kh&ocirc;ng ph&#7843;n h&#7891;i &rarr; ch&#7845;p nh&#7853;n</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  04 — ACTIONS AFTER SURVEY                   -->
+<!-- ════════════════════════════════════════════ -->
+<section id="actions-survey" class="tile tile--dark-2">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">04</div>
+      <div class="section-head-text">
+        <h2>H&agrave;nh &#272;&#7897;ng Sau Survey</h2>
+        <p class="sh-sub">Ma tr&#7853;n ph&#7843;n &#7913;ng theo k&#7871;t qu&#7843; t&#7915;ng lo&#7841;i survey</p>
+      </div>
+    </div>
+
+    <!-- S2 Actions -->
+    <h3>S2 &mdash; Post-Service Quick: Ma tr&#7853;n ph&#7843;n &#7913;ng</h3>
+    <table>
+      <thead><tr><th>K&#7871;t qu&#7843;</th><th>Trong 2 gi&#7901;</th><th>Trong 24 gi&#7901;</th><th>Trong 7 ng&agrave;y</th></tr></thead>
+      <tbody>
+        <tr class="mx-green"><td><strong>5 sao + &#128077;</strong></td><td>&ldquo;C&#7843;m &#417;n ch&#7883;! Review gi&uacute;p em tr&ecirc;n Google nh&eacute;?&rdquo; + deep link</td><td>Kh&ocirc;ng ch&#7841;m th&ecirc;m</td><td>G&#7907;i &yacute; referral: gi&#7899;i thi&#7879;u b&#7841;n &mdash; c&#7843; hai nh&#7853;n &#432;u &#273;&atilde;i</td></tr>
+        <tr class="mx-green"><td><strong>4 sao + &#128077;</strong></td><td>&ldquo;C&#7843;m &#417;n ch&#7883;!&rdquo; (kh&ocirc;ng xin review)</td><td>Kh&ocirc;ng ch&#7841;m th&ecirc;m</td><td>G&#7917;i tip ch&#259;m s&oacute;c da li&ecirc;n quan bu&#7893;i v&#7915;a l&agrave;m</td></tr>
+        <tr class="mx-yellow"><td><strong>3 sao</strong></td><td>CRM auto-tag &ldquo;c&#7847;n theo d&otilde;i&rdquo;</td><td>Qu&#7843;n l&yacute; nh&#7855;n Zalo: &ldquo;Ch&#7883; chia s&#7867; th&ecirc;m &#273;&#432;&#7907;c kh&ocirc;ng?&rdquo;</td><td>Bu&#7893;i ti&#7871;p: KTV lead ph&#7909;c v&#7909;, h&#7887;i th&#259;m</td></tr>
+        <tr class="mx-orange"><td><strong>2 sao</strong></td><td><strong>Alert &#273;&#7887;</strong> &rarr; Qu&#7843;n l&yacute; g&#7885;i trong 2h</td><td>Ghi nh&#7853;n KTV. &#8805; 3 l&#7847;n 2 sao/th&aacute;ng &rarr; training</td><td>Bu&#7893;i ti&#7871;p: upgrade + qu&#7843;n l&yacute; check-in</td></tr>
+        <tr class="mx-red"><td><strong>1 sao</strong></td><td><strong>Alert kh&#7849;n</strong> &rarr; Qu&#7843;n l&yacute; g&#7885;i ngay + b&aacute;o gi&aacute;m &#273;&#7889;c</td><td>M&#7901;i quay l&#7841;i mi&#7877;n ph&iacute;, qu&#7843;n l&yacute; &#273;&#7889;n</td><td>Theo d&otilde;i 30 ng&agrave;y, n&#7871;u kh&ocirc;ng quay l&#7841;i &rarr; Win-back</td></tr>
+        <tr class="mx-orange"><td><strong>&#128078; (KTV)</strong></td><td>Ghi nh&#7853;n. Kh&ocirc;ng ti&#7871;t l&#7897; ai &#273;&aacute;nh gi&aacute;</td><td>T&iacute;ch l&#361;y v&agrave;o performance KTV</td><td>&#8805; 3/th&aacute;ng &rarr; coaching. &#8805; 5 &rarr; t&#7841;m d&#7915;ng VIP</td></tr>
+      </tbody>
+    </table>
+
+    <div class="script-block">
+      <span class="script-who">Script g&#7885;i khi 1&ndash;2 sao</span>
+      &ldquo;Ch&#7883; [T&ecirc;n] &#417;i, em l&agrave; [T&ecirc;n], qu&#7843;n l&yacute; chi nh&aacute;nh [X]. Em nh&#7853;n &#273;&#432;&#7907;c ph&#7843;n h&#7891;i c&#7911;a ch&#7883; v&agrave; th&#7853;t s&#7921; xin l&#7895;i. Ch&#7883; c&oacute; th&#7875; chia s&#7867; th&ecirc;m &#273;&#7875; em kh&#7855;c ph&#7909;c ngay &#273;&#432;&#7907;c kh&ocirc;ng &#7841;? Em mu&#7889;n l&#7847;n t&#7899;i ch&#7883; gh&eacute; s&#7869; tr&#7885;n v&#7865;n h&#417;n.&rdquo;
+    </div>
+
+    <div class="warn-block">
+      <span class="warn-label">Tuy&#7879;t &#273;&#7889;i kh&ocirc;ng</span>
+      <ul style="margin-top:8px;">
+        <li>Kh&ocirc;ng h&#7887;i &ldquo;Ch&#7883; &#273;&aacute;nh gi&aacute; 2 sao &#273;&uacute;ng kh&ocirc;ng?&rdquo; &rarr; kh&aacute;ch c&#7843;m th&#7845;y b&#7883; theo d&otilde;i</li>
+        <li>Kh&ocirc;ng &#273;&#7893; l&#7895;i: &ldquo;H&ocirc;m &#273;&oacute; &#273;&ocirc;ng qu&aacute; n&ecirc;n...&rdquo;</li>
+        <li>Kh&ocirc;ng g&#7917;i voucher ngay l&uacute;c g&#7885;i &rarr; c&#7843;m gi&aacute;c mua chu&#7897;c</li>
+      </ul>
+    </div>
+
+    <!-- S1 Actions -->
+    <h3>S1 &mdash; Onboarding: H&agrave;nh &#273;&#7897;ng theo c&acirc;u tr&#7843; l&#7901;i</h3>
+    <table>
+      <thead><tr><th>C&acirc;u tr&#7843; l&#7901;i</th><th>H&agrave;nh &#273;&#7897;ng CRM t&#7921; &#273;&#7897;ng</th><th>H&agrave;nh &#273;&#7897;ng nh&acirc;n s&#7921;</th></tr></thead>
+      <tbody>
+        <tr><td>Ngu&#7891;n = &ldquo;B&#7841;n gi&#7899;i thi&#7879;u&rdquo;</td><td>Tag referral, g&#7917;i c&#7843;m &#417;n ng&#432;&#7901;i gi&#7899;i thi&#7879;u</td><td>H&#7887;i t&ecirc;n b&#7841;n &rarr; c&#7897;ng &#273;i&#7875;m loyalty</td></tr>
+        <tr><td>Ngu&#7891;n = &ldquo;MXH&rdquo;</td><td>Tag channel=social, g&#7917;i follow App/Zalo</td><td>&mdash;</td></tr>
+        <tr><td>Quan t&acirc;m = &ldquo;K&#7871;t qu&#7843; r&otilde;&rdquo;</td><td>Auto-tag <span class="persona-badge p-result">P4</span>, queue content khoa h&#7885;c</td><td>KTV chu&#7849;n b&#7883; &#7843;nh before/after</td></tr>
+        <tr><td>Quan t&acirc;m = &ldquo;An to&agrave;n&rdquo;</td><td>Auto-tag <span class="persona-badge p-exp">P1</span>, g&#7917;i ch&#7913;ng nh&#7853;n/gi&#7845;y ph&eacute;p</td><td>KTV gi&#7843;i th&iacute;ch an to&agrave;n tr&#432;&#7899;c khi b&#7855;t &#273;&#7847;u</td></tr>
+        <tr><td>Quan t&acirc;m = &ldquo;Kh&ocirc;ng gian &#273;&#7865;p&rdquo;</td><td>Auto-tag <span class="persona-badge p-social">P5</span></td><td>Check-in &#273;&#7865;p, g&#7907;i &yacute; hashtag</td></tr>
+        <tr><td>&#8804; 2 sao</td><td>Alert qu&#7843;n l&yacute; (nh&#432; S2)</td><td>G&#7885;i xin l&#7895;i trong 4h</td></tr>
+        <tr><td>5 sao</td><td>Queue xin review sau 3 ng&agrave;y</td><td>&mdash;</td></tr>
+        <tr><td>Nh&#7853;n &#432;u &#273;&atilde;i = No</td><td>Tag &ldquo;no marketing&rdquo;, ch&#7881; SERVICE</td><td>T&ocirc;n tr&#7885;ng tuy&#7879;t &#273;&#7889;i</td></tr>
+      </tbody>
+    </table>
+
+    <!-- S3 Actions -->
+    <h3>S3 &mdash; Treatment Progress: Ph&#7843;n &#7913;ng gi&#7919;a li&#7879;u tr&igrave;nh</h3>
+    <table>
+      <thead><tr><th>K&#7871;t qu&#7843;</th><th>M&#7913;c &#273;&#7897;</th><th>H&agrave;nh &#273;&#7897;ng</th></tr></thead>
+      <tbody>
+        <tr class="mx-green"><td>&ldquo;V&#432;&#7907;t k&#7923; v&#7885;ng&rdquo;</td><td><span class="chs-dot chs-green"></span> Tuy&#7879;t v&#7901;i</td><td><strong>Upsell moment:</strong> G&#7907;i &yacute; li&#7879;u tr&igrave;nh b&#7893; sung (3 ng&agrave;y sau). M&#7901;i referral. Xin review. G&#7917;i &#7843;nh progress.</td></tr>
+        <tr class="mx-green"><td>&ldquo;&#272;&uacute;ng k&#7923; v&#7885;ng&rdquo;</td><td><span class="chs-dot chs-green"></span> &#7892;n</td><td><strong>Duy tr&igrave;:</strong> Ti&#7871;p t&#7909;c b&igrave;nh th&#432;&#7901;ng. G&#7917;i tip ch&#259;m s&oacute;c. Nh&#7855;c l&#7883;ch &#273;&uacute;ng h&#7865;n.</td></tr>
+        <tr class="mx-yellow"><td>&ldquo;Ch&#432;a th&#7845;y r&otilde;&rdquo;</td><td><span class="chs-dot chs-orange"></span> C&#7847;n can thi&#7879;p</td><td><strong>Qu&#7843;n l&yacute; k&#7923; v&#7885;ng:</strong> B&aacute;c s&#297; g&#7885;i t&#432; v&#7845;n 48h. G&#7917;i case study t&#432;&#417;ng t&#7921;. C&acirc;n nh&#7855;c &#273;i&#7873;u ch&#7881;nh protocol.</td></tr>
+        <tr class="mx-red"><td>&ldquo;Th&#7845;t v&#7885;ng&rdquo;</td><td><span class="chs-dot chs-red"></span> Kh&#7849;n c&#7845;p</td><td><strong>C&#7913;u m&#7889;i quan h&#7879;:</strong> B&aacute;c s&#297; tr&#432;&#7903;ng g&#7885;i 4h. T&aacute;i kh&aacute;m mi&#7877;n ph&iacute;. &#272;&aacute;nh gi&aacute; l&#7841;i protocol. &#272;&#7873; xu&#7845;t chuy&#7875;n li&#7879;u tr&igrave;nh + b&ugrave; chi ph&iacute;.</td></tr>
+        <tr class="mx-red"><td>&ldquo;C&oacute; th&#7875; d&#7915;ng&rdquo; (c&acirc;u 5)</td><td><span class="chs-dot chs-red"></span> S&#7855;p m&#7845;t</td><td><strong>Retention:</strong> Qu&#7843;n l&yacute; g&#7885;i 2h (kh&ocirc;ng telesale). T&agrave;i ch&iacute;nh &rarr; flexible payment. K&#7871;t qu&#7843; &rarr; th&ecirc;m bu&#7893;i mi&#7877;n ph&iacute;. <strong>KH&Ocirc;NG &Eacute;P</strong>.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- S4 Actions -->
+    <h3>S4 &mdash; Treatment Complete: Ph&acirc;n lu&#7891;ng theo NPS</h3>
+    <table>
+      <thead><tr><th>NPS</th><th>Ph&acirc;n lo&#7841;i</th><th>7 ng&agrave;y</th><th>30 ng&agrave;y</th><th>90 ng&agrave;y</th></tr></thead>
+      <tbody>
+        <tr class="mx-green"><td><strong>9&ndash;10</strong></td><td>Promoter</td><td>&#7842;nh before/after + c&#7843;m &#417;n c&aacute; nh&acirc;n</td><td>M&#7901;i VIP Circle</td><td>Testimonial, referral card &#273;&#7863;c bi&#7879;t, g&#7907;i &yacute; li&#7879;u tr&igrave;nh m&#7899;i</td></tr>
+        <tr class="mx-yellow"><td><strong>7&ndash;8</strong></td><td>Passive</td><td>G&#7917;i tip duy tr&igrave; k&#7871;t qu&#7843;</td><td>G&#7907;i &yacute; maintenance, &#432;u &#273;&atilde;i nh&#7865;</td><td>Re-survey S5. N&#7871;u CHS gi&#7843;m &rarr; At Risk</td></tr>
+        <tr class="mx-red"><td><strong>0&ndash;6</strong></td><td>Detractor</td><td>Qu&#7843;n l&yacute; g&#7885;i &rarr; hi&#7875;u l&yacute; do</td><td>M&#7901;i quay l&#7841;i mi&#7877;n ph&iacute; 1 bu&#7893;i + senior KTV</td><td>Ghi nh&#7853;n &#273;&#7875; c&#7843;i thi&#7879;n. Kh&ocirc;ng spam.</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Khi NPS 0&ndash;6: H&#7887;i s&acirc;u l&yacute; do &amp; Workflow x&#7917; l&yacute;</h4>
+    <table>
+      <thead><tr><th>L&yacute; do</th><th>Ng&#432;&#7901;i ch&#7883;u tr&aacute;ch nhi&#7879;m</th><th>H&agrave;nh &#273;&#7897;ng</th><th>Deadline</th></tr></thead>
+      <tbody>
+        <tr><td>K&#7871;t qu&#7843; &#273;i&#7873;u tr&#7883;</td><td>B&aacute;c s&#297; tr&#432;&#7903;ng</td><td>Review protocol, so s&aacute;nh case, b&aacute;o c&aacute;o medical director</td><td>72h</td></tr>
+        <tr><td>Th&aacute;i &#273;&#7897; nh&acirc;n vi&ecirc;n</td><td>Qu&#7843;n l&yacute; chi nh&aacute;nh</td><td>X&aacute;c minh ca, coaching KTV, &#273;i&#7873;u ch&#7881;nh assignment</td><td>48h</td></tr>
+        <tr><td>Th&#7901;i gian ch&#7901;</td><td>Operation Manager</td><td>Review booking slot, &#273;i&#7873;u ch&#7881;nh capacity</td><td>1 tu&#7847;n</td></tr>
+        <tr><td>Gi&aacute; c&#7843;</td><td>Sales Manager</td><td>&#272;&aacute;nh gi&aacute; pricing, &#273;&#7873; xu&#7845;t package linh ho&#7841;t</td><td>1 tu&#7847;n</td></tr>
+        <tr><td>V&#7879; sinh</td><td>Qu&#7843;n l&yacute; chi nh&aacute;nh</td><td>Ki&#7875;m tra ngay, ch&#7909;p &#7843;nh confirm, g&#7917;i kh&aacute;ch</td><td>24h</td></tr>
+      </tbody>
+    </table>
+
+    <!-- S6 Actions -->
+    <h3>S6 &mdash; Win-back: K&#7883;ch b&#7843;n theo l&yacute; do r&#7901;i</h3>
+    <table>
+      <thead><tr><th>L&yacute; do</th><th>X&aacute;c su&#7845;t win-back</th><th>K&#7883;ch b&#7843;n</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>&ldquo;B&#7853;n&rdquo;</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill" style="width:70%; background:#34c759;"></div></div><span>70%</span></div></td>
+          <td>Nh&#7855;n nh&#7865;: &ldquo;Khi n&agrave;o r&#7843;nh, em gi&#7919; slot.&rdquo; Nh&#7855;c l&#7841;i sau 30 ng&agrave;y.</td>
+        </tr>
+        <tr>
+          <td><strong>&ldquo;Ch&#432;a c&#7847;n&rdquo;</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill" style="width:50%; background:#ffcc00;"></div></div><span>50%</span></div></td>
+          <td>Content gi&aacute;o d&#7909;c: &ldquo;Da sau li&#7879;u tr&igrave;nh c&#7847;n duy tr&igrave; th&#7871; n&agrave;o?&rdquo; Kh&ocirc;ng b&aacute;n h&agrave;ng.</td>
+        </tr>
+        <tr>
+          <td><strong>&ldquo;Chuy&#7875;n n&#417;i&rdquo;</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill" style="width:20%; background:#ff3b30;"></div></div><span>20%</span></div></td>
+          <td>H&#7887;i th&#7859;ng: &ldquo;N&#417;i m&#7899;i c&oacute; g&igrave; t&#7889;t h&#417;n?&rdquo; Ghi nh&#7853;n. Sau 3 th&aacute;ng m&#7901;i l&#7841;i 1 l&#7847;n.</td>
+        </tr>
+        <tr>
+          <td><strong>&ldquo;Ch&#432;a h&agrave;i l&ograve;ng&rdquo;</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill" style="width:40%; background:#ff9500;"></div></div><span>40%</span></div></td>
+          <td><strong>Qu&#7843;n l&yacute; c&#7845;p cao g&#7885;i</strong> (kh&ocirc;ng telesale). Bu&#7893;i mi&#7877;n ph&iacute; + qu&#7843;n l&yacute; &#273;&oacute;n.</td>
+        </tr>
+        <tr>
+          <td><strong>&ldquo;T&agrave;i ch&iacute;nh&rdquo;</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-fill" style="width:60%; background:#34c759;"></div></div><span>60%</span></div></td>
+          <td>G&oacute;i nh&#7887; h&#417;n / tr&#7843; g&oacute;p / maintenance chi ph&iacute; th&#7845;p.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  05 — ACTIONS PER PERSONA                    -->
+<!-- ════════════════════════════════════════════ -->
+<section id="actions-persona" class="tile tile--white">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">05</div>
+      <div class="section-head-text">
+        <h2>Playbook Theo Persona</h2>
+        <p class="sh-sub">H&agrave;nh &#273;&#7897;ng &#273;&uacute;ng vs sai cho t&#7915;ng nh&oacute;m kh&aacute;ch h&agrave;ng</p>
+      </div>
+    </div>
+
+    <!-- P1 -->
+    <h3><span class="persona-badge p-exp">P1</span> Ch&#7883; Lan &ldquo;Tr&#7843;i nghi&#7879;m&rdquo;</h3>
+    <table>
+      <thead><tr><th>T&igrave;nh hu&#7889;ng</th><th style="color:#ff3b30;">H&agrave;nh &#273;&#7897;ng SAI</th><th style="color:#34c759;">H&agrave;nh &#273;&#7897;ng &#272;&Uacute;NG</th></tr></thead>
+      <tbody>
+        <tr><td>L&#7847;n &#273;&#7847;u &#273;&#7871;n</td><td>Push li&#7879;u tr&igrave;nh d&agrave;i + gi&aacute; cao ngay</td><td>T&#432; v&#7845;n nh&#7865;, cho th&#7917; 1 bu&#7893;i &#273;&#417;n l&#7867;. &ldquo;Ch&#7883; th&#7917; 1 bu&#7893;i, th&iacute;ch th&igrave; t&iacute;nh ti&#7871;p.&rdquo;</td></tr>
+        <tr><td>Survey 3 sao</td><td>G&#7917;i voucher gi&#7843;m gi&aacute;</td><td>Qu&#7843;n l&yacute; nh&#7855;n tin h&#7887;i th&#259;m. P1 c&#7847;n <strong>an to&agrave;n</strong>, kh&ocirc;ng c&#7847;n gi&#7843;m gi&aacute;.</td></tr>
+        <tr><td>14 ng&agrave;y kh&ocirc;ng quay l&#7841;i</td><td>Telesale g&#7885;i push</td><td>Content gi&aacute;o d&#7909;c qua Zalo: &ldquo;3 &#273;i&#7873;u n&ecirc;n bi&#7871;t tr&#432;&#7899;c khi ch&#7885;n spa&rdquo;</td></tr>
+        <tr><td>H&#7887;i gi&aacute; nhi&#7873;u</td><td>T&#7887; ra kh&oacute; ch&#7883;u</td><td>Minh b&#7841;ch b&#7843;ng gi&aacute;, so s&aacute;nh g&oacute;i, gi&#7843;i th&iacute;ch r&otilde;</td></tr>
+        <tr><td>Quay l&#7841;i l&#7847;n 3+</td><td>V&#7851;n &#273;&#7889;i x&#7917; nh&#432; kh&aacute;ch m&#7899;i</td><td>CRM auto-update persona. Nh&#7899; th&oacute;i quen: &ldquo;Ch&#7883; v&#7851;n th&iacute;ch ph&ograve;ng b&ecirc;n tr&aacute;i?&rdquo;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- P2 -->
+    <h3><span class="persona-badge p-loyal">P2</span> Ch&#7883; H&#432;&#417;ng &ldquo;Quen thu&#7897;c&rdquo;</h3>
+    <table>
+      <thead><tr><th>T&igrave;nh hu&#7889;ng</th><th style="color:#ff3b30;">SAI</th><th style="color:#34c759;">&#272;&Uacute;NG</th></tr></thead>
+      <tbody>
+        <tr><td>KTV quen ngh&#7881; ph&eacute;p</td><td>&#272;&#7893;i KTV kh&ocirc;ng b&aacute;o</td><td>Nh&#7855;n tr&#432;&#7899;c 3 ng&agrave;y: &ldquo;KTV [T&ecirc;n] ngh&#7881;. Ch&#7883; mu&#7889;n d&#7901;i l&#7883;ch hay em s&#7855;p KTV [T&ecirc;n 2]?&rdquo;</td></tr>
+        <tr><td>Survey 4 sao</td><td>B&#7887; qua v&igrave; &ldquo;4 t&#7889;t r&#7891;i&rdquo;</td><td>Ch&uacute; &yacute; &mdash; P2 th&#432;&#7901;ng cho 5 sao. 4 sao = c&oacute; v&#7845;n &#273;&#7873; nh&#7887;. KTV h&#7887;i nh&#7865; bu&#7893;i sau.</td></tr>
+        <tr><td>Gi&#7899;i thi&#7879;u b&#7841;n</td><td>Voucher chung chung</td><td>C&#7843;m &#417;n ri&ecirc;ng + th&#432;&#7903;ng c&oacute; &yacute; ngh&#297;a: bu&#7893;i d&#7883;ch v&#7909; hay l&agrave;m mi&#7877;n ph&iacute;</td></tr>
+        <tr><td>3 th&aacute;ng ch&#432;a upsell</td><td>Push d&#7883;ch v&#7909; aggressive</td><td>KTV g&#7907;i &yacute; nh&#7865; trong bu&#7893;i: &ldquo;Th&ecirc;m [X] s&#7869; &#273;&#7865;p l&#7855;m. Ch&#7883; mu&#7889;n t&#432; v&#7845;n?&rdquo;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- P3 -->
+    <h3><span class="persona-badge p-vip">P3</span> Ch&#7883; Mai &ldquo;VIP k&iacute;n &#273;&aacute;o&rdquo;</h3>
+    <table>
+      <thead><tr><th>T&igrave;nh hu&#7889;ng</th><th style="color:#ff3b30;">SAI</th><th style="color:#34c759;">&#272;&Uacute;NG</th></tr></thead>
+      <tbody>
+        <tr><td>G&#7917;i survey</td><td>Survey d&agrave;i, g&#7917;i nhi&#7873;u l&#7847;n</td><td>1 l&#7847;n, ch&#7881; 2 c&acirc;u + &ldquo;Kh&ocirc;ng c&#7847;n tr&#7843; l&#7901;i n&#7871;u kh&ocirc;ng ti&#7879;n.&rdquo; Kh&ocirc;ng nh&#7855;c l&#7841;i.</td></tr>
+        <tr><td>Check-in</td><td>Ch&agrave;o to &#7903; s&#7843;nh</td><td>Nh&#7855;n tr&#432;&#7899;c: &ldquo;Ph&ograve;ng VIP &#273;&atilde; s&#7861;n.&rdquo; D&#7851;n th&#7859;ng v&agrave;o, kh&ocirc;ng &#273;&#7907;i s&#7843;nh.</td></tr>
+        <tr><td>Ch&#7901; &gt; 5 ph&uacute;t</td><td>&ldquo;&#272;&#7907;i ch&uacute;t &#7841;&rdquo;</td><td><strong>Kh&ocirc;ng &#273;&#432;&#7907;c &#273;&#7875; x&#7843;y ra.</strong> N&#7871;u c&oacute; &rarr; xin l&#7895;i + compensate ngay.</td></tr>
+        <tr><td>Survey 3 sao</td><td>Telesale g&#7885;i</td><td><strong>Qu&#7843;n l&yacute; c&#7845;p cao</strong> nh&#7855;n ri&ecirc;ng Zalo CN</td></tr>
+        <tr><td>Marketing</td><td>Broadcast nh&#432; kh&aacute;ch th&#432;&#7901;ng</td><td><strong>KH&Ocirc;NG broadcast.</strong> Ch&#7881; 1:1, exclusive access, d&#7883;ch v&#7909; ch&#432;a ra m&#7855;t.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- P4 -->
+    <h3><span class="persona-badge p-result">P4</span> Ch&#7883; Th&#7843;o &ldquo;K&#7871;t qu&#7843;&rdquo;</h3>
+    <table>
+      <thead><tr><th>T&igrave;nh hu&#7889;ng</th><th style="color:#ff3b30;">SAI</th><th style="color:#34c759;">&#272;&Uacute;NG</th></tr></thead>
+      <tbody>
+        <tr><td>T&#432; v&#7845;n li&#7879;u tr&igrave;nh</td><td>&ldquo;Tin em &#273;i, l&agrave;m xong &#273;&#7865;p l&#7855;m&rdquo;</td><td>Timeline c&#7909; th&#7875;, % c&#7843;i thi&#7879;n, &#7843;nh case study, c&#417; ch&#7871;. &ldquo;Bu&#7893;i 1&ndash;3: [X]. Bu&#7893;i 4&ndash;6: [Y].&rdquo;</td></tr>
+        <tr><td>Gi&#7919;a li&#7879;u tr&igrave;nh</td><td>Kh&ocirc;ng update g&igrave;</td><td>&#7842;nh before/current + ph&acirc;n t&iacute;ch: &ldquo;V&ugrave;ng n&agrave;y c&#7843;i thi&#7879;n [X]%.&rdquo;</td></tr>
+        <tr><td>S3 = &ldquo;Ch&#432;a r&otilde;&rdquo;</td><td>&ldquo;C&#7913; ki&ecirc;n nh&#7851;n &#273;i ch&#7883;&rdquo;</td><td>B&aacute;c s&#297; g&#7885;i <strong>c&oacute; s&#7889; li&#7879;u</strong>: &ldquo;&#272;o l&#7841;i, c&#7843;i thi&#7879;n [X]. Em g&#7917;i &#7843;nh so s&aacute;nh.&rdquo;</td></tr>
+        <tr><td>K&#7871;t th&uacute;c li&#7879;u tr&igrave;nh</td><td>&ldquo;C&#7843;m &#417;n, ch&uacute;c &#273;&#7865;p&rdquo;</td><td><strong>B&aacute;o c&aacute;o k&#7871;t qu&#7843; chi ti&#7871;t:</strong> before/after, s&#7889; bu&#7893;i, % c&#7843;i thi&#7879;n, khuy&#7871;n ngh&#7883; duy tr&igrave;.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- P5 -->
+    <h3><span class="persona-badge p-social">P5</span> B&#7841;n Linh &ldquo;Social Proof&rdquo;</h3>
+    <table>
+      <thead><tr><th>T&igrave;nh hu&#7889;ng</th><th style="color:#ff3b30;">SAI</th><th style="color:#34c759;">&#272;&Uacute;NG</th></tr></thead>
+      <tbody>
+        <tr><td>L&#7847;n &#273;&#7847;u</td><td>&#272;&#7889;i x&#7917; b&igrave;nh th&#432;&#7901;ng</td><td>G&oacute;c check-in &#273;&#7865;p. &ldquo;Em ch&#7909;p &#7843;nh cho ch&#7883;?&rdquo; G&#7907;i &yacute; hashtag.</td></tr>
+        <tr><td>Survey 5 sao</td><td>C&#7843;m &#417;n v&agrave; d&#7915;ng</td><td>&ldquo;Ch&#7883; share story &#273;&#432;&#7907;c kh&ocirc;ng? T&#7863;ng &#432;u &#273;&atilde;i l&#7847;n sau!&rdquo; &mdash; K&ecirc;nh marketing mi&#7877;n ph&iacute;.</td></tr>
+        <tr><td>30 ng&agrave;y kh&ocirc;ng l&#7841;i</td><td>Nh&#7855;c l&#7883;ch b&igrave;nh th&#432;&#7901;ng</td><td>G&#7917;i trend m&#7899;i: &ldquo;Treatment [X] &#273;ang hot tr&ecirc;n TikTok &mdash; mu&#7889;n th&#7917; &#273;&#7847;u ti&ecirc;n?&rdquo;</td></tr>
+        <tr><td>D&#7883;ch v&#7909; m&#7899;i</td><td>Broadcast chung</td><td>M&#7901;i tr&#7843;i nghi&#7879;m &#273;&#7847;u ti&ecirc;n &mdash; &#273;&#7893;i l&#7841;i b&#7857;ng review/story. Win-win.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- P6 -->
+    <h3><span class="persona-badge p-male">P6</span> Anh Minh &ldquo;Nam gi&#7899;i&rdquo;</h3>
+    <table>
+      <thead><tr><th>T&igrave;nh hu&#7889;ng</th><th style="color:#ff3b30;">SAI</th><th style="color:#34c759;">&#272;&Uacute;NG</th></tr></thead>
+      <tbody>
+        <tr><td>L&#7847;n &#273;&#7847;u</td><td>KTV h&#7887;i nhi&#7873;u, k&eacute;o d&agrave;i t&#432; v&#7845;n</td><td>Ng&#7855;n g&#7885;n: &ldquo;Anh c&#7847;n [X]. Li&#7879;u tr&igrave;nh [Y] bu&#7893;i. B&#7855;t &#273;&#7847;u lu&ocirc;n?&rdquo;</td></tr>
+        <tr><td>Survey</td><td>Survey d&agrave;i, nhi&#7873;u l&#7921;a ch&#7885;n</td><td>Ch&#7881; S2 d&#7841;ng 1 c&acirc;u: rating sao. Kh&ocirc;ng g&#7917;i S1.</td></tr>
+        <tr><td>Nh&#7855;c l&#7883;ch</td><td>Nh&#7855;n d&agrave;i, k&egrave;m emoji</td><td>C&#7921;c ng&#7855;n: &ldquo;Anh [T&ecirc;n], l&#7883;ch [ng&agrave;y] l&uacute;c [gi&#7901;]. X&aacute;c nh&#7853;n?&rdquo;</td></tr>
+        <tr><td>Ph&ograve;ng ch&#7901;</td><td>Ng&#7891;i chung s&#7843;nh &#273;&ocirc;ng</td><td>Ph&ograve;ng ri&ecirc;ng ho&#7863;c slot gi&#7901; &iacute;t ng&#432;&#7901;i</td></tr>
+        <tr><td>Win-back</td><td>Zalo nh&#7855;n nhi&#7873;u l&#7847;n</td><td>&#272;&uacute;ng 1 l&#7847;n: &ldquo;Anh mu&#7889;n book l&#7841;i th&igrave; nh&#7855;n em.&rdquo; D&#7915;ng n&#7871;u kh&ocirc;ng reply.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  06 — PERSONA × CHS MATRIX                   -->
+<!-- ════════════════════════════════════════════ -->
+<section id="matrix" class="tile tile--dark-3">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">06</div>
+      <div class="section-head-text">
+        <h2>Ma Tr&#7853;n Persona &times; CHS</h2>
+        <p class="sh-sub">B&#7843;ng quy&#7871;t &#273;&#7883;nh cu&#7889;i c&ugrave;ng &mdash; k&#7871;t h&#7907;p persona + Customer Health Score</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th><span class="chs-dot chs-green"></span>80&ndash;100</th>
+          <th><span class="chs-dot chs-yellow"></span>60&ndash;79</th>
+          <th><span class="chs-dot chs-orange"></span>40&ndash;59</th>
+          <th><span class="chs-dot chs-red"></span>20&ndash;39</th>
+          <th><span class="chs-dot chs-black"></span>0&ndash;19</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="persona-badge p-exp">P1</span></td>
+          <td class="mx-green">Chuy&#7875;n d&#7847;n P2: nh&#7899; th&oacute;i quen, g&#7907;i &yacute; KTV c&#7889; &#273;&#7883;nh</td>
+          <td class="mx-yellow">Content gi&aacute;o d&#7909;c, m&#7901;i th&#7917; d&#7883;ch v&#7909; m&#7899;i</td>
+          <td class="mx-orange">H&#7887;i: &ldquo;B&#259;n kho&#259;n g&igrave;?&rdquo; &mdash; P1 d&#7877; r&#7901;i v&igrave; ch&#432;a g&#7855;n b&oacute;</td>
+          <td class="mx-red">Bu&#7893;i tr&#7843;i nghi&#7879;m mi&#7877;n ph&iacute;</td>
+          <td class="mx-gray">1 l&#7847;n win-back &rarr; d&#7915;ng</td>
+        </tr>
+        <tr>
+          <td><span class="persona-badge p-loyal">P2</span></td>
+          <td class="mx-green">Referral, VIP Circle, upsell qua KTV quen</td>
+          <td class="mx-yellow">Duy tr&igrave; KTV c&#7889; &#273;&#7883;nh, kh&ocirc;ng &#273;&#7893;i</td>
+          <td class="mx-orange"><strong>Alert ngay</strong> &mdash; KTV g&#7885;i h&#7887;i th&#259;m</td>
+          <td class="mx-red">KTV + Qu&#7843;n l&yacute; c&ugrave;ng g&#7885;i</td>
+          <td class="mx-gray">KTV vi&#7871;t tin c&aacute; nh&acirc;n</td>
+        </tr>
+        <tr>
+          <td><span class="persona-badge p-vip">P3</span></td>
+          <td class="mx-green">Exclusive access, event ri&ecirc;ng, concierge</td>
+          <td class="mx-yellow">Standard VIP. Ki&#7875;m tra ch&#7901; &#273;&#7907;i</td>
+          <td class="mx-orange"><strong>Qu&#7843;n l&yacute; c&#7845;p cao x&#7917; l&yacute; ngay</strong></td>
+          <td class="mx-red">Gi&aacute;m &#273;&#7889;c g&#7885;i. Compensate l&#7899;n.</td>
+          <td class="mx-gray">1 l&#7847;n c&#7845;p cao &rarr; t&ocirc;n tr&#7885;ng</td>
+        </tr>
+        <tr>
+          <td><span class="persona-badge p-result">P4</span></td>
+          <td class="mx-green">B&aacute;o c&aacute;o k&#7871;t qu&#7843; chi ti&#7871;t, m&#7901;i case study</td>
+          <td class="mx-yellow">B&#7893; sung data: &#7843;nh progress, s&#7889; li&#7879;u</td>
+          <td class="mx-orange">&#7842;nh before/current + ph&acirc;n t&iacute;ch &mdash; P4 c&#7847;n <strong>b&#7857;ng ch&#7913;ng</strong></td>
+          <td class="mx-red">B&aacute;c s&#297; tr&#432;&#7903;ng t&#432; v&#7845;n, review protocol</td>
+          <td class="mx-gray">T&#7893;ng k&#7871;t k&#7871;t qu&#7843; + l&#7901;i m&#7901;i m&#7903;</td>
+        </tr>
+        <tr>
+          <td><span class="persona-badge p-social">P5</span></td>
+          <td class="mx-green">Collab content, early access, tr&#7843;i nghi&#7879;m &ldquo;&#273;&aacute;ng post&rdquo;</td>
+          <td class="mx-yellow">Trend m&#7899;i, gi&#7919; engagement</td>
+          <td class="mx-orange">FOMO: &ldquo;Ch&#7881; 5 slot tu&#7847;n n&agrave;y&rdquo;</td>
+          <td class="mx-red">Flash offer + social proof</td>
+          <td class="mx-gray">Retarget qua ads (MXH)</td>
+        </tr>
+        <tr>
+          <td><span class="persona-badge p-male">P6</span></td>
+          <td class="mx-green">Package d&agrave;i h&#7841;n (ti&#7879;n, &iacute;t book)</td>
+          <td class="mx-yellow">Nh&#7855;c l&#7883;ch &#273;&#417;n gi&#7843;n</td>
+          <td class="mx-orange">1 tin ng&#7855;n g&#7885;n. Kh&ocirc;ng reply &rarr; ch&#7901;</td>
+          <td class="mx-red">G&#7885;i ng&#7855;n: &ldquo;Mu&#7889;n book l&#7841;i kh&ocirc;ng?&rdquo;</td>
+          <td class="mx-gray">1 l&#7847;n. D&#7915;ng. P6 gh&eacute;t b&#7883; l&agrave;m phi&#7873;n.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  07 — CRM AUTOMATION RULES                   -->
+<!-- ════════════════════════════════════════════ -->
+<section id="automation" class="tile tile--parchment">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">07</div>
+      <div class="section-head-text">
+        <h2>CRM Automation Rules</h2>
+        <p class="sh-sub">7 rule t&#7921; &#273;&#7897;ng c&#7845;u h&igrave;nh trong h&#7879; th&#7889;ng CRM</p>
+      </div>
+    </div>
+
+    <div class="rule-block">RULE 1: Post-Service Alert
+  IF  S2.rating &le; 2
+  THEN &rarr; Create task &ldquo;G&#7885;i kh&aacute;ch kh&#7849;n&rdquo;
+       &rarr; Assign: Branch Manager
+       &rarr; Deadline: 2 hours
+       &rarr; Priority: URGENT</div>
+
+    <div class="rule-block">RULE 2: Persona Auto-Tag
+  IF  S1.concern = &ldquo;K&#7871;t qu&#7843; r&otilde;&rdquo; AND S1.concern = &ldquo;An to&agrave;n&rdquo;
+  THEN &rarr; Tag persona = P4
+  IF  S1.source = &ldquo;MXH&rdquo; AND S1.concern = &ldquo;Kh&ocirc;ng gian &#273;&#7865;p&rdquo;
+  THEN &rarr; Tag persona = P5</div>
+
+    <div class="rule-block">RULE 3: Promoter Activation
+  IF  S4.NPS &ge; 9
+  THEN &rarr; Wait 3 days
+       &rarr; Send referral invitation (template by persona)
+       &rarr; Add to &ldquo;VIP Circle&rdquo; list
+       &rarr; Queue Google Review request (7 days later)</div>
+
+    <div class="rule-block">RULE 4: At-Risk Detection
+  IF  S3.progress = &ldquo;Th&#7845;t v&#7885;ng&rdquo; OR S3.continue = &ldquo;C&oacute; th&#7875; d&#7915;ng&rdquo;
+  THEN &rarr; Change CHS segment to &ldquo;Danger&rdquo;
+       &rarr; Create task &ldquo;Retention call&rdquo;
+       &rarr; Assign: Senior Manager
+       &rarr; Pause all marketing messages
+       &rarr; Deadline: 4 hours</div>
+
+    <div class="rule-block">RULE 5: Win-back Routing
+  IF  S6.reason = &ldquo;Ch&#432;a h&agrave;i l&ograve;ng&rdquo;
+  THEN &rarr; Route to Senior Manager (not telesale)
+       &rarr; Create complimentary session voucher
+  IF  S6.reason = &ldquo;T&agrave;i ch&iacute;nh&rdquo;
+  THEN &rarr; Route to Sales Manager
+       &rarr; Prepare flexible payment options</div>
+
+    <div class="rule-block">RULE 6: Survey Fatigue Prevention
+  IF  customer.survey_count_this_month &ge; 3
+  THEN &rarr; Skip all non-critical surveys for 30 days
+       &rarr; Only allow: S2 (if previous rating &le; 2)</div>
+
+    <div class="rule-block">RULE 7: Persona Evolution
+  IF  customer.visit_count &ge; 3 AND persona = P1
+  THEN &rarr; Re-evaluate persona score
+       &rarr; IF has preferred KTV &rarr; upgrade to P2
+       &rarr; IF avg_spending &gt; 15M/month &rarr; evaluate P3</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════ -->
+<!--  08 — KPIs                                    -->
+<!-- ════════════════════════════════════════════ -->
+<section id="kpi" class="tile tile--dark">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">08</div>
+      <div class="section-head-text">
+        <h2>KPI &#272;o Hi&#7879;u Qu&#7843;</h2>
+        <p class="sh-sub">Ch&#7881; s&#7889; &#273;o l&#432;&#7901;ng hi&#7879;u qu&#7843; h&#7879; th&#7889;ng Survey &amp; Personas</p>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>Metric</th><th>Target</th><th>C&aacute;ch &#273;o</th><th>T&#7847;n su&#7845;t</th></tr></thead>
+      <tbody>
+        <tr><td>T&#7927; l&#7879; tr&#7843; l&#7901;i S2</td><td>&ge; 40%</td><td>Ph&#7843;n h&#7891;i / G&#7917;i</td><td>Tu&#7847;n</td></tr>
+        <tr><td>T&#7927; l&#7879; tr&#7843; l&#7901;i S1</td><td>&ge; 60%</td><td>Ph&#7843;n h&#7891;i / Kh&aacute;ch m&#7899;i</td><td>Tu&#7847;n</td></tr>
+        <tr><td>Avg Satisfaction (S2)</td><td>&ge; 4.2 / 5</td><td>Trung b&igrave;nh rating</td><td>Tu&#7847;n</td></tr>
+        <tr><td>NPS</td><td>&ge; 50</td><td>%Promoter &minus; %Detractor</td><td>Th&aacute;ng</td></tr>
+        <tr><td>Alert Response Time</td><td>&lt; 2h (kh&#7849;n), &lt; 24h (th&#432;&#7901;ng)</td><td>Alert &rarr; h&agrave;nh &#273;&#7897;ng</td><td>Tu&#7847;n</td></tr>
+        <tr><td>Recovery Rate</td><td>&ge; 30%</td><td>CHS &lt; 40 &rarr; quay l&#7841;i &gt; 60</td><td>Th&aacute;ng</td></tr>
+        <tr><td>Persona Coverage</td><td>&ge; 80% sau 2 l&#7847;n</td><td>Kh&aacute;ch c&oacute; tag / T&#7893;ng</td><td>Th&aacute;ng</td></tr>
+        <tr><td>Win-back Success (S6)</td><td>&ge; 25%</td><td>Kh&aacute;ch drift quay l&#7841;i</td><td>Th&aacute;ng</td></tr>
+        <tr><td>Persona P1 &rarr; P2</td><td>&ge; 40%</td><td>P1 upgrade sau 3 th&aacute;ng</td><td>Qu&yacute;</td></tr>
+      </tbody>
+    </table>
+
+    <h3>L&#7897; tr&igrave;nh tri&#7875;n khai</h3>
+    <div class="card-grid-3">
+      <div class="card">
+        <div class="card-icon">1</div>
+        <div class="card-title">Phase 1 &mdash; N&#7873;n t&#7843;ng</div>
+        <p class="card-desc"><strong>Th&aacute;ng 1&ndash;2:</strong> Thi&#7871;t k&#7871; S1 + S2. T&iacute;ch h&#7907;p App/Zalo. Alert t&#7921; &#273;&#7897;ng. Dashboard c&#417; b&#7843;n.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">2</div>
+        <div class="card-title">Phase 2 &mdash; M&#7903; r&#7897;ng</div>
+        <p class="card-desc"><strong>Th&aacute;ng 3&ndash;4:</strong> Th&ecirc;m S3 + S4. Customer Health Score. Auto-tag persona. NPS h&agrave;ng th&aacute;ng.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">3</div>
+        <div class="card-title">Phase 3 &mdash; N&acirc;ng cao</div>
+        <p class="card-desc"><strong>Th&aacute;ng 5&ndash;6:</strong> S5 + S6 + S7. Persona scoring ho&agrave;n ch&#7881;nh. Survey &rarr; CRM automation. A/B test.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">L&#432;u &yacute; quan tr&#7885;ng</div>
+      <ul>
+        <li><strong>B&#7843;o m&#7853;t tuy&#7879;t &#273;&#7889;i</strong> &mdash; K&#7871;t qu&#7843; survey KH&Ocirc;NG hi&#7875;n th&#7883; cho KTV bi&#7871;t ai &#273;&aacute;nh gi&aacute; g&igrave; (tr&#7915; khi kh&aacute;ch &#273;&#7891;ng &yacute;)</li>
+        <li><strong>Kh&ocirc;ng survey qu&aacute; nhi&#7873;u</strong> &mdash; T&#7889;i &#273;a 1 survey/tu&#7847;n cho 1 kh&aacute;ch</li>
+        <li><strong>Th&#7901;i &#273;i&#7875;m nh&#7841;y c&#7843;m</strong> &mdash; Kh&ocirc;ng g&#7917;i survey ngay sau d&#7883;ch v&#7909; c&oacute; th&#7901;i gian ph&#7909;c h&#7891;i (filler, laser n&#7863;ng). &#272;&#7907;i 24&ndash;48h.</li>
+        <li><strong>Ng&ocirc;n ng&#7919; &#7845;m &aacute;p</strong> &mdash; Kh&ocirc;ng d&ugrave;ng &ldquo;kh&#7843;o s&aacute;t&rdquo;, &ldquo;&#273;&aacute;nh gi&aacute;&rdquo;. D&ugrave;ng &ldquo;chia s&#7867;&rdquo;, &ldquo;g&oacute;p &yacute;&rdquo;, &ldquo;gi&uacute;p em hi&#7875;u ch&#7883; h&#417;n&rdquo;.</li>
+        <li><strong>Incentive theo persona</strong> &mdash; VIP kh&ocirc;ng c&#7847;n voucher 50K, h&#7885; c&#7847;n &ldquo;&yacute; ki&#7871;n t&ocirc;i &#273;&#432;&#7907;c l&#7855;ng nghe&rdquo;.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="tile tile--dark-2 site-footer">
+  <p style="color:#86868b;">TheAdvance &mdash; Playbook Survey &amp; Customer Personas &mdash; T&agrave;i li&#7879;u n&#7897;i b&#7897;</p>
+</footer>
+
+</body>
+</html>

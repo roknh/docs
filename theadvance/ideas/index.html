@@ -42,6 +42,7 @@
     font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px;
     color: var(--ink); background: var(--canvas);
+    overflow-x: hidden;
   }
 
   .hero-display {
@@ -412,6 +413,13 @@
     color: var(--ink-muted-48); margin-bottom: 12px;
   }
 
+  /* === Inline grid helpers === */
+  .resp-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  .resp-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .resp-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+  .resp-grid-5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+  .resp-flex-row { display: flex; gap: 32px; align-items: flex-start; }
+
   /* === Responsive === */
   @media (max-width: 833px) {
     .hero-display { font-size: 40px !important; }
@@ -426,8 +434,10 @@
     .tp-mini-grid { grid-template-columns: 1fr 1fr; }
     .lifecycle-grid, .segment-grid, .pillar-grid, .dept-grid, .doc-grid,
     .reason-summary-grid, .signal-row { grid-template-columns: 1fr; }
+    .resp-grid-2, .resp-grid-3, .resp-grid-4, .resp-grid-5 { grid-template-columns: 1fr; }
+    .resp-flex-row { flex-direction: column; gap: 20px; }
     .hero { padding: 80px 24px 64px; }
-    .section { padding: 48px 24px; }
+    .section { padding: 48px 20px; }
     .global-nav__links { display: none; }
   }
   @media (max-width: 640px) {
@@ -435,6 +445,8 @@
     .display-lg { font-size: 28px !important; }
     .tp-mini-grid { grid-template-columns: 1fr; }
     .tp-mini { padding: 20px; }
+    .section { padding: 40px 16px; }
+    .hero { padding: 64px 16px 48px; }
   }
 </style>
 </head>
@@ -536,13 +548,13 @@
       <div class="tp-mini">
         <div class="tp-mini__num">1</div>
         <h4>Đặt lịch</h4>
-        <p>Xác nhận &lt; 15 phút, nhắn nhắc lịch kèm tên KTV</p>
-        <div class="tp-mini__wow">WOW: Tin nhắn có tên KTV sẽ phục vụ</div>
+        <p>Xác nhận &lt; 2 phút (tự động) và có hướng dẫn dặn dò khi đến chi tiết</p>
+        <div class="tp-mini__wow">WOW: Tin nhắn nhắc lịch kèm hướng dẫn dặn dò chi tiết khi đến</div>
       </div>
       <div class="tp-mini">
         <div class="tp-mini__num">2</div>
         <h4>Đón khách</h4>
-        <p>Chào &lt; 10 giây, gọi tên, khăn ấm + nước theo mùa</p>
+        <p>Chào &lt; 10 giây, gọi tên, khăn ấm + nước theo mùa. Chờ được tư vấn/làm dịch vụ &le; 30 phút</p>
         <div class="tp-mini__wow">WOW: Khăn ấm + đồ uống &lt; 2 phút</div>
       </div>
       <div class="tp-mini">
@@ -594,7 +606,7 @@
           <span class="lifecycle-card__channel">Kênh tiếp cận gốc</span>
           <span class="lifecycle-card__channel">Telesale</span>
         </div>
-        <div class="lifecycle-card__goal"><strong>Mục tiêu:</strong> Chốt lịch buổi đầu, phản hồi &lt; 15 phút</div>
+        <div class="lifecycle-card__goal"><strong>Mục tiêu:</strong> Chốt lịch buổi đầu, xác nhận &lt; 2 phút (tự động)</div>
       </div>
 
       <!-- Onboarding -->
@@ -637,7 +649,7 @@
     <!-- Nguyên tắc -->
     <div style="margin-top:40px; padding:28px 32px; background:var(--surface-tile-2); border-radius:var(--rounded-lg); border:1px solid rgba(255,255,255,0.08);">
       <h4 class="body-strong" style="color:var(--on-dark); margin-bottom:16px;">4 nguyên tắc nền tảng giai đoạn 0&ndash;6 tháng</h4>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+      <div class="resp-grid-2">
         <div style="font-size:15px; color:var(--body-muted); line-height:1.6;">
           <strong style="color:var(--primary-on-dark);">1. App là trung tâm</strong><br>
           App đảm nhận cả 3 vai trò: chạm cá nhân, giao dịch, broadcast. Kênh khác chỉ là fallback.
@@ -730,7 +742,7 @@
 
     <!-- 6 chương trình -->
     <h3 class="display-md" style="margin-top:56px; margin-bottom:24px;">6 chương trình giữ chân &amp; win-back</h3>
-    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+    <div class="resp-grid-3">
       <div style="padding:24px; background:var(--canvas-parchment); border-radius:var(--rounded-lg);">
         <div style="font-size:20px; margin-bottom:10px;">&#128142;</div>
         <h4 style="font-size:15px; font-weight:600; margin-bottom:6px;">Nhắc điểm sắp hết hạn</h4>
@@ -904,7 +916,7 @@
     <!-- Cách nhận diện -->
     <div style="margin-top:48px; padding:28px 32px; background:var(--surface-tile-2); border-radius:var(--rounded-lg); border:1px solid rgba(255,255,255,0.08);">
       <h4 class="body-strong" style="color:var(--on-dark); margin-bottom:16px;">6 cách nhận diện lý do rời đi</h4>
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+      <div class="resp-grid-3">
         <div style="font-size:14px; color:var(--body-muted); line-height:1.6;">
           <strong style="color:var(--on-dark);">Khảo sát sau dịch vụ</strong><br>
           App gửi 3&ndash;5 câu ngay sau buổi. Nguồn dữ liệu sớm nhất.
@@ -1011,9 +1023,9 @@
         <h4>Lễ tân</h4>
         <div class="dept-card__role">Điểm chạm 1, 2, 4</div>
         <ul class="dept-card__kpis">
-          <li><span>Xác nhận lịch &lt; 15 phút</span><span>&ge; 95%</span></li>
           <li><span>Khăn ấm + nước &lt; 2 phút</span><span>&ge; 90%</span></li>
-          <li><span>Nhắc lịch có tên KTV</span><span>100%</span></li>
+          <li><span>Thời gian chờ sau check-in</span><span>&le; 30 phút</span></li>
+          <li><span>Nhắc lịch có hướng dẫn dặn dò</span><span>100%</span></li>
           <li><span>Khách hủy / no-show</span><span>&le; 10%</span></li>
         </ul>
       </div>
@@ -1082,7 +1094,7 @@
     <!-- Lưu ý thưởng -->
     <div style="margin-top:32px; padding:24px 28px; background:var(--surface-tile-2); border-radius:var(--rounded-lg); border:1px solid rgba(255,255,255,0.08);">
       <h4 class="body-strong" style="color:var(--on-dark); margin-bottom:12px;">Lưu ý khi gắn KPI vào thưởng</h4>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; font-size:14px; color:var(--body-muted); line-height:1.6;">
+      <div class="resp-grid-2" style="font-size:14px; color:var(--body-muted); line-height:1.6;">
         <div><strong style="color:var(--on-dark);">KPI giữ chân = KPI nhóm</strong> &mdash; retention là kết quả phối hợp cả chi nhánh, không một mình ai.</div>
         <div><strong style="color:var(--on-dark);">Đo baseline trước, đặt mục tiêu sau</strong> &mdash; chạy 1 tháng lấy số thật rồi mới chốt ngưỡng.</div>
         <div><strong style="color:var(--on-dark);">Đừng thưởng KPI dễ gian</strong> &mdash; ưu tiên KPI từ data hệ thống hơn KPI tự khai.</div>
@@ -1105,14 +1117,14 @@
 
     <!-- Highlight card -->
     <a href="rnd-unit-strategy.html" style="text-decoration:none; display:block;">
-      <div style="background:var(--canvas); border:2px solid var(--primary); border-radius:var(--rounded-lg); padding:40px; position:relative; overflow:hidden; transition:transform .2s;">
-        <div style="display:flex; gap:32px; align-items:flex-start;">
+      <div style="background:var(--canvas); border:2px solid var(--primary); border-radius:var(--rounded-lg); padding:clamp(20px,4vw,40px); position:relative; overflow:hidden; transition:transform .2s;">
+        <div class="resp-flex-row">
           <div style="flex:1;">
             <div style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(--primary); margin-bottom:12px;">Strategic Document</div>
             <h3 style="font-family:'SF Pro Display',system-ui,sans-serif; font-size:28px; font-weight:600; line-height:1.14; color:var(--ink); margin-bottom:12px;">Từ Call-Driven sang Lifecycle-Driven</h3>
             <p style="font-size:17px; color:var(--ink-muted-80); line-height:1.6; margin-bottom:20px;">Mục tiêu 12 tháng: đảo ngược tỷ trọng booking từ <strong style="color:var(--ink);">"70% phụ thuộc Ads"</strong> thành <strong style="color:var(--ink);">"70% từ tệp hiện hữu"</strong> &mdash; với App là trung tâm điều phối.</p>
 
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+            <div class="resp-grid-4">
               <div>
                 <div style="font-size:13px; font-weight:600; color:var(--primary); margin-bottom:4px;">Lifecycle Core</div>
                 <div style="font-size:13px; color:var(--ink-muted-48);">6 trạng thái khách, auto-tag, automation</div>
@@ -1140,7 +1152,7 @@
     </a>
 
     <!-- 5 loại booking -->
-    <div style="margin-top:32px; display:grid; grid-template-columns:repeat(5,1fr); gap:12px;">
+    <div class="resp-grid-5" style="margin-top:32px;">
       <div style="padding:20px; background:var(--canvas); border-radius:var(--rounded-lg); border:1px solid var(--hairline); text-align:center;">
         <div style="font-size:24px; font-weight:700; color:var(--primary); margin-bottom:4px;">B1</div>
         <div style="font-size:13px; font-weight:600; margin-bottom:4px;">First Booking</div>
@@ -1185,7 +1197,7 @@
       <p class="lead">Mỗi file đi sâu vào một khía cạnh cụ thể &mdash; click để xem</p>
     </div>
 
-    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px;">
+    <div class="resp-grid-2">
       <a href="rnd-unit-strategy.html" style="text-decoration:none;">
         <div style="padding:24px; background:var(--surface-tile-2); border:1px solid rgba(255,255,255,0.08); border-radius:var(--rounded-lg); border-left:4px solid var(--primary-on-dark); transition:transform .2s;">
           <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(--primary-on-dark); margin-bottom:6px;">Chiến lược</div>
@@ -1242,6 +1254,20 @@
           <p style="font-size:14px; color:var(--body-muted); line-height:1.5;">6 bộ phận, mỗi KPI gắn tag NPS/Retention/Tay nghề. Lưu ý gắn KPI vào thưởng.</p>
         </div>
       </a>
+      <a href="guideline-tan-suat-diem-cham.html" style="text-decoration:none;">
+        <div style="padding:24px; background:var(--surface-tile-2); border:1px solid rgba(255,255,255,0.08); border-radius:var(--rounded-lg); border-left:4px solid #00c7be; transition:transform .2s;">
+          <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:#00c7be; margin-bottom:6px;">CRM Config</div>
+          <h4 style="font-size:17px; font-weight:600; color:var(--on-dark); margin-bottom:6px;">Tần Suất Điểm Chạm</h4>
+          <p style="font-size:14px; color:var(--body-muted); line-height:1.5;">Guideline tần suất &amp; kênh chạm CRM. Trong liệu trình, sau liệu trình 0&ndash;12+ tháng. 5 quy tắc vàng, frequency cap.</p>
+        </div>
+      </a>
+      <a href="playbook-survey-personas.html" style="text-decoration:none;">
+        <div style="padding:24px; background:var(--surface-tile-2); border:1px solid rgba(255,255,255,0.08); border-radius:var(--rounded-lg); border-left:4px solid #ff6482; transition:transform .2s;">
+          <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:#ff6482; margin-bottom:6px;">Playbook</div>
+          <h4 style="font-size:17px; font-weight:600; color:var(--on-dark); margin-bottom:6px;">Survey &amp; Personas</h4>
+          <p style="font-size:14px; color:var(--body-muted); line-height:1.5;">6 personas, 7 loại survey, Customer Health Score, ma trận hành động Persona &times; CHS, CRM automation rules.</p>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -1251,7 +1277,7 @@
   <div class="footer__inner">
     <span class="footer__version">v1.0</span>
     <p>TheAdvance &mdash; Hành Trình Khách Hàng &mdash; Tổng hợp toàn hệ thống<br>
-    Tài liệu nội bộ. Bao gồm nội dung từ: SOP 5 Điểm Chạm &middot; Guideline 0&ndash;6 tháng &middot; Guideline 6&ndash;12 tháng &middot; Lý Do Rời Đi &amp; Win-back &middot; Framework Đo Lường &middot; KPI Bộ Phận.</p>
+    Tài liệu nội bộ. Bao gồm nội dung từ: SOP 5 Điểm Chạm &middot; Guideline 0&ndash;6 tháng &middot; Guideline 6&ndash;12 tháng &middot; Lý Do Rời Đi &amp; Win-back &middot; Framework Đo Lường &middot; KPI Bộ Phận &middot; Tần Suất Điểm Chạm CRM &middot; Survey &amp; Personas.</p>
   </div>
 </footer>
 
