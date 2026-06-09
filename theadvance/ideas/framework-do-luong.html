@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework Đo Lường Chất Lượng — ND Beauty</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+    background: #ffffff;
+  }
+
+  /* ── Full-bleed tiles ── */
+  .tile {
+    width: 100%;
+    padding: 80px 20px;
+  }
+  .tile-white  { background: #ffffff; color: #1d1d1f; }
+  .tile-parchment { background: #f5f5f7; color: #1d1d1f; }
+  .tile-dark   { background: #272729; color: #ffffff; }
+  .tile-dark-2 { background: #2a2a2c; color: #ffffff; }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* ── Hero (header) tile ── */
+  .hero-tile {
+    background: #ffffff;
+    padding: 80px 20px 72px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: #7a7a7a;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .hero-h1 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: clamp(34px, 6vw, 56px);
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+  }
+  .hero-sub {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #7a7a7a;
+    max-width: 560px;
+    margin: 0 auto 28px;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .tag {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    color: #7a7a7a;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 9999px;
+    padding: 6px 14px;
+  }
+
+  /* ── Principle tile (dark) ── */
+  .principle-tile {
+    background: #272729;
+    padding: 80px 20px;
+  }
+  .principle-inner {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .tile-label {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a7a7a;
+    margin-bottom: 16px;
+  }
+  .principle-tile .tile-label { color: #cccccc; }
+  .tile-h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #ffffff;
+    margin-bottom: 24px;
+  }
+  .principle-body {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #cccccc;
+    margin-bottom: 16px;
+  }
+  .principle-body:last-child { margin-bottom: 0; }
+  .principle-hl {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* ── Pillar sections (light tiles) ── */
+  .pillar-tile {
+    padding: 80px 20px;
+  }
+  .pillar-tile.alt { background: #f5f5f7; }
+  .pillar-tile.wht { background: #ffffff; }
+
+  .pillar-num {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0066cc;
+    margin-bottom: 12px;
+  }
+  .pillar-h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #1d1d1f;
+    margin-bottom: 12px;
+  }
+  .pillar-desc {
+    font-size: 17px;
+    color: #7a7a7a;
+    max-width: 600px;
+    margin-bottom: 48px;
+  }
+
+  /* Cards inside pillars */
+  .card-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .pillar-tile.alt .card {
+    background: #ffffff;
+  }
+  .pillar-tile.wht .card {
+    background: #f5f5f7;
+    border-color: #e0e0e0;
+  }
+
+  .card-label {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a7a7a;
+    margin-bottom: 12px;
+  }
+  .card-body {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+  }
+  .card-body p { margin-bottom: 8px; }
+  .card-body p:last-child { margin-bottom: 0; }
+
+  /* NPS segments */
+  .seg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .seg-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    background: #ffffff;
+  }
+  .pillar-tile.wht .seg-item { background: #fafafa; }
+  .seg-name {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    margin-bottom: 4px;
+  }
+  .seg-range {
+    font-size: 12px;
+    color: #7a7a7a;
+    letter-spacing: -0.12px;
+    line-height: 1.4;
+  }
+  .seg-det .seg-name { color: #c0392b; }
+  .seg-pas .seg-name { color: #7a6a3a; }
+  .seg-pro .seg-name { color: #2e6b3e; }
+
+  /* Formula blocks */
+  .formula-block {
+    background: #f5f5f7;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 15px;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .pillar-tile.alt .formula-block { background: #ebebed; }
+  .formula-block:last-child { margin-bottom: 0; }
+  .formula-name {
+    font-weight: 600;
+    color: #1d1d1f;
+  }
+  .formula-op {
+    color: #0066cc;
+    font-weight: 600;
+    padding: 0 3px;
+  }
+  .formula-note {
+    color: #7a7a7a;
+    font-size: 13px;
+  }
+
+  /* Target rows */
+  .target-list { margin-top: 12px; }
+  .target-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .target-row:first-child { border-top: 1px solid #e0e0e0; }
+  .target-label {
+    font-size: 15px;
+    color: #1d1d1f;
+  }
+  .target-value {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    white-space: nowrap;
+    color: #1d1d1f;
+  }
+  .target-value.good { color: #2e6b3e; }
+  .target-note {
+    font-size: 12px;
+    color: #7a7a7a;
+    margin-top: 10px;
+    letter-spacing: -0.12px;
+  }
+
+  /* Action items */
+  .action-list { display: grid; gap: 8px; margin-top: 4px; }
+  .action-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    background: #f5f5f7;
+    border-radius: 8px;
+  }
+  .pillar-tile.alt .action-item { background: #ebebed; }
+  .action-dot {
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-top: 7px;
+  }
+  .action-dot.red   { background: #c0392b; }
+  .action-dot.amber { background: #b07d1e; }
+  .action-dot.green { background: #2e6b3e; }
+  .action-text {
+    font-size: 15px;
+    color: #1d1d1f;
+    line-height: 1.5;
+  }
+  .action-text strong { font-weight: 600; color: #1d1d1f; }
+
+  /* Score table */
+  .score-table { margin-top: 4px; }
+  .score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 11px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .score-row:first-child { border-top: 1px solid #e0e0e0; }
+  .score-item {
+    font-size: 14px;
+    color: #1d1d1f;
+    flex: 1;
+    letter-spacing: -0.224px;
+  }
+  .score-pts {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #7a7a7a;
+    white-space: nowrap;
+  }
+  .score-footer {
+    margin-top: 14px;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #1d1d1f;
+    letter-spacing: -0.224px;
+    line-height: 1.5;
+  }
+  .pillar-tile.alt .score-footer { background: #ebebed; }
+  .score-footer strong { font-weight: 600; }
+
+  /* ── Cadence tile (parchment) ── */
+  .cadence-tile {
+    background: #f5f5f7;
+    padding: 80px 20px;
+  }
+  .cadence-h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+  }
+  .cadence-sub {
+    font-size: 17px;
+    color: #7a7a7a;
+    margin-bottom: 40px;
+  }
+  .cadence-list { display: grid; gap: 1px; }
+  .cadence-row {
+    display: flex;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #e0e0e0;
+    align-items: flex-start;
+  }
+  .cadence-row:first-child { border-top: 1px solid #e0e0e0; }
+  .cadence-freq {
+    flex: 0 0 100px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0066cc;
+    padding-top: 2px;
+  }
+  .cadence-what {
+    flex: 1;
+    font-size: 15px;
+    color: #1d1d1f;
+    line-height: 1.5;
+  }
+  .cadence-what strong { font-weight: 600; }
+  .cadence-who {
+    flex: 0 0 auto;
+    font-size: 12px;
+    color: #7a7a7a;
+    text-align: right;
+    padding-top: 2px;
+    letter-spacing: -0.12px;
+  }
+
+  /* ── Decision rules tile (dark) ── */
+  .decision-tile {
+    background: #272729;
+    padding: 80px 20px;
+  }
+  .decision-h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #ffffff;
+    margin-bottom: 40px;
+  }
+  .decision-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .decision-card {
+    border-radius: 18px;
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .decision-card.stop { background: #2a1f1f; border-color: rgba(192,57,43,0.3); }
+  .decision-card.go   { background: #1a2a1f; border-color: rgba(46,107,62,0.3); }
+  .decision-gate-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .decision-card.stop .decision-gate-label { color: #e74c3c; }
+  .decision-card.go   .decision-gate-label { color: #27ae60; }
+  .decision-body {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #cccccc;
+  }
+  .decision-body strong { color: #ffffff; font-weight: 600; }
+
+  /* ── Footer ── */
+  .footer-tile {
+    background: #f5f5f7;
+    padding: 48px 20px;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+  }
+  .footer-text {
+    font-size: 12px;
+    color: #7a7a7a;
+    letter-spacing: -0.12px;
+    line-height: 1.6;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero-h1 { font-size: 34px; }
+    .tile-h2, .pillar-h2, .cadence-h2, .decision-h2 { font-size: 28px; }
+    .seg-grid { grid-template-columns: 1fr; }
+    .cadence-row { flex-wrap: wrap; gap: 6px; }
+    .cadence-freq { flex-basis: 100%; }
+    .cadence-who  { flex-basis: 100%; text-align: left; }
+  }
+  @media (max-width: 480px) {
+    .tile, .hero-tile, .principle-tile, .pillar-tile, .cadence-tile, .decision-tile { padding: 48px 16px; }
+    .pillar-desc { margin-bottom: 32px; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .tile-dark, .principle-tile, .decision-tile { background: #f5f5f7 !important; color: #1d1d1f !important; }
+    .tile-h2, .principle-body, .decision-h2, .decision-body { color: #1d1d1f !important; }
+    .decision-card { background: #fafafa !important; border: 1px solid #e0e0e0 !important; }
+    .decision-gate-label { color: #1d1d1f !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav style="background:#000;height:44px;display:flex;align-items:center;justify-content:center;gap:20px;position:sticky;top:0;z-index:100;">
+  <a href="index.html" style="color:#fff;text-decoration:none;font-size:14px;font-weight:600;font-family:system-ui;letter-spacing:-0.224px;">TheAdvance</a>
+  <span style="color:#7a7a7a;font-size:12px;">|</span>
+  <span style="color:rgba(255,255,255,0.7);font-size:12px;font-family:system-ui;">Framework Đo Lường</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero-tile">
+  <div class="hero-eyebrow">TheAdvance · Hệ vận hành chất lượng — Phần 2</div>
+  <h1 class="hero-h1">Framework Đo Lường<br>Chất Lượng</h1>
+  <p class="hero-sub">Ba thước đo cốt lõi: khách có muốn giới thiệu không (NPS), khách có quay lại không (Retention), tay nghề có ổn định không (Chất lượng kỹ thuật).</p>
+  <div class="tag-row">
+    <span class="tag">Đi cùng: SOP 5 Điểm Chạm</span>
+    <span class="tag">Đối tượng: Quản lý CN · Vận hành · Ban lãnh đạo</span>
+    <span class="tag">Phiên bản 1.0</span>
+  </div>
+</header>
+
+<!-- PRINCIPLE — dark tile -->
+<section class="principle-tile">
+  <div class="principle-inner">
+    <div class="tile-label">Nguyên tắc</div>
+    <h2 class="tile-h2">Đo để ra quyết định</h2>
+    <p class="principle-body">Mỗi chỉ số dưới đây phải gắn với <span class="principle-hl">một hành động cụ thể</span> khi nó tốt hoặc xấu. Số liệu không dẫn tới hành động là số liệu vô dụng.</p>
+    <p class="principle-body">Ưu tiên chiến lược: <span class="principle-hl">sửa retention và trải nghiệm trước, mở rộng acquisition sau.</span> Nhóm khách lõi (~11% khách đi 10+ lần) tạo phần lớn doanh thu — giữ được họ rẻ và lãi hơn nhiều so với kéo khách mới rồi để họ thất vọng vì chất lượng chưa đều.</p>
+  </div>
+</section>
+
+<!-- PILLAR 1: NPS — white tile -->
+<section class="pillar-tile wht">
+  <div class="wrap">
+    <div class="pillar-num">Thước đo 01 — Mức độ hài lòng</div>
+    <h2 class="pillar-h2">NPS — Net Promoter Score</h2>
+    <p class="pillar-desc">Khách có sẵn lòng giới thiệu ND Beauty cho người khác không? Ngành thẩm mỹ chạy bằng niềm tin và truyền miệng.</p>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="card-label">Câu hỏi chuẩn</div>
+        <div class="card-body">
+          <p>"Trên thang 0–10, chị sẵn lòng giới thiệu ND Beauty cho bạn bè/người thân ở mức nào ạ?" — hỏi trong tin nhắn chăm sóc sau dịch vụ (Điểm chạm 5).</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Phân nhóm</div>
+        <div class="seg-grid">
+          <div class="seg-item seg-det">
+            <div class="seg-name">Detractor</div>
+            <div class="seg-range">0–6 · Khách không hài lòng, có thể nói xấu</div>
+          </div>
+          <div class="seg-item seg-pas">
+            <div class="seg-name">Passive</div>
+            <div class="seg-range">7–8 · Tạm hài lòng, dễ rời đi</div>
+          </div>
+          <div class="seg-item seg-pro">
+            <div class="seg-name">Promoter</div>
+            <div class="seg-range">9–10 · Trung thành, sẵn sàng giới thiệu</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Công thức</div>
+        <div class="formula-block">
+          <span class="formula-name">NPS</span> = % Promoter <span class="formula-op">−</span> % Detractor
+          <span class="formula-note">&nbsp;(thang điểm từ −100 đến +100)</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Mục tiêu khởi điểm</div>
+        <div class="target-list">
+          <div class="target-row">
+            <span class="target-label">Mức tối thiểu chấp nhận</span>
+            <span class="target-value">≥ +30</span>
+          </div>
+          <div class="target-row">
+            <span class="target-label">Mức tốt cho ngành dịch vụ cao cấp</span>
+            <span class="target-value good">≥ +50</span>
+          </div>
+          <div class="target-row">
+            <span class="target-label">Tỷ lệ thu thập phản hồi / lượt khách</span>
+            <span class="target-value">≥ 40%</span>
+          </div>
+        </div>
+        <p class="target-note">Đây là mốc khởi điểm tham khảo — chốt lại sau khi đo baseline 1 tháng đầu của hệ thống.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Hành động theo kết quả</div>
+        <div class="action-list">
+          <div class="action-item">
+            <span class="action-dot red"></span>
+            <span class="action-text"><strong>Mỗi Detractor</strong> → chuyển ngay quy trình xử lý sự cố, quản lý CN liên hệ trong 24h. Đây là cơ hội cứu khách, không phải con số để giấu.</span>
+          </div>
+          <div class="action-item">
+            <span class="action-dot amber"></span>
+            <span class="action-text"><strong>Passive</strong> → hỏi "cần thêm gì để lần sau chị cho 10 điểm?". Khai thác lý do chưa trung thành.</span>
+          </div>
+          <div class="action-item">
+            <span class="action-dot green"></span>
+            <span class="action-text"><strong>Promoter</strong> → mời để lại review/ảnh và đưa vào chương trình giới thiệu (referral). Đây là đại sứ rẻ nhất.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PILLAR 2: RETENTION — parchment tile -->
+<section class="pillar-tile alt">
+  <div class="wrap">
+    <div class="pillar-num">Thước đo 02 — Giữ chân</div>
+    <h2 class="pillar-h2">Retention — Tỷ lệ quay lại</h2>
+    <p class="pillar-desc">Chỉ số quan trọng nhất với mô hình hiện tại. Một khách quay lại đều giá trị hơn nhiều khách đến một lần.</p>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="card-label">Các chỉ số con</div>
+        <div class="formula-block">
+          <span class="formula-name">Tỷ lệ quay lại 60 ngày</span> = Số khách quay lại trong 60 ngày <span class="formula-op">÷</span> Tổng khách kỳ trước
+        </div>
+        <div class="formula-block">
+          <span class="formula-name">Tần suất ghé</span> = Tổng lượt ghé <span class="formula-op">÷</span> Số khách duy nhất (trong kỳ)
+        </div>
+        <div class="formula-block">
+          <span class="formula-name">Tỷ lệ rời bỏ (Churn)</span> = Khách không quay lại trong 90 ngày <span class="formula-op">÷</span> Tổng khách hoạt động
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Theo dõi theo nhóm (cohort) — quan trọng</div>
+        <div class="card-body">
+          <p>Không gộp chung tất cả khách. Tách riêng <strong>nhóm khách lõi (10+ lần)</strong> vì nhóm này tạo phần lớn doanh thu — churn của nhóm này là báo động đỏ, phải xử lý trước mọi thứ khác.</p>
+        </div>
+        <div class="target-list">
+          <div class="target-row">
+            <span class="target-label">Tỷ lệ quay lại 60 ngày (toàn bộ)</span>
+            <span class="target-value">≥ 35%</span>
+          </div>
+          <div class="target-row">
+            <span class="target-label">Tỷ lệ giữ chân nhóm khách lõi / quý</span>
+            <span class="target-value good">≥ 85%</span>
+          </div>
+          <div class="target-row">
+            <span class="target-label">Tỷ lệ chuyển khách mới → quay lại lần 2</span>
+            <span class="target-value">≥ 40%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Cách thu thập</div>
+        <div class="card-body">
+          <p>Từ dữ liệu đặt lịch / CRM — <strong>không cần khảo sát</strong>. Mỗi tháng xuất báo cáo theo từng chi nhánh và từng nhóm cohort. Đây là phần đo rẻ nhất và chính xác nhất.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Hành động theo kết quả</div>
+        <div class="action-list">
+          <div class="action-item">
+            <span class="action-dot red"></span>
+            <span class="action-text"><strong>Khách lõi không quay lại đúng chu kỳ</strong> → CSKH chủ động liên hệ tìm hiểu lý do trước khi mất hẳn.</span>
+          </div>
+          <div class="action-item">
+            <span class="action-dot amber"></span>
+            <span class="action-text"><strong>Lần 2 thấp</strong> → soi lại chất lượng Điểm chạm 5 (chăm sóc sau) và trải nghiệm lần đầu.</span>
+          </div>
+          <div class="action-item">
+            <span class="action-dot green"></span>
+            <span class="action-text"><strong>Retention chắc</strong> → đây là tín hiệu được phép mở rộng kênh khách mới (xem mục Quy tắc ra quyết định).</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PILLAR 3: CRAFTSMANSHIP — white tile -->
+<section class="pillar-tile wht">
+  <div class="wrap">
+    <div class="pillar-num">Thước đo 03 — Tay nghề</div>
+    <h2 class="pillar-h2">Chất lượng kỹ thuật</h2>
+    <p class="pillar-desc">Kết quả thật và độ ổn định giữa các KTV, các chi nhánh. Rủi ro lớn nhất khi có 16–30 cơ sở là tay nghề không đều.</p>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="card-label">4 nguồn dữ liệu</div>
+        <div class="card-body">
+          <p><strong>1. Tuân thủ SOP kỹ thuật</strong> — KTV ký xác nhận đủ bước mỗi liệu trình.</p>
+          <p><strong>2. Ảnh before/after chuẩn hóa</strong> — cùng góc, cùng ánh sáng, chấm điểm kết quả.</p>
+          <p><strong>3. Mystery shopper</strong> — chấm tỷ lệ phủ 5 điểm chạm và tay nghề.</p>
+          <p><strong>4. Tỷ lệ làm lại / khiếu nại kỹ thuật</strong> theo từng KTV.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Bảng chấm Mystery Shopper (100 điểm)</div>
+        <div class="score-table">
+          <div class="score-row">
+            <span class="score-item">Điểm chạm 1–2: đặt lịch nhanh, đón khách, khăn + nước &lt; 2 phút</span>
+            <span class="score-pts">20 đ</span>
+          </div>
+          <div class="score-row">
+            <span class="score-item">Điểm chạm 3: KTV đọc hồ sơ, báo tiến trình, không bỏ bước</span>
+            <span class="score-pts">25 đ</span>
+          </div>
+          <div class="score-row">
+            <span class="score-item">Tay nghề &amp; kết quả kỹ thuật (đánh giá chuyên môn)</span>
+            <span class="score-pts">25 đ</span>
+          </div>
+          <div class="score-row">
+            <span class="score-item">Điểm chạm 4–5: minh bạch giá, dặn dò văn bản, hỏi thăm sau</span>
+            <span class="score-pts">15 đ</span>
+          </div>
+          <div class="score-row">
+            <span class="score-item">Không gian: sạch, mùi hương, toilet, đồng phục, thái độ</span>
+            <span class="score-pts">15 đ</span>
+          </div>
+        </div>
+        <div class="score-footer">
+          <strong>≥ 85đ</strong> đạt chuẩn &nbsp;·&nbsp; <strong>70–84đ</strong> cần cải thiện, kèm đào tạo lại &nbsp;·&nbsp; <strong>&lt; 70đ</strong> rủi ro, xử lý ngay với quản lý CN.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Mục tiêu khởi điểm</div>
+        <div class="target-list">
+          <div class="target-row">
+            <span class="target-label">Tuân thủ SOP kỹ thuật</span>
+            <span class="target-value good">100%</span>
+          </div>
+          <div class="target-row">
+            <span class="target-label">Điểm mystery shopper trung bình / chi nhánh</span>
+            <span class="target-value">≥ 85đ</span>
+          </div>
+          <div class="target-row">
+            <span class="target-label">Tỷ lệ làm lại / khiếu nại kỹ thuật</span>
+            <span class="target-value">≤ 3%</span>
+          </div>
+          <div class="target-row">
+            <span class="target-label">Chênh điểm tay nghề giữa các chi nhánh</span>
+            <span class="target-value">≤ 10đ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Hành động theo kết quả</div>
+        <div class="action-list">
+          <div class="action-item">
+            <span class="action-dot red"></span>
+            <span class="action-text"><strong>KTV / chi nhánh dưới chuẩn</strong> → đào tạo lại tập trung, ghép kèm KTV giỏi, chấm lại sau 2 tuần.</span>
+          </div>
+          <div class="action-item">
+            <span class="action-dot amber"></span>
+            <span class="action-text"><strong>Chênh lệch giữa chi nhánh lớn</strong> → chuẩn hóa lại đào tạo lõi, không để mỗi nơi tự làm một kiểu.</span>
+          </div>
+          <div class="action-item">
+            <span class="action-dot green"></span>
+            <span class="action-text"><strong>Ảnh before/after đạt chuẩn</strong> → dùng làm tài sản marketing và bằng chứng kết quả thật.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CADENCE — parchment tile -->
+<section class="cadence-tile">
+  <div class="wrap">
+    <h2 class="cadence-h2">Lịch vận hành</h2>
+    <p class="cadence-sub">Đo lường chỉ sống nếu có nhịp cố định và người chịu trách nhiệm rõ ràng.</p>
+    <div class="cadence-list">
+      <div class="cadence-row">
+        <div class="cadence-freq">Hằng ngày</div>
+        <div class="cadence-what">Theo dõi <strong>Detractor mới</strong> và khiếu nại → xử lý trong 24h.</div>
+        <div class="cadence-who">Quản lý CN</div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-freq">Hằng tuần</div>
+        <div class="cadence-what">Rà <strong>khách lõi sắp tới chu kỳ</strong> chưa đặt lịch → CSKH chủ động liên hệ.</div>
+        <div class="cadence-who">CSKH</div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-freq">Hằng tháng</div>
+        <div class="cadence-what">Báo cáo <strong>NPS + Retention + điểm tay nghề</strong> theo từng chi nhánh, so mục tiêu.</div>
+        <div class="cadence-who">Vận hành</div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-freq">Hằng tháng</div>
+        <div class="cadence-what">Tối thiểu <strong>1 lượt mystery shopper</strong> / chi nhánh.</div>
+        <div class="cadence-who">Vận hành</div>
+      </div>
+      <div class="cadence-row">
+        <div class="cadence-freq">Hằng quý</div>
+        <div class="cadence-what">Đánh giá <strong>cohort khách lõi</strong> và quyết định mở rộng / siết kênh acquisition.</div>
+        <div class="cadence-who">Ban lãnh đạo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISION RULES — dark tile -->
+<section class="decision-tile">
+  <div class="wrap">
+    <h2 class="decision-h2">Quy tắc ra quyết định mở rộng</h2>
+    <div class="decision-grid">
+      <div class="decision-card stop">
+        <div class="decision-gate-label">Chưa được tăng ngân sách khách mới khi</div>
+        <p class="decision-body">Retention nhóm khách lõi <strong>dưới mục tiêu</strong>, hoặc NPS <strong>&lt; +30</strong>, hoặc điểm tay nghề chênh giữa chi nhánh <strong>&gt; 10đ</strong>. Đổ tiền vào ads lúc này chỉ làm <strong>nhiều người thất vọng nhanh hơn</strong> — đốt tiền vô ích.</p>
+      </div>
+      <div class="decision-card go">
+        <div class="decision-gate-label">Được phép mở rộng acquisition khi</div>
+        <p class="decision-body">Cả 3 thước đo đạt mục tiêu và <strong>ổn định ≥ 2 tháng liên tiếp</strong>. Lúc này mỗi khách mới ở lại lâu hơn, chi phí thu hút mới sinh lời thật sự.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-tile">
+  <p class="footer-text">ND Beauty · Framework Đo Lường Chất Lượng v1.0 — Tài liệu nội bộ.<br>Đi cùng bộ SOP 5 Điểm Chạm.</p>
+</footer>
+
+</body>
+</html>

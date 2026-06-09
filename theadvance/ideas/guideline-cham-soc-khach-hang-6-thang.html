@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guideline Chăm Sóc Khách Hàng — Vòng Đời 6 Tháng</title>
+<style>
+  :root {
+    --primary: #0066cc;
+    --primary-focus: #0071e3;
+    --primary-on-dark: #2997ff;
+    --ink: #1d1d1f;
+    --ink-muted-80: #333333;
+    --ink-muted-48: #7a7a7a;
+    --body-muted: #cccccc;
+    --canvas: #ffffff;
+    --canvas-parchment: #f5f5f7;
+    --surface-tile-1: #272729;
+    --surface-tile-2: #2a2a2c;
+    --surface-tile-3: #252527;
+    --surface-black: #000000;
+    --on-primary: #ffffff;
+    --on-dark: #ffffff;
+    --hairline: #e0e0e0;
+    --divider-soft: #f0f0f0;
+    --rounded-sm: 8px;
+    --rounded-md: 11px;
+    --rounded-lg: 18px;
+    --rounded-pill: 9999px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+  body {
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px;
+    color: var(--ink); background: var(--canvas);
+  }
+
+  /* === Typography === */
+  .hero-display {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 56px; font-weight: 600; line-height: 1.07; letter-spacing: -0.28px;
+  }
+  .display-lg {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px; font-weight: 600; line-height: 1.1; letter-spacing: 0;
+  }
+  .lead {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 28px; font-weight: 400; line-height: 1.14; letter-spacing: 0.196px;
+  }
+  .lead-airy {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 24px; font-weight: 300; line-height: 1.5; letter-spacing: 0;
+  }
+  .tagline {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 21px; font-weight: 600; line-height: 1.19; letter-spacing: 0.231px;
+  }
+  .body-strong { font-weight: 600; line-height: 1.24; }
+  .caption { font-size: 14px; font-weight: 400; line-height: 1.43; letter-spacing: -0.224px; }
+  .fine-print { font-size: 12px; font-weight: 400; line-height: 1.4; letter-spacing: -0.12px; color: var(--ink-muted-48); }
+
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* === Global Nav — left-aligned === */
+  .global-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface-black);
+    height: 48px; display: flex; align-items: center;
+    font-size: 13px; font-weight: 400; letter-spacing: -0.08px; color: var(--on-dark);
+  }
+  .global-nav__inner {
+    max-width: 1080px; width: 100%; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; gap: 32px;
+  }
+  .global-nav__brand {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-weight: 600; font-size: 15px; letter-spacing: 0;
+    margin-right: 8px; white-space: nowrap;
+  }
+  .global-nav__links { display: flex; gap: 24px; }
+  .global-nav__links a { color: var(--body-muted); transition: color .2s; white-space: nowrap; }
+  .global-nav__links a:hover { color: var(--on-dark); text-decoration: none; }
+
+  /* === Hero === */
+  .hero {
+    background: var(--surface-black); color: var(--on-dark);
+    text-align: center; padding: 120px 24px 100px;
+  }
+  .hero .hero-display { max-width: 780px; margin: 0 auto 20px; }
+  .hero .lead-airy { max-width: 680px; margin: 0 auto; color: var(--body-muted); }
+
+  /* === Sections === */
+  .section { padding: 80px 24px; }
+  .section__inner { max-width: 980px; margin: 0 auto; }
+  .section--parchment { background: var(--canvas-parchment); }
+  .section--dark { background: var(--surface-tile-1); color: var(--on-dark); }
+  .section--dark-2 { background: var(--surface-tile-2); color: var(--on-dark); }
+  .section--dark-3 { background: var(--surface-tile-3); color: var(--on-dark); }
+
+  .section__header { text-align: center; margin-bottom: 48px; }
+  .section__header .display-lg { margin-bottom: 12px; }
+  .section__header .lead { color: var(--ink-muted-80); }
+  .section--dark .section__header .lead,
+  .section--dark-2 .section__header .lead,
+  .section--dark-3 .section__header .lead { color: var(--body-muted); }
+
+  .section__number {
+    display: inline-block; font-size: 14px; font-weight: 600;
+    color: var(--primary); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .section--dark .section__number,
+  .section--dark-2 .section__number,
+  .section--dark-3 .section__number { color: var(--primary-on-dark); }
+
+  /* === Principles Grid === */
+  .principles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 32px; }
+  .principle-card {
+    background: var(--canvas); border: 1px solid var(--hairline);
+    border-radius: var(--rounded-lg); padding: 32px;
+  }
+  .principle-card__number {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; background: var(--primary); color: var(--on-primary);
+    border-radius: var(--rounded-pill); font-size: 14px; font-weight: 600; margin-bottom: 16px;
+  }
+  .principle-card h3 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 21px; font-weight: 600; line-height: 1.19; margin-bottom: 12px;
+  }
+  .principle-card p { color: var(--ink-muted-80); line-height: 1.58; }
+
+  /* === Channel Table === */
+  .channel-table { width: 100%; border-collapse: collapse; margin-top: 32px; font-size: 15px; }
+  .channel-table th, .channel-table td { padding: 16px 20px; text-align: left; border-bottom: 1px solid var(--hairline); }
+  .channel-table th {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--ink-muted-48); background: var(--canvas-parchment);
+  }
+  .channel-table td { vertical-align: top; }
+  .channel-table tr:last-child td { border-bottom: none; }
+  .section--dark .channel-table th { background: var(--surface-tile-2); color: var(--body-muted); border-color: rgba(255,255,255,0.08); }
+  .section--dark .channel-table td { border-color: rgba(255,255,255,0.08); }
+
+  /* === Timeline === */
+  .timeline { margin-top: 48px; }
+  .timeline-item { display: flex; gap: 32px; position: relative; padding-bottom: 48px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: 23px; top: 48px; bottom: 0;
+    width: 2px; background: var(--hairline);
+  }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-dot {
+    flex-shrink: 0; width: 48px; height: 48px; border-radius: var(--rounded-pill);
+    background: var(--primary); color: var(--on-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 600; position: relative; z-index: 1;
+  }
+  .timeline-content { flex: 1; }
+  .timeline-content h3 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 28px; font-weight: 600; line-height: 1.14; margin-bottom: 4px;
+  }
+  .timeline-meta { font-size: 14px; color: var(--ink-muted-48); margin-bottom: 12px; }
+  .timeline-content p { color: var(--ink-muted-80); margin-bottom: 8px; }
+  .timeline-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .tag {
+    display: inline-block; padding: 4px 12px; border-radius: var(--rounded-pill);
+    font-size: 12px; font-weight: 600; letter-spacing: -0.12px;
+  }
+  .tag--goal { background: rgba(0,102,204,0.1); color: var(--primary); }
+  .tag--risk { background: rgba(255,59,48,0.1); color: #ff3b30; }
+
+  /* === Phase Detail === */
+  .phase-detail {
+    background: var(--canvas); border: 1px solid var(--hairline);
+    border-radius: var(--rounded-lg); padding: 40px; margin-bottom: 24px;
+  }
+  .section--dark .phase-detail { background: var(--surface-tile-2); border-color: rgba(255,255,255,0.08); }
+  .phase-detail__badge {
+    display: inline-block; padding: 4px 14px; border-radius: var(--rounded-pill);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .phase-detail__badge--critical { background: #ff3b30; color: #fff; }
+  .phase-detail__badge--warning { background: #ff9500; color: #fff; }
+  .phase-detail__badge--info { background: var(--primary); color: var(--on-primary); }
+  .phase-detail h3 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 28px; font-weight: 600; line-height: 1.14; margin-bottom: 20px;
+  }
+  .phase-detail p { color: var(--ink-muted-80); margin-bottom: 16px; }
+  .section--dark .phase-detail p { color: var(--body-muted); }
+  .phase-detail .mini-table { margin-top: 16px; }
+  .phase-detail .mini-table th { background: var(--canvas-parchment); }
+  .section--dark .phase-detail .mini-table th { background: var(--surface-tile-3); }
+
+  .phase-detail__note {
+    margin-top: 20px; padding: 16px 20px; background: var(--canvas-parchment);
+    border-radius: var(--rounded-sm); font-size: 15px; color: var(--ink-muted-80);
+  }
+  .phase-detail__note strong { color: var(--ink); }
+  .section--dark .phase-detail__note { background: var(--surface-tile-3); color: var(--body-muted); }
+  .section--dark .phase-detail__note strong { color: var(--on-dark); }
+  .section--dark-3 .phase-detail__note { background: var(--surface-tile-2); color: var(--body-muted); }
+  .section--dark-3 .phase-detail__note strong { color: var(--on-dark); }
+
+  /* === Touchpoint Summary === */
+  .touchpoint-table { border-radius: var(--rounded-lg); overflow: hidden; border: 1px solid var(--hairline); }
+  .touchpoint-table .channel-table { margin-top: 0; }
+  .touchpoint-table .channel-table th:first-child,
+  .touchpoint-table .channel-table td:first-child { font-weight: 600; }
+
+  /* === VIP === */
+  .vip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
+  .vip-card {
+    background: var(--canvas); border: 1px solid var(--hairline);
+    border-radius: var(--rounded-lg); padding: 32px; position: relative; overflow: hidden;
+  }
+  .section--dark .vip-card { background: var(--surface-tile-2); border-color: rgba(255,255,255,0.08); }
+  .vip-card__tier {
+    display: inline-block; padding: 4px 14px; border-radius: var(--rounded-pill);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.3px; margin-bottom: 16px;
+  }
+  .vip-card__tier--2 { background: rgba(0,102,204,0.1); color: var(--primary); }
+  .vip-card__tier--3 { background: rgba(175,82,222,0.12); color: #af52de; }
+  .vip-card__tier--4 { background: rgba(255,149,0,0.12); color: #ff9500; }
+  .section--dark .vip-card__tier--2 { background: rgba(41,151,255,0.15); color: var(--primary-on-dark); }
+  .section--dark .vip-card__tier--3 { background: rgba(175,130,222,0.2); color: #bf7ff0; }
+  .section--dark .vip-card__tier--4 { background: rgba(255,159,10,0.2); color: #ffb340; }
+  .vip-card h4 { font-size: 21px; font-weight: 600; margin-bottom: 12px; }
+  .vip-card p { font-size: 15px; color: var(--ink-muted-80); line-height: 1.5; }
+  .section--dark .vip-card p { color: var(--body-muted); }
+  .vip-card ul { list-style: none; margin-top: 16px; }
+  .vip-card ul li {
+    padding: 8px 0; border-top: 1px solid var(--divider-soft);
+    font-size: 15px; display: flex; align-items: baseline; gap: 8px;
+  }
+  .section--dark .vip-card ul li { border-color: rgba(255,255,255,0.06); }
+  .vip-card ul li::before {
+    content: ''; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 6px;
+  }
+
+  /* === VIP Principles === */
+  .vip-principles { margin-top: 48px; }
+  .vip-principle {
+    display: flex; gap: 24px; align-items: flex-start;
+    padding: 24px 0; border-bottom: 1px solid var(--hairline);
+  }
+  .vip-principle:last-child { border-bottom: none; }
+  .section--dark .vip-principle { border-color: rgba(255,255,255,0.08); }
+  .vip-principle__letter {
+    flex-shrink: 0; width: 40px; height: 40px; border-radius: var(--rounded-pill);
+    background: var(--primary); color: var(--on-primary);
+    display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600;
+  }
+  .vip-principle__content h4 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .vip-principle__content p { font-size: 15px; color: var(--ink-muted-80); }
+  .section--dark .vip-principle__content p { color: var(--body-muted); }
+
+  /* === Rules === */
+  .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
+  .rule-card {
+    background: var(--canvas); border: 1px solid var(--hairline);
+    border-radius: var(--rounded-lg); padding: 32px;
+  }
+  .rule-card__label {
+    width: 40px; height: 40px; border-radius: var(--rounded-sm);
+    background: #ff3b30; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 600; margin-bottom: 16px;
+  }
+  .rule-card h4 { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .rule-card p { font-size: 15px; color: var(--ink-muted-80); line-height: 1.5; }
+
+  /* === Prerequisites === */
+  .prereq-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 32px; }
+  .prereq-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 24px; background: var(--surface-tile-2); border-radius: var(--rounded-lg);
+  }
+  .prereq-item__num {
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: var(--rounded-pill);
+    background: var(--primary-on-dark); color: var(--surface-black);
+    display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;
+  }
+  .prereq-item p { font-size: 15px; color: var(--body-muted); }
+  .prereq-item strong { color: var(--on-dark); }
+
+  /* === Footer === */
+  .footer {
+    background: var(--canvas-parchment); padding: 64px 24px; text-align: center;
+  }
+  .footer__inner { max-width: 980px; margin: 0 auto; }
+  .footer p { font-size: 12px; color: var(--ink-muted-48); line-height: 1.6; }
+  .footer__version {
+    display: inline-block; padding: 4px 12px; background: var(--canvas);
+    border-radius: var(--rounded-pill); font-size: 12px; font-weight: 600;
+    color: var(--ink-muted-48); margin-bottom: 12px;
+  }
+
+  /* === Responsive === */
+  @media (max-width: 833px) {
+    .hero-display { font-size: 40px !important; }
+    .display-lg { font-size: 34px !important; }
+    .lead { font-size: 24px !important; }
+    .lead-airy { font-size: 21px !important; }
+    .principles-grid, .vip-grid, .rules-grid, .prereq-list { grid-template-columns: 1fr; }
+    .hero { padding: 80px 24px 64px; }
+    .section { padding: 48px 24px; }
+    .global-nav__links { display: none; }
+    .timeline-item { gap: 20px; }
+    .timeline-content h3 { font-size: 21px; }
+  }
+  @media (max-width: 640px) {
+    .hero-display { font-size: 34px !important; }
+    .display-lg { font-size: 28px !important; }
+    .channel-table { font-size: 14px; }
+    .channel-table th, .channel-table td { padding: 12px 14px; }
+    .phase-detail { padding: 24px; }
+    .principle-card { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav — left-aligned, single bar -->
+<nav class="global-nav">
+  <div class="global-nav__inner">
+    <a href="index.html" class="global-nav__brand" style="text-decoration:none; color:inherit;">TheAdvance</a>
+    <div class="global-nav__links">
+      <a href="#triet-ly">Nguyên tắc</a>
+      <a href="#kenh">Mô hình kênh</a>
+      <a href="#vong-doi">Vòng đời</a>
+      <a href="#chi-tiet">Giai đoạn</a>
+      <a href="#vip">VIP</a>
+      <a href="#quy-tac">Quy tắc</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1 class="hero-display">Guideline Chăm Sóc<br>Khách Hàng</h1>
+  <p class="lead-airy">Vòng đời 6 tháng &mdash; Mô hình App-first: Mobile App là kênh trung tâm cho mọi loại tương tác.</p>
+</section>
+
+<!-- 1. Nguyên tắc nền tảng -->
+<section id="triet-ly" class="section section--parchment">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 1</span>
+      <h2 class="display-lg">Nguyên tắc nền tảng</h2>
+      <p class="lead">Bốn nguyên tắc định hướng toàn bộ hoạt động chăm sóc khách hàng</p>
+    </div>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <div class="principle-card__number">1</div>
+        <h3>App là trung tâm</h3>
+        <p>App đảm nhận cả ba vai trò: chạm cá nhân (chat, voice, video), giao dịch (nhắc lịch, xác nhận, tra cứu), và broadcast (thông báo, nội dung). Các kênh khác chỉ kích hoạt khi app không chạm tới được.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-card__number">2</div>
+        <h3>Tách hai trục: Dịch vụ vs. Marketing</h3>
+        <p>Chạm "dịch vụ" đi theo nhịp sinh học của liệu trình. Chạm "marketing" phục vụ mục tiêu của shop. Không gộp hai trục vào cùng một thông báo.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-card__number">3</div>
+        <h3>Đúng cửa sổ thời gian</h3>
+        <p>Phần lớn khách rời bỏ xảy ra trong 90 ngày đầu và ngay sau khi hoàn tất liệu trình. Mục tiêu là chạm đúng lúc khách còn quan tâm.</p>
+      </div>
+      <div class="principle-card">
+        <div class="principle-card__number">4</div>
+        <h3>Mọi touchpoint = cơ hội kéo lên app</h3>
+        <p>Mỗi lần chạm qua kênh fallback nên kèm một nhịp nhẹ đẩy khách về app. Đây là vòng lặp di cư kênh, không phải bước phụ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Mô hình kênh -->
+<section id="kenh" class="section section--dark">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 2</span>
+      <h2 class="display-lg">Mô hình kênh</h2>
+      <p class="lead">App là hub, phần còn lại là fallback</p>
+    </div>
+
+    <div class="touchpoint-table">
+      <table class="channel-table">
+        <thead>
+          <tr>
+            <th>Vai trò</th>
+            <th>Kênh chính (App)</th>
+            <th>Fallback bậc 1</th>
+            <th>Fallback bậc 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Chạm cá nhân</strong><br><span class="caption" style="color:var(--body-muted)">Chăm sóc, tư vấn, xử lý lo lắng</span></td>
+            <td>App chat / Voice / Video</td>
+            <td>Zalo cá nhân</td>
+            <td>Telesale (PSTN)</td>
+          </tr>
+          <tr>
+            <td><strong>Giao dịch</strong><br><span class="caption" style="color:var(--body-muted)">Nhắc lịch, xác nhận, tra cứu</span></td>
+            <td>App push + Chat</td>
+            <td>Zalo OA</td>
+            <td>SMS / Telesale</td>
+          </tr>
+          <tr>
+            <td><strong>Broadcast</strong><br><span class="caption" style="color:var(--body-muted)">Thông tin, giáo dục, chương trình</span></td>
+            <td>App notification / feed</td>
+            <td>Zalo OA</td>
+            <td>&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 32px;">
+      <div class="phase-detail">
+        <h4 class="body-strong" style="margin-bottom:12px;">Hai điều chỉnh quan trọng</h4>
+        <p><strong style="color:var(--on-dark)">Zalo cá nhân &amp; Telesale gộp chung trần tần suất</strong> &mdash; cùng là "chạm cá nhân chủ động", chỉ khác giọng nói vs chữ. Tính riêng sẽ khiến chúng cộng dồn mà đội vận hành không nhận ra.</p>
+        <p><strong style="color:var(--on-dark)">Telesale (PSTN) là kênh leo thang</strong> &mdash; không dùng cho chăm sóc thường ngày. Chỉ rút ra khi cần sức nặng của giọng nói và app voice không chạm tới được.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Bản đồ vòng đời -->
+<section id="vong-doi" class="section">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 3</span>
+      <h2 class="display-lg">Bản đồ vòng đời 6 tháng</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">0</div>
+        <div class="timeline-content">
+          <h3>Lead</h3>
+          <div class="timeline-meta">Trước khi chốt</div>
+          <p>Chốt lịch buổi đầu &mdash; booking ngay tại kênh tiếp cận hoặc chuyển telesale chốt</p>
+          <div class="timeline-tags">
+            <span class="tag tag--goal">Chốt lịch buổi đầu</span>
+            <span class="tag tag--risk">Mất khách vì phản hồi chậm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <div class="timeline-content">
+          <h3>Onboarding</h3>
+          <div class="timeline-meta">Ngày 0&ndash;30</div>
+          <p>Giữ khách + hình thành thói quen mở app</p>
+          <div class="timeline-tags">
+            <span class="tag tag--goal">Thói quen mở app</span>
+            <span class="tag tag--risk">Kỳ vọng lệch; chưa cài app</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-content">
+          <h3>Trong liệu trình</h3>
+          <div class="timeline-meta">Tháng 1&ndash;3</div>
+          <p>Duy trì nhịp điều trị đều qua app</p>
+          <div class="timeline-tags">
+            <span class="tag tag--goal">Nhịp điều trị đều</span>
+            <span class="tag tag--risk">Bỏ buổi, ngắt quãng</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-content">
+          <h3>Sau liệu trình</h3>
+          <div class="timeline-meta">Tháng 3&ndash;5</div>
+          <p>Kéo về chu kỳ tiếp theo</p>
+          <div class="timeline-tags">
+            <span class="tag tag--goal">Chu kỳ tiếp theo</span>
+            <span class="tag tag--risk">Hết lý do quay lại</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot">4</div>
+        <div class="timeline-content">
+          <h3>At-risk / Loyal</h3>
+          <div class="timeline-meta">Tháng 4&ndash;6</div>
+          <p>Win-back hoặc gắn kết dài hạn</p>
+          <div class="timeline-tags">
+            <span class="tag tag--goal">Gắn kết dài hạn</span>
+            <span class="tag tag--risk">Im lặng &rarr; rơi rụng</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Chi tiết từng giai đoạn -->
+<section id="chi-tiet" class="section section--dark">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 4</span>
+      <h2 class="display-lg">Hướng dẫn chi tiết theo giai đoạn</h2>
+    </div>
+
+    <!-- GĐ 0 -->
+    <div class="phase-detail">
+      <span class="phase-detail__badge phase-detail__badge--info">Giai đoạn 0</span>
+      <h3>Lead &mdash; Trước khi chốt</h3>
+      <p>Tốc độ phản hồi quyết định tỷ lệ chốt nhiều hơn nội dung. Giai đoạn này <strong style="color:var(--on-dark)">chưa cần cài app</strong> &mdash; tập trung 100% vào chốt lịch.</p>
+      <ul style="margin-top:12px; padding-left:20px; color:var(--body-muted); line-height:2;">
+        <li>Phản hồi trong <strong style="color:var(--on-dark)">dưới 5 phút</strong>. Lead đến từ kênh nào thì phản hồi ngay kênh đó.</li>
+        <li><strong style="color:var(--on-dark)">Booking ngay tại kênh tiếp cận</strong> (Zalo, Facebook, website&hellip;) hoặc chuyển lead cho telesale chốt lịch.</li>
+        <li>Tối đa <strong style="color:var(--on-dark)">2&ndash;3 lần nhắc</strong> trong 5&ndash;7 ngày nếu chưa đặt lịch, rồi dừng.</li>
+      </ul>
+      <div class="phase-detail__note">
+        <strong>Lưu ý:</strong> Không yêu cầu cài app ở giai đoạn này. Việc cài app chỉ diễn ra khi khách đến chi nhánh check-in buổi đầu tiên &mdash; do nhân viên lễ tân hướng dẫn trực tiếp.
+      </div>
+    </div>
+
+    <!-- GĐ 1 -->
+    <div class="phase-detail">
+      <span class="phase-detail__badge phase-detail__badge--critical">Cửa sổ sống còn</span>
+      <h3>Onboarding &mdash; Ngày 0&ndash;30</h3>
+      <p>Giai đoạn quyết định khách ở lại hay không, và quyết định khách có thật sự lên app hay không.</p>
+
+      <table class="channel-table mini-table" style="margin-top:20px;">
+        <thead>
+          <tr><th>Mốc</th><th>Việc cần làm</th><th>Kênh chính</th><th>Fallback</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Khi check-in buổi đầu</td>
+            <td>Lễ tân hướng dẫn cài app, tạo tài khoản, bật thông báo, giới thiệu tính năng cơ bản</td>
+            <td>Trực tiếp tại chi nhánh</td>
+            <td>&mdash;</td>
+          </tr>
+          <tr>
+            <td>Ngay sau buổi đầu</td>
+            <td>Xác nhận hồ sơ + lịch buổi tiếp; nhắc mở app xem tiến độ</td>
+            <td>App push</td>
+            <td>Zalo OA</td>
+          </tr>
+          <tr>
+            <td>Trong 24h</td>
+            <td>Dặn dò aftercare + "có gì bất thường nhắn em ngay"</td>
+            <td>App chat</td>
+            <td>Zalo cá nhân</td>
+          </tr>
+          <tr>
+            <td>Ngày 3&ndash;7</td>
+            <td>Hỏi thăm kết quả, xử lý lo lắng sớm</td>
+            <td>App chat / Voice</td>
+            <td>Zalo cá nhân</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="phase-detail__note">
+        <strong>Mục tiêu ẩn:</strong> Khách cài app và bật thông báo ngay tại chi nhánh trong buổi đầu tiên &mdash; đây là thời điểm vàng vì lễ tân hỗ trợ trực tiếp. Nếu buổi đầu chưa cài được, đội CSKH chủ động hỗ trợ trong 7 ngày đầu. Marketing ở giai đoạn này: <strong>gần như bằng 0.</strong>
+      </div>
+    </div>
+
+    <!-- GĐ 2 -->
+    <div class="phase-detail">
+      <span class="phase-detail__badge phase-detail__badge--info">Giai đoạn 2</span>
+      <h3>Trong liệu trình &mdash; Tháng 1&ndash;3</h3>
+      <p>Giữ nhịp điều trị đều. Nhịp tương tác bám theo chu kỳ buổi, không theo lịch chung.</p>
+      <ul style="margin-top:12px; padding-left:20px; color:var(--body-muted); line-height:2;">
+        <li><strong style="color:var(--on-dark)">Nhắc buổi tiếp:</strong> App push là chính &rarr; fallback Zalo OA. Nhắc trước 2&ndash;3 ngày &rarr; xác nhận trước 1 ngày.</li>
+        <li><strong style="color:var(--on-dark)">Nhắc đúng lúc:</strong> đặt vào thời điểm hiệu quả buổi trước bắt đầu giảm.</li>
+        <li><strong style="color:var(--on-dark)">Tin chăm sóc giữa buổi:</strong> App chat, thưa. Việc cần giải thích kỹ &rarr; App voice/video.</li>
+        <li><strong style="color:var(--on-dark)">Marketing:</strong> tối đa 1 lần/tháng, qua App notification / Zalo OA.</li>
+      </ul>
+      <div class="phase-detail__note">
+        <strong>Tránh:</strong> nhắc lịch trùng lặp đồng thời trên App, OA và Zalo cá nhân.
+      </div>
+    </div>
+
+    <!-- GĐ 3 -->
+    <div class="phase-detail">
+      <span class="phase-detail__badge phase-detail__badge--warning">Điểm dễ mất nhất</span>
+      <h3>Sau liệu trình &mdash; Tháng 3&ndash;5</h3>
+      <p>Nơi khách rơi rụng nhiều nhất: xong gói, hết lý do quay lại, không ai chủ động kéo về.</p>
+      <ul style="margin-top:12px; padding-left:20px; color:var(--body-muted); line-height:2;">
+        <li><strong style="color:var(--on-dark)">Nhắc tái điều trị</strong> đúng cửa sổ hết hiệu quả tự nhiên của từng dịch vụ. App chat / App voice &rarr; fallback Zalo cá nhân &rarr; Telesale.</li>
+        <li><strong style="color:var(--on-dark)">Nội dung duy trì kết quả / giáo dục</strong> giữa hai chu kỳ: App notification / Zalo OA.</li>
+        <li>Một nhịp <strong style="color:var(--on-dark)">"check-in giá trị" không bán hàng</strong> giữa hai chu kỳ để giữ kết nối.</li>
+      </ul>
+      <div class="phase-detail__note">
+        <strong>Lưu ý:</strong> cửa sổ tái điều trị phải dựa trên khoảng tái khám trung bình thực tế theo từng loại dịch vụ.
+      </div>
+    </div>
+
+    <!-- GĐ 4 -->
+    <div class="phase-detail">
+      <span class="phase-detail__badge phase-detail__badge--critical">Giai đoạn 4</span>
+      <h3>At-risk &amp; Loyal &mdash; Tháng 4&ndash;6</h3>
+
+      <h4 class="body-strong" style="margin:16px 0 8px; color:var(--on-dark);">Nhánh At-risk</h4>
+      <p>Khách im lặng vượt khoảng tái khám bình thường ~1.5 lần. Trigger win-back có cá nhân hoá: ưu tiên App voice call. Nếu khách không nhận hoặc đã gỡ app &rarr; leo thang sang Telesale PSTN.</p>
+
+      <h4 class="body-strong" style="margin:16px 0 8px; color:var(--on-dark);">Nhánh Loyal</h4>
+      <p>Chăm sóc theo chu kỳ tái điều trị qua App chat, thưa. Marketing 1&ndash;2 lần/tháng qua App notification / Zalo OA.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. Bảng tổng hợp touchpoint -->
+<section id="touchpoint" class="section section--parchment">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 5</span>
+      <h2 class="display-lg">Tổng hợp touchpoint &amp; tần suất</h2>
+    </div>
+    <div class="touchpoint-table">
+      <table class="channel-table">
+        <thead>
+          <tr>
+            <th>Touchpoint</th>
+            <th>Kênh chính</th>
+            <th>Fallback</th>
+            <th>Tần suất</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lead chưa chốt</td>
+            <td>Kênh lead đến / Telesale</td>
+            <td>&mdash;</td>
+            <td>2&ndash;3 lần / 5&ndash;7 ngày rồi dừng</td>
+          </tr>
+          <tr>
+            <td>Cài app (buổi đầu tại chi nhánh)</td>
+            <td>Lễ tân hướng dẫn trực tiếp</td>
+            <td>CSKH hỗ trợ qua Zalo/điện thoại</td>
+            <td>1 (tại chi nhánh)</td>
+          </tr>
+          <tr>
+            <td>Xác nhận hồ sơ/lịch buổi đầu</td>
+            <td>App push</td>
+            <td>Zalo OA</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Aftercare 24h</td>
+            <td>App chat</td>
+            <td>Zalo cá nhân</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Check-in ngày 3&ndash;7</td>
+            <td>App chat / App voice</td>
+            <td>Zalo cá nhân</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Nhắc / xác nhận lịch</td>
+            <td>App push</td>
+            <td>Zalo OA</td>
+            <td>Theo buổi</td>
+          </tr>
+          <tr>
+            <td>Nhắc tái điều trị</td>
+            <td>App chat / App voice</td>
+            <td>Zalo cá nhân &rarr; Telesale</td>
+            <td>Theo chu kỳ dịch vụ</td>
+          </tr>
+          <tr>
+            <td>Nội dung giáo dục</td>
+            <td>App notification</td>
+            <td>Zalo OA</td>
+            <td>&le; 1&ndash;2 lần/tháng</td>
+          </tr>
+          <tr>
+            <td>Win-back at-risk</td>
+            <td>App voice call</td>
+            <td>Telesale PSTN</td>
+            <td>Trigger theo hành vi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Module VIP -->
+<section id="vip" class="section section--dark">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 6</span>
+      <h2 class="display-lg">Module VIP</h2>
+      <p class="lead">Chăm sóc đặc biệt qua App &mdash; nhóm 2&ndash;3&ndash;4</p>
+    </div>
+
+    <p style="text-align:center; max-width:700px; margin:0 auto 48px; color:var(--body-muted);">
+      Với tệp VIP, App-first không thay thế con người &mdash; nó đặt một chuyên gia có tên vào kênh mình sở hữu, ngay cạnh lịch sử liệu trình của khách. Khách VIP muốn <em>con người</em>; app chỉ là đường ống.
+    </p>
+
+    <!-- Phân tầng -->
+    <div class="vip-grid">
+      <div class="vip-card">
+        <span class="vip-card__tier vip-card__tier--2">VIP 2</span>
+        <h4>Chuyên gia theo pod</h4>
+        <p>Chia sẻ chuyên gia trong pod</p>
+        <ul>
+          <li>Chat ưu tiên</li>
+          <li>Voice/video theo hẹn</li>
+          <li>SLA chat: nhanh</li>
+          <li>Proactive theo chu kỳ</li>
+        </ul>
+      </div>
+      <div class="vip-card">
+        <span class="vip-card__tier vip-card__tier--3">VIP 3</span>
+        <h4>Chuyên gia chỉ định</h4>
+        <p>Một chuyên gia được chỉ định riêng</p>
+        <ul>
+          <li>Chat + voice/video theo hẹn</li>
+          <li>SLA chat: nhanh hơn</li>
+          <li>Chủ động đúng cửa sổ</li>
+          <li>Cá nhân hoá trung bình</li>
+        </ul>
+      </div>
+      <div class="vip-card">
+        <span class="vip-card__tier vip-card__tier--4">VIP 4</span>
+        <h4>Quản lý chăm sóc riêng</h4>
+        <p>Quản lý cá nhân với ưu tiên cao nhất</p>
+        <ul>
+          <li>Chat/voice/video ưu tiên cao</li>
+          <li>Gọi tương đối tự do</li>
+          <li>SLA chat: nhanh nhất</li>
+          <li>Chủ động cao, cá nhân hoá sâu</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5 Nguyên tắc -->
+    <div class="vip-principles">
+      <h3 class="tagline" style="margin-bottom:24px;">5 nguyên tắc nền</h3>
+
+      <div class="vip-principle">
+        <div class="vip-principle__letter">a</div>
+        <div class="vip-principle__content">
+          <h4>Bỏ lời hứa "luôn có". Thay bằng SLA + pod phủ thay.</h4>
+          <p>Một người không thể 24/7. Hứa always-on mà gãy một lần, VIP cảm nhận đặc quyền bị phá. Thay bằng cam kết thời gian phản hồi rõ ràng và mỗi chuyên gia có một backup biết hồ sơ khách.</p>
+        </div>
+      </div>
+
+      <div class="vip-principle">
+        <div class="vip-principle__letter">b</div>
+        <div class="vip-principle__content">
+          <h4>Quan hệ thuộc THƯƠNG HIỆU, không thuộc cá nhân.</h4>
+          <p>Mọi note/lịch sử nằm trên app dùng chung; quản lý shadow vài VIP đầu bảng; có quy trình bàn giao khi đổi người. Đừng để quan hệ sống trong đầu một nhân viên.</p>
+        </div>
+      </div>
+
+      <div class="vip-principle">
+        <div class="vip-principle__letter">c</div>
+        <div class="vip-principle__content">
+          <h4>Ba tầng phải khác nhau thật, không cào bằng.</h4>
+          <p>Nếu cả 2&ndash;3&ndash;4 cùng "chuyên gia riêng, gọi bất cứ lúc nào" thì phân tầng vô nghĩa và đang over-serve tầng thấp.</p>
+        </div>
+      </div>
+
+      <div class="vip-principle">
+        <div class="vip-principle__letter">d</div>
+        <div class="vip-principle__content">
+          <h4>Voice/video "gọi bất cứ lúc nào" không scale.</h4>
+          <p>Tách rõ: chat luôn mở (async, có SLA) &mdash; voice/video theo hẹn cho việc cần nhìn/giải thích &mdash; gọi tức thì chỉ cho việc gấp.</p>
+        </div>
+      </div>
+
+      <div class="vip-principle">
+        <div class="vip-principle__letter">e</div>
+        <div class="vip-principle__content">
+          <h4>Capacity ratio quyết định mô hình sống hay chết.</h4>
+          <p>Phải có tỷ lệ bao nhiêu VIP/một chuyên gia bền vững, khác nhau theo tầng. Không có con số này, "chăm sóc đặc biệt" chỉ là khẩu hiệu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Quy tắc chống lạm dụng -->
+<section id="quy-tac" class="section">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 7</span>
+      <h2 class="display-lg">Quy tắc chống lạm dụng</h2>
+      <p class="lead">3 quy tắc bắt buộc</p>
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-card__label">A</div>
+        <h4>Trần tần suất theo VAI TRÒ</h4>
+        <p>Chạm cá nhân chủ động (App chat/voice/video + Zalo cá nhân + Telesale gộp chung): <strong>&le; 1 chạm/tuần</strong>. Promo thuần tuý: <strong>&le; 1&ndash;2 lần/tháng</strong>. Push giao dịch không tính vào hai trần trên.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__label">B</div>
+        <h4>Một touchpoint = một kênh</h4>
+        <p>Mỗi sự kiện chọn đúng một kênh chính. Chỉ leo thang sang fallback khi kênh chính không được đọc/không kết nối sau X giờ. Không gửi cùng nội dung lên App + OA + Zalo "cho chắc".</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card__label">C</div>
+        <h4>Xin phép trước khi gọi</h4>
+        <p>Cuộc gọi chủ động (kể cả trong app) thân mật hơn chat nhiều. Báo trước bằng chat "em gọi mình qua app nhé?" rồi mới gọi. Gọi video chỉ khi có lý do rõ.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Điều kiện tiên quyết -->
+<section class="section section--dark-3">
+  <div class="section__inner">
+    <div class="section__header">
+      <span class="section__number">Mục 8</span>
+      <h2 class="display-lg">Điều kiện tiên quyết</h2>
+      <p class="lead">Mô hình App-first chỉ phát huy khi có bốn mảnh ghép</p>
+    </div>
+
+    <div class="prereq-list">
+      <div class="prereq-item">
+        <div class="prereq-item__num">1</div>
+        <p><strong>Tỷ lệ cài app + bật thông báo</strong> theo từng nhóm khách &mdash; biến số sống còn của toàn bộ mô hình. Cần đo và đặt mục tiêu.</p>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-item__num">2</div>
+        <p><strong>Khoảng tái khám trung bình</strong> theo từng loại dịch vụ &mdash; để xác định cửa sổ trigger nhắc tái điều trị.</p>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-item__num">3</div>
+        <p><strong>Độ tin cậy của app voice/video call</strong> (tỷ lệ kết nối khi gọi chủ động) &mdash; để biết khi nào có thể giảm phụ thuộc Telesale PSTN.</p>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-item__num">4</div>
+        <p><strong>Capacity ratio cho tệp VIP</strong> (số VIP/chuyên gia theo từng tầng) &mdash; để mô hình chăm sóc đặc biệt không vỡ khi scale.</p>
+      </div>
+    </div>
+
+    <div class="phase-detail__note" style="margin-top:32px; background:var(--surface-tile-2); border-radius:var(--rounded-sm); padding:20px 24px;">
+      <strong>Lưu ý:</strong> Thiếu mảnh 1, App-first sẽ âm thầm bỏ sót một phần khách mà đội không nhận ra. Đây là chỉ số cần theo dõi đầu tiên trước khi mở rộng mô hình.
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__version">v2.1</div>
+    <p>Guideline Chăm Sóc Khách Hàng &mdash; Vòng Đời 6 Tháng</p>
+    <p style="margin-top:8px;">App-first + Module VIP. Tài liệu vận hành nội bộ.</p>
+    <p style="margin-top:16px; color:var(--ink-muted-48);">TheAdvance &copy; 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hệ thống AI vận hành — Tổng quan (v2)</title>
+<style>
+  :root{
+    --ink:#1d1d1f;--gray:#86868b;--gray2:#a1a1a6;--line:#d2d2d7;
+    --bg:#fff;--bg-soft:#f5f5f7;--blue:#0071e3;--blue2:#2997ff;--maxw:1020px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.4;
+  }
+  .deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+  .deck::-webkit-scrollbar{display:none}
+  section{min-height:100vh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:7vh 6vw;position:relative;overflow:hidden}
+  .inner{max-width:var(--maxw);width:100%;margin:0 auto;position:relative;z-index:2}
+
+  /* ---- cinematic dark ---- */
+  .dark{background:#050507;color:#f5f5f7}
+  .cinematic::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(60% 50% at 18% 22%, rgba(41,151,255,.28), transparent 60%),
+      radial-gradient(55% 45% at 85% 30%, rgba(140,82,255,.22), transparent 60%),
+      radial-gradient(70% 60% at 60% 100%, rgba(0,113,227,.20), transparent 65%);
+    filter:saturate(1.1);animation:float 18s ease-in-out infinite alternate;
+  }
+  .cinematic::after{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  @keyframes float{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(0,-18px,0) scale(1.05)}}
+  .soft{background:var(--bg-soft)}
+
+  .eyebrow{font-size:clamp(13px,1.4vw,17px);font-weight:600;color:var(--blue);margin-bottom:18px}
+  .dark .eyebrow{color:var(--blue2)}
+  h1{font-size:clamp(42px,7vw,96px);font-weight:700;letter-spacing:-.025em;line-height:1.03}
+  h2{font-size:clamp(30px,4.6vw,58px);font-weight:700;letter-spacing:-.02em;line-height:1.08;margin-bottom:8px}
+  h3{font-size:clamp(19px,2.1vw,27px);font-weight:600;letter-spacing:-.01em}
+  .lead{font-size:clamp(18px,2.1vw,27px);font-weight:400;color:var(--gray);margin-top:22px;max-width:780px;line-height:1.45}
+  .dark .lead{color:#c7c7cc}
+  .caption{margin-top:38px;font-size:15px;color:var(--gray2);font-weight:500}
+  .badge{display:inline-block;font-size:13px;font-weight:600;color:var(--blue);border:1px solid currentColor;border-radius:980px;padding:4px 14px;margin-bottom:20px}
+  .dark .badge{color:var(--blue2)}
+  .note{margin-top:26px;font-size:13px;color:var(--gray2);font-style:italic}
+
+  .grid{display:grid;gap:22px;margin-top:44px;width:100%}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px 26px;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+  .dark .card{background:rgba(28,28,32,.6);border-color:#2a2a2d;backdrop-filter:blur(12px)}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 50px rgba(0,0,0,.08)}
+  .dark .card:hover{box-shadow:0 18px 50px rgba(0,0,0,.5)}
+  .card .k{font-size:13px;font-weight:600;color:var(--blue);letter-spacing:.01em}
+  .dark .card .k{color:var(--blue2)}
+  .card h3{margin:10px 0 8px}
+  .card p{font-size:16px;color:var(--gray);line-height:1.5}
+  .dark .card p{color:#a1a1a6}
+
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;margin-top:50px;width:100%}
+  .kpi .num{font-size:clamp(40px,6.5vw,86px);font-weight:700;letter-spacing:-.03em;line-height:1;background:linear-gradient(180deg,#fff,#9bbcff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .kpi .lab{margin-top:12px;font-size:15px;color:#c7c7cc;font-weight:500;line-height:1.35}
+  @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+
+  /* request journey */
+  .journey{display:flex;flex-direction:column;gap:14px;margin-top:42px;width:100%}
+  .step{display:flex;align-items:center;gap:22px;border:1px solid var(--line);border-radius:18px;padding:20px 24px;background:#fff;transition:transform .4s}
+  .step:hover{transform:translateX(6px)}
+  .step .n{flex:none;width:42px;height:42px;border-radius:50%;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px}
+  .step.hl .n{background:var(--blue)}
+  .step .body h3{font-size:19px;margin-bottom:3px}
+  .step .body p{font-size:15px;color:var(--gray);line-height:1.45}
+  .step .tag{margin-left:auto;flex:none;font-size:12px;font-weight:600;color:var(--gray);border:1px solid var(--line);border-radius:980px;padding:5px 13px}
+  .jarrow{text-align:center;color:var(--gray2);font-size:18px;margin:-6px 0}
+
+  /* arch layers */
+  .arch{display:flex;flex-direction:column;gap:14px;margin-top:42px;width:100%}
+  .layer{border:1px solid var(--line);border-radius:18px;padding:18px 22px;background:#fff;display:flex;align-items:center;gap:20px}
+  .layer .label{min-width:140px;font-size:14px;font-weight:600;color:var(--gray)}
+  .layer .nodes{display:flex;gap:12px;flex-wrap:wrap;flex:1}
+  .node{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:10px 18px;font-size:15px;font-weight:600}
+  .node.accent{background:#000;color:#fff;border-color:#000}
+  .node.blue{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .flowarrow{text-align:center;color:var(--gray2);font-size:18px;margin:-4px 0}
+
+  ul.feat{margin-top:32px;list-style:none;display:grid;gap:16px}
+  ul.feat li{font-size:clamp(17px,2vw,22px);display:flex;gap:14px;align-items:flex-start;color:var(--ink)}
+  ul.feat li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue);margin-top:11px;flex:none}
+  .dark ul.feat li{color:#f5f5f7}
+  .stack{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+  .pill{border:1px solid var(--line);border-radius:980px;padding:8px 18px;font-size:14px;font-weight:600;background:#fff}
+  .dark .pill{background:rgba(28,28,32,.6);border-color:#2a2a2d;color:#f5f5f7;backdrop-filter:blur(12px)}
+
+  .dots{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:12px}
+  .dots a{width:9px;height:9px;border-radius:50%;background:rgba(120,120,128,.35);display:block;transition:all .3s}
+  .dots a.active{background:var(--ink);transform:scale(1.35)}
+  .dark-active .dots a{background:rgba(255,255,255,.3)}
+  .dark-active .dots a.active{background:#fff}
+  .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue2));z-index:60;width:0;transition:width .25s}
+  .pager{position:fixed;left:0;right:0;bottom:22px;text-align:center;z-index:40;font-size:13px;color:var(--gray2);font-weight:500;pointer-events:none}
+  .dark-active .pager{color:#86868b}
+
+  @media(max-width:760px){.g2,.g3,.g4{grid-template-columns:1fr}.layer{flex-direction:column;align-items:flex-start}.dots{display:none}.step{flex-wrap:wrap}.step .tag{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<nav class="dots" id="dots"></nav>
+<div class="pager" id="pager"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 HERO -->
+  <section class="dark cinematic" data-title="Mở đầu">
+    <div class="inner">
+      <div class="eyebrow">Trình bày nội bộ · 2026</div>
+      <h1>Hệ thống AI<br>vận hành.</h1>
+      <p class="lead">Tổng quan kiến trúc, hạ tầng và năng lực AI đang phục vụ tập đoàn hôm nay — và giá trị nó tạo ra.</p>
+      <div class="caption">Dùng phím ↑ ↓ hoặc cuộn để xem từng phần</div>
+    </div>
+  </section>
+
+  <!-- 2 KPI -->
+  <section class="dark cinematic" data-title="Hệ thống bằng con số">
+    <div class="inner">
+      <div class="eyebrow">Hệ thống bằng con số</div>
+      <h2>Một nền tảng đang chạy thật.</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="num">5</div><div class="lab">Mô hình AI<br>tự host</div></div>
+        <div class="kpi"><div class="num">3</div><div class="lab">Nền tảng<br>vận hành</div></div>
+        <div class="kpi"><div class="num">1</div><div class="lab">Server H200<br>tập trung</div></div>
+        <div class="kpi"><div class="num">0đ</div><div class="lab">Chi phí gọi<br>API ngoài</div></div>
+        <div class="kpi"><div class="num">9</div><div class="lab">Module mới<br>đang xây</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 VALUE -->
+  <section class="soft" data-title="Giá trị mang lại">
+    <div class="inner">
+      <div class="eyebrow">Vì sao điều này quan trọng</div>
+      <h2>Giá trị mang lại cho tập đoàn.</h2>
+      <p class="lead">Không chỉ là công nghệ — đây là bốn lợi ích kinh doanh trực tiếp.</p>
+      <div class="grid g4">
+        <div class="card"><div class="k">Tự chủ & bảo mật</div><h3>Dữ liệu không ra ngoài</h3><p>Toàn bộ mô hình tự host trên server riêng — tài liệu, hội thoại, dữ liệu khách hàng không gửi cho bên thứ ba.</p></div>
+        <div class="card"><div class="k">Chi phí</div><h3>Cắt phí API ngoài</h3><p>Không trả tiền theo từng lượt gọi OpenAI/Claude; dùng chung một GPU cho mọi sản phẩm — chi phí biên gần như bằng 0.</p></div>
+        <div class="card"><div class="k">Hiệu quả</div><h3>Tái dùng & nhất quán</h3><p>Một cổng AIGateway dùng chung — không lặp code, kiểm soát chi phí & bảo mật tập trung cho mọi app.</p></div>
+        <div class="card"><div class="k">Tốc độ</div><h3>Triển khai nhanh</h3><p>Dify cho phép dựng app AI cho từng nghiệp vụ bằng giao diện trực quan — ra sản phẩm tính bằng ngày, không phải tháng.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 ARCHITECTURE -->
+  <section data-title="Kiến trúc tổng thể">
+    <div class="inner">
+      <div class="eyebrow">Bức tranh tổng thể</div>
+      <h2>Bốn thành phần, một nền tảng.</h2>
+      <div class="arch">
+        <div class="layer"><div class="label">Người dùng</div><div class="nodes"><span class="node">Nhân viên</span><span class="node">Khách hàng</span><span class="node">App sản phẩm</span></div></div>
+        <div class="flowarrow">↓</div>
+        <div class="layer"><div class="label">Lớp ứng dụng</div><div class="nodes"><span class="node">OpenWebUI</span><span class="node">Dify</span></div></div>
+        <div class="flowarrow">↓</div>
+        <div class="layer"><div class="label">Cổng tập trung</div><div class="nodes"><span class="node blue">AIGateway — cổng AI duy nhất</span></div></div>
+        <div class="flowarrow">↓</div>
+        <div class="layer"><div class="label">Hạ tầng AI</div><div class="nodes"><span class="node accent">Server H200 · LLM / Embedding / Rerank / STT</span><span class="node">RagFlow · Kho tri thức (Vector DB)</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 REQUEST JOURNEY -->
+  <section class="soft" data-title="Hành trình 1 yêu cầu">
+    <div class="inner">
+      <div class="eyebrow">Hệ thống hoạt động thế nào</div>
+      <h2>Hành trình một yêu cầu thật.</h2>
+      <p class="lead">Ví dụ: khách hàng nhắn chatbot CSKH TMV Ngọc Dung để đặt lịch hẹn.</p>
+      <div class="journey">
+        <div class="step"><div class="n">1</div><div class="body"><h3>Khách hàng nhắn tin</h3><p>Hỏi dịch vụ / muốn đặt lịch qua chatbot Ngọc Dung.</p></div><span class="tag">Người dùng</span></div>
+        <div class="jarrow">↓</div>
+        <div class="step"><div class="n">2</div><div class="body"><h3>Dify điều phối</h3><p>Chatflow CSKH nhận câu hỏi, xác định ý định (tư vấn / đặt lịch / khiếu nại).</p></div><span class="tag">Dify</span></div>
+        <div class="jarrow">↓</div>
+        <div class="step hl"><div class="n">3</div><div class="body"><h3>Qua AIGateway</h3><p>Xác thực, phân quyền, định tuyến tới đúng mô hình — ghi nhận chi phí & log tập trung.</p></div><span class="tag">AIGateway</span></div>
+        <div class="jarrow">↓</div>
+        <div class="step"><div class="n">4</div><div class="body"><h3>Qwen + RagFlow xử lý</h3><p>LLM suy luận câu trả lời, tra cứu chính sách & dịch vụ từ kho tri thức RagFlow.</p></div><span class="tag">H200</span></div>
+        <div class="jarrow">↓</div>
+        <div class="step"><div class="n">5</div><div class="body"><h3>Trả lời & đặt lịch</h3><p>Phản hồi khách hàng, tạo lịch hẹn — toàn bộ trong vài giây, không cần nhân viên.</p></div><span class="tag">Kết quả</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 INFRA -->
+  <section class="dark cinematic" data-title="Hạ tầng & mô hình">
+    <div class="inner">
+      <div class="eyebrow">Hạ tầng</div>
+      <h2>Một server H200,<br>tất cả mô hình tự host.</h2>
+      <p class="lead">Toàn bộ mô hình AI chạy nội bộ trên một server NVIDIA H200 — dữ liệu không ra ngoài, chi phí gọi API về 0.</p>
+      <div class="grid g2">
+        <div class="card"><div class="k">LLM chính</div><h3>Qwen3.5-35B-A3B</h3><p>Mô hình ngôn ngữ lớn dạng MoE — bộ não xử lý hội thoại & suy luận.</p></div>
+        <div class="card"><div class="k">LLM context dài</div><h3>Qwen2.5-7B-Instruct-1M</h3><p>Cửa sổ ngữ cảnh tới 1 triệu token — đọc tài liệu rất dài trong một lần.</p></div>
+        <div class="card"><div class="k">Tìm kiếm</div><h3>bge-reranker-v2-m3</h3><p>Rerank — chấm lại và sắp xếp kết quả truy hồi cho chính xác hơn.</p></div>
+        <div class="card"><div class="k">Vector hóa</div><h3>Vietnamese_Embedding_v2</h3><p>Embedding tiếng Việt — chuyển văn bản thành vector để tìm kiếm ngữ nghĩa.</p></div>
+        <div class="card"><div class="k">Giọng nói</div><h3>faster-whisper</h3><p>Speech-to-text — chuyển giọng nói thành văn bản, tối ưu tốc độ.</p></div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:center"><div class="k">Nguyên tắc</div><h3>Self-hosted toàn bộ</h3><p>Chủ động dữ liệu, bảo mật nội bộ, không phụ thuộc nhà cung cấp ngoài.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 RAGFLOW -->
+  <section data-title="RagFlow">
+    <div class="inner">
+      <div class="badge">Kho tri thức</div>
+      <h2>RagFlow</h2>
+      <p class="lead">Nơi lưu trữ và xử lý toàn bộ tài liệu nội bộ dưới dạng cơ sở dữ liệu vector (Vector DB).</p>
+      <ul class="feat">
+        <li>Nạp tài liệu đa định dạng — Word, Excel, PDF, Markdown: quy định, chính sách, hướng dẫn của công ty.</li>
+        <li>Xử lý → vector hóa (embedding) → lưu trữ để truy hồi theo ngữ nghĩa.</li>
+        <li>Là nguồn tri thức để các chatbot trả lời "đúng theo tài liệu công ty".</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 8 DIFY -->
+  <section class="soft" data-title="Dify">
+    <div class="inner">
+      <div class="badge">Xây & vận hành ứng dụng AI</div>
+      <h2>Dify</h2>
+      <p class="lead">Giao diện trực quan để dựng workflow / chatflow đặc thù cho từng nghiệp vụ, tích hợp mô hình AI và quản lý hội thoại.</p>
+      <div class="grid g4" style="margin-top:38px">
+        <div class="card"><h3>Theo nghiệp vụ</h3><p>HR, CSKH, Sales, Marketing… mỗi phòng ban một luồng riêng.</p></div>
+        <div class="card"><h3>Ví dụ đang chạy</h3><p>Chatbot CSKH TMV Ngọc Dung: tư vấn dịch vụ, đặt lịch hẹn, xử lý khiếu nại.</p></div>
+        <div class="card"><h3>Tích hợp</h3><p>Kết nối mô hình AI + dữ liệu RagFlow, quản lý phiên hội thoại.</p></div>
+        <div class="card"><h3>Lộ trình</h3><p>Các nghiệp vụ khác sẽ được triển khai trong thời gian tới.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 OPENWEBUI -->
+  <section data-title="OpenWebUI">
+    <div class="inner">
+      <div class="badge">Giao diện chat nội bộ</div>
+      <h2>OpenWebUI</h2>
+      <p class="lead">Cổng chat cho nhân viên toàn tập đoàn — hỏi đáp và xử lý công việc nội bộ ngay trong trình duyệt.</p>
+      <ul class="feat">
+        <li>Trải nghiệm chat quen thuộc, dùng chung mô hình tự host trên H200.</li>
+        <li>Phục vụ nhu cầu hằng ngày: tra cứu, soạn thảo, tóm tắt, hỗ trợ công việc.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10 AIGATEWAY -->
+  <section class="dark cinematic" data-title="AIGateway">
+    <div class="inner">
+      <div class="eyebrow">Trái tim của hệ thống</div>
+      <h2>AIGateway</h2>
+      <p class="lead">Một cổng API duy nhất đặt trước mọi sản phẩm AI/LLM nội bộ. Mọi request muốn dùng AI đều đi qua đây, thay vì gọi thẳng nhà cung cấp.</p>
+      <div class="grid g2" style="margin-top:40px">
+        <div class="card"><div class="k">Vì sao tồn tại</div><h3>Gom về một cổng</h3><p>Thay vì mỗi sản phẩm tự tích hợp OpenAI/Claude riêng lẻ — lặp code, khó kiểm soát chi phí, khó bảo mật.</p></div>
+        <div class="card"><div class="k">Nhiệm vụ</div><h3>4 việc tập trung</h3><p>Xác thực · Phân quyền · Định tuyến request · Giám sát chi phí & bảo mật — cộng các logic đặc thù.</p></div>
+      </div>
+      <div class="stack">
+        <span class="pill">NestJS 10</span><span class="pill">LiteLLM</span><span class="pill">MongoDB</span><span class="pill">Redis</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 MODULE NGHIỆP VỤ -->
+  <section class="soft" data-title="Module nghiệp vụ">
+    <div class="inner">
+      <div class="eyebrow">Module nghiệp vụ</div>
+      <h2>AI phục vụ từng nghiệp vụ.</h2>
+      <p class="lead">Năm module ứng dụng AI trực tiếp vào vận hành — từ chăm sóc khách hàng đến ra quyết định kinh doanh.</p>
+      <div class="grid g3" style="margin-top:40px">
+        <div class="card"><div class="k">CSKH</div><h3>Chatbot tư vấn khách hàng</h3><p>Tư vấn dịch vụ, ghi nhận khiếu nại, đặt lịch hẹn — tự động 24/7, không cần nhân viên trực.</p></div>
+        <div class="card"><div class="k">Nội bộ</div><h3>Chatbot hỗ trợ nhân viên</h3><p>Tổng hợp thông tin khách hàng từ nhiều nguồn — nhân viên hỏi bằng ngôn ngữ tự nhiên, nhận câu trả lời ngay.</p></div>
+        <div class="card"><div class="k">Phân tích</div><h3>Phân tích hồ sơ khách hàng</h3><p>AI đọc hiểu và tổng hợp hồ sơ khách hàng — lịch sử dịch vụ, hành vi, sở thích — thành bức tranh toàn cảnh.</p></div>
+        <div class="card"><div class="k">Scoring</div><h3>Scoring tiềm năng khách hàng</h3><p>Xây dựng hệ thống chấm điểm đánh giá tiềm năng — xác định khách hàng giá trị cao, ưu tiên chăm sóc đúng người.</p></div>
+        <div class="card"><div class="k">BI + AI</div><h3>Phân tích báo cáo hệ thống</h3><p>AI phân tích dữ liệu vận hành — doanh thu, hiệu suất, xu hướng — chuyển số liệu thô thành insight hành động.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 MODULE NỀN TẢNG -->
+  <section class="dark cinematic" data-title="Module nền tảng">
+    <div class="inner">
+      <div class="eyebrow">Module nền tảng</div>
+      <h2>Năng lực AI dùng chung.</h2>
+      <p class="lead">Bốn module cơ sở mở rộng qua AIGateway — mọi sản phẩm đều có thể gọi.</p>
+      <div class="grid g4" style="margin-top:40px">
+        <div class="card"><div class="k">NLP</div><h3>Summary</h3><p>Tóm tắt văn bản tiếng Việt — rút gọn tài liệu dài thành ý chính trong vài giây.</p></div>
+        <div class="card"><div class="k">NLP</div><h3>Sentiment</h3><p>Phân tích cảm xúc văn bản — tích cực, tiêu cực, trung lập — phục vụ đánh giá phản hồi.</p></div>
+        <div class="card"><div class="k">Giọng nói</div><h3>STT</h3><p>Chuyển giọng nói thành văn bản — hỗ trợ ghi chú cuộc gọi, voice command.</p></div>
+        <div class="card"><div class="k">Thị giác</div><h3>OCR</h3><p>Nhận diện chữ trong ảnh — số hoá hợp đồng, hoá đơn, chứng từ giấy.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 CLOSE -->
+  <section class="dark cinematic" data-title="Kết">
+    <div class="inner" style="text-align:center">
+      <h1 style="font-size:clamp(34px,5.5vw,74px)">Một nền tảng AI<br>tập trung, tự chủ.</h1>
+      <p class="lead" style="margin-left:auto;margin-right:auto">RagFlow lưu tri thức · Dify & OpenWebUI phục vụ người dùng · AIGateway kiểm soát tập trung · tất cả chạy trên H200.</p>
+      <div class="caption">Cảm ơn đã theo dõi.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  const deck=document.getElementById('deck');
+  const sections=[...deck.querySelectorAll('section')];
+  const dotsWrap=document.getElementById('dots');
+  const pager=document.getElementById('pager');
+  const progress=document.getElementById('progress');
+  sections.forEach((s,i)=>{const a=document.createElement('a');a.href='#';a.title=s.dataset.title||('Slide '+(i+1));a.onclick=e=>{e.preventDefault();sections[i].scrollIntoView()};dotsWrap.appendChild(a)});
+  const dots=[...dotsWrap.children];
+  function update(){
+    const i=Math.round(deck.scrollTop/window.innerHeight);
+    dots.forEach((d,k)=>d.classList.toggle('active',k===i));
+    const cur=sections[i];
+    document.body.classList.toggle('dark-active',cur&&cur.classList.contains('dark'));
+    pager.textContent=(i+1)+' / '+sections.length+'  ·  '+(cur?cur.dataset.title:'');
+    progress.style.width=((deck.scrollTop/(deck.scrollHeight-window.innerHeight))*100)+'%';
+  }
+  deck.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  document.addEventListener('keydown',e=>{
+    const i=Math.round(deck.scrollTop/window.innerHeight);
+    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();sections[Math.min(i+1,sections.length-1)].scrollIntoView()}
+    if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();sections[Math.max(i-1,0)].scrollIntoView()}
+    if(e.key==='Home'){sections[0].scrollIntoView()}
+    if(e.key==='End'){sections[sections.length-1].scrollIntoView()}
+  });
+  update();
+</script>
+</body>
+</html>

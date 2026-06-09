@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bộ Câu Hỏi Khảo Sát Khách Hàng — ND Beauty</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: #ffffff;
+    color: #1d1d1f;
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+
+  /* ── Nav ── */
+  .global-nav {
+    background: #000000;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .global-nav span {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    line-height: 1;
+  }
+  .global-nav .nav-brand {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: #ffffff;
+  }
+  .global-nav .nav-sep {
+    color: #7a7a7a;
+    margin: 0 10px;
+  }
+
+  /* ── Hero tile — light ── */
+  .hero-tile {
+    background: #ffffff;
+    text-align: center;
+    padding: 96px 20px 80px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0066cc;
+    margin-bottom: 12px;
+  }
+  .hero-tile h1 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    color: #1d1d1f;
+    max-width: 680px;
+    margin: 0 auto 16px;
+  }
+  .hero-tile .hero-sub {
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: #7a7a7a;
+    max-width: 580px;
+    margin: 0 auto 32px;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .tag {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    color: #1d1d1f;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 9999px;
+    padding: 6px 14px;
+    line-height: 1.29;
+  }
+
+  /* ── Principle tile — parchment ── */
+  .principle-tile {
+    background: #f5f5f7;
+    padding: 80px 20px;
+  }
+  .principle-tile .inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a7a7a;
+    margin-bottom: 16px;
+  }
+  .principle-tile h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #1d1d1f;
+    margin-bottom: 28px;
+  }
+  .principle-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .principle-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+  }
+  .principle-list li strong {
+    font-weight: 600;
+  }
+  .principle-dot {
+    flex: 0 0 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: #0066cc;
+    margin-top: 8px;
+  }
+
+  /* ── Survey tile — light ── */
+  .survey-tile {
+    background: #ffffff;
+    padding: 80px 20px;
+    border-top: 1px solid #e0e0e0;
+  }
+  .survey-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .survey-header {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .survey-kick {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0066cc;
+    margin-bottom: 10px;
+  }
+  .survey-header h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.28px;
+    color: #1d1d1f;
+    margin-bottom: 10px;
+  }
+  .survey-when {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    line-height: 1.43;
+    color: #7a7a7a;
+  }
+
+  /* ── Survey tile — dark ── */
+  .survey-tile--dark {
+    background: #272729;
+    color: #ffffff;
+    border-top: 0;
+  }
+  .survey-tile--dark .survey-header {
+    border-bottom-color: rgba(255,255,255,0.12);
+  }
+  .survey-tile--dark .survey-kick {
+    color: #2997ff;
+  }
+  .survey-tile--dark .survey-header h2 {
+    color: #ffffff;
+  }
+  .survey-tile--dark .survey-when {
+    color: #cccccc;
+  }
+  .survey-tile--dark .section-label {
+    color: #cccccc;
+  }
+
+  /* ── Question rows ── */
+  .q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .q {
+    padding: 28px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .q:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .survey-tile--dark .q {
+    border-bottom-color: rgba(255,255,255,0.1);
+  }
+
+  .q-head {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .q-num {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    flex-shrink: 0;
+    background: #1d1d1f;
+    color: #ffffff;
+  }
+  .survey-tile--dark .q-num {
+    background: #ffffff;
+    color: #272729;
+  }
+  .q-text {
+    flex: 1;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+    padding-top: 5px;
+  }
+  .survey-tile--dark .q-text {
+    color: #ffffff;
+  }
+  .q-text strong {
+    font-weight: 600;
+  }
+
+  /* ── Answer type label + metric pills ── */
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-left: 48px;
+    margin-top: 12px;
+  }
+  .atype {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    color: #7a7a7a;
+    font-style: italic;
+  }
+  .survey-tile--dark .atype {
+    color: #cccccc;
+  }
+
+  /* Metric pills */
+  .mpill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    line-height: 1.29;
+  }
+  .mpill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+  }
+  /* NPS — blue */
+  .mpill--nps {
+    background: rgba(0,102,204,0.1);
+    color: #0066cc;
+    border: 1px solid rgba(0,102,204,0.2);
+  }
+  .mpill--nps .mpill-dot { background: #0066cc; }
+  .survey-tile--dark .mpill--nps {
+    background: rgba(41,151,255,0.15);
+    color: #2997ff;
+    border-color: rgba(41,151,255,0.25);
+  }
+  .survey-tile--dark .mpill--nps .mpill-dot { background: #2997ff; }
+  /* Retention — green */
+  .mpill--ret {
+    background: rgba(52,199,89,0.1);
+    color: #1a7a34;
+    border: 1px solid rgba(52,199,89,0.25);
+  }
+  .mpill--ret .mpill-dot { background: #34c759; }
+  .survey-tile--dark .mpill--ret {
+    background: rgba(52,199,89,0.15);
+    color: #34c759;
+    border-color: rgba(52,199,89,0.3);
+  }
+  /* Tay nghề — amber */
+  .mpill--skill {
+    background: rgba(255,159,10,0.1);
+    color: #a05c00;
+    border: 1px solid rgba(255,159,10,0.25);
+  }
+  .mpill--skill .mpill-dot { background: #ff9f0a; }
+  .survey-tile--dark .mpill--skill {
+    background: rgba(255,159,10,0.15);
+    color: #ff9f0a;
+    border-color: rgba(255,159,10,0.3);
+  }
+
+  /* ── NPS 0-10 scale ── */
+  .scale-nps {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-left: 48px;
+    margin-top: 14px;
+  }
+  .scale-nps .sdot {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1d1d1f;
+    line-height: 1;
+  }
+  /* detractor 0-6 */
+  .scale-nps .sdot:nth-child(-n+7) {
+    background: rgba(255,59,48,0.08);
+    border-color: rgba(255,59,48,0.2);
+    color: #c0392b;
+  }
+  /* passive 7-8 */
+  .scale-nps .sdot:nth-child(8),
+  .scale-nps .sdot:nth-child(9) {
+    background: rgba(255,159,10,0.1);
+    border-color: rgba(255,159,10,0.25);
+    color: #a05c00;
+  }
+  /* promoter 9-10 */
+  .scale-nps .sdot:nth-child(n+10) {
+    background: rgba(52,199,89,0.1);
+    border-color: rgba(52,199,89,0.25);
+    color: #1a7a34;
+  }
+  .survey-tile--dark .scale-nps .sdot {
+    border-color: rgba(255,255,255,0.12);
+    color: #ffffff;
+  }
+  .survey-tile--dark .scale-nps .sdot:nth-child(-n+7) {
+    background: rgba(255,59,48,0.15);
+    border-color: rgba(255,59,48,0.3);
+    color: #ff6b6b;
+  }
+  .survey-tile--dark .scale-nps .sdot:nth-child(8),
+  .survey-tile--dark .scale-nps .sdot:nth-child(9) {
+    background: rgba(255,159,10,0.15);
+    border-color: rgba(255,159,10,0.3);
+    color: #ff9f0a;
+  }
+  .survey-tile--dark .scale-nps .sdot:nth-child(n+10) {
+    background: rgba(52,199,89,0.15);
+    border-color: rgba(52,199,89,0.3);
+    color: #34c759;
+  }
+
+  /* ── 1-5 scale ── */
+  .scale5 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 48px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .scale5-label {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    color: #7a7a7a;
+    line-height: 1.29;
+  }
+  .survey-tile--dark .scale5-label { color: #cccccc; }
+  .scale5-dots {
+    display: flex;
+    gap: 4px;
+  }
+  .scale5-dots span {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1d1d1f;
+    line-height: 1;
+  }
+  .survey-tile--dark .scale5-dots span {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.14);
+    color: #ffffff;
+  }
+
+  /* ── Multiple choice chips ── */
+  .opts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-left: 48px;
+    margin-top: 14px;
+  }
+  .opts .opt {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    padding: 7px 16px;
+    border-radius: 9999px;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    color: #1d1d1f;
+    line-height: 1.29;
+  }
+  .survey-tile--dark .opts .opt {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.16);
+    color: #ffffff;
+  }
+
+  /* ── Open text box ── */
+  .openbox {
+    margin-left: 48px;
+    margin-top: 14px;
+    border: 1.5px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    color: #7a7a7a;
+    font-style: italic;
+    background: #f5f5f7;
+  }
+  .survey-tile--dark .openbox {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: #cccccc;
+  }
+
+  /* ── Group labels (deep survey) ── */
+  .grp {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 32px 0 20px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 0;
+  }
+  .grp:first-child { padding-top: 0; }
+  .survey-tile--dark .grp {
+    border-bottom-color: rgba(255,255,255,0.1);
+  }
+  .grp-title {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.28px;
+    white-space: nowrap;
+    color: #1d1d1f;
+  }
+  .survey-tile--dark .grp-title { color: #ffffff; }
+  .grp-line {
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+  }
+  .survey-tile--dark .grp-line {
+    background: rgba(255,255,255,0.12);
+  }
+  .grp-pill {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    white-space: nowrap;
+  }
+  .grp-pill--exp {
+    background: rgba(0,102,204,0.1);
+    color: #0066cc;
+    border: 1px solid rgba(0,102,204,0.2);
+  }
+  .survey-tile--dark .grp-pill--exp {
+    background: rgba(41,151,255,0.15);
+    color: #2997ff;
+    border-color: rgba(41,151,255,0.25);
+  }
+  .grp-pill--serv {
+    background: rgba(255,159,10,0.1);
+    color: #a05c00;
+    border: 1px solid rgba(255,159,10,0.25);
+  }
+  .survey-tile--dark .grp-pill--serv {
+    background: rgba(255,159,10,0.15);
+    color: #ff9f0a;
+    border-color: rgba(255,159,10,0.3);
+  }
+  .grp-pill--brand {
+    background: rgba(175,82,222,0.1);
+    color: #7d3c98;
+    border: 1px solid rgba(175,82,222,0.2);
+  }
+  .survey-tile--dark .grp-pill--brand {
+    background: rgba(175,82,222,0.15);
+    color: #bf5af2;
+    border-color: rgba(175,82,222,0.3);
+  }
+
+  /* ── Logic branch sections ── */
+  .branch-tile {
+    padding: 80px 20px;
+    border-top: 1px solid #e0e0e0;
+  }
+  .branch-tile--det {
+    background: #ffffff;
+  }
+  .branch-tile--pro {
+    background: #f5f5f7;
+  }
+  .branch-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .branch-card {
+    border-radius: 18px;
+    padding: 32px;
+    border: 1px solid #e0e0e0;
+  }
+  .branch-card--det {
+    border-top: 3px solid #ff3b30;
+    background: #ffffff;
+  }
+  .branch-card--pro {
+    border-top: 3px solid #34c759;
+    background: #ffffff;
+  }
+  .branch-heading {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.28px;
+    margin-bottom: 6px;
+  }
+  .branch-card--det .branch-heading { color: #c0392b; }
+  .branch-card--pro .branch-heading { color: #1a7a34; }
+  .branch-trigger {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    color: #7a7a7a;
+    margin-bottom: 20px;
+  }
+  .branch-desc {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+  }
+  .branch-desc strong { font-weight: 600; }
+  .branch-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .branch-qline {
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+  }
+  .branch-qline .qline-meta {
+    font-size: 14px;
+    font-weight: 400;
+    color: #7a7a7a;
+    font-style: italic;
+  }
+
+  /* ── Mapping table — dark tile ── */
+  .map-tile {
+    background: #272729;
+    padding: 80px 20px;
+  }
+  .map-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .map-inner .section-label {
+    color: #cccccc;
+    margin-bottom: 16px;
+  }
+  .map-inner h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  .map-inner .map-sub {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #cccccc;
+    margin-bottom: 48px;
+    max-width: 560px;
+  }
+
+  .map-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .map-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    align-items: baseline;
+  }
+  .map-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .map-key {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #cccccc;
+  }
+  .map-key strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .map-val {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: #2997ff;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    background: #f5f5f7;
+    padding: 48px 20px;
+    text-align: center;
+  }
+  .site-footer p {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.12px;
+    color: #7a7a7a;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero-tile h1 { font-size: 34px; letter-spacing: -0.374px; }
+    .hero-tile .hero-sub { font-size: 17px; }
+    .principle-tile h2 { font-size: 28px; }
+    .survey-header h2 { font-size: 28px; }
+    .grp-title { font-size: 22px; }
+    .scale-nps { margin-left: 0; }
+    .scale5 { margin-left: 0; }
+    .opts { margin-left: 0; }
+    .openbox { margin-left: 0; }
+    .q-meta { margin-left: 0; }
+    .map-row { grid-template-columns: 1fr; gap: 6px; }
+    .map-val { text-align: left; }
+    .branch-card { padding: 20px; }
+    .survey-tile { padding: 48px 20px; }
+    .principle-tile { padding: 48px 20px; }
+    .map-tile { padding: 48px 20px; }
+    .branch-tile { padding: 48px 20px; }
+  }
+
+  @media print {
+    .global-nav { display: none; }
+    body { color: #000; }
+    .survey-tile--dark, .map-tile {
+      background: #f5f5f7;
+      color: #000;
+    }
+    .survey-tile--dark .survey-header h2,
+    .survey-tile--dark .q-text,
+    .survey-tile--dark .grp-title,
+    .map-inner h2 { color: #000; }
+    .survey-tile--dark .survey-when,
+    .survey-tile--dark .atype,
+    .map-inner .map-sub,
+    .map-key { color: #333; }
+    .survey-tile--dark .survey-header {
+      border-bottom-color: #e0e0e0;
+    }
+    .survey-tile--dark .q {
+      border-bottom-color: #e0e0e0;
+    }
+    .survey-tile--dark .q-num {
+      background: #1d1d1f;
+      color: #fff;
+    }
+    .survey-tile--dark .scale5-dots span,
+    .survey-tile--dark .opts .opt {
+      background: #f5f5f7;
+      border-color: #e0e0e0;
+      color: #000;
+    }
+    .survey-tile--dark .openbox {
+      background: #f5f5f7;
+      border-color: #e0e0e0;
+      color: #333;
+    }
+    .map-inner .map-key,
+    .map-row { border-bottom-color: #ccc; }
+    .map-inner .map-key strong { color: #000; }
+    .map-val { color: #0066cc; }
+    .branch-card { border: 1px solid #ccc; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Global nav -->
+<nav class="global-nav">
+  <a href="index.html" class="nav-brand" style="text-decoration:none;">TheAdvance</a>
+  <span class="nav-sep">/</span>
+  <span>Bộ Câu Hỏi Khảo Sát</span>
+</nav>
+
+<!-- Hero tile -->
+<section class="hero-tile">
+  <div class="eyebrow">ND Beauty · Hệ vận hành chất lượng — Phần 4</div>
+  <h1>Bộ Câu Hỏi Khảo Sát Khách Hàng</h1>
+  <p class="hero-sub">Mỗi câu hỏi được thiết kế để thu đúng một chỉ số — không hỏi thừa. Soi đủ 5 điểm chạm và cả 3 trụ cột: trải nghiệm · dịch vụ · thương hiệu.</p>
+  <div class="tag-row">
+    <span class="tag">Đi cùng: SOP · Framework Đo Lường · KPI Bộ Phận</span>
+    <span class="tag">Phiên bản 1.0</span>
+  </div>
+</section>
+
+<!-- Principle tile — parchment -->
+<section class="principle-tile">
+  <div class="inner">
+    <div class="section-label">Nguyên tắc thiết kế</div>
+    <h2>Hỏi đúng. Đo được. Hành động ngay.</h2>
+    <ul class="principle-list">
+      <li>
+        <span class="principle-dot"></span>
+        <span><strong>Ngắn = tỷ lệ trả lời cao.</strong> Bản nhanh gửi sau mỗi lần dịch vụ chỉ 6 câu, bấm là xong — để đạt mục tiêu thu ≥ 40% phản hồi.</span>
+      </li>
+      <li>
+        <span class="principle-dot"></span>
+        <span><strong>Mỗi câu phải đo được một chỉ số.</strong> Nhãn màu cho biết câu đó phục vụ NPS, Retention hay Tay nghề. Không có câu hỏi "cho vui".</span>
+      </li>
+      <li>
+        <span class="principle-dot"></span>
+        <span><strong>Phân nhánh thông minh.</strong> Điểm thấp → đào sâu lý do (cứu khách). Điểm cao → mời review + referral (nhân đại sứ).</span>
+      </li>
+      <li>
+        <span class="principle-dot"></span>
+        <span><strong>Bản chuyên sâu chỉ dùng định kỳ</strong> hoặc cho khách lõi — không gửi sau mỗi lần để tránh phiền.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Survey A — light tile -->
+<section class="survey-tile">
+  <div class="survey-inner">
+    <div class="survey-header">
+      <div class="survey-kick">Bản A — gửi sau mỗi lần dịch vụ</div>
+      <h2>Khảo sát nhanh</h2>
+      <p class="survey-when">Gửi qua tin nhắn chăm sóc 24–48h (Điểm chạm 5) &nbsp;·&nbsp; ~6 câu &nbsp;·&nbsp; mục tiêu hoàn thành &lt; 1 phút</p>
+    </div>
+
+    <div class="q-list">
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">1</div>
+          <div class="q-text">Trên thang 0–10, chị sẵn lòng giới thiệu ND Beauty cho bạn bè/người thân ở mức nào ạ?</div>
+        </div>
+        <div class="scale-nps">
+          <span class="sdot">0</span><span class="sdot">1</span><span class="sdot">2</span><span class="sdot">3</span><span class="sdot">4</span><span class="sdot">5</span><span class="sdot">6</span><span class="sdot">7</span><span class="sdot">8</span><span class="sdot">9</span><span class="sdot">10</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 0–10 (câu lõi NPS)</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">2</div>
+          <div class="q-text">Chị hài lòng với <strong>kết quả dịch vụ</strong> hôm nay ở mức nào?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất không</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất hài lòng</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--skill"><span class="mpill-dot"></span>Tay nghề</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">3</div>
+          <div class="q-text">Chị hài lòng với <strong>thái độ &amp; sự chăm sóc</strong> của nhân viên ở mức nào?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất không</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất hài lòng</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">4</div>
+          <div class="q-text">Chị hài lòng với <strong>không gian &amp; sự sạch sẽ</strong> của cơ sở ở mức nào?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất không</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất hài lòng</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">5</div>
+          <div class="q-text">Chị có dự định <strong>quay lại</strong> ND Beauty không ạ?</div>
+        </div>
+        <div class="opts">
+          <span class="opt">Chắc chắn có</span>
+          <span class="opt">Có thể</span>
+          <span class="opt">Chưa chắc</span>
+          <span class="opt">Không</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Chọn 1</span>
+          <span class="mpill mpill--ret"><span class="mpill-dot"></span>Retention</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">6</div>
+          <div class="q-text">Có điều gì chị muốn ND Beauty làm tốt hơn không ạ? (không bắt buộc)</div>
+        </div>
+        <div class="openbox">Ô trả lời mở — ngắn gọn, tùy chọn</div>
+        <div class="q-meta">
+          <span class="atype">Câu mở</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+          <span class="mpill mpill--skill"><span class="mpill-dot"></span>Tay nghề</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Branch — Detractor -->
+<section class="branch-tile branch-tile--det">
+  <div class="branch-inner">
+    <div class="branch-card branch-card--det">
+      <div class="branch-heading">Nhánh Detractor</div>
+      <p class="branch-trigger">Khi câu 1 ở mức 0–6 — hỏi thêm</p>
+      <p class="branch-desc">Mục tiêu: hiểu lý do để cứu khách, không phải để giấu con số. Đồng thời <strong>kích hoạt xử lý sự cố trong 24h</strong>.</p>
+      <div class="branch-questions">
+        <div class="branch-qline">Điều gì khiến chị chưa hài lòng nhất hôm nay ạ? <span class="qline-meta">(câu mở)</span></div>
+        <div class="branch-qline">Chị có muốn ND Beauty liên hệ trực tiếp để hỗ trợ không ạ? <span class="qline-meta">(Có / Không)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Branch — Promoter -->
+<section class="branch-tile branch-tile--pro">
+  <div class="branch-inner">
+    <div class="branch-card branch-card--pro">
+      <div class="branch-heading">Nhánh Promoter</div>
+      <p class="branch-trigger">Khi câu 1 ở mức 9–10 — hỏi thêm</p>
+      <p class="branch-desc">Mục tiêu: biến khách hài lòng thành đại sứ — nguồn khách mới rẻ và chất lượng nhất.</p>
+      <div class="branch-questions">
+        <div class="branch-qline">Chị có sẵn lòng để lại vài dòng cảm nhận / hình ảnh giúp tụi em không ạ? <span class="qline-meta">(Có → gửi link review)</span></div>
+        <div class="branch-qline">Chị có muốn nhận ưu đãi khi giới thiệu bạn bè đến ND Beauty không ạ? <span class="qline-meta">(Có → đưa vào chương trình giới thiệu)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Survey B — dark tile -->
+<section class="survey-tile survey-tile--dark">
+  <div class="survey-inner">
+    <div class="survey-header">
+      <div class="survey-kick">Bản B — định kỳ / khách lõi</div>
+      <h2>Khảo sát chuyên sâu</h2>
+      <p class="survey-when">Gửi hàng quý hoặc cho nhóm khách lõi &nbsp;·&nbsp; chia theo 3 trụ cột chất lượng &nbsp;·&nbsp; ~15 câu</p>
+    </div>
+
+    <div class="q-list">
+
+      <!-- Group I: Trải nghiệm -->
+      <div class="grp">
+        <span class="grp-title">I. Trải nghiệm</span>
+        <span class="grp-line"></span>
+        <span class="grp-pill grp-pill--exp">Điểm chạm 1·2·4·5</span>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">1</div>
+          <div class="q-text">Việc <strong>đặt lịch</strong> với ND Beauty có dễ dàng và nhanh chóng không?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất khó</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất dễ</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">2</div>
+          <div class="q-text">Khi đến nơi, chị có được <strong>đón tiếp chu đáo</strong> (chào hỏi, khăn/nước) không?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất kém</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất tốt</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">3</div>
+          <div class="q-text"><strong>Thời gian chờ</strong> của chị có hợp lý không?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Chờ quá lâu</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất nhanh</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">4</div>
+          <div class="q-text">Sau khi về, chị có nhận được <strong>lời dặn dò &amp; hỏi thăm chăm sóc</strong> không?</div>
+        </div>
+        <div class="opts">
+          <span class="opt">Có, rất chu đáo</span>
+          <span class="opt">Có nhưng sơ sài</span>
+          <span class="opt">Không</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Chọn 1</span>
+          <span class="mpill mpill--ret"><span class="mpill-dot"></span>Retention</span>
+        </div>
+      </div>
+
+      <!-- Group II: Dịch vụ & Tay nghề -->
+      <div class="grp">
+        <span class="grp-title">II. Dịch vụ &amp; Tay nghề</span>
+        <span class="grp-line"></span>
+        <span class="grp-pill grp-pill--serv">Điểm chạm 3</span>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">5</div>
+          <div class="q-text">Chị hài lòng với <strong>kết quả chuyên môn</strong> của dịch vụ ở mức nào?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất không</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất hài lòng</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--skill"><span class="mpill-dot"></span>Tay nghề</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">6</div>
+          <div class="q-text">KTV có <strong>tư vấn rõ ràng và phù hợp</strong> với tình trạng của chị không?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất kém</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất tốt</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--skill"><span class="mpill-dot"></span>Tay nghề</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">7</div>
+          <div class="q-text">Chị có cảm thấy <strong>an toàn và chuyên nghiệp</strong> trong suốt quá trình làm không?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất không</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất an tâm</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--skill"><span class="mpill-dot"></span>Tay nghề</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">8</div>
+          <div class="q-text">KTV có <strong>nhớ và quan tâm đến nhu cầu riêng</strong> của chị (lần trước, cơ địa) không?</div>
+        </div>
+        <div class="opts">
+          <span class="opt">Có, rất rõ</span>
+          <span class="opt">Một phần</span>
+          <span class="opt">Không</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Chọn 1 (đo cá nhân hóa)</span>
+          <span class="mpill mpill--ret"><span class="mpill-dot"></span>Retention</span>
+        </div>
+      </div>
+
+      <!-- Group III: Thương hiệu -->
+      <div class="grp">
+        <span class="grp-title">III. Thương hiệu</span>
+        <span class="grp-line"></span>
+        <span class="grp-pill grp-pill--brand">Niềm tin &amp; Giá trị</span>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">9</div>
+          <div class="q-text">Chị <strong>tin tưởng</strong> ND Beauty ở mức nào?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Rất ít</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Hoàn toàn</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">10</div>
+          <div class="q-text">Chị thấy dịch vụ có <strong>xứng đáng với số tiền</strong> bỏ ra không?</div>
+        </div>
+        <div class="scale5">
+          <span class="scale5-label">Không đáng</span>
+          <div class="scale5-dots"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          <span class="scale5-label">Rất đáng</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 1–5 (giá trị cảm nhận)</span>
+          <span class="mpill mpill--ret"><span class="mpill-dot"></span>Retention</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">11</div>
+          <div class="q-text">So với nơi khác chị từng làm, ND Beauty <strong>tốt hơn hay kém hơn</strong>?</div>
+        </div>
+        <div class="opts">
+          <span class="opt">Tốt hơn nhiều</span>
+          <span class="opt">Tốt hơn chút</span>
+          <span class="opt">Như nhau</span>
+          <span class="opt">Kém hơn</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Chọn 1 (định vị cạnh tranh)</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">12</div>
+          <div class="q-text">Trên thang 0–10, chị sẵn lòng <strong>giới thiệu</strong> ND Beauty ở mức nào? (NPS)</div>
+        </div>
+        <div class="scale-nps">
+          <span class="sdot">0</span><span class="sdot">1</span><span class="sdot">2</span><span class="sdot">3</span><span class="sdot">4</span><span class="sdot">5</span><span class="sdot">6</span><span class="sdot">7</span><span class="sdot">8</span><span class="sdot">9</span><span class="sdot">10</span>
+        </div>
+        <div class="q-meta">
+          <span class="atype">Thang 0–10</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">13</div>
+          <div class="q-text">Điều gì chị <strong>thích nhất</strong> ở ND Beauty? (không bắt buộc)</div>
+        </div>
+        <div class="openbox">Ô trả lời mở — khai thác điểm mạnh để khuếch đại</div>
+        <div class="q-meta">
+          <span class="atype">Câu mở</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+      <div class="q">
+        <div class="q-head">
+          <div class="q-num">14</div>
+          <div class="q-text">Một điều chị <strong>mong ND Beauty cải thiện</strong> nhất là gì? (không bắt buộc)</div>
+        </div>
+        <div class="openbox">Ô trả lời mở — ưu tiên hành động cải tiến</div>
+        <div class="q-meta">
+          <span class="atype">Câu mở</span>
+          <span class="mpill mpill--skill"><span class="mpill-dot"></span>Tay nghề</span>
+          <span class="mpill mpill--nps"><span class="mpill-dot"></span>NPS</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Mapping table — dark tile -->
+<section class="map-tile">
+  <div class="map-inner">
+    <div class="section-label">Câu hỏi → Chỉ số</div>
+    <h2>Câu hỏi đo ra chỉ số nào</h2>
+    <p class="map-sub">Để khi báo cáo, mỗi câu trả lời chảy đúng về một con số trong Framework.</p>
+    <div class="map-rows">
+      <div class="map-row">
+        <div class="map-key"><strong>NPS</strong> — câu 0–10 (bản A câu 1, bản B câu 12)</div>
+        <div class="map-val">% Promoter − % Detractor</div>
+      </div>
+      <div class="map-row">
+        <div class="map-key"><strong>Tay nghề</strong> — hài lòng kết quả, tư vấn, an toàn</div>
+        <div class="map-val">điểm TB 1–5 + đối chiếu mystery</div>
+      </div>
+      <div class="map-row">
+        <div class="map-key"><strong>Retention (ý định)</strong> — dự định quay lại, giá trị, cá nhân hóa</div>
+        <div class="map-val">% "chắc chắn quay lại"</div>
+      </div>
+      <div class="map-row">
+        <div class="map-key"><strong>Trải nghiệm</strong> — đặt lịch, đón tiếp, chờ, chăm sóc sau</div>
+        <div class="map-val">điểm TB từng điểm chạm</div>
+      </div>
+      <div class="map-row">
+        <div class="map-key"><strong>Thương hiệu</strong> — tin tưởng, đáng tiền, so sánh đối thủ</div>
+        <div class="map-val">điểm TB + phân tích câu mở</div>
+      </div>
+      <div class="map-row">
+        <div class="map-key"><strong>Hành động</strong> — Detractor → xử lý 24h &nbsp;·&nbsp; Promoter → review/referral</div>
+        <div class="map-val">phân nhánh tự động</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <p>ND Beauty &nbsp;·&nbsp; Bộ Câu Hỏi Khảo Sát Khách Hàng v1.0 &nbsp;·&nbsp; Tài liệu nội bộ. Hoàn thiện bộ 4: SOP · Đo Lường · KPI · Khảo Sát.</p>
+</footer>
+
+</body>
+</html>
