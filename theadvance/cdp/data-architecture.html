@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CDP TheAdvance — Data Architecture v1.0</title>
+<title>CDP TheAdvance — Data Architecture v2.0</title>
 <style>
   /* ===== RESET & BASE ===== */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -743,6 +743,10 @@
     background: linear-gradient(90deg, rgba(194,120,66,0.18) 0%, rgba(194,120,66,0.08) 100%);
     border: 1px solid rgba(194,120,66,0.35);
   }
+  .layer--pg {
+    background: linear-gradient(90deg, rgba(41,151,255,0.18) 0%, rgba(41,151,255,0.06) 100%);
+    border: 1px solid rgba(41,151,255,0.4);
+  }
   .layer__badge {
     font-size: 11px;
     font-weight: 600;
@@ -763,6 +767,10 @@
   .layer--bronze .layer__badge {
     background: rgba(194,120,66,0.25);
     color: #7c2d12;
+  }
+  .layer--pg .layer__badge {
+    background: rgba(41,151,255,0.25);
+    color: #0040aa;
   }
   .layer__title {
     font-size: 17px;
@@ -1037,8 +1045,8 @@
   <div class="sub-nav__inner">
     <span class="sub-nav__title">Data Architecture</span>
     <div class="sub-nav__meta">
-      <span class="sub-nav__version">v1.0</span>
-      <span class="sub-nav__date">2026-06-11</span>
+      <span class="sub-nav__version">v2.0</span>
+      <span class="sub-nav__date">2026-06-12</span>
     </div>
   </div>
 </div>
@@ -1051,6 +1059,11 @@
     <div class="toc-header">Mục lục</div>
     <ul class="toc-list">
       <li><a href="#section-1">1. Tổng quan kiến trúc</a></li>
+      <ul class="toc-sub">
+        <li><a href="#section-1">1.1 Nguyên tắc thiết kế</a></li>
+        <li><a href="#section-1">1.2 Kiến trúc tổng thể</a></li>
+        <li><a href="#section-1-3">1.3 Tại sao Dual-Database?</a></li>
+      </ul>
       <li class="toc-divider" aria-hidden="true"></li>
       <li><a href="#section-2">2. Cơ chế đồng bộ</a></li>
       <ul class="toc-sub">
@@ -1062,14 +1075,14 @@
       </ul>
       <li class="toc-divider" aria-hidden="true"></li>
       <li><a href="#section-3">3. Chuẩn hoá dữ liệu</a></li>
-      <li><a href="#section-4">4. Data Layers</a></li>
+      <li><a href="#section-4">4. Data Layer Design</a></li>
       <ul class="toc-sub">
-        <li><a href="#section-4">4.1 Bronze (Raw)</a></li>
-        <li><a href="#section-4">4.2 Silver (Cleaned)</a></li>
-        <li><a href="#section-4">4.3 Gold (Business)</a></li>
+        <li><a href="#section-4">4.0 DB Responsibility Split</a></li>
+        <li><a href="#section-4">4.1 PostgreSQL (OLTP)</a></li>
+        <li><a href="#section-4">4.2 ClickHouse (OLAP)</a></li>
       </ul>
       <li class="toc-divider" aria-hidden="true"></li>
-      <li><a href="#section-5">5. Transform Jobs</a></li>
+      <li><a href="#section-5">5. Transform Jobs &amp; Sync</a></li>
       <li><a href="#section-6">6. Monitoring</a></li>
       <li><a href="#section-7">7. Source Map</a></li>
       <li><a href="#section-8">8. Checklist</a></li>
@@ -1084,11 +1097,12 @@
   <div class="container">
     <div class="hero__eyebrow">Technical Document</div>
     <h1 class="hero__title">Data Architecture<br>&amp; Ingestion Design</h1>
-    <p class="hero__subtitle">Hệ thống hoá 4 cơ chế đồng bộ dữ liệu về ClickHouse, chuẩn hoá data trước khi thiết kế schema.</p>
+    <p class="hero__subtitle">Kiến trúc dual-database — PostgreSQL làm operational brain (OLTP), ClickHouse làm analytical engine (OLAP). Hệ thống hoá 4 cơ chế đồng bộ và sync pattern giữa 2 database.</p>
     <div class="hero__meta">
-      <span class="hero__meta-item"><strong>Version</strong> 1.0</span>
-      <span class="hero__meta-item"><strong>Ngày</strong> 2026-06-11</span>
-      <span class="hero__meta-item"><strong>Database</strong> ClickHouse</span>
+      <span class="hero__meta-item"><strong>Version</strong> 2.0</span>
+      <span class="hero__meta-item"><strong>Ngày</strong> 2026-06-12</span>
+      <span class="hero__meta-item"><strong>OLTP</strong> PostgreSQL</span>
+      <span class="hero__meta-item"><strong>OLAP</strong> ClickHouse</span>
       <span class="hero__meta-item"><strong>Streaming</strong> Kafka</span>
       <span class="hero__meta-item"><strong>ETL</strong> Airbyte</span>
     </div>
@@ -1101,7 +1115,7 @@
     <div class="section-header">
       <span class="section-num">Section 01</span>
       <h2 class="section-title">Tổng quan kiến trúc</h2>
-      <p class="section-lead">Nguyên tắc thiết kế và kiến trúc tổng thể của CDP TheAdvance.</p>
+      <p class="section-lead">Nguyên tắc thiết kế dual-database và kiến trúc tổng thể của CDP TheAdvance.</p>
     </div>
 
     <div class="subsection">
@@ -1109,28 +1123,38 @@
       <div class="principles-grid">
         <div class="principle-card">
           <div class="principle-card__num">01</div>
-          <div class="principle-card__title">ClickHouse là trung tâm</div>
-          <p class="principle-card__body">Mọi data đều chảy về ClickHouse, không lưu trữ chính ở nơi khác.</p>
+          <div class="principle-card__title">Dual-database: PG + ClickHouse</div>
+          <p class="principle-card__body">PostgreSQL cho operational data (ACID, point lookup, updates). ClickHouse cho analytics (columnar scan, bulk insert, fast aggregation). Mỗi database làm đúng thế mạnh.</p>
         </div>
         <div class="principle-card">
           <div class="principle-card__num">02</div>
-          <div class="principle-card__title">Raw trước, Transform sau</div>
-          <p class="principle-card__body">Luôn lưu data thô gốc trước, rồi mới transform/enrich.</p>
+          <div class="principle-card__title">PostgreSQL là source of truth</div>
+          <p class="principle-card__body">Customer profile, lead state, campaign state, consent sống ở PG. ClickHouse nhận bản replicate để phục vụ analytics, không là nơi ghi gốc.</p>
         </div>
         <div class="principle-card">
           <div class="principle-card__num">03</div>
-          <div class="principle-card__title">Schema-on-write</div>
-          <p class="principle-card__body">Data ghi vào ClickHouse phải đúng schema, validate trước khi insert.</p>
+          <div class="principle-card__title">Raw trước, Transform sau</div>
+          <p class="principle-card__body">Luôn lưu data thô gốc trước (ClickHouse Bronze layer), rồi mới transform/enrich. Không mất data gốc.</p>
         </div>
         <div class="principle-card">
           <div class="principle-card__num">04</div>
-          <div class="principle-card__title">Idempotent ingestion</div>
-          <p class="principle-card__body">Mọi cơ chế đều có thể retry mà không tạo duplicate.</p>
+          <div class="principle-card__title">Schema-on-write</div>
+          <p class="principle-card__body">Data ghi vào cả PG và ClickHouse phải đúng schema, validate trước khi insert. Không schema-on-read.</p>
         </div>
         <div class="principle-card">
           <div class="principle-card__num">05</div>
+          <div class="principle-card__title">Idempotent ingestion</div>
+          <p class="principle-card__body">Mọi cơ chế đều có thể retry mà không tạo duplicate. ReplacingMergeTree ở CH, UPSERT ở PG.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">06</div>
           <div class="principle-card__title">Lineage tracking</div>
-          <p class="principle-card__body">Mỗi record biết mình đến từ đâu, qua cơ chế nào, lúc nào.</p>
+          <p class="principle-card__body">Mỗi record biết mình đến từ đâu, qua cơ chế nào, lúc nào. Trace được từ Gold về Bronze.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">07</div>
+          <div class="principle-card__title">Sync unidirectional: PG → CH</div>
+          <p class="principle-card__body">Master data chảy 1 chiều từ PG sang CH qua CDC hoặc scheduled sync. ClickHouse không ghi ngược về PG — chỉ batch jobs đọc CH rồi write kết quả vào PG.</p>
         </div>
       </div>
     </div>
@@ -1157,28 +1181,46 @@
         ▼           ▼          ▼            ▼          ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                                                                         │
-│                    ClickHouse — CDP Database                            │
+│                 ClickHouse — Analytical Engine (OLAP)                   │
 │                                                                         │
 │  ┌─────────────────────────────────────────────────────────────────┐   │
 │  │                    Layer 1: RAW (Bronze)                        │   │
 │  │  raw_pos_transactions  raw_crm_contacts  raw_web_events  ...   │   │
 │  └────────────────────────────┬────────────────────────────────────┘   │
-│                               │                                         │
-│                        Transform Jobs                                   │
-│                     (dbt / ClickHouse MVs)                              │
-│                               │                                         │
+│                               │  Transform Jobs (dbt / ClickHouse MVs) │
 │  ┌────────────────────────────▼────────────────────────────────────┐   │
 │  │                    Layer 2: CLEANED (Silver)                    │   │
-│  │  cleaned_customers  cleaned_transactions  cleaned_events  ...  │   │
+│  │  transactions  events  ad_performance  customers_replica  ...  │   │
 │  └────────────────────────────┬────────────────────────────────────┘   │
-│                               │                                         │
-│                        Transform Jobs                                   │
-│                     (dbt / ClickHouse MVs)                              │
-│                               │                                         │
+│                               │  Transform Jobs (dbt / ClickHouse MVs) │
 │  ┌────────────────────────────▼────────────────────────────────────┐   │
 │  │                    Layer 3: BUSINESS (Gold)                     │   │
-│  │  unified_customers  customer_scores  segments  rfm  analytics  │   │
+│  │  unified_customers_mv  customer_scores  rfm  daily_metrics     │   │
 │  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+└──────────────────────────────┬──────────────────────────────────────────┘
+                               │
+                          CDC / Sync
+                        (PG → CH: 1 chiều)
+                               │
+┌──────────────────────────────┴──────────────────────────────────────────┐
+│                                                                         │
+│                 PostgreSQL — Operational Brain (OLTP)                   │
+│                                                                         │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │  Customer Master    │  Operational State     │  System Config    │  │
+│  │                     │                        │                   │  │
+│  │  • customers        │  • leads               │  • users          │  │
+│  │  • identity_graph   │  • campaigns           │  • roles          │  │
+│  │  • customer_bu_     │  • campaign_members    │  • permissions    │  │
+│  │    profiles         │  • workflows           │  • api_keys       │  │
+│  │  • customer_scores  │  • workflow_instances  │  • scoring_config │  │
+│  │    (latest)         │  • consents            │  • segment_defs   │  │
+│  │  • customer_tags    │  • appointments        │  • bu_config      │  │
+│  │  • customer_consents│  • treatments          │  • branches       │  │
+│  │                     │  • treatment_sessions  │  • staff          │  │
+│  │                     │  • dealers             │  • audit_log      │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘</code></pre>
       </div>
@@ -1186,25 +1228,91 @@
       <div class="layer-stack">
         <div class="layer layer--gold">
           <span class="layer__badge">Gold</span>
-          <div>
-            <div class="layer__title">Layer 3: Business Analytics</div>
-          </div>
-          <div class="layer__desc">unified_customers · customer_scores · segments · rfm · analytics</div>
+          <div><div class="layer__title">Layer 3: Business Analytics (ClickHouse)</div></div>
+          <div class="layer__desc">unified_customers_mv · customer_scores · rfm · daily_metrics</div>
         </div>
         <div class="layer layer--silver">
           <span class="layer__badge">Silver</span>
-          <div>
-            <div class="layer__title">Layer 2: Cleaned &amp; Standardized</div>
-          </div>
-          <div class="layer__desc">cleaned_customers · cleaned_transactions · cleaned_events</div>
+          <div><div class="layer__title">Layer 2: Cleaned &amp; Standardized (ClickHouse)</div></div>
+          <div class="layer__desc">transactions · events · ad_performance · customers_replica</div>
         </div>
         <div class="layer layer--bronze">
           <span class="layer__badge">Bronze</span>
-          <div>
-            <div class="layer__title">Layer 1: Raw Data</div>
-          </div>
+          <div><div class="layer__title">Layer 1: Raw Data (ClickHouse)</div></div>
           <div class="layer__desc">raw_pos_transactions · raw_crm_contacts · raw_web_events</div>
         </div>
+        <div class="layer layer--pg">
+          <span class="layer__badge">PG</span>
+          <div><div class="layer__title">Operational Brain (PostgreSQL)</div></div>
+          <div class="layer__desc">customers · leads · consents · campaigns · scoring_configs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection" id="section-1-3">
+      <h3 class="subsection-title">1.3. Tại sao Dual-Database?</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Vấn đề</th>
+              <th>ClickHouse only</th>
+              <th>PostgreSQL + ClickHouse</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Customer 360 lookup</strong> (<code>WHERE id = X</code>)</td>
+              <td>Columnar scan, chậm cho single-row</td>
+              <td>PG B-tree index, &lt; 5ms</td>
+            </tr>
+            <tr>
+              <td><strong>Update lead status</strong></td>
+              <td>ReplacingMergeTree + FINAL, không atomic</td>
+              <td><code>UPDATE ... SET status = 'contacted'</code>, ACID</td>
+            </tr>
+            <tr>
+              <td><strong>Consent on/off</strong></td>
+              <td>Insert new row, merge later, race condition</td>
+              <td><code>UPDATE</code> atomic, consistent ngay</td>
+            </tr>
+            <tr>
+              <td><strong>Campaign state machine</strong></td>
+              <td>Không có transaction, dễ inconsistent</td>
+              <td>Transaction: insert campaign + members + update segment</td>
+            </tr>
+            <tr>
+              <td><strong>Identity merge/unmerge</strong></td>
+              <td>Không rollback được</td>
+              <td>Transaction: merge 2 profiles atomic</td>
+            </tr>
+            <tr>
+              <td><strong>Small concurrent writes</strong> (API identify, webhook)</td>
+              <td>"Too many parts" error khi insert từng row</td>
+              <td>PG handle hàng nghìn small writes/giây</td>
+            </tr>
+            <tr>
+              <td><strong>Application config</strong> (users, roles, scoring rules)</td>
+              <td>Overkill, không cần columnar</td>
+              <td>PG relational model, JOIN, foreign key</td>
+            </tr>
+            <tr>
+              <td><strong>Billion events analytics</strong></td>
+              <td>Columnar scan cực nhanh</td>
+              <td>PG chết ở scale này</td>
+            </tr>
+            <tr>
+              <td><strong>Dashboard aggregation</strong></td>
+              <td>SUM/AVG/COUNT trên 100M rows &lt; 1 giây</td>
+              <td>PG timeout</td>
+            </tr>
+            <tr>
+              <td><strong>Time-series score history</strong></td>
+              <td>MergeTree partition by month, TTL tự xóa</td>
+              <td>PG partition phức tạp hơn</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -1636,25 +1744,12 @@
 <span class="kw2">CREATE MATERIALIZED VIEW</span> <span class="id">cdp_raw.mv_events_raw</span>
 <span class="kw">TO</span> <span class="id">cdp_raw.raw_events</span>
 <span class="kw">AS SELECT</span>
-    <span class="id">event_id</span><span class="pn">,</span>
-    <span class="id">event_type</span><span class="pn">,</span>
-    <span class="id">event_category</span><span class="pn">,</span>
-    <span class="id">timestamp</span><span class="pn">,</span>
-    <span class="id">source_system</span><span class="pn">,</span>
-    <span class="id">source_bu</span><span class="pn">,</span>
-    <span class="id">source_connector</span><span class="pn">,</span>
-    <span class="id">actor_customer_id</span><span class="pn">,</span>
-    <span class="id">actor_anonymous_id</span><span class="pn">,</span>
-    <span class="id">actor_session_id</span><span class="pn">,</span>
-    <span class="id">actor_device_id</span><span class="pn">,</span>
-    <span class="id">context_ip</span><span class="pn">,</span>
-    <span class="id">context_url</span><span class="pn">,</span>
-    <span class="id">context_referrer</span><span class="pn">,</span>
-    <span class="id">context_utm_source</span><span class="pn">,</span>
-    <span class="id">context_utm_medium</span><span class="pn">,</span>
-    <span class="id">context_utm_campaign</span><span class="pn">,</span>
-    <span class="id">properties</span><span class="pn">,</span>
-    <span class="id">metadata_sdk_version</span><span class="pn">,</span>
+    <span class="id">event_id</span><span class="pn">,</span> <span class="id">event_type</span><span class="pn">,</span> <span class="id">event_category</span><span class="pn">,</span> <span class="id">timestamp</span><span class="pn">,</span>
+    <span class="id">source_system</span><span class="pn">,</span> <span class="id">source_bu</span><span class="pn">,</span> <span class="id">source_connector</span><span class="pn">,</span>
+    <span class="id">actor_customer_id</span><span class="pn">,</span> <span class="id">actor_anonymous_id</span><span class="pn">,</span> <span class="id">actor_session_id</span><span class="pn">,</span> <span class="id">actor_device_id</span><span class="pn">,</span>
+    <span class="id">context_ip</span><span class="pn">,</span> <span class="id">context_url</span><span class="pn">,</span> <span class="id">context_referrer</span><span class="pn">,</span>
+    <span class="id">context_utm_source</span><span class="pn">,</span> <span class="id">context_utm_medium</span><span class="pn">,</span> <span class="id">context_utm_campaign</span><span class="pn">,</span>
+    <span class="id">properties</span><span class="pn">,</span> <span class="id">metadata_sdk_version</span><span class="pn">,</span>
     <span class="fn">now64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">ingested_at</span>
 <span class="kw">FROM</span> <span class="id">cdp_raw.kafka_events</span><span class="pn">;</span>
 
@@ -1971,105 +2066,7 @@
         </table>
       </div>
 
-      <h4 class="subsection-title-sm">Request/Response format</h4>
-      <p><strong>POST /v1/events</strong></p>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">json</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code><span class="cm">// Request</span>
-<span class="pn">{</span>
-  <span class="json-key">"event_type"</span>: <span class="json-str">"page_view"</span>,
-  <span class="json-key">"timestamp"</span>: <span class="json-str">"2026-06-11T14:30:00.000Z"</span>,
-  <span class="json-key">"anonymous_id"</span>: <span class="json-str">"anon_abc123"</span>,
-  <span class="json-key">"customer_id"</span>: <span class="json-null">null</span>,
-  <span class="json-key">"properties"</span>: <span class="pn">{</span>
-    <span class="json-key">"page_url"</span>: <span class="json-str">"https://ngocdung.com/dich-vu/tre-hoa-da"</span>,
-    <span class="json-key">"page_title"</span>: <span class="json-str">"Trẻ hoá da - Ngọc Dung"</span>,
-    <span class="json-key">"referrer"</span>: <span class="json-str">"https://google.com"</span>
-  <span class="pn">},</span>
-  <span class="json-key">"context"</span>: <span class="pn">{</span>
-    <span class="json-key">"utm_source"</span>: <span class="json-str">"google"</span>,
-    <span class="json-key">"utm_medium"</span>: <span class="json-str">"cpc"</span>
-  <span class="pn">}</span>
-<span class="pn">}</span>
-
-<span class="cm">// Response 200 OK</span>
-<span class="pn">{</span>
-  <span class="json-key">"status"</span>: <span class="json-str">"ok"</span>,
-  <span class="json-key">"event_id"</span>: <span class="json-str">"evt_uuid_generated"</span>
-<span class="pn">}</span>
-
-<span class="cm">// Response 400 Bad Request</span>
-<span class="pn">{</span>
-  <span class="json-key">"status"</span>: <span class="json-str">"error"</span>,
-  <span class="json-key">"error"</span>: <span class="json-str">"validation_failed"</span>,
-  <span class="json-key">"details"</span>: <span class="pn">[</span>
-    <span class="pn">{</span><span class="json-key">"field"</span>: <span class="json-str">"event_type"</span>, <span class="json-key">"message"</span>: <span class="json-str">"required field missing"</span><span class="pn">}</span>
-  <span class="pn">]</span>
-<span class="pn">}</span></code></pre>
-      </div>
-
-      <p><strong>POST /v1/identify</strong></p>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">json</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code><span class="cm">// Request - Link anonymous user → known customer</span>
-<span class="pn">{</span>
-  <span class="json-key">"anonymous_id"</span>: <span class="json-str">"anon_abc123"</span>,
-  <span class="json-key">"customer_id"</span>: <span class="json-null">null</span>,
-  <span class="json-key">"traits"</span>: <span class="pn">{</span>
-    <span class="json-key">"phone"</span>: <span class="json-str">"0901234567"</span>,
-    <span class="json-key">"email"</span>: <span class="json-str">"a@email.com"</span>,
-    <span class="json-key">"name"</span>: <span class="json-str">"Nguyễn Thị A"</span>
-  <span class="pn">}</span>
-<span class="pn">}</span>
-
-<span class="cm">// CDP sẽ:</span>
-<span class="cm">// 1. Lookup phone/email trong identity graph</span>
-<span class="cm">// 2. Nếu tìm thấy → link anonymous_id vào customer_id hiện có</span>
-<span class="cm">// 3. Nếu không → tạo customer mới (hoặc queue cho identity resolution)</span></code></pre>
-      </div>
-
-      <p><strong>POST /v1/webhooks/zalo</strong></p>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">json</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code><span class="cm">// Zalo OA gửi webhook khi có event</span>
-<span class="pn">{</span>
-  <span class="json-key">"app_id"</span>: <span class="json-str">"123456"</span>,
-  <span class="json-key">"event_name"</span>: <span class="json-str">"user_send_text"</span>,
-  <span class="json-key">"timestamp"</span>: <span class="json-str">"1718107800000"</span>,
-  <span class="json-key">"sender"</span>: <span class="pn">{</span>
-    <span class="json-key">"id"</span>: <span class="json-str">"zalo_user_789"</span>
-  <span class="pn">},</span>
-  <span class="json-key">"message"</span>: <span class="pn">{</span>
-    <span class="json-key">"text"</span>: <span class="json-str">"Cho mình hỏi về liệu trình trẻ hoá da"</span>
-  <span class="pn">}</span>
-<span class="pn">}</span>
-
-<span class="cm">// CDP API Gateway:</span>
-<span class="cm">// 1. Verify webhook signature</span>
-<span class="cm">// 2. Transform thành Unified Event Format</span>
-<span class="cm">// 3. Push vào Kafka topic cdp.events.crm.{bu}</span>
-<span class="cm">// 4. Response 200 OK cho Zalo</span></code></pre>
-      </div>
-
       <h4 class="subsection-title-sm">Routing: Kafka vs Direct insert</h4>
-      <div class="ascii-block">
-        <pre><code>API Gateway nhận request
-  │
-  ├── Volume cao (events, tracking) → Push vào Kafka → ClickHouse consume
-  │     Ưu điểm: buffer, không mất data khi CH chậm, decouple
-  │
-  └── Volume thấp, cần confirm (identify, import) → Direct insert ClickHouse
-        Ưu điểm: response ngay kết quả, synchronous</code></pre>
-      </div>
       <div class="table-wrap">
         <table>
           <thead>
@@ -2161,7 +2158,6 @@ Rules:
 4. Loại bỏ email rõ ràng fake:
    - test@test.com, example@example.com
    - abc@abc.com, no@email.com
-   - Domain không tồn tại (optional, nếu có DNS check)
 
 Ví dụ:
   <span class="str">" A.Nguyen@Gmail.COM "</span>  → <span class="str">"a.nguyen@gmail.com"</span> <span class="kw">✅</span>
@@ -2185,103 +2181,30 @@ Rules:
 
 Ví dụ:
   <span class="str">"NGUYỄN THỊ A"</span>     → <span class="str">"Nguyễn Thị A"</span>
-  <span class="str">"nguyen thi a"</span>      → <span class="str">"Nguyen Thi A"</span> (không có dấu → giữ không dấu)
-  <span class="str">"chị A Nguyễn"</span>      → <span class="str">"A Nguyễn"</span> (bỏ "chị", giữ thứ tự gốc)
-  <span class="str">"  Nguyễn  Thị   A"</span> → <span class="str">"Nguyễn Thị A"</span> (collapse spaces)</code></pre>
+  <span class="str">"nguyen thi a"</span>      → <span class="str">"Nguyen Thi A"</span>
+  <span class="str">"chị A Nguyễn"</span>      → <span class="str">"A Nguyễn"</span> (bỏ "chị")
+  <span class="str">"  Nguyễn  Thị   A"</span> → <span class="str">"Nguyễn Thị A"</span></code></pre>
       </div>
 
-      <h4 class="subsection-title-sm">3.2.4. Gender</h4>
+      <h4 class="subsection-title-sm">3.2.4–3.2.8. Gender, DOB, Address, Currency, Timestamp</h4>
       <div class="code-block-wrap">
         <div class="code-block-header">
           <span class="code-block-lang">rules</span>
           <div class="code-block-dots"><span></span><span></span><span></span></div>
         </div>
-        <pre><code>Input bất kỳ → Output chuẩn: 'M' | 'F' | null
+        <pre><code><span class="cm">-- Gender: 'F', 'female', 'nữ', 2, '2' → 'F' | 'M', 'male', 'nam', 1 → 'M' | else → NULL</span>
 
-Mapping:
-  <span class="str">'F', 'female', 'nữ', 'nu', 'Nữ', 2, '2', 'woman'</span> → <span class="str">'F'</span>
-  <span class="str">'M', 'male', 'nam', 'Nam', 1, '1', 'man'</span>          → <span class="str">'M'</span>
-  Mọi giá trị khác                                   → <span class="json-null">null</span></code></pre>
-      </div>
+<span class="cm">-- DOB: "15/05/1990" | "1990-05-15" | "May 15, 1990" → Date(YYYY-MM-DD)</span>
+<span class="cm">--      Validate năm: 1920–2015</span>
 
-      <h4 class="subsection-title-sm">3.2.5. Date of birth</h4>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">rules</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code>Input bất kỳ → Output chuẩn: Date (YYYY-MM-DD)
+<span class="cm">-- Address: raw_address → {province, district, ward, street, region}</span>
+<span class="cm">--          region = Bắc/Trung/Nam derived từ province</span>
 
-Formats accepted:
-  <span class="str">"1990-05-15"</span>     → 1990-05-15 <span class="kw">✅</span>
-  <span class="str">"15/05/1990"</span>     → 1990-05-15 <span class="kw">✅</span>
-  <span class="str">"05/15/1990"</span>     → 1990-05-15 <span class="kw">✅</span> (detect US format)
-  <span class="str">"15-05-1990"</span>     → 1990-05-15 <span class="kw">✅</span>
-  <span class="str">"1990"</span>           → 1990-01-01 (chỉ có năm → ghi nhận năm, flag partial)
-  <span class="str">"May 15, 1990"</span>   → 1990-05-15 <span class="kw">✅</span>
+<span class="cm">-- Currency: "1.500.000 VND" | "1,500,000đ" → Decimal64(2) 1500000.00</span>
 
-Validation:
-  - Năm sinh: 1920-2015 (hợp lý cho khách hàng)
-  - Ngoài range → flag suspicious, giữ raw</code></pre>
-      </div>
-
-      <h4 class="subsection-title-sm">3.2.6. Address</h4>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">rules</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code>Input bất kỳ → Output: structured address
-
-Fields:
-  - <span class="id">raw_address</span>: String (giữ nguyên)
-  - <span class="id">province</span>: String (tỉnh/thành phố, chuẩn hoá theo danh mục 63 tỉnh)
-  - <span class="id">district</span>: String (quận/huyện, chuẩn hoá)
-  - <span class="id">ward</span>: String (phường/xã, chuẩn hoá)
-  - <span class="id">street</span>: String (phần còn lại)
-  - <span class="id">region</span>: String (Bắc/Trung/Nam, tự derive từ province)
-
-Mapping table: cần bảng danh mục hành chính VN chuẩn</code></pre>
-      </div>
-
-      <h4 class="subsection-title-sm">3.2.7. Currency / Amount</h4>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">rules</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code>Input bất kỳ → Output chuẩn: Decimal64(2), đơn vị VND
-
-Rules:
-1. Loại bỏ ký tự: "VND", "đ", "₫", ",", "."
-2. Detect separator:
-   - <span class="str">"1.500.000"</span> → 1500000 (dấu . là thousand separator VN)
-   - <span class="str">"1,500,000"</span> → 1500000 (dấu , là thousand separator)
-   - <span class="str">"1500000.50"</span> → 1500000.50 (dấu . cuối là decimal)
-3. Validate: amount > 0 và hợp lý (< 100 tỷ)</code></pre>
-      </div>
-
-      <h4 class="subsection-title-sm">3.2.8. Timestamp</h4>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">rules</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code>Input bất kỳ → Output chuẩn: DateTime64(3), UTC timezone
-
-Rules:
-1. Parse multiple formats: ISO 8601, Unix epoch (sec &amp; ms), custom formats
-2. Convert timezone:
-   - Nếu có timezone info → convert sang UTC
-   - Nếu không có → assume Asia/Ho_Chi_Minh (UTC+7) → convert sang UTC
-3. Validate: không quá xa trong tương lai (> now + 1 day → reject)
-   Không quá xa trong quá khứ (tuỳ context: events &lt; 1 năm, transactions &lt; 10 năm)
-
-Ví dụ:
-  <span class="str">"2026-06-11T14:30:00+07:00"</span> → <span class="str">"2026-06-11T07:30:00.000Z"</span>
-  <span class="str">"2026-06-11 14:30:00"</span>       → <span class="str">"2026-06-11T07:30:00.000Z"</span> (assume +7)
-  <span class="nu">1718107800</span>                   → <span class="str">"2026-06-11T07:30:00.000Z"</span>
-  <span class="nu">1718107800000</span>                → <span class="str">"2026-06-11T07:30:00.000Z"</span> (detect ms)</code></pre>
+<span class="cm">-- Timestamp: ISO 8601, Unix epoch(sec/ms), custom → DateTime64(3) UTC</span>
+<span class="cm">--            Nếu không có timezone → assume Asia/Ho_Chi_Minh (UTC+7)</span>
+<span class="cm">-- Ví dụ: "2026-06-11T14:30:00+07:00" → "2026-06-11T07:30:00.000Z"</span></code></pre>
       </div>
     </div>
 
@@ -2333,21 +2256,237 @@ Ví dụ:
   </div>
 </section>
 
-<!-- ===== SECTION 4: DATA LAYERS ===== -->
+<!-- ===== SECTION 4: DATA LAYERS — DUAL DATABASE ===== -->
 <section class="section-dark-2" id="section-4">
   <div class="container">
     <div class="section-header">
       <span class="section-num">Section 04</span>
-      <h2 class="section-title">Data Layer Design</h2>
-      <p class="section-lead">Bronze → Silver → Gold — ba lớp dữ liệu trong ClickHouse CDP.</p>
+      <h2 class="section-title">Data Layer Design (Dual-Database)</h2>
+      <p class="section-lead">PostgreSQL (OLTP) + ClickHouse (OLAP) — mỗi database làm đúng thế mạnh, Bronze → Silver → Gold trong ClickHouse.</p>
     </div>
 
-    <!-- 4.1 Bronze -->
+    <!-- 4.0 Decision Tree -->
     <div class="subsection">
-      <h3 class="subsection-title">4.1. Layer 1: Bronze (Raw)</h3>
-      <div class="callout">
-        <p><strong>Database:</strong> <code>cdp_raw</code> — Giữ nguyên data gốc, không transform. Mỗi source/BU/entity 1 table riêng. Engine: ReplacingMergeTree.</p>
+      <h3 class="subsection-title">4.0. Database Responsibility Split</h3>
+      <div class="ascii-block">
+        <pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    QUYẾT ĐỊNH: DATA NÀY ĐI ĐÂU?                       │
+│                                                                         │
+│  Hỏi lần lượt:                                                         │
+│                                                                         │
+│  1. Application cần UPDATE/DELETE thường xuyên?        → PostgreSQL    │
+│  2. Application cần đọc single row by ID?              → PostgreSQL    │
+│  3. Cần ACID transaction (nhiều bảng atomic)?          → PostgreSQL    │
+│  4. Data là config/state/definition?                   → PostgreSQL    │
+│  5. Volume > 10M rows VÀ chủ yếu INSERT + aggregate?  → ClickHouse   │
+│  6. Time-series / event stream?                        → ClickHouse   │
+│  7. Pre-aggregated metrics cho dashboard?              → ClickHouse   │
+│                                                                         │
+│  Nếu cần CẢ HAI (VD: customer — PG update, CH analytics):             │
+│  → PostgreSQL là source of truth, CDC sync sang ClickHouse             │
+└─────────────────────────────────────────────────────────────────────────┘</code></pre>
       </div>
+    </div>
+
+    <!-- 4.1 PostgreSQL -->
+    <div class="subsection">
+      <h3 class="subsection-title">4.1. PostgreSQL — Operational Database</h3>
+      <div class="callout">
+        <p><strong>Database:</strong> <code>cdp</code> — Source of truth cho master data, operational state, system config. Backend API đọc/ghi trực tiếp. Mọi UPDATE/DELETE đều ở đây.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">Schema overview</h4>
+      <div class="file-tree">
+        <div class="file-tree-header">
+          <span>cdp (PostgreSQL)</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>cdp (PostgreSQL)
+│
+├── Customer Master:
+│   ├── customers                     # Unified customer profile (source of truth)
+│   ├── customer_bu_profiles          # Profile riêng tại mỗi BU
+│   ├── customer_tags                 # Tags gắn cho khách
+│   ├── customer_scores               # Latest scores (unified, monetary, engagement...)
+│   ├── identity_graph                # Identity resolution: link records → customer
+│   ├── identity_merge_log            # Lịch sử merge/unmerge (audit)
+│   └── customer_source_ids           # Mapping: source_system + source_id → customer_id
+│
+├── Operational State:
+│   ├── leads                         # Lead pipeline (status thay đổi liên tục)
+│   ├── lead_assignments              # Lead assign cho telesale
+│   ├── lead_activities               # Ghi chú, gọi điện, notes per lead
+│   ├── campaigns                     # Campaign definitions + state machine
+│   ├── campaign_members              # Khách trong campaign (gửi/chưa gửi/kết quả)
+│   ├── workflows                     # Automation workflow definitions
+│   ├── workflow_instances            # Instance đang chạy per customer
+│   ├── workflow_step_logs            # Log từng step đã thực hiện
+│   ├── consents                      # Consent matrix (BU × channel × customer)
+│   ├── consent_change_log            # Lịch sử thay đổi consent
+│   ├── appointments                  # Lịch hẹn (Beauty)
+│   ├── treatments                    # Liệu trình (Beauty)
+│   ├── treatment_sessions            # Buổi liệu trình
+│   ├── dealers                       # Đại lý Ocany
+│   └── dealer_contracts              # Hợp đồng đại lý
+│
+├── Segment Engine:
+│   ├── segments                      # Segment definitions (conditions JSON)
+│   ├── segment_members               # Dynamic membership (customer ↔ segment)
+│   └── segment_snapshots             # Snapshot count per segment per day
+│
+├── Reference / Config:
+│   ├── business_units, branches, staff, services, products
+│   └── provinces, districts, wards
+│
+├── Scoring Config:
+│   ├── scoring_configs, scoring_tier_thresholds, scoring_engagement_rules
+│   ├── scoring_config_versions
+│   └── scoring_auto_actions
+│
+└── System:
+    ├── users, roles, permissions, user_roles, api_keys
+    ├── audit_log, notifications
+    └── Pipeline Config: connector_configs, pipeline_schedules, pipeline_run_log</pre>
+      </div>
+
+      <h4 class="subsection-title-sm">PostgreSQL: <code>customers</code> table (source of truth)</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql — postgresql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">customers</span> <span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGSERIAL</span> <span class="kw">PRIMARY KEY</span><span class="pn">,</span>
+
+    <span class="cm">-- Standard fields (đã chuẩn hoá)</span>
+    <span class="id">phone</span>                <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">15</span><span class="pn">),</span>          <span class="cm">-- Chuẩn: "0901234567"</span>
+    <span class="id">phone_valid</span>          <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
+    <span class="id">email</span>                <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">255</span><span class="pn">),</span>
+    <span class="id">email_valid</span>          <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
+
+    <span class="id">raw_name</span>             <span class="ty">TEXT</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">normalized_name</span>      <span class="ty">TEXT</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">first_name</span>           <span class="ty">TEXT</span><span class="pn">,</span>
+    <span class="id">last_name</span>            <span class="ty">TEXT</span><span class="pn">,</span>
+
+    <span class="id">gender</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">1</span><span class="pn">)</span> <span class="kw">CHECK</span> <span class="pn">(</span><span class="id">gender</span> <span class="kw">IN</span> <span class="pn">(</span><span class="str">'M'</span><span class="pn">,</span> <span class="str">'F'</span><span class="pn">)),</span>
+    <span class="id">date_of_birth</span>        <span class="ty">DATE</span><span class="pn">,</span>
+    <span class="id">dob_precision</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'full'</span><span class="pn">,</span>
+
+    <span class="cm">-- Address</span>
+    <span class="id">raw_address</span>          <span class="ty">TEXT</span><span class="pn">,</span>
+    <span class="id">province_code</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">5</span><span class="pn">)</span> <span class="kw">REFERENCES</span> <span class="id">provinces</span><span class="pn">(</span><span class="id">code</span><span class="pn">),</span>
+    <span class="id">district_code</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">5</span><span class="pn">)</span> <span class="kw">REFERENCES</span> <span class="id">districts</span><span class="pn">(</span><span class="id">code</span><span class="pn">),</span>
+    <span class="id">ward_code</span>            <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">REFERENCES</span> <span class="id">wards</span><span class="pn">(</span><span class="id">code</span><span class="pn">),</span>
+    <span class="id">region</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">CHECK</span> <span class="pn">(</span><span class="id">region</span> <span class="kw">IN</span> <span class="pn">(</span><span class="str">'north'</span><span class="pn">,</span> <span class="str">'central'</span><span class="pn">,</span> <span class="str">'south'</span><span class="pn">)),</span>
+
+    <span class="cm">-- BU presence (denormalized for fast query)</span>
+    <span class="id">has_ngocdung</span>         <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">has_zema</span>             <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">has_ocany</span>            <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">bu_count</span>             <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+
+    <span class="id">first_seen_at</span>        <span class="ty">TIMESTAMPTZ</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">first_seen_source</span>    <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">),</span>
+    <span class="id">first_seen_bu</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">),</span>
+    <span class="id">last_seen_at</span>         <span class="ty">TIMESTAMPTZ</span><span class="pn">,</span>
+    <span class="id">last_transaction_at</span>  <span class="ty">TIMESTAMPTZ</span><span class="pn">,</span>
+
+    <span class="cm">-- Identity resolution</span>
+    <span class="id">merge_status</span>         <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'single'</span><span class="pn">,</span>
+    <span class="id">merged_into_id</span>       <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">merge_confidence</span>     <span class="ty">REAL</span><span class="pn">,</span>
+    <span class="id">primary_source</span>       <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">),</span>
+
+    <span class="id">created_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+
+    <span class="kw">CONSTRAINT</span> <span class="id">uq_phone</span> <span class="kw">UNIQUE</span> <span class="pn">(</span><span class="id">phone</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NOT NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span><span class="pn">,</span>
+    <span class="kw">CONSTRAINT</span> <span class="id">uq_email</span> <span class="kw">UNIQUE</span> <span class="pn">(</span><span class="id">email</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">email</span> <span class="kw">IS NOT NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span>
+<span class="pn">);</span>
+
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_phone</span>    <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">phone</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NOT NULL</span><span class="pn">;</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_email</span>    <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">email</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">email</span> <span class="kw">IS NOT NULL</span><span class="pn">;</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_bu</span>       <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">has_ngocdung</span><span class="pn">,</span> <span class="id">has_zema</span><span class="pn">,</span> <span class="id">has_ocany</span><span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_last_seen</span> <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">last_seen_at</span> <span class="kw">DESC</span><span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_name_trgm</span> <span class="kw">ON</span> <span class="id">customers</span> <span class="kw">USING</span> <span class="fn">gin</span> <span class="pn">(</span><span class="id">normalized_name</span> <span class="id">gin_trgm_ops</span><span class="pn">);</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">PostgreSQL: <code>customer_scores</code>, <code>leads</code>, <code>consents</code>, <code>identity_graph</code></h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql — postgresql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- customer_scores: latest scores per customer (updated by scoring jobs)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">customer_scores</span> <span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">PRIMARY KEY</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">unified_score</span>        <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">monetary_score</span>       <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">engagement_score</span>     <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">tier</span>                 <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'bronze'</span><span class="pn">,</span>
+    <span class="id">health_status</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'healthy'</span><span class="pn">,</span>
+    <span class="id">churn_probability_30d</span> <span class="ty">REAL</span><span class="pn">,</span>
+    <span class="id">rfm_segment</span>          <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">30</span><span class="pn">),</span>
+    <span class="id">lifecycle_stage</span>      <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">calculated_at</span>        <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">()</span>
+<span class="pn">);</span>
+
+<span class="cm">-- leads: lead pipeline (thay đổi status liên tục → PG)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">leads</span> <span class="pn">(</span>
+    <span class="id">lead_id</span>              <span class="ty">BIGSERIAL</span> <span class="kw">PRIMARY KEY</span><span class="pn">,</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">bu</span>                   <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">source</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">name</span>                 <span class="ty">TEXT</span><span class="pn">,</span>
+    <span class="id">phone</span>                <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">15</span><span class="pn">),</span>
+    <span class="id">status</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">30</span><span class="pn">)</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">pipeline_stage</span>       <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">)</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">assigned_to</span>          <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">users</span><span class="pn">(</span><span class="id">user_id</span><span class="pn">),</span>
+    <span class="id">branch_id</span>            <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">branches</span><span class="pn">(</span><span class="id">branch_id</span><span class="pn">),</span>
+    <span class="id">created_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="kw">CONSTRAINT</span> <span class="id">chk_lead_status</span> <span class="kw">CHECK</span> <span class="pn">(</span><span class="id">status</span> <span class="kw">IN</span> <span class="pn">(</span><span class="str">'new'</span><span class="pn">,</span><span class="str">'contacted'</span><span class="pn">,</span><span class="str">'qualified'</span><span class="pn">,</span><span class="str">'unqualified'</span><span class="pn">,</span><span class="str">'converted'</span><span class="pn">,</span><span class="str">'lost'</span><span class="pn">))</span>
+<span class="pn">);</span>
+
+<span class="cm">-- consents: composite PK ensures 1 row per customer × bu × channel × type</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">consents</span> <span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">bu</span>                   <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">channel</span>              <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>  <span class="cm">-- zalo/sms/email/push/call</span>
+    <span class="id">consent_type</span>         <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="str">'marketing'</span><span class="pn">,</span>
+    <span class="id">status</span>               <span class="ty">BOOLEAN</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_by</span>           <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">),</span>
+    <span class="kw">PRIMARY KEY</span> <span class="pn">(</span><span class="id">customer_id</span><span class="pn">,</span> <span class="id">bu</span><span class="pn">,</span> <span class="id">channel</span><span class="pn">,</span> <span class="id">consent_type</span><span class="pn">)</span>
+<span class="pn">);</span>
+
+<span class="cm">-- identity_graph: all identifiers linked to a customer</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">identity_graph</span> <span class="pn">(</span>
+    <span class="id">id</span>                   <span class="ty">BIGSERIAL</span> <span class="kw">PRIMARY KEY</span><span class="pn">,</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">NOT NULL</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">identifier_type</span>      <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">30</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>  <span class="cm">-- phone/email/crm_id/zalo_id</span>
+    <span class="id">identifier_value</span>     <span class="ty">TEXT</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">source_system</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">confidence</span>           <span class="ty">REAL</span> <span class="kw">DEFAULT</span> <span class="nu">1.0</span><span class="pn">,</span>
+    <span class="id">verified</span>             <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">created_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="kw">UNIQUE</span> <span class="pn">(</span><span class="id">identifier_type</span><span class="pn">,</span> <span class="id">identifier_value</span><span class="pn">,</span> <span class="id">source_system</span><span class="pn">)</span>
+<span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_identity_lookup</span>   <span class="kw">ON</span> <span class="id">identity_graph</span> <span class="pn">(</span><span class="id">identifier_type</span><span class="pn">,</span> <span class="id">identifier_value</span><span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_identity_customer</span> <span class="kw">ON</span> <span class="id">identity_graph</span> <span class="pn">(</span><span class="id">customer_id</span><span class="pn">);</span></code></pre>
+      </div>
+    </div>
+
+    <!-- 4.2 ClickHouse -->
+    <div class="subsection">
+      <h3 class="subsection-title">4.2. ClickHouse — Analytical Database</h3>
+      <div class="callout">
+        <p><strong>Role:</strong> Analytical engine cho high-volume append-mostly data. Bronze (raw) → Silver (cleaned) → Gold (analytics). Master data (customers/leads/consents) KHÔNG sống ở đây — chỉ có <code>customers_replica</code> để phục vụ JOIN.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">4.2.1. Layer 1: Bronze (Raw) — Database: <code>cdp_raw</code></h4>
       <div class="file-tree">
         <div class="file-tree-header">
           <span>cdp_raw — Bronze Layer</span>
@@ -2356,61 +2495,35 @@ Ví dụ:
         <pre>cdp_raw/
 │
 ├── From Airbyte (Cơ chế 1):
-│   ├── raw_pos_ngocdung_customers
-│   ├── raw_pos_ngocdung_transactions
-│   ├── raw_pos_ngocdung_transaction_items
-│   ├── raw_pos_ngocdung_appointments
-│   ├── raw_pos_ngocdung_treatments
-│   ├── raw_pos_ngocdung_treatment_sessions
-│   ├── raw_pos_ngocdung_services
-│   ├── raw_pos_ngocdung_branches
-│   ├── raw_pos_ngocdung_staff
-│   ├── raw_pos_zema_*                (tương tự ND)
-│   ├── raw_crm_{bu}_contacts
-│   ├── raw_crm_{bu}_leads
-│   ├── raw_crm_{bu}_deals
-│   ├── raw_crm_{bu}_activities
-│   ├── raw_erp_ocany_orders
-│   ├── raw_erp_ocany_order_items
-│   ├── raw_erp_ocany_products
-│   ├── raw_erp_ocany_inventory
-│   ├── raw_erp_ocany_dealers
-│   ├── raw_dms_ocany_dealer_orders
-│   └── raw_dms_ocany_dealer_sellout
+│   ├── raw_pos_ngocdung_customers, raw_pos_ngocdung_transactions, ...
+│   ├── raw_pos_zema_*
+│   ├── raw_crm_{bu}_contacts, raw_crm_{bu}_leads, raw_crm_{bu}_deals
+│   ├── raw_erp_ocany_orders, raw_erp_ocany_order_items, raw_erp_ocany_products
+│   ├── raw_erp_ocany_inventory, raw_erp_ocany_dealers
+│   └── raw_dms_ocany_dealer_orders, raw_dms_ocany_dealer_sellout
 │
 ├── From Kafka (Cơ chế 2):
 │   └── raw_events                    (unified event table, partitioned by bu + month)
 │
 ├── From API Pull (Cơ chế 3):
-│   ├── raw_api_facebook_ads_{bu}
-│   ├── raw_api_facebook_leads_{bu}
-│   ├── raw_api_google_ads_{bu}
-│   ├── raw_api_google_analytics_{bu}
-│   ├── raw_api_zalo_followers_{bu}
-│   ├── raw_api_zalo_messages_{bu}
-│   ├── raw_api_shopee_orders_ocany
-│   ├── raw_api_lazada_orders_ocany
+│   ├── raw_api_facebook_ads_{bu}, raw_api_facebook_leads_{bu}
+│   ├── raw_api_google_ads_{bu}, raw_api_google_analytics_{bu}
+│   ├── raw_api_zalo_followers_{bu}, raw_api_zalo_messages_{bu}
+│   ├── raw_api_shopee_orders_ocany, raw_api_lazada_orders_ocany
 │   ├── raw_api_tiktok_orders_ocany
-│   ├── raw_api_sms_delivery
-│   └── raw_api_email_events
+│   ├── raw_api_sms_delivery, raw_api_email_events
 │
 ├── From API Gateway (Cơ chế 4):
-│   └── (events → raw_events qua Kafka)
-│   └── raw_api_identify_requests     (direct write identify calls)
+│   ├── raw_api_identify_requests     (direct write identify calls)
 │   └── raw_api_imports               (CSV/bulk imports)
 │
 └── System:
     ├── raw_events_dlq                (Dead Letter Queue)
     └── api_pull_checkpoints</pre>
       </div>
-    </div>
 
-    <!-- 4.2 Silver -->
-    <div class="subsection">
-      <h3 class="subsection-title">4.2. Layer 2: Silver (Cleaned &amp; Standardized)</h3>
-      <div class="callout">
-        <p><strong>Database:</strong> <code>cdp_clean</code> — Data đã qua standardization. Deduplication hoàn chỉnh. Schema chuẩn xuyên BU. Engine: ReplacingMergeTree.</p>
-      </div>
+      <h4 class="subsection-title-sm">4.2.2. Layer 2: Silver (Cleaned) — Database: <code>cdp_clean</code></h4>
+      <p>Chứa data <strong>high-volume, append-mostly</strong>. <strong>Không chứa</strong> <code>customers</code>, <code>leads</code>, <code>consents</code>, <code>segments</code>, <code>campaigns</code> — những bảng đó sống ở PostgreSQL.</p>
       <div class="file-tree">
         <div class="file-tree-header">
           <span>cdp_clean — Silver Layer</span>
@@ -2418,205 +2531,81 @@ Ví dụ:
         </div>
         <pre>cdp_clean/
 │
-├── Entity tables (chuẩn hoá xuyên BU):
-│   ├── customers                     # Khách hàng chuẩn hoá từ mọi nguồn
+├── High-volume entity tables (ClickHouse strength):
 │   ├── transactions                  # Giao dịch từ POS + ERP + e-commerce
 │   ├── transaction_items             # Chi tiết giao dịch
-│   ├── leads                         # Lead từ CRM + FB + API
-│   ├── appointments                  # Lịch hẹn (Beauty)
-│   ├── treatments                    # Liệu trình (Beauty)
-│   ├── treatment_sessions            # Buổi liệu trình (Beauty)
-│   ├── services                      # Danh mục dịch vụ (Beauty)
-│   ├── products                      # Danh mục sản phẩm (Ocany)
-│   ├── orders                        # Đơn hàng (Ocany)
+│   ├── events                        # Events đã chuẩn hoá + enriched (billions)
+│   ├── orders                        # Đơn hàng Ocany
 │   ├── order_items                   # Chi tiết đơn hàng
-│   ├── dealers                       # Đại lý (Ocany)
-│   ├── dealer_orders                 # Đơn đại lý
-│   ├── branches                      # Chi nhánh/khu vực
-│   ├── staff                         # Nhân viên
-│   └── events                        # Events đã chuẩn hoá + enriched
+│   └── dealer_orders                 # Đơn đại lý
 │
-├── Marketing tables:
-│   ├── ad_campaigns                  # Campaign từ FB + GG + Zalo
-│   ├── ad_performance                # Stats per campaign/ad
-│   ├── sms_delivery                  # SMS delivery status
+├── Marketing event tables:
+│   ├── ad_performance                # Stats per campaign/ad (from FB/GG/Zalo)
+│   ├── sms_delivery                  # SMS delivery status (high volume)
 │   ├── email_events                  # Email tracking events
 │   └── zalo_interactions             # Zalo OA interactions
 │
-├── Mapping / Reference tables:
-│   ├── phone_to_customer_mapping     # SĐT → customer_id
-│   ├── email_to_customer_mapping     # Email → customer_id
-│   ├── anonymous_to_customer_mapping # anonymous_id → customer_id
-│   ├── source_id_mapping             # source_system + source_id → customer_id
-│   ├── provinces                     # Danh mục 63 tỉnh
-│   ├── districts                     # Danh mục quận/huyện
-│   └── wards                         # Danh mục phường/xã
+├── Mapping tables (replicated from PG via CDC):
+│   ├── customers_replica             # Read-only replica synced from PG
+│   ├── branches_replica              # Replicated from PG
+│   └── staff_replica                 # Replicated from PG
 │
 └── Quality:
     └── data_quality_issues           # Log vấn đề data quality</pre>
       </div>
 
-      <h4 class="subsection-title-sm">Ví dụ Silver table: <code>customers</code></h4>
       <div class="code-block-wrap">
         <div class="code-block-header">
-          <span class="code-block-lang">sql</span>
+          <span class="code-block-lang">sql — clickhouse</span>
           <div class="code-block-dots"><span></span><span></span><span></span></div>
         </div>
-        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">cdp_clean.customers</span>
+        <pre><code><span class="cm">-- Silver: transactions (high-volume, ReplacingMergeTree)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_clean.transactions</span>
 <span class="pn">(</span>
-    <span class="cm">-- Identity</span>
-    <span class="id">customer_id</span>          <span class="ty">UInt64</span><span class="pn">,</span>         <span class="cm">-- CDP internal ID (auto-generated)</span>
+    <span class="id">transaction_id</span>       <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">customer_id</span>          <span class="ty">UInt64</span><span class="pn">,</span>
+    <span class="id">bu</span>                   <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">branch_id</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt32</span><span class="pn">),</span>
+    <span class="id">transaction_type</span>     <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">transaction_date</span>     <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">amount</span>               <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">),</span>
+    <span class="id">net_amount</span>           <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">),</span>
+    <span class="id">payment_method</span>       <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
+    <span class="id">currency</span>             <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'VND'</span><span class="pn">,</span>
+    <span class="id">source_system</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">source_id</span>            <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">_version</span>             <span class="ty">UInt64</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">_version</span><span class="pn">)</span>
+<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="id">customer_id</span><span class="pn">,</span> <span class="id">transaction_date</span><span class="pn">,</span> <span class="id">transaction_id</span><span class="pn">)</span>
+<span class="kw">PARTITION BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">transaction_date</span><span class="pn">));</span>
 
-    <span class="cm">-- Standard fields (đã chuẩn hoá)</span>
-    <span class="id">phone</span>                <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>  <span class="cm">-- Chuẩn: "0901234567"</span>
-    <span class="id">phone_valid</span>          <span class="ty">Bool</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
-    <span class="id">email</span>                <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>  <span class="cm">-- Chuẩn: lowercase, trimmed</span>
-    <span class="id">email_valid</span>          <span class="ty">Bool</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
-
-    <span class="cm">-- Name</span>
-    <span class="id">raw_name</span>             <span class="ty">String</span><span class="pn">,</span>            <span class="cm">-- Tên gốc, chưa sửa</span>
-    <span class="id">normalized_name</span>      <span class="ty">String</span><span class="pn">,</span>            <span class="cm">-- Tên chuẩn hoá: "Nguyễn Thị A"</span>
-    <span class="id">first_name</span>           <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">last_name</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-
-    <span class="cm">-- Demographics</span>
+<span class="cm">-- Silver: customers_replica (read-only, synced from PG via CDC)</span>
+<span class="cm">-- Dùng để JOIN với transactions/events — KHÔNG dùng cho single-row lookup</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_clean.customers_replica</span>
+<span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">UInt64</span><span class="pn">,</span>
+    <span class="id">phone</span>                <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">email</span>                <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">normalized_name</span>      <span class="ty">String</span><span class="pn">,</span>
     <span class="id">gender</span>               <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'M'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'F'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">)),</span>
     <span class="id">date_of_birth</span>        <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Date</span><span class="pn">),</span>
-    <span class="id">dob_precision</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'full'</span><span class="pn">,</span> <span class="cm">-- 'full','year_only','none'</span>
-
-    <span class="cm">-- Address</span>
-    <span class="id">raw_address</span>          <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
     <span class="id">province</span>             <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">district</span>             <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">ward</span>                 <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
     <span class="id">region</span>               <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'north'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'central'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">,</span> <span class="str">'south'</span> <span class="op">=</span> <span class="nu">3</span><span class="pn">)),</span>
-
-    <span class="cm">-- BU presence</span>
-    <span class="id">has_ngocdung</span>         <span class="ty">Bool</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
-    <span class="id">has_zema</span>             <span class="ty">Bool</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
-    <span class="id">has_ocany</span>            <span class="ty">Bool</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
-    <span class="id">bu_count</span>             <span class="ty">UInt8</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-
-    <span class="cm">-- Lifecycle</span>
-    <span class="id">first_seen_at</span>        <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">first_seen_source</span>    <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">first_seen_bu</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">last_seen_at</span>         <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">last_transaction_at</span>  <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)),</span>
-
-    <span class="cm">-- Identity resolution</span>
-    <span class="id">merge_status</span>         <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'single'</span><span class="pn">,</span>
-    <span class="id">merged_from</span>          <span class="ty">Array</span><span class="pn">(</span><span class="ty">UInt64</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="pn">[],</span>
-    <span class="id">merge_confidence</span>     <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Float32</span><span class="pn">),</span>
-
-    <span class="cm">-- Provenance</span>
-    <span class="id">primary_source</span>       <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">source_ids</span>           <span class="ty">Map</span><span class="pn">(</span><span class="ty">String</span><span class="pn">,</span> <span class="ty">String</span><span class="pn">),</span>
-
-    <span class="cm">-- Metadata</span>
-    <span class="id">created_at</span>           <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">has_ngocdung</span>         <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">has_zema</span>             <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">has_ocany</span>            <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">bu_count</span>             <span class="ty">UInt8</span><span class="pn">,</span>
+    <span class="id">merge_status</span>         <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
     <span class="id">updated_at</span>           <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
     <span class="id">_version</span>             <span class="ty">UInt64</span>
 <span class="pn">)</span>
 <span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">_version</span><span class="pn">)</span>
 <span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">customer_id</span><span class="pn">)</span>
-<span class="kw">PARTITION BY</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">first_seen_at</span><span class="pn">)</span>
-<span class="kw">SETTINGS</span> <span class="id">index_granularity</span> <span class="op">=</span> <span class="nu">8192</span><span class="pn">;</span>
-
-<span class="cm">-- Index phục vụ lookup</span>
-<span class="kw">ALTER TABLE</span> <span class="id">cdp_clean.customers</span> <span class="kw">ADD INDEX</span> <span class="id">idx_phone</span> <span class="pn">(</span><span class="id">phone</span><span class="pn">)</span> <span class="kw">TYPE</span> <span class="fn">bloom_filter</span> <span class="kw">GRANULARITY</span> <span class="nu">4</span><span class="pn">;</span>
-<span class="kw">ALTER TABLE</span> <span class="id">cdp_clean.customers</span> <span class="kw">ADD INDEX</span> <span class="id">idx_email</span> <span class="pn">(</span><span class="id">email</span><span class="pn">)</span> <span class="kw">TYPE</span> <span class="fn">bloom_filter</span> <span class="kw">GRANULARITY</span> <span class="nu">4</span><span class="pn">;</span></code></pre>
-      </div>
-
-      <h4 class="subsection-title-sm">Ví dụ Silver table: <code>transactions</code></h4>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">sql</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">cdp_clean.transactions</span>
-<span class="pn">(</span>
-    <span class="cm">-- Identity</span>
-    <span class="id">transaction_id</span>       <span class="ty">String</span><span class="pn">,</span>            <span class="cm">-- "{source}_{bu}_{original_id}"</span>
-    <span class="id">customer_id</span>          <span class="ty">UInt64</span><span class="pn">,</span>
-
-    <span class="cm">-- BU &amp; Location</span>
-    <span class="id">bu</span>                   <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>  <span class="cm">-- ngocdung/zema/ocany</span>
-    <span class="id">branch_id</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt32</span><span class="pn">),</span>
-    <span class="id">branch_name</span>          <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-
-    <span class="cm">-- Transaction</span>
-    <span class="id">transaction_type</span>     <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>  <span class="cm">-- service/product/treatment/order</span>
-    <span class="id">transaction_date</span>     <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">amount</span>               <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">),</span>             <span class="cm">-- VND, chuẩn hoá</span>
-    <span class="id">discount_amount</span>      <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">net_amount</span>           <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">),</span>
-    <span class="id">payment_method</span>       <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
-    <span class="id">currency</span>             <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'VND'</span><span class="pn">,</span>
-
-    <span class="id">item_count</span>           <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">staff_id</span>             <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt32</span><span class="pn">),</span>
-    <span class="id">staff_name</span>           <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">channel</span>              <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>   <span class="cm">-- in_store/online/shopee/lazada/tiktok/app</span>
-    <span class="id">source_system</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>   <span class="cm">-- pos/erp/shopee/lazada</span>
-    <span class="id">source_id</span>            <span class="ty">String</span><span class="pn">,</span>
-    <span class="id">created_at</span>           <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">updated_at</span>           <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">_version</span>             <span class="ty">UInt64</span>
-<span class="pn">)</span>
-<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">_version</span><span class="pn">)</span>
-<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="id">customer_id</span><span class="pn">,</span> <span class="id">transaction_date</span><span class="pn">,</span> <span class="id">transaction_id</span><span class="pn">)</span>
-<span class="kw">PARTITION BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">transaction_date</span><span class="pn">))</span>
 <span class="kw">SETTINGS</span> <span class="id">index_granularity</span> <span class="op">=</span> <span class="nu">8192</span><span class="pn">;</span></code></pre>
       </div>
 
-      <h4 class="subsection-title-sm">Ví dụ Silver table: <code>events</code> (cleaned)</h4>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">sql</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">cdp_clean.events</span>
-<span class="pn">(</span>
-    <span class="id">event_id</span>             <span class="ty">String</span><span class="pn">,</span>
-    <span class="id">event_type</span>           <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">event_category</span>       <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">timestamp</span>            <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-
-    <span class="cm">-- Actor (enriched sau identity resolution)</span>
-    <span class="id">customer_id</span>          <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt64</span><span class="pn">),</span>
-    <span class="id">anonymous_id</span>         <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">session_id</span>           <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-
-    <span class="cm">-- Source</span>
-    <span class="id">bu</span>                   <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">source_system</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-
-    <span class="cm">-- Context (standardized)</span>
-    <span class="id">url</span>                  <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">referrer</span>             <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">utm_source</span>           <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
-    <span class="id">utm_medium</span>           <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
-    <span class="id">utm_campaign</span>         <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
-
-    <span class="id">properties</span>           <span class="ty">String</span><span class="pn">,</span>  <span class="cm">-- JSON</span>
-    <span class="id">ingested_at</span>          <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">processed_at</span>         <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)</span>
-<span class="pn">)</span>
-<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">MergeTree</span><span class="pn">()</span>
-<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="id">event_category</span><span class="pn">,</span> <span class="id">event_type</span><span class="pn">,</span> <span class="id">timestamp</span><span class="pn">,</span> <span class="id">event_id</span><span class="pn">)</span>
-<span class="kw">PARTITION BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">timestamp</span><span class="pn">))</span>
-<span class="kw">TTL</span> <span class="id">timestamp</span> <span class="op">+</span> <span class="kw">INTERVAL</span> <span class="nu">24</span> <span class="kw">MONTH</span> <span class="kw">DELETE</span>
-<span class="kw">SETTINGS</span> <span class="id">index_granularity</span> <span class="op">=</span> <span class="nu">8192</span><span class="pn">;</span></code></pre>
-      </div>
-    </div>
-
-    <!-- 4.3 Gold -->
-    <div class="subsection">
-      <h3 class="subsection-title">4.3. Layer 3: Gold (Business / Analytics)</h3>
-      <div class="callout">
-        <p><strong>Database:</strong> <code>cdp_analytics</code> — Data đã aggregate, enrich, join. Pre-computed metrics, scores, segments. Optimized cho query performance.</p>
-      </div>
+      <h4 class="subsection-title-sm">4.2.3. Layer 3: Gold (Analytics) — Database: <code>cdp_analytics</code></h4>
       <div class="file-tree">
         <div class="file-tree-header">
           <span>cdp_analytics — Gold Layer</span>
@@ -2624,131 +2613,88 @@ Ví dụ:
         </div>
         <pre>cdp_analytics/
 │
-├── Core business:
-│   ├── unified_customers             # Customer 360 — 1 row per customer, mọi thứ
-│   ├── customer_bu_profiles          # Profile per customer per BU
-│   ├── customer_scores               # Unified + sub-scores (latest)
-│   ├── customer_score_history        # Score history (daily snapshots)
-│   ├── customer_segments             # Customer ↔ Segment mapping
-│   ├── customer_consents             # Consent matrix per customer
+├── Customer analytics (materialized from PG + CH data):
+│   ├── unified_customers_mv          # Denormalized: PG customer + CH aggregates
+│   ├── customer_score_history        # Score snapshots daily (time-series)
 │   ├── customer_timeline             # Merged timeline all events/transactions
-│   └── identity_graph                # Identity resolution graph
+│   └── customer_ltv                  # LTV calculation
 │
-├── Segments:
-│   ├── segments                      # Segment definitions
-│   ├── segment_members               # Dynamic segment membership
-│   └── rfm_segments                  # RFM calculation results
+├── Segment analytics:
+│   ├── segment_member_snapshots      # Snapshot count per segment per day
+│   └── rfm_results                   # RFM calculation results per BU
 │
-├── Analytics (pre-aggregated):
-│   ├── daily_bu_metrics              # Doanh thu, khách, giao dịch per BU per day
+├── Aggregated metrics (dashboard-ready):
+│   ├── daily_bu_metrics              # Revenue, customers, transactions per BU per day
 │   ├── daily_branch_metrics          # Per branch per day
 │   ├── daily_service_metrics         # Per service/product per day
 │   ├── daily_staff_metrics           # Per staff per day
 │   ├── monthly_cohort_retention      # Cohort analysis pre-computed
-│   ├── customer_ltv                  # LTV calculation
 │   └── channel_attribution           # Marketing attribution
 │
-├── Campaign:
-│   ├── campaigns                     # Campaign definitions
-│   ├── campaign_results              # Aggregated results per campaign
+├── Campaign analytics:
+│   ├── campaign_delivery_stats       # Aggregated: sent/delivered/opened/clicked
 │   ├── campaign_customer_results     # Per customer per campaign
-│   └── campaign_daily_metrics        # Daily breakdown
+│   └── campaign_daily_metrics
 │
-├── Lead:
-│   ├── lead_pipeline                 # Current lead pipeline state
-│   ├── lead_scores                   # Lead scoring results
-│   └── lead_funnel_metrics           # Funnel conversion metrics
+├── Lead analytics:
+│   └── lead_funnel_metrics           # Funnel conversion metrics (aggregated from PG)
 │
 ├── Industry-specific:
-│   ├── treatment_tracker             # Liệu trình progress (Beauty)
-│   ├── dealer_health                 # Dealer health scores (Ocany)
-│   └── dealer_monthly_metrics        # Dealer performance
+│   ├── dealer_monthly_metrics        # Dealer performance over time (Ocany)
+│   └── treatment_completion_stats    # Liệu trình completion rate (Beauty)
 │
 └── System:
-    ├── data_freshness                # Tracking data freshness per source
-    └── ingestion_metrics             # Volume/latency per ingestion mechanism</pre>
+    ├── data_freshness
+    └── ingestion_metrics</pre>
       </div>
 
-      <h4 class="subsection-title-sm">Ví dụ Gold table: <code>unified_customers</code></h4>
       <div class="code-block-wrap">
         <div class="code-block-header">
-          <span class="code-block-lang">sql</span>
+          <span class="code-block-lang">sql — clickhouse gold</span>
           <div class="code-block-dots"><span></span><span></span><span></span></div>
         </div>
-        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">cdp_analytics.unified_customers</span>
+        <pre><code><span class="cm">-- Gold: unified_customers_mv</span>
+<span class="cm">-- Denormalized: PG master data + CH aggregated metrics</span>
+<span class="cm">-- Rebuilt daily (batch job). NOT for single-row lookup (dùng PG cho việc đó)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_analytics.unified_customers_mv</span>
 <span class="pn">(</span>
     <span class="id">customer_id</span>              <span class="ty">UInt64</span><span class="pn">,</span>
 
-    <span class="cm">-- Basic info (from Silver)</span>
+    <span class="cm">-- From PG (replicated)</span>
     <span class="id">phone</span>                    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-    <span class="id">email</span>                    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
     <span class="id">normalized_name</span>          <span class="ty">String</span><span class="pn">,</span>
     <span class="id">gender</span>                   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'M'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'F'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">)),</span>
     <span class="id">date_of_birth</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Date</span><span class="pn">),</span>
     <span class="id">age</span>                      <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt8</span><span class="pn">),</span>
     <span class="id">province</span>                 <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
     <span class="id">region</span>                   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'north'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'central'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">,</span> <span class="str">'south'</span> <span class="op">=</span> <span class="nu">3</span><span class="pn">)),</span>
-
-    <span class="cm">-- BU presence</span>
     <span class="id">has_ngocdung</span>             <span class="ty">Bool</span><span class="pn">,</span>
     <span class="id">has_zema</span>                 <span class="ty">Bool</span><span class="pn">,</span>
     <span class="id">has_ocany</span>                <span class="ty">Bool</span><span class="pn">,</span>
-    <span class="id">bu_count</span>                 <span class="ty">UInt8</span><span class="pn">,</span>
+    <span class="id">tier</span>                     <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'bronze'</span><span class="pn">,</span>
+    <span class="id">health_status</span>            <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'healthy'</span><span class="pn">,</span>
+    <span class="id">lifecycle_stage</span>          <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">rfm_segment</span>              <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
 
-    <span class="cm">-- Scoring (latest)</span>
+    <span class="cm">-- From PG customer_scores (replicated)</span>
     <span class="id">unified_score</span>            <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
     <span class="id">monetary_score</span>           <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
     <span class="id">engagement_score</span>         <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">loyalty_score</span>            <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">social_score</span>             <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">health_score</span>             <span class="ty">UInt8</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">tier</span>                     <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'bronze'</span><span class="pn">,</span>
-    <span class="id">health_status</span>            <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'healthy'</span><span class="pn">,</span>
-
-    <span class="cm">-- Predictive (latest)</span>
     <span class="id">churn_probability_30d</span>    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Float32</span><span class="pn">),</span>
-    <span class="id">upsell_propensity</span>        <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Float32</span><span class="pn">),</span>
-    <span class="id">crossbu_propensity</span>       <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Float32</span><span class="pn">),</span>
 
-    <span class="cm">-- RFM</span>
-    <span class="id">rfm_recency</span>              <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt8</span><span class="pn">),</span>   <span class="cm">-- 1-5</span>
-    <span class="id">rfm_frequency</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt8</span><span class="pn">),</span>   <span class="cm">-- 1-5</span>
-    <span class="id">rfm_monetary</span>             <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt8</span><span class="pn">),</span>   <span class="cm">-- 1-5</span>
-    <span class="id">rfm_segment</span>              <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
-
-    <span class="cm">-- Aggregated metrics</span>
+    <span class="cm">-- Aggregated from CH transactions (computed)</span>
     <span class="id">total_spend_all_bu</span>       <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
     <span class="id">total_spend_12m</span>          <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
     <span class="id">total_transactions</span>       <span class="ty">UInt32</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">total_transactions_12m</span>   <span class="ty">UInt32</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
     <span class="id">avg_transaction_value</span>    <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
 
-    <span class="cm">-- Per BU spend</span>
-    <span class="id">spend_ngocdung_12m</span>       <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">spend_zema_12m</span>           <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">spend_ocany_12m</span>          <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-
-    <span class="cm">-- Engagement</span>
+    <span class="cm">-- Aggregated from CH events (computed)</span>
     <span class="id">last_event_at</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)),</span>
-    <span class="id">last_transaction_at</span>      <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)),</span>
     <span class="id">days_since_last_visit</span>    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt16</span><span class="pn">),</span>
     <span class="id">events_count_30d</span>         <span class="ty">UInt32</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">primary_channel</span>          <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
 
-    <span class="cm">-- Lifecycle</span>
-    <span class="id">lifecycle_stage</span>          <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
     <span class="id">first_seen_at</span>            <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">customer_tenure_months</span>   <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-
-    <span class="cm">-- Referral</span>
-    <span class="id">referral_count</span>           <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
-    <span class="id">referred_by_customer_id</span>  <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt64</span><span class="pn">),</span>
-
-    <span class="cm">-- Tags</span>
-    <span class="id">tags</span>                     <span class="ty">Array</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="pn">[],</span>
     <span class="id">segment_ids</span>              <span class="ty">Array</span><span class="pn">(</span><span class="ty">UInt32</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="pn">[],</span>
-
-    <span class="cm">-- Metadata</span>
     <span class="id">updated_at</span>               <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
     <span class="id">_version</span>                 <span class="ty">UInt64</span>
 <span class="pn">)</span>
@@ -2760,13 +2706,13 @@ Ví dụ:
   </div>
 </section>
 
-<!-- ===== SECTION 5: TRANSFORM JOBS ===== -->
-<section class="section-light" id="section-5">
+<!-- ===== SECTION 5: TRANSFORM JOBS & SYNC ===== -->
+<section class="section-parchment" id="section-5">
   <div class="container">
     <div class="section-header">
       <span class="section-num">Section 05</span>
-      <h2 class="section-title">Transform Jobs</h2>
-      <p class="section-lead">Bronze → Silver → Gold — pipeline lên lịch và theo thời gian thực.</p>
+      <h2 class="section-title">Transform Jobs &amp; Sync Pipeline</h2>
+      <p class="section-lead">CDC sync PG → CH, scheduled transform jobs, và data quality checks.</p>
     </div>
 
     <div class="subsection">
@@ -2774,31 +2720,48 @@ Ví dụ:
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Job type</th><th>Trigger</th><th>Tool</th><th>Ví dụ</th></tr>
+            <tr>
+              <th>Job type</th>
+              <th>Trigger</th>
+              <th>Tool</th>
+              <th>Target DB</th>
+              <th>Ví dụ</th>
+            </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Continuous MV</strong></td>
-              <td>Khi data mới insert vào source table</td>
+              <td>Khi data mới insert</td>
               <td>ClickHouse Materialized View</td>
+              <td>CH</td>
               <td>Kafka events → raw_events</td>
             </tr>
             <tr>
+              <td><strong>CDC Sync</strong></td>
+              <td>PG row change</td>
+              <td>Debezium / pg_notify</td>
+              <td>CH</td>
+              <td>PG customers → CH customers_replica</td>
+            </tr>
+            <tr>
               <td><strong>Scheduled transform</strong></td>
-              <td>Cron (mỗi 15 phút / giờ / ngày)</td>
-              <td>dbt + ClickHouse / Python script</td>
-              <td>Raw customers → Cleaned customers</td>
+              <td>Cron (15 phút / giờ)</td>
+              <td>Python / dbt</td>
+              <td>PG + CH</td>
+              <td>Raw → PG customers, Raw → CH transactions</td>
             </tr>
             <tr>
               <td><strong>Daily batch</strong></td>
               <td>1 lần/ngày (2:00 AM)</td>
-              <td>dbt + ClickHouse</td>
+              <td>dbt / Python</td>
+              <td>CH + PG</td>
               <td>Score calculation, RFM, cohort</td>
             </tr>
             <tr>
               <td><strong>On-demand</strong></td>
-              <td>Trigger bởi user hoặc event</td>
-              <td>API call → job queue</td>
+              <td>User/event trigger</td>
+              <td>API → job queue</td>
+              <td>PG + CH</td>
               <td>Re-score segment, recalculate LTV</td>
             </tr>
           </tbody>
@@ -2807,119 +2770,192 @@ Ví dụ:
     </div>
 
     <div class="subsection">
-      <h3 class="subsection-title">5.2. Transform pipeline</h3>
+      <h3 class="subsection-title">5.2. PG ↔ CH Sync Pattern</h3>
+      <div class="ascii-block">
+        <pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    SYNC DIRECTION: PG → CH (1 chiều)                    │
+│                                                                         │
+│  PostgreSQL (source of truth)                                           │
+│       │                                                                 │
+│       ├── CDC (Debezium + Kafka Connect)                                │
+│       │   ├── pg.cdp.customers → CH cdp_clean.customers_replica        │
+│       │   ├── pg.cdp.customer_scores → CH (join vào unified_mv)        │
+│       │   ├── pg.cdp.branches → CH cdp_clean.branches_replica          │
+│       │   └── Latency: &lt; 10 giây (near real-time)                      │
+│       │                                                                 │
+│       └── Scheduled Sync (fallback / full refresh)                     │
+│           ├── Full refresh customers_replica mỗi 6 giờ (safety net)    │
+│           └── Full refresh reference tables daily                       │
+│                                                                         │
+│  ClickHouse → PostgreSQL: KHÔNG sync ngược                              │
+│  Thay vào đó: batch jobs READ từ CH, WRITE kết quả vào PG              │
+│       ├── CH aggregate transactions → PG customer_scores.monetary       │
+│       ├── CH aggregate events → PG customer_scores.engagement           │
+│       └── CH RFM results → PG customer_scores.rfm_*                    │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">CDC Setup (Debezium)</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">yaml — debezium</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="yaml-cm"># Debezium PostgreSQL connector config</span>
+<span class="yaml-key">connector.class</span>: <span class="yaml-val">io.debezium.connector.postgresql.PostgresConnector</span>
+<span class="yaml-key">database.hostname</span>: <span class="yaml-val">pg-cdp.internal</span>
+<span class="yaml-key">database.dbname</span>: <span class="yaml-val">cdp</span>
+<span class="yaml-key">database.user</span>: <span class="yaml-val">debezium</span>
+<span class="yaml-key">plugin.name</span>: <span class="yaml-val">pgoutput</span>
+
+<span class="yaml-cm"># Tables to capture</span>
+<span class="yaml-key">table.include.list</span>: <span class="yaml-val">&gt;</span>
+  <span class="yaml-val">public.customers,</span>
+  <span class="yaml-val">public.customer_scores,</span>
+  <span class="yaml-val">public.branches,</span>
+  <span class="yaml-val">public.staff,</span>
+  <span class="yaml-val">public.segments,</span>
+  <span class="yaml-val">public.segment_members</span>
+
+<span class="yaml-cm"># Kafka topics prefix</span>
+<span class="yaml-key">topics.prefix</span>: <span class="yaml-val">cdp.pg</span>
+
+<span class="yaml-cm"># → cdp.pg.public.customers</span>
+<span class="yaml-cm"># → cdp.pg.public.customer_scores</span>
+<span class="yaml-cm"># → cdp.pg.public.branches</span>
+<span class="yaml-cm"># ClickHouse Kafka Engine consumes these topics</span>
+<span class="yaml-cm"># and writes to cdp_clean.*_replica tables</span></code></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">5.3. Transform pipeline</h3>
       <div class="pipeline">
         <div class="pipeline-block">
           <div class="pipeline-block__header">CONTINUOUS (real-time)</div>
-          <pre>Kafka → raw_events (MV)
-raw_events → cleaned events (MV: standardize timestamp, enrich)</pre>
+          <pre>[ClickHouse]
+Kafka → raw_events (MV)
+raw_events → cleaned events (MV: standardize timestamp, enrich)
+
+[PG → CH CDC]
+PG customers change → Debezium → Kafka → CH customers_replica
+PG customer_scores change → Debezium → Kafka → CH scores_replica</pre>
         </div>
         <div class="pipeline-block">
           <div class="pipeline-block__header">FREQUENT (mỗi 15 phút)</div>
-          <pre>Job: sync_customers
-├── raw_pos_*_customers + raw_crm_*_contacts → cdp_clean.customers
-├── Standardize: phone, email, name, gender, dob, address
-└── Run identity resolution (match &amp; merge)
+          <pre>Job: sync_customers_to_pg
+  READ: CH raw_pos_*_customers + raw_crm_*_contacts
+  Standardize: phone, email, name, gender, dob, address
+  Run identity resolution (match &amp; merge)
+  WRITE: PG customers (UPSERT) ← source of truth
+       └── CDC auto-syncs PG → CH customers_replica
 
-Job: sync_transactions
-├── raw_pos_*_transactions + raw_erp_*_orders → cdp_clean.transactions
-├── Standardize: amount, timestamp, channel
-└── Link customer_id (via identity graph)
+Job: sync_transactions_to_ch
+  READ: CH raw_pos_*_transactions + raw_erp_*_orders
+  Standardize: amount, timestamp, channel
+  Link customer_id (lookup PG identity_graph)
+  WRITE: CH cdp_clean.transactions
 
-Job: sync_leads
-├── raw_crm_*_leads + raw_api_facebook_leads → cdp_clean.leads
-├── Standardize + dedup
-└── Auto-assign + calculate lead score</pre>
+Job: sync_leads_to_pg
+  READ: CH raw_crm_*_leads + raw_api_facebook_leads
+  Standardize + dedup + auto-assign + calculate lead score
+  WRITE: PG leads (UPSERT) ← source of truth</pre>
         </div>
         <div class="pipeline-block">
           <div class="pipeline-block__header">HOURLY</div>
           <pre>Job: update_engagement_scores
-├── Read events last 90 days per customer
-├── Apply scoring rules + decay
-└── Update cdp_analytics.customer_scores
+  READ: CH events last 90 days per customer
+  Apply scoring rules + decay (config from PG scoring_configs)
+  WRITE: PG customer_scores.engagement_score (UPDATE)
+       └── CDC auto-syncs to CH
 
-Job: update_health_scores
-├── Calculate engagement trend, recency, complaint status
-└── Update health_score + health_status
+Job: update_health_scores → WRITE: PG customer_scores.health_score
 
 Job: refresh_segments
-├── Re-evaluate dynamic segment conditions
-└── Update segment_members</pre>
+  Re-evaluate dynamic segment conditions (PG segment definitions)
+  Some conditions query CH (spend &gt; X, events in 30d)
+  WRITE: PG segment_members (UPSERT)</pre>
         </div>
         <div class="pipeline-block">
           <div class="pipeline-block__header">DAILY (2:00 AM)</div>
-          <pre>Job: calculate_scores
-├── Full recalculate: monetary, loyalty, social scores
-├── Recalculate unified score
-├── Determine tier (Diamond/Platinum/Gold/Silver/Bronze)
-└── Snapshot to customer_score_history
+          <pre>Job: calculate_scores_full
+  READ: CH transactions + events (aggregate per customer)
+  Full recalculate: monetary, loyalty, social scores, tier
+  WRITE: PG customer_scores (full UPDATE)
+  WRITE: CH customer_score_history (daily snapshot, append)
 
 Job: calculate_rfm
-├── Calculate R/F/M per BU
-└── Assign RFM segment
+  READ: CH transactions per BU
+  WRITE: PG customer_scores.rfm_* (UPDATE)
+  WRITE: CH rfm_results (snapshot)
 
-Job: build_unified_customers
-├── Join: customers + scores + segments + transactions agg
-└── Full rebuild cdp_analytics.unified_customers
+Job: build_unified_customers_mv
+  READ: PG customers + scores (via CH replica) + CH transaction aggregates
+  WRITE: CH cdp_analytics.unified_customers_mv (full rebuild)
 
-Job: aggregate_daily_metrics
-├── Aggregate by: BU, branch, service, staff, channel
-└── Write to daily_*_metrics tables
-
-Job: update_treatment_tracker (Beauty)
-Job: update_dealer_health (Ocany)
-Job: check_data_freshness</pre>
+Job: aggregate_daily_metrics → WRITE: CH daily_*_metrics tables (append)
+Job: sync_treatment_status → WRITE: PG treatments + sessions (UPSERT)
+Job: update_dealer_health (Ocany) → WRITE: PG dealers.health_score</pre>
         </div>
         <div class="pipeline-block">
           <div class="pipeline-block__header">WEEKLY</div>
           <pre>Job: retrain_predictive_models
-├── Churn prediction model
-├── Upsell propensity model
-└── Cross-BU propensity model
+  READ: CH transactions + events (training data)
+  READ: PG customers + scores (labels)
+  Train: Churn, Upsell, Cross-BU models
+  WRITE: PG customer_scores.churn_*/upsell_*/crossbu_*
 
-Job: calculate_cohort_retention
-Job: calculate_ltv
-Job: calculate_attribution</pre>
+Job: calculate_cohort_retention → CH
+Job: calculate_ltv → CH + PG
+Job: full_refresh_ch_replicas (safety net)
+  Full dump PG customers/scores/branches → CH replicas</pre>
         </div>
       </div>
     </div>
 
     <div class="subsection">
-      <h3 class="subsection-title">5.3. Data quality checks</h3>
-      <p>Chạy sau mỗi transform:</p>
+      <h3 class="subsection-title">5.4. Data quality checks</h3>
       <div class="code-block-wrap">
         <div class="code-block-header">
           <span class="code-block-lang">sql</span>
           <div class="code-block-dots"><span></span><span></span><span></span></div>
         </div>
-        <pre><code><span class="cm">-- Check: không có customer thiếu phone VÀ email</span>
+        <pre><code><span class="cm">-- PostgreSQL checks</span>
+<span class="cm">-- Check: không có customer thiếu phone VÀ email</span>
 <span class="kw">SELECT</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">orphan_customers</span>
-<span class="kw">FROM</span> <span class="id">cdp_clean.customers</span>
-<span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NULL</span> <span class="kw">AND</span> <span class="id">email</span> <span class="kw">IS NULL</span><span class="pn">;</span>
+<span class="kw">FROM</span> <span class="id">customers</span>
+<span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NULL</span> <span class="kw">AND</span> <span class="id">email</span> <span class="kw">IS NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span><span class="pn">;</span>
 
+<span class="cm">-- Check: duplicate phone (should be 0 due to unique constraint)</span>
+<span class="kw">SELECT</span> <span class="id">phone</span><span class="pn">,</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">cnt</span>
+<span class="kw">FROM</span> <span class="id">customers</span>
+<span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NOT NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span>
+<span class="kw">GROUP BY</span> <span class="id">phone</span> <span class="kw">HAVING</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="op">&gt;</span> <span class="nu">1</span><span class="pn">;</span>
+
+<span class="cm">-- Check: orphan scores</span>
+<span class="kw">SELECT</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">FROM</span> <span class="id">customer_scores</span> <span class="id">cs</span>
+<span class="kw">LEFT JOIN</span> <span class="id">customers</span> <span class="id">c</span> <span class="kw">ON</span> <span class="id">cs</span><span class="pn">.</span><span class="id">customer_id</span> <span class="op">=</span> <span class="id">c</span><span class="pn">.</span><span class="id">customer_id</span>
+<span class="kw">WHERE</span> <span class="id">c</span><span class="pn">.</span><span class="id">customer_id</span> <span class="kw">IS NULL</span><span class="pn">;</span>
+
+<span class="cm">-- ClickHouse checks</span>
 <span class="cm">-- Check: transaction amount hợp lý</span>
 <span class="kw">SELECT</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">suspicious_transactions</span>
 <span class="kw">FROM</span> <span class="id">cdp_clean.transactions</span>
-<span class="kw">WHERE</span> <span class="id">amount</span> <span class="op">&lt;=</span> <span class="nu">0</span> <span class="kw">OR</span> <span class="id">amount</span> <span class="op">&gt;</span> <span class="nu">10000000000</span><span class="pn">;</span>  <span class="cm">-- > 10 tỷ</span>
+<span class="kw">WHERE</span> <span class="id">amount</span> <span class="op">&lt;=</span> <span class="nu">0</span> <span class="kw">OR</span> <span class="id">amount</span> <span class="op">&gt;</span> <span class="nu">10000000000</span><span class="pn">;</span>
 
-<span class="cm">-- Check: data freshness — nguồn nào lâu không có data mới</span>
+<span class="cm">-- Check: CH replica freshness vs PG</span>
 <span class="kw">SELECT</span>
-    <span class="id">source_system</span><span class="pn">,</span>
-    <span class="id">bu</span><span class="pn">,</span>
-    <span class="fn">max</span><span class="pn">(</span><span class="id">updated_at</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">last_data</span><span class="pn">,</span>
-    <span class="fn">dateDiff</span><span class="pn">(</span><span class="str">'hour'</span><span class="pn">,</span> <span class="fn">max</span><span class="pn">(</span><span class="id">updated_at</span><span class="pn">),</span> <span class="fn">now</span><span class="pn">())</span> <span class="kw">AS</span> <span class="id">hours_stale</span>
-<span class="kw">FROM</span> <span class="id">cdp_clean.customers</span>
-<span class="kw">GROUP BY</span> <span class="id">source_system</span><span class="pn">,</span> <span class="id">bu</span>
-<span class="kw">HAVING</span> <span class="id">hours_stale</span> <span class="op">&gt;</span> <span class="nu">24</span><span class="pn">;</span>
+    <span class="fn">max</span><span class="pn">(</span><span class="id">updated_at</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">ch_latest</span><span class="pn">,</span>
+    <span class="fn">dateDiff</span><span class="pn">(</span><span class="str">'minute'</span><span class="pn">,</span> <span class="fn">max</span><span class="pn">(</span><span class="id">updated_at</span><span class="pn">),</span> <span class="fn">now</span><span class="pn">())</span> <span class="kw">AS</span> <span class="id">minutes_behind</span>
+<span class="kw">FROM</span> <span class="id">cdp_clean.customers_replica</span><span class="pn">;</span>
 
-<span class="cm">-- Check: duplicate rate sau identity resolution</span>
-<span class="kw">SELECT</span>
-    <span class="id">phone</span><span class="pn">,</span>
-    <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">cnt</span>
-<span class="kw">FROM</span> <span class="id">cdp_clean.customers</span>
-<span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NOT NULL</span>
-<span class="kw">GROUP BY</span> <span class="id">phone</span>
-<span class="kw">HAVING</span> <span class="id">cnt</span> <span class="op">&gt;</span> <span class="nu">1</span><span class="pn">;</span></code></pre>
+<span class="cm">-- Check: data freshness per source</span>
+<span class="kw">SELECT</span> <span class="id">source_system</span><span class="pn">,</span> <span class="id">source_bu</span><span class="pn">,</span> <span class="fn">max</span><span class="pn">(</span><span class="id">timestamp</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">last_event</span><span class="pn">,</span>
+    <span class="fn">dateDiff</span><span class="pn">(</span><span class="str">'hour'</span><span class="pn">,</span> <span class="fn">max</span><span class="pn">(</span><span class="id">timestamp</span><span class="pn">),</span> <span class="fn">now</span><span class="pn">())</span> <span class="kw">AS</span> <span class="id">hours_stale</span>
+<span class="kw">FROM</span> <span class="id">cdp_clean.events</span>
+<span class="kw">GROUP BY</span> <span class="id">source_system</span><span class="pn">,</span> <span class="id">source_bu</span>
+<span class="kw">HAVING</span> <span class="id">hours_stale</span> <span class="op">&gt;</span> <span class="nu">24</span><span class="pn">;</span></code></pre>
       </div>
     </div>
   </div>
@@ -2931,107 +2967,114 @@ Job: calculate_attribution</pre>
     <div class="section-header">
       <span class="section-num">Section 06</span>
       <h2 class="section-title">Ingestion Monitoring &amp; Observability</h2>
-      <p class="section-lead">Theo dõi volume, latency, lỗi và SLA cho mọi cơ chế ingestion.</p>
+      <p class="section-lead">Metrics, SLA targets, và alert thresholds cho toàn bộ data pipeline.</p>
     </div>
 
     <div class="subsection">
-      <h3 class="subsection-title">6.1. Metrics tracking</h3>
-      <div class="code-block-wrap">
-        <div class="code-block-header">
-          <span class="code-block-lang">sql</span>
-          <div class="code-block-dots"><span></span><span></span><span></span></div>
-        </div>
-        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">cdp_system.ingestion_metrics</span>
-<span class="pn">(</span>
-    <span class="id">timestamp</span>          <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
-    <span class="id">mechanism</span>          <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>  <span class="cm">-- airbyte/kafka/api_pull/api_gateway</span>
-    <span class="id">source</span>             <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>  <span class="cm">-- pos_ngocdung, facebook_ads...</span>
-    <span class="id">bu</span>                 <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
-
-    <span class="cm">-- Volume</span>
-    <span class="id">records_received</span>   <span class="ty">UInt64</span><span class="pn">,</span>
-    <span class="id">records_valid</span>      <span class="ty">UInt64</span><span class="pn">,</span>
-    <span class="id">records_invalid</span>    <span class="ty">UInt64</span><span class="pn">,</span>
-    <span class="id">records_duplicate</span>  <span class="ty">UInt64</span><span class="pn">,</span>
-    <span class="id">bytes_received</span>     <span class="ty">UInt64</span><span class="pn">,</span>
-
-    <span class="cm">-- Latency</span>
-    <span class="id">latency_p50_ms</span>     <span class="ty">UInt32</span><span class="pn">,</span>
-    <span class="id">latency_p95_ms</span>     <span class="ty">UInt32</span><span class="pn">,</span>
-    <span class="id">latency_p99_ms</span>     <span class="ty">UInt32</span><span class="pn">,</span>
-
-    <span class="cm">-- Errors</span>
-    <span class="id">error_count</span>        <span class="ty">UInt32</span><span class="pn">,</span>
-    <span class="id">error_types</span>        <span class="ty">Array</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span>
-<span class="pn">)</span>
-<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">MergeTree</span><span class="pn">()</span>
-<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">mechanism</span><span class="pn">,</span> <span class="id">source</span><span class="pn">,</span> <span class="id">bu</span><span class="pn">,</span> <span class="id">timestamp</span><span class="pn">)</span>
-<span class="kw">PARTITION BY</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">timestamp</span><span class="pn">);</span></code></pre>
-      </div>
-    </div>
-
-    <div class="subsection">
-      <h3 class="subsection-title">6.2. Dashboard monitoring</h3>
+      <h3 class="subsection-title">6.1. Dashboard monitoring</h3>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Metric</th><th>Target</th><th>Alert threshold</th></tr>
+            <tr>
+              <th>Metric</th>
+              <th>Target</th>
+              <th>Alert threshold</th>
+            </tr>
           </thead>
           <tbody>
+            <tr><td colspan="3"><strong>Ingestion</strong></td></tr>
             <tr>
               <td>Airbyte sync success rate</td>
-              <td><span class="badge badge--green">&gt; 99%</span></td>
+              <td>&gt; 99%</td>
               <td><span class="badge badge--red">&lt; 95%</span></td>
             </tr>
             <tr>
               <td>Airbyte sync latency</td>
-              <td><span class="badge badge--green">&lt; 30 phút</span></td>
-              <td><span class="badge badge--red">&gt; 60 phút</span></td>
+              <td>&lt; 30 phút</td>
+              <td><span class="badge badge--orange">&gt; 60 phút</span></td>
             </tr>
             <tr>
               <td>Kafka consumer lag</td>
-              <td><span class="badge badge--green">&lt; 1000 events</span></td>
+              <td>&lt; 1,000 events</td>
               <td><span class="badge badge--red">&gt; 10,000 events</span></td>
             </tr>
             <tr>
               <td>Kafka event processing latency</td>
-              <td><span class="badge badge--green">&lt; 5 giây</span></td>
-              <td><span class="badge badge--red">&gt; 30 giây</span></td>
+              <td>&lt; 5 giây</td>
+              <td><span class="badge badge--orange">&gt; 30 giây</span></td>
             </tr>
             <tr>
               <td>API Pull success rate</td>
-              <td><span class="badge badge--green">&gt; 98%</span></td>
+              <td>&gt; 98%</td>
               <td><span class="badge badge--red">&lt; 90%</span></td>
             </tr>
             <tr>
               <td>API Gateway response time p95</td>
-              <td><span class="badge badge--green">&lt; 100ms</span></td>
-              <td><span class="badge badge--red">&gt; 500ms</span></td>
+              <td>&lt; 100ms</td>
+              <td><span class="badge badge--orange">&gt; 500ms</span></td>
             </tr>
             <tr>
               <td>API Gateway error rate</td>
-              <td><span class="badge badge--green">&lt; 1%</span></td>
+              <td>&lt; 1%</td>
               <td><span class="badge badge--red">&gt; 5%</span></td>
             </tr>
             <tr>
               <td>DLQ size (unprocessed)</td>
-              <td><span class="badge badge--green">0</span></td>
-              <td><span class="badge badge--red">&gt; 100 events</span></td>
+              <td>0</td>
+              <td><span class="badge badge--orange">&gt; 100 events</span></td>
             </tr>
             <tr>
               <td>Data freshness per source</td>
-              <td><span class="badge badge--green">&lt; SLA</span></td>
-              <td><span class="badge badge--red">&gt; 2× SLA</span></td>
+              <td>&lt; SLA</td>
+              <td><span class="badge badge--orange">&gt; 2× SLA</span></td>
             </tr>
+            <tr><td colspan="3"><strong>Transform</strong></td></tr>
             <tr>
               <td>Bronze → Silver transform lag</td>
-              <td><span class="badge badge--green">&lt; 30 phút</span></td>
+              <td>&lt; 30 phút</td>
               <td><span class="badge badge--orange">&gt; 2 giờ</span></td>
             </tr>
             <tr>
               <td>Silver → Gold transform lag</td>
-              <td><span class="badge badge--green">&lt; 4 giờ</span></td>
+              <td>&lt; 4 giờ</td>
               <td><span class="badge badge--orange">&gt; 8 giờ</span></td>
+            </tr>
+            <tr><td colspan="3"><strong>PG ↔ CH Sync</strong></td></tr>
+            <tr>
+              <td>CDC replication lag (PG → CH)</td>
+              <td>&lt; 30 giây</td>
+              <td><span class="badge badge--red">&gt; 5 phút</span></td>
+            </tr>
+            <tr>
+              <td>CH customers_replica freshness</td>
+              <td>&lt; 1 phút behind PG</td>
+              <td><span class="badge badge--orange">&gt; 10 phút</span></td>
+            </tr>
+            <tr>
+              <td>Score writeback lag (CH → PG)</td>
+              <td>&lt; 5 phút (hourly jobs)</td>
+              <td><span class="badge badge--orange">&gt; 30 phút</span></td>
+            </tr>
+            <tr><td colspan="3"><strong>PostgreSQL</strong></td></tr>
+            <tr>
+              <td>PG connection pool usage</td>
+              <td>&lt; 70%</td>
+              <td><span class="badge badge--red">&gt; 90%</span></td>
+            </tr>
+            <tr>
+              <td>PG query p95 latency</td>
+              <td>&lt; 50ms</td>
+              <td><span class="badge badge--orange">&gt; 200ms</span></td>
+            </tr>
+            <tr>
+              <td>PG replication lag (if replica)</td>
+              <td>&lt; 1 giây</td>
+              <td><span class="badge badge--orange">&gt; 10 giây</span></td>
+            </tr>
+            <tr>
+              <td>PG disk usage</td>
+              <td>&lt; 80%</td>
+              <td><span class="badge badge--red">&gt; 90%</span></td>
             </tr>
           </tbody>
         </table>
@@ -3041,169 +3084,191 @@ Job: calculate_attribution</pre>
 </section>
 
 <!-- ===== SECTION 7: SOURCE MAP ===== -->
-<section class="section-parchment" id="section-7">
+<section class="section-light" id="section-7">
   <div class="container">
     <div class="section-header">
       <span class="section-num">Section 07</span>
-      <h2 class="section-title">Tổng hợp: Source → Cơ chế → Tables</h2>
-      <p class="section-lead">Bản đồ đầy đủ từ nguồn dữ liệu tới raw tables và tần suất cập nhật.</p>
+      <h2 class="section-title">Source Map</h2>
+      <p class="section-lead">Tổng hợp: Source → Cơ chế → CH Raw Tables → Final destination (PG or CH).</p>
     </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Source</th><th>BU</th><th>Cơ chế</th><th>Raw Table(s)</th><th>Tần suất</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>POS DB</td>
-            <td>ND, Zema</td>
-            <td><span class="badge badge--blue">1 (Airbyte)</span></td>
-            <td><code>raw_pos_{bu}_*</code></td>
-            <td>15 phút</td>
-          </tr>
-          <tr>
-            <td>POS Webhook</td>
-            <td>ND, Zema</td>
-            <td><span class="badge badge--green">2 (Kafka)</span></td>
-            <td><code>raw_events</code></td>
-            <td><span class="badge badge--green">Real-time</span></td>
-          </tr>
-          <tr>
-            <td>CRM DB</td>
-            <td>Cả 3</td>
-            <td><span class="badge badge--blue">1 (Airbyte)</span></td>
-            <td><code>raw_crm_{bu}_*</code></td>
-            <td>15 phút</td>
-          </tr>
-          <tr>
-            <td>CRM Webhook</td>
-            <td>Cả 3</td>
-            <td><span class="badge badge--green">2 (Kafka)</span></td>
-            <td><code>raw_events</code></td>
-            <td><span class="badge badge--green">Real-time</span></td>
-          </tr>
-          <tr>
-            <td>ERP DB</td>
-            <td>Ocany</td>
-            <td><span class="badge badge--blue">1 (Airbyte)</span></td>
-            <td><code>raw_erp_ocany_*</code></td>
-            <td>1 giờ</td>
-          </tr>
-          <tr>
-            <td>DMS DB</td>
-            <td>Ocany</td>
-            <td><span class="badge badge--blue">1 (Airbyte)</span></td>
-            <td><code>raw_dms_ocany_*</code></td>
-            <td>1 giờ</td>
-          </tr>
-          <tr>
-            <td>Website events</td>
-            <td>Cả 3</td>
-            <td><span class="badge badge--orange">4→2 (SDK→Kafka)</span></td>
-            <td><code>raw_events</code></td>
-            <td><span class="badge badge--green">Real-time</span></td>
-          </tr>
-          <tr>
-            <td>App events</td>
-            <td>ND, Zema</td>
-            <td><span class="badge badge--orange">4→2 (SDK→Kafka)</span></td>
-            <td><code>raw_events</code></td>
-            <td><span class="badge badge--green">Real-time</span></td>
-          </tr>
-          <tr>
-            <td>Facebook Ads</td>
-            <td>Cả 3</td>
-            <td>3 (API Pull)</td>
-            <td><code>raw_api_facebook_ads_{bu}</code></td>
-            <td>6 giờ</td>
-          </tr>
-          <tr>
-            <td>Facebook Leads</td>
-            <td>Cả 3</td>
-            <td>4 (Webhook)</td>
-            <td><code>raw_events + raw_api_facebook_leads</code></td>
-            <td><span class="badge badge--green">Real-time</span></td>
-          </tr>
-          <tr>
-            <td>Google Ads</td>
-            <td>Cả 3</td>
-            <td>3 (API Pull)</td>
-            <td><code>raw_api_google_ads_{bu}</code></td>
-            <td>Daily</td>
-          </tr>
-          <tr>
-            <td>Google Analytics</td>
-            <td>Cả 3</td>
-            <td>3 (API Pull)</td>
-            <td><code>raw_api_google_analytics_{bu}</code></td>
-            <td>Daily</td>
-          </tr>
-          <tr>
-            <td>Zalo OA</td>
-            <td>Cả 3</td>
-            <td>3 (API Pull) + 4 (Webhook)</td>
-            <td><code>raw_api_zalo_* + raw_events</code></td>
-            <td>1 giờ + RT</td>
-          </tr>
-          <tr>
-            <td>Shopee</td>
-            <td>Ocany</td>
-            <td>3 (API Pull)</td>
-            <td><code>raw_api_shopee_orders_ocany</code></td>
-            <td>30 phút</td>
-          </tr>
-          <tr>
-            <td>Lazada</td>
-            <td>Ocany</td>
-            <td>3 (API Pull)</td>
-            <td><code>raw_api_lazada_orders_ocany</code></td>
-            <td>30 phút</td>
-          </tr>
-          <tr>
-            <td>TikTok Shop</td>
-            <td>Ocany</td>
-            <td>3 (API Pull)</td>
-            <td><code>raw_api_tiktok_orders_ocany</code></td>
-            <td>1 giờ</td>
-          </tr>
-          <tr>
-            <td>SMS Gateway</td>
-            <td>All</td>
-            <td>3 (Pull) + 4 (Webhook)</td>
-            <td><code>raw_api_sms_delivery + raw_events</code></td>
-            <td>15 phút + RT</td>
-          </tr>
-          <tr>
-            <td>Email Service</td>
-            <td>All</td>
-            <td>3 (Pull) + 4 (Webhook)</td>
-            <td><code>raw_api_email_events + raw_events</code></td>
-            <td>1 giờ + RT</td>
-          </tr>
-          <tr>
-            <td>Call Center</td>
-            <td>ND, Zema</td>
-            <td>4 (Webhook) → 2 (Kafka)</td>
-            <td><code>raw_events</code></td>
-            <td><span class="badge badge--green">Real-time</span></td>
-          </tr>
-          <tr>
-            <td>CSV Import</td>
-            <td>Cả 3</td>
-            <td>4 (API Upload)</td>
-            <td><code>raw_api_imports</code></td>
-            <td>On-demand</td>
-          </tr>
-          <tr>
-            <td>Walk-in (manual)</td>
-            <td>Cả 3</td>
-            <td>Via POS/CRM</td>
-            <td>(through POS/CRM sync)</td>
-            <td>Via source</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="subsection">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>BU</th>
+              <th>Cơ chế</th>
+              <th>CH Raw Table(s)</th>
+              <th>Final destination</th>
+              <th>Tần suất</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>POS DB</td>
+              <td>ND, Zema</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_pos_{bu}_*</code></td>
+              <td><span class="badge badge--blue">PG</span> customers, treatments / <span class="badge badge--orange">CH</span> transactions</td>
+              <td>15 phút</td>
+            </tr>
+            <tr>
+              <td>POS Webhook</td>
+              <td>ND, Zema</td>
+              <td>2 (Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>CRM DB</td>
+              <td>Cả 3</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_crm_{bu}_*</code></td>
+              <td><span class="badge badge--blue">PG</span> customers, leads / <span class="badge badge--orange">CH</span> transactions</td>
+              <td>15 phút</td>
+            </tr>
+            <tr>
+              <td>CRM Webhook</td>
+              <td>Cả 3</td>
+              <td>2 (Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>ERP DB</td>
+              <td>Ocany</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_erp_ocany_*</code></td>
+              <td><span class="badge badge--orange">CH</span> transactions, orders</td>
+              <td>1 giờ</td>
+            </tr>
+            <tr>
+              <td>DMS DB</td>
+              <td>Ocany</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_dms_ocany_*</code></td>
+              <td><span class="badge badge--blue">PG</span> dealers / <span class="badge badge--orange">CH</span> dealer_orders</td>
+              <td>1 giờ</td>
+            </tr>
+            <tr>
+              <td>Website events</td>
+              <td>Cả 3</td>
+              <td>4→2 (SDK→Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>App events</td>
+              <td>ND, Zema</td>
+              <td>4→2 (SDK→Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>Facebook Ads</td>
+              <td>Cả 3</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_facebook_ads_{bu}</code></td>
+              <td><span class="badge badge--orange">CH</span> ad_performance</td>
+              <td>6 giờ</td>
+            </tr>
+            <tr>
+              <td>Facebook Leads</td>
+              <td>Cả 3</td>
+              <td>4 (Webhook)</td>
+              <td><code>raw_api_facebook_leads</code></td>
+              <td><span class="badge badge--blue">PG</span> leads</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>Google Ads</td>
+              <td>Cả 3</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_google_ads_{bu}</code></td>
+              <td><span class="badge badge--orange">CH</span> ad_performance</td>
+              <td>Daily</td>
+            </tr>
+            <tr>
+              <td>Google Analytics</td>
+              <td>Cả 3</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_google_analytics_{bu}</code></td>
+              <td><span class="badge badge--orange">CH</span> ad_performance</td>
+              <td>Daily</td>
+            </tr>
+            <tr>
+              <td>Zalo OA</td>
+              <td>Cả 3</td>
+              <td>3 + 4</td>
+              <td><code>raw_api_zalo_*</code> + <code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events, zalo_interactions</td>
+              <td>1 giờ + RT</td>
+            </tr>
+            <tr>
+              <td>Shopee</td>
+              <td>Ocany</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_shopee_orders_ocany</code></td>
+              <td><span class="badge badge--orange">CH</span> orders</td>
+              <td>30 phút</td>
+            </tr>
+            <tr>
+              <td>Lazada</td>
+              <td>Ocany</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_lazada_orders_ocany</code></td>
+              <td><span class="badge badge--orange">CH</span> orders</td>
+              <td>30 phút</td>
+            </tr>
+            <tr>
+              <td>TikTok Shop</td>
+              <td>Ocany</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_tiktok_orders_ocany</code></td>
+              <td><span class="badge badge--orange">CH</span> orders</td>
+              <td>1 giờ</td>
+            </tr>
+            <tr>
+              <td>SMS Gateway</td>
+              <td>All</td>
+              <td>3 + 4</td>
+              <td><code>raw_api_sms_delivery</code> + <code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> sms_delivery, events</td>
+              <td>15 phút + RT</td>
+            </tr>
+            <tr>
+              <td>Email Service</td>
+              <td>All</td>
+              <td>3 + 4</td>
+              <td><code>raw_api_email_events</code> + <code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> email_events, events</td>
+              <td>1 giờ + RT</td>
+            </tr>
+            <tr>
+              <td>Call Center</td>
+              <td>ND, Zema</td>
+              <td>4→2 (Webhook→Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>CSV Import</td>
+              <td>Cả 3</td>
+              <td>4 (API Upload)</td>
+              <td><code>raw_api_imports</code></td>
+              <td><span class="badge badge--blue">PG</span> customers/leads (via transform)</td>
+              <td>On-demand</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
@@ -3214,21 +3279,39 @@ Job: calculate_attribution</pre>
     <div class="section-header">
       <span class="section-num">Section 08</span>
       <h2 class="section-title">Checklist trước khi thiết kế schema chi tiết</h2>
-      <p class="section-lead">Các điểm cần confirm trước khi bắt đầu implement schema production.</p>
+      <p class="section-lead">Các điểm cần confirm trước khi bắt đầu implement.</p>
     </div>
 
     <div class="subsection">
+      <h3 class="subsection-title">Infrastructure</h3>
+      <ul class="checklist">
+        <li>Confirm PostgreSQL deployment: managed (RDS/Cloud SQL) hay self-hosted? Version ≥ 15?</li>
+        <li>Confirm ClickHouse deployment: self-hosted hay ClickHouse Cloud? Cluster hay single node?</li>
+        <li>Confirm Kafka deployment: self-managed hay managed (Confluent, AWS MSK)?</li>
+        <li>Confirm Airbyte deployment: OSS self-hosted hay Airbyte Cloud?</li>
+        <li>Confirm CDC tool: Debezium hay PG logical replication trực tiếp?</li>
+        <li>PG extensions cần cài: <code>pg_trgm</code> (fuzzy search), <code>pgcrypto</code> (PII masking), <code>pg_stat_statements</code> (monitoring)</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Data sources</h3>
       <ul class="checklist">
         <li>Confirm danh sách hệ thống nguồn thực tế của từng BU (POS nào? CRM nào? ERP nào?)</li>
         <li>Confirm database type &amp; version của từng hệ thống nguồn (MySQL? PostgreSQL? SQL Server?)</li>
         <li>Confirm hệ thống nguồn nào có API/webhook, hệ thống nào chỉ export DB/CSV</li>
         <li>Confirm data volume ước tính: số khách, số giao dịch/ngày, số event/ngày</li>
-        <li>Confirm ClickHouse deployment: self-hosted hay ClickHouse Cloud? Cluster hay single node?</li>
-        <li>Confirm Kafka deployment: self-managed hay managed (Confluent, AWS MSK)?</li>
-        <li>Confirm Airbyte deployment: OSS self-hosted hay Airbyte Cloud?</li>
-        <li>Review danh sách fields thực tế từ POS/CRM/ERP → adjust Silver schema</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Schema</h3>
+      <ul class="checklist">
+        <li>Review danh sách fields thực tế từ POS/CRM/ERP → adjust PG + CH schema</li>
         <li>Xác nhận naming convention: tiếng Việt hay tiếng Anh cho business terms</li>
         <li>Xác nhận timezone convention: UTC hay Asia/Ho_Chi_Minh</li>
+        <li>Xác nhận PG connection pooling: PgBouncer hay built-in?</li>
+        <li>Xác nhận backup strategy: PG (pg_dump / WAL archiving) + CH (clickhouse-backup)</li>
       </ul>
     </div>
   </div>
@@ -3241,62 +3324,44 @@ Job: calculate_attribution</pre>
       <div>
         <div class="site-footer__col-title">CDP TheAdvance</div>
         <ul class="site-footer__links">
-          <li><a href="#section-1">Tổng quan kiến trúc</a></li>
+          <li><a href="#section-1">Kiến trúc</a></li>
           <li><a href="#section-2">Cơ chế đồng bộ</a></li>
-          <li><a href="#section-3">Chuẩn hoá dữ liệu</a></li>
-          <li><a href="#section-4">Data Layers</a></li>
+          <li><a href="#section-3">Chuẩn hoá</a></li>
         </ul>
       </div>
       <div>
-        <div class="site-footer__col-title">Kỹ thuật</div>
+        <div class="site-footer__col-title">Data Layers</div>
         <ul class="site-footer__links">
-          <li><a href="#section-5">Transform Jobs</a></li>
+          <li><a href="#section-4">4.0 DB Decision</a></li>
+          <li><a href="#section-4">4.1 PostgreSQL</a></li>
+          <li><a href="#section-4">4.2 ClickHouse</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="site-footer__col-title">Pipeline</div>
+        <ul class="site-footer__links">
+          <li><a href="#section-5">Transform &amp; Sync</a></li>
           <li><a href="#section-6">Monitoring</a></li>
           <li><a href="#section-7">Source Map</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="site-footer__col-title">Document</div>
+        <ul class="site-footer__links">
+          <li><a href="#">Version 2.0</a></li>
+          <li><a href="#">2026-06-12</a></li>
           <li><a href="#section-8">Checklist</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="site-footer__col-title">Stack</div>
-        <ul class="site-footer__links">
-          <li><a href="#">ClickHouse</a></li>
-          <li><a href="#">Apache Kafka</a></li>
-          <li><a href="#">Airbyte</a></li>
-          <li><a href="#">dbt</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="site-footer__col-title">Business Units</div>
-        <ul class="site-footer__links">
-          <li><a href="#">Ngọc Dung (ND)</a></li>
-          <li><a href="#">Zema</a></li>
-          <li><a href="#">Ocany</a></li>
         </ul>
       </div>
     </div>
     <div class="site-footer__legal">
-      Copyright &copy; 2026 TheAdvance Group. Data Architecture v1.0 — Internal Technical Document.
+      CDP TheAdvance — Data Architecture v2.0 — Dual-Database: PostgreSQL (OLTP) + ClickHouse (OLAP)
     </div>
   </div>
 </footer>
 
   </main>
-</div><!-- end .doc-shell -->
+</div>
 
-<script>
-  // Active TOC highlighting
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        document.querySelectorAll('.toc-list a').forEach(a => a.classList.remove('active'));
-        const id = entry.target.id;
-        const link = document.querySelector(`.toc-list a[href="#${id}"]`);
-        if (link) link.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-100px 0px -60% 0px' });
-
-  document.querySelectorAll('section[id^="section-"]').forEach(el => observer.observe(el));
-</script>
 </body>
 </html>
