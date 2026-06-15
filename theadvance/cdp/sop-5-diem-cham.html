@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOP 5 Điểm Chạm — ND Beauty</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: #ffffff;
+    color: #1d1d1f;
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+
+  /* ── Nav ── */
+  .global-nav {
+    background: #000000;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .global-nav span {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    line-height: 1;
+  }
+  .global-nav .nav-brand {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: #ffffff;
+  }
+  .global-nav .nav-sep {
+    color: #7a7a7a;
+    margin: 0 10px;
+  }
+
+  /* ── Hero tile — light ── */
+  .hero-tile {
+    background: #ffffff;
+    text-align: center;
+    padding: 96px 20px 80px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: #0066cc;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  .hero-tile h1 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    color: #1d1d1f;
+    max-width: 680px;
+    margin: 0 auto 16px;
+  }
+  .hero-tile .hero-sub {
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: #7a7a7a;
+    max-width: 560px;
+    margin: 0 auto 32px;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .tag {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    color: #1d1d1f;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 9999px;
+    padding: 6px 14px;
+    line-height: 1.29;
+  }
+
+  /* ── Principle tile — parchment ── */
+  .principle-tile {
+    background: #f5f5f7;
+    padding: 80px 20px;
+    text-align: center;
+  }
+  .principle-tile .inner {
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7a7a7a;
+    margin-bottom: 16px;
+  }
+  .principle-tile h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+  }
+  .principle-tile p {
+    font-size: 17px;
+    color: #1d1d1f;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+  .principle-tile p strong {
+    font-weight: 600;
+    color: #0066cc;
+  }
+
+  /* ── Touchpoint tiles — alternating ── */
+  /* odd = dark, even = light */
+
+  .tp-tile {
+    padding: 80px 20px;
+  }
+  .tp-tile--light {
+    background: #ffffff;
+    color: #1d1d1f;
+  }
+  .tp-tile--dark {
+    background: #272729;
+    color: #ffffff;
+  }
+
+  .tp-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .tp-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+  }
+  .tp-tile--light .tp-header {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .tp-tile--dark .tp-header {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .tp-num {
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.28px;
+    flex-shrink: 0;
+  }
+  .tp-tile--light .tp-num {
+    background: #1d1d1f;
+    color: #ffffff;
+  }
+  .tp-tile--dark .tp-num {
+    background: #ffffff;
+    color: #272729;
+  }
+
+  .tp-heading {
+    flex: 1;
+  }
+  .tp-heading h3 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    margin-bottom: 4px;
+  }
+  .tp-when {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    line-height: 1.43;
+  }
+  .tp-tile--light .tp-when { color: #7a7a7a; }
+  .tp-tile--dark .tp-when { color: #cccccc; }
+
+  /* rows inside tp */
+  .tp-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tp-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    padding: 24px 0;
+  }
+  .tp-tile--light .tp-row {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .tp-tile--dark .tp-row {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .tp-row:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .row-label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    line-height: 1.29;
+    padding-top: 2px;
+  }
+  .tp-tile--light .row-label { color: #7a7a7a; }
+  .tp-tile--dark .row-label { color: #cccccc; }
+
+  .row-content {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+  .tp-tile--light .row-content { color: #1d1d1f; }
+  .tp-tile--dark .row-content { color: #ffffff; }
+  .row-content strong {
+    font-weight: 600;
+  }
+
+  /* WOW block */
+  .wow-block {
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 4px;
+  }
+  .tp-tile--light .wow-block {
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+  }
+  .tp-tile--dark .wow-block {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.14);
+  }
+  .wow-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .tp-tile--light .wow-label { color: #0066cc; }
+  .tp-tile--dark .wow-label { color: #2997ff; }
+  .wow-block p {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+  .tp-tile--light .wow-block p { color: #1d1d1f; }
+  .tp-tile--dark .wow-block p { color: #ffffff; }
+
+  /* Scripts */
+  .scripts-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .quote {
+    border-left: 2px solid;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 17px;
+    font-style: italic;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+  .tp-tile--light .quote {
+    border-color: #0066cc;
+    background: #f5f5f7;
+    color: #1d1d1f;
+  }
+  .tp-tile--dark .quote {
+    border-color: #2997ff;
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+  .tp-tile--light .checklist li { color: #1d1d1f; }
+  .tp-tile--dark .checklist li { color: #ffffff; }
+  .check-box {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tp-tile--light .check-box {
+    border: 1.5px solid #0066cc;
+  }
+  .tp-tile--dark .check-box {
+    border: 1.5px solid #2997ff;
+  }
+
+  /* Forbidden */
+  .forbidden-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .forbidden-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+  .tp-tile--light .forbidden-list li { color: #1d1d1f; }
+  .tp-tile--dark .forbidden-list li { color: #ffffff; }
+  .forbidden-mark {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 9999px;
+    margin-top: 3px;
+    line-height: 1;
+  }
+  .tp-tile--light .forbidden-mark {
+    background: #f5f5f7;
+    color: #1d1d1f;
+    border: 1px solid #e0e0e0;
+  }
+  .tp-tile--dark .forbidden-mark {
+    background: rgba(255,255,255,0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  /* ── Measurement tile — dark ── */
+  .measure-tile {
+    background: #272729;
+    color: #ffffff;
+    padding: 80px 20px;
+  }
+  .measure-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .measure-inner .section-label {
+    color: #cccccc;
+    margin-bottom: 16px;
+  }
+  .measure-inner h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 12px;
+  }
+  .measure-inner .lead-text {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #cccccc;
+    margin-bottom: 48px;
+    max-width: 560px;
+  }
+  .measure-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .measure-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .measure-card .kpi {
+    font-family: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  .measure-card .kpi-desc {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: -0.224px;
+    color: #cccccc;
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    background: #f5f5f7;
+    padding: 48px 20px;
+    text-align: center;
+  }
+  .site-footer p {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.12px;
+    color: #7a7a7a;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero-tile h1 { font-size: 34px; letter-spacing: -0.374px; }
+    .hero-tile .hero-sub { font-size: 17px; }
+    .principle-tile h2 { font-size: 28px; }
+    .tp-row { grid-template-columns: 1fr; gap: 8px; }
+    .row-label { padding-top: 0; }
+    .tp-heading h3 { font-size: 26px; }
+    .measure-grid { grid-template-columns: 1fr; }
+    .tp-tile { padding: 48px 20px; }
+    .measure-tile { padding: 48px 20px; }
+    .principle-tile { padding: 48px 20px; }
+  }
+
+  @media print {
+    .global-nav { display: none; }
+    body { color: #000; }
+    .tp-tile--dark, .measure-tile {
+      background: #f5f5f7;
+      color: #000;
+    }
+    .tp-tile--dark .tp-heading h3,
+    .tp-tile--dark .row-content,
+    .tp-tile--dark .checklist li,
+    .tp-tile--dark .forbidden-list li,
+    .tp-tile--dark .wow-block p,
+    .measure-inner h2,
+    .measure-card .kpi { color: #000; }
+    .tp-tile--dark .tp-num { background: #1d1d1f; color: #fff; }
+    .tp-tile--dark .tp-when,
+    .tp-tile--dark .row-label,
+    .measure-inner .lead-text,
+    .measure-card .kpi-desc { color: #333; }
+    .tp-tile--dark .wow-block,
+    .measure-card { border: 1px solid #ccc; background: #fff; }
+    .tp-tile--dark .quote { background: #f5f5f5; color: #000; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Global nav -->
+<nav class="global-nav">
+  <a href="index.html" class="nav-brand" style="text-decoration:none;">TheAdvance</a>
+  <span class="nav-sep">/</span>
+  <span>SOP 5 Điểm Chạm</span>
+</nav>
+
+<!-- Hero tile -->
+<section class="hero-tile">
+  <div class="eyebrow">Quy trình chuẩn dịch vụ</div>
+  <h1>Bộ SOP 5 Điểm Chạm</h1>
+  <p class="hero-sub">Mỗi khách hàng đều phải nhận đúng một trải nghiệm — bất kể đến chi nhánh nào, gặp KTV nào, vào ngày nào.</p>
+  <div class="tag-row">
+    <span class="tag">Áp dụng: toàn hệ thống</span>
+    <span class="tag">Đối tượng: Lễ tân · KTV · Quản lý CN</span>
+    <span class="tag">Phiên bản 1.0</span>
+  </div>
+</section>
+
+<!-- Principle tile — parchment -->
+<section class="principle-tile">
+  <div class="inner">
+    <div class="section-label">Nguyên tắc nền</div>
+    <h2>Trải nghiệm là thứ khách nhớ.</h2>
+    <p>Trải nghiệm là thứ khách <strong>cảm nhận và nhớ</strong>, quyết định việc quay lại nhiều hơn cả kết quả kỹ thuật. SOP này không phụ thuộc tay nghề từng người — nó đảm bảo <strong>mọi khách đều nhận tối thiểu chừng này</strong>. Mỗi điểm chạm có 1 hành động "wow" bắt buộc làm, không phải tùy hứng.</p>
+  </div>
+</section>
+
+<!-- Touchpoint 1 — dark -->
+<section class="tp-tile tp-tile--dark">
+  <div class="tp-inner">
+    <div class="tp-header">
+      <div class="tp-num">1</div>
+      <div class="tp-heading">
+        <h3>Đặt lịch</h3>
+        <p class="tp-when">Từ lúc khách liên hệ → đến trước giờ hẹn &nbsp;·&nbsp; Phụ trách: Lễ tân / CSKH</p>
+      </div>
+    </div>
+    <div class="tp-rows">
+      <div class="tp-row">
+        <div class="row-label">Mục tiêu</div>
+        <div class="row-content">Khách thấy mình được <strong>chờ đón</strong>, không bị nhầm lịch, biết rõ sẽ làm gì với ai trong bao lâu.</div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Bước chuẩn</div>
+        <div class="row-content">
+          1. Hệ thống <strong>tự động xác nhận lịch trong 2 phút</strong> (kiểm tra khung trống &amp; gửi xác nhận).<br>
+          2. Ghi rõ: dịch vụ, KTV, thời lượng dự kiến, giá tham khảo.<br>
+          3. Với khách cũ — mở hồ sơ, đọc lần làm trước.<br>
+          4. Nhắn nhắc lịch trước <strong>1 ngày</strong> + <strong>2 giờ</strong>, kèm hướng dẫn dặn dò khi đến chi tiết.
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Hành động WOW</div>
+        <div class="row-content">
+          <div class="wow-block">
+            <div class="wow-label">Bắt buộc</div>
+            <p>Tin nhắn nhắc lịch kèm hướng dẫn dặn dò chi tiết khi đến — khách biết cần chuẩn bị gì, đến đâu, lưu ý gì trước buổi làm, cảm thấy được quan tâm chu đáo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Câu thoại mẫu</div>
+        <div class="row-content">
+          <div class="scripts-block">
+            <div class="quote">Dạ Ngoc Dung Beauty đã giữ lịch cho mình lúc 14h thứ Năm, dịch vụ chăm sóc da chuyên sâu, khoảng 60 phút ạ. Mình nhớ rửa mặt sạch trước khi đến, không bôi kem chống nắng nha. Khi đến mình vào cửa chính, bạn lễ tân sẽ đón ngay ạ!</div>
+            <div class="quote">Em nhắc nhẹ lịch hẹn 14h chiều mai của mình nha. Mình đến trước 5–10 phút để thư giãn, mang theo áo thoải mái dễ thay. Có gì cần hỏi thêm mình nhắn em nha!</div>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Checklist</div>
+        <div class="row-content">
+          <ul class="checklist">
+            <li><span class="check-box"></span>Hệ thống tự động xác nhận lịch &lt; 2 phút</li>
+            <li><span class="check-box"></span>Đã đọc hồ sơ khách cũ trước khi khách đến</li>
+            <li><span class="check-box"></span>Đã nhắn nhắc lịch (1 ngày + 2 giờ) có hướng dẫn dặn dò</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Cấm kỵ</div>
+        <div class="row-content">
+          <ul class="forbidden-list">
+            <li><span class="forbidden-mark">X</span>Để khách chờ xác nhận quá lâu / phải nhắn lại lần 2</li>
+            <li><span class="forbidden-mark">X</span>Báo giá mập mờ rồi phát sinh khi đến nơi</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Touchpoint 2 — light -->
+<section class="tp-tile tp-tile--light">
+  <div class="tp-inner">
+    <div class="tp-header">
+      <div class="tp-num">2</div>
+      <div class="tp-heading">
+        <h3>Đón khách — Bước vào</h3>
+        <p class="tp-when">Từ lúc khách tới cửa → ngồi vào vị trí &nbsp;·&nbsp; Phụ trách: Lễ tân</p>
+      </div>
+    </div>
+    <div class="tp-rows">
+      <div class="tp-row">
+        <div class="row-label">Mục tiêu</div>
+        <div class="row-content">Ấn tượng 60 giây đầu tiên: khách thấy <strong>sạch, sang, được nhận ra</strong> ngay khi bước vào.</div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Bước chuẩn</div>
+        <div class="row-content">
+          1. Chào trong <strong>10 giây</strong>, đứng dậy, gọi đúng tên nếu là khách hẹn.<br>
+          2. Mời ngồi, phục vụ <strong>khăn ấm + nước theo mùa</strong> ngay.<br>
+          3. Xác nhận lại dịch vụ và giá.<br>
+          4. Báo rõ KTV và thời gian bắt đầu.<br>
+          5. Đảm bảo thời gian chờ từ sau check-in đến khi được tư vấn/làm dịch vụ <strong>không quá 30 phút</strong>.
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Hành động WOW</div>
+        <div class="row-content">
+          <div class="wow-block">
+            <div class="wow-label">Bắt buộc</div>
+            <p>Khăn ấm + đồ uống theo mùa (trà ấm mùa lạnh / nước detox mát mùa nóng) phục vụ <strong>trong 2 phút</strong> kể từ khi khách ngồi xuống — trước cả khi khách hỏi.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Câu thoại mẫu</div>
+        <div class="row-content">
+          <div class="scripts-block">
+            <div class="quote">Dạ chào chị Hương, mời chị vào ạ! Chị ngồi nghỉ chút, em mời chị khăn ấm với ly trà nha.</div>
+            <div class="quote">Hôm nay chị làm chăm sóc da chuyên sâu với chị Lan, khoảng 60 phút ạ. Em mời chị qua phòng số 2 mình bắt đầu nha.</div>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Checklist</div>
+        <div class="row-content">
+          <ul class="checklist">
+            <li><span class="check-box"></span>Chào &lt; 10 giây, đứng dậy đón</li>
+            <li><span class="check-box"></span>Khăn ấm + nước &lt; 2 phút</li>
+            <li><span class="check-box"></span>Thời gian chờ sau check-in &le; 30 phút</li>
+            <li><span class="check-box"></span>Toilet & khu chờ đã được kiểm tra sạch (đầu mỗi ca)</li>
+            <li><span class="check-box"></span>Có mùi hương đặc trưng (signature scent) — không mùi hóa chất</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Cấm kỵ</div>
+        <div class="row-content">
+          <ul class="forbidden-list">
+            <li><span class="forbidden-mark">X</span>Ngồi yên nhìn khách tự vào / chỉ "ngẩng mặt lên" chào</li>
+            <li><span class="forbidden-mark">X</span>Để khách tự tìm chỗ ngồi, không ai để ý</li>
+            <li><span class="forbidden-mark">X</span>Toilet bẩn — phá tan toàn bộ cảm giác cao cấp</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Touchpoint 3 — dark -->
+<section class="tp-tile tp-tile--dark">
+  <div class="tp-inner">
+    <div class="tp-header">
+      <div class="tp-num">3</div>
+      <div class="tp-heading">
+        <h3>Trong lúc làm dịch vụ</h3>
+        <p class="tp-when">Suốt liệu trình &nbsp;·&nbsp; Phụ trách: KTV phụ trách</p>
+      </div>
+    </div>
+    <div class="tp-rows">
+      <div class="tp-row">
+        <div class="row-label">Mục tiêu</div>
+        <div class="row-content">Khách <strong>yên tâm và thư giãn</strong> — biết đang làm gì, còn bao lâu, không phải kể lại lịch sử của mình.</div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Bước chuẩn</div>
+        <div class="row-content">
+          1. KTV <strong>đã đọc hồ sơ</strong>, không bắt khách kể lại lần trước.<br>
+          2. Giải thích ngắn từng bước đang làm.<br>
+          3. Hỏi cảm giác (đau / nóng / lạnh) ở các mốc quan trọng.<br>
+          4. Cập nhật tiến trình: "còn khoảng 15 phút nữa nha chị".<br>
+          5. Làm đúng SOP kỹ thuật của dịch vụ — không bỏ bước.
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Hành động WOW</div>
+        <div class="row-content">
+          <div class="wow-block">
+            <div class="wow-label">Bắt buộc</div>
+            <p>KTV chủ động nhắc lại 1 chi tiết cá nhân từ lần trước ("lần trước da chị hơi nhạy vùng má, nay em làm nhẹ vùng đó nha") — khách thấy mình được nhớ, không phải số thứ tự.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Câu thoại mẫu</div>
+        <div class="row-content">
+          <div class="scripts-block">
+            <div class="quote">Giờ em làm bước làm sạch sâu, hơi mát chút nha chị. Chị thấy ổn không ạ?</div>
+            <div class="quote">Mình còn khoảng 15 phút nữa là xong phần này rồi nha chị, chị cứ nghỉ ngơi thoải mái ạ.</div>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Checklist</div>
+        <div class="row-content">
+          <ul class="checklist">
+            <li><span class="check-box"></span>Đã đọc hồ sơ trước khi vào — khách không phải kể lại</li>
+            <li><span class="check-box"></span>Báo tiến trình ít nhất 1 lần giữa liệu trình</li>
+            <li><span class="check-box"></span>Làm đủ bước theo SOP kỹ thuật, KTV ký xác nhận</li>
+            <li><span class="check-box"></span>Hỏi cảm giác khách ở mốc quan trọng</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Cấm kỵ</div>
+        <div class="row-content">
+          <ul class="forbidden-list">
+            <li><span class="forbidden-mark">X</span>Im lặng suốt buổi hoặc buôn chuyện riêng với đồng nghiệp</li>
+            <li><span class="forbidden-mark">X</span>Bắt khách kể lại tình trạng đã có trong hồ sơ</li>
+            <li><span class="forbidden-mark">X</span>Bỏ bước để làm nhanh khi đông khách</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Touchpoint 4 — light -->
+<section class="tp-tile tp-tile--light">
+  <div class="tp-inner">
+    <div class="tp-header">
+      <div class="tp-num">4</div>
+      <div class="tp-heading">
+        <h3>Thanh toán — Tiễn khách</h3>
+        <p class="tp-when">Kết thúc dịch vụ → ra cửa &nbsp;·&nbsp; Phụ trách: Lễ tân + KTV</p>
+      </div>
+    </div>
+    <div class="tp-rows">
+      <div class="tp-row">
+        <div class="row-label">Mục tiêu</div>
+        <div class="row-content">Khách ra về với cảm giác <strong>minh bạch, được chăm đến phút cuối</strong> — và có lý do để quay lại.</div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Bước chuẩn</div>
+        <div class="row-content">
+          1. KTV dặn dò chăm sóc sau (kiêng gì, làm gì tại nhà).<br>
+          2. Thanh toán <strong>đúng giá đã báo</strong>, không phát sinh bất ngờ.<br>
+          3. Gợi ý lịch lần tới đúng chu kỳ liệu trình (không ép).<br>
+          4. Tiễn ra tận cửa, cảm ơn bằng tên.
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Hành động WOW</div>
+        <div class="row-content">
+          <div class="wow-block">
+            <div class="wow-label">Bắt buộc</div>
+            <p>Đưa khách <strong>lời dặn chăm sóc sau bằng văn bản</strong> (thẻ nhỏ / tin nhắn) + mốc gợi ý quay lại theo đúng liệu trình. Khách cầm về cái cụ thể, không phải chỉ "nhớ uống nhiều nước nha".</p>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Câu thoại mẫu</div>
+        <div class="row-content">
+          <div class="scripts-block">
+            <div class="quote">Về nhà chị tránh nắng và trang điểm trong 24h nha, em gửi chị tin nhắn ghi rõ luôn ạ. Khoảng 3 tuần nữa là tới đợt làm tiếp lý tưởng đó chị.</div>
+            <div class="quote">Dạ tổng đúng như em báo lúc đầu là [...] ạ. Cảm ơn chị Hương đã tin tưởng, em tiễn chị ra nha!</div>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Checklist</div>
+        <div class="row-content">
+          <ul class="checklist">
+            <li><span class="check-box"></span>Đã dặn dò chăm sóc sau (có văn bản kèm)</li>
+            <li><span class="check-box"></span>Thanh toán khớp giá đã báo — 0 phát sinh bất ngờ</li>
+            <li><span class="check-box"></span>Gợi ý lịch lần tới (nhẹ nhàng, không ép)</li>
+            <li><span class="check-box"></span>Tiễn ra cửa, cảm ơn đích danh</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Cấm kỵ</div>
+        <div class="row-content">
+          <ul class="forbidden-list">
+            <li><span class="forbidden-mark">X</span>Phát sinh phí không báo trước</li>
+            <li><span class="forbidden-mark">X</span>Ép mua liệu trình / sản phẩm gây khó chịu</li>
+            <li><span class="forbidden-mark">X</span>Khách tự đứng dậy ra về không ai tiễn</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Touchpoint 5 — dark -->
+<section class="tp-tile tp-tile--dark">
+  <div class="tp-inner">
+    <div class="tp-header">
+      <div class="tp-num">5</div>
+      <div class="tp-heading">
+        <h3>Sau khi về</h3>
+        <p class="tp-when">24–48 giờ sau dịch vụ &nbsp;·&nbsp; Phụ trách: CSKH / Quản lý CN</p>
+      </div>
+    </div>
+    <div class="tp-rows">
+      <div class="tp-row">
+        <div class="row-label">Mục tiêu</div>
+        <div class="row-content">Khách thấy ND Beauty <strong>quan tâm thật sự</strong>, không "tiền trao xong là hết". Đây là điểm chạm rẻ nhất nhưng tác động retention mạnh nhất.</div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Bước chuẩn</div>
+        <div class="row-content">
+          1. Nhắn hỏi thăm trong <strong>24–48h</strong> — hỏi tình trạng, không phải bán hàng.<br>
+          2. Nếu khách phản hồi tốt → mời để lại review/ảnh (có thể kèm ưu đãi nhẹ).<br>
+          3. Nếu khách phản hồi chưa ổn → chuyển ngay quy trình xử lý sự cố, quản lý CN xử lý trong <strong>24h</strong>.<br>
+          4. Lưu phản hồi vào hồ sơ khách.
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Hành động WOW</div>
+        <div class="row-content">
+          <div class="wow-block">
+            <div class="wow-label">Bắt buộc</div>
+            <p>Tin nhắn hỏi thăm 24–48h <strong>cá nhân hóa theo đúng dịch vụ vừa làm</strong> ("da chị sau buổi chăm sóc hôm qua ổn không ạ?") — không phải tin nhắn mẫu chung chung gửi hàng loạt.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Câu thoại mẫu</div>
+        <div class="row-content">
+          <div class="scripts-block">
+            <div class="quote">Chị Hương ơi, sau buổi chăm sóc da hôm qua chị thấy da mình thế nào ạ? Có gì chị cứ nhắn em nha, ND Beauty luôn sẵn sàng hỗ trợ ạ.</div>
+            <div class="quote">Em rất vui vì chị hài lòng ạ! Nếu tiện chị để lại cho tụi em vài dòng cảm nhận nha, em xin gửi chị một ưu đãi nhỏ cho lần tới ạ.</div>
+          </div>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Checklist</div>
+        <div class="row-content">
+          <ul class="checklist">
+            <li><span class="check-box"></span>Đã nhắn hỏi thăm trong 24–48h, có cá nhân hóa</li>
+            <li><span class="check-box"></span>Phản hồi tốt → đã mời review/ảnh</li>
+            <li><span class="check-box"></span>Phản hồi xấu → đã chuyển xử lý sự cố &lt; 24h</li>
+            <li><span class="check-box"></span>Đã lưu phản hồi vào hồ sơ khách</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tp-row">
+        <div class="row-label">Cấm kỵ</div>
+        <div class="row-content">
+          <ul class="forbidden-list">
+            <li><span class="forbidden-mark">X</span>Gửi tin nhắn mẫu chung chung, sai tên / sai dịch vụ</li>
+            <li><span class="forbidden-mark">X</span>Phớt lờ phản hồi tiêu cực hoặc trả lời chậm</li>
+            <li><span class="forbidden-mark">X</span>Biến tin hỏi thăm thành tin bán hàng</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Measurement tile — dark (surface-tile-2 for slight separation) -->
+<section class="measure-tile" style="background:#2a2a2c;">
+  <div class="measure-inner">
+    <div class="section-label">Đo lường & Trách nhiệm</div>
+    <h2>SOP không đo được thì không tồn tại.</h2>
+    <p class="lead-text">Quản lý chi nhánh chịu trách nhiệm các chỉ số sau hàng tháng.</p>
+    <div class="measure-grid">
+      <div class="measure-card">
+        <div class="kpi">Tỷ lệ quay lại</div>
+        <div class="kpi-desc">% khách quay lại trong 60 ngày — chỉ số quan trọng nhất của nhóm khách lõi.</div>
+      </div>
+      <div class="measure-card">
+        <div class="kpi">NPS</div>
+        <div class="kpi-desc">Điểm khách sẵn sàng giới thiệu. Thu qua tin hỏi thăm sau dịch vụ.</div>
+      </div>
+      <div class="measure-card">
+        <div class="kpi">Tỷ lệ phủ "5 điểm chạm"</div>
+        <div class="kpi-desc">% lượt khách được làm đủ 5 hành động WOW — chấm qua mystery shopper.</div>
+      </div>
+      <div class="measure-card">
+        <div class="kpi">Tốc độ xử lý sự cố</div>
+        <div class="kpi-desc">Thời gian từ lúc khách phàn nàn → được xử lý. Mục tiêu &lt; 24h.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <p>ND Beauty &nbsp;·&nbsp; SOP 5 Điểm Chạm v1.0 &nbsp;·&nbsp; Tài liệu nội bộ. In dán tại quầy lễ tân & phòng KTV mỗi chi nhánh.</p>
+</footer>
+
+</body>
+</html>

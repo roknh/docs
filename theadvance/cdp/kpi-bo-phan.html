@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPI Theo Bộ Phận — ND Beauty</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+    background: #ffffff;
+  }
+
+  /* ── Global nav ── */
+  .global-nav {
+    background: #000000;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+  }
+  .global-nav span {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.12px;
+    color: #ffffff;
+    opacity: 0.7;
+  }
+  .global-nav strong {
+    color: #ffffff;
+    opacity: 1;
+    font-weight: 600;
+  }
+
+  /* ── Hero tile (light) ── */
+  .hero-tile {
+    background: #ffffff;
+    padding: 80px 20px;
+    text-align: center;
+  }
+  .hero-tile .eyebrow {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.29;
+    letter-spacing: -0.224px;
+    color: #0066cc;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .hero-tile h1 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+  }
+  .hero-tile .lead {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: 0.196px;
+    color: #1d1d1f;
+    max-width: 680px;
+    margin: 0 auto 32px;
+  }
+  .hero-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .hero-tag {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.29;
+    letter-spacing: -0.224px;
+    color: #7a7a7a;
+    background: #f5f5f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 9999px;
+    padding: 6px 16px;
+  }
+
+  /* ── Legend tile (parchment) ── */
+  .legend-tile {
+    background: #f5f5f7;
+    padding: 80px 20px;
+  }
+  .legend-tile .inner {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .legend-tile h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #1d1d1f;
+    margin-bottom: 16px;
+  }
+  .legend-tile p {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #1d1d1f;
+    max-width: 600px;
+    margin-bottom: 32px;
+  }
+  .legend-chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.29;
+    letter-spacing: -0.224px;
+    padding: 10px 18px;
+    border-radius: 9999px;
+    border: 1px solid;
+  }
+  .chip-nps {
+    color: #0066cc;
+    background: rgba(0, 102, 204, 0.06);
+    border-color: rgba(0, 102, 204, 0.2);
+  }
+  .chip-ret {
+    color: #3a7d44;
+    background: rgba(58, 125, 68, 0.07);
+    border-color: rgba(58, 125, 68, 0.22);
+  }
+  .chip-skill {
+    color: #8a6a00;
+    background: rgba(138, 106, 0, 0.07);
+    border-color: rgba(138, 106, 0, 0.22);
+  }
+
+  /* ── Department tiles ── */
+  /* Light dept tile */
+  .dept-light {
+    background: #ffffff;
+    padding: 80px 20px;
+  }
+  /* Dark dept tile */
+  .dept-dark {
+    background: #272729;
+    padding: 80px 20px;
+  }
+
+  .dept-inner {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Dept header */
+  .dept-header {
+    margin-bottom: 40px;
+  }
+  .dept-number {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .dept-light .dept-number { color: #0066cc; }
+  .dept-dark .dept-number { color: #2997ff; }
+
+  .dept-header h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    margin-bottom: 8px;
+  }
+  .dept-light .dept-header h2 { color: #1d1d1f; }
+  .dept-dark .dept-header h2 { color: #ffffff; }
+
+  .dept-role {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+  }
+  .dept-light .dept-role { color: #7a7a7a; }
+  .dept-dark .dept-role { color: #cccccc; }
+
+  /* KPI cards */
+  .kpi-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .dept-light .kpi-grid {
+    border-color: #e0e0e0;
+    background: #ffffff;
+  }
+  .dept-dark .kpi-grid {
+    border-color: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+  }
+
+  .kpi-card {
+    padding: 24px;
+    border-bottom: 1px solid;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .kpi-card:last-child { border-bottom: none; }
+  .dept-light .kpi-card { border-color: #e0e0e0; }
+  .dept-dark .kpi-card { border-color: rgba(255,255,255,0.08); }
+
+  .kpi-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .kpi-name {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.24;
+    letter-spacing: -0.374px;
+    flex: 1;
+  }
+  .dept-light .kpi-name { color: #1d1d1f; }
+  .dept-dark .kpi-name { color: #ffffff; }
+
+  .kpi-target {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    white-space: nowrap;
+  }
+  .dept-light .kpi-target { color: #0066cc; }
+  .dept-dark .kpi-target { color: #2997ff; }
+
+  .kpi-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .kpi-source {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.43;
+    letter-spacing: -0.224px;
+  }
+  .dept-light .kpi-source { color: #7a7a7a; }
+  .dept-dark .kpi-source { color: #cccccc; }
+
+  .dept-light .kpi-source strong {
+    color: #333333;
+    font-weight: 600;
+  }
+  .dept-dark .kpi-source strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .metric-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .metric-tag {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 9999px;
+    border: 1px solid;
+  }
+  /* Light tile tags */
+  .dept-light .tag-nps {
+    color: #0066cc;
+    background: rgba(0, 102, 204, 0.07);
+    border-color: rgba(0, 102, 204, 0.2);
+  }
+  .dept-light .tag-ret {
+    color: #3a7d44;
+    background: rgba(58, 125, 68, 0.07);
+    border-color: rgba(58, 125, 68, 0.2);
+  }
+  .dept-light .tag-skill {
+    color: #8a6a00;
+    background: rgba(138, 106, 0, 0.07);
+    border-color: rgba(138, 106, 0, 0.2);
+  }
+  /* Dark tile tags */
+  .dept-dark .tag-nps {
+    color: #2997ff;
+    background: rgba(41, 151, 255, 0.12);
+    border-color: rgba(41, 151, 255, 0.3);
+  }
+  .dept-dark .tag-ret {
+    color: #5ac474;
+    background: rgba(90, 196, 116, 0.12);
+    border-color: rgba(90, 196, 116, 0.3);
+  }
+  .dept-dark .tag-skill {
+    color: #ffd60a;
+    background: rgba(255, 214, 10, 0.1);
+    border-color: rgba(255, 214, 10, 0.25);
+  }
+
+  /* ── Incentive note tile (dark) ── */
+  .note-tile {
+    background: #272729;
+    padding: 80px 20px;
+  }
+  .note-tile .inner {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .note-tile h2 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: #ffffff;
+    margin-bottom: 40px;
+  }
+  .note-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.04);
+  }
+  .note-item {
+    padding: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: #cccccc;
+  }
+  .note-item:last-child { border-bottom: none; }
+  .note-item strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* ── Footer tile (parchment) ── */
+  .footer-tile {
+    background: #f5f5f7;
+    padding: 48px 20px;
+    text-align: center;
+  }
+  .footer-tile p {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.12px;
+    color: #7a7a7a;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero-tile h1 { font-size: 34px; }
+    .hero-tile .lead { font-size: 19px; }
+    .dept-header h2 { font-size: 28px; }
+    .note-tile h2 { font-size: 28px; }
+    .legend-tile h2 { font-size: 28px; }
+    .hero-tile, .legend-tile, .dept-light, .dept-dark, .note-tile { padding: 48px 20px; }
+    .kpi-top { flex-direction: column; gap: 4px; }
+    .kpi-target { font-size: 17px; }
+  }
+
+  @media print {
+    .global-nav { display: none; }
+    .dept-dark, .note-tile { background: #f5f5f7 !important; }
+    .dept-dark .dept-number { color: #0066cc !important; }
+    .dept-dark .dept-header h2 { color: #1d1d1f !important; }
+    .dept-dark .dept-role { color: #7a7a7a !important; }
+    .dept-dark .kpi-name { color: #1d1d1f !important; }
+    .dept-dark .kpi-target { color: #0066cc !important; }
+    .dept-dark .kpi-source { color: #7a7a7a !important; }
+    .dept-dark .kpi-source strong { color: #333333 !important; }
+    .dept-dark .kpi-grid { border-color: #e0e0e0 !important; background: #ffffff !important; }
+    .dept-dark .kpi-card { border-color: #e0e0e0 !important; }
+    .dept-dark .tag-nps { color: #0066cc !important; background: rgba(0,102,204,0.07) !important; border-color: rgba(0,102,204,0.2) !important; }
+    .dept-dark .tag-ret { color: #3a7d44 !important; background: rgba(58,125,68,0.07) !important; border-color: rgba(58,125,68,0.2) !important; }
+    .dept-dark .tag-skill { color: #8a6a00 !important; background: rgba(138,106,0,0.07) !important; border-color: rgba(138,106,0,0.2) !important; }
+    .note-tile h2 { color: #1d1d1f !important; }
+    .note-list { border-color: #e0e0e0 !important; background: #ffffff !important; }
+    .note-item { color: #1d1d1f !important; border-color: #e0e0e0 !important; }
+    .note-item strong { color: #1d1d1f !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Global nav -->
+<nav class="global-nav">
+  <a href="index.html" style="color:#ffffff; text-decoration:none; font-size:14px; font-weight:600; letter-spacing:-0.224px;">TheAdvance</a>
+  <span style="color:#7a7a7a; margin:0 10px;">|</span>
+  <span>KPI Bộ Phận</span>
+</nav>
+
+<!-- Hero tile -->
+<section class="hero-tile">
+  <div class="eyebrow">Hệ vận hành chất lượng — Phần 3</div>
+  <h1>KPI Theo Bộ Phận</h1>
+  <p class="lead">Tản 3 thước đo xuống từng vị trí — mỗi bộ phận biết rõ mình chịu trách nhiệm con số nào và đo bằng cách nào.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Đi cùng: SOP 5 Điểm Chạm + Framework Đo Lường</span>
+    <span class="hero-tag">Phiên bản 1.0</span>
+  </div>
+</section>
+
+<!-- Legend tile (parchment) -->
+<section class="legend-tile">
+  <div class="inner">
+    <h2>Cách đọc</h2>
+    <p>Mỗi KPI gắn nhãn màu cho biết nó phục vụ thước đo nào. Một bộ phận có thể ảnh hưởng nhiều thước đo cùng lúc — đó là lý do cần phối hợp, không đổ lỗi.</p>
+    <div class="legend-chips">
+      <span class="legend-chip chip-nps">NPS · Hài lòng</span>
+      <span class="legend-chip chip-ret">Retention · Giữ chân</span>
+      <span class="legend-chip chip-skill">Tay nghề · Kỹ thuật</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · Lễ tân (light) -->
+<section class="dept-light">
+  <div class="dept-inner">
+    <div class="dept-header">
+      <div class="dept-number">01 — Lễ tân</div>
+      <h2>Lễ tân</h2>
+      <div class="dept-role">Điểm chạm 1, 2, 4 · Ấn tượng đầu &amp; cuối</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Thời gian chờ sau check-in đến khi được tư vấn/làm dịch vụ</div>
+          <div class="kpi-target">≤ 30 phút</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>log check-in CRM / khảo sát khách</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span><span class="metric-tag tag-retention">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ phục vụ khăn ấm + nước &lt; 2 phút</div>
+          <div class="kpi-target">≥ 90%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>mystery shopper</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ tin nhắn nhắc lịch có hướng dẫn dặn dò</div>
+          <div class="kpi-target">100%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>kiểm tra tin nhắn mẫu</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Điểm sạch khu chờ &amp; toilet (checklist đầu ca)</div>
+          <div class="kpi-target">100% ca</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>checklist đầu ca + mystery</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ khách hủy/no-show (gián tiếp qua nhắc lịch)</div>
+          <div class="kpi-target">≤ 10%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>log đặt lịch</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · KTV (dark) -->
+<section class="dept-dark">
+  <div class="dept-inner">
+    <div class="dept-header">
+      <div class="dept-number">02 — KTV</div>
+      <h2>Kỹ thuật viên (KTV)</h2>
+      <div class="dept-role">Điểm chạm 3 · Chủ lực tạo kết quả &amp; giữ chân</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tuân thủ SOP kỹ thuật (ký xác nhận đủ bước)</div>
+          <div class="kpi-target">100%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>phiếu liệu trình</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Điểm tay nghề mystery shopper</div>
+          <div class="kpi-target">≥ 85đ</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>bảng chấm 100 điểm</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-skill">Tay nghề</span><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ làm lại / khiếu nại kỹ thuật</div>
+          <div class="kpi-target">≤ 3%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>log sự cố theo KTV</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ đọc hồ sơ trước &amp; cá nhân hóa (Điểm chạm 3)</div>
+          <div class="kpi-target">≥ 90%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>mystery shopper</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Retention khách do mình phụ trách (60 ngày)</div>
+          <div class="kpi-target">≥ 35%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>data đặt lịch gán theo KTV</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Ảnh before/after đạt chuẩn / số liệu trình đủ điều kiện</div>
+          <div class="kpi-target">≥ 80%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>thư viện ảnh chuẩn hóa</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · CSKH (light) -->
+<section class="dept-light">
+  <div class="dept-inner">
+    <div class="dept-header">
+      <div class="dept-number">03 — CSKH</div>
+      <h2>Chăm sóc khách hàng (CSKH)</h2>
+      <div class="dept-role">Điểm chạm 5 · Giữ chân &amp; thu phản hồi</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ gửi tin hỏi thăm 24–48h (có cá nhân hóa)</div>
+          <div class="kpi-target">≥ 90%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>log CSKH</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ thu thập phản hồi NPS / lượt khách</div>
+          <div class="kpi-target">≥ 40%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>hệ thống khảo sát</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ liên hệ khách lõi sắp tới chu kỳ chưa đặt lịch</div>
+          <div class="kpi-target">100%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>danh sách cohort hàng tuần</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ chuyển khách lần 1 → quay lại lần 2</div>
+          <div class="kpi-target">≥ 40%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>data cohort khách mới</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ Promoter được mời review/đưa vào referral</div>
+          <div class="kpi-target">≥ 80%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>log CSKH + chương trình giới thiệu</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Quản lý chi nhánh (dark) -->
+<section class="dept-dark">
+  <div class="dept-inner">
+    <div class="dept-header">
+      <div class="dept-number">04 — Quản lý</div>
+      <h2>Quản lý chi nhánh</h2>
+      <div class="dept-role">Chịu trách nhiệm tổng chất lượng cơ sở</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">NPS của chi nhánh</div>
+          <div class="kpi-target">≥ +30</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>báo cáo tháng</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ quay lại 60 ngày của chi nhánh</div>
+          <div class="kpi-target">≥ 35%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>báo cáo cohort</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ giữ chân nhóm khách lõi / quý</div>
+          <div class="kpi-target">≥ 85%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>báo cáo cohort lõi</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Điểm mystery shopper trung bình chi nhánh</div>
+          <div class="kpi-target">≥ 85đ</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>mystery shopper</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ Detractor/khiếu nại xử lý trong 24h</div>
+          <div class="kpi-target">100%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>log sự cố</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · Vận hành & Marketing (light) -->
+<section class="dept-light">
+  <div class="dept-inner">
+    <div class="dept-header">
+      <div class="dept-number">05 — Vận hành</div>
+      <h2>Vận hành &amp; Marketing</h2>
+      <div class="dept-role">Chuẩn hóa hệ thống &amp; quyết định kênh</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Báo cáo NPS + Retention + tay nghề đúng hạn</div>
+          <div class="kpi-target">100% kỳ</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>lịch vận hành</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span><span class="metric-tag tag-ret">Retention</span><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Số lượt mystery shopper / chi nhánh / tháng</div>
+          <div class="kpi-target">≥ 1</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>lịch kiểm tra</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Chênh điểm tay nghề giữa các chi nhánh (chuẩn hóa đào tạo)</div>
+          <div class="kpi-target">≤ 10đ</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>so sánh báo cáo CN</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ review/UGC thu được từ Promoter</div>
+          <div class="kpi-target">tăng dần</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>hệ thống review</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Chỉ tăng ngân sách khách mới khi gate 3 thước đo đạt</div>
+          <div class="kpi-target">tuân thủ</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>quy tắc ra quyết định</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · Ban lãnh đạo (dark) -->
+<section class="dept-dark">
+  <div class="dept-inner">
+    <div class="dept-header">
+      <div class="dept-number">06 — Ban lãnh đạo</div>
+      <h2>Ban lãnh đạo</h2>
+      <div class="dept-role">Quyết định chiến lược &amp; phân bổ nguồn lực</div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">NPS toàn hệ thống</div>
+          <div class="kpi-target">≥ +50</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>báo cáo hợp nhất</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-nps">NPS</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Tỷ lệ giữ chân khách lõi toàn hệ thống / quý</div>
+          <div class="kpi-target">≥ 85%</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>báo cáo cohort hợp nhất</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">LTV/CAC nhóm khách lõi (sửa unit economics trước khi mở rộng)</div>
+          <div class="kpi-target">cải thiện</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>mô hình tài chính</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span></div>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top">
+          <div class="kpi-name">Đánh giá cohort &amp; quyết định mở rộng / siết kênh</div>
+          <div class="kpi-target">mỗi quý</div>
+        </div>
+        <div class="kpi-bottom">
+          <div class="kpi-source">Nguồn: <strong>review hàng quý</strong></div>
+          <div class="metric-tags"><span class="metric-tag tag-ret">Retention</span><span class="metric-tag tag-nps">NPS</span><span class="metric-tag tag-skill">Tay nghề</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Incentive notes (dark) -->
+<section class="note-tile">
+  <div class="inner">
+    <h2>Lưu ý khi gắn KPI vào thưởng</h2>
+    <ul class="note-list">
+      <li class="note-item"><strong>Đừng thưởng KPI dễ bị "gian".</strong> Ví dụ thưởng số review → KTV/CSKH có thể tự tạo review ảo. Ưu tiên KPI lấy từ data hệ thống (retention, tỷ lệ xử lý &lt; 24h) hơn là KPI tự khai.</li>
+      <li class="note-item"><strong>KPI giữ chân nên là KPI nhóm</strong> (cả chi nhánh), vì retention là kết quả phối hợp lễ tân + KTV + CSKH — không một mình ai làm nên. KPI tay nghề thì gắn cá nhân KTV được.</li>
+      <li class="note-item"><strong>Đo baseline trước, đặt mục tiêu sau.</strong> Các con số ở đây là mốc khởi điểm tham khảo — chạy 1 tháng lấy số thật của ND Beauty rồi mới chốt ngưỡng thưởng, tránh đặt quá cao gây nản hoặc quá thấp mất tác dụng.</li>
+      <li class="note-item"><strong>Không thưởng tăng trưởng khách mới khi gate chất lượng chưa đạt.</strong> Nếu thưởng acquisition trước khi retention vững, đội ngũ sẽ tối ưu sai hướng — kéo nhiều khách rồi để họ rời đi.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer-tile">
+  <p>ND Beauty · KPI Theo Bộ Phận v1.0 — Tài liệu nội bộ. Bộ 3: SOP 5 Điểm Chạm · Framework Đo Lường · KPI Bộ Phận.</p>
+</footer>
+
+</body>
+</html>
