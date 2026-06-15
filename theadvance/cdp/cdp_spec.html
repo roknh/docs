@@ -1324,7 +1324,7 @@
 <!-- Sub Nav -->
 <div class="sub-nav">
   <span class="sub-nav-title">Specification v1.0</span>
-  <span class="sub-nav-badge pending">🟡 Chờ khách confirm</span>
+  <span class="sub-nav-badge pending">🟡 Chờ xác nhận</span>
 </div>
 
 <!-- Document Shell -->
@@ -1345,6 +1345,7 @@
       <li><a href="#sec-functional">2. Yêu cầu chức năng</a></li>
       <ul class="toc-sub">
         <li><a href="#sec-roles">2.1 User roles</a></li>
+        <li><a href="#sec-modules">Tổng quan Modules</a></li>
         <li><a href="#sec-features">2.2 Feature list</a></li>
         <li><a href="#sec-details">2.3 Chi tiết tính năng</a></li>
       </ul>
@@ -1356,11 +1357,9 @@
       <li><a href="#sec-platform">7. Platform</a></li>
       <li><a href="#sec-phases">8. Kế hoạch phase</a></li>
       <li><a href="#sec-risks">9. Rủi ro &amp; giả định</a></li>
-      <li><a href="#sec-oq">10. Open questions</a></li>
-      <li><a href="#sec-glossary">11. Glossary</a></li>
-      <li><a href="#sec-changelog">12. Changelog</a></li>
+      <li><a href="#sec-glossary">10. Glossary</a></li>
+      <li><a href="#sec-changelog">11. Changelog</a></li>
       <li class="toc-divider" aria-hidden="true"></li>
-      <li><a href="#sec-signoff">Signoff</a></li>
     </ul>
   </aside>
 
@@ -1390,7 +1389,7 @@
         <div class="hero-meta-sep" aria-hidden="true"></div>
         <div class="hero-meta-item">
           <span class="hero-meta-label">Trạng thái</span>
-          <span class="status-badge">🟡 Chờ khách confirm</span>
+          <span class="status-badge">🟡 Chờ xác nhận</span>
         </div>
       </div>
     </section>
@@ -1530,6 +1529,34 @@
               </table>
             </div>
           </div>
+        </div>
+
+        <!-- 2.1b Module Overview -->
+        <div id="sec-modules" style="margin-bottom: 48px;">
+          <h3 class="subsection-title">Tổng quan Modules</h3>
+          <p style="color: rgba(255,255,255,0.65); margin-bottom: 20px;">CDP được chia thành 10 module, mỗi module đảm nhận một mảng chức năng riêng biệt:</p>
+          <div class="dark-table">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>#</th><th>Module</th><th>Mô tả</th><th>Số features</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>M1</td><td><strong>Data Integration</strong></td><td>Thu thập và chuẩn hoá dữ liệu từ mọi nguồn (POS, CRM, App, Zalo, Ads...)</td><td>2</td></tr>
+                  <tr><td>M2</td><td><strong>Identity &amp; Profile</strong></td><td>Hợp nhất danh tính khách hàng, xây dựng Customer 360</td><td>2</td></tr>
+                  <tr><td>M3</td><td><strong>Segmentation</strong></td><td>Phân khúc khách hàng theo rule, AI, và RFM</td><td>3</td></tr>
+                  <tr><td>M4</td><td><strong>Campaign &amp; Activation</strong></td><td>Quản lý campaign, automation workflow, kết nối kênh gửi</td><td>3</td></tr>
+                  <tr><td>M5</td><td><strong>Analytics &amp; Reporting</strong></td><td>Dashboard, phân tích khách hàng và campaign</td><td>3</td></tr>
+                  <tr><td>M6</td><td><strong>Lead Management</strong></td><td>Thu lead, chấm điểm lead, theo dõi chuyển đổi</td><td>3</td></tr>
+                  <tr><td>M7</td><td><strong>Consent &amp; Privacy</strong></td><td>Quản lý đồng ý, tuân thủ quy định dữ liệu</td><td>1</td></tr>
+                  <tr><td>M8</td><td><strong>Access Control</strong></td><td>Phân quyền đa cấp theo BU, chi nhánh, vai trò</td><td>1</td></tr>
+                  <tr><td>M9</td><td><strong>Features đặc thù ngành</strong></td><td>Quản lý liệu trình (thẩm mỹ), đại lý, cross-BU</td><td>3</td></tr>
+                  <tr><td>M10</td><td><strong>Customer Scoring</strong></td><td>Bộ điểm thống nhất: Health, Engagement, Monetary, Loyalty, Predictive</td><td>8</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 12px;">Tổng cộng: <strong style="color: rgba(255,255,255,0.8);">10 modules, 29 features</strong> &mdash; triển khai qua 3 phase.</p>
         </div>
 
         <!-- 2.2 Feature List -->
@@ -3061,6 +3088,7 @@
                     │  Zalo SMS   │
                     │  Email Ads  │
                     └─────────────┘</pre>
+        <p style="margin-top: 16px; font-size: 14px; color: #888;">👉 Xem chi tiết kiến trúc dữ liệu tại <a href="data-architecture.html" target="_blank" style="color: var(--blue);">data-architecture.html</a></p>
 
         <h3 class="subsection-title">5.3. Data retention</h3>
         <div class="table-wrap">
@@ -3185,7 +3213,7 @@
           </div>
         </div>
 
-        <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 8px;">Timeline mong muốn cho Phase 1: <strong style="color: rgba(255,255,255,0.75);">Chưa chốt — cần confirm từ khách</strong></p>
+        <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 8px;">Timeline mong muốn cho Phase 1: <strong style="color: rgba(255,255,255,0.75);">cần confirm lại</strong></p>
       </div>
     </section>
 
@@ -3232,31 +3260,10 @@
       </div>
     </section>
 
-    <!-- Section 10: Open Questions dark -->
-    <section class="section-dark-2 section-anchor" id="sec-oq">
-      <div class="section-inner">
-        <div class="section-label section-label-dark">Section 10</div>
-        <h2 class="section-title">Open questions (chưa chốt)</h2>
-        <p style="color: rgba(255,255,255,0.5); margin-bottom: 32px; font-size: 14px;">Các câu hỏi này cần được khách xác nhận trước khi chốt spec.</p>
-        <ol class="oq-list">
-          <li><span class="oq-num">1</span>Hệ thống POS/CRM hiện tại của từng BU là gì? Có API không?</li>
-          <li><span class="oq-num">2</span>Số lượng khách hàng, chi nhánh, đại lý hiện tại của từng BU?</li>
-          <li><span class="oq-num">3</span>Timeline mong muốn cho Phase 1?</li>
-          <li><span class="oq-num">4</span>Budget dự kiến? (ảnh hưởng đến quyết định build vs buy)</li>
-          <li><span class="oq-num">5</span>Có yêu cầu hosting on-premise hay chấp nhận cloud?</li>
-          <li><span class="oq-num">6</span>Ai là Product Owner phía khách cho dự án CDP?</li>
-          <li><span class="oq-num">7</span>Ngọc Dung và Zema có dùng chung hệ thống POS/CRM không, hay hoàn toàn tách biệt?</li>
-          <li><span class="oq-num">8</span>Ocany có kênh bán hàng trực tiếp (D2C) cho end-consumer không, hay chỉ qua đại lý?</li>
-          <li><span class="oq-num">9</span>Có yêu cầu tích hợp với hệ thống loyalty/tích điểm hiện tại không?</li>
-          <li><span class="oq-num">10</span>Có yêu cầu về data residency (data phải lưu ở Việt Nam)?</li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- Section 11: Glossary light -->
+    <!-- Section 10: Glossary light -->
     <section class="section-parchment section-anchor" id="sec-glossary">
       <div class="section-inner">
-        <div class="section-label">Section 11</div>
+        <div class="section-label">Section 10</div>
         <h2 class="section-title">Glossary</h2>
         <div class="glossary-grid">
           <div class="glossary-item"><span class="glossary-term">CDP</span><span class="glossary-def">Customer Data Platform — nền tảng hợp nhất dữ liệu khách hàng</span></div>
@@ -3286,48 +3293,16 @@
       </div>
     </section>
 
-    <!-- Section 12: Changelog dark -->
+    <!-- Section 11: Changelog dark -->
     <section class="section-dark section-anchor" id="sec-changelog">
       <div class="section-inner">
-        <div class="section-label section-label-dark">Section 12</div>
+        <div class="section-label section-label-dark">Section 11</div>
         <h2 class="section-title">Changelog</h2>
         <div class="changelog-item">
           <span class="changelog-ver" style="background: rgba(41,151,255,0.15); color: var(--primary-on-dark);">v1.0</span>
           <span class="changelog-date" style="color: rgba(255,255,255,0.4);">2026-06-11</span>
           <span class="changelog-note" style="color: rgba(255,255,255,0.8);">Initial draft — 10 modules, 28 features, full spec</span>
           <span class="changelog-author" style="color: rgba(255,255,255,0.35);">IT Team</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Signoff parchment -->
-    <section class="section-parchment section-anchor" id="sec-signoff">
-      <div class="section-inner">
-        <div class="section-label">Signoff</div>
-        <h2 class="section-title">Xác nhận &amp; ký duyệt</h2>
-        <p>Spec này cần được khách hàng đọc, review và xác nhận trước khi chuyển cho Product Owner / Tech Lead tiếp tục quy trình nội bộ.</p>
-
-        <div class="signoff-box">
-          <div class="signoff-row">
-            <span class="signoff-check"></span>
-            <span class="signoff-label">Khách hàng đã đọc và đồng ý với toàn bộ nội dung spec</span>
-          </div>
-          <div class="signoff-row">
-            <span class="signoff-check"></span>
-            <span class="signoff-label">Ngày confirm:</span>
-            <span class="signoff-blank"></span>
-          </div>
-          <div class="signoff-row">
-            <span class="signoff-check"></span>
-            <span class="signoff-label">Tên người confirm:</span>
-            <span class="signoff-blank"></span>
-          </div>
-        </div>
-
-        <div style="margin-top: 32px; padding: 20px; background: rgba(0,102,204,0.06); border-radius: var(--rounded-lg); border: 1px solid rgba(0,102,204,0.15);">
-          <p style="margin: 0; font-size: 14px; color: var(--ink-muted-48); line-height: 1.6;">
-            Sau khi khách confirm → update status từ 🟡 sang 🟢 → chuyển spec.md cho <strong style="color: var(--ink);">Product Owner / Tech Lead</strong> để tiếp tục quy trình nội bộ (đánh giá scope, chọn tech stack, init dự án, deploy, CI/CD).
-          </p>
         </div>
       </div>
     </section>
@@ -3339,7 +3314,7 @@
           <div class="footer-brand">CDP TheAdvance</div>
           <div class="footer-meta">
             Specification v1.0 · 2026-06-11<br>
-            BA: IT Team · Status: 🟡 Chờ khách confirm<br>
+            BA: IT Team · Status: 🟡 Chờ xác nhận<br>
             10 modules · 28 features · 3 phases
           </div>
         </div>
