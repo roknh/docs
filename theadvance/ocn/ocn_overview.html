@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCANY — Ecosystem Overview</title>
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── Colors ── */
+    :root {
+      --primary: #0066cc;
+      --primary-focus: #0071e3;
+      --primary-on-dark: #2997ff;
+      --ink: #1d1d1f;
+      --ink-muted-80: #333333;
+      --ink-muted-48: #7a7a7a;
+      --body-muted: #cccccc;
+      --canvas: #ffffff;
+      --canvas-parchment: #f5f5f7;
+      --surface-pearl: #fafafc;
+      --surface-tile-1: #272729;
+      --surface-tile-2: #2a2a2c;
+      --surface-tile-3: #252527;
+      --surface-black: #000000;
+      --hairline: #e0e0e0;
+      --divider-soft: #f0f0f0;
+      --on-primary: #ffffff;
+      --on-dark: #ffffff;
+    }
+
+    /* ── Typography ── */
+    body {
+      font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+      color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero-display {
+      font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+      font-size: 56px;
+      font-weight: 600;
+      line-height: 1.07;
+      letter-spacing: -0.28px;
+    }
+    .display-lg {
+      font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    .display-md {
+      font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+    }
+    .lead {
+      font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.14;
+      letter-spacing: 0.196px;
+    }
+    .lead-airy {
+      font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.5;
+      letter-spacing: 0;
+    }
+    .tagline {
+      font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.19;
+      letter-spacing: 0.231px;
+    }
+    .body-strong {
+      font-weight: 600;
+      line-height: 1.24;
+      letter-spacing: -0.374px;
+    }
+    .caption {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+    }
+    .caption-strong {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.29;
+      letter-spacing: -0.224px;
+    }
+    .fine-print {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.12px;
+    }
+
+    /* ── Global Nav ── */
+    .global-nav {
+      background: var(--surface-black);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .global-nav-inner {
+      max-width: 980px;
+      width: 100%;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      color: var(--on-dark);
+      font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.28px;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--body-muted);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.12px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--on-dark); }
+
+    /* ── Sub Nav ── */
+    .sub-nav {
+      background: rgba(245, 245, 247, 0.8);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 44px;
+      z-index: 99;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .sub-nav-inner {
+      max-width: 980px;
+      width: 100%;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sub-nav-title {
+      font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: 0.231px;
+      color: var(--ink);
+    }
+    .sub-nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      align-items: center;
+    }
+    .sub-nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.224px;
+      color: var(--ink-muted-48);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .sub-nav-links a:hover { color: var(--ink); }
+    .sub-nav-links a.active { color: var(--ink); font-weight: 600; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.374px;
+      padding: 11px 22px;
+      border-radius: 9999px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .btn-primary:active { transform: scale(0.95); }
+
+    .btn-secondary {
+      display: inline-block;
+      background: transparent;
+      color: var(--primary);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.374px;
+      padding: 11px 22px;
+      border-radius: 9999px;
+      border: 1px solid var(--primary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .btn-secondary:active { transform: scale(0.95); }
+
+    .text-link {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .text-link:hover { text-decoration: underline; }
+    .text-link-on-dark {
+      color: var(--primary-on-dark);
+      text-decoration: none;
+    }
+    .text-link-on-dark:hover { text-decoration: underline; }
+
+    /* ── Tiles ── */
+    .tile {
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .tile-inner {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .tile-light { background: var(--canvas); color: var(--ink); }
+    .tile-parchment { background: var(--canvas-parchment); color: var(--ink); }
+    .tile-dark { background: var(--surface-tile-1); color: var(--on-dark); }
+    .tile-dark-2 { background: var(--surface-tile-2); color: var(--on-dark); }
+    .tile-dark-3 { background: var(--surface-tile-3); color: var(--on-dark); }
+    .tile-black { background: var(--surface-black); color: var(--on-dark); }
+
+    .tile h2 { margin-bottom: 12px; }
+    .tile .lead, .tile .lead-airy { margin-bottom: 24px; }
+    .tile .cta-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+
+    /* ── Cards Grid ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 18px;
+      padding: 32px 24px;
+      text-align: left;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card-dark {
+      background: var(--surface-tile-2);
+      border-color: rgba(255,255,255,0.08);
+      color: var(--on-dark);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .card-icon-blue { background: var(--primary); color: var(--on-primary); }
+    .card-icon-dark { background: var(--ink); color: var(--on-dark); }
+    .card-icon-green { background: #30d158; color: #fff; }
+    .card-icon-orange { background: #ff9500; color: #fff; }
+    .card-icon-purple { background: #af52de; color: #fff; }
+    .card-icon-red { background: #ff3b30; color: #fff; }
+    .card-icon-teal { background: #5ac8fa; color: #fff; }
+
+    .card h3 {
+      font-size: 21px;
+      font-weight: 600;
+      line-height: 1.19;
+      letter-spacing: 0.231px;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: var(--ink-muted-48);
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+      margin-bottom: 12px;
+    }
+    .card-dark p { color: var(--body-muted); }
+
+    /* ── Tech Table ── */
+    .tech-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .tech-table th {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.12px;
+      text-transform: uppercase;
+      color: var(--ink-muted-48);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .tech-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--divider-soft);
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+    }
+    .tech-table-dark th {
+      color: var(--body-muted);
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+    .tech-table-dark td {
+      border-bottom-color: rgba(255,255,255,0.06);
+      color: var(--on-dark);
+    }
+    .tech-table td:first-child {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .tech-table-dark td:first-child {
+      color: var(--on-dark);
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+    .tag-blue { background: rgba(0,102,204,0.12); color: var(--primary); }
+    .tag-green { background: rgba(48,209,88,0.12); color: #248a3d; }
+    .tag-orange { background: rgba(255,149,0,0.12); color: #c93400; }
+    .tag-purple { background: rgba(175,82,222,0.12); color: #8944ab; }
+    .tag-dark-blue { background: rgba(41,151,255,0.15); color: var(--primary-on-dark); }
+    .tag-dark-green { background: rgba(48,209,88,0.15); color: #30d158; }
+
+    /* ── Microservices Map ── */
+    .ms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .ms-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 11px;
+      padding: 16px;
+      text-align: left;
+    }
+    .ms-item-port {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary-on-dark);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .ms-item-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--on-dark);
+      margin-bottom: 4px;
+    }
+    .ms-item-desc {
+      font-size: 12px;
+      color: var(--body-muted);
+      line-height: 1.3;
+    }
+
+    /* ── Section Headers ── */
+    .section-header {
+      text-align: left;
+      max-width: 980px;
+      margin: 0 auto 48px;
+    }
+    .section-header .overline {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      letter-spacing: -0.224px;
+      margin-bottom: 8px;
+    }
+    .section-header-dark .overline { color: var(--primary-on-dark); }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--canvas-parchment);
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .footer p {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.6;
+      letter-spacing: -0.12px;
+      color: var(--ink-muted-48);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ── Utility ── */
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .mb-8 { margin-bottom: 8px; }
+    .mb-12 { margin-bottom: 12px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .mb-48 { margin-bottom: 48px; }
+    .mt-32 { margin-top: 32px; }
+    .mt-48 { margin-top: 48px; }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 833px) {
+      .hero-display { font-size: 40px; }
+      .display-lg { font-size: 34px; }
+      .display-md { font-size: 28px; }
+      .lead { font-size: 24px; }
+      .lead-airy { font-size: 21px; }
+      .tile { padding: 48px 20px; }
+      .nav-links { display: none; }
+      .sub-nav-links { display: none; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .ms-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .hero-display { font-size: 34px; }
+      .display-lg { font-size: 28px; }
+      .tile { padding: 40px 16px; }
+    }
+
+    /* ── Scroll anchor offset ── */
+    [id] { scroll-margin-top: 100px; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ Global Nav ════════════════ -->
+<nav class="global-nav">
+  <div class="global-nav-inner">
+    <a href="#" class="nav-logo">OCANY</a>
+    <ul class="nav-links">
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#sfs">SFS</a></li>
+      <li><a href="#web-app">Web App</a></li>
+      <li><a href="#delivery">Delivery</a></li>
+      <li><a href="#dms">DMS</a></li>
+      <li><a href="#erp">ERP</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════════════ Sub Nav ════════════════ -->
+<div class="sub-nav">
+  <div class="sub-nav-inner">
+    <span class="sub-nav-title">Ecosystem</span>
+    <ul class="sub-nav-links">
+      <li><a href="#overview" class="active">7 Products</a></li>
+      <li><a href="#erp">20 Microservices</a></li>
+      <li><a href="#tech-summary">Tech Stack</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section id="overview" class="tile tile-black">
+  <div class="tile-inner">
+    <p class="caption" style="color: var(--primary-on-dark); margin-bottom: 12px;">Ocany Technology Ecosystem</p>
+    <h1 class="hero-display" style="color: var(--on-dark);">
+      7 products.<br>20 microservices.<br>One platform.
+    </h1>
+    <p class="lead-airy" style="color: var(--body-muted); margin-top: 24px; max-width: 600px; margin-left: auto; margin-right: auto;">
+      From sales force to ERP, from mobile delivery to enterprise CRM &mdash; the complete business operating system for Ocany.
+    </p>
+    <div class="cta-group">
+      <a href="#products" class="btn-primary">Explore Products</a>
+      <a href="#tech-summary" class="btn-secondary" style="border-color: rgba(255,255,255,0.3); color: var(--on-dark);">Tech Stack</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ ARCHITECTURE OVERVIEW ════════════════ -->
+<section class="tile tile-parchment">
+  <div class="tile-inner">
+    <div class="section-header">
+      <p class="overline">Architecture Overview</p>
+      <h2 class="display-lg">Kiến trúc Máy chủ Đơn.</h2>
+      <p class="lead" style="color: var(--ink-muted-48); margin-top: 12px;">
+        Tất cả trên 1 máy chủ (Không HA) &mdash; IIS, SQL Server, Redis cùng chạy trên một máy chủ vật lý / VM duy nhất.
+      </p>
+    </div>
+    <div style="max-width: 900px; margin: 0 auto;">
+      <img src="architecture-single-server.png" alt="Sơ đồ Kiến trúc Máy chủ Đơn - IIS, SQL Server, Redis trên 1 máy chủ" style="width: 100%; border-radius: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PRODUCT MAP ════════════════ -->
+<section id="products" class="tile tile-parchment">
+  <div class="tile-inner">
+    <div class="section-header">
+      <p class="overline">Product Portfolio</p>
+      <h2 class="display-lg">Built for every touchpoint.</h2>
+      <p class="lead" style="color: var(--ink-muted-48); margin-top: 12px;">Backend, web, mobile &mdash; mỗi sản phẩm phục vụ một vai trò cụ thể trong chuỗi vận hành.</p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- SFS -->
+      <div class="card">
+        <div class="card-icon card-icon-blue">S</div>
+        <div class="badge-row">
+          <span class="tag tag-blue">.NET 8</span>
+          <span class="tag tag-blue">Blazor</span>
+        </div>
+        <h3>SFS</h3>
+        <p>Sales Force System &mdash; Back-office quản lý bán hàng, kho, giao hàng, báo cáo. DevExpress XAF + EF Core 8, 267+ migrations.</p>
+        <a href="#sfs" class="text-link caption">Learn more &rsaquo;</a>
+      </div>
+
+      <!-- OCANY-WEB-APP -->
+      <div class="card">
+        <div class="card-icon card-icon-green">W</div>
+        <div class="badge-row">
+          <span class="tag tag-green">React 19</span>
+          <span class="tag tag-green">Turborepo</span>
+        </div>
+        <h3>OCANY Web App</h3>
+        <p>Monorepo chứa SFS Web + CRM. Turborepo + npm workspaces, 70+ shared UI components (shadcn/ui + custom OCN).</p>
+        <a href="#web-app" class="text-link caption">Learn more &rsaquo;</a>
+      </div>
+
+      <!-- OcanyDelivery -->
+      <div class="card">
+        <div class="card-icon card-icon-orange">D</div>
+        <div class="badge-row">
+          <span class="tag tag-orange">React Native</span>
+          <span class="tag tag-orange">0.74</span>
+        </div>
+        <h3>OcanyDelivery</h3>
+        <p>App dành cho shipper/nhân viên giao hàng. VoIP (Stringee), push notification, chụp ảnh xác nhận, quản lý hàng tồn.</p>
+        <a href="#delivery" class="text-link caption">Learn more &rsaquo;</a>
+      </div>
+
+      <!-- OcanyDMS -->
+      <div class="card">
+        <div class="card-icon card-icon-purple">M</div>
+        <div class="badge-row">
+          <span class="tag tag-purple">React Native</span>
+          <span class="tag tag-purple">0.79</span>
+        </div>
+        <h3>OcanyDMS</h3>
+        <p>Distribution Management System &mdash; 16+ modules cho nhân viên bán hàng: viếng thăm, đặt hàng, FaceID, GPS, báo cáo.</p>
+        <a href="#dms" class="text-link caption">Learn more &rsaquo;</a>
+      </div>
+
+      <!-- sfscore-erp -->
+      <div class="card">
+        <div class="card-icon card-icon-red">E</div>
+        <div class="badge-row">
+          <span class="tag" style="background:rgba(255,59,48,0.12);color:#ff3b30;">.NET 10</span>
+          <span class="tag" style="background:rgba(255,59,48,0.12);color:#ff3b30;">Microservices</span>
+        </div>
+        <h3>Sfscore ERP</h3>
+        <p>ERP thế hệ mới &mdash; 20 microservices, Event-Driven, CQRS + MediatR. Tài chính, kho, nhân sự, marketing, thương mại điện tử.</p>
+        <a href="#erp" class="text-link caption">Learn more &rsaquo;</a>
+      </div>
+
+      <!-- Runtolive -->
+      <div class="card">
+        <div class="card-icon card-icon-teal">R</div>
+        <div class="badge-row">
+          <span class="tag" style="background:rgba(90,200,250,0.12);color:#007aff;">Web</span>
+        </div>
+        <h3>Runtolive</h3>
+        <p>Web bán vé chạy bộ &mdash; quản lý sự kiện, đăng ký, bán vé trực tuyến.</p>
+      </div>
+
+      <!-- App Loyalty -->
+      <div class="card">
+        <div class="card-icon card-icon-dark">L</div>
+        <div class="badge-row">
+          <span class="tag tag-blue">Mobile</span>
+        </div>
+        <h3>App Loyalty</h3>
+        <p>Quản lý thành viên &mdash; tích điểm, đổi quà, nhận ưu đãi, đăng ký vé trực tuyến, quản lý thành viên.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ SFS DETAIL ════════════════ -->
+<section id="sfs" class="tile tile-light">
+  <div class="tile-inner">
+    <div class="section-header">
+      <p class="overline">SFS &mdash; Sales Force System</p>
+      <h2 class="display-lg">The operational backbone.</h2>
+      <p class="lead" style="color: var(--ink-muted-48); margin-top: 12px;">
+        Back-office quản lý bán hàng, kho, vận hành, báo cáo. Chạy trên .NET 8 + Blazor Server + DevExpress XAF.
+      </p>
+    </div>
+
+    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+      <!-- Backend -->
+      <div class="card" style="padding: 24px;">
+        <h3 class="mb-16">Backend</h3>
+        <table class="tech-table">
+          <tr><td>.NET 8</td><td>ASP.NET Core 8 (Blazor + API)</td></tr>
+          <tr><td>DevExpress XAF</td><td>v24.2.3 &mdash; Model, Security, Audit Trail, Reports</td></tr>
+          <tr><td>EF Core 8</td><td>SQL Server, 267+ migrations</td></tr>
+          <tr><td>Auth</td><td>XAF Security + JWT</td></tr>
+          <tr><td>Background Jobs</td><td>Quartz.NET</td></tr>
+          <tr><td>Real-time</td><td>ASP.NET Core SignalR</td></tr>
+          <tr><td>Cache</td><td>Redis (StackExchange.Redis)</td></tr>
+          <tr><td>Logging</td><td>Serilog (Console + Seq)</td></tr>
+          <tr><td>Tracing</td><td>OpenTelemetry</td></tr>
+          <tr><td>Mapping</td><td>AutoMapper 12</td></tr>
+          <tr><td>HTTP Client</td><td>IHttpClientFactory + Refit</td></tr>
+        </table>
+      </div>
+
+      <!-- Frontend & DB -->
+      <div class="card" style="padding: 24px;">
+        <h3 class="mb-16">Frontend & Storage</h3>
+        <table class="tech-table">
+          <tr><td>Blazor Server</td><td>Back-office UI (rendered by XAF)</td></tr>
+          <tr><td>DevExpress Blazor</td><td>DxDataGrid, DxChart, DxScheduler, DxRichEdit...</td></tr>
+          <tr><td>Charts</td><td>ApexCharts, Chart.js, Leaflet</td></tr>
+          <tr><td>React Native</td><td>Mobile apps (OcanyDelivery, OcanyDMS)</td></tr>
+        </table>
+        <h3 class="mb-16 mt-32">Database & Storage</h3>
+        <table class="tech-table">
+          <tr><td>SQL Server</td><td>Primary DB, 267+ EF Core migrations</td></tr>
+          <tr><td>Redis</td><td>Cache layer</td></tr>
+          <tr><td>Seq</td><td>Log storage</td></tr>
+          <tr><td>File Storage</td><td>Local wwwroot/Images, Audio, data</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="text-center mt-48">
+      <h3 class="tagline mb-16">External Integrations</h3>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+        <span class="tag tag-blue">Telegram Bot</span>
+        <span class="tag tag-blue">Firebase</span>
+        <span class="tag tag-blue">Zalo OA</span>
+        <span class="tag tag-blue">Stringee (Call Center)</span>
+        <span class="tag tag-blue">Google Sheets</span>
+        <span class="tag tag-blue">ACC (Accounting)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ WEB APP DETAIL ════════════════ -->
+<section id="web-app" class="tile tile-dark">
+  <div class="tile-inner">
+    <div class="section-header section-header-dark">
+      <p class="overline">OCANY-WEB-APP</p>
+      <h2 class="display-lg" style="color: var(--on-dark);">Modern web, unified design.</h2>
+      <p class="lead" style="color: var(--body-muted); margin-top: 12px;">
+        Monorepo nội bộ chứa SFS Web + CRM, dùng chung hệ thống UI thống nhất.
+      </p>
+    </div>
+
+    <div class="cards-grid" style="grid-template-columns: 1fr 1fr; max-width: 900px;">
+      <!-- Structure -->
+      <div class="card card-dark" style="grid-column: 1 / -1;">
+        <h3 style="margin-bottom: 16px;">Project Structure</h3>
+        <pre style="font-family: 'SF Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--body-muted); overflow-x: auto;">
+apps/
+  sfs/            # Sales Force System web
+  crm/            # Customer Relationship Management
+
+packages/
+  ui/             # @workspace/ui &mdash; 70+ shared components
+  core/           # @workspace/core &mdash; business logic
+  features/       # @workspace/features &mdash; feature modules</pre>
+      </div>
+
+      <!-- SFS Web -->
+      <div class="card card-dark">
+        <h3 class="mb-8">SFS Web</h3>
+        <p>Dashboard, Customers, Orders, Debts, HR, Shipping, Tasks, Promotion, Reports, Messages, Profile.</p>
+      </div>
+
+      <!-- CRM -->
+      <div class="card card-dark">
+        <h3 class="mb-8">CRM</h3>
+        <p>Contact, Orders, Leads, Debt, Call History, Messages/ChatBot, Reports & Analysis, KPI Settings.</p>
+      </div>
+    </div>
+
+    <!-- Tech Stack Table -->
+    <div class="mt-48" style="max-width: 900px; margin-left: auto; margin-right: auto;">
+      <h3 class="tagline mb-24" style="color: var(--on-dark); text-align: left;">Tech Stack</h3>
+      <table class="tech-table tech-table-dark" style="width: 100%;">
+        <thead>
+          <tr><th>Category</th><th>Technology</th><th>Version</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Monorepo</td><td>Turborepo</td><td>^2.8.17</td></tr>
+          <tr><td>Build Tool</td><td>Vite</td><td>^7.3.2</td></tr>
+          <tr><td>Language</td><td>TypeScript</td><td>^5.9.3</td></tr>
+          <tr><td>UI Framework</td><td>React</td><td>^19.2.4</td></tr>
+          <tr><td>Routing</td><td>TanStack Router</td><td>^1.157.3</td></tr>
+          <tr><td>Data Fetching</td><td>TanStack React Query</td><td>^5.90.20</td></tr>
+          <tr><td>Data Table</td><td>TanStack React Table</td><td>^8.21.3</td></tr>
+          <tr><td>State</td><td>Zustand</td><td>^5.0.10</td></tr>
+          <tr><td>HTTP Client</td><td>Axios</td><td>^1.13.2</td></tr>
+          <tr><td>Forms</td><td>React Hook Form + Yup/Zod</td><td>^7.71.1</td></tr>
+          <tr><td>Styling</td><td>TailwindCSS v4</td><td>^4.1.18</td></tr>
+          <tr><td>UI Components</td><td>Radix UI + shadcn/ui</td><td>^1.4.3 / ^4.2.0</td></tr>
+          <tr><td>Icons</td><td>Lucide React</td><td>^1.8.0</td></tr>
+          <tr><td>Maps</td><td>Leaflet + React Leaflet</td><td>^1.9.4 / ^5.0.0</td></tr>
+          <tr><td>PDF Export</td><td>html2pdf.js</td><td>^0.14.0</td></tr>
+          <tr><td>Deployment</td><td>Vercel</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Shared UI -->
+    <div class="mt-48 text-center">
+      <h3 class="tagline mb-12" style="color: var(--on-dark);">Shared UI Library &mdash; @workspace/ui</h3>
+      <p style="color: var(--body-muted); max-width: 600px; margin: 0 auto 24px;">70+ components chia thành 2 lớp</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; max-width: 700px; margin: 0 auto;">
+        <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.04); border-radius: 11px; padding: 20px; text-align: left;">
+          <p class="caption-strong" style="color: var(--primary-on-dark); margin-bottom: 8px;">base/ &mdash; 31 components</p>
+          <p class="caption" style="color: var(--body-muted);">OCNButton, OCNInput, OCNModal, OCNTabs, OCNCombobox, DataTable...</p>
+        </div>
+        <div style="flex: 1; min-width: 260px; background: rgba(255,255,255,0.04); border-radius: 11px; padding: 20px; text-align: left;">
+          <p class="caption-strong" style="color: var(--primary-on-dark); margin-bottom: 8px;">origin/ &mdash; 39 components</p>
+          <p class="caption" style="color: var(--body-muted);">sidebar, dialog, sheet, dropdown-menu, calendar, popover... (shadcn/ui)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ DELIVERY DETAIL ════════════════ -->
+<section id="delivery" class="tile tile-light">
+  <div class="tile-inner">
+    <div class="section-header">
+      <p class="overline">OcanyDelivery</p>
+      <h2 class="display-lg">Delivery in your pocket.</h2>
+      <p class="lead" style="color: var(--ink-muted-48); margin-top: 12px;">
+        App React Native cho shipper &mdash; iOS & Android. Quản lý đơn, gọi VoIP, chụp ảnh xác nhận, theo dõi hàng tồn.
+      </p>
+    </div>
+
+    <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="card">
+        <h3 class="mb-8">Core</h3>
+        <table class="tech-table">
+          <tr><td>React Native</td><td>0.74.2</td></tr>
+          <tr><td>TypeScript</td><td>~5.9</td></tr>
+          <tr><td>UI</td><td>Tamagui 1.127</td></tr>
+          <tr><td>Navigation</td><td>React Navigation (Stack + Material Top Tabs)</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 class="mb-8">State & Networking</h3>
+        <table class="tech-table">
+          <tr><td>State</td><td>Redux Toolkit + MMKV</td></tr>
+          <tr><td>Server State</td><td>TanStack React Query</td></tr>
+          <tr><td>HTTP</td><td>Axios</td></tr>
+          <tr><td>Auth</td><td>JWT + Keychain</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 class="mb-8">Native Features</h3>
+        <table class="tech-table">
+          <tr><td>VoIP</td><td>Stringee</td></tr>
+          <tr><td>Push</td><td>Firebase + Notifee</td></tr>
+          <tr><td>GPS</td><td>Geolocation</td></tr>
+          <tr><td>Camera</td><td>Image Picker</td></tr>
+          <tr><td>OTA</td><td>CodePush (RevoPush)</td></tr>
+          <tr><td>Monitoring</td><td>Sentry</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Source Structure -->
+    <div class="mt-48" style="max-width: 700px; margin-left: auto; margin-right: auto;">
+      <h3 class="tagline mb-16 text-left">Source Structure</h3>
+      <div style="background: var(--canvas-parchment); border-radius: 11px; padding: 24px; text-align: left;">
+        <pre style="font-family: 'SF Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--ink-muted-80);">src/
+├── components/       # OrderItem, CallPopup, FilterModal...
+├── config.js         # Stringee API & Order Status constants
+├── hooks/query/      # useGetOrders, useLogin, useGetProvinces...
+├── models/           # Order, Customer, Delivery, Auth...
+├── navigation/       # App, Auth, Main navigators
+├── redux/            # authSlice, pickerSlice
+├── screens/          # Auth, Home, Order, Call (VoIP)
+├── services/         # Delivery, Auth, CallCenter, Stringee, Address
+├── styles/           # Style definitions
+└── utils/            # Utility functions</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ DMS DETAIL ════════════════ -->
+<section id="dms" class="tile tile-dark-2">
+  <div class="tile-inner">
+    <div class="section-header section-header-dark">
+      <p class="overline">OcanyDMS</p>
+      <h2 class="display-lg" style="color: var(--on-dark);">Distribution, reimagined.</h2>
+      <p class="lead" style="color: var(--body-muted); margin-top: 12px;">
+        React Native 0.79 &mdash; 16+ modules cho nhân viên bán hàng. FaceID, GPS, camera, voice recognition, bản đồ.
+      </p>
+    </div>
+
+    <!-- Modules Grid -->
+    <div class="ms-grid" style="grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); margin-bottom: 48px;">
+      <div class="ms-item"><div class="ms-item-name">Auth</div><div class="ms-item-desc">Đăng nhập, xác thực</div></div>
+      <div class="ms-item"><div class="ms-item-name">Dashboard</div><div class="ms-item-desc">Bảng điều khiển tổng quan</div></div>
+      <div class="ms-item"><div class="ms-item-name">Customer</div><div class="ms-item-desc">Quản lý khách hàng</div></div>
+      <div class="ms-item"><div class="ms-item-name">Visit</div><div class="ms-item-desc">Check-in / check-out</div></div>
+      <div class="ms-item"><div class="ms-item-name">Order</div><div class="ms-item-desc">Quản lý đơn hàng</div></div>
+      <div class="ms-item"><div class="ms-item-name">Debt</div><div class="ms-item-desc">Quản lý công nợ</div></div>
+      <div class="ms-item"><div class="ms-item-name">Exhibition</div><div class="ms-item-desc">Quản lý trưng bày</div></div>
+      <div class="ms-item"><div class="ms-item-name">Ticket</div><div class="ms-item-desc">Yêu cầu/phiếu hỗ trợ</div></div>
+      <div class="ms-item"><div class="ms-item-name">Maps</div><div class="ms-item-desc">Bản đồ/định vị</div></div>
+      <div class="ms-item"><div class="ms-item-name">Analytics</div><div class="ms-item-desc">Báo cáo & phân tích</div></div>
+      <div class="ms-item"><div class="ms-item-name">FaceID</div><div class="ms-item-desc">Nhận diện khuôn mặt</div></div>
+      <div class="ms-item"><div class="ms-item-name">Notification</div><div class="ms-item-desc">Push notification</div></div>
+      <div class="ms-item"><div class="ms-item-name">UniversalSearch</div><div class="ms-item-desc">Tìm kiếm toàn hệ thống</div></div>
+      <div class="ms-item"><div class="ms-item-name">SettingMCP</div><div class="ms-item-desc">Cấu hình MCP</div></div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div style="max-width: 900px; margin: 0 auto;">
+      <h3 class="tagline mb-24" style="color: var(--on-dark); text-align: left;">Tech Stack</h3>
+      <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+        <div class="card card-dark" style="padding: 20px;">
+          <p class="caption-strong" style="color: var(--primary-on-dark); margin-bottom: 12px;">Core Framework</p>
+          <table class="tech-table tech-table-dark">
+            <tr><td>React Native</td><td>0.79.7</td></tr>
+            <tr><td>React</td><td>19.0.0</td></tr>
+            <tr><td>TypeScript</td><td>5.0.4</td></tr>
+          </table>
+        </div>
+        <div class="card card-dark" style="padding: 20px;">
+          <p class="caption-strong" style="color: var(--primary-on-dark); margin-bottom: 12px;">UI Framework</p>
+          <table class="tech-table tech-table-dark">
+            <tr><td>Tamagui</td><td>1.140.4</td></tr>
+            <tr><td>Reanimated</td><td>4.1.6</td></tr>
+            <tr><td>Lottie</td><td>Animations</td></tr>
+            <tr><td>Flash List</td><td>Shopify</td></tr>
+          </table>
+        </div>
+        <div class="card card-dark" style="padding: 20px;">
+          <p class="caption-strong" style="color: var(--primary-on-dark); margin-bottom: 12px;">Native Features</p>
+          <table class="tech-table tech-table-dark">
+            <tr><td>Maps</td><td>React Native Maps</td></tr>
+            <tr><td>Camera</td><td>Vision Camera</td></tr>
+            <tr><td>Biometrics</td><td>Fingerprint/FaceID</td></tr>
+            <tr><td>Voice</td><td>React Native Voice</td></tr>
+            <tr><td>GPS</td><td>Geolocation</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Source Structure -->
+    <div class="mt-48" style="max-width: 700px; margin-left: auto; margin-right: auto;">
+      <h3 class="tagline mb-16" style="color: var(--on-dark); text-align: left;">Source Structure</h3>
+      <div style="background: rgba(255,255,255,0.04); border-radius: 11px; padding: 24px; text-align: left;">
+        <pre style="font-family: 'SF Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--body-muted);">src/
+├── App.tsx             # Entry point, Provider stack
+├── components/common/  # Shared UI components
+├── context/            # Camera, CodePush, Modal, Recorder
+├── hooks/              # Custom hooks
+├── models/             # TypeScript interfaces
+├── modules/            # FaceDetection, LiveActivity
+├── navigations/        # React Navigation setup
+├── redux/              # auth, common, permission, record
+├── screens/            # 18 feature screens
+├── services/api/       # 14 API service files (Axios)
+└── utils/              # Utility functions</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ ERP DETAIL ════════════════ -->
+<section id="erp" class="tile tile-parchment">
+  <div class="tile-inner">
+    <div class="section-header">
+      <p class="overline">Sfscore ERP</p>
+      <h2 class="display-lg">Enterprise-grade.<br>Cloud-native.</h2>
+      <p class="lead" style="color: var(--ink-muted-48); margin-top: 12px;">
+        20 microservices trên .NET 10. Event-Driven, CQRS, Saga Orchestration. Tài chính, Kho, Nhân sự, CRM, Marketing, E-commerce.
+      </p>
+    </div>
+
+    <!-- Architecture -->
+    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 48px;">
+      <div class="card">
+        <p class="caption-strong" style="color: var(--primary);">Architecture</p>
+        <h3>Microservices</h3>
+        <p>Event-Driven, Cloud-Native</p>
+      </div>
+      <div class="card">
+        <p class="caption-strong" style="color: var(--primary);">API Gateway</p>
+        <h3>YARP</h3>
+        <p>Reverse Proxy, AuthN/AuthZ tập trung</p>
+      </div>
+      <div class="card">
+        <p class="caption-strong" style="color: var(--primary);">Messaging</p>
+        <h3>MassTransit + RabbitMQ</h3>
+        <p>Giao tiếp bất đồng bộ giữa services</p>
+      </div>
+      <div class="card">
+        <p class="caption-strong" style="color: var(--primary);">Patterns</p>
+        <h3>CQRS + MediatR</h3>
+        <p>Transactional Outbox, Saga Orchestration</p>
+      </div>
+      <div class="card">
+        <p class="caption-strong" style="color: var(--primary);">Observability</p>
+        <h3>LGTM Stack</h3>
+        <p>Loki, Grafana, Tempo, Prometheus + OpenTelemetry</p>
+      </div>
+    </div>
+
+    <!-- Backend Tech -->
+    <div style="max-width: 900px; margin: 0 auto 48px;">
+      <h3 class="tagline mb-24 text-left">Backend (.NET)</h3>
+      <div class="cards-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="card" style="padding: 20px;">
+          <table class="tech-table">
+            <tr><td>Framework</td><td>.NET 10 / ASP.NET Core</td></tr>
+            <tr><td>ORM</td><td>Entity Framework Core</td></tr>
+            <tr><td>Database</td><td>SQL Server 2022</td></tr>
+            <tr><td>Caching</td><td>Redis 7</td></tr>
+            <tr><td>Message Broker</td><td>RabbitMQ (MassTransit)</td></tr>
+          </table>
+        </div>
+        <div class="card" style="padding: 20px;">
+          <table class="tech-table">
+            <tr><td>Inter-service</td><td>gRPC, SignalR</td></tr>
+            <tr><td>Background Jobs</td><td>Hangfire</td></tr>
+            <tr><td>File Storage</td><td>MinIO (S3-compatible)</td></tr>
+            <tr><td>Vector DB</td><td>Qdrant (AI/Chatbot)</td></tr>
+            <tr><td>API Pattern</td><td>CQRS + MediatR</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frontend Tech -->
+    <div style="max-width: 900px; margin: 0 auto 48px;">
+      <h3 class="tagline mb-24 text-left">Frontend (WebUI)</h3>
+      <div class="card" style="padding: 20px;">
+        <table class="tech-table">
+          <thead><tr><th>Component</th><th>Technology</th></tr></thead>
+          <tbody>
+            <tr><td>Framework</td><td>React 18 + Vite 5</td></tr>
+            <tr><td>UI Library</td><td>Ant Design 5</td></tr>
+            <tr><td>Admin Framework</td><td>Refine.dev (core + antd + simple-rest)</td></tr>
+            <tr><td>CSS</td><td>Tailwind CSS 4</td></tr>
+            <tr><td>Routing</td><td>React Router v6</td></tr>
+            <tr><td>Charts</td><td>Recharts</td></tr>
+            <tr><td>i18n</td><td>i18next</td></tr>
+            <tr><td>Real-time</td><td>@microsoft/signalr</td></tr>
+            <tr><td>Maps</td><td>Leaflet</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Shared Libraries -->
+    <div style="max-width: 900px; margin: 0 auto 48px;">
+      <h3 class="tagline mb-24 text-left">Shared Libraries (BuildingBlocks)</h3>
+      <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+        <div class="card" style="padding: 20px;">
+          <p class="body-strong mb-8">Sfscore.BuildingBlocks</p>
+          <p>Core shared: base entities, events, middleware, extensions</p>
+        </div>
+        <div class="card" style="padding: 20px;">
+          <p class="body-strong mb-8">Sfscore.BuildingBlocks.Grpc</p>
+          <p>gRPC shared contracts & clients</p>
+        </div>
+        <div class="card" style="padding: 20px;">
+          <p class="body-strong mb-8">Sfscore.BuildingBlocks.Storage</p>
+          <p>MinIO/S3 storage abstraction</p>
+        </div>
+        <div class="card" style="padding: 20px;">
+          <p class="body-strong mb-8">Sfscore.Localization</p>
+          <p>Multilingual support (i18n)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Infrastructure -->
+    <div style="max-width: 900px; margin: 0 auto 48px;">
+      <h3 class="tagline mb-24 text-left">Infrastructure & DevOps</h3>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <span class="tag tag-blue">Docker + Docker Compose</span>
+        <span class="tag tag-blue">Grafana</span>
+        <span class="tag tag-blue">Prometheus</span>
+        <span class="tag tag-blue">Loki</span>
+        <span class="tag tag-blue">Tempo</span>
+        <span class="tag tag-blue">OpenTelemetry Collector</span>
+        <span class="tag tag-blue">Portainer</span>
+        <span class="tag tag-blue">YARP Gateway</span>
+        <span class="tag tag-blue">Nginx</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ MICROSERVICES MAP ════════════════ -->
+<section class="tile tile-dark-3">
+  <div class="tile-inner">
+    <div class="section-header section-header-dark">
+      <p class="overline">Sfscore ERP</p>
+      <h2 class="display-lg" style="color: var(--on-dark);">20 Microservices.</h2>
+      <p class="lead" style="color: var(--body-muted); margin-top: 12px;">
+        Mỗi service chạy độc lập, giao tiếp qua RabbitMQ và gRPC.
+      </p>
+    </div>
+
+    <div class="ms-grid">
+      <div class="ms-item"><div class="ms-item-port">:5001</div><div class="ms-item-name">Gateway.API</div><div class="ms-item-desc">Cổng vào duy nhất, điều hướng, AuthN/AuthZ</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5002</div><div class="ms-item-name">Admin.API</div><div class="ms-item-desc">Quản lý người dùng, phân quyền, tổ chức</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5003</div><div class="ms-item-name">Audit.API</div><div class="ms-item-desc">Lưu vết hoạt động, kiểm soát toàn vẹn</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5004</div><div class="ms-item-name">File.API</div><div class="ms-item-desc">Quản lý file tập trung (MinIO)</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5005</div><div class="ms-item-name">Report.API</div><div class="ms-item-desc">Tổng hợp & xuất báo cáo</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5006</div><div class="ms-item-name">Orchestration.API</div><div class="ms-item-desc">Theo dõi vòng đời giao dịch (read-side)</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5007</div><div class="ms-item-name">Order.API</div><div class="ms-item-desc">Quản lý đơn hàng</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5008</div><div class="ms-item-name">Sales.API</div><div class="ms-item-desc">Quản lý bán hàng, CRM Tasks</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5009</div><div class="ms-item-name">Inventory.API</div><div class="ms-item-desc">Quản lý kho hàng</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5010</div><div class="ms-item-name">Logistics.API</div><div class="ms-item-desc">Quản lý vận chuyển, giao nhận</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5011</div><div class="ms-item-name">Promotion.API</div><div class="ms-item-desc">Khuyến mãi, marketing campaigns</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5012</div><div class="ms-item-name">Communication.API</div><div class="ms-item-desc">Thông báo, chat, Zalo, notification</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5013</div><div class="ms-item-name">Workflow.API</div><div class="ms-item-desc">Quy trình phê duyệt</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5014</div><div class="ms-item-name">Commerce.API</div><div class="ms-item-desc">Shopee, Lazada, TikTok Shop</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5015</div><div class="ms-item-name">HR.API</div><div class="ms-item-desc">Nhân sự, chấm công, bảng công</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5016</div><div class="ms-item-name">Product.API</div><div class="ms-item-desc">Danh mục & cấu hình sản phẩm</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5017</div><div class="ms-item-name">CallCenter.API</div><div class="ms-item-desc">Cuộc gọi SIP, hotline, AI chatbot</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5018</div><div class="ms-item-name">Customer.API</div><div class="ms-item-desc">Quản lý khách hàng, CRM</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5019</div><div class="ms-item-name">SystemMonitor.API</div><div class="ms-item-desc">Giám sát hệ thống, truy vết</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5020</div><div class="ms-item-name">Accounting.API</div><div class="ms-item-desc">Kế toán: Sổ cái, COA, hạch toán, EOM</div></div>
+      <div class="ms-item"><div class="ms-item-port">:5022</div><div class="ms-item-name">Marketing.API</div><div class="ms-item-desc">Chi phí quảng cáo, Facebook Ads</div></div>
+      <div class="ms-item"><div class="ms-item-port">:3000</div><div class="ms-item-name">WebUI</div><div class="ms-item-desc">Giao diện người dùng React</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ TECH SUMMARY ════════════════ -->
+<section id="tech-summary" class="tile tile-light">
+  <div class="tile-inner">
+    <div class="section-header">
+      <p class="overline">Technology Summary</p>
+      <h2 class="display-lg">The full stack, at a glance.</h2>
+    </div>
+
+    <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <!-- Backend -->
+      <div class="card" style="padding: 24px;">
+        <p class="caption-strong" style="color: var(--primary); margin-bottom: 16px;">Backend</p>
+        <table class="tech-table">
+          <tr><td>.NET 8</td><td>SFS (monolithic)</td></tr>
+          <tr><td>.NET 10</td><td>Sfscore ERP (microservices)</td></tr>
+          <tr><td>DevExpress XAF</td><td>v24.2.3</td></tr>
+          <tr><td>EF Core</td><td>ORM</td></tr>
+          <tr><td>SQL Server</td><td>Primary database</td></tr>
+          <tr><td>Redis</td><td>Cache</td></tr>
+          <tr><td>RabbitMQ</td><td>Message broker</td></tr>
+          <tr><td>YARP</td><td>API Gateway</td></tr>
+          <tr><td>MinIO</td><td>Object storage</td></tr>
+          <tr><td>Qdrant</td><td>Vector DB (AI)</td></tr>
+        </table>
+      </div>
+
+      <!-- Frontend Web -->
+      <div class="card" style="padding: 24px;">
+        <p class="caption-strong" style="color: var(--primary); margin-bottom: 16px;">Frontend Web</p>
+        <table class="tech-table">
+          <tr><td>React 19</td><td>OCANY Web App</td></tr>
+          <tr><td>React 18</td><td>Sfscore ERP WebUI</td></tr>
+          <tr><td>TypeScript</td><td>Primary language</td></tr>
+          <tr><td>Vite</td><td>Build tool</td></tr>
+          <tr><td>TailwindCSS v4</td><td>Styling</td></tr>
+          <tr><td>shadcn/ui</td><td>OCANY Web App</td></tr>
+          <tr><td>Ant Design 5</td><td>Sfscore ERP</td></tr>
+          <tr><td>TanStack</td><td>Router, Query, Table</td></tr>
+          <tr><td>Zustand</td><td>State (web app)</td></tr>
+          <tr><td>Vercel</td><td>Deployment</td></tr>
+        </table>
+      </div>
+
+      <!-- Mobile -->
+      <div class="card" style="padding: 24px;">
+        <p class="caption-strong" style="color: var(--primary); margin-bottom: 16px;">Mobile</p>
+        <table class="tech-table">
+          <tr><td>React Native 0.74</td><td>OcanyDelivery</td></tr>
+          <tr><td>React Native 0.79</td><td>OcanyDMS</td></tr>
+          <tr><td>Tamagui</td><td>UI framework</td></tr>
+          <tr><td>Redux Toolkit</td><td>State management</td></tr>
+          <tr><td>TanStack Query</td><td>Server state</td></tr>
+          <tr><td>Formik/RHF</td><td>Forms</td></tr>
+          <tr><td>Stringee</td><td>VoIP</td></tr>
+          <tr><td>Firebase</td><td>Push notifications</td></tr>
+          <tr><td>Sentry</td><td>Error tracking</td></tr>
+          <tr><td>CodePush</td><td>OTA updates</td></tr>
+        </table>
+      </div>
+
+      <!-- DevOps -->
+      <div class="card" style="padding: 24px;">
+        <p class="caption-strong" style="color: var(--primary); margin-bottom: 16px;">DevOps & Infra</p>
+        <table class="tech-table">
+          <tr><td>Docker</td><td>Containerization</td></tr>
+          <tr><td>Grafana</td><td>Monitoring dashboards</td></tr>
+          <tr><td>Prometheus</td><td>Metrics</td></tr>
+          <tr><td>Loki</td><td>Log aggregation</td></tr>
+          <tr><td>Tempo</td><td>Distributed tracing</td></tr>
+          <tr><td>OpenTelemetry</td><td>Instrumentation</td></tr>
+          <tr><td>Portainer</td><td>Container management</td></tr>
+          <tr><td>Nginx</td><td>Reverse proxy (WebUI)</td></tr>
+          <tr><td>Serilog + Seq</td><td>Logging (SFS)</td></tr>
+          <tr><td>Fastlane</td><td>Mobile CI/CD</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer class="footer">
+  <p style="margin-bottom: 12px;">
+    <strong style="color: var(--ink);">OCANY Ecosystem</strong> &mdash; 7 products, 20 microservices, one unified platform.
+  </p>
+  <p>
+    SFS &middot; OCANY Web App &middot; OcanyDelivery &middot; OcanyDMS &middot; Sfscore ERP &middot; Runtolive &middot; App Loyalty
+  </p>
+  <p style="margin-top: 24px; color: var(--ink-muted-48);">
+    Generated from OCN Tech Stack documentation &middot; 2026-06-15
+  </p>
+</footer>
+
+</body>
+</html>
