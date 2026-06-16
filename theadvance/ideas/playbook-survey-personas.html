@@ -328,6 +328,7 @@
   <a href="#matrix">Ma tr&#7853;n</a>
   <a href="#automation">CRM Rules</a>
   <a href="#kpi">KPI</a>
+  <a href="#question-bank">C&acirc;u h&#7887;i</a>
 </nav>
 
 <!-- ════════════════════════════════════════════ -->
@@ -340,7 +341,7 @@
   <div class="tag-row">
     <span class="tag">6 Personas</span>
     <span class="tag">7 Lo&#7841;i Survey</span>
-    <span class="tag">Customer Health Score</span>
+    <span class="tag">CHS via Unified Lifecycle</span>
     <span class="tag">CRM Automation</span>
     <span class="tag">Playbook H&agrave;nh &#272;&#7897;ng</span>
   </div>
@@ -428,7 +429,7 @@
         <ul style="text-align: left; font-size: 15px; color: #a1a1a6; line-height: 1.7; list-style: none; margin-left: 0;">
           <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">6 Personas</strong> &mdash; ph&acirc;n lo&#7841;i kh&aacute;ch t&#7921; &#273;&#7897;ng t&#7915; d&#7919; li&#7879;u</li>
           <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">7 lo&#7841;i Survey</strong> &mdash; &#273;&uacute;ng l&uacute;c, &#273;&uacute;ng k&ecirc;nh, &#273;&uacute;ng &#273;&#7897; d&agrave;i</li>
-          <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">Health Score</strong> &mdash; &#273;i&#7875;m s&#7913;c kh&#7887;e 0&ndash;100 cho m&#7895;i kh&aacute;ch</li>
+          <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">Health Score</strong> &mdash; &#273;&#7883;nh ngh&#297;a trong <a href="unified-lifecycle.html" style="color:#2997ff;">Unified Lifecycle</a>, d&ugrave;ng k&#7871;t qu&#7843; &#7903; &#273;&acirc;y</li>
           <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">Playbook h&agrave;nh &#273;&#7897;ng</strong> &mdash; l&agrave;m g&igrave; sau m&#7895;i k&#7871;t qu&#7843;</li>
           <li style="margin-bottom: 10px;"><span style="color:#34c759; font-weight:600;">&#9654;</span> <strong style="color:#f5f5f7;">CRM Rules</strong> &mdash; t&#7921; &#273;&#7897;ng ho&aacute; trong h&#7879; th&#7889;ng</li>
         </ul>
@@ -716,74 +717,6 @@ Re-evaluate m&#7895;i khi visit_count t&#259;ng ho&#7863;c sau m&#7895;i survey.
 </section>
 
 <!-- ════════════════════════════════════════════ -->
-<!--  03 — CUSTOMER HEALTH SCORE                  -->
-<!-- ════════════════════════════════════════════ -->
-<section class="tile tile--parchment">
-  <div class="inner">
-    <div class="section-head">
-      <div class="num-circle">03</div>
-      <div class="section-head-text">
-        <h2>Customer Health Score</h2>
-        <p class="sh-sub">&#272;i&#7875;m s&#7913;c kh&#7887;e kh&aacute;ch h&agrave;ng &mdash; thang 0&ndash;100, k&#7871;t h&#7907;p 5 y&#7871;u t&#7889;</p>
-      </div>
-    </div>
-
-    <div class="rule-block">CHS = (NPS &times; 0.25) + (Frequency Score &times; 0.20) + (Satisfaction Avg &times; 0.25)
-    + (Engagement Score &times; 0.15) + (Spending Trend &times; 0.15)</div>
-
-    <table>
-      <thead><tr><th>Th&agrave;nh ph&#7847;n</th><th>C&aacute;ch t&iacute;nh</th><th>Ngu&#7891;n</th><th>Tr&#7885;ng s&#7889;</th></tr></thead>
-      <tbody>
-        <tr><td>NPS</td><td>&#272;i&#7875;m NPS g&#7847;n nh&#7845;t, quy v&#7873; 0&ndash;100</td><td>Survey S4, S7</td><td>25%</td></tr>
-        <tr><td>Frequency</td><td>T&#7847;n su&#7845;t th&#7921;c t&#7871; vs k&#7923; v&#7885;ng theo persona</td><td>CRM data</td><td>20%</td></tr>
-        <tr><td>Satisfaction</td><td>Trung b&igrave;nh 5 l&#7847;n &#273;&aacute;nh gi&aacute; g&#7847;n nh&#7845;t</td><td>Survey S2</td><td>25%</td></tr>
-        <tr><td>Engagement</td><td>M&#7903; app + &#273;&#7885;c tin + d&ugrave;ng voucher + reply survey</td><td>App analytics</td><td>15%</td></tr>
-        <tr><td>Spending Trend</td><td>T&#259;ng/gi&#7919;/gi&#7843;m chi ti&ecirc;u 3 th&aacute;ng</td><td>CRM data</td><td>15%</td></tr>
-      </tbody>
-    </table>
-
-    <h3>Ph&acirc;n nh&oacute;m theo CHS</h3>
-    <div class="card-grid">
-      <div class="card" style="border-left: 4px solid #34c759;">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-          <span class="chs-dot chs-green"></span>
-          <span class="card-title" style="margin:0;">80&ndash;100 &mdash; Promoter</span>
-        </div>
-        <p class="card-desc">M&#7901;i referral, m&#7901;i review Google, upsell premium, VIP Circle</p>
-      </div>
-      <div class="card" style="border-left: 4px solid #ffcc00;">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-          <span class="chs-dot chs-yellow"></span>
-          <span class="card-title" style="margin:0;">60&ndash;79 &mdash; Healthy</span>
-        </div>
-        <p class="card-desc">Duy tr&igrave; ch&#7841;m &#273;&#7873;u, g&#7907;i &yacute; d&#7883;ch v&#7909; m&#7899;i, theo d&otilde;i xu h&#432;&#7899;ng</p>
-      </div>
-      <div class="card" style="border-left: 4px solid #ff9500;">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-          <span class="chs-dot chs-orange"></span>
-          <span class="card-title" style="margin:0;">40&ndash;59 &mdash; At Risk</span>
-        </div>
-        <p class="card-desc">T&#259;ng t&#7847;n su&#7845;t ch&#7841;m, &#432;u &#273;&atilde;i c&aacute; nh&acirc;n, qu&#7843;n l&yacute; g&#7885;i h&#7887;i th&#259;m</p>
-      </div>
-      <div class="card" style="border-left: 4px solid #ff3b30;">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-          <span class="chs-dot chs-red"></span>
-          <span class="card-title" style="margin:0;">20&ndash;39 &mdash; Danger</span>
-        </div>
-        <p class="card-desc">Alert qu&#7843;n l&yacute;, g&#7885;i ngay, special offer, xin feedback tr&#7921;c ti&#7871;p</p>
-      </div>
-      <div class="card" style="border-left: 4px solid #636366;">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-          <span class="chs-dot chs-black"></span>
-          <span class="card-title" style="margin:0;">0&ndash;19 &mdash; Lost</span>
-        </div>
-        <p class="card-desc">Win-back campaign 1 l&#7847;n, n&#7871;u kh&ocirc;ng ph&#7843;n h&#7891;i &rarr; ch&#7845;p nh&#7853;n</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════ -->
 <!--  04 — ACTIONS AFTER SURVEY                   -->
 <!-- ════════════════════════════════════════════ -->
 <section id="actions-survey" class="tile tile--dark-2">
@@ -1014,6 +947,13 @@ Re-evaluate m&#7895;i khi visit_count t&#259;ng ho&#7863;c sau m&#7895;i survey.
       </div>
     </div>
 
+    <div class="callout" style="margin-bottom: 32px;">
+      <div class="callout-label">Ngu&#7891;n g&#7889;c CHS</div>
+      C&ocirc;ng th&#7913;c CHS, c&aacute;c ng&#432;&#7905;ng ph&acirc;n lo&#7841;i v&agrave; Health Status &#273;&#432;&#7907;c &#273;&#7883;nh ngh&#297;a ch&iacute;nh th&#7913;c trong
+      <a href="unified-lifecycle.html" style="color:#2997ff; text-decoration:underline;">Unified Lifecycle</a>.
+      Playbook n&agrave;y ch&#7881; s&#7917; d&#7909;ng k&#7871;t qu&#7843; CHS &#273;&#7875; &#273;&#432;a ra h&agrave;nh &#273;&#7897;ng theo persona.
+    </div>
+
     <table>
       <thead>
         <tr>
@@ -1112,9 +1052,9 @@ Re-evaluate m&#7895;i khi visit_count t&#259;ng ho&#7863;c sau m&#7895;i survey.
        &rarr; Add to &ldquo;VIP Circle&rdquo; list
        &rarr; Queue Google Review request (7 days later)</div>
 
-    <div class="rule-block">RULE 4: At-Risk Detection
+    <div class="rule-block">RULE 4: AT_RISK Detection (Health Status)
   IF  S3.progress = &ldquo;Th&#7845;t v&#7885;ng&rdquo; OR S3.continue = &ldquo;C&oacute; th&#7875; d&#7915;ng&rdquo;
-  THEN &rarr; Change CHS segment to &ldquo;Danger&rdquo;
+  THEN &rarr; Change health_status to &ldquo;AT_RISK&rdquo;
        &rarr; Create task &ldquo;Retention call&rdquo;
        &rarr; Assign: Senior Manager
        &rarr; Pause all marketing messages
@@ -1201,9 +1141,119 @@ Re-evaluate m&#7895;i khi visit_count t&#259;ng ho&#7863;c sau m&#7895;i survey.
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════ -->
+<!--  09 — NGÂN HÀNG CÂU HỎI BỔ SUNG             -->
+<!-- ════════════════════════════════════════════ -->
+<section id="question-bank" class="tile tile--white">
+  <div class="inner">
+    <div class="section-head">
+      <div class="num-circle">09</div>
+      <div class="section-head-text">
+        <h2>Ng&acirc;n H&agrave;ng C&acirc;u H&#7887;i B&#7893; Sung</h2>
+        <p class="sh-sub">T&#7893;ng h&#7907;p t&#7915; <em>B&#7897; C&acirc;u H&#7887;i Kh&#7843;o S&aacute;t</em> &mdash; bao g&#7891;m logic ph&acirc;n nh&aacute;nh v&agrave; &aacute;nh x&#7841; ch&#7881; s&#7889;</p>
+      </div>
+    </div>
+
+    <p>C&aacute;c b&#7897; c&acirc;u h&#7887;i d&#432;&#7899;i &#273;&acirc;y &#273;&#432;&#7907;c h&#7907;p nh&#7845;t t&#7915; file <strong>bo-cau-hoi-khao-sat.html</strong>. Khi c&aacute;c survey S1&ndash;S7 c&#7847;n c&acirc;u h&#7887;i c&#7909; th&#7875; h&#417;n, d&ugrave;ng ng&acirc;n h&agrave;ng n&agrave;y l&agrave;m ngu&#7891;n tham kh&#7843;o.</p>
+
+    <!-- Survey A -->
+    <h3>B&#7843;n A &mdash; Kh&#7843;o s&aacute;t nhanh (6 c&acirc;u)</h3>
+    <p style="color:#6e6e73; font-style:italic;">G&#7917;i sau m&#7895;i l&#7847;n d&#7883;ch v&#7909;, 24&ndash;48h sau. M&#7909;c ti&ecirc;u ho&agrave;n th&agrave;nh &lt; 1 ph&uacute;t. T&#432;&#417;ng &#7913;ng m&#7909;c ti&ecirc;u c&#7911;a S2.</p>
+    <table>
+      <thead><tr><th>C&acirc;u</th><th>N&#7897;i dung</th><th>Lo&#7841;i / Thang</th><th>Ch&#7881; s&#7889;</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Tr&ecirc;n thang 0&ndash;10, ch&#7883; s&#7861;n l&ograve;ng gi&#7899;i thi&#7879;u ND Beauty cho b&#7841;n b&egrave; &#7903; m&#7913;c n&agrave;o?</td><td>Thang 0&ndash;10 (NPS l&otilde;i)</td><td>NPS</td></tr>
+        <tr><td>2</td><td>Ch&#7883; h&agrave;i l&ograve;ng v&#7899;i <strong>k&#7871;t qu&#7843; d&#7883;ch v&#7909;</strong> h&ocirc;m nay &#7903; m&#7913;c n&agrave;o?</td><td>Thang 1&ndash;5</td><td>Tay ngh&#7873;</td></tr>
+        <tr><td>3</td><td>Ch&#7883; h&agrave;i l&ograve;ng v&#7899;i <strong>th&aacute;i &#273;&#7897; &amp; s&#7921; ch&#259;m s&oacute;c</strong> c&#7911;a nh&acirc;n vi&ecirc;n &#7903; m&#7913;c n&agrave;o?</td><td>Thang 1&ndash;5</td><td>NPS</td></tr>
+        <tr><td>4</td><td>Ch&#7883; h&agrave;i l&ograve;ng v&#7899;i <strong>kh&ocirc;ng gian &amp; s&#7921; s&#7841;ch s&#7869;</strong> c&#7911;a c&#417; s&#7903; &#7903; m&#7913;c n&agrave;o?</td><td>Thang 1&ndash;5</td><td>NPS</td></tr>
+        <tr><td>5</td><td>Ch&#7883; c&oacute; d&#7921; &#273;&#7883;nh <strong>quay l&#7841;i</strong> kh&ocirc;ng?</td><td>Ch&#7855;c ch&#7855;n c&oacute; / C&oacute; th&#7875; / Ch&#432;a ch&#7855;c / Kh&ocirc;ng</td><td>Retention</td></tr>
+        <tr><td>6</td><td>C&oacute; &#273;i&#7873;u g&igrave; ch&#7883; mu&#7889;n l&agrave;m t&#7889;t h&#417;n kh&ocirc;ng? (kh&ocirc;ng b&#7855;t bu&#7897;c)</td><td>C&acirc;u m&#7903;</td><td>NPS + Tay ngh&#7873;</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Branching logic -->
+    <h3>Logic ph&acirc;n nh&aacute;nh theo NPS (B&#7843;n A &mdash; sau c&acirc;u 1)</h3>
+    <div class="card-grid-2" style="margin-top: 16px;">
+      <div class="card" style="border-top: 3px solid #ff3b30;">
+        <div class="card-title" style="color:#ff3b30;">Nh&aacute;nh Detractor &mdash; NPS 0&ndash;6</div>
+        <p class="card-desc">M&#7909;c ti&ecirc;u: hi&#7875;u l&yacute; do &#273;&#7875; c&#7913;u kh&aacute;ch, kh&iacute;ch ho&#7841;t x&#7917; l&yacute; s&#7921; c&#7889; trong 24h.</p>
+        <ul style="font-size:15px; line-height:1.7; color:#6e6e73; margin-top: 8px; margin-left: 16px;">
+          <li>&#272;i&#7873;u g&igrave; khi&#7871;n ch&#7883; ch&#432;a h&agrave;i l&ograve;ng nh&#7845;t h&ocirc;m nay? <em>(c&acirc;u m&#7903;)</em></li>
+          <li>Ch&#7883; c&oacute; mu&#7889;n ND Beauty li&ecirc;n h&#7879; tr&#7921;c ti&#7871;p &#273;&#7875; h&#7895; tr&#7907; kh&ocirc;ng? <em>(C&oacute; / Kh&ocirc;ng)</em></li>
+        </ul>
+        <div class="warn-block" style="margin-top: 12px;">
+          <span class="warn-label">H&agrave;nh &#273;&#7897;ng CRM</span>: Auto-alert qu&#7843;n l&yacute; trong 2h. Xem chi ti&#7871;t t&#7841;i m&#7909;c 04 &mdash; Actions Sau Survey.
+        </div>
+      </div>
+      <div class="card" style="border-top: 3px solid #34c759;">
+        <div class="card-title" style="color:#1a7a34;">Nh&aacute;nh Promoter &mdash; NPS 9&ndash;10</div>
+        <p class="card-desc">M&#7909;c ti&ecirc;u: bi&#7871;n kh&aacute;ch h&agrave;i l&ograve;ng th&agrave;nh &#273;&#7841;i s&#7913; &mdash; ngu&#7891;n kh&aacute;ch m&#7899;i r&#7867; v&agrave; ch&#7845;t l&#432;&#7907;ng nh&#7845;t.</p>
+        <ul style="font-size:15px; line-height:1.7; color:#6e6e73; margin-top: 8px; margin-left: 16px;">
+          <li>Ch&#7883; c&oacute; s&#7861;n l&ograve;ng &#273;&#7875; l&#7841;i v&agrave;i d&ograve;ng c&#7843;m nh&#7853;n / h&igrave;nh &#7843;nh gi&uacute;p tụi em kh&ocirc;ng? <em>(C&oacute; &rarr; g&#7917;i link review)</em></li>
+          <li>Ch&#7883; c&oacute; mu&#7889;n nh&#7853;n &#432;u &#273;&atilde;i khi gi&#7899;i thi&#7879;u b&#7841;n b&egrave; &#273;&#7871;n kh&ocirc;ng? <em>(C&oacute; &rarr; ch&#432;&#417;ng tr&igrave;nh referral)</em></li>
+        </ul>
+        <div class="callout" style="margin-top: 12px;">
+          <div class="callout-label">H&agrave;nh &#273;&#7897;ng CRM</div>: Sau 3 ng&agrave;y g&#7917;i referral invitation. Th&ecirc;m v&agrave;o danh s&aacute;ch VIP Circle. Sau 7 ng&agrave;y g&#7917;i Google Review request.
+        </div>
+      </div>
+    </div>
+
+    <!-- Survey B -->
+    <h3>B&#7843;n B &mdash; Kh&#7843;o s&aacute;t chuy&ecirc;n s&acirc;u (14 c&acirc;u &mdash; 3 tr&#7909; c&#7897;t)</h3>
+    <p style="color:#6e6e73; font-style:italic;">G&#7917;i h&agrave;ng qu&yacute; ho&#7863;c cho nh&oacute;m kh&aacute;ch l&otilde;i. Kh&ocirc;ng g&#7917;i sau m&#7895;i l&#7847;n d&#7883;ch v&#7909;.</p>
+    <table>
+      <thead><tr><th>Tr&#7909; c&#7897;t</th><th>C&acirc;u</th><th>N&#7897;i dung</th><th>Lo&#7841;i</th><th>Ch&#7881; s&#7889;</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4"><strong>I. Tr&#7843;i nghi&#7879;m</strong><br><span style="font-size:13px; color:#6e6e73;">&#272;i&#7875;m ch&#7841;m 1·2·4·5</span></td><td>1</td><td>Vi&#7879;c <strong>&#273;&#7863;t l&#7883;ch</strong> c&oacute; d&#7877; d&agrave;ng kh&ocirc;ng?</td><td>Thang 1&ndash;5</td><td>NPS</td></tr>
+        <tr><td>2</td><td>&#272;&#432;&#7907;c <strong>&#273;&oacute;n ti&#7871;p chu &#273;&aacute;o</strong> (ch&agrave;o h&#7887;i, kh&#259;n/n&#432;&#7899;c) kh&ocirc;ng?</td><td>Thang 1&ndash;5</td><td>NPS</td></tr>
+        <tr><td>3</td><td><strong>Th&#7901;i gian ch&#7901;</strong> c&oacute; h&#7907;p l&yacute; kh&ocirc;ng?</td><td>Thang 1&ndash;5</td><td>NPS</td></tr>
+        <tr><td>4</td><td>Sau khi v&#7873;, nh&#7853;n &#273;&#432;&#7907;c <strong>d&#7863;n d&ograve; &amp; h&#7887;i th&#259;m ch&#259;m s&oacute;c</strong> kh&ocirc;ng?</td><td>Ch&#7885;n 1</td><td>Retention</td></tr>
+        <tr><td rowspan="4"><strong>II. D&#7883;ch v&#7909; &amp; Tay ngh&#7873;</strong><br><span style="font-size:13px; color:#6e6e73;">&#272;i&#7875;m ch&#7841;m 3</span></td><td>5</td><td>H&agrave;i l&ograve;ng v&#7899;i <strong>k&#7871;t qu&#7843; chuy&ecirc;n m&ocirc;n</strong> &#7903; m&#7913;c n&agrave;o?</td><td>Thang 1&ndash;5</td><td>Tay ngh&#7873;</td></tr>
+        <tr><td>6</td><td>KTV c&oacute; <strong>t&#432; v&#7845;n r&otilde; r&agrave;ng v&agrave; ph&ugrave; h&#7907;p</strong> kh&ocirc;ng?</td><td>Thang 1&ndash;5</td><td>Tay ngh&#7873;</td></tr>
+        <tr><td>7</td><td>C&#7843;m th&#7845;y <strong>an to&agrave;n v&agrave; chuy&ecirc;n nghi&#7879;p</strong> su&#7889;t qu&aacute; tr&igrave;nh kh&ocirc;ng?</td><td>Thang 1&ndash;5</td><td>Tay ngh&#7873;</td></tr>
+        <tr><td>8</td><td>KTV c&oacute; <strong>nh&#7899; v&agrave; quan t&acirc;m nhu c&#7847;u ri&ecirc;ng</strong> (l&#7847;n tr&#432;&#7899;c, c&#417; &#273;&#7883;a) kh&ocirc;ng?</td><td>Ch&#7885;n 1 (c&aacute; nh&acirc;n h&oacute;a)</td><td>Retention</td></tr>
+        <tr><td rowspan="6"><strong>III. Th&#432;&#417;ng hi&#7879;u</strong><br><span style="font-size:13px; color:#6e6e73;">Ni&#7873;m tin &amp; Gi&aacute; tr&#7883;</span></td><td>9</td><td><strong>Tin t&#432;&#7903;ng</strong> ND Beauty &#7903; m&#7913;c n&agrave;o?</td><td>Thang 1&ndash;5</td><td>NPS</td></tr>
+        <tr><td>10</td><td>D&#7883;ch v&#7909; c&oacute; <strong>x&#7913;ng &#273;&aacute;ng v&#7899;i s&#7889; ti&#7873;n</strong> b&#7887; ra kh&ocirc;ng?</td><td>Thang 1&ndash;5</td><td>Retention</td></tr>
+        <tr><td>11</td><td>So v&#7899;i n&#417;i kh&aacute;c, ND Beauty <strong>t&#7889;t h&#417;n hay k&eacute;m h&#417;n</strong>?</td><td>Ch&#7885;n 1 (&#273;&#7883;nh v&#7883; c&#7841;nh tranh)</td><td>NPS</td></tr>
+        <tr><td>12</td><td>Tr&ecirc;n thang 0&ndash;10, s&#7861;n l&ograve;ng <strong>gi&#7899;i thi&#7879;u</strong> ND Beauty &#7903; m&#7913;c n&agrave;o? (NPS)</td><td>Thang 0&ndash;10</td><td>NPS</td></tr>
+        <tr><td>13</td><td>&#272;i&#7873;u g&igrave; ch&#7883; <strong>th&iacute;ch nh&#7845;t</strong>? (kh&ocirc;ng b&#7855;t bu&#7897;c)</td><td>C&acirc;u m&#7903;</td><td>NPS</td></tr>
+        <tr><td>14</td><td>M&#7897;t &#273;i&#7873;u ch&#7883; <strong>mong c&#7843;i thi&#7879;n nh&#7845;t</strong> l&agrave; g&igrave;? (kh&ocirc;ng b&#7855;t bu&#7897;c)</td><td>C&acirc;u m&#7903;</td><td>Tay ngh&#7873; + NPS</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Metric mapping -->
+    <h3>&Aacute;nh x&#7841; c&acirc;u h&#7887;i &rarr; Ch&#7881; s&#7889; KPI</h3>
+    <table>
+      <thead><tr><th>Ch&#7881; s&#7889;</th><th>C&acirc;u h&#7887;i ngu&#7891;n</th><th>C&aacute;ch t&iacute;nh</th></tr></thead>
+      <tbody>
+        <tr><td><strong>NPS</strong></td><td>B&#7843;n A c&acirc;u 1 &bull; B&#7843;n B c&acirc;u 12</td><td>% Promoter &minus; % Detractor</td></tr>
+        <tr><td><strong>Tay ngh&#7873;</strong></td><td>B&#7843;n A c&acirc;u 2 &bull; B&#7843;n B c&acirc;u 5, 6, 7</td><td>&#272;i&#7875;m TB 1&ndash;5 + &#273;&#7889;i chi&#7871;u mystery</td></tr>
+        <tr><td><strong>Retention (& yacute; &#273;&#7883;nh)</strong></td><td>B&#7843;n A c&acirc;u 5 &bull; B&#7843;n B c&acirc;u 4, 8, 10</td><td>% &ldquo;ch&#7855;c ch&#7855;n quay l&#7841;i&rdquo;</td></tr>
+        <tr><td><strong>Tr&#7843;i nghi&#7879;m</strong></td><td>B&#7843;n A c&acirc;u 3, 4 &bull; B&#7843;n B c&acirc;u 1, 2, 3, 4</td><td>&#272;i&#7875;m TB t&#7915;ng &#273;i&#7875;m ch&#7841;m</td></tr>
+        <tr><td><strong>Th&#432;&#417;ng hi&#7879;u</strong></td><td>B&#7843;n B c&acirc;u 9, 10, 11</td><td>&#272;i&#7875;m TB + ph&acirc;n t&iacute;ch c&acirc;u m&#7903;</td></tr>
+        <tr><td><strong>Ph&acirc;n nh&aacute;nh t&#7921; &#273;&#7897;ng</strong></td><td>NPS 0&ndash;6 &rarr; Detractor &bull; NPS 9&ndash;10 &rarr; Promoter</td><td>Logic trigger trong CRM</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-label">Lưu ý sử dụng</div>
+      <ul>
+        <li>B&#7843;n A (6 c&acirc;u) t&#432;&#417;ng &#7913;ng m&#7909;c ti&ecirc;u c&#7911;a <strong>S2 &mdash; Post-Service Quick</strong> trong h&#7879; th&#7889;ng survey c&#7911;a playbook n&agrave;y. C&oacute; th&#7875; d&ugrave;ng thay th&#7871; ho&#7863;c b&#7893; sung c&acirc;u h&#7887;i c&#7909; th&#7875; cho S2.</li>
+        <li>B&#7843;n B (14 c&acirc;u) ph&ugrave; h&#7907;p v&#7899;i <strong>S5 &mdash; Periodic NPS</strong> &#273;&#7883;nh k&#7923; qu&yacute;. Chia theo 3 tr&#7909; c&#7897;t: Tr&#7843;i nghi&#7879;m &middot; D&#7883;ch v&#7909; &middot; Th&#432;&#417;ng hi&#7879;u.</li>
+        <li>Logic ph&acirc;n nh&aacute;nh Detractor/Promoter &#273;&atilde; &#273;&#432;&#7907;c t&iacute;ch h&#7907;p v&agrave;o <strong>RULE 3 (Promoter Activation)</strong> v&agrave; h&agrave;nh &#273;&#7897;ng S4 t&#7841;i m&#7909;c 04.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ── Footer ── -->
 <footer class="tile tile--dark-2 site-footer">
-  <p style="color:#86868b;">TheAdvance &mdash; Playbook Survey &amp; Customer Personas &mdash; T&agrave;i li&#7879;u n&#7897;i b&#7897;</p>
+  <p style="color:#86868b;">TheAdvance &mdash; Playbook Survey &amp; Customer Personas v2.0 &mdash; T&agrave;i li&#7879;u n&#7897;i b&#7897;</p>
+  <p style="color:#636366; font-size:14px; margin-top:8px;">
+    Li&ecirc;n quan: <a href="unified-lifecycle.html" style="color:#2997ff; text-decoration:none;">Unified Lifecycle</a> (ngu&#7891;n g&#7889;c CHS &amp; Health Status)
+    &nbsp;&middot;&nbsp;
+    C&acirc;u h&#7887;i chi ti&#7871;t h&#7907;p nh&#7845;t t&#7915; <a href="bo-cau-hoi-khao-sat.html" style="color:#2997ff; text-decoration:none;">B&#7897; C&acirc;u H&#7887;i Kh&#7843;o S&aacute;t</a>
+  </p>
 </footer>
 
 </body>

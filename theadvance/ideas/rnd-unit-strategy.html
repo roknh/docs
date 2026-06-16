@@ -390,7 +390,7 @@
 <section class="tile tile--dark hero">
   <div class="eyebrow">Strategic Document · 2026</div>
   <h1>R&amp;D Unit — Customer Lifecycle Lab</h1>
-  <p class="hero-sub">Mobile App như "Kênh Giao Tiếp Chính" với Khách hàng. Đảo ngược tỷ trọng booking từ 70% Ads thành 70% từ tệp hiện hữu trong 12 tháng.</p>
+  <p class="hero-sub">Mobile App như "Kênh Giao Tiếp Chính" với Khách hàng.</p>
   <div class="tag-row">
     <span class="tag">Lifecycle-Driven</span>
     <span class="tag">4 Trụ cột</span>
@@ -454,9 +454,9 @@
     <p>Hệ thống hiện đang vận hành theo mô hình <strong>Call-Driven</strong> với các điểm yếu nghiêm trọng:</p>
     <ul>
       <li><strong>Phụ thuộc Ads</strong> — 70%+ lead mới đến từ Facebook/Google Ads, CPL tăng 30–50%/năm</li>
-      <li><strong>Phụ thuộc Telesale</strong> — telesale là điểm chạm duy nhất biến lead thành booking</li>
-      <li><strong>Khách bị động</strong> — chỉ 20% booking đến từ kênh tự phục vụ (App)</li>
-      <li><strong>Không có vòng đời khách hàng</strong> — không phân biệt khách Trial/Active/Loyal/At-Risk</li>
+      <li><strong>Phụ thuộc Telesale</strong> — telesale là điểm chạm chính biến lead thành booking</li>
+      <li><strong>Khách bị động</strong> — dưới 30% khách tự booking và đến từ kênh.</li>
+      <li><strong>Không có vòng đời khách hàng</strong> — không phân biệt khách Trial/Active/Loyal/Lapsed</li>
       <li><strong>Không có flywheel</strong> — mỗi vòng quay phải trả tiền lại từ đầu cho Ads</li>
     </ul>
 
@@ -505,7 +505,7 @@
       <tbody>
         <tr><td><strong>B1 — First Booking</strong></td><td>Booking đầu tiên của khách mới</td><td>Lead → Trial</td></tr>
         <tr><td><strong>B2 — Repeat Booking</strong></td><td>Booking định kỳ của khách hiện hữu</td><td>Active, Loyal</td></tr>
-        <tr><td><strong>B3 — Reactivation</strong></td><td>Khách quay lại sau khoảng nghỉ dài</td><td>At-Risk, Churned</td></tr>
+        <tr><td><strong>B3 — Reactivation</strong></td><td>Khách quay lại sau khoảng nghỉ dài</td><td>Lapsed, Churned</td></tr>
         <tr><td><strong>B4 — Upsell Booking</strong></td><td>Đặt thêm dịch vụ mới</td><td>Active, Loyal</td></tr>
         <tr><td><strong>B5 — Referred Booking</strong></td><td>Phát sinh từ giới thiệu</td><td>Lead mới + Loyal dùng credit</td></tr>
       </tbody>
@@ -538,6 +538,8 @@
       <div class="progress-values"><span>Hiện tại &lt;5%</span><span>Target ≥ 10%</span></div>
     </div>
 
+    <p style="font-size: 14px; color: #6e6e73; font-style: italic; margin-top: 16px;">*Các số liệu KPI giả định, khi thực hiện sẽ cập nhật chính xác.</p>
+
     <div class="callout" style="margin-top:32px;">
       <p><em>"Mọi kênh phải tạo Booking. Mọi Booking phải được attribute đúng kênh. Mọi kênh đều phải phục vụ cả khách mới và khách cũ."</em></p>
     </div>
@@ -560,7 +562,7 @@
     <ol>
       <li><strong>Báo cáo trực tiếp Ban Tổng</strong>, không nằm dưới khối Kinh doanh</li>
       <li><strong>Owner toàn diện chi nhánh 392</strong> — có quyền quyết định về sản phẩm, giá, quy trình tại 392</li>
-      <li><strong>Đồng tác giả với GĐCN 392</strong> — không phải quan hệ cấp trên/dưới</li>
+      <li><strong>Đồng hành với GĐCN 392</strong> — không phải quan hệ cấp trên/dưới</li>
       <li><strong>Mục tiêu cuối cùng là tạo Framework nhân bản</strong> cho 15 chi nhánh còn lại</li>
     </ol>
 
@@ -625,15 +627,16 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
     </div>
 
     <h3>Lifecycle 6 trạng thái</h3>
+    <p style="font-size:15px; color:#a1a1a6; margin-bottom:16px;">Định nghĩa chi tiết và transition triggers: xem <a href="unified-lifecycle.html" style="color:#2997ff;">Unified Lifecycle</a></p>
     <table>
-      <thead><tr><th>#</th><th>Trạng thái</th><th>Định nghĩa định lượng</th><th>Booking mục tiêu</th></tr></thead>
+      <thead><tr><th>#</th><th>Trạng thái</th><th>Định nghĩa</th><th>Booking mục tiêu</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td><strong>LEAD</strong></td><td>Đặt lịch nhưng chưa từng đến</td><td>B1 (first booking)</td></tr>
-        <tr><td>2</td><td><strong>TRIAL</strong></td><td>Đến đúng 1 lần, ≤ 60 ngày</td><td>B2 (đặt lịch lần 2)</td></tr>
-        <tr><td>3</td><td><strong>ACTIVE</strong></td><td>Đến 2–3 lần, gần nhất ≤ 60 ngày</td><td>B2 + B4</td></tr>
-        <tr><td>4</td><td><strong>LOYAL</strong></td><td>Đến ≥ 4 lần, gần nhất ≤ 60 ngày</td><td>B2 + B4 + B5</td></tr>
-        <tr><td>5</td><td><strong>AT-RISK</strong></td><td>Đã Active/Loyal, không đến 60–120 ngày</td><td>B3 (win-back)</td></tr>
-        <tr><td>6</td><td><strong>CHURNED</strong></td><td>Không đến > 120 ngày</td><td>B3 (reactivation)</td></tr>
+        <tr><td>1</td><td><strong>LEAD</strong></td><td>Có thông tin liên hệ, chưa từng đến</td><td>B1 — First Booking</td></tr>
+        <tr><td>2</td><td><strong>TRIAL</strong></td><td>Đến đúng 1 lần</td><td>B2 — Repeat (đặt lần 2)</td></tr>
+        <tr><td>3</td><td><strong>ACTIVE</strong></td><td>Đến 2–3 lần, đang trong hoặc vừa xong liệu trình</td><td>B2 + B4 (Repeat + Upsell)</td></tr>
+        <tr><td>4</td><td><strong>LOYAL</strong></td><td>Đến ≥ 4 lần HOẶC hoàn thành ≥ 2 liệu trình</td><td>B2 + B4 + B5 (+ Referral)</td></tr>
+        <tr><td>5</td><td><strong>LAPSED</strong></td><td>Đã từng Active/Loyal, không giao dịch 61–180 ngày</td><td>B3 — Reactivation</td></tr>
+        <tr><td>6</td><td><strong>CHURNED</strong></td><td>Không giao dịch &gt; 180 ngày</td><td>B3 — Last-chance reactivation</td></tr>
       </tbody>
     </table>
 
@@ -660,7 +663,7 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
       <tbody>
         <tr><td><strong>Local event mở</strong></td><td>Khách mới + khách cũ rủ bạn</td><td>B1 + B5</td></tr>
         <tr><td><strong>Member-only event</strong></td><td>Active/Loyal</td><td>B2, B4</td></tr>
-        <tr><td><strong>Comeback event</strong></td><td>At-Risk/Churned</td><td>B3</td></tr>
+        <tr><td><strong>Comeback event</strong></td><td>Lapsed/Churned</td><td>B3</td></tr>
         <tr><td><strong>Partner cross-promotion</strong></td><td>Khách của partner + của mình</td><td>B1 + B5</td></tr>
         <tr><td><strong>Seasonal campaign</strong></td><td>Tất cả nhóm</td><td>B1+B2+B3</td></tr>
       </tbody>
@@ -686,7 +689,7 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
         <tr><td><strong>TRIAL</strong></td><td>Combo Khám phá 3–5 buổi</td><td>Giá trị > giá, anchor lần 2</td><td>B2</td></tr>
         <tr><td><strong>ACTIVE</strong></td><td>Liệu trình chính 8–12 buổi + cross-sell</td><td>Giá tiêu chuẩn, push AOV</td><td>B2 + B4</td></tr>
         <tr><td><strong>LOYAL</strong></td><td>Gói Premium/VIP + Referral reward</td><td>Giá cao, biên cao</td><td>B2 + B4 + B5</td></tr>
-        <tr><td><strong>AT-RISK</strong></td><td>Win-back voucher cá nhân hoá</td><td>Discount mạnh có điều kiện</td><td>B3</td></tr>
+        <tr><td><strong>LAPSED</strong></td><td>Win-back voucher cá nhân hoá</td><td>Discount mạnh có điều kiện</td><td>B3</td></tr>
         <tr><td><strong>CHURNED</strong></td><td>Comeback gói "trở lại"</td><td>High-value re-engagement</td><td>B3</td></tr>
       </tbody>
     </table>
@@ -695,7 +698,7 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
     <ol>
       <li><strong>Mỗi trạng thái có 1 sản phẩm "mỏ neo"</strong> — tránh loạn lựa chọn</li>
       <li><strong>Giá trị tăng dần theo lifecycle</strong> — không discount sâu cho Active/Loyal</li>
-      <li><strong>AT-RISK ưu tiên cá nhân hoá hơn discount</strong> — đề xuất đúng nhu cầu</li>
+      <li><strong>LAPSED ưu tiên cá nhân hoá hơn discount</strong> — đề xuất đúng nhu cầu</li>
       <li><strong>CHURNED chỉ tiếp cận khi có lý do thật</strong> — không spam định kỳ</li>
     </ol>
 
@@ -707,7 +710,7 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
         <tr><td>TRIAL</td><td>App Push + Zalo</td><td>1 chạm sau buổi đầu</td></tr>
         <tr><td>ACTIVE</td><td>App Push + Zalo</td><td>Trigger theo lịch</td></tr>
         <tr><td>LOYAL</td><td>Zalo cá nhân + App</td><td>Touch định kỳ</td></tr>
-        <tr><td>AT-RISK</td><td>Telesale + Zalo</td><td>2 chạm / 14 ngày</td></tr>
+        <tr><td>LAPSED</td><td>Telesale + Zalo</td><td>2 chạm / 14 ngày</td></tr>
         <tr><td>CHURNED</td><td>Email + Ads remarketing</td><td>1 campaign / quý</td></tr>
       </tbody>
     </table>
@@ -752,6 +755,8 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
       </tbody>
     </table>
 
+    <p style="font-size: 14px; color: #6e6e73; font-style: italic;">*Các số liệu KPI giả định, khi triển khai sẽ chi tiết cụ thể hơn.</p>
+
     <div class="callout">
       <p><em>KPI Replication quan trọng hơn KPI tại 392 — vì mục tiêu cuối cùng là <strong>nhân bản</strong>, không phải làm 392 thật xuất sắc rồi dừng ở đó.</em></p>
     </div>
@@ -773,41 +778,41 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 0 — Foundation (Tháng 1)</div>
-          <div class="timeline-desc">Setup R&amp;D Unit + ký kết phối hợp với 392 · Chuẩn hoá schema dữ liệu CRM &amp; CDP · Đo &amp; lock baseline 6 KPI booking (B1–B5) · Audit kênh tương tác hiện có + Audit App</div>
+          <div class="timeline-title">Phase 0 — Foundation</div>
+          <div class="timeline-desc">Chuẩn hoá schema dữ liệu CRM &amp; CDP · Đo &amp; lock baseline 6 KPI booking (B1–B5) · Audit kênh tương tác hiện có + Audit App</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 1 — Lifecycle &amp; App Core (Tháng 2–3)</div>
+          <div class="timeline-title">Phase 1 — Lifecycle &amp; App Core</div>
           <div class="timeline-desc">Triển khai 6 trạng thái + rule auto-transition · Tag toàn bộ tệp khách hiện hữu của 392 · App Phase 1: Engagement Layer (Diary, Reminder, Progress) · Hoàn thiện giỏ hàng cho từng trạng thái</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 2 — Automation &amp; Referral (Tháng 4–6)</div>
-          <div class="timeline-desc">3 luồng automation ưu tiên: Trial nurture, AT-RISK win-back, Loyal referral · App Phase 2: Loyalty &amp; Rewards Layer · Telesale chuyển sang script kết hợp automation · Launch Referral Level 1</div>
+          <div class="timeline-title">Phase 2 — Automation &amp; Referral</div>
+          <div class="timeline-desc">3 luồng automation ưu tiên: Trial nurture, LAPSED win-back, Loyal referral · App Phase 2: Loyalty &amp; Rewards Layer · Telesale chuyển sang script kết hợp automation · Launch Referral Level 1</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 3 — Offline &amp; SEO Ramp-up (Tháng 7–9)</div>
+          <div class="timeline-title">Phase 3 — Offline &amp; SEO Ramp-up</div>
           <div class="timeline-desc">Launch Offline Lab: 1 event/tháng + partner network · SEO content: 30 bài/tháng + Local SEO · Launch Ambassador Program (Referral L2) · App Phase 3: Content &amp; Community Layer</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 4 — Optimize &amp; Scale (Tháng 10–12)</div>
+          <div class="timeline-title">Phase 4 — Optimize &amp; Scale</div>
           <div class="timeline-desc">Tối ưu funnel theo dữ liệu thực tế · Mở rộng Referral L3 (Affiliate) · Đóng gói framework + playbook · Pilot nhân bản tại 1–2 chi nhánh tiếp theo</div>
         </div>
       </div>
     </div>
 
-    <h3>Exit Criteria sau 12 tháng</h3>
+    <h3>Exit Criteria sau Phase 4</h3>
     <div class="card-grid">
       <div class="card">
         <div class="card-title" style="color:#34c759;">GO (nhân bản)</div>
@@ -845,8 +850,6 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
         <tr><td>Khối Kinh doanh xem R&amp;D như "đặc quyền"</td><td>Cao</td><td>R&amp;D làm khó để các CN khác làm dễ</td></tr>
         <tr><td>Ban Tổng mất kiên nhẫn vì chưa thấy ROI</td><td>Cao</td><td>Lock kỳ vọng từ đầu: 6 tháng đầu là R&amp;D</td></tr>
         <tr><td>R&amp;D xong nhưng không ai dùng</td><td>Cao</td><td>Có Replication Manager từ Phase 2</td></tr>
-        <tr><td>GĐCN 392 mất quyền tự chủ</td><td>TB</td><td>Đặt vào vai "đồng tác giả", có quyền đồng ký</td></tr>
-        <tr><td>App build thêm tính năng khách không hiểu</td><td>TB</td><td>Test với 50 user trước mỗi feature</td></tr>
         <tr><td>SEO mất 6 tháng mới có kết quả</td><td>TB</td><td>KPI leading trước KPI lagging</td></tr>
         <tr><td>Referral bị abuse</td><td>Thấp</td><td>Verify SĐT, giới hạn /khách, audit định kỳ</td></tr>
         <tr><td>4 domain phân tán nguồn lực</td><td>Cao</td><td>Phase rõ ràng — không làm song song 4 thứ ngày 1</td></tr>
@@ -1099,7 +1102,7 @@ KHỐI KINH DOANH  R&amp;D UNIT          KHỐI HỖ TRỢ
         <tr><td>Trial</td><td>Service Companion sau buổi đầu, Education, Welcome series</td><td>60% Companion / 40% Brand</td></tr>
         <tr><td>Active</td><td>Personal Journey, Service Companion, Upsell content</td><td>40% / 40% / 20%</td></tr>
         <tr><td>Loyal</td><td>BTS, Insider content, Community, Referral story</td><td>30% BTS / 30% Community / 20% Service / 20% Lifestyle</td></tr>
-        <tr><td>At-Risk</td><td>Comeback content, testimonial, dịch vụ mới</td><td>Win-back focused</td></tr>
+        <tr><td>Lapsed</td><td>Comeback content, testimonial, dịch vụ mới</td><td>Win-back focused</td></tr>
         <tr><td>Churned</td><td>"Có gì mới ở 392", công nghệ mới</td><td>Reactivation focused</td></tr>
       </tbody>
     </table>
@@ -1288,6 +1291,8 @@ Day -3: Telesale gọi (chỉ những case này) —
         <tr><td>% khách opt-in nhận push</td><td>TBD</td><td>≥ 80%</td></tr>
       </tbody>
     </table>
+
+    <p style="font-size: 14px; color: #6e6e73; font-style: italic;">*Các số liệu KPI giả định, khi triển khai sẽ chi tiết cụ thể hơn.</p>
   </div>
 </section>
 
@@ -1306,35 +1311,35 @@ Day -3: Telesale gọi (chỉ những case này) —
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 1 — Foundation (Tháng 1–2)</div>
+          <div class="timeline-title">Phase 1 — Foundation</div>
           <div class="timeline-desc"><strong>Audit &amp; Setup:</strong> Audit App hiện tại, setup analytics (Amplitude/Mixpanel), khảo sát 50 khách.<br><strong>Quick wins:</strong> Fix UX flow đặt lịch, thêm earn rule (check-in, đọc bài, review), thêm "điểm sắp hết hạn" + "tier progress" lên home.</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 2 — Loyalty Overhaul (Tháng 3–4)</div>
+          <div class="timeline-title">Phase 2 — Loyalty Overhaul</div>
           <div class="timeline-desc">Triển khai 3 lớp Loyalty mới (Points + Tier + Rewards) · Redesign Tier: Discover/Insider/Signature/Icon · Tái cấu trúc Shop quà theo 4 loại · Add expiry rules + flash redemption</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 3 — Content Framework (Tháng 5–7)</div>
+          <div class="timeline-title">Phase 3 — Content Framework</div>
           <div class="timeline-desc">Build content templates cho Top 10 dịch vụ · Setup automation trigger content theo lifecycle event · Launch quiz onboarding + content series cho 5 concern chính · Production: 4 BTS + 4 Lifestyle + 2 Expert video/tháng</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 4 — Communication Shift (Tháng 8–10)</div>
+          <div class="timeline-title">Phase 4 — Communication Shift</div>
           <div class="timeline-desc">Launch Chat module (AI + CSKH + Expert) · Migrate 50% giao tiếp telesale sang App push + chat · Optimize push frequency, A/B test message · Train Lễ tân/TVV dùng App</div>
         </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
-          <div class="timeline-title">Phase 5 — Community &amp; Scale (Tháng 11–12)</div>
+          <div class="timeline-title">Phase 5 — Community &amp; Scale</div>
           <div class="timeline-desc">Launch Community feed (UGC) · AI Skin/Body Analysis · Đo và lock framework chuẩn · Document playbook để nhân bản 15 chi nhánh</div>
         </div>
       </div>
@@ -1436,17 +1441,16 @@ Day -3: Telesale gọi (chỉ những case này) —
         <tr><td>Ban Tổng "thử xem", áp KPI doanh thu sớm</td><td>10%</td></tr>
       </tbody>
     </table>
-    <p>Tháng 4–6 sẽ là giai đoạn <strong>"thung lũng tử thần"</strong> — đã đầu tư nhiều, nhưng kết quả chưa rõ. Đây là lúc 70% dự án transformation chết vì lãnh đạo mất kiên nhẫn.</p>
+    <p>Giữa hành trình sẽ là giai đoạn <strong>"thung lũng tử thần"</strong> — đã đầu tư nhiều, nhưng kết quả chưa rõ. Đây là lúc 70% dự án transformation chết vì lãnh đạo mất kiên nhẫn.</p>
 
-    <h3>#2 — Chất lượng người lead R&amp;D Unit (20%)</h3>
-    <p>R&amp;D Lead là vai trò quan trọng nhất — người vừa hiểu sản phẩm, vừa hiểu data, vừa có quyền đàm phán với GĐCN 392 và Ban Tổng.</p>
+    <h3>#2 — Chất lượng team R&amp;D Unit (20%)</h3>
+    <p>R&amp;D team có vai trò quan trọng — người vừa hiểu sản phẩm, vừa hiểu data.</p>
     <ul>
       <li>Đã từng làm transformation (không phải fresh hire)</li>
       <li>Có authority đủ để veto quyết định khi cần</li>
       <li>Có network để pull được nhân tài</li>
       <li>Communicate được cả với business và tech</li>
     </ul>
-    <p><strong>→ Nếu không có người này, dù có kế hoạch hoàn hảo cũng thất bại.</strong></p>
 
     <h3>#3 — Chất lượng dữ liệu hiện có (15%)</h3>
     <table>
@@ -1500,27 +1504,28 @@ Day -3: Telesale gọi (chỉ những case này) —
       </div>
     </div>
 
-    <h3>Tài chính tại 392 (sau 12 tháng, đạt 70% target)</h3>
+    <h3>Tài chính tại 392 (sau Phase 4)</h3>
     <table>
-      <thead><tr><th>Hạng mục</th><th>Trước</th><th>Sau</th><th>Thay đổi</th></tr></thead>
+      <thead><tr><th>Hạng mục</th><th>Kỳ vọng</th></tr></thead>
       <tbody>
-        <tr><td>Tổng booking</td><td>100</td><td>145</td><td>+45%</td></tr>
-        <tr><td>Trong đó B1 (mới)</td><td>50</td><td>43</td><td>-14%</td></tr>
-        <tr><td>Trong đó B2+B3+B4+B5 (cũ)</td><td>50</td><td>102</td><td>+104%</td></tr>
-        <tr><td>AOV</td><td>1.0</td><td>1.15</td><td>+15%</td></tr>
-        <tr><td><strong>Doanh thu</strong></td><td><strong>100</strong></td><td><strong>167</strong></td><td><strong>+67%</strong></td></tr>
-        <tr><td>Cost Ads</td><td>30</td><td>12</td><td>-60%</td></tr>
-        <tr><td>Cost Telesale</td><td>15</td><td>8</td><td>-47%</td></tr>
-        <tr><td>Cost App + automation (mới)</td><td>0</td><td>6</td><td>+6</td></tr>
-        <tr><td>Cost Content + SEO + Offline</td><td>5</td><td>12</td><td>+7</td></tr>
-        <tr><td>Cost R&amp;D allocation</td><td>0</td><td>8</td><td>+8</td></tr>
-        <tr><td><strong>Tổng cost</strong></td><td><strong>50</strong></td><td><strong>46</strong></td><td><strong>-8%</strong></td></tr>
-        <tr><td><strong>Profit</strong></td><td><strong>50</strong></td><td><strong>121</strong></td><td><strong>+142%</strong></td></tr>
+        <tr><td>Tổng booking</td><td>Tăng</td></tr>
+        <tr><td>Trong đó B1 (mới)</td><td>Giảm tỷ trọng</td></tr>
+        <tr><td>Trong đó B2+B3+B4+B5 (cũ)</td><td>Tăng mạnh</td></tr>
+        <tr><td>AOV</td><td>Tăng</td></tr>
+        <tr><td><strong>Doanh thu</strong></td><td><strong>Tăng</strong></td></tr>
+        <tr><td>Cost Ads</td><td>Giảm</td></tr>
+        <tr><td>Cost Telesale</td><td>Giảm</td></tr>
+        <tr><td>Cost App + automation (mới)</td><td>Đầu tư mới</td></tr>
+        <tr><td>Cost Content + SEO + Offline</td><td>Đầu tư mới</td></tr>
+        <tr><td>Cost R&amp;D allocation</td><td>Đầu tư mới</td></tr>
+        <tr><td><strong>Tổng cost</strong></td><td><strong>Giảm hoặc giữ nguyên</strong></td></tr>
+        <tr><td><strong>Profit</strong></td><td><strong>Tăng</strong></td></tr>
       </tbody>
     </table>
 
     <div class="callout">
-      <p>Doanh thu tăng ~67%, cost giảm 8%, profit tăng ~2.4 lần tại 392. <strong>Quan trọng hơn:</strong> Cấu trúc cost đã chuyển từ "biến phí Ads cao" sang "đầu tư tài sản (App, SEO, Loyalty)" — profit margin <strong>tăng theo thời gian</strong>.</p>
+      <div class="callout-label">Lưu ý</div>
+      <p>Các con số cụ thể cần được trao đổi và thống nhất trước khi chốt KPI. Hướng kỳ vọng: cấu trúc cost chuyển từ "biến phí Ads cao" sang "đầu tư tài sản (App, SEO, Loyalty)" — profit margin <strong>tăng theo thời gian</strong>.</p>
     </div>
 
     <h3>Toàn hệ thống (sau 24–36 tháng, nhân bản 10/15 CN)</h3>
@@ -1621,7 +1626,7 @@ Day -3: Telesale gọi (chỉ những case này) —
     </ul>
 
     <div class="callout">
-      <p>Đó là lý do <strong>Exit Criteria sau 12 tháng quan trọng</strong> — để có dũng khí dừng nếu cần.</p>
+      <p>Đó là lý do <strong>Exit Criteria sau Phase 4 quan trọng</strong> — để có dũng khí dừng nếu cần.</p>
     </div>
   </div>
 </section>
@@ -1676,8 +1681,6 @@ Day -3: Telesale gọi (chỉ những case này) —
       <p><em>Nếu không lock được 3 thứ này → <strong>đừng bắt đầu</strong>. Triển khai với commitment lưng chừng còn tệ hơn không làm.</em></p>
     </div>
 
-    <h3>2. Đầu tư mạnh vào R&amp;D Lead và Mobile Lead</h3>
-    <p>Hai vai trò này là <strong>xương sống</strong>. Tốt hơn chậm 1 tháng để tuyển đúng người, hơn là bắt đầu nhanh với người không phù hợp.</p>
 
     <h3>3. Tuần 1 phải làm: Audit dữ liệu</h3>
     <ul>

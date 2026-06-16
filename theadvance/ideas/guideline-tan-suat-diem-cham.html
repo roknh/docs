@@ -354,8 +354,10 @@
     </table>
 
     <div class="callout">
-      <div class="callout-label">Nguyên tắc chọn kênh</div>
-      <p><strong>Escalation từ nhẹ đến nặng:</strong> App Push &rarr; Zalo OA &rarr; Zalo cá nhân &rarr; Telesale. Chỉ chuyển sang kênh "nặng" hơn khi kênh trước không phản hồi sau 48h. Không bao giờ gọi điện khi chưa thử digital trước.</p>
+      <div class="callout-label">Nguyên tắc chọn kênh — App-first</div>
+      <p><strong>App là hub trung tâm</strong> cho cả 3 vai trò: chạm cá nhân (chat, voice, video), giao dịch (nhắc lịch, xác nhận), và broadcast (thông báo, nội dung). Các kênh khác chỉ kích hoạt khi app không chạm tới được.</p>
+      <p style="margin-top:10px;"><strong>Escalation từ nhẹ đến nặng:</strong> App Push &rarr; Zalo OA &rarr; Zalo cá nhân &rarr; Telesale. Chỉ chuyển sang kênh "nặng" hơn khi kênh trước không phản hồi sau 48h. Không bao giờ gọi điện khi chưa thử digital trước.</p>
+      <p style="margin-top:10px;"><strong>Zalo cá nhân &amp; Telesale gộp chung trần tần suất</strong> — cùng là "chạm cá nhân chủ động". Telesale PSTN chỉ dùng khi cần sức nặng giọng nói và app voice không chạm tới được.</p>
     </div>
   </div>
 </section>
@@ -702,7 +704,7 @@
 <section class="tile tile--dark">
   <div class="inner">
     <h3 style="margin-top:0;">Giai đoạn 3: 3&ndash;6 tháng &mdash; "Nhắc nhớ"</h3>
-    <p style="color:#a1a1a6;">Khách bắt đầu drift. Có thể đã gỡ app hoặc tắt noti. Chuyển dần sang Zalo. Tần suất: 1 chạm/tuần.</p>
+    <p style="color:#a1a1a6;">Khách bắt đầu trôi dần (LAPSED). Có thể đã gỡ app hoặc tắt noti. Chuyển dần sang Zalo. Tần suất: 1 chạm/tuần.</p>
 
     <table>
       <thead><tr><th>Tần suất</th><th>Kênh</th><th>Nội dung</th><th>Mục tiêu</th></tr></thead>
@@ -815,7 +817,7 @@
 <section class="tile tile--parchment">
   <div class="inner">
     <h3 style="margin-top:0;">Giai đoạn 6: 12+ tháng &mdash; "Passive"</h3>
-    <p style="color:#6e6e73;">Khách đã churned. Không chạm chủ động nữa, chỉ giữ trong danh sách campaign lớn. Tần suất: tối đa 1/quý.</p>
+    <p style="color:#6e6e73;">Khách đã CHURNED. Không chạm chủ động nữa, chỉ giữ trong danh sách campaign lớn. Tần suất: tối đa 1/quý.</p>
 
     <table>
       <thead><tr><th>Tần suất</th><th>Kênh</th><th>Nội dung</th><th>Ghi chú</th></tr></thead>
@@ -835,7 +837,7 @@
         <tr>
           <td><strong>Ads remarketing</strong></td>
           <td><span class="ch-badge ch-ads">Facebook/Google Ads</span></td>
-          <td>Retarget theo tệp KH churned 12+ tháng, với creative "Quay lại với ưu đãi đặc biệt"</td>
+          <td>Retarget theo tệp KH CHURNED 12+ tháng, với creative "Quay lại với ưu đãi đặc biệt"</td>
           <td>Chi phí thấp, reach rộng, không invasive</td>
         </tr>
       </tbody>
@@ -951,7 +953,7 @@
         <tr><td>App không mở 14 ngày</td><td>Last app_open > 14 days</td><td>Tag <code>app_inactive</code>, chuyển kênh mặc định sang Zalo OA</td></tr>
         <tr><td>Không phản hồi 60 ngày</td><td>No response any channel > 60 days</td><td>Chuyển vào giai đoạn "3&ndash;6 tháng" (hoặc giai đoạn phù hợp theo thời gian thực)</td></tr>
         <tr><td>Khách yêu cầu ngừng</td><td>Opt-out hoặc DO_NOT_CONTACT</td><td>Dừng mọi automation. Chỉ giữ Ads retarget (nếu không opt-out ads).</td></tr>
-        <tr><td>Khách quay lại booking</td><td>Booking created + tag Churned/At-Risk</td><td>Reset về flow "Trong liệu trình". Xóa tag cũ.</td></tr>
+        <tr><td>Khách quay lại booking</td><td>Booking created + tag CHURNED/LAPSED</td><td>Reset về flow "Trong liệu trình". Xóa tag cũ.</td></tr>
       </tbody>
     </table>
   </div>
@@ -1122,7 +1124,7 @@
         <tr><td>Trong liệu trình</td><td>Tỷ lệ no-show / hủy</td><td>&le; 8%</td></tr>
         <tr><td>0&ndash;30 ngày sau</td><td>% khách booking tiếp trong 30 ngày</td><td>&ge; 40%</td></tr>
         <tr><td>1&ndash;3 tháng</td><td>% khách booking tiếp trong 90 ngày</td><td>&ge; 60%</td></tr>
-        <tr><td>3&ndash;6 tháng</td><td>% khách quay lại (từ Drift)</td><td>&ge; 20%</td></tr>
+        <tr><td>3&ndash;6 tháng</td><td>% khách quay lại (từ LAPSED)</td><td>&ge; 20%</td></tr>
         <tr><td>6&ndash;9 tháng</td><td>% win-back thành công</td><td>&ge; 10%</td></tr>
         <tr><td>9&ndash;12 tháng</td><td>% reactivation</td><td>&ge; 5%</td></tr>
         <tr><td>12+ tháng</td><td>% quay lại từ passive</td><td>&ge; 2%</td></tr>
@@ -1139,6 +1141,7 @@
 <!-- Footer -->
 <footer class="tile tile--dark site-footer">
   <a href="index.html" style="color:#2997ff; text-decoration:none; font-size:14px; letter-spacing:0; text-transform:none;">&larr; Quay về Hành Trình Khách Hàng</a>
+  <p style="margin-top:12px; font-size:13px; letter-spacing:0; text-transform:none;">Tham chiếu: <a href="unified-lifecycle.html" style="color:#2997ff; text-decoration:none;">Unified Lifecycle</a> · <a href="guideline-cham-soc-khach-hang-6-thang.html" style="color:#2997ff; text-decoration:none;">CSKH 0-6 tháng</a></p>
   <p style="margin-top:16px;">Guideline Tần Suất Điểm Chạm &middot; TheAdvance &middot; 2026</p>
 </footer>
 

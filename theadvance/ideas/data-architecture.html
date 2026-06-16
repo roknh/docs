@@ -1,0 +1,3367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Data Architecture v2.0</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #0066cc;
+    --primary-focus: #0071e3;
+    --primary-on-dark: #2997ff;
+    --ink: #1d1d1f;
+    --ink-muted-80: #333333;
+    --ink-muted-48: #7a7a7a;
+    --body-muted: #cccccc;
+    --hairline: #e0e0e0;
+    --divider-soft: #f0f0f0;
+    --canvas: #ffffff;
+    --canvas-parchment: #f5f5f7;
+    --surface-pearl: #fafafc;
+    --surface-tile-1: #272729;
+    --surface-tile-2: #2a2a2c;
+    --surface-tile-3: #252527;
+    --surface-black: #000000;
+    --on-dark: #ffffff;
+    --nav-height: 44px;
+    --subnav-height: 52px;
+    --section-pad: 80px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+    background: var(--canvas);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ===== GLOBAL NAV ===== */
+  .global-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    background: var(--surface-black);
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .global-nav__inner {
+    width: 100%;
+    max-width: 980px;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .global-nav__brand {
+    color: var(--on-dark);
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    text-decoration: none;
+  }
+  .global-nav__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .global-nav__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--primary);
+  }
+  .global-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    list-style: none;
+  }
+  .global-nav__links a {
+    color: rgba(255,255,255,0.72);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .global-nav__links a:hover { color: var(--on-dark); }
+
+  /* ===== SUB-NAV ===== */
+  .sub-nav {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    z-index: 8900;
+    background: rgba(245,245,247,0.88);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    height: var(--subnav-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .sub-nav__inner {
+    width: 100%;
+    max-width: 980px;
+    padding: 0 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sub-nav__title {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0.231px;
+    color: var(--ink);
+  }
+  .sub-nav__meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .sub-nav__version {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+  }
+  .sub-nav__date {
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+  }
+
+  /* ===== LAYOUT ===== */
+  .doc-shell {
+    display: flex;
+    margin-top: calc(var(--nav-height) + var(--subnav-height));
+    min-height: calc(100vh - var(--nav-height) - var(--subnav-height));
+  }
+  .doc-main {
+    flex: 1;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  /* ===== SECTION TILES ===== */
+  .section-light {
+    background: var(--canvas);
+    color: var(--ink);
+    padding: var(--section-pad) 0;
+  }
+  .section-parchment {
+    background: var(--canvas-parchment);
+    color: var(--ink);
+    padding: var(--section-pad) 0;
+  }
+  .section-dark {
+    background: var(--surface-tile-1);
+    color: var(--on-dark);
+    padding: var(--section-pad) 0;
+  }
+  .section-dark-2 {
+    background: var(--surface-tile-2);
+    color: var(--on-dark);
+    padding: var(--section-pad) 0;
+  }
+  .section-dark-3 {
+    background: var(--surface-tile-3);
+    color: var(--on-dark);
+    padding: var(--section-pad) 0;
+  }
+
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 22px;
+  }
+  .container--wide {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 22px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--surface-black);
+    color: var(--on-dark);
+    padding: 100px 0 80px;
+    text-align: center;
+  }
+  .hero__eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--primary-on-dark);
+    margin-bottom: 16px;
+  }
+  .hero__title {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    color: var(--on-dark);
+    margin-bottom: 20px;
+  }
+  .hero__subtitle {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: rgba(255,255,255,0.72);
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .hero__meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .hero__meta-item {
+    font-size: 12px;
+    color: rgba(255,255,255,0.48);
+    letter-spacing: -0.12px;
+  }
+  .hero__meta-item strong {
+    color: rgba(255,255,255,0.72);
+    font-weight: 600;
+  }
+
+  /* ===== SIDEBAR TOC ===== */
+  .toc-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: sticky;
+    top: calc(var(--nav-height) + var(--subnav-height));
+    height: calc(100vh - var(--nav-height) - var(--subnav-height));
+    overflow-y: auto;
+    background: var(--canvas-parchment);
+    border-right: 1px solid var(--hairline);
+    padding: 32px 0;
+  }
+  .toc-sidebar::-webkit-scrollbar { width: 4px; }
+  .toc-sidebar::-webkit-scrollbar-track { background: transparent; }
+  .toc-sidebar::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 2px; }
+  .toc-header {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted-48);
+    padding: 0 20px 12px;
+  }
+  .toc-list { list-style: none; padding: 0; margin: 0; }
+  .toc-list a {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    color: var(--ink-muted-80);
+    text-decoration: none;
+    padding: 6px 20px;
+    border-left: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    line-height: 1.4;
+  }
+  .toc-list a:hover {
+    color: var(--primary);
+    background: rgba(0,102,204,0.05);
+    border-left-color: var(--primary);
+  }
+  .toc-list a.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    font-weight: 600;
+  }
+  .toc-list .toc-sub a {
+    padding-left: 32px;
+    font-size: 12px;
+    color: var(--ink-muted-48);
+  }
+  .toc-list .toc-sub a:hover { color: var(--primary); }
+  .toc-divider {
+    height: 1px;
+    background: var(--hairline);
+    margin: 12px 20px;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-header {
+    margin-bottom: 48px;
+  }
+  .section-num {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .section-dark .section-num,
+  .section-dark-2 .section-num,
+  .section-dark-3 .section-num {
+    color: var(--primary-on-dark);
+  }
+  .section-title {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+    color: inherit;
+    margin-bottom: 12px;
+  }
+  .section-lead {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: var(--ink-muted-80);
+    max-width: 600px;
+  }
+  .section-dark .section-lead,
+  .section-dark-2 .section-lead,
+  .section-dark-3 .section-lead {
+    color: var(--body-muted);
+  }
+
+  /* ===== SUBSECTION ===== */
+  .subsection { margin-bottom: 56px; }
+  .subsection:last-child { margin-bottom: 0; }
+  .subsection-title {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: inherit;
+    margin-bottom: 24px;
+    padding-top: 8px;
+  }
+  .subsection-title-sm {
+    font-family: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: inherit;
+    margin-bottom: 16px;
+    margin-top: 32px;
+  }
+  .subsection-title-sm:first-child { margin-top: 0; }
+
+  /* ===== BODY TEXT ===== */
+  p {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    margin-bottom: 17px;
+    color: inherit;
+  }
+  p:last-child { margin-bottom: 0; }
+  strong {
+    font-weight: 600;
+    color: inherit;
+  }
+  em {
+    font-style: italic;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  a:hover { text-decoration: underline; }
+  .section-dark a,
+  .section-dark-2 a,
+  .section-dark-3 a {
+    color: var(--primary-on-dark);
+  }
+
+  /* ===== ORDERED/UNORDERED LISTS ===== */
+  ul, ol {
+    padding-left: 24px;
+    margin-bottom: 17px;
+  }
+  li {
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    margin-bottom: 6px;
+    color: inherit;
+  }
+  li:last-child { margin-bottom: 0; }
+
+  /* ===== CHECKLIST ===== */
+  .checklist {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 24px;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 17px;
+    line-height: 1.47;
+  }
+  .checklist li::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 1.5px solid var(--hairline);
+    border-radius: 4px;
+    margin-top: 3px;
+    background: var(--surface-pearl);
+  }
+  .section-dark .checklist li::before,
+  .section-dark-2 .checklist li::before,
+  .section-dark-3 .checklist li::before {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* ===== TABLES ===== */
+  .table-wrap {
+    overflow-x: auto;
+    margin-bottom: 32px;
+    border-radius: 18px;
+    border: 1px solid var(--hairline);
+  }
+  .section-dark .table-wrap,
+  .section-dark-2 .table-wrap,
+  .section-dark-3 .table-wrap {
+    border-color: rgba(255,255,255,0.1);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.224px;
+  }
+  thead tr {
+    background: var(--canvas-parchment);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .section-dark thead tr,
+  .section-dark-2 thead tr,
+  .section-dark-3 thead tr {
+    background: rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-muted-48);
+    white-space: nowrap;
+  }
+  .section-dark th,
+  .section-dark-2 th,
+  .section-dark-3 th {
+    color: rgba(255,255,255,0.4);
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--divider-soft);
+    vertical-align: top;
+    color: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .section-dark td,
+  .section-dark-2 td,
+  .section-dark-3 td {
+    border-bottom-color: rgba(255,255,255,0.06);
+  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,0,0,0.02); }
+  .section-dark tbody tr:hover,
+  .section-dark-2 tbody tr:hover,
+  .section-dark-3 tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+  }
+  td code, th code {
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", "Menlo", monospace;
+    font-size: 12.5px;
+    background: var(--canvas-parchment);
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    padding: 1px 5px;
+    color: var(--ink-muted-80);
+  }
+  .section-dark td code,
+  .section-dark-2 td code,
+  .section-dark-3 td code {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ===== CODE BLOCKS ===== */
+  .code-block-wrap {
+    margin-bottom: 32px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--surface-tile-3);
+  }
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .code-block-lang {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .code-block-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .code-block-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.12);
+  }
+  pre {
+    background: var(--surface-tile-3);
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  pre code {
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", "Menlo", "Monaco", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #cdd6f4;
+    background: none;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    letter-spacing: 0;
+  }
+
+  /* ASCII diagram blocks */
+  .ascii-block pre {
+    background: var(--surface-tile-1);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 28px 32px;
+    overflow-x: auto;
+  }
+  .ascii-block pre code {
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", "Menlo", monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+    white-space: pre;
+  }
+
+  /* Inline code */
+  p code, li code {
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", "Menlo", monospace;
+    font-size: 13.5px;
+    background: var(--canvas-parchment);
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    padding: 1px 5px;
+    color: var(--ink-muted-80);
+  }
+  .section-dark p code,
+  .section-dark li code,
+  .section-dark-2 p code,
+  .section-dark-2 li code,
+  .section-dark-3 p code,
+  .section-dark-3 li code {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ===== SYNTAX COLORING ===== */
+  .kw { color: #89b4fa; } /* keywords */
+  .kw2 { color: #cba6f7; } /* CREATE TABLE, ENGINE etc */
+  .ty { color: #89dceb; } /* types */
+  .str { color: #a6e3a1; } /* strings */
+  .cm { color: #6c7086; font-style: italic; } /* comments */
+  .fn { color: #f38ba8; } /* functions */
+  .nu { color: #fab387; } /* numbers */
+  .op { color: #89dceb; } /* operators */
+  .pn { color: #cdd6f4; } /* punctuation */
+  .id { color: #cdd6f4; } /* identifiers */
+  .py-kw { color: #cba6f7; }
+  .py-fn { color: #89b4fa; }
+  .py-str { color: #a6e3a1; }
+  .py-cm { color: #6c7086; font-style: italic; }
+  .py-def { color: #f38ba8; }
+  .json-key { color: #89b4fa; }
+  .json-str { color: #a6e3a1; }
+  .json-num { color: #fab387; }
+  .json-null { color: #cba6f7; }
+  .yaml-key { color: #89b4fa; }
+  .yaml-val { color: #a6e3a1; }
+  .yaml-cm { color: #6c7086; font-style: italic; }
+
+  /* ===== PRINCIPLE CARDS ===== */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .principle-card {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .principle-card__num {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .principle-card__title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .principle-card__body {
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.224px;
+    color: var(--ink-muted-80);
+    margin: 0;
+  }
+
+  /* ===== MECHANISM CARDS ===== */
+  .mechanism-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .mechanism-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .mechanism-card__badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    background: rgba(41,151,255,0.15);
+    color: var(--primary-on-dark);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .mechanism-card__title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    color: var(--on-dark);
+    margin-bottom: 8px;
+  }
+  .mechanism-card__body {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--body-muted);
+    margin: 0;
+  }
+
+  /* ===== LAYER DIAGRAM ===== */
+  .layer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 40px;
+  }
+  .layer {
+    border-radius: 12px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .layer--gold {
+    background: linear-gradient(90deg, rgba(234,179,8,0.18) 0%, rgba(234,179,8,0.08) 100%);
+    border: 1px solid rgba(234,179,8,0.4);
+  }
+  .layer--silver {
+    background: linear-gradient(90deg, rgba(148,163,184,0.2) 0%, rgba(148,163,184,0.08) 100%);
+    border: 1px solid rgba(148,163,184,0.35);
+  }
+  .layer--bronze {
+    background: linear-gradient(90deg, rgba(194,120,66,0.18) 0%, rgba(194,120,66,0.08) 100%);
+    border: 1px solid rgba(194,120,66,0.35);
+  }
+  .layer--pg {
+    background: linear-gradient(90deg, rgba(41,151,255,0.18) 0%, rgba(41,151,255,0.06) 100%);
+    border: 1px solid rgba(41,151,255,0.4);
+  }
+  .layer__badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 4px 10px;
+    border-radius: 9999px;
+  }
+  .layer--gold .layer__badge {
+    background: rgba(234,179,8,0.25);
+    color: #92400e;
+  }
+  .layer--silver .layer__badge {
+    background: rgba(148,163,184,0.3);
+    color: #475569;
+  }
+  .layer--bronze .layer__badge {
+    background: rgba(194,120,66,0.25);
+    color: #7c2d12;
+  }
+  .layer--pg .layer__badge {
+    background: rgba(41,151,255,0.25);
+    color: #0040aa;
+  }
+  .layer__title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.374px;
+  }
+  .layer__desc {
+    font-size: 13px;
+    color: var(--ink-muted-48);
+    flex: 1;
+    text-align: right;
+  }
+
+  /* ===== INFO CALLOUT ===== */
+  .callout {
+    background: rgba(0,102,204,0.08);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .section-dark .callout,
+  .section-dark-2 .callout,
+  .section-dark-3 .callout {
+    background: rgba(41,151,255,0.1);
+    border-left-color: var(--primary-on-dark);
+  }
+  .callout p {
+    margin: 0;
+    font-size: 15px;
+    color: inherit;
+  }
+  .callout strong { color: var(--primary); }
+  .section-dark .callout strong,
+  .section-dark-2 .callout strong,
+  .section-dark-3 .callout strong {
+    color: var(--primary-on-dark);
+  }
+
+  /* ===== DIVIDER ===== */
+  hr {
+    border: none;
+    border-top: 1px solid var(--hairline);
+    margin: 40px 0;
+  }
+  .section-dark hr,
+  .section-dark-2 hr,
+  .section-dark-3 hr {
+    border-top-color: rgba(255,255,255,0.1);
+  }
+
+  /* ===== FILE TREE ===== */
+  .file-tree {
+    background: var(--surface-tile-3);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .file-tree-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .file-tree-header span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .file-tree pre {
+    padding: 20px 24px;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", "Menlo", monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.82);
+    margin: 0;
+    background: transparent;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ===== ALERT BADGE ===== */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .badge--blue { background: rgba(0,102,204,0.12); color: var(--primary); }
+  .badge--green { background: rgba(52,199,89,0.12); color: #34c759; }
+  .badge--orange { background: rgba(255,149,0,0.12); color: #ff9500; }
+  .badge--red { background: rgba(255,59,48,0.12); color: #ff3b30; }
+  .section-dark .badge--blue { background: rgba(41,151,255,0.15); color: var(--primary-on-dark); }
+  .section-dark .badge--green,
+  .section-dark-2 .badge--green,
+  .section-dark-3 .badge--green { background: rgba(52,199,89,0.18); color: #30d158; }
+  .section-dark .badge--orange,
+  .section-dark-2 .badge--orange,
+  .section-dark-3 .badge--orange { background: rgba(255,149,0,0.18); }
+  .section-dark .badge--red,
+  .section-dark-2 .badge--red,
+  .section-dark-3 .badge--red { background: rgba(255,59,48,0.18); }
+
+  /* ===== PIPELINE BLOCKS ===== */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 32px;
+  }
+  .pipeline-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .pipeline-block__header {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-on-dark);
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pipeline-block__header::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--primary-on-dark);
+  }
+  .pipeline-block pre {
+    background: transparent;
+    padding: 0;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.7);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  /* Light-section overrides for pipeline blocks */
+  .section-light .pipeline-block,
+  .section-parchment .pipeline-block {
+    background: var(--canvas-parchment);
+    border: 1px solid var(--hairline);
+  }
+  .section-light .pipeline-block__header,
+  .section-parchment .pipeline-block__header {
+    color: var(--primary);
+  }
+  .section-light .pipeline-block__header::before,
+  .section-parchment .pipeline-block__header::before {
+    background: var(--primary);
+  }
+  .section-light .pipeline-block pre,
+  .section-parchment .pipeline-block pre {
+    color: var(--ink-muted-80);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 834px) {
+    :root { --section-pad: 60px; }
+    .global-nav__links { display: none; }
+    .hero__title { font-size: 40px; }
+    .section-title { font-size: 34px; }
+    .toc-sidebar { width: 220px; }
+  }
+  @media (max-width: 768px) {
+    .toc-sidebar { display: none; }
+  }
+  @media (max-width: 640px) {
+    :root { --section-pad: 48px; }
+    .hero__title { font-size: 34px; }
+    .hero__subtitle { font-size: 17px; }
+    .section-title { font-size: 28px; }
+    .subsection-title { font-size: 24px; }
+    .mechanism-grid { grid-template-columns: 1fr; }
+    .principles-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 419px) {
+    .hero__title { font-size: 28px; }
+    .sub-nav__meta { display: none; }
+  }
+
+  /* ===== FOOTER ===== */
+  .site-footer {
+    background: var(--canvas-parchment);
+    padding: 64px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .site-footer__inner {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 22px;
+  }
+  .site-footer__cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+  .site-footer__col-title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .site-footer__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .site-footer__links li {
+    margin-bottom: 0;
+  }
+  .site-footer__links a {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 2.41;
+    letter-spacing: 0;
+    color: var(--ink-muted-80);
+    text-decoration: none;
+  }
+  .site-footer__links a:hover { color: var(--primary); text-decoration: none; }
+  .site-footer__legal {
+    border-top: 1px solid var(--hairline);
+    padding-top: 20px;
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+    line-height: 1.0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== GLOBAL NAV ===== -->
+<nav class="global-nav" aria-label="Global navigation">
+  <div class="global-nav__inner">
+    <a href="#" class="global-nav__brand">
+      <span class="global-nav__badge">
+        <span class="global-nav__dot"></span>
+        CDP TheAdvance
+      </span>
+    </a>
+    <ul class="global-nav__links">
+      <li><a href="#section-1">Kiến trúc</a></li>
+      <li><a href="#section-2">Cơ chế đồng bộ</a></li>
+      <li><a href="#section-3">Chuẩn hoá</a></li>
+      <li><a href="#section-4">Data Layers</a></li>
+      <li><a href="#section-5">Transform</a></li>
+      <li><a href="#section-6">Monitoring</a></li>
+      <li><a href="#section-7">Source Map</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== SUB-NAV ===== -->
+<div class="sub-nav" aria-label="Document navigation">
+  <div class="sub-nav__inner">
+    <span class="sub-nav__title">Data Architecture</span>
+    <div class="sub-nav__meta">
+      <span class="sub-nav__version">v2.0</span>
+      <span class="sub-nav__date">2026-06-12</span>
+    </div>
+  </div>
+</div>
+
+<!-- Document Shell -->
+<div class="doc-shell">
+
+  <!-- Sidebar TOC -->
+  <aside class="toc-sidebar" aria-label="Table of contents">
+    <div class="toc-header">Mục lục</div>
+    <ul class="toc-list">
+      <li><a href="#section-1">1. Tổng quan kiến trúc</a></li>
+      <ul class="toc-sub">
+        <li><a href="#section-1">1.1 Nguyên tắc thiết kế</a></li>
+        <li><a href="#section-1">1.2 Kiến trúc tổng thể</a></li>
+        <li><a href="#section-1-3">1.3 Tại sao Dual-Database?</a></li>
+      </ul>
+      <li class="toc-divider" aria-hidden="true"></li>
+      <li><a href="#section-2">2. Cơ chế đồng bộ</a></li>
+      <ul class="toc-sub">
+        <li><a href="#section-2">2.1 Tổng quan so sánh</a></li>
+        <li><a href="#section-2">2.2 ETL (Airbyte)</a></li>
+        <li><a href="#section-2">2.3 Kafka Realtime</a></li>
+        <li><a href="#section-2">2.4 API Pull</a></li>
+        <li><a href="#section-2">2.5 API Gateway</a></li>
+      </ul>
+      <li class="toc-divider" aria-hidden="true"></li>
+      <li><a href="#section-3">3. Chuẩn hoá dữ liệu</a></li>
+      <li><a href="#section-4">4. Data Layer Design</a></li>
+      <ul class="toc-sub">
+        <li><a href="#section-4">4.0 DB Responsibility Split</a></li>
+        <li><a href="#section-4">4.1 PostgreSQL (OLTP)</a></li>
+        <li><a href="#section-4">4.2 ClickHouse (OLAP)</a></li>
+      </ul>
+      <li class="toc-divider" aria-hidden="true"></li>
+      <li><a href="#section-5">5. Transform Jobs &amp; Sync</a></li>
+      <li><a href="#section-6">6. Monitoring</a></li>
+      <li><a href="#section-7">7. Source Map</a></li>
+      <li><a href="#section-8">8. Checklist</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-main">
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__eyebrow">Technical Document</div>
+    <h1 class="hero__title">Data Architecture<br>&amp; Ingestion Design</h1>
+    <p class="hero__subtitle">Kiến trúc dual-database — PostgreSQL làm operational brain (OLTP), ClickHouse làm analytical engine (OLAP). Hệ thống hoá 4 cơ chế đồng bộ và sync pattern giữa 2 database.</p>
+    <div class="hero__meta">
+      <span class="hero__meta-item"><strong>Version</strong> 2.0</span>
+      <span class="hero__meta-item"><strong>Ngày</strong> 2026-06-12</span>
+      <span class="hero__meta-item"><strong>OLTP</strong> PostgreSQL</span>
+      <span class="hero__meta-item"><strong>OLAP</strong> ClickHouse</span>
+      <span class="hero__meta-item"><strong>Streaming</strong> Kafka</span>
+      <span class="hero__meta-item"><strong>ETL</strong> Airbyte</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 1: TỔNG QUAN ===== -->
+<section class="section-parchment" id="section-1">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 01</span>
+      <h2 class="section-title">Tổng quan kiến trúc</h2>
+      <p class="section-lead">Nguyên tắc thiết kế dual-database và kiến trúc tổng thể của CDP TheAdvance.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">1.1. Nguyên tắc thiết kế</h3>
+      <div class="principles-grid">
+        <div class="principle-card">
+          <div class="principle-card__num">01</div>
+          <div class="principle-card__title">Dual-database: PG + ClickHouse</div>
+          <p class="principle-card__body">PostgreSQL cho operational data (ACID, point lookup, updates). ClickHouse cho analytics (columnar scan, bulk insert, fast aggregation). Mỗi database làm đúng thế mạnh.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">02</div>
+          <div class="principle-card__title">PostgreSQL là source of truth</div>
+          <p class="principle-card__body">Customer profile, lead state, campaign state, consent sống ở PG. ClickHouse nhận bản replicate để phục vụ analytics, không là nơi ghi gốc.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">03</div>
+          <div class="principle-card__title">Raw trước, Transform sau</div>
+          <p class="principle-card__body">Luôn lưu data thô gốc trước (ClickHouse Bronze layer), rồi mới transform/enrich. Không mất data gốc.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">04</div>
+          <div class="principle-card__title">Schema-on-write</div>
+          <p class="principle-card__body">Data ghi vào cả PG và ClickHouse phải đúng schema, validate trước khi insert. Không schema-on-read.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">05</div>
+          <div class="principle-card__title">Idempotent ingestion</div>
+          <p class="principle-card__body">Mọi cơ chế đều có thể retry mà không tạo duplicate. ReplacingMergeTree ở CH, UPSERT ở PG.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">06</div>
+          <div class="principle-card__title">Lineage tracking</div>
+          <p class="principle-card__body">Mỗi record biết mình đến từ đâu, qua cơ chế nào, lúc nào. Trace được từ Gold về Bronze.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">07</div>
+          <div class="principle-card__title">Sync unidirectional: PG → CH</div>
+          <p class="principle-card__body">Master data chảy 1 chiều từ PG sang CH qua CDC hoặc scheduled sync. ClickHouse không ghi ngược về PG — chỉ batch jobs đọc CH rồi write kết quả vào PG.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">1.2. Kiến trúc tổng thể</h3>
+      <div class="ascii-block">
+        <pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                          DATA SOURCES                                   │
+│                                                                         │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐         │
+│  │   POS   │ │   CRM   │ │   ERP   │ │ Website │ │  Zalo   │ ...     │
+│  │ ND/Zema │ │  3 BU   │ │  Ocany  │ │  3 BU   │ │  OA     │         │
+│  └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘         │
+│       │           │           │           │           │               │
+└───────┼───────────┼───────────┼───────────┼───────────┼───────────────┘
+        │           │           │           │           │
+   ┌────┴────┐ ┌────┴────┐ ┌───┴────┐ ┌────┴────┐ ┌───┴─────┐
+   │ Cơ chế 1│ │ Cơ chế 1│ │Cơ chế 3│ │ Cơ chế 2│ │ Cơ chế 4│
+   │  ETL    │ │  ETL    │ │API Pull│ │  Kafka  │ │ API GW  │
+   │ Airbyte │ │ Airbyte │ │ Worker │ │Realtime │ │  Write  │
+   └────┬────┘ └────┬────┘ └───┬────┘ └────┬────┘ └───┬─────┘
+        │           │          │            │          │
+        ▼           ▼          ▼            ▼          ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                                                                         │
+│                 ClickHouse — Analytical Engine (OLAP)                   │
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                    Layer 1: RAW (Bronze)                        │   │
+│  │  raw_pos_transactions  raw_crm_contacts  raw_web_events  ...   │   │
+│  └────────────────────────────┬────────────────────────────────────┘   │
+│                               │  Transform Jobs (dbt / ClickHouse MVs) │
+│  ┌────────────────────────────▼────────────────────────────────────┐   │
+│  │                    Layer 2: CLEANED (Silver)                    │   │
+│  │  transactions  events  ad_performance  customers_replica  ...  │   │
+│  └────────────────────────────┬────────────────────────────────────┘   │
+│                               │  Transform Jobs (dbt / ClickHouse MVs) │
+│  ┌────────────────────────────▼────────────────────────────────────┐   │
+│  │                    Layer 3: BUSINESS (Gold)                     │   │
+│  │  unified_customers_mv  customer_scores  rfm  daily_metrics     │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+└──────────────────────────────┬──────────────────────────────────────────┘
+                               │
+                          CDC / Sync
+                        (PG → CH: 1 chiều)
+                               │
+┌──────────────────────────────┴──────────────────────────────────────────┐
+│                                                                         │
+│                 PostgreSQL — Operational Brain (OLTP)                   │
+│                                                                         │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │  Customer Master    │  Operational State     │  System Config    │  │
+│  │                     │                        │                   │  │
+│  │  • customers        │  • leads               │  • users          │  │
+│  │  • identity_graph   │  • campaigns           │  • roles          │  │
+│  │  • customer_bu_     │  • campaign_members    │  • permissions    │  │
+│  │    profiles         │  • workflows           │  • api_keys       │  │
+│  │  • customer_scores  │  • workflow_instances  │  • scoring_config │  │
+│  │    (latest)         │  • consents            │  • segment_defs   │  │
+│  │  • customer_tags    │  • appointments        │  • bu_config      │  │
+│  │  • customer_consents│  • treatments          │  • branches       │  │
+│  │                     │  • treatment_sessions  │  • staff          │  │
+│  │                     │  • dealers             │  • audit_log      │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘</code></pre>
+      </div>
+
+      <div class="layer-stack">
+        <div class="layer layer--gold">
+          <span class="layer__badge">Gold</span>
+          <div><div class="layer__title">Layer 3: Business Analytics (ClickHouse)</div></div>
+          <div class="layer__desc">unified_customers_mv · customer_scores · rfm · daily_metrics</div>
+        </div>
+        <div class="layer layer--silver">
+          <span class="layer__badge">Silver</span>
+          <div><div class="layer__title">Layer 2: Cleaned &amp; Standardized (ClickHouse)</div></div>
+          <div class="layer__desc">transactions · events · ad_performance · customers_replica</div>
+        </div>
+        <div class="layer layer--bronze">
+          <span class="layer__badge">Bronze</span>
+          <div><div class="layer__title">Layer 1: Raw Data (ClickHouse)</div></div>
+          <div class="layer__desc">raw_pos_transactions · raw_crm_contacts · raw_web_events</div>
+        </div>
+        <div class="layer layer--pg">
+          <span class="layer__badge">PG</span>
+          <div><div class="layer__title">Operational Brain (PostgreSQL)</div></div>
+          <div class="layer__desc">customers · leads · consents · campaigns · scoring_configs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection" id="section-1-3">
+      <h3 class="subsection-title">1.3. Tại sao Dual-Database?</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Vấn đề</th>
+              <th>ClickHouse only</th>
+              <th>PostgreSQL + ClickHouse</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Customer 360 lookup</strong> (<code>WHERE id = X</code>)</td>
+              <td>Columnar scan, chậm cho single-row</td>
+              <td>PG B-tree index, &lt; 5ms</td>
+            </tr>
+            <tr>
+              <td><strong>Update lead status</strong></td>
+              <td>ReplacingMergeTree + FINAL, không atomic</td>
+              <td><code>UPDATE ... SET status = 'contacted'</code>, ACID</td>
+            </tr>
+            <tr>
+              <td><strong>Consent on/off</strong></td>
+              <td>Insert new row, merge later, race condition</td>
+              <td><code>UPDATE</code> atomic, consistent ngay</td>
+            </tr>
+            <tr>
+              <td><strong>Campaign state machine</strong></td>
+              <td>Không có transaction, dễ inconsistent</td>
+              <td>Transaction: insert campaign + members + update segment</td>
+            </tr>
+            <tr>
+              <td><strong>Identity merge/unmerge</strong></td>
+              <td>Không rollback được</td>
+              <td>Transaction: merge 2 profiles atomic</td>
+            </tr>
+            <tr>
+              <td><strong>Small concurrent writes</strong> (API identify, webhook)</td>
+              <td>"Too many parts" error khi insert từng row</td>
+              <td>PG handle hàng nghìn small writes/giây</td>
+            </tr>
+            <tr>
+              <td><strong>Application config</strong> (users, roles, scoring rules)</td>
+              <td>Overkill, không cần columnar</td>
+              <td>PG relational model, JOIN, foreign key</td>
+            </tr>
+            <tr>
+              <td><strong>Billion events analytics</strong></td>
+              <td>Columnar scan cực nhanh</td>
+              <td>PG chết ở scale này</td>
+            </tr>
+            <tr>
+              <td><strong>Dashboard aggregation</strong></td>
+              <td>SUM/AVG/COUNT trên 100M rows &lt; 1 giây</td>
+              <td>PG timeout</td>
+            </tr>
+            <tr>
+              <td><strong>Time-series score history</strong></td>
+              <td>MergeTree partition by month, TTL tự xóa</td>
+              <td>PG partition phức tạp hơn</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2: BỐN CƠ CHẾ ===== -->
+<section class="section-dark" id="section-2">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 02</span>
+      <h2 class="section-title">Bốn cơ chế đồng bộ dữ liệu</h2>
+      <p class="section-lead">So sánh và chi tiết từng cơ chế ingestion về ClickHouse.</p>
+    </div>
+
+    <!-- 2.1 Tổng quan so sánh -->
+    <div class="subsection">
+      <h3 class="subsection-title">2.1. Tổng quan so sánh</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Cơ chế 1: ETL (Airbyte)</th>
+              <th>Cơ chế 2: Kafka Realtime</th>
+              <th>Cơ chế 3: API Pull</th>
+              <th>Cơ chế 4: API Gateway Write</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Mô hình</strong></td>
+              <td>Batch pull từ nguồn → transform → load</td>
+              <td>Stream event realtime</td>
+              <td>Scheduled pull từ API</td>
+              <td>Push trực tiếp vào CDP</td>
+            </tr>
+            <tr>
+              <td><strong>Latency</strong></td>
+              <td><span class="badge badge--orange">Phút → giờ</span></td>
+              <td><span class="badge badge--green">Giây</span></td>
+              <td><span class="badge badge--orange">Phút → giờ</span></td>
+              <td><span class="badge badge--green">Giây (real-time)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Hướng</strong></td>
+              <td>Source → CDP</td>
+              <td>Source → Kafka → CDP</td>
+              <td>CDP pull ← Source API</td>
+              <td>External → CDP API → CH</td>
+            </tr>
+            <tr>
+              <td><strong>Phù hợp cho</strong></td>
+              <td>Database-to-database, bulk data, data lịch sử</td>
+              <td>User events, tracking, real-time updates</td>
+              <td>API có sẵn nhưng không push được, third-party</td>
+              <td>Website/app tracking, webhook receiver, form submit</td>
+            </tr>
+            <tr>
+              <td><strong>Nguồn tiêu biểu</strong></td>
+              <td>POS DB, CRM DB, ERP DB</td>
+              <td>Website events, app events, POS realtime</td>
+              <td>Facebook Ads API, Google Ads API, Zalo OA API</td>
+              <td>JS SDK, Mobile SDK, Webhook, Partner API</td>
+            </tr>
+            <tr>
+              <td><strong>Volume</strong></td>
+              <td>Cao (bulk)</td>
+              <td>Rất cao (streaming)</td>
+              <td>Trung bình (API rate limit)</td>
+              <td>Trung bình → cao</td>
+            </tr>
+            <tr>
+              <td><strong>Complexity</strong></td>
+              <td><span class="badge badge--green">Thấp (Airbyte config)</span></td>
+              <td><span class="badge badge--red">Cao (Kafka ops)</span></td>
+              <td><span class="badge badge--orange">Trung bình (code workers)</span></td>
+              <td><span class="badge badge--orange">Trung bình (API design)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2.2 Cơ chế 1 -->
+    <div class="subsection">
+      <h3 class="subsection-title">2.2. Cơ chế 1: ETL via Airbyte</h3>
+      <div class="callout">
+        <p><strong>Mục đích:</strong> Đồng bộ batch data từ database/file của các hệ thống nguồn về ClickHouse.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">Flow chi tiết</h4>
+      <div class="ascii-block">
+        <pre><code>┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  Source DB   │     │   Airbyte    │     │  ClickHouse  │     │  Transform   │
+│  (POS, CRM,  │────▶│   Extract    │────▶│  raw_* table │────▶│  Job (dbt/   │
+│   ERP, CSV)  │     │  &amp; Load      │     │  (Bronze)    │     │  MV/cron)    │
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Nguồn áp dụng</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nguồn</th>
+              <th>BU</th>
+              <th>Data</th>
+              <th>Tần suất sync</th>
+              <th>Sync mode</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>POS Database (MySQL/PostgreSQL)</td>
+              <td>ND, Zema</td>
+              <td>Khách hàng, giao dịch, dịch vụ, liệu trình, lịch hẹn</td>
+              <td><code>*/15 * * * *</code></td>
+              <td>Incremental (CDC/cursor)</td>
+            </tr>
+            <tr>
+              <td>CRM Database</td>
+              <td>Cả 3</td>
+              <td>Lead, contact, deal, activity</td>
+              <td>Mỗi 15 phút</td>
+              <td>Incremental</td>
+            </tr>
+            <tr>
+              <td>ERP Database</td>
+              <td>Ocany</td>
+              <td>Đơn hàng, sản phẩm, kho, công nợ</td>
+              <td>Mỗi giờ</td>
+              <td>Incremental</td>
+            </tr>
+            <tr>
+              <td>DMS Database</td>
+              <td>Ocany</td>
+              <td>Đại lý, sell-out, tồn kho NPP</td>
+              <td>Mỗi giờ</td>
+              <td>Incremental</td>
+            </tr>
+            <tr>
+              <td>Excel/CSV (manual upload)</td>
+              <td>Cả 3</td>
+              <td>Data lịch sử, import 1 lần</td>
+              <td>On-demand</td>
+              <td>Full refresh</td>
+            </tr>
+            <tr>
+              <td>Google Sheets</td>
+              <td>Cả 3</td>
+              <td>Mapping tables, config</td>
+              <td>Daily</td>
+              <td>Full refresh</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="subsection-title-sm">Airbyte configuration</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">yaml</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="yaml-cm"># Ví dụ: Sync POS Ngọc Dung</span>
+<span class="yaml-key">source</span>:
+  <span class="yaml-key">type</span>: <span class="yaml-val">mysql</span>
+  <span class="yaml-key">host</span>: <span class="yaml-val">pos-ngocdung-db.internal</span>
+  <span class="yaml-key">database</span>: <span class="yaml-val">pos_production</span>
+  <span class="yaml-key">tables</span>:
+    - <span class="yaml-val">customers</span>        <span class="yaml-cm"># Khách hàng</span>
+    - <span class="yaml-val">transactions</span>     <span class="yaml-cm"># Giao dịch</span>
+    - <span class="yaml-val">transaction_items</span> <span class="yaml-cm"># Chi tiết giao dịch</span>
+    - <span class="yaml-val">services</span>         <span class="yaml-cm"># Danh mục dịch vụ</span>
+    - <span class="yaml-val">appointments</span>     <span class="yaml-cm"># Lịch hẹn</span>
+    - <span class="yaml-val">treatments</span>       <span class="yaml-cm"># Liệu trình</span>
+    - <span class="yaml-val">treatment_sessions</span> <span class="yaml-cm"># Buổi liệu trình</span>
+
+<span class="yaml-key">destination</span>:
+  <span class="yaml-key">type</span>: <span class="yaml-val">clickhouse</span>
+  <span class="yaml-key">host</span>: <span class="yaml-val">clickhouse-cdp.internal</span>
+  <span class="yaml-key">database</span>: <span class="yaml-val">cdp_raw</span>
+
+<span class="yaml-key">sync</span>:
+  <span class="yaml-key">mode</span>: <span class="yaml-val">incremental_append_dedup</span>
+  <span class="yaml-key">cursor_field</span>: <span class="yaml-val">updated_at</span>
+  <span class="yaml-key">primary_key</span>: <span class="yaml-val">id</span>
+  <span class="yaml-key">frequency</span>: <span class="yaml-val">"*/15 * * * *"</span>  <span class="yaml-cm"># Mỗi 15 phút</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Raw tables tạo bởi Airbyte</h4>
+      <p>Naming convention: <code>raw_{source}_{bu}_{entity}</code></p>
+      <div class="file-tree">
+        <div class="file-tree-header">
+          <span>cdp_raw</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>cdp_raw/
+├── raw_pos_ngocdung_customers
+├── raw_pos_ngocdung_transactions
+├── raw_pos_ngocdung_transaction_items
+├── raw_pos_ngocdung_appointments
+├── raw_pos_ngocdung_treatments
+├── raw_pos_ngocdung_treatment_sessions
+├── raw_pos_zema_customers
+├── raw_pos_zema_transactions
+├── raw_pos_zema_...
+├── raw_crm_ngocdung_contacts
+├── raw_crm_ngocdung_leads
+├── raw_crm_ngocdung_deals
+├── raw_crm_zema_...
+├── raw_crm_ocany_...
+├── raw_erp_ocany_orders
+├── raw_erp_ocany_order_items
+├── raw_erp_ocany_products
+├── raw_erp_ocany_inventory
+├── raw_dms_ocany_dealers
+├── raw_dms_ocany_dealer_orders
+└── raw_csv_import_{bu}_{entity}_{date}</pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Metadata columns (Airbyte tự thêm)</h4>
+      <p>Mỗi raw table đều có các cột metadata:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Column</th><th>Type</th><th>Mô tả</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>_airbyte_raw_id</code></td><td>String</td><td>UUID unique cho mỗi record ingested</td></tr>
+            <tr><td><code>_airbyte_extracted_at</code></td><td>DateTime64</td><td>Thời điểm Airbyte extract từ nguồn</td></tr>
+            <tr><td><code>_airbyte_loaded_at</code></td><td>DateTime64</td><td>Thời điểm load vào ClickHouse</td></tr>
+            <tr><td><code>_airbyte_source</code></td><td>String</td><td>Tên connection (VD: <code>pos_ngocdung</code>)</td></tr>
+            <tr><td><code>_airbyte_generation_id</code></td><td>UInt64</td><td>Sync generation (để track full refresh vs incremental)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="subsection-title-sm">Xử lý dedup</h4>
+      <p>Airbyte chạy incremental có thể tạo duplicate (cùng record extract nhiều lần). Xử lý bằng <strong>ReplacingMergeTree</strong>:</p>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">cdp_raw.raw_pos_ngocdung_customers</span>
+<span class="pn">(</span>
+    <span class="id">id</span>                    <span class="ty">UInt64</span><span class="pn">,</span>
+    <span class="id">name</span>                  <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">phone</span>                 <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">email</span>                 <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">gender</span>                <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">dob</span>                   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Date</span><span class="pn">),</span>
+    <span class="id">branch_id</span>             <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt32</span><span class="pn">),</span>
+    <span class="id">created_at</span>            <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">updated_at</span>            <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="cm">-- Airbyte metadata</span>
+    <span class="id">_airbyte_raw_id</span>       <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">_airbyte_extracted_at</span> <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">_airbyte_loaded_at</span>    <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">_airbyte_source</span>       <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">_airbyte_loaded_at</span><span class="pn">)</span>
+<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">id</span><span class="pn">)</span>
+<span class="kw">PARTITION BY</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">created_at</span><span class="pn">);</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Monitoring &amp; alerting</h4>
+      <ul class="checklist">
+        <li>Airbyte dashboard: theo dõi status mỗi connection</li>
+        <li>Alert khi sync fail > 2 lần liên tiếp</li>
+        <li>Alert khi sync chậm hơn SLA (VD: POS sync > 30 phút)</li>
+        <li>Alert khi số record sync = 0 (nguồn có thể die)</li>
+        <li>Daily report: tổng record synced per source</li>
+      </ul>
+    </div>
+
+    <!-- 2.3 Cơ chế 2 -->
+    <div class="subsection">
+      <h3 class="subsection-title">2.3. Cơ chế 2: Kafka Realtime Streaming</h3>
+      <div class="callout">
+        <p><strong>Mục đích:</strong> Nhận event realtime (user behavior, system events) với latency &lt; 5 giây.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">Flow chi tiết</h4>
+      <div class="ascii-block">
+        <pre><code>┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Source   │    │  Kafka   │    │  Kafka   │    │ClickHouse│    │Transform │
+│ (Website, │───▶│ Producer │───▶│  Topic   │───▶│ Kafka    │───▶│  Job     │
+│  App,POS) │    │          │    │          │    │ Engine   │    │          │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘
+                                     │
+                                     ├──▶ Topic: cdp.events.web
+                                     ├──▶ Topic: cdp.events.app
+                                     ├──▶ Topic: cdp.events.pos
+                                     ├──▶ Topic: cdp.events.crm
+                                     └──▶ Topic: cdp.events.system</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Kafka Topics</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Topic</th><th>Producer</th><th>Data</th><th>Volume ước tính</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>cdp.events.web.{bu}</code></td>
+              <td>JS SDK trên website</td>
+              <td>Pageview, click, form_submit, scroll, session_start/end</td>
+              <td>50k-200k events/ngày/BU</td>
+            </tr>
+            <tr>
+              <td><code>cdp.events.app.{bu}</code></td>
+              <td>Mobile SDK</td>
+              <td>Screen_view, button_click, push_open, app_open/close</td>
+              <td>20k-100k events/ngày/BU</td>
+            </tr>
+            <tr>
+              <td><code>cdp.events.pos.{bu}</code></td>
+              <td>POS webhook/connector</td>
+              <td>Transaction_created, appointment_booked, treatment_completed</td>
+              <td>5k-20k events/ngày/BU</td>
+            </tr>
+            <tr>
+              <td><code>cdp.events.crm.{bu}</code></td>
+              <td>CRM webhook</td>
+              <td>Lead_created, lead_updated, deal_won, activity_logged</td>
+              <td>2k-10k events/ngày/BU</td>
+            </tr>
+            <tr>
+              <td><code>cdp.events.campaign</code></td>
+              <td>CDP Campaign module</td>
+              <td>Message_sent, message_delivered, message_opened, message_clicked</td>
+              <td>Phụ thuộc campaign</td>
+            </tr>
+            <tr>
+              <td><code>cdp.events.system</code></td>
+              <td>CDP internal</td>
+              <td>Score_updated, segment_changed, tier_changed, health_changed</td>
+              <td>Internal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="subsection-title-sm">Event schema chuẩn (Unified Event Format)</h4>
+      <p>Mọi event từ mọi nguồn, trước khi vào Kafka, <strong>PHẢI</strong> conform theo schema này:</p>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">json</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="pn">{</span>
+  <span class="json-key">"event_id"</span>: <span class="json-str">"uuid-v4"</span>,
+  <span class="json-key">"event_type"</span>: <span class="json-str">"page_view"</span>,
+  <span class="json-key">"event_category"</span>: <span class="json-str">"web"</span>,
+  <span class="json-key">"timestamp"</span>: <span class="json-str">"2026-06-11T14:30:00.000Z"</span>,
+  <span class="json-key">"source"</span>: <span class="pn">{</span>
+    <span class="json-key">"system"</span>: <span class="json-str">"website"</span>,
+    <span class="json-key">"bu"</span>: <span class="json-str">"ngocdung"</span>,
+    <span class="json-key">"connector"</span>: <span class="json-str">"js_sdk"</span>
+  <span class="pn">},</span>
+  <span class="json-key">"actor"</span>: <span class="pn">{</span>
+    <span class="json-key">"customer_id"</span>: <span class="json-null">null</span>,
+    <span class="json-key">"anonymous_id"</span>: <span class="json-str">"anon_abc123"</span>,
+    <span class="json-key">"session_id"</span>: <span class="json-str">"sess_xyz789"</span>,
+    <span class="json-key">"device_id"</span>: <span class="json-str">"dev_456"</span>
+  <span class="pn">},</span>
+  <span class="json-key">"context"</span>: <span class="pn">{</span>
+    <span class="json-key">"ip"</span>: <span class="json-str">"1.2.3.4"</span>,
+    <span class="json-key">"user_agent"</span>: <span class="json-str">"Mozilla/5.0..."</span>,
+    <span class="json-key">"url"</span>: <span class="json-str">"https://ngocdung.com/dich-vu/tre-hoa-da"</span>,
+    <span class="json-key">"referrer"</span>: <span class="json-str">"https://google.com"</span>,
+    <span class="json-key">"utm_source"</span>: <span class="json-str">"google"</span>,
+    <span class="json-key">"utm_medium"</span>: <span class="json-str">"cpc"</span>,
+    <span class="json-key">"utm_campaign"</span>: <span class="json-str">"summer_2026"</span>
+  <span class="pn">},</span>
+  <span class="json-key">"properties"</span>: <span class="pn">{</span>
+    <span class="json-key">"page_title"</span>: <span class="json-str">"Trẻ hoá da - Ngọc Dung"</span>,
+    <span class="json-key">"page_category"</span>: <span class="json-str">"service"</span>,
+    <span class="json-key">"service_id"</span>: <span class="json-str">"svc_123"</span>
+  <span class="pn">},</span>
+  <span class="json-key">"metadata"</span>: <span class="pn">{</span>
+    <span class="json-key">"sdk_version"</span>: <span class="json-str">"1.2.0"</span>,
+    <span class="json-key">"ingested_at"</span>: <span class="json-null">null</span>
+  <span class="pn">}</span>
+<span class="pn">}</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">ClickHouse Kafka Engine</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- Kafka consumer table</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_raw.kafka_events</span>
+<span class="pn">(</span>
+    <span class="id">event_id</span>         <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">event_type</span>       <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">event_category</span>   <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">timestamp</span>        <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">source_system</span>    <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">source_bu</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">source_connector</span> <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">actor_customer_id</span>    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt64</span><span class="pn">),</span>
+    <span class="id">actor_anonymous_id</span>   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">actor_session_id</span>     <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">actor_device_id</span>      <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_ip</span>       <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_url</span>      <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_referrer</span> <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_utm_source</span>   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_utm_medium</span>   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_utm_campaign</span> <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">properties</span>       <span class="ty">String</span><span class="pn">,</span>  <span class="cm">-- JSON string cho flexible properties</span>
+    <span class="id">metadata_sdk_version</span> <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">Kafka</span><span class="pn">()</span>
+<span class="kw">SETTINGS</span>
+    <span class="id">kafka_broker_list</span> <span class="op">=</span> <span class="str">'kafka-1:9092,kafka-2:9092,kafka-3:9092'</span>,
+    <span class="id">kafka_topic_list</span> <span class="op">=</span> <span class="str">'cdp.events.web.ngocdung,cdp.events.web.zema,cdp.events.web.ocany,cdp.events.app.ngocdung,cdp.events.app.zema,cdp.events.pos.ngocdung,cdp.events.pos.zema,cdp.events.pos.ocany,cdp.events.crm.ngocdung,cdp.events.crm.zema,cdp.events.crm.ocany,cdp.events.campaign,cdp.events.system'</span>,
+    <span class="id">kafka_group_name</span> <span class="op">=</span> <span class="str">'clickhouse_cdp_consumer'</span>,
+    <span class="id">kafka_format</span> <span class="op">=</span> <span class="str">'JSONEachRow'</span>,
+    <span class="id">kafka_num_consumers</span> <span class="op">=</span> <span class="nu">4</span><span class="pn">;</span>
+
+<span class="cm">-- Materialized View để persist vào storage</span>
+<span class="kw2">CREATE MATERIALIZED VIEW</span> <span class="id">cdp_raw.mv_events_raw</span>
+<span class="kw">TO</span> <span class="id">cdp_raw.raw_events</span>
+<span class="kw">AS SELECT</span>
+    <span class="id">event_id</span><span class="pn">,</span> <span class="id">event_type</span><span class="pn">,</span> <span class="id">event_category</span><span class="pn">,</span> <span class="id">timestamp</span><span class="pn">,</span>
+    <span class="id">source_system</span><span class="pn">,</span> <span class="id">source_bu</span><span class="pn">,</span> <span class="id">source_connector</span><span class="pn">,</span>
+    <span class="id">actor_customer_id</span><span class="pn">,</span> <span class="id">actor_anonymous_id</span><span class="pn">,</span> <span class="id">actor_session_id</span><span class="pn">,</span> <span class="id">actor_device_id</span><span class="pn">,</span>
+    <span class="id">context_ip</span><span class="pn">,</span> <span class="id">context_url</span><span class="pn">,</span> <span class="id">context_referrer</span><span class="pn">,</span>
+    <span class="id">context_utm_source</span><span class="pn">,</span> <span class="id">context_utm_medium</span><span class="pn">,</span> <span class="id">context_utm_campaign</span><span class="pn">,</span>
+    <span class="id">properties</span><span class="pn">,</span> <span class="id">metadata_sdk_version</span><span class="pn">,</span>
+    <span class="fn">now64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">ingested_at</span>
+<span class="kw">FROM</span> <span class="id">cdp_raw.kafka_events</span><span class="pn">;</span>
+
+<span class="cm">-- Storage table</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_raw.raw_events</span>
+<span class="pn">(</span>
+    <span class="id">event_id</span>         <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">event_type</span>       <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">event_category</span>   <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">timestamp</span>        <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">source_system</span>    <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">source_bu</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">source_connector</span> <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">actor_customer_id</span>    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt64</span><span class="pn">),</span>
+    <span class="id">actor_anonymous_id</span>   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">actor_session_id</span>     <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">actor_device_id</span>      <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_ip</span>       <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_url</span>      <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_referrer</span> <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_utm_source</span>   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_utm_medium</span>   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">context_utm_campaign</span> <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">properties</span>       <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">metadata_sdk_version</span> <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">ingested_at</span>      <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">MergeTree</span><span class="pn">()</span>
+<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">source_bu</span><span class="pn">,</span> <span class="id">event_category</span><span class="pn">,</span> <span class="id">event_type</span><span class="pn">,</span> <span class="id">timestamp</span><span class="pn">,</span> <span class="id">event_id</span><span class="pn">)</span>
+<span class="kw">PARTITION BY</span> <span class="pn">(</span><span class="id">source_bu</span><span class="pn">,</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">timestamp</span><span class="pn">))</span>
+<span class="kw">TTL</span> <span class="id">timestamp</span> <span class="op">+</span> <span class="kw">INTERVAL</span> <span class="nu">24</span> <span class="kw">MONTH</span> <span class="kw">DELETE</span>
+<span class="kw">SETTINGS</span> <span class="id">index_granularity</span> <span class="op">=</span> <span class="nu">8192</span><span class="pn">;</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Dead Letter Queue</h4>
+      <p>Event không parse được hoặc không đúng schema → đẩy vào DLQ topic:</p>
+      <div class="ascii-block">
+        <pre><code>cdp.events.dlq   ←── Events bị reject (schema invalid, parse error)</code></pre>
+      </div>
+      <p>Consumer riêng ghi vào <code>cdp_raw.raw_events_dlq</code>. Admin dashboard: xem DLQ count, lý do reject, retry manual.</p>
+    </div>
+
+    <!-- 2.4 Cơ chế 3 -->
+    <div class="subsection">
+      <h3 class="subsection-title">2.4. Cơ chế 3: API Pull Workers</h3>
+      <div class="callout">
+        <p><strong>Mục đích:</strong> Kéo data từ third-party API có sẵn (Facebook, Google, Zalo...) mà không hỗ trợ push/webhook hoặc cần pull chủ động.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">Flow chi tiết</h4>
+      <div class="ascii-block">
+        <pre><code>┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  Third-party │     │  API Pull    │     │  Validate &amp;  │     │  ClickHouse  │
+│     API      │◀────│   Worker     │────▶│  Normalize   │────▶│  raw_* table │
+│  (FB, GG,    │     │  (scheduled) │     │              │     │  (Bronze)    │
+│   Zalo...)   │     └──────────────┘     └──────────────┘     └──────────────┘
+└──────────────┘            ▲
+                            │
+                     ┌──────┴──────┐
+                     │  Scheduler  │
+                     │  (Cron/     │
+                     │   Airflow)  │
+                     └─────────────┘</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Nguồn áp dụng</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>API Source</th><th>Data cần pull</th><th>Tần suất</th><th>Rate limit</th><th>Auth</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Facebook Marketing API</strong></td>
+              <td>Campaign stats, ad performance, lead forms, custom audience sync status</td>
+              <td>Mỗi 6 giờ</td>
+              <td>200 calls/hour</td>
+              <td>OAuth + App Token</td>
+            </tr>
+            <tr>
+              <td><strong>Google Ads API</strong></td>
+              <td>Campaign stats, keyword performance, conversion data</td>
+              <td>Daily</td>
+              <td>15k requests/day</td>
+              <td>OAuth</td>
+            </tr>
+            <tr>
+              <td><strong>Google Analytics 4</strong></td>
+              <td>Session data, user behavior aggregate, conversion paths</td>
+              <td>Daily</td>
+              <td>Quota-based</td>
+              <td>OAuth</td>
+            </tr>
+            <tr>
+              <td><strong>Zalo OA API</strong></td>
+              <td>Follower list, message history, interaction stats</td>
+              <td>Mỗi giờ</td>
+              <td>500 calls/min</td>
+              <td>OA Access Token</td>
+            </tr>
+            <tr>
+              <td><strong>Shopee Open API</strong></td>
+              <td>Orders, products, reviews (Ocany)</td>
+              <td>Mỗi 30 phút</td>
+              <td>Rate limited</td>
+              <td>Partner key</td>
+            </tr>
+            <tr>
+              <td><strong>Lazada Open API</strong></td>
+              <td>Orders, products, reviews (Ocany)</td>
+              <td>Mỗi 30 phút</td>
+              <td>Rate limited</td>
+              <td>App key</td>
+            </tr>
+            <tr>
+              <td><strong>TikTok Shop API</strong></td>
+              <td>Orders, products (Ocany)</td>
+              <td>Mỗi giờ</td>
+              <td>Rate limited</td>
+              <td>App key</td>
+            </tr>
+            <tr>
+              <td><strong>SMS Gateway API</strong></td>
+              <td>Delivery reports, balance</td>
+              <td>Mỗi 15 phút</td>
+              <td>Varies</td>
+              <td>API key</td>
+            </tr>
+            <tr>
+              <td><strong>Email Service API</strong></td>
+              <td>Open/click/bounce events, stats</td>
+              <td>Mỗi giờ</td>
+              <td>Varies</td>
+              <td>API key</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="subsection-title-sm">Worker design</h4>
+      <p>Mỗi API source có 1 worker riêng, chạy dưới dạng scheduled job:</p>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">python</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="py-cm"># Pseudo-code cho mỗi worker</span>
+<span class="py-kw">class</span> <span class="py-def">APIWorker</span>:
+    <span class="py-kw">def</span> <span class="py-fn">run</span>(<span class="py-kw">self</span>):
+        <span class="py-cm"># 1. Lấy checkpoint (last sync cursor)</span>
+        checkpoint <span class="op">=</span> <span class="py-fn">get_checkpoint</span>(<span class="py-kw">self</span>.source_name)
+
+        <span class="py-cm"># 2. Pull data từ API (pagination)</span>
+        raw_data <span class="op">=</span> <span class="py-kw">self</span>.<span class="py-fn">pull_from_api</span>(since<span class="op">=</span>checkpoint.last_cursor)
+
+        <span class="py-cm"># 3. Validate schema</span>
+        valid, invalid <span class="op">=</span> <span class="py-kw">self</span>.<span class="py-fn">validate</span>(raw_data)
+
+        <span class="py-cm"># 4. Ghi invalid vào DLQ table</span>
+        <span class="py-kw">if</span> invalid:
+            <span class="py-fn">insert_to_dlq</span>(invalid, reason<span class="op">=</span><span class="py-str">"schema_validation_failed"</span>)
+
+        <span class="py-cm"># 5. Ghi valid vào raw table</span>
+        <span class="py-fn">insert_to_clickhouse</span>(
+            table<span class="op">=</span><span class="py-str">f"cdp_raw.raw_api_{self.source_name}_{self.bu}"</span>,
+            data<span class="op">=</span>valid
+        )
+
+        <span class="py-cm"># 6. Cập nhật checkpoint</span>
+        <span class="py-fn">update_checkpoint</span>(<span class="py-kw">self</span>.source_name, new_cursor)
+
+        <span class="py-cm"># 7. Log metrics</span>
+        <span class="py-fn">log_metrics</span>(source<span class="op">=</span><span class="py-kw">self</span>.source_name, pulled<span class="op">=</span><span class="py-fn">len</span>(raw_data),
+                    valid<span class="op">=</span><span class="py-fn">len</span>(valid), invalid<span class="op">=</span><span class="py-fn">len</span>(invalid))</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Raw tables</h4>
+      <div class="file-tree">
+        <div class="file-tree-header">
+          <span>cdp_raw / api sources</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>cdp_raw/
+├── raw_api_facebook_ads_{bu}          # Campaign/ad stats
+├── raw_api_facebook_leads_{bu}        # Lead form submissions
+├── raw_api_google_ads_{bu}            # Campaign stats
+├── raw_api_google_analytics_{bu}      # Session/behavior aggregate
+├── raw_api_zalo_followers_{bu}        # Follower list
+├── raw_api_zalo_messages_{bu}         # Message history
+├── raw_api_shopee_orders_ocany        # Shopee orders
+├── raw_api_lazada_orders_ocany        # Lazada orders
+├── raw_api_tiktok_orders_ocany        # TikTok Shop orders
+├── raw_api_sms_delivery               # SMS delivery reports
+└── raw_api_email_events               # Email open/click/bounce</pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Common metadata columns (mọi raw_api table)</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Column</th><th>Type</th><th>Mô tả</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>_pull_id</code></td><td>String</td><td>UUID của lần pull</td></tr>
+            <tr><td><code>_pulled_at</code></td><td>DateTime64</td><td>Thời điểm pull từ API</td></tr>
+            <tr><td><code>_api_source</code></td><td>LowCardinality(String)</td><td>Tên API source</td></tr>
+            <tr><td><code>_api_endpoint</code></td><td>String</td><td>Endpoint đã gọi</td></tr>
+            <tr><td><code>_api_response_id</code></td><td>Nullable(String)</td><td>ID response từ API (nếu có)</td></tr>
+            <tr><td><code>_bu</code></td><td>LowCardinality(String)</td><td>BU sở hữu data</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="subsection-title-sm">Checkpoint management</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">cdp_system.api_pull_checkpoints</span>
+<span class="pn">(</span>
+    <span class="id">source_name</span>     <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">bu</span>              <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">last_cursor</span>     <span class="ty">String</span><span class="pn">,</span>         <span class="cm">-- cursor/offset/timestamp tuỳ API</span>
+    <span class="id">last_pull_at</span>    <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">records_pulled</span>  <span class="ty">UInt32</span><span class="pn">,</span>
+    <span class="id">status</span>          <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>  <span class="cm">-- success/failed/partial</span>
+    <span class="id">error_message</span>   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">updated_at</span>      <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">updated_at</span><span class="pn">)</span>
+<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">source_name</span><span class="pn">,</span> <span class="id">bu</span><span class="pn">);</span></code></pre>
+      </div>
+    </div>
+
+    <!-- 2.5 Cơ chế 4 -->
+    <div class="subsection">
+      <h3 class="subsection-title">2.5. Cơ chế 4: CDP API Gateway (Direct Write)</h3>
+      <div class="callout">
+        <p><strong>Mục đích:</strong> Nhận data trực tiếp từ bên ngoài qua REST API — website tracking SDK, mobile SDK, webhook từ third-party, partner push.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">Flow chi tiết</h4>
+      <div class="ascii-block">
+        <pre><code>┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  External    │     │  CDP API     │     │   Validate   │     │  ClickHouse  │
+│  (JS SDK,    │────▶│  Gateway     │────▶│  + Enrich    │────▶│  (via Kafka  │
+│   Mobile,    │     │  (REST API)  │     │  + Auth      │     │   or direct) │
+│   Webhook)   │     └──────────────┘     └──────────────┘     └──────────────┘
+└──────────────┘            │
+                            │ Validation fail
+                            ▼
+                     ┌──────────────┐
+                     │  DLQ / Error │
+                     │  Response    │
+                     └──────────────┘</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">API Endpoints</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">http</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="kw">POST</span> /v1/events                    <span class="cm"># Ghi 1 event</span>
+<span class="kw">POST</span> /v1/events/batch              <span class="cm"># Ghi batch events (max 1000)</span>
+<span class="kw">POST</span> /v1/identify                  <span class="cm"># Identify user (link anonymous → known)</span>
+<span class="kw">POST</span> /v1/track                     <span class="cm"># Alias cho /events (compatibility)</span>
+
+<span class="kw">POST</span> /v1/webhooks/zalo             <span class="cm"># Nhận webhook từ Zalo OA</span>
+<span class="kw">POST</span> /v1/webhooks/facebook         <span class="cm"># Nhận webhook từ Facebook</span>
+<span class="kw">POST</span> /v1/webhooks/pos/{bu}         <span class="cm"># Nhận webhook từ POS</span>
+<span class="kw">POST</span> /v1/webhooks/crm/{bu}         <span class="cm"># Nhận webhook từ CRM</span>
+<span class="kw">POST</span> /v1/webhooks/sms-gateway      <span class="cm"># Nhận delivery report từ SMS</span>
+<span class="kw">POST</span> /v1/webhooks/email-service    <span class="cm"># Nhận event từ email service</span>
+
+<span class="kw">POST</span> /v1/import/csv                <span class="cm"># Upload CSV file</span>
+<span class="kw">POST</span> /v1/import/customers          <span class="cm"># Import khách hàng (structured)</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Authentication &amp; Authorization</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">http headers</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm"># Mỗi source được cấp API key riêng</span>
+<span class="kw">Headers:</span>
+  <span class="id">X-CDP-API-Key</span>: <span class="str">cdp_key_ngocdung_website_abc123</span>
+  <span class="id">X-CDP-Source</span>: <span class="str">website</span>
+  <span class="id">X-CDP-BU</span>: <span class="str">ngocdung</span>
+  <span class="id">Content-Type</span>: <span class="str">application/json</span>
+
+<span class="cm"># API key encode thông tin:</span>
+<span class="cm"># - BU nào</span>
+<span class="cm"># - Source type nào (website/app/webhook/partner)</span>
+<span class="cm"># - Permission: write-only events / write customers / full access</span>
+<span class="cm"># - Rate limit tier</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Rate limiting</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Client type</th><th>Rate limit</th><th>Burst</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>JS SDK (website)</td><td>1,000 events/giây per BU</td><td>5,000</td></tr>
+            <tr><td>Mobile SDK</td><td>500 events/giây per BU</td><td>2,000</td></tr>
+            <tr><td>Webhook receiver</td><td>100 requests/giây per source</td><td>500</td></tr>
+            <tr><td>CSV import</td><td>10 requests/phút</td><td>20</td></tr>
+            <tr><td>Batch endpoint</td><td>50 requests/giây</td><td>200</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class="subsection-title-sm">Routing: Kafka vs Direct insert</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Endpoint</th><th>Routing</th><th>Lý do</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>/v1/events</code>, <code>/v1/events/batch</code>, <code>/v1/track</code></td><td><span class="badge badge--blue">Kafka</span></td><td>Volume cao, async OK</td></tr>
+            <tr><td><code>/v1/webhooks/*</code></td><td><span class="badge badge--blue">Kafka</span></td><td>Webhook cần respond nhanh, process async</td></tr>
+            <tr><td><code>/v1/identify</code></td><td><span class="badge badge--orange">Direct + Kafka</span></td><td>Direct insert identity, Kafka cho event log</td></tr>
+            <tr><td><code>/v1/import/csv</code>, <code>/v1/import/customers</code></td><td><span class="badge badge--green">Direct (batch insert)</span></td><td>Cần feedback kết quả, volume thấp</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 3: CHUẨN HOÁ ===== -->
+<section class="section-light" id="section-3">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 03</span>
+      <h2 class="section-title">Chuẩn hoá dữ liệu</h2>
+      <p class="section-lead">Data Standardization — xử lý sự khác biệt format giữa các nguồn.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">3.1. Vấn đề: Mỗi nguồn có format khác nhau</h3>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">example</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">Cùng 1 khách "Nguyễn Thị A" xuất hiện ở 5 nguồn:</span>
+
+<span class="id">POS Ngọc Dung</span>:  <span class="pn">{</span> <span class="json-key">phone</span>: <span class="json-str">"+84901234567"</span>, <span class="json-key">name</span>: <span class="json-str">"NGUYỄN THỊ A"</span>, <span class="json-key">gender</span>: <span class="json-str">"F"</span> <span class="pn">}</span>
+<span class="id">CRM Zema</span>:       <span class="pn">{</span> <span class="json-key">sdt</span>: <span class="json-str">"0901.234.567"</span>, <span class="json-key">ho_ten</span>: <span class="json-str">"Nguyễn Thị A"</span>, <span class="json-key">gioi_tinh</span>: <span class="json-str">"Nữ"</span> <span class="pn">}</span>
+<span class="id">ERP Ocany</span>:      <span class="pn">{</span> <span class="json-key">mobile</span>: <span class="json-str">"84901234567"</span>, <span class="json-key">customer_name</span>: <span class="json-str">"Nguyen Thi A"</span>, <span class="json-key">sex</span>: <span class="json-num">2</span> <span class="pn">}</span>
+<span class="id">Facebook Lead</span>:  <span class="pn">{</span> <span class="json-key">phone_number</span>: <span class="json-str">"0901 234 567"</span>, <span class="json-key">full_name</span>: <span class="json-str">"A Nguyễn"</span> <span class="pn">}</span>
+<span class="id">Website form</span>:   <span class="pn">{</span> <span class="json-key">tel</span>: <span class="json-str">"0901234567"</span>, <span class="json-key">name</span>: <span class="json-str">"chị A"</span> <span class="pn">}</span></code></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">3.2. Standardization Rules</h3>
+
+      <h4 class="subsection-title-sm">3.2.1. Phone number</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">rules</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code>Input bất kỳ → Output chuẩn: <span class="str">0901234567</span> (10 số, bắt đầu bằng 0)
+
+Rules:
+1. Loại bỏ mọi ký tự không phải số: spaces, dashes, dots, brackets
+2. Bỏ prefix quốc gia:
+   - "+84" → "0"
+   - "84" (đầu) → "0"
+   - "0084" → "0"
+3. Validate:
+   - Phải 10 số (sau chuẩn hoá)
+   - Bắt đầu bằng 0
+   - Prefix hợp lệ: 03x, 05x, 07x, 08x, 09x
+4. Nếu không hợp lệ → giữ nguyên raw + flag invalid
+
+Ví dụ:
+  <span class="str">"+84901234567"</span>  → <span class="str">"0901234567"</span> <span class="kw">✅</span>
+  <span class="str">"0901.234.567"</span>  → <span class="str">"0901234567"</span> <span class="kw">✅</span>
+  <span class="str">"84901234567"</span>   → <span class="str">"0901234567"</span> <span class="kw">✅</span>
+  <span class="str">"0901 234 567"</span>  → <span class="str">"0901234567"</span> <span class="kw">✅</span>
+  <span class="str">"901234567"</span>     → <span class="str">"0901234567"</span> <span class="kw">✅</span> (thêm 0 đầu nếu 9 số)
+  <span class="str">"1234567"</span>       → <span class="str">"1234567"</span> <span class="fn">❌</span> (flag invalid, giữ raw)
+  <span class="str">"0000000000"</span>    → blacklist, không dùng cho identity resolution</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">3.2.2. Email</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">rules</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code>Input bất kỳ → Output chuẩn: lowercase, trimmed
+
+Rules:
+1. Trim whitespace
+2. Lowercase toàn bộ
+3. Validate format: regex email chuẩn
+4. Loại bỏ email rõ ràng fake:
+   - test@test.com, example@example.com
+   - abc@abc.com, no@email.com
+
+Ví dụ:
+  <span class="str">" A.Nguyen@Gmail.COM "</span>  → <span class="str">"a.nguyen@gmail.com"</span> <span class="kw">✅</span>
+  <span class="str">"nguyen thi a@yahoo"</span>    → invalid <span class="fn">❌</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">3.2.3. Customer name</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">rules</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code>Input bất kỳ → Output chuẩn: Title Case, trimmed, normalized
+
+Rules:
+1. Trim whitespace, collapse multiple spaces
+2. Remove prefix/suffix: "chị", "anh", "cô", "Mr.", "Mrs.", "Ms."
+3. Title Case: "nguyễn thị a" → "Nguyễn Thị A"
+4. Chuẩn hoá dấu tiếng Việt: NFD → NFC
+5. Giữ nguyên raw name, tạo thêm field normalized_name
+
+Ví dụ:
+  <span class="str">"NGUYỄN THỊ A"</span>     → <span class="str">"Nguyễn Thị A"</span>
+  <span class="str">"nguyen thi a"</span>      → <span class="str">"Nguyen Thi A"</span>
+  <span class="str">"chị A Nguyễn"</span>      → <span class="str">"A Nguyễn"</span> (bỏ "chị")
+  <span class="str">"  Nguyễn  Thị   A"</span> → <span class="str">"Nguyễn Thị A"</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">3.2.4–3.2.8. Gender, DOB, Address, Currency, Timestamp</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">rules</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- Gender: 'F', 'female', 'nữ', 2, '2' → 'F' | 'M', 'male', 'nam', 1 → 'M' | else → NULL</span>
+
+<span class="cm">-- DOB: "15/05/1990" | "1990-05-15" | "May 15, 1990" → Date(YYYY-MM-DD)</span>
+<span class="cm">--      Validate năm: 1920–2015</span>
+
+<span class="cm">-- Address: raw_address → {province, district, ward, street, region}</span>
+<span class="cm">--          region = Bắc/Trung/Nam derived từ province</span>
+
+<span class="cm">-- Currency: "1.500.000 VND" | "1,500,000đ" → Decimal64(2) 1500000.00</span>
+
+<span class="cm">-- Timestamp: ISO 8601, Unix epoch(sec/ms), custom → DateTime64(3) UTC</span>
+<span class="cm">--            Nếu không có timezone → assume Asia/Ho_Chi_Minh (UTC+7)</span>
+<span class="cm">-- Ví dụ: "2026-06-11T14:30:00+07:00" → "2026-06-11T07:30:00.000Z"</span></code></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">3.3. Standardization Pipeline</h3>
+      <p>Mỗi data flow đều đi qua standardization trước khi vào Silver layer:</p>
+      <div class="ascii-block">
+        <pre><code>┌─────────┐     ┌─────────────┐     ┌──────────────┐     ┌──────────┐
+│  Raw     │     │  Standard-  │     │  Validation  │     │  Silver  │
+│  (Bronze)│────▶│  ization    │────▶│  &amp; Quality   │────▶│  (Clean) │
+│          │     │  Functions  │     │  Check       │     │          │
+└─────────┘     └─────────────┘     └──────┬───────┘     └──────────┘
+                                           │
+                                    ┌──────▼───────┐
+                                    │  Quality     │
+                                    │  Issues Log  │
+                                    └──────────────┘</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">Implemented as ClickHouse functions + Materialized Views</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- Ví dụ: function chuẩn hoá SĐT</span>
+<span class="kw2">CREATE FUNCTION</span> <span class="fn">normalize_phone</span> <span class="kw">AS</span> <span class="pn">(</span>raw_phone<span class="pn">)</span> <span class="op">-></span>
+    <span class="fn">if</span><span class="pn">(</span>
+        <span class="fn">length</span><span class="pn">(</span>
+            <span class="fn">replaceRegexpAll</span><span class="pn">(</span>
+                <span class="fn">replaceOne</span><span class="pn">(</span>
+                    <span class="fn">replaceOne</span><span class="pn">(</span>
+                        <span class="fn">replaceRegexpAll</span><span class="pn">(</span><span class="fn">toString</span><span class="pn">(</span>raw_phone<span class="pn">),</span> <span class="str">'[^0-9]'</span><span class="pn">,</span> <span class="str">''</span><span class="pn">),</span>
+                    <span class="str">'840'</span><span class="pn">,</span> <span class="str">'0'</span><span class="pn">),</span>  <span class="cm">-- +840 → 0 (nếu 11 số)</span>
+                <span class="str">'84'</span><span class="pn">,</span> <span class="str">'0'</span><span class="pn">),</span>       <span class="cm">-- 84 → 0 (nếu 11 số bắt đầu 84)</span>
+            <span class="str">'^([3-9])'</span><span class="pn">,</span> <span class="str">'0\\1'</span><span class="pn">)</span>   <span class="cm">-- thêm 0 nếu bắt đầu bằng 3-9</span>
+        <span class="pn">)</span> <span class="op">=</span> <span class="nu">10</span><span class="pn">,</span>
+        <span class="fn">replaceRegexpAll</span><span class="pn">(</span>
+            <span class="fn">replaceOne</span><span class="pn">(</span>
+                <span class="fn">replaceOne</span><span class="pn">(</span>
+                    <span class="fn">replaceRegexpAll</span><span class="pn">(</span><span class="fn">toString</span><span class="pn">(</span>raw_phone<span class="pn">),</span> <span class="str">'[^0-9]'</span><span class="pn">,</span> <span class="str">''</span><span class="pn">),</span>
+                <span class="str">'840'</span><span class="pn">,</span> <span class="str">'0'</span><span class="pn">),</span>
+            <span class="str">'84'</span><span class="pn">,</span> <span class="str">'0'</span><span class="pn">),</span>
+        <span class="str">'^([3-9])'</span><span class="pn">,</span> <span class="str">'0\\1'</span><span class="pn">),</span>
+        <span class="json-null">NULL</span>  <span class="cm">-- invalid → null</span>
+    <span class="pn">);</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 4: DATA LAYERS — DUAL DATABASE ===== -->
+<section class="section-dark-2" id="section-4">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 04</span>
+      <h2 class="section-title">Data Layer Design (Dual-Database)</h2>
+      <p class="section-lead">PostgreSQL (OLTP) + ClickHouse (OLAP) — mỗi database làm đúng thế mạnh, Bronze → Silver → Gold trong ClickHouse.</p>
+    </div>
+
+    <!-- 4.0 Decision Tree -->
+    <div class="subsection">
+      <h3 class="subsection-title">4.0. Database Responsibility Split</h3>
+      <div class="ascii-block">
+        <pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    QUYẾT ĐỊNH: DATA NÀY ĐI ĐÂU?                       │
+│                                                                         │
+│  Hỏi lần lượt:                                                         │
+│                                                                         │
+│  1. Application cần UPDATE/DELETE thường xuyên?        → PostgreSQL    │
+│  2. Application cần đọc single row by ID?              → PostgreSQL    │
+│  3. Cần ACID transaction (nhiều bảng atomic)?          → PostgreSQL    │
+│  4. Data là config/state/definition?                   → PostgreSQL    │
+│  5. Volume > 10M rows VÀ chủ yếu INSERT + aggregate?  → ClickHouse   │
+│  6. Time-series / event stream?                        → ClickHouse   │
+│  7. Pre-aggregated metrics cho dashboard?              → ClickHouse   │
+│                                                                         │
+│  Nếu cần CẢ HAI (VD: customer — PG update, CH analytics):             │
+│  → PostgreSQL là source of truth, CDC sync sang ClickHouse             │
+└─────────────────────────────────────────────────────────────────────────┘</code></pre>
+      </div>
+    </div>
+
+    <!-- 4.1 PostgreSQL -->
+    <div class="subsection">
+      <h3 class="subsection-title">4.1. PostgreSQL — Operational Database</h3>
+      <div class="callout">
+        <p><strong>Database:</strong> <code>cdp</code> — Source of truth cho master data, operational state, system config. Backend API đọc/ghi trực tiếp. Mọi UPDATE/DELETE đều ở đây.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">Schema overview</h4>
+      <div class="file-tree">
+        <div class="file-tree-header">
+          <span>cdp (PostgreSQL)</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>cdp (PostgreSQL)
+│
+├── Customer Master:
+│   ├── customers                     # Unified customer profile (source of truth)
+│   ├── customer_bu_profiles          # Profile riêng tại mỗi BU
+│   ├── customer_tags                 # Tags gắn cho khách
+│   ├── customer_scores               # Latest scores (unified, monetary, engagement...)
+│   ├── identity_graph                # Identity resolution: link records → customer
+│   ├── identity_merge_log            # Lịch sử merge/unmerge (audit)
+│   └── customer_source_ids           # Mapping: source_system + source_id → customer_id
+│
+├── Operational State:
+│   ├── leads                         # Lead pipeline (status thay đổi liên tục)
+│   ├── lead_assignments              # Lead assign cho telesale
+│   ├── lead_activities               # Ghi chú, gọi điện, notes per lead
+│   ├── campaigns                     # Campaign definitions + state machine
+│   ├── campaign_members              # Khách trong campaign (gửi/chưa gửi/kết quả)
+│   ├── workflows                     # Automation workflow definitions
+│   ├── workflow_instances            # Instance đang chạy per customer
+│   ├── workflow_step_logs            # Log từng step đã thực hiện
+│   ├── consents                      # Consent matrix (BU × channel × customer)
+│   ├── consent_change_log            # Lịch sử thay đổi consent
+│   ├── appointments                  # Lịch hẹn (Beauty)
+│   ├── treatments                    # Liệu trình (Beauty)
+│   ├── treatment_sessions            # Buổi liệu trình
+│   ├── dealers                       # Đại lý Ocany
+│   └── dealer_contracts              # Hợp đồng đại lý
+│
+├── Segment Engine:
+│   ├── segments                      # Segment definitions (conditions JSON)
+│   ├── segment_members               # Dynamic membership (customer ↔ segment)
+│   └── segment_snapshots             # Snapshot count per segment per day
+│
+├── Reference / Config:
+│   ├── business_units, branches, staff, services, products
+│   └── provinces, districts, wards
+│
+├── Scoring Config:
+│   ├── scoring_configs, scoring_tier_thresholds, scoring_engagement_rules
+│   ├── scoring_config_versions
+│   └── scoring_auto_actions
+│
+└── System:
+    ├── users, roles, permissions, user_roles, api_keys
+    ├── audit_log, notifications
+    └── Pipeline Config: connector_configs, pipeline_schedules, pipeline_run_log</pre>
+      </div>
+
+      <h4 class="subsection-title-sm">PostgreSQL: <code>customers</code> table (source of truth)</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql — postgresql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="kw2">CREATE TABLE</span> <span class="id">customers</span> <span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGSERIAL</span> <span class="kw">PRIMARY KEY</span><span class="pn">,</span>
+
+    <span class="cm">-- Standard fields (đã chuẩn hoá)</span>
+    <span class="id">phone</span>                <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">15</span><span class="pn">),</span>          <span class="cm">-- Chuẩn: "0901234567"</span>
+    <span class="id">phone_valid</span>          <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
+    <span class="id">email</span>                <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">255</span><span class="pn">),</span>
+    <span class="id">email_valid</span>          <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
+
+    <span class="id">raw_name</span>             <span class="ty">TEXT</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">normalized_name</span>      <span class="ty">TEXT</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">first_name</span>           <span class="ty">TEXT</span><span class="pn">,</span>
+    <span class="id">last_name</span>            <span class="ty">TEXT</span><span class="pn">,</span>
+
+    <span class="id">gender</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">1</span><span class="pn">)</span> <span class="kw">CHECK</span> <span class="pn">(</span><span class="id">gender</span> <span class="kw">IN</span> <span class="pn">(</span><span class="str">'M'</span><span class="pn">,</span> <span class="str">'F'</span><span class="pn">)),</span>
+    <span class="id">date_of_birth</span>        <span class="ty">DATE</span><span class="pn">,</span>
+    <span class="id">dob_precision</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'full'</span><span class="pn">,</span>
+
+    <span class="cm">-- Address</span>
+    <span class="id">raw_address</span>          <span class="ty">TEXT</span><span class="pn">,</span>
+    <span class="id">province_code</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">5</span><span class="pn">)</span> <span class="kw">REFERENCES</span> <span class="id">provinces</span><span class="pn">(</span><span class="id">code</span><span class="pn">),</span>
+    <span class="id">district_code</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">5</span><span class="pn">)</span> <span class="kw">REFERENCES</span> <span class="id">districts</span><span class="pn">(</span><span class="id">code</span><span class="pn">),</span>
+    <span class="id">ward_code</span>            <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">REFERENCES</span> <span class="id">wards</span><span class="pn">(</span><span class="id">code</span><span class="pn">),</span>
+    <span class="id">region</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">CHECK</span> <span class="pn">(</span><span class="id">region</span> <span class="kw">IN</span> <span class="pn">(</span><span class="str">'north'</span><span class="pn">,</span> <span class="str">'central'</span><span class="pn">,</span> <span class="str">'south'</span><span class="pn">)),</span>
+
+    <span class="cm">-- BU presence (denormalized for fast query)</span>
+    <span class="id">has_ngocdung</span>         <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">has_zema</span>             <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">has_ocany</span>            <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">bu_count</span>             <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+
+    <span class="id">first_seen_at</span>        <span class="ty">TIMESTAMPTZ</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">first_seen_source</span>    <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">),</span>
+    <span class="id">first_seen_bu</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">),</span>
+    <span class="id">last_seen_at</span>         <span class="ty">TIMESTAMPTZ</span><span class="pn">,</span>
+    <span class="id">last_transaction_at</span>  <span class="ty">TIMESTAMPTZ</span><span class="pn">,</span>
+
+    <span class="cm">-- Identity resolution</span>
+    <span class="id">merge_status</span>         <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'single'</span><span class="pn">,</span>
+    <span class="id">merged_into_id</span>       <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">merge_confidence</span>     <span class="ty">REAL</span><span class="pn">,</span>
+    <span class="id">primary_source</span>       <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">),</span>
+
+    <span class="id">created_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+
+    <span class="kw">CONSTRAINT</span> <span class="id">uq_phone</span> <span class="kw">UNIQUE</span> <span class="pn">(</span><span class="id">phone</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NOT NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span><span class="pn">,</span>
+    <span class="kw">CONSTRAINT</span> <span class="id">uq_email</span> <span class="kw">UNIQUE</span> <span class="pn">(</span><span class="id">email</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">email</span> <span class="kw">IS NOT NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span>
+<span class="pn">);</span>
+
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_phone</span>    <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">phone</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NOT NULL</span><span class="pn">;</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_email</span>    <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">email</span><span class="pn">)</span> <span class="kw">WHERE</span> <span class="id">email</span> <span class="kw">IS NOT NULL</span><span class="pn">;</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_bu</span>       <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">has_ngocdung</span><span class="pn">,</span> <span class="id">has_zema</span><span class="pn">,</span> <span class="id">has_ocany</span><span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_last_seen</span> <span class="kw">ON</span> <span class="id">customers</span> <span class="pn">(</span><span class="id">last_seen_at</span> <span class="kw">DESC</span><span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_customers_name_trgm</span> <span class="kw">ON</span> <span class="id">customers</span> <span class="kw">USING</span> <span class="fn">gin</span> <span class="pn">(</span><span class="id">normalized_name</span> <span class="id">gin_trgm_ops</span><span class="pn">);</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">PostgreSQL: <code>customer_scores</code>, <code>leads</code>, <code>consents</code>, <code>identity_graph</code></h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql — postgresql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- customer_scores: latest scores per customer (updated by scoring jobs)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">customer_scores</span> <span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">PRIMARY KEY</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">unified_score</span>        <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">monetary_score</span>       <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">engagement_score</span>     <span class="ty">SMALLINT</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">tier</span>                 <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'bronze'</span><span class="pn">,</span>
+    <span class="id">health_status</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">10</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'healthy'</span><span class="pn">,</span>
+    <span class="id">churn_probability_30d</span> <span class="ty">REAL</span><span class="pn">,</span>
+    <span class="id">rfm_segment</span>          <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">30</span><span class="pn">),</span>
+    <span class="id">lifecycle_stage</span>      <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">calculated_at</span>        <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">()</span>
+<span class="pn">);</span>
+
+<span class="cm">-- leads: lead pipeline (thay đổi status liên tục → PG)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">leads</span> <span class="pn">(</span>
+    <span class="id">lead_id</span>              <span class="ty">BIGSERIAL</span> <span class="kw">PRIMARY KEY</span><span class="pn">,</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">bu</span>                   <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">source</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">name</span>                 <span class="ty">TEXT</span><span class="pn">,</span>
+    <span class="id">phone</span>                <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">15</span><span class="pn">),</span>
+    <span class="id">status</span>               <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">30</span><span class="pn">)</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">pipeline_stage</span>       <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">)</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">assigned_to</span>          <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">users</span><span class="pn">(</span><span class="id">user_id</span><span class="pn">),</span>
+    <span class="id">branch_id</span>            <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">branches</span><span class="pn">(</span><span class="id">branch_id</span><span class="pn">),</span>
+    <span class="id">created_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="kw">CONSTRAINT</span> <span class="id">chk_lead_status</span> <span class="kw">CHECK</span> <span class="pn">(</span><span class="id">status</span> <span class="kw">IN</span> <span class="pn">(</span><span class="str">'new'</span><span class="pn">,</span><span class="str">'contacted'</span><span class="pn">,</span><span class="str">'qualified'</span><span class="pn">,</span><span class="str">'unqualified'</span><span class="pn">,</span><span class="str">'converted'</span><span class="pn">,</span><span class="str">'lost'</span><span class="pn">))</span>
+<span class="pn">);</span>
+
+<span class="cm">-- consents: composite PK ensures 1 row per customer × bu × channel × type</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">consents</span> <span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">bu</span>                   <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">channel</span>              <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>  <span class="cm">-- zalo/sms/email/push/call</span>
+    <span class="id">consent_type</span>         <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">20</span><span class="pn">)</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="str">'marketing'</span><span class="pn">,</span>
+    <span class="id">status</span>               <span class="ty">BOOLEAN</span> <span class="kw">NOT NULL</span> <span class="kw">DEFAULT</span> <span class="kw">true</span><span class="pn">,</span>
+    <span class="id">updated_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="id">updated_by</span>           <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">),</span>
+    <span class="kw">PRIMARY KEY</span> <span class="pn">(</span><span class="id">customer_id</span><span class="pn">,</span> <span class="id">bu</span><span class="pn">,</span> <span class="id">channel</span><span class="pn">,</span> <span class="id">consent_type</span><span class="pn">)</span>
+<span class="pn">);</span>
+
+<span class="cm">-- identity_graph: all identifiers linked to a customer</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">identity_graph</span> <span class="pn">(</span>
+    <span class="id">id</span>                   <span class="ty">BIGSERIAL</span> <span class="kw">PRIMARY KEY</span><span class="pn">,</span>
+    <span class="id">customer_id</span>          <span class="ty">BIGINT</span> <span class="kw">NOT NULL</span> <span class="kw">REFERENCES</span> <span class="id">customers</span><span class="pn">(</span><span class="id">customer_id</span><span class="pn">),</span>
+    <span class="id">identifier_type</span>      <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">30</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>  <span class="cm">-- phone/email/crm_id/zalo_id</span>
+    <span class="id">identifier_value</span>     <span class="ty">TEXT</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">source_system</span>        <span class="ty">VARCHAR</span><span class="pn">(</span><span class="nu">50</span><span class="pn">)</span> <span class="kw">NOT NULL</span><span class="pn">,</span>
+    <span class="id">confidence</span>           <span class="ty">REAL</span> <span class="kw">DEFAULT</span> <span class="nu">1.0</span><span class="pn">,</span>
+    <span class="id">verified</span>             <span class="ty">BOOLEAN</span> <span class="kw">DEFAULT</span> <span class="kw">false</span><span class="pn">,</span>
+    <span class="id">created_at</span>           <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> <span class="fn">now</span><span class="pn">(),</span>
+    <span class="kw">UNIQUE</span> <span class="pn">(</span><span class="id">identifier_type</span><span class="pn">,</span> <span class="id">identifier_value</span><span class="pn">,</span> <span class="id">source_system</span><span class="pn">)</span>
+<span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_identity_lookup</span>   <span class="kw">ON</span> <span class="id">identity_graph</span> <span class="pn">(</span><span class="id">identifier_type</span><span class="pn">,</span> <span class="id">identifier_value</span><span class="pn">);</span>
+<span class="kw2">CREATE INDEX</span> <span class="id">idx_identity_customer</span> <span class="kw">ON</span> <span class="id">identity_graph</span> <span class="pn">(</span><span class="id">customer_id</span><span class="pn">);</span></code></pre>
+      </div>
+    </div>
+
+    <!-- 4.2 ClickHouse -->
+    <div class="subsection">
+      <h3 class="subsection-title">4.2. ClickHouse — Analytical Database</h3>
+      <div class="callout">
+        <p><strong>Role:</strong> Analytical engine cho high-volume append-mostly data. Bronze (raw) → Silver (cleaned) → Gold (analytics). Master data (customers/leads/consents) KHÔNG sống ở đây — chỉ có <code>customers_replica</code> để phục vụ JOIN.</p>
+      </div>
+
+      <h4 class="subsection-title-sm">4.2.1. Layer 1: Bronze (Raw) — Database: <code>cdp_raw</code></h4>
+      <div class="file-tree">
+        <div class="file-tree-header">
+          <span>cdp_raw — Bronze Layer</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>cdp_raw/
+│
+├── From Airbyte (Cơ chế 1):
+│   ├── raw_pos_ngocdung_customers, raw_pos_ngocdung_transactions, ...
+│   ├── raw_pos_zema_*
+│   ├── raw_crm_{bu}_contacts, raw_crm_{bu}_leads, raw_crm_{bu}_deals
+│   ├── raw_erp_ocany_orders, raw_erp_ocany_order_items, raw_erp_ocany_products
+│   ├── raw_erp_ocany_inventory, raw_erp_ocany_dealers
+│   └── raw_dms_ocany_dealer_orders, raw_dms_ocany_dealer_sellout
+│
+├── From Kafka (Cơ chế 2):
+│   └── raw_events                    (unified event table, partitioned by bu + month)
+│
+├── From API Pull (Cơ chế 3):
+│   ├── raw_api_facebook_ads_{bu}, raw_api_facebook_leads_{bu}
+│   ├── raw_api_google_ads_{bu}, raw_api_google_analytics_{bu}
+│   ├── raw_api_zalo_followers_{bu}, raw_api_zalo_messages_{bu}
+│   ├── raw_api_shopee_orders_ocany, raw_api_lazada_orders_ocany
+│   ├── raw_api_tiktok_orders_ocany
+│   ├── raw_api_sms_delivery, raw_api_email_events
+│
+├── From API Gateway (Cơ chế 4):
+│   ├── raw_api_identify_requests     (direct write identify calls)
+│   └── raw_api_imports               (CSV/bulk imports)
+│
+└── System:
+    ├── raw_events_dlq                (Dead Letter Queue)
+    └── api_pull_checkpoints</pre>
+      </div>
+
+      <h4 class="subsection-title-sm">4.2.2. Layer 2: Silver (Cleaned) — Database: <code>cdp_clean</code></h4>
+      <p>Chứa data <strong>high-volume, append-mostly</strong>. <strong>Không chứa</strong> <code>customers</code>, <code>leads</code>, <code>consents</code>, <code>segments</code>, <code>campaigns</code> — những bảng đó sống ở PostgreSQL.</p>
+      <div class="file-tree">
+        <div class="file-tree-header">
+          <span>cdp_clean — Silver Layer</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>cdp_clean/
+│
+├── High-volume entity tables (ClickHouse strength):
+│   ├── transactions                  # Giao dịch từ POS + ERP + e-commerce
+│   ├── transaction_items             # Chi tiết giao dịch
+│   ├── events                        # Events đã chuẩn hoá + enriched (billions)
+│   ├── orders                        # Đơn hàng Ocany
+│   ├── order_items                   # Chi tiết đơn hàng
+│   └── dealer_orders                 # Đơn đại lý
+│
+├── Marketing event tables:
+│   ├── ad_performance                # Stats per campaign/ad (from FB/GG/Zalo)
+│   ├── sms_delivery                  # SMS delivery status (high volume)
+│   ├── email_events                  # Email tracking events
+│   └── zalo_interactions             # Zalo OA interactions
+│
+├── Mapping tables (replicated from PG via CDC):
+│   ├── customers_replica             # Read-only replica synced from PG
+│   ├── branches_replica              # Replicated from PG
+│   └── staff_replica                 # Replicated from PG
+│
+└── Quality:
+    └── data_quality_issues           # Log vấn đề data quality</pre>
+      </div>
+
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql — clickhouse</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- Silver: transactions (high-volume, ReplacingMergeTree)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_clean.transactions</span>
+<span class="pn">(</span>
+    <span class="id">transaction_id</span>       <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">customer_id</span>          <span class="ty">UInt64</span><span class="pn">,</span>
+    <span class="id">bu</span>                   <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">branch_id</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt32</span><span class="pn">),</span>
+    <span class="id">transaction_type</span>     <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">transaction_date</span>     <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">amount</span>               <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">),</span>
+    <span class="id">net_amount</span>           <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">),</span>
+    <span class="id">payment_method</span>       <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
+    <span class="id">currency</span>             <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'VND'</span><span class="pn">,</span>
+    <span class="id">source_system</span>        <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">source_id</span>            <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">_version</span>             <span class="ty">UInt64</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">_version</span><span class="pn">)</span>
+<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="id">customer_id</span><span class="pn">,</span> <span class="id">transaction_date</span><span class="pn">,</span> <span class="id">transaction_id</span><span class="pn">)</span>
+<span class="kw">PARTITION BY</span> <span class="pn">(</span><span class="id">bu</span><span class="pn">,</span> <span class="fn">toYYYYMM</span><span class="pn">(</span><span class="id">transaction_date</span><span class="pn">));</span>
+
+<span class="cm">-- Silver: customers_replica (read-only, synced from PG via CDC)</span>
+<span class="cm">-- Dùng để JOIN với transactions/events — KHÔNG dùng cho single-row lookup</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_clean.customers_replica</span>
+<span class="pn">(</span>
+    <span class="id">customer_id</span>          <span class="ty">UInt64</span><span class="pn">,</span>
+    <span class="id">phone</span>                <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">email</span>                <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">normalized_name</span>      <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">gender</span>               <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'M'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'F'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">)),</span>
+    <span class="id">date_of_birth</span>        <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Date</span><span class="pn">),</span>
+    <span class="id">province</span>             <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">region</span>               <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'north'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'central'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">,</span> <span class="str">'south'</span> <span class="op">=</span> <span class="nu">3</span><span class="pn">)),</span>
+    <span class="id">has_ngocdung</span>         <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">has_zema</span>             <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">has_ocany</span>            <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">bu_count</span>             <span class="ty">UInt8</span><span class="pn">,</span>
+    <span class="id">merge_status</span>         <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">updated_at</span>           <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">_version</span>             <span class="ty">UInt64</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">_version</span><span class="pn">)</span>
+<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">customer_id</span><span class="pn">)</span>
+<span class="kw">SETTINGS</span> <span class="id">index_granularity</span> <span class="op">=</span> <span class="nu">8192</span><span class="pn">;</span></code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">4.2.3. Layer 3: Gold (Analytics) — Database: <code>cdp_analytics</code></h4>
+      <div class="file-tree">
+        <div class="file-tree-header">
+          <span>cdp_analytics — Gold Layer</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>cdp_analytics/
+│
+├── Customer analytics (materialized from PG + CH data):
+│   ├── unified_customers_mv          # Denormalized: PG customer + CH aggregates
+│   ├── customer_score_history        # Score snapshots daily (time-series)
+│   ├── customer_timeline             # Merged timeline all events/transactions
+│   └── customer_ltv                  # LTV calculation
+│
+├── Segment analytics:
+│   ├── segment_member_snapshots      # Snapshot count per segment per day
+│   └── rfm_results                   # RFM calculation results per BU
+│
+├── Aggregated metrics (dashboard-ready):
+│   ├── daily_bu_metrics              # Revenue, customers, transactions per BU per day
+│   ├── daily_branch_metrics          # Per branch per day
+│   ├── daily_service_metrics         # Per service/product per day
+│   ├── daily_staff_metrics           # Per staff per day
+│   ├── monthly_cohort_retention      # Cohort analysis pre-computed
+│   └── channel_attribution           # Marketing attribution
+│
+├── Campaign analytics:
+│   ├── campaign_delivery_stats       # Aggregated: sent/delivered/opened/clicked
+│   ├── campaign_customer_results     # Per customer per campaign
+│   └── campaign_daily_metrics
+│
+├── Lead analytics:
+│   └── lead_funnel_metrics           # Funnel conversion metrics (aggregated from PG)
+│
+├── Industry-specific:
+│   ├── dealer_monthly_metrics        # Dealer performance over time (Ocany)
+│   └── treatment_completion_stats    # Liệu trình completion rate (Beauty)
+│
+└── System:
+    ├── data_freshness
+    └── ingestion_metrics</pre>
+      </div>
+
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql — clickhouse gold</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- Gold: unified_customers_mv</span>
+<span class="cm">-- Denormalized: PG master data + CH aggregated metrics</span>
+<span class="cm">-- Rebuilt daily (batch job). NOT for single-row lookup (dùng PG cho việc đó)</span>
+<span class="kw2">CREATE TABLE</span> <span class="id">cdp_analytics.unified_customers_mv</span>
+<span class="pn">(</span>
+    <span class="id">customer_id</span>              <span class="ty">UInt64</span><span class="pn">,</span>
+
+    <span class="cm">-- From PG (replicated)</span>
+    <span class="id">phone</span>                    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">normalized_name</span>          <span class="ty">String</span><span class="pn">,</span>
+    <span class="id">gender</span>                   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'M'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'F'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">)),</span>
+    <span class="id">date_of_birth</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Date</span><span class="pn">),</span>
+    <span class="id">age</span>                      <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt8</span><span class="pn">),</span>
+    <span class="id">province</span>                 <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">String</span><span class="pn">),</span>
+    <span class="id">region</span>                   <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Enum8</span><span class="pn">(</span><span class="str">'north'</span> <span class="op">=</span> <span class="nu">1</span><span class="pn">,</span> <span class="str">'central'</span> <span class="op">=</span> <span class="nu">2</span><span class="pn">,</span> <span class="str">'south'</span> <span class="op">=</span> <span class="nu">3</span><span class="pn">)),</span>
+    <span class="id">has_ngocdung</span>             <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">has_zema</span>                 <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">has_ocany</span>                <span class="ty">Bool</span><span class="pn">,</span>
+    <span class="id">tier</span>                     <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'bronze'</span><span class="pn">,</span>
+    <span class="id">health_status</span>            <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'healthy'</span><span class="pn">,</span>
+    <span class="id">lifecycle_stage</span>          <span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="str">'new'</span><span class="pn">,</span>
+    <span class="id">rfm_segment</span>              <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">LowCardinality</span><span class="pn">(</span><span class="ty">String</span><span class="pn">)),</span>
+
+    <span class="cm">-- From PG customer_scores (replicated)</span>
+    <span class="id">unified_score</span>            <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">monetary_score</span>           <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">engagement_score</span>         <span class="ty">UInt16</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">churn_probability_30d</span>    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">Float32</span><span class="pn">),</span>
+
+    <span class="cm">-- Aggregated from CH transactions (computed)</span>
+    <span class="id">total_spend_all_bu</span>       <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">total_spend_12m</span>          <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">total_transactions</span>       <span class="ty">UInt32</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+    <span class="id">avg_transaction_value</span>    <span class="ty">Decimal64</span><span class="pn">(</span><span class="nu">2</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+
+    <span class="cm">-- Aggregated from CH events (computed)</span>
+    <span class="id">last_event_at</span>            <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">)),</span>
+    <span class="id">days_since_last_visit</span>    <span class="ty">Nullable</span><span class="pn">(</span><span class="ty">UInt16</span><span class="pn">),</span>
+    <span class="id">events_count_30d</span>         <span class="ty">UInt32</span> <span class="kw">DEFAULT</span> <span class="nu">0</span><span class="pn">,</span>
+
+    <span class="id">first_seen_at</span>            <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">segment_ids</span>              <span class="ty">Array</span><span class="pn">(</span><span class="ty">UInt32</span><span class="pn">)</span> <span class="kw">DEFAULT</span> <span class="pn">[],</span>
+    <span class="id">updated_at</span>               <span class="ty">DateTime64</span><span class="pn">(</span><span class="nu">3</span><span class="pn">),</span>
+    <span class="id">_version</span>                 <span class="ty">UInt64</span>
+<span class="pn">)</span>
+<span class="kw2">ENGINE</span> <span class="op">=</span> <span class="fn">ReplacingMergeTree</span><span class="pn">(</span><span class="id">_version</span><span class="pn">)</span>
+<span class="kw">ORDER BY</span> <span class="pn">(</span><span class="id">customer_id</span><span class="pn">)</span>
+<span class="kw">SETTINGS</span> <span class="id">index_granularity</span> <span class="op">=</span> <span class="nu">8192</span><span class="pn">;</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 5: TRANSFORM JOBS & SYNC ===== -->
+<section class="section-parchment" id="section-5">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 05</span>
+      <h2 class="section-title">Transform Jobs &amp; Sync Pipeline</h2>
+      <p class="section-lead">CDC sync PG → CH, scheduled transform jobs, và data quality checks.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">5.1. Job categories</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Job type</th>
+              <th>Trigger</th>
+              <th>Tool</th>
+              <th>Target DB</th>
+              <th>Ví dụ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Continuous MV</strong></td>
+              <td>Khi data mới insert</td>
+              <td>ClickHouse Materialized View</td>
+              <td>CH</td>
+              <td>Kafka events → raw_events</td>
+            </tr>
+            <tr>
+              <td><strong>CDC Sync</strong></td>
+              <td>PG row change</td>
+              <td>Debezium / pg_notify</td>
+              <td>CH</td>
+              <td>PG customers → CH customers_replica</td>
+            </tr>
+            <tr>
+              <td><strong>Scheduled transform</strong></td>
+              <td>Cron (15 phút / giờ)</td>
+              <td>Python / dbt</td>
+              <td>PG + CH</td>
+              <td>Raw → PG customers, Raw → CH transactions</td>
+            </tr>
+            <tr>
+              <td><strong>Daily batch</strong></td>
+              <td>1 lần/ngày (2:00 AM)</td>
+              <td>dbt / Python</td>
+              <td>CH + PG</td>
+              <td>Score calculation, RFM, cohort</td>
+            </tr>
+            <tr>
+              <td><strong>On-demand</strong></td>
+              <td>User/event trigger</td>
+              <td>API → job queue</td>
+              <td>PG + CH</td>
+              <td>Re-score segment, recalculate LTV</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">5.2. PG ↔ CH Sync Pattern</h3>
+      <div class="ascii-block">
+        <pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    SYNC DIRECTION: PG → CH (1 chiều)                    │
+│                                                                         │
+│  PostgreSQL (source of truth)                                           │
+│       │                                                                 │
+│       ├── CDC (Debezium + Kafka Connect)                                │
+│       │   ├── pg.cdp.customers → CH cdp_clean.customers_replica        │
+│       │   ├── pg.cdp.customer_scores → CH (join vào unified_mv)        │
+│       │   ├── pg.cdp.branches → CH cdp_clean.branches_replica          │
+│       │   └── Latency: &lt; 10 giây (near real-time)                      │
+│       │                                                                 │
+│       └── Scheduled Sync (fallback / full refresh)                     │
+│           ├── Full refresh customers_replica mỗi 6 giờ (safety net)    │
+│           └── Full refresh reference tables daily                       │
+│                                                                         │
+│  ClickHouse → PostgreSQL: KHÔNG sync ngược                              │
+│  Thay vào đó: batch jobs READ từ CH, WRITE kết quả vào PG              │
+│       ├── CH aggregate transactions → PG customer_scores.monetary       │
+│       ├── CH aggregate events → PG customer_scores.engagement           │
+│       └── CH RFM results → PG customer_scores.rfm_*                    │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘</code></pre>
+      </div>
+
+      <h4 class="subsection-title-sm">CDC Setup (Debezium)</h4>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">yaml — debezium</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="yaml-cm"># Debezium PostgreSQL connector config</span>
+<span class="yaml-key">connector.class</span>: <span class="yaml-val">io.debezium.connector.postgresql.PostgresConnector</span>
+<span class="yaml-key">database.hostname</span>: <span class="yaml-val">pg-cdp.internal</span>
+<span class="yaml-key">database.dbname</span>: <span class="yaml-val">cdp</span>
+<span class="yaml-key">database.user</span>: <span class="yaml-val">debezium</span>
+<span class="yaml-key">plugin.name</span>: <span class="yaml-val">pgoutput</span>
+
+<span class="yaml-cm"># Tables to capture</span>
+<span class="yaml-key">table.include.list</span>: <span class="yaml-val">&gt;</span>
+  <span class="yaml-val">public.customers,</span>
+  <span class="yaml-val">public.customer_scores,</span>
+  <span class="yaml-val">public.branches,</span>
+  <span class="yaml-val">public.staff,</span>
+  <span class="yaml-val">public.segments,</span>
+  <span class="yaml-val">public.segment_members</span>
+
+<span class="yaml-cm"># Kafka topics prefix</span>
+<span class="yaml-key">topics.prefix</span>: <span class="yaml-val">cdp.pg</span>
+
+<span class="yaml-cm"># → cdp.pg.public.customers</span>
+<span class="yaml-cm"># → cdp.pg.public.customer_scores</span>
+<span class="yaml-cm"># → cdp.pg.public.branches</span>
+<span class="yaml-cm"># ClickHouse Kafka Engine consumes these topics</span>
+<span class="yaml-cm"># and writes to cdp_clean.*_replica tables</span></code></pre>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">5.3. Transform pipeline</h3>
+      <div class="pipeline">
+        <div class="pipeline-block">
+          <div class="pipeline-block__header">CONTINUOUS (real-time)</div>
+          <pre>[ClickHouse]
+Kafka → raw_events (MV)
+raw_events → cleaned events (MV: standardize timestamp, enrich)
+
+[PG → CH CDC]
+PG customers change → Debezium → Kafka → CH customers_replica
+PG customer_scores change → Debezium → Kafka → CH scores_replica</pre>
+        </div>
+        <div class="pipeline-block">
+          <div class="pipeline-block__header">FREQUENT (mỗi 15 phút)</div>
+          <pre>Job: sync_customers_to_pg
+  READ: CH raw_pos_*_customers + raw_crm_*_contacts
+  Standardize: phone, email, name, gender, dob, address
+  Run identity resolution (match &amp; merge)
+  WRITE: PG customers (UPSERT) ← source of truth
+       └── CDC auto-syncs PG → CH customers_replica
+
+Job: sync_transactions_to_ch
+  READ: CH raw_pos_*_transactions + raw_erp_*_orders
+  Standardize: amount, timestamp, channel
+  Link customer_id (lookup PG identity_graph)
+  WRITE: CH cdp_clean.transactions
+
+Job: sync_leads_to_pg
+  READ: CH raw_crm_*_leads + raw_api_facebook_leads
+  Standardize + dedup + auto-assign + calculate lead score
+  WRITE: PG leads (UPSERT) ← source of truth</pre>
+        </div>
+        <div class="pipeline-block">
+          <div class="pipeline-block__header">HOURLY</div>
+          <pre>Job: update_engagement_scores
+  READ: CH events last 90 days per customer
+  Apply scoring rules + decay (config from PG scoring_configs)
+  WRITE: PG customer_scores.engagement_score (UPDATE)
+       └── CDC auto-syncs to CH
+
+Job: update_health_scores → WRITE: PG customer_scores.health_score
+
+Job: refresh_segments
+  Re-evaluate dynamic segment conditions (PG segment definitions)
+  Some conditions query CH (spend &gt; X, events in 30d)
+  WRITE: PG segment_members (UPSERT)</pre>
+        </div>
+        <div class="pipeline-block">
+          <div class="pipeline-block__header">DAILY (2:00 AM)</div>
+          <pre>Job: calculate_scores_full
+  READ: CH transactions + events (aggregate per customer)
+  Full recalculate: monetary, loyalty, social scores, tier
+  WRITE: PG customer_scores (full UPDATE)
+  WRITE: CH customer_score_history (daily snapshot, append)
+
+Job: calculate_rfm
+  READ: CH transactions per BU
+  WRITE: PG customer_scores.rfm_* (UPDATE)
+  WRITE: CH rfm_results (snapshot)
+
+Job: build_unified_customers_mv
+  READ: PG customers + scores (via CH replica) + CH transaction aggregates
+  WRITE: CH cdp_analytics.unified_customers_mv (full rebuild)
+
+Job: aggregate_daily_metrics → WRITE: CH daily_*_metrics tables (append)
+Job: sync_treatment_status → WRITE: PG treatments + sessions (UPSERT)
+Job: update_dealer_health (Ocany) → WRITE: PG dealers.health_score</pre>
+        </div>
+        <div class="pipeline-block">
+          <div class="pipeline-block__header">WEEKLY</div>
+          <pre>Job: retrain_predictive_models
+  READ: CH transactions + events (training data)
+  READ: PG customers + scores (labels)
+  Train: Churn, Upsell, Cross-BU models
+  WRITE: PG customer_scores.churn_*/upsell_*/crossbu_*
+
+Job: calculate_cohort_retention → CH
+Job: calculate_ltv → CH + PG
+Job: full_refresh_ch_replicas (safety net)
+  Full dump PG customers/scores/branches → CH replicas</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">5.4. Data quality checks</h3>
+      <div class="code-block-wrap">
+        <div class="code-block-header">
+          <span class="code-block-lang">sql</span>
+          <div class="code-block-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre><code><span class="cm">-- PostgreSQL checks</span>
+<span class="cm">-- Check: không có customer thiếu phone VÀ email</span>
+<span class="kw">SELECT</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">orphan_customers</span>
+<span class="kw">FROM</span> <span class="id">customers</span>
+<span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NULL</span> <span class="kw">AND</span> <span class="id">email</span> <span class="kw">IS NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span><span class="pn">;</span>
+
+<span class="cm">-- Check: duplicate phone (should be 0 due to unique constraint)</span>
+<span class="kw">SELECT</span> <span class="id">phone</span><span class="pn">,</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">cnt</span>
+<span class="kw">FROM</span> <span class="id">customers</span>
+<span class="kw">WHERE</span> <span class="id">phone</span> <span class="kw">IS NOT NULL</span> <span class="kw">AND</span> <span class="id">merged_into_id</span> <span class="kw">IS NULL</span>
+<span class="kw">GROUP BY</span> <span class="id">phone</span> <span class="kw">HAVING</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="op">&gt;</span> <span class="nu">1</span><span class="pn">;</span>
+
+<span class="cm">-- Check: orphan scores</span>
+<span class="kw">SELECT</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">FROM</span> <span class="id">customer_scores</span> <span class="id">cs</span>
+<span class="kw">LEFT JOIN</span> <span class="id">customers</span> <span class="id">c</span> <span class="kw">ON</span> <span class="id">cs</span><span class="pn">.</span><span class="id">customer_id</span> <span class="op">=</span> <span class="id">c</span><span class="pn">.</span><span class="id">customer_id</span>
+<span class="kw">WHERE</span> <span class="id">c</span><span class="pn">.</span><span class="id">customer_id</span> <span class="kw">IS NULL</span><span class="pn">;</span>
+
+<span class="cm">-- ClickHouse checks</span>
+<span class="cm">-- Check: transaction amount hợp lý</span>
+<span class="kw">SELECT</span> <span class="fn">count</span><span class="pn">(</span><span class="op">*</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">suspicious_transactions</span>
+<span class="kw">FROM</span> <span class="id">cdp_clean.transactions</span>
+<span class="kw">WHERE</span> <span class="id">amount</span> <span class="op">&lt;=</span> <span class="nu">0</span> <span class="kw">OR</span> <span class="id">amount</span> <span class="op">&gt;</span> <span class="nu">10000000000</span><span class="pn">;</span>
+
+<span class="cm">-- Check: CH replica freshness vs PG</span>
+<span class="kw">SELECT</span>
+    <span class="fn">max</span><span class="pn">(</span><span class="id">updated_at</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">ch_latest</span><span class="pn">,</span>
+    <span class="fn">dateDiff</span><span class="pn">(</span><span class="str">'minute'</span><span class="pn">,</span> <span class="fn">max</span><span class="pn">(</span><span class="id">updated_at</span><span class="pn">),</span> <span class="fn">now</span><span class="pn">())</span> <span class="kw">AS</span> <span class="id">minutes_behind</span>
+<span class="kw">FROM</span> <span class="id">cdp_clean.customers_replica</span><span class="pn">;</span>
+
+<span class="cm">-- Check: data freshness per source</span>
+<span class="kw">SELECT</span> <span class="id">source_system</span><span class="pn">,</span> <span class="id">source_bu</span><span class="pn">,</span> <span class="fn">max</span><span class="pn">(</span><span class="id">timestamp</span><span class="pn">)</span> <span class="kw">AS</span> <span class="id">last_event</span><span class="pn">,</span>
+    <span class="fn">dateDiff</span><span class="pn">(</span><span class="str">'hour'</span><span class="pn">,</span> <span class="fn">max</span><span class="pn">(</span><span class="id">timestamp</span><span class="pn">),</span> <span class="fn">now</span><span class="pn">())</span> <span class="kw">AS</span> <span class="id">hours_stale</span>
+<span class="kw">FROM</span> <span class="id">cdp_clean.events</span>
+<span class="kw">GROUP BY</span> <span class="id">source_system</span><span class="pn">,</span> <span class="id">source_bu</span>
+<span class="kw">HAVING</span> <span class="id">hours_stale</span> <span class="op">&gt;</span> <span class="nu">24</span><span class="pn">;</span></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 6: MONITORING ===== -->
+<section class="section-dark-3" id="section-6">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 06</span>
+      <h2 class="section-title">Ingestion Monitoring &amp; Observability</h2>
+      <p class="section-lead">Metrics, SLA targets, và alert thresholds cho toàn bộ data pipeline.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">6.1. Dashboard monitoring</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Target</th>
+              <th>Alert threshold</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="3"><strong>Ingestion</strong></td></tr>
+            <tr>
+              <td>Airbyte sync success rate</td>
+              <td>&gt; 99%</td>
+              <td><span class="badge badge--red">&lt; 95%</span></td>
+            </tr>
+            <tr>
+              <td>Airbyte sync latency</td>
+              <td>&lt; 30 phút</td>
+              <td><span class="badge badge--orange">&gt; 60 phút</span></td>
+            </tr>
+            <tr>
+              <td>Kafka consumer lag</td>
+              <td>&lt; 1,000 events</td>
+              <td><span class="badge badge--red">&gt; 10,000 events</span></td>
+            </tr>
+            <tr>
+              <td>Kafka event processing latency</td>
+              <td>&lt; 5 giây</td>
+              <td><span class="badge badge--orange">&gt; 30 giây</span></td>
+            </tr>
+            <tr>
+              <td>API Pull success rate</td>
+              <td>&gt; 98%</td>
+              <td><span class="badge badge--red">&lt; 90%</span></td>
+            </tr>
+            <tr>
+              <td>API Gateway response time p95</td>
+              <td>&lt; 100ms</td>
+              <td><span class="badge badge--orange">&gt; 500ms</span></td>
+            </tr>
+            <tr>
+              <td>API Gateway error rate</td>
+              <td>&lt; 1%</td>
+              <td><span class="badge badge--red">&gt; 5%</span></td>
+            </tr>
+            <tr>
+              <td>DLQ size (unprocessed)</td>
+              <td>0</td>
+              <td><span class="badge badge--orange">&gt; 100 events</span></td>
+            </tr>
+            <tr>
+              <td>Data freshness per source</td>
+              <td>&lt; SLA</td>
+              <td><span class="badge badge--orange">&gt; 2× SLA</span></td>
+            </tr>
+            <tr><td colspan="3"><strong>Transform</strong></td></tr>
+            <tr>
+              <td>Bronze → Silver transform lag</td>
+              <td>&lt; 30 phút</td>
+              <td><span class="badge badge--orange">&gt; 2 giờ</span></td>
+            </tr>
+            <tr>
+              <td>Silver → Gold transform lag</td>
+              <td>&lt; 4 giờ</td>
+              <td><span class="badge badge--orange">&gt; 8 giờ</span></td>
+            </tr>
+            <tr><td colspan="3"><strong>PG ↔ CH Sync</strong></td></tr>
+            <tr>
+              <td>CDC replication lag (PG → CH)</td>
+              <td>&lt; 30 giây</td>
+              <td><span class="badge badge--red">&gt; 5 phút</span></td>
+            </tr>
+            <tr>
+              <td>CH customers_replica freshness</td>
+              <td>&lt; 1 phút behind PG</td>
+              <td><span class="badge badge--orange">&gt; 10 phút</span></td>
+            </tr>
+            <tr>
+              <td>Score writeback lag (CH → PG)</td>
+              <td>&lt; 5 phút (hourly jobs)</td>
+              <td><span class="badge badge--orange">&gt; 30 phút</span></td>
+            </tr>
+            <tr><td colspan="3"><strong>PostgreSQL</strong></td></tr>
+            <tr>
+              <td>PG connection pool usage</td>
+              <td>&lt; 70%</td>
+              <td><span class="badge badge--red">&gt; 90%</span></td>
+            </tr>
+            <tr>
+              <td>PG query p95 latency</td>
+              <td>&lt; 50ms</td>
+              <td><span class="badge badge--orange">&gt; 200ms</span></td>
+            </tr>
+            <tr>
+              <td>PG replication lag (if replica)</td>
+              <td>&lt; 1 giây</td>
+              <td><span class="badge badge--orange">&gt; 10 giây</span></td>
+            </tr>
+            <tr>
+              <td>PG disk usage</td>
+              <td>&lt; 80%</td>
+              <td><span class="badge badge--red">&gt; 90%</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 7: SOURCE MAP ===== -->
+<section class="section-light" id="section-7">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 07</span>
+      <h2 class="section-title">Source Map</h2>
+      <p class="section-lead">Tổng hợp: Source → Cơ chế → CH Raw Tables → Final destination (PG or CH).</p>
+    </div>
+
+    <div class="subsection">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>BU</th>
+              <th>Cơ chế</th>
+              <th>CH Raw Table(s)</th>
+              <th>Final destination</th>
+              <th>Tần suất</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>POS DB</td>
+              <td>ND, Zema</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_pos_{bu}_*</code></td>
+              <td><span class="badge badge--blue">PG</span> customers, treatments / <span class="badge badge--orange">CH</span> transactions</td>
+              <td>15 phút</td>
+            </tr>
+            <tr>
+              <td>POS Webhook</td>
+              <td>ND, Zema</td>
+              <td>2 (Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>CRM DB</td>
+              <td>Cả 3</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_crm_{bu}_*</code></td>
+              <td><span class="badge badge--blue">PG</span> customers, leads / <span class="badge badge--orange">CH</span> transactions</td>
+              <td>15 phút</td>
+            </tr>
+            <tr>
+              <td>CRM Webhook</td>
+              <td>Cả 3</td>
+              <td>2 (Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>ERP DB</td>
+              <td>Ocany</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_erp_ocany_*</code></td>
+              <td><span class="badge badge--orange">CH</span> transactions, orders</td>
+              <td>1 giờ</td>
+            </tr>
+            <tr>
+              <td>DMS DB</td>
+              <td>Ocany</td>
+              <td>1 (Airbyte)</td>
+              <td><code>raw_dms_ocany_*</code></td>
+              <td><span class="badge badge--blue">PG</span> dealers / <span class="badge badge--orange">CH</span> dealer_orders</td>
+              <td>1 giờ</td>
+            </tr>
+            <tr>
+              <td>Website events</td>
+              <td>Cả 3</td>
+              <td>4→2 (SDK→Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>App events</td>
+              <td>ND, Zema</td>
+              <td>4→2 (SDK→Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>Facebook Ads</td>
+              <td>Cả 3</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_facebook_ads_{bu}</code></td>
+              <td><span class="badge badge--orange">CH</span> ad_performance</td>
+              <td>6 giờ</td>
+            </tr>
+            <tr>
+              <td>Facebook Leads</td>
+              <td>Cả 3</td>
+              <td>4 (Webhook)</td>
+              <td><code>raw_api_facebook_leads</code></td>
+              <td><span class="badge badge--blue">PG</span> leads</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>Google Ads</td>
+              <td>Cả 3</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_google_ads_{bu}</code></td>
+              <td><span class="badge badge--orange">CH</span> ad_performance</td>
+              <td>Daily</td>
+            </tr>
+            <tr>
+              <td>Google Analytics</td>
+              <td>Cả 3</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_google_analytics_{bu}</code></td>
+              <td><span class="badge badge--orange">CH</span> ad_performance</td>
+              <td>Daily</td>
+            </tr>
+            <tr>
+              <td>Zalo OA</td>
+              <td>Cả 3</td>
+              <td>3 + 4</td>
+              <td><code>raw_api_zalo_*</code> + <code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events, zalo_interactions</td>
+              <td>1 giờ + RT</td>
+            </tr>
+            <tr>
+              <td>Shopee</td>
+              <td>Ocany</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_shopee_orders_ocany</code></td>
+              <td><span class="badge badge--orange">CH</span> orders</td>
+              <td>30 phút</td>
+            </tr>
+            <tr>
+              <td>Lazada</td>
+              <td>Ocany</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_lazada_orders_ocany</code></td>
+              <td><span class="badge badge--orange">CH</span> orders</td>
+              <td>30 phút</td>
+            </tr>
+            <tr>
+              <td>TikTok Shop</td>
+              <td>Ocany</td>
+              <td>3 (API Pull)</td>
+              <td><code>raw_api_tiktok_orders_ocany</code></td>
+              <td><span class="badge badge--orange">CH</span> orders</td>
+              <td>1 giờ</td>
+            </tr>
+            <tr>
+              <td>SMS Gateway</td>
+              <td>All</td>
+              <td>3 + 4</td>
+              <td><code>raw_api_sms_delivery</code> + <code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> sms_delivery, events</td>
+              <td>15 phút + RT</td>
+            </tr>
+            <tr>
+              <td>Email Service</td>
+              <td>All</td>
+              <td>3 + 4</td>
+              <td><code>raw_api_email_events</code> + <code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> email_events, events</td>
+              <td>1 giờ + RT</td>
+            </tr>
+            <tr>
+              <td>Call Center</td>
+              <td>ND, Zema</td>
+              <td>4→2 (Webhook→Kafka)</td>
+              <td><code>raw_events</code></td>
+              <td><span class="badge badge--orange">CH</span> events</td>
+              <td>Real-time</td>
+            </tr>
+            <tr>
+              <td>CSV Import</td>
+              <td>Cả 3</td>
+              <td>4 (API Upload)</td>
+              <td><code>raw_api_imports</code></td>
+              <td><span class="badge badge--blue">PG</span> customers/leads (via transform)</td>
+              <td>On-demand</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 8: CHECKLIST ===== -->
+<section class="section-dark" id="section-8">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">Section 08</span>
+      <h2 class="section-title">Checklist trước khi thiết kế schema chi tiết</h2>
+      <p class="section-lead">Các điểm cần confirm trước khi bắt đầu implement.</p>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Infrastructure</h3>
+      <ul class="checklist">
+        <li>Confirm PostgreSQL deployment: managed (RDS/Cloud SQL) hay self-hosted? Version ≥ 15?</li>
+        <li>Confirm ClickHouse deployment: self-hosted hay ClickHouse Cloud? Cluster hay single node?</li>
+        <li>Confirm Kafka deployment: self-managed hay managed (Confluent, AWS MSK)?</li>
+        <li>Confirm Airbyte deployment: OSS self-hosted hay Airbyte Cloud?</li>
+        <li>Confirm CDC tool: Debezium hay PG logical replication trực tiếp?</li>
+        <li>PG extensions cần cài: <code>pg_trgm</code> (fuzzy search), <code>pgcrypto</code> (PII masking), <code>pg_stat_statements</code> (monitoring)</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Data sources</h3>
+      <ul class="checklist">
+        <li>Confirm danh sách hệ thống nguồn thực tế của từng BU (POS nào? CRM nào? ERP nào?)</li>
+        <li>Confirm database type &amp; version của từng hệ thống nguồn (MySQL? PostgreSQL? SQL Server?)</li>
+        <li>Confirm hệ thống nguồn nào có API/webhook, hệ thống nào chỉ export DB/CSV</li>
+        <li>Confirm data volume ước tính: số khách, số giao dịch/ngày, số event/ngày</li>
+      </ul>
+    </div>
+
+    <div class="subsection">
+      <h3 class="subsection-title">Schema</h3>
+      <ul class="checklist">
+        <li>Review danh sách fields thực tế từ POS/CRM/ERP → adjust PG + CH schema</li>
+        <li>Xác nhận naming convention: tiếng Việt hay tiếng Anh cho business terms</li>
+        <li>Xác nhận timezone convention: UTC hay Asia/Ho_Chi_Minh</li>
+        <li>Xác nhận PG connection pooling: PgBouncer hay built-in?</li>
+        <li>Xác nhận backup strategy: PG (pg_dump / WAL archiving) + CH (clickhouse-backup)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__cols">
+      <div>
+        <div class="site-footer__col-title">CDP TheAdvance</div>
+        <ul class="site-footer__links">
+          <li><a href="#section-1">Kiến trúc</a></li>
+          <li><a href="#section-2">Cơ chế đồng bộ</a></li>
+          <li><a href="#section-3">Chuẩn hoá</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="site-footer__col-title">Data Layers</div>
+        <ul class="site-footer__links">
+          <li><a href="#section-4">4.0 DB Decision</a></li>
+          <li><a href="#section-4">4.1 PostgreSQL</a></li>
+          <li><a href="#section-4">4.2 ClickHouse</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="site-footer__col-title">Pipeline</div>
+        <ul class="site-footer__links">
+          <li><a href="#section-5">Transform &amp; Sync</a></li>
+          <li><a href="#section-6">Monitoring</a></li>
+          <li><a href="#section-7">Source Map</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="site-footer__col-title">Document</div>
+        <ul class="site-footer__links">
+          <li><a href="#">Version 2.0</a></li>
+          <li><a href="#">2026-06-12</a></li>
+          <li><a href="#section-8">Checklist</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__legal">
+      CDP TheAdvance — Data Architecture v2.0 — Dual-Database: PostgreSQL (OLTP) + ClickHouse (OLAP)
+    </div>
+  </div>
+</footer>
+
+  </main>
+</div>
+
+</body>
+</html>
