@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Khách Hàng — Shynh Premium 33 TQT</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #0066cc;
+    --primary-on-dark: #2997ff;
+    --ink: #1d1d1f;
+    --ink-muted-80: #333333;
+    --ink-muted-48: #7a7a7a;
+    --canvas: #ffffff;
+    --canvas-parchment: #f5f5f7;
+    --surface-tile-1: #272729;
+    --surface-black: #000000;
+    --on-dark: #ffffff;
+    --hairline: #e0e0e0;
+    --divider-soft: #f0f0f0;
+    --red: #ff3b30;
+    --orange: #ff9500;
+    --yellow: #ffcc00;
+    --green: #34c759;
+  }
+
+  body {
+    font-family: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+    background: var(--canvas);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Nav */
+  .global-nav {
+    background: var(--surface-black);
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .global-nav span {
+    color: var(--on-dark);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+    opacity: .8;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--surface-tile-1);
+    color: var(--on-dark);
+    text-align: center;
+    padding: 100px 24px 80px;
+  }
+  .hero-eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: var(--primary-on-dark);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    margin-bottom: 17px;
+  }
+  .hero .lead {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: 0.196px;
+    color: #a1a1a6;
+    max-width: 680px;
+    margin: 0 auto 32px;
+  }
+  .hero .meta {
+    font-size: 14px;
+    color: #86868b;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Score overview */
+  .score-overview {
+    background: var(--canvas);
+    padding: 80px 24px;
+  }
+  .score-overview .container {
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .section-title {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.1;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .section-subtitle {
+    font-size: 21px;
+    font-weight: 400;
+    color: var(--ink-muted-48);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+  }
+  .score-card {
+    background: var(--canvas-parchment);
+    border-radius: 18px;
+    padding: 32px 20px;
+    text-align: center;
+    transition: transform .2s;
+  }
+  .score-card:hover { transform: scale(1.02); }
+  .score-number {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .score-max {
+    font-size: 14px;
+    color: var(--ink-muted-48);
+    margin-bottom: 12px;
+  }
+  .score-label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: var(--ink-muted-80);
+  }
+  .score-bad { color: var(--red); }
+  .score-warn { color: var(--orange); }
+  .score-mid { color: var(--yellow); }
+  .score-good { color: var(--green); }
+
+  /* Average bar */
+  .avg-bar {
+    margin-top: 40px;
+    text-align: center;
+  }
+  .avg-bar .bar-track {
+    width: 100%;
+    max-width: 600px;
+    height: 6px;
+    background: var(--divider-soft);
+    border-radius: 3px;
+    margin: 12px auto 0;
+    overflow: hidden;
+  }
+  .avg-bar .bar-fill {
+    height: 100%;
+    width: 54%;
+    background: var(--orange);
+    border-radius: 3px;
+    transition: width .8s ease;
+  }
+  .avg-number {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  .avg-label {
+    font-size: 14px;
+    color: var(--ink-muted-48);
+  }
+
+  /* Detail sections */
+  .detail-section {
+    padding: 80px 24px;
+  }
+  .detail-section:nth-child(odd) { background: var(--canvas-parchment); }
+  .detail-section:nth-child(even) { background: var(--canvas); }
+  .detail-section.dark {
+    background: var(--surface-tile-1);
+    color: var(--on-dark);
+  }
+  .detail-container {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .detail-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .detail-number {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.28px;
+    flex-shrink: 0;
+  }
+  .detail-title {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.374px;
+  }
+  .detail-score-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .badge-bad { background: rgba(255, 59, 48, .12); color: var(--red); }
+  .badge-warn { background: rgba(255, 149, 0, .12); color: var(--orange); }
+  .badge-mid { background: rgba(255, 204, 0, .15); color: #b38f00; }
+  .badge-good { background: rgba(52, 199, 89, .12); color: var(--green); }
+
+  .feedback-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .feedback-item {
+    padding: 20px 24px;
+    border-radius: 12px;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+  }
+  .dark .feedback-item {
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.1);
+  }
+  .feedback-item.negative { border-left: 3px solid var(--red); }
+  .feedback-item.positive { border-left: 3px solid var(--green); }
+  .feedback-item.neutral  { border-left: 3px solid var(--orange); }
+  .feedback-item p {
+    line-height: 1.47;
+  }
+  .feedback-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.12px;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    margin-bottom: 8px;
+  }
+  .tag-negative { background: rgba(255,59,48,.1); color: var(--red); }
+  .tag-positive { background: rgba(52,199,89,.1); color: var(--green); }
+  .tag-neutral  { background: rgba(255,149,0,.1); color: var(--orange); }
+
+  .summary-quote {
+    font-family: "SF Pro Display", system-ui, -apple-system, sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--ink-muted-48);
+    border-left: 3px solid var(--primary);
+    padding-left: 24px;
+    margin-top: 24px;
+    font-style: italic;
+  }
+  .dark .summary-quote { color: #86868b; border-color: var(--primary-on-dark); }
+
+  /* Conclusion */
+  .conclusion {
+    background: var(--surface-tile-1);
+    color: var(--on-dark);
+    padding: 80px 24px;
+    text-align: center;
+  }
+  .conclusion .section-title { color: var(--on-dark); }
+  .verdict {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 24px;
+  }
+  .conclusion-text {
+    font-size: 21px;
+    font-weight: 400;
+    color: #a1a1a6;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.4;
+  }
+
+  /* Recommendations */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .rec-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 18px;
+    padding: 24px;
+  }
+  .rec-card h4 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--on-dark);
+  }
+  .rec-card p {
+    font-size: 14px;
+    color: #86868b;
+    line-height: 1.43;
+  }
+  .rec-priority {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    margin-bottom: 12px;
+  }
+  .priority-critical { background: rgba(255,59,48,.2); color: #ff6961; }
+  .priority-high { background: rgba(255,149,0,.2); color: #ffb340; }
+  .priority-medium { background: rgba(255,204,0,.2); color: #ffd426; }
+
+  /* Footer */
+  .footer {
+    background: var(--canvas-parchment);
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 834px) {
+    .hero h1 { font-size: 40px; }
+    .hero .lead { font-size: 21px; }
+    .score-grid { grid-template-columns: repeat(3, 1fr); }
+    .rec-grid { grid-template-columns: 1fr; }
+    .detail-number { font-size: 40px; }
+    .detail-title { font-size: 28px; }
+  }
+  @media (max-width: 640px) {
+    .hero { padding: 64px 20px 48px; }
+    .hero h1 { font-size: 34px; }
+    .hero .lead { font-size: 19px; }
+    .score-grid { grid-template-columns: repeat(2, 1fr); }
+    .detail-section { padding: 48px 20px; }
+    .section-title { font-size: 28px; }
+    .detail-header { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Global Nav -->
+<nav class="global-nav">
+  <span>Shynh Premium &nbsp;|&nbsp; Customer Feedback Report</span>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-eyebrow">Customer Feedback</div>
+  <h1>Shynh Premium</h1>
+  <p class="lead">Review trải nghiệm dịch vụ Meso Peel trị mụn xoá thâm — Chương trình KM 499k tại chi nhánh 33 Trần Quốc Thảo, Quận 3.</p>
+  <div class="meta">
+    <span>Chi nhánh: 33 Trần Quốc Thảo, Q3</span>
+    <span>Dịch vụ: Meso Peel 499k</span>
+    <span>Loại: Mystery Shopping</span>
+  </div>
+</section>
+
+<!-- Score Overview -->
+<section class="score-overview">
+  <div class="container">
+    <h2 class="section-title">Tổng quan điểm số</h2>
+    <p class="section-subtitle">Đánh giá trên 5 khâu trải nghiệm khách hàng</p>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="score-number score-bad">2</div>
+        <div class="score-max">/ 10</div>
+        <div class="score-label">Tư vấn Online</div>
+      </div>
+      <div class="score-card">
+        <div class="score-number score-warn">4</div>
+        <div class="score-max">/ 10</div>
+        <div class="score-label">Đón tiếp</div>
+      </div>
+      <div class="score-card">
+        <div class="score-number score-mid">5</div>
+        <div class="score-max">/ 10</div>
+        <div class="score-label">Tư vấn chốt deal</div>
+      </div>
+      <div class="score-card">
+        <div class="score-number score-good">8</div>
+        <div class="score-max">/ 10</div>
+        <div class="score-label">Dịch vụ làm da</div>
+      </div>
+      <div class="score-card">
+        <div class="score-number score-good">8</div>
+        <div class="score-max">/ 10</div>
+        <div class="score-label">Không gian & Relax</div>
+      </div>
+    </div>
+
+    <div class="avg-bar">
+      <div class="avg-number" style="color: var(--orange);">5.4</div>
+      <div class="avg-label">Điểm trung bình tổng</div>
+      <div class="bar-track">
+        <div class="bar-fill"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 1. Tu van Online -->
+<section class="detail-section">
+  <div class="detail-container">
+    <div class="detail-header">
+      <div class="detail-number score-bad">2<span style="font-size:24px;color:var(--ink-muted-48);">/10</span></div>
+      <div class="detail-title">Tư vấn Online</div>
+    </div>
+    <span class="detail-score-badge badge-bad">Cần cải thiện ngay</span>
+
+    <ul class="feedback-list">
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Zalo Chat</span>
+        <p>Tư vấn rất <strong>bị động</strong> — không chủ động hỏi nhu cầu khách. Chỉ đặt duy nhất câu hỏi "quan tâm dịch vụ gì?" trong khi KH mới, chưa biết Shynh có dịch vụ gì.</p>
+      </li>
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Nội dung tư vấn</span>
+        <p>Khi KH hỏi về dịch vụ da mặt, chỉ trả lời ngắn gọn "có 3 chương trình". <strong>Không hỏi tình trạng da, không hỏi năng lực tài chính</strong>, không giới thiệu thêm các gói dịch vụ khác.</p>
+      </li>
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Chính tả</span>
+        <p>Viết sai chính tả nhiều, tạo cảm nhận thiếu chuyên nghiệp cho khách hàng.</p>
+      </li>
+      <li class="feedback-item neutral">
+        <span class="feedback-tag tag-neutral">Điện thoại</span>
+        <p>Tư vấn qua điện thoại ở mức bình thường, không nổi bật. KH chuyển qua chat vì không nói qua điện thoại nhiều.</p>
+      </li>
+    </ul>
+
+    <p class="summary-quote">"Gặp tư vấn như này thiệt sự chán, không muốn qua. Vì chủ động muốn trải nghiệm Shynh nên mới chốt lịch."</p>
+  </div>
+</section>
+
+<!-- 2. Don tiep -->
+<section class="detail-section">
+  <div class="detail-container">
+    <div class="detail-header">
+      <div class="detail-number score-warn">4<span style="font-size:24px;color:var(--ink-muted-48);">/10</span></div>
+      <div class="detail-title">Đón tiếp</div>
+    </div>
+    <span class="detail-score-badge badge-warn">Dưới trung bình</span>
+
+    <ul class="feedback-list">
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Nhân viên nam</span>
+        <p>Khuôn mặt hơi "buồn", thiếu tươi tắn. Hỏi thông tin KH như <strong>tra hỏi</strong> — không giải thích mục đích thu thập thông tin. Hỏi trùng lặp 2 lần cho 1 thông tin, gây khó chịu.</p>
+      </li>
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Thái độ</span>
+        <p>Khi KH nhờ sạc điện thoại, hỗ trợ nhưng thái độ có chút kỳ. Sau 3 lần tiếp xúc, xác định: bạn này đón tiếp khách chưa đủ nhiệt tình.</p>
+      </li>
+      <li class="feedback-item neutral">
+        <span class="feedback-tag tag-neutral">Thời gian chờ</span>
+        <p>Đợi hơn 5 phút mới có người ra hỏi. Do khách đông nên có thể thông cảm.</p>
+      </li>
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Nhân viên khác</span>
+        <p>Được mời ngồi, mời nước. Các nhân viên khác khi bắt gặp ánh mắt KH đều gật đầu chào và cười thân thiện.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3. Tu van chot deal -->
+<section class="detail-section">
+  <div class="detail-container">
+    <div class="detail-header">
+      <div class="detail-number score-mid">5<span style="font-size:24px;color:var(--ink-muted-48);">/10</span></div>
+      <div class="detail-title">Tư vấn chốt deal</div>
+    </div>
+    <span class="detail-score-badge badge-mid">Trung bình</span>
+
+    <ul class="feedback-list">
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Thái độ</span>
+        <p>2 chuyên viên tư vấn khá nice, nhiệt tình, thoải mái. Tư vấn đúng vấn đề KH quan tâm (mụn).</p>
+      </li>
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Chiến lược bán hàng</span>
+        <p>Quá tập trung push <strong>gói chuyên sâu 12 triệu</strong>, không giới thiệu gói basic. KH quan tâm vấn đề mụn nhưng không được tư vấn gói combo lấy mụn 10 lần (4.5 triệu) — gói phù hợp hơn.</p>
+      </li>
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Gói KM 499k</span>
+        <p>Khi hỏi về hiệu quả gói KM, tư vấn khiến KH cảm nhận gói này chỉ để <strong>"câu khách đến cơ sở"</strong>, không có hiệu quả gì. Nếu KH đến vì dịch vụ này sẽ bị hụt hẫng.</p>
+      </li>
+      <li class="feedback-item negative">
+        <span class="feedback-tag tag-negative">Không tôn trọng quyết định</span>
+        <p>Khi KH đã chốt gói combo lấy mụn (giá thấp hơn), tư vấn viên tiếp tục push gói chuyên sâu — <strong>không quan tâm năng lực tài chính</strong> của khách hàng.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4. Dich vu -->
+<section class="detail-section dark">
+  <div class="detail-container">
+    <div class="detail-header">
+      <div class="detail-number score-good">8<span style="font-size:24px;color:#86868b;">/10</span></div>
+      <div class="detail-title">Dịch vụ làm da</div>
+    </div>
+    <span class="detail-score-badge badge-good">Tốt</span>
+
+    <ul class="feedback-list">
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Nghiệp vụ</span>
+        <p>Luôn chủ động thông báo trước mọi tình huống (sẽ lạnh, sẽ chói, sẽ châm chích trong bao lâu). Thao tác gãy gọn, chỉnh chu. KH hài lòng.</p>
+      </li>
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Giao tiếp</span>
+        <p>Trao đổi nhẹ nhàng, chia sẻ vừa phải — <strong>không gây cảm giác phiền</strong>. Tư vấn thêm dịch vụ một cách tự nhiên, KH tiếp nhận tích cực.</p>
+      </li>
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Tư vấn đúng nhu cầu</span>
+        <p>Giới thiệu cho KH gói lấy mụn phù hợp mà bộ phận tư vấn ban đầu đã bỏ sót. KH hài lòng và chốt deal tại đây.</p>
+      </li>
+      <li class="feedback-item neutral">
+        <span class="feedback-tag tag-neutral">Lưu ý</span>
+        <p>Khi được hỏi, bạn nghiệp vụ nâng tầm Shynh Premium (chuyên môn, thâm niên) nhưng nói Shynh House "cũng như các Spa thông thường khác" — cần thống nhất thông điệp thương hiệu.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5. Khong gian -->
+<section class="detail-section">
+  <div class="detail-container">
+    <div class="detail-header">
+      <div class="detail-number score-good">8<span style="font-size:24px;color:var(--ink-muted-48);">/10</span></div>
+      <div class="detail-title">Không gian & Relax</div>
+    </div>
+    <span class="detail-score-badge badge-good">Tốt</span>
+
+    <ul class="feedback-list">
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Nước uống</span>
+        <p>Ngon, có refill cho khách.</p>
+      </li>
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Không gian</span>
+        <p>Sạch sẽ, thơm, yên tĩnh. Nhân viên nói chuyện nhỏ nhẹ — khi làm dịch vụ chỉ nghe tiếng dép, ít nghe tiếng nói.</p>
+      </li>
+      <li class="feedback-item positive">
+        <span class="feedback-tag tag-positive">Cảm nhận</span>
+        <p>Mặc dù cuối tuần đông khách nhưng <strong>không thấy ngột ngạt</strong>. Không gian vẫn giữ được sự thoải mái.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Conclusion -->
+<section class="conclusion">
+  <h2 class="section-title" style="margin-bottom: 24px;">Kết luận</h2>
+  <div class="verdict">
+    <svg width="24" height="24" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#34c759" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="#34c759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Khách hàng sẽ quay lại
+  </div>
+  <p class="conclusion-text">Nghiệp vụ làm da tốt và cảm nhận chung ok. Tuy nhiên cần khắc phục nghiêm túc các điểm yếu ở khâu tư vấn online và đón tiếp.</p>
+
+  <h3 style="font-size:21px;font-weight:600;margin-bottom:24px;color:var(--on-dark);">Khuyến nghị cải thiện</h3>
+
+  <div class="rec-grid">
+    <div class="rec-card">
+      <span class="rec-priority priority-critical">Khẩn cấp</span>
+      <h4>Đào tạo tư vấn Online</h4>
+      <p>Xây dựng script tư vấn chuẩn: chủ động hỏi nhu cầu, tình trạng da, ngân sách. Kiểm tra chính tả trước khi gửi. Không để KH phải tự tìm hiểu.</p>
+    </div>
+    <div class="rec-card">
+      <span class="rec-priority priority-critical">Khẩn cấp</span>
+      <h4>Thái độ đón tiếp</h4>
+      <p>Coaching riêng nhân viên nam về kỹ năng đón tiếp: biểu cảm tươi tắn, giải thích mục đích khi thu thập thông tin, không hỏi trùng lặp.</p>
+    </div>
+    <div class="rec-card">
+      <span class="rec-priority priority-high">Quan trọng</span>
+      <h4>Chiến lược tư vấn gói dịch vụ</h4>
+      <p>Giới thiệu đầy đủ các mức giá từ basic đến chuyên sâu. Tôn trọng quyết định và năng lực tài chính của KH. Không push quá mức.</p>
+    </div>
+    <div class="rec-card">
+      <span class="rec-priority priority-medium">Cần lưu ý</span>
+      <h4>Thống nhất thông điệp thương hiệu</h4>
+      <p>Đào tạo nhân viên không so sánh tiêu cực giữa Shynh Premium và Shynh House. Cả hai đều là thương hiệu của Shynh Group.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>Feedback Report — Shynh Premium 33 Trần Quốc Thảo, Quận 3</p>
+  <p style="margin-top:4px;">Dịch vụ: Meso Peel trị mụn xoá thâm (KM 499k) &nbsp;|&nbsp; Ngày KH trải nghiệm: 26/07/2023</p>
+</footer>
+
+</body>
+</html>
