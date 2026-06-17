@@ -1323,7 +1323,7 @@
 
 <!-- Sub Nav -->
 <div class="sub-nav">
-  <span class="sub-nav-title">Specification v1.0</span>
+  <span class="sub-nav-title">Specification v1.1</span>
   <span class="sub-nav-badge pending">🟡 Chờ xác nhận</span>
 </div>
 
@@ -1545,7 +1545,7 @@
                   <tr><td>M1</td><td><strong>Data Integration</strong></td><td>Thu thập và chuẩn hoá dữ liệu từ mọi nguồn (POS, CRM, App, Zalo, Ads...)</td><td>2</td></tr>
                   <tr><td>M2</td><td><strong>Identity &amp; Profile</strong></td><td>Hợp nhất danh tính khách hàng, xây dựng Customer 360</td><td>2</td></tr>
                   <tr><td>M3</td><td><strong>Segmentation</strong></td><td>Phân khúc khách hàng theo rule, AI, và RFM</td><td>3</td></tr>
-                  <tr><td>M4</td><td><strong>Campaign &amp; Activation</strong></td><td>Quản lý campaign, automation workflow, kết nối kênh gửi</td><td>3</td></tr>
+                  <tr><td>M4</td><td><strong>Campaign &amp; Activation</strong></td><td>Quản lý campaign, template nội dung, automation workflow, kết nối kênh gửi</td><td>4</td></tr>
                   <tr><td>M5</td><td><strong>Analytics &amp; Reporting</strong></td><td>Dashboard, phân tích khách hàng và campaign</td><td>3</td></tr>
                   <tr><td>M6</td><td><strong>Lead Management</strong></td><td>Thu lead, chấm điểm lead, theo dõi chuyển đổi</td><td>3</td></tr>
                   <tr><td>M7</td><td><strong>Consent &amp; Privacy</strong></td><td>Quản lý đồng ý, tuân thủ quy định dữ liệu</td><td>1</td></tr>
@@ -1556,7 +1556,7 @@
               </table>
             </div>
           </div>
-          <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 12px;">Tổng cộng: <strong style="color: rgba(255,255,255,0.8);">10 modules, 29 features</strong> &mdash; triển khai qua 3 phase.</p>
+          <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 12px;">Tổng cộng: <strong style="color: rgba(255,255,255,0.8);">10 modules, 30 features</strong> &mdash; triển khai qua 3 phase.</p>
         </div>
 
         <!-- 2.2 Feature List -->
@@ -1592,6 +1592,7 @@
                   <tr><td>F4.1</td><td>Campaign Management</td><td>Campaign</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 2</span></td></tr>
                   <tr><td>F4.2</td><td>Marketing Automation (Workflow Builder)</td><td>Campaign</td><td><span class="priority-badge priority-C">C</span></td><td><span class="phase-badge">Phase 3</span></td></tr>
                   <tr><td>F4.3</td><td>Channel Integration (kênh gửi)</td><td>Campaign</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 2</span></td></tr>
+                  <tr><td>F4.4</td><td>Message Template Management</td><td>Campaign</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 2</span></td></tr>
                   <tr style="background: rgba(41,151,255,0.06);">
                     <td colspan="5"><strong style="color: var(--primary-on-dark);">Module 5: Analytics &amp; Reporting</strong></td>
                   </tr>
@@ -2027,7 +2028,7 @@
           </div>
           <blockquote class="user-story"><p>Là <strong>marketing manager</strong>, tôi muốn <strong>tạo và quản lý chiến dịch marketing từ 1 nơi</strong>, để <strong>không phải vào từng kênh riêng lẻ</strong>.</p></blockquote>
           <h5 class="sub-feature-title">Workflow tạo campaign:</h5>
-          <pre>Chọn segment → Chọn kênh → Soạn nội dung → Set lịch gửi → Review → Launch</pre>
+          <pre>Chọn segment → Chọn kênh → Soạn nội dung (từ template hoặc nhập trực tiếp) → Set lịch gửi → Review → Launch</pre>
           <h5 class="sub-feature-title">Cá nhân hoá nội dung:</h5>
           <ul class="styled">
             <li>Merge field: <code>&#123;&#123;ten_khach&#125;&#125;</code>, <code>&#123;&#123;dich_vu_gan_nhat&#125;&#125;</code>, <code>&#123;&#123;so_buoi_con_lai&#125;&#125;</code></li>
@@ -2116,6 +2117,93 @@
             <li>Rate limiting: không gửi quá X message/giây để tránh bị block</li>
             <li>Fallback channel: nếu Zalo fail → tự gửi SMS</li>
           </ul>
+        </div>
+
+        <!-- F4.4 -->
+        <div class="feature-card-dark" id="f4-4">
+          <div class="feature-card-header">
+            <span class="feature-id feature-id-dark">F4.4</span>
+            <h4 class="feature-title" style="margin:0; color:white;">Message Template Management</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 2</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>marketing manager</strong>, tôi muốn <strong>tạo và quản lý các template nội dung mẫu có hỗ trợ biến cá nhân hoá</strong>, để <strong>khi tạo campaign chỉ cần chọn template, không phải soạn lại từ đầu, đồng thời đo lường hiệu quả theo từng template</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Quản lý template:</h5>
+          <ul class="styled">
+            <li><strong>Tạo / sửa / xoá / nhân bản</strong> template nội dung cho từng kênh (Zalo, SMS, Email, Push...)</li>
+            <li><strong>Phân loại</strong> theo: kênh, BU, mục đích (welcome, promotion, reminder, winback, nurture...)</li>
+            <li><strong>Trạng thái</strong>: Draft → Active → Archived</li>
+            <li><strong>Versioning</strong>: lưu lịch sử các phiên bản template, cho phép rollback</li>
+            <li><strong>Preview</strong>: xem trước nội dung đã render với data của 1 khách hàng test</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Short-code (biến cá nhân hoá):</h5>
+          <p style="color: rgba(255,255,255,0.75);">Người dùng chèn biến vào nội dung template bằng cú pháp short-code. Khi gửi, hệ thống tự thay bằng dữ liệu thực của từng khách hàng.</p>
+          <div class="dark-table">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Nhóm</th><th>Short-code</th><th>Mô tả</th><th>Ví dụ output</th></tr></thead>
+                <tbody>
+                  <tr><td rowspan="5"><strong>Thông tin cơ bản</strong></td><td><code>{{ho_ten}}</code></td><td>Họ tên đầy đủ</td><td>Nguyễn Thị Mai</td></tr>
+                  <tr><td><code>{{ten}}</code></td><td>Tên (từ cuối)</td><td>Mai</td></tr>
+                  <tr><td><code>{{gioi_tinh}}</code></td><td>Giới tính</td><td>Chị / Anh</td></tr>
+                  <tr><td><code>{{ngay_sinh}}</code></td><td>Ngày sinh</td><td>15/03</td></tr>
+                  <tr><td><code>{{chi_nhanh}}</code></td><td>Chi nhánh thường đến</td><td>Ngọc Dung Quận 1</td></tr>
+                  <tr><td rowspan="4"><strong>Giao dịch</strong></td><td><code>{{dich_vu_gan_nhat}}</code></td><td>Dịch vụ gần nhất</td><td>Trẻ hoá da Thermage</td></tr>
+                  <tr><td><code>{{ngay_gd_cuoi}}</code></td><td>Ngày giao dịch cuối</td><td>05/06/2026</td></tr>
+                  <tr><td><code>{{tong_chi_tieu}}</code></td><td>Tổng chi tiêu format</td><td>45.000.000đ</td></tr>
+                  <tr><td><code>{{so_buoi_con_lai}}</code></td><td>Số buổi liệu trình còn</td><td>3</td></tr>
+                  <tr><td rowspan="3"><strong>Segment &amp; Score</strong></td><td><code>{{segment}}</code></td><td>Segment hiện tại</td><td>VIP Gold</td></tr>
+                  <tr><td><code>{{hang_thanh_vien}}</code></td><td>Tier thành viên</td><td>Diamond</td></tr>
+                  <tr><td><code>{{diem_tich_luy}}</code></td><td>Điểm tích luỹ</td><td>12.500</td></tr>
+                  <tr><td rowspan="2"><strong>Campaign</strong></td><td><code>{{ma_uu_dai}}</code></td><td>Mã ưu đãi riêng</td><td>VIP-MAI-2026</td></tr>
+                  <tr><td><code>{{link_uu_dai}}</code></td><td>Link landing page riêng</td><td>https://...?ref=abc</td></tr>
+                  <tr><td><strong>Custom</strong></td><td><code>{{custom.ten_field}}</code></td><td>Bất kỳ field nào trong profile</td><td>(tuỳ field)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h5 class="sub-feature-title">Sử dụng template khi tạo campaign:</h5>
+          <p style="color: rgba(255,255,255,0.75);">Khi tạo campaign ở bước "Soạn nội dung", user có 2 lựa chọn:</p>
+          <ul class="styled">
+            <li><strong>Chọn từ template mẫu</strong> — browse/search template theo kênh &amp; mục đích → chọn → nội dung tự điền, user có thể chỉnh sửa thêm trước khi gửi</li>
+            <li><strong>Nhập trực tiếp</strong> — soạn nội dung từ đầu (vẫn hỗ trợ chèn short-code từ danh sách gợi ý)</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Thống kê hiệu quả theo template:</h5>
+          <ul class="styled">
+            <li>Mỗi template có trang thống kê riêng: tổng số lần sử dụng, tổng audience reached</li>
+            <li>Metrics theo campaign đã dùng template: sent, delivered, open rate, click rate, conversion rate, revenue</li>
+            <li>So sánh hiệu quả giữa các template cùng mục đích (VD: 3 template winback → template nào convert tốt nhất)</li>
+            <li>Trend hiệu quả theo thời gian — phát hiện template nào đang "mòn" (open rate giảm dần)</li>
+            <li>Đề xuất top template theo hiệu quả khi user chọn template cho campaign mới</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>CRUD template với rich text editor (email) hoặc plain text editor (SMS, Zalo)</li>
+            <li>Autocomplete short-code: gõ <code>{{</code> → hiện danh sách biến có sẵn, chọn để chèn</li>
+            <li>Validate template trước khi lưu: cảnh báo nếu có short-code không hợp lệ hoặc field không tồn tại</li>
+            <li>Preview template với data khách thực — chọn 1 khách bất kỳ để xem nội dung đã render</li>
+            <li>Fallback value cho short-code: nếu khách thiếu data (VD: không có tên) → dùng giá trị mặc định ("Quý khách")</li>
+            <li>Khi tạo campaign: hiển thị cả 2 option "Chọn template" và "Nhập trực tiếp" rõ ràng</li>
+            <li>Template library có search, filter theo kênh/BU/mục đích, sort theo hiệu quả</li>
+            <li>Phân quyền: BU chỉ thấy template của BU mình + template chung (holding)</li>
+            <li>Dashboard thống kê template: top performing, most used, declining effectiveness</li>
+            <li>Export báo cáo hiệu quả template theo thời gian (Excel/PDF)</li>
+          </ul>
+
+          <div class="edge-cases">
+            <div class="edge-cases-title">Edge Cases</div>
+            <ul>
+              <li>Short-code trỏ đến field đã bị xoá khỏi schema → hiển thị fallback value, log warning cho admin</li>
+              <li>Template đang được dùng trong workflow automation → không cho xoá, chỉ cho archive</li>
+              <li>Khách có nhiều liệu trình → <code>{{so_buoi_con_lai}}</code> lấy liệu trình đang active gần nhất</li>
+              <li>Template dùng cho nhiều kênh khác nhau → mỗi kênh có bản nội dung riêng (SMS ngắn hơn email)</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -2212,8 +2300,9 @@
             <li>Revenue attributed (doanh thu phát sinh từ campaign)</li>
             <li>Cost (chi phí gửi SMS/Zalo/Ads)</li>
             <li>ROI = Revenue / Cost</li>
-            <li>Breakdown by segment, by channel, by chi nhánh</li>
+            <li>Breakdown by segment, by channel, by chi nhánh, by template sử dụng</li>
             <li>Comparison với campaign tương tự trước đó</li>
+            <li><strong>Template performance</strong>: so sánh hiệu quả các template đã dùng — open rate, click rate, conversion, revenue per template</li>
           </ul>
           <h5 class="sub-feature-title">Acceptance criteria:</h5>
           <ul class="ac-list">
@@ -2945,7 +3034,7 @@
           <div class="screen-chip"><div class="screen-id">S5</div><div class="screen-info"><div class="screen-name">Segment Builder</div><div class="screen-desc">Tạo/sửa segment bằng UI</div><div class="screen-role">Marketing, Analyst</div></div></div>
           <div class="screen-chip"><div class="screen-id">S6</div><div class="screen-info"><div class="screen-name">Segment List</div><div class="screen-desc">Danh sách segment đã tạo</div><div class="screen-role">Marketing</div></div></div>
           <div class="screen-chip"><div class="screen-id">S7</div><div class="screen-info"><div class="screen-name">RFM Dashboard</div><div class="screen-desc">Ma trận RFM, drill-down</div><div class="screen-role">Marketing, Management</div></div></div>
-          <div class="screen-chip"><div class="screen-id">S8</div><div class="screen-info"><div class="screen-name">Campaign Create</div><div class="screen-desc">Tạo campaign mới</div><div class="screen-role">Marketing</div></div></div>
+          <div class="screen-chip"><div class="screen-id">S8</div><div class="screen-info"><div class="screen-name">Campaign Create</div><div class="screen-desc">Tạo campaign mới (chọn template hoặc nhập trực tiếp)</div><div class="screen-role">Marketing</div></div></div>
           <div class="screen-chip"><div class="screen-id">S9</div><div class="screen-info"><div class="screen-name">Campaign List</div><div class="screen-desc">Danh sách campaign, status, kết quả</div><div class="screen-role">Marketing</div></div></div>
           <div class="screen-chip"><div class="screen-id">S10</div><div class="screen-info"><div class="screen-name">Campaign Detail</div><div class="screen-desc">Chi tiết kết quả 1 campaign</div><div class="screen-role">Marketing</div></div></div>
           <div class="screen-chip"><div class="screen-id">S11</div><div class="screen-info"><div class="screen-name">Workflow Builder</div><div class="screen-desc">Tạo automation workflow</div><div class="screen-role">Marketing</div></div></div>
@@ -2964,6 +3053,9 @@
           <div class="screen-chip"><div class="screen-id">S24</div><div class="screen-info"><div class="screen-name">Consent Center</div><div class="screen-desc">Xem/quản lý consent khách</div><div class="screen-role">Admin, CS</div></div></div>
           <div class="screen-chip"><div class="screen-id">S25</div><div class="screen-info"><div class="screen-name">Audit Log</div><div class="screen-desc">Lịch sử truy cập, thay đổi</div><div class="screen-role">Super Admin</div></div></div>
           <div class="screen-chip"><div class="screen-id">S26</div><div class="screen-info"><div class="screen-name">Custom Dashboard Builder</div><div class="screen-desc">Tự tạo dashboard riêng</div><div class="screen-role">All (theo quyền)</div></div></div>
+          <div class="screen-chip"><div class="screen-id">S27</div><div class="screen-info"><div class="screen-name">Template List</div><div class="screen-desc">Danh sách template mẫu, filter theo kênh/BU/mục đích, sort theo hiệu quả</div><div class="screen-role">Marketing</div></div></div>
+          <div class="screen-chip"><div class="screen-id">S28</div><div class="screen-info"><div class="screen-name">Template Editor</div><div class="screen-desc">Tạo/sửa template, chèn short-code, preview với data khách thực</div><div class="screen-role">Marketing</div></div></div>
+          <div class="screen-chip"><div class="screen-id">S29</div><div class="screen-info"><div class="screen-name">Template Analytics</div><div class="screen-desc">Thống kê hiệu quả từng template: usage, open/click/conversion, trend, so sánh</div><div class="screen-role">Marketing, Management</div></div></div>
         </div>
 
         <h3 class="subsection-title">4.2. User flow chính</h3>
@@ -2972,9 +3064,12 @@
           <div class="user-flow-title">Flow 1 — Marketing tạo campaign re-engagement</div>
           <pre>Login → Dashboard → Segment Builder → Tạo segment "At-risk 30 ngày"
 → Preview số khách → Lưu → Campaign Create → Chọn segment
-→ Chọn kênh Zalo → Soạn nội dung (cá nhân hoá) → Preview
-→ Set lịch gửi → Submit for approval → Manager approve → Gửi
-→ Campaign Detail → Xem kết quả (open, click, conversion)</pre>
+→ Chọn kênh Zalo → Chọn nội dung:
+    ├─ Option A: Chọn từ Template List → chọn template "Winback 30 ngày" → nội dung tự điền → chỉnh sửa nếu cần
+    └─ Option B: Nhập trực tiếp → soạn nội dung, chèn short-code {{ten}}, {{dich_vu_gan_nhat}}
+→ Preview nội dung đã render với data khách thực → Set lịch gửi
+→ Submit for approval → Manager approve → Gửi
+→ Campaign Detail → Xem kết quả (open, click, conversion, breakdown theo template)</pre>
         </div>
 
         <div class="user-flow">
@@ -2998,6 +3093,23 @@
           <pre>Login → Score Config → Chọn BU → Cấu hình trọng số
 → Cấu hình tier thresholds → Cấu hình engagement events
 → Preview impact → Schedule áp dụng → Lưu</pre>
+        </div>
+
+        <div class="user-flow">
+          <div class="user-flow-title">Flow 5 — Marketing tạo và quản lý template</div>
+          <pre>Login → Template List → [+ Tạo template mới] → Template Editor
+→ Chọn kênh (Zalo/SMS/Email) → Chọn mục đích (winback/promotion/reminder...)
+→ Soạn nội dung → Gõ {{ → autocomplete danh sách short-code → chèn biến
+→ Set fallback value cho từng biến → Preview với data khách thực
+→ Lưu (Draft) → Activate → Template sẵn sàng dùng trong campaign</pre>
+        </div>
+
+        <div class="user-flow">
+          <div class="user-flow-title">Flow 6 — Marketing đánh giá hiệu quả template</div>
+          <pre>Login → Template List → Sort by performance → Chọn 1 template
+→ Template Analytics → Xem: số lần dùng, open rate, click rate, conversion, revenue
+→ Xem trend theo thời gian (template có đang "mòn"?)
+→ So sánh với template cùng mục đích → Quyết định: tiếp tục / chỉnh sửa / archive</pre>
         </div>
 
         <h3 class="subsection-title">4.3. Design reference</h3>
@@ -3028,7 +3140,8 @@
               <tr><td><strong>Transaction</strong></td><td>Giao dịch</td><td><code>id, customer_id, bu_id, branch_id, amount, items, payment_method</code></td></tr>
               <tr><td><strong>Lead</strong></td><td>Khách tiềm năng</td><td><code>id, customer_id, bu_id, source, status, score, assigned_to</code></td></tr>
               <tr><td><strong>Segment</strong></td><td>Nhóm khách</td><td><code>id, name, conditions (JSON), bu_id, count, type (static/dynamic)</code></td></tr>
-              <tr><td><strong>Campaign</strong></td><td>Chiến dịch</td><td><code>id, name, segment_id, channel, content, status, scheduled_at</code></td></tr>
+              <tr><td><strong>MessageTemplate</strong></td><td>Template nội dung mẫu</td><td><code>id, name, bu_id, channel, purpose, content, short_codes (JSON), status (draft/active/archived), version, created_by, created_at</code></td></tr>
+              <tr><td><strong>Campaign</strong></td><td>Chiến dịch</td><td><code>id, name, segment_id, channel, template_id (nullable), content, status, scheduled_at</code></td></tr>
               <tr><td><strong>CampaignResult</strong></td><td>Kết quả gửi</td><td><code>campaign_id, customer_id, sent, delivered, opened, clicked, converted</code></td></tr>
               <tr><td><strong>Score</strong></td><td>Điểm khách</td><td><code>customer_id, unified, monetary, engagement, loyalty, social, health, tier</code></td></tr>
               <tr><td><strong>ScoreHistory</strong></td><td>Lịch sử điểm</td><td><code>customer_id, score_type, value, calculated_at</code></td></tr>
@@ -3370,6 +3483,12 @@
           <span class="changelog-note" style="color: rgba(255,255,255,0.8);">Initial draft — 10 modules, 28 features, full spec</span>
           <span class="changelog-author" style="color: rgba(255,255,255,0.35);">IT Team</span>
         </div>
+        <div class="changelog-item">
+          <span class="changelog-ver" style="background: rgba(41,151,255,0.15); color: var(--primary-on-dark);">v1.1</span>
+          <span class="changelog-date" style="color: rgba(255,255,255,0.4);">2026-06-17</span>
+          <span class="changelog-note" style="color: rgba(255,255,255,0.8);">Thêm F4.4 Message Template Management + 3 màn hình (S27 Template List, S28 Template Editor, S29 Template Analytics) + 2 user flow mới (tạo template, đánh giá hiệu quả) + entity MessageTemplate. Cập nhật S8, Flow 1, F5.3 cho phù hợp.</span>
+          <span class="changelog-author" style="color: rgba(255,255,255,0.35);">IT Team</span>
+        </div>
       </div>
     </section>
 
@@ -3381,7 +3500,7 @@
           <div class="footer-meta">
             Specification v1.0 · 2026-06-11<br>
             BA: IT Team · Status: 🟡 Chờ xác nhận<br>
-            10 modules · 28 features · 3 phases
+            10 modules · 30 features · 3 phases
           </div>
         </div>
         <div class="footer-legal">

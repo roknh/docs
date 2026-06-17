@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Thống kê Template</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #004d99;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* ══ TOPNAV ══ */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.topnav-icon-btn { background: none; border: none; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); color: var(--ink-48); }
+.topnav-icon-btn:hover { background: var(--ink-04); }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+/* ══ SIDEBAR ══ */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: width 0.25s ease; }
+.sidebar.open { transform: translateX(0) !important; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; box-shadow: var(--shadow-sm); }
+
+/* ══ CONTENT ══ */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ BUTTONS ══ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-ghost { background: none; color: var(--brand-primary); border: none; }
+.btn-ghost:hover { background: var(--brand-primary-subtle); }
+
+/* ══ BADGES ══ */
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
+.badge-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.badge-success { background: var(--success-subtle); color: var(--success-ink); }
+.badge-warning { background: var(--warning-subtle); color: var(--warning-ink); }
+.badge-danger { background: var(--danger-subtle); color: var(--danger-ink); }
+.badge-info { background: var(--info-subtle); color: var(--info); }
+.badge-neutral { background: var(--ink-04); color: var(--ink-60); }
+
+/* Channel type badges */
+.ch-email { background: #e5f1ff; color: #004d99; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); }
+.ch-zalo  { background: #e5f6ff; color: #0070ba; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); }
+.ch-sms   { background: var(--warning-subtle); color: var(--warning-ink); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); }
+.ch-push  { background: var(--bu-zema-bg); color: var(--bu-zema); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); }
+
+/* BU badges */
+.bu-nd { background: var(--bu-ngocdung-bg); color: var(--bu-ngocdung); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: var(--radius-pill); }
+.bu-ze { background: var(--bu-zema-bg); color: var(--bu-zema); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: var(--radius-pill); }
+.bu-oc { background: var(--bu-ocany-bg); color: var(--bu-ocany); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: var(--radius-pill); }
+
+/* ══ PAGE HEADER ══ */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 20px 32px; }
+.breadcrumb { font-size: 13px; color: var(--ink-48); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+.breadcrumb a { color: var(--brand-primary); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.page-header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-header-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* Time range filter pills */
+.time-filter { display: flex; gap: 2px; background: var(--ink-04); border-radius: var(--radius-md); padding: 3px; }
+.time-filter-btn { font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: var(--radius-sm); border: none; background: none; color: var(--ink-60); cursor: pointer; transition: all 0.12s; }
+.time-filter-btn.active { background: var(--ink-00); color: var(--ink-100); box-shadow: var(--shadow-xs); font-weight: 600; }
+
+/* ══ BODY LAYOUT ══ */
+.page-body { padding: 24px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+/* ══ KPI CARDS ══ */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.kpi-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 18px 20px; }
+.kpi-card.kpi-primary { border-top: 3px solid var(--brand-primary); }
+.kpi-card.kpi-success { border-top: 3px solid var(--success); }
+.kpi-card.kpi-info    { border-top: 3px solid var(--info); }
+.kpi-card.kpi-purple  { border-top: 3px solid var(--bu-zema); }
+.kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); margin-bottom: 6px; }
+.kpi-value { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: var(--ink-100); letter-spacing: -0.5px; line-height: 1.1; }
+.kpi-sub { font-size: 12px; color: var(--ink-48); margin-top: 4px; }
+.kpi-delta { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.kpi-delta.up   { color: var(--success-ink); }
+.kpi-delta.down { color: var(--danger-ink); }
+
+/* ══ CARDS ══ */
+.card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.card-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--ink-04); }
+.card-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+.card-body { padding: 20px; }
+
+/* ══ TEMPLATE TABLE ══ */
+.table-wrapper { overflow-x: auto; }
+table.tmpl-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+table.tmpl-table thead th { background: var(--ink-02); padding: 10px 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); text-align: left; white-space: nowrap; border-bottom: 1px solid var(--ink-08); }
+table.tmpl-table thead th.num { text-align: right; }
+table.tmpl-table tbody tr { transition: background 0.12s; }
+table.tmpl-table tbody tr:hover { background: var(--ink-02); }
+table.tmpl-table tbody td { padding: 11px 14px; border-bottom: 1px solid var(--ink-04); color: var(--ink-80); vertical-align: middle; }
+table.tmpl-table tbody tr:last-child td { border-bottom: none; }
+table.tmpl-table tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.tmpl-rank { font-size: 12px; font-weight: 700; color: var(--ink-32); width: 24px; text-align: center; }
+.tmpl-rank.gold   { color: #c9970a; }
+.tmpl-rank.silver { color: #888; }
+.tmpl-rank.bronze { color: #a3591a; }
+.tmpl-name { font-weight: 500; color: var(--ink-100); max-width: 200px; }
+.tmpl-name-sub { font-size: 11px; color: var(--ink-48); margin-top: 1px; }
+.rate-bar-wrap { display: flex; align-items: center; gap: 8px; }
+.rate-bar { flex: 1; max-width: 80px; height: 4px; background: var(--ink-04); border-radius: 2px; overflow: hidden; }
+.rate-bar-fill { height: 100%; border-radius: 2px; }
+.rate-val { font-size: 12px; font-weight: 600; color: var(--ink-100); min-width: 36px; }
+.trend-spark { font-size: 14px; letter-spacing: -1px; }
+.trend-up   { color: var(--success-ink); }
+.trend-down { color: var(--danger-ink); }
+.trend-flat { color: var(--ink-32); }
+
+/* ══ CHANNEL USAGE BARS ══ */
+.channel-list { display: flex; flex-direction: column; gap: 18px; padding: 20px; }
+.channel-row { display: flex; align-items: center; gap: 16px; }
+.channel-name { width: 60px; font-size: 13px; font-weight: 600; color: var(--ink-80); flex-shrink: 0; }
+.channel-bar-wrap { flex: 1; }
+.channel-bar-track { height: 24px; background: var(--ink-04); border-radius: var(--radius-sm); overflow: hidden; position: relative; }
+.channel-bar-fill { height: 100%; border-radius: var(--radius-sm); display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; transition: width 0.6s ease; }
+.channel-meta { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-48); flex-shrink: 0; min-width: 120px; }
+.channel-count { font-weight: 600; color: var(--ink-80); }
+
+/* ══ COMPARE SECTION ══ */
+.compare-selectors { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--ink-04); flex-wrap: wrap; }
+.compare-selectors label { font-size: 13px; font-weight: 500; color: var(--ink-60); }
+.compare-select { height: 34px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 0 28px 0 10px; font-size: 13px; background: var(--ink-00); color: var(--ink-80); font-family: var(--font-text); cursor: pointer; min-width: 200px; }
+.compare-select:focus { outline: none; box-shadow: var(--shadow-focus); }
+.compare-vs { font-size: 13px; font-weight: 700; color: var(--ink-32); }
+
+table.compare-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+table.compare-table thead th { background: var(--ink-02); padding: 10px 16px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); text-align: left; border-bottom: 1px solid var(--ink-08); }
+table.compare-table thead th.tmpl-a { background: #e5f1ff; color: #004d99; }
+table.compare-table thead th.tmpl-b { background: var(--bu-zema-bg); color: var(--bu-zema); }
+table.compare-table tbody td { padding: 12px 16px; border-bottom: 1px solid var(--ink-04); vertical-align: middle; }
+table.compare-table tbody tr:last-child td { border-bottom: none; }
+table.compare-table tbody td:first-child { font-weight: 500; color: var(--ink-60); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+table.compare-table tbody td.val-a { font-weight: 700; color: #004d99; font-family: var(--font-display); font-size: 15px; }
+table.compare-table tbody td.val-b { font-weight: 700; color: var(--bu-zema); font-family: var(--font-display); font-size: 15px; }
+table.compare-table tbody td.winner-a { font-size: 11px; color: var(--success-ink); font-weight: 600; }
+table.compare-table tbody td.winner-b { font-size: 11px; color: var(--bu-zema); font-weight: 600; }
+table.compare-table tbody td.tie { font-size: 11px; color: var(--ink-32); }
+
+/* ══ LOW PERFORMING ══ */
+.low-perf-list { display: flex; flex-direction: column; gap: 0; }
+.low-perf-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--ink-04); }
+.low-perf-item:last-child { border-bottom: none; }
+.low-perf-left { flex: 1; min-width: 0; }
+.low-perf-name { font-weight: 500; color: var(--ink-100); font-size: 14px; margin-bottom: 4px; }
+.low-perf-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.low-perf-metrics { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; }
+.low-perf-metric { display: flex; flex-direction: column; }
+.low-perf-metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-32); font-weight: 600; }
+.low-perf-metric-val { font-size: 14px; font-weight: 700; margin-top: 1px; }
+.low-perf-metric-val.bad { color: var(--danger-ink); }
+.low-perf-metric-val.ok  { color: var(--warning-ink); }
+.low-perf-suggestion { display: flex; align-items: flex-start; gap: 6px; background: var(--warning-subtle); border: 1px solid #f9d98a; border-radius: var(--radius-md); padding: 8px 10px; font-size: 12px; color: var(--warning-ink); margin-top: 8px; max-width: 500px; }
+.low-perf-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+
+/* ══ PAGINATION ══ */
+.pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-top: 1px solid var(--ink-04); font-size: 13px; color: var(--ink-48); flex-wrap: wrap; gap: 10px; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-section-label::after { content: ""; display: block; width: 24px; height: 1px; background: var(--ink-08); margin: 0 auto; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .content { margin-left: 64px; }
+  .page-header { padding: 16px 24px; }
+  .page-body { padding: 20px 24px; }
+}
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-section-label::after { display: none; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; }
+  .topnav-bu-switch { display: none; }
+  .page-header { padding: 16px; }
+  .page-title { font-size: 17px; }
+  .page-header-controls { width: 100%; }
+  .page-body { padding: 16px; gap: 16px; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .kpi-value { font-size: 24px; }
+  /* Table → card on mobile */
+  table.tmpl-table, table.tmpl-table thead, table.tmpl-table tbody, table.tmpl-table tr, table.tmpl-table th, table.tmpl-table td { display: block; }
+  table.tmpl-table thead { display: none; }
+  table.tmpl-table tbody tr { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; }
+  table.tmpl-table tbody td { padding: 3px 0; border-bottom: none; }
+  table.tmpl-table tbody td::before { content: attr(data-label); font-size: 10px; font-weight: 600; color: var(--ink-48); text-transform: uppercase; margin-right: 6px; display: inline-block; }
+  table.tmpl-table tbody td.num { text-align: left; }
+  .low-perf-item { flex-direction: column; }
+  .low-perf-right { flex-direction: row; align-items: center; }
+  .compare-select { min-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Ngọc Dung</span>
+    <button class="topnav-icon-btn" title="Thông báo">&#x1F514;</button>
+    <span style="font-size:12px;color:var(--ink-48);">Mai Lan</span>
+    <div class="topnav-avatar">ML</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item active" href="ui-template-list.html"><span class="sidebar-icon">&#x1F4CB;</span> Templates</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="ui-template-list.html">Templates</a>
+      <span>/</span>
+      <span style="color:var(--ink-100);font-weight:500;">Thống kê template</span>
+    </div>
+    <div class="page-header-row">
+      <div class="page-title">Thống kê hiệu quả Template</div>
+      <div class="page-header-controls">
+        <div class="time-filter">
+          <button class="time-filter-btn">7N</button>
+          <button class="time-filter-btn">T5</button>
+          <button class="time-filter-btn active">T6</button>
+          <button class="time-filter-btn">Q2</button>
+          <button class="time-filter-btn">YTD</button>
+        </div>
+        <select style="height:34px;border:1px solid var(--ink-08);border-radius:var(--radius-md);padding:0 24px 0 10px;font-size:13px;background:var(--ink-00);color:var(--ink-80);font-family:var(--font-text);cursor:pointer;">
+          <option>Tất cả BU</option>
+          <option>Ngọc Dung</option>
+          <option>Zema</option>
+          <option>Ocany</option>
+        </select>
+        <button class="btn btn-primary">&#x1F4E5; Xuất báo cáo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- KPI Cards Row -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-label">Tổng template</div>
+        <div class="kpi-value">42</div>
+        <div class="kpi-sub">Trong thư viện</div>
+      </div>
+      <div class="kpi-card kpi-success">
+        <div class="kpi-label">Đang sử dụng</div>
+        <div class="kpi-value">28</div>
+        <div class="kpi-sub">66.7% tổng số</div>
+      </div>
+      <div class="kpi-card kpi-info">
+        <div class="kpi-label">Avg Open Rate</div>
+        <div class="kpi-value">34.2%</div>
+        <div class="kpi-delta up">&#x25B2; 2.1% so với tháng trước</div>
+      </div>
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-label">Avg Conversion</div>
+        <div class="kpi-value">8.7%</div>
+        <div class="kpi-delta up">&#x25B2; 0.4% so với tháng trước</div>
+      </div>
+    </div>
+
+    <!-- Top Performing Templates Table -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">&#x1F3C6; Top Performing Templates</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select style="height:30px;border:1px solid var(--ink-08);border-radius:var(--radius-md);padding:0 24px 0 10px;font-size:12px;background:var(--ink-00);font-family:var(--font-text);cursor:pointer;">
+            <option>Tất cả kênh</option>
+            <option>Email</option>
+            <option>Zalo</option>
+            <option>SMS</option>
+            <option>Push</option>
+          </select>
+          <button class="btn btn-sm btn-secondary">&#x1F4E5; Xuất CSV</button>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="tmpl-table">
+          <thead>
+            <tr>
+              <th style="width:36px;">#</th>
+              <th>Tên Template</th>
+              <th>Kênh</th>
+              <th>BU</th>
+              <th class="num">Số lần dùng</th>
+              <th>Open Rate</th>
+              <th>Click Rate</th>
+              <th>Conversion</th>
+              <th style="text-align:center;">Trend</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="tmpl-rank gold">1</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Sinh nhật VIP — Ưu đãi đặc biệt</div>
+                <div class="tmpl-name-sub">Cập nhật 02/06/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-email">&#x2709; Email</span></td>
+              <td data-label="BU"><span class="bu-nd">Ngọc Dung</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>148</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:89%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">44.8%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:72%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">18.2%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:76%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">15.3%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-up">&#x2191;&#x2197;&#x2191;&#x2192;&#x2191;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="tmpl-rank silver">2</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Nhắc lịch dưỡng da định kỳ</div>
+                <div class="tmpl-name-sub">Cập nhật 28/05/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-zalo">&#x1F4F1; Zalo</span></td>
+              <td data-label="BU"><span class="bu-nd">Ngọc Dung</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>215</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:82%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">41.1%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:61%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">15.4%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:68%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">13.7%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-up">&#x2197;&#x2191;&#x2197;&#x2197;&#x2192;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="tmpl-rank bronze">3</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Flash Sale cuối tuần — Giảm 30%</div>
+                <div class="tmpl-name-sub">Cập nhật 10/06/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-email">&#x2709; Email</span></td>
+              <td data-label="BU"><span class="bu-ze">Zema</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>89</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:79%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">39.5%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:58%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">14.7%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:61%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">12.2%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-up">&#x2192;&#x2197;&#x2191;&#x2197;&#x2191;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="tmpl-rank">4</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Chào mừng thành viên mới</div>
+                <div class="tmpl-name-sub">Cập nhật 15/04/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-email">&#x2709; Email</span></td>
+              <td data-label="BU"><span class="bu-oc">Ocany</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>304</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:75%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">37.8%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:48%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">12.1%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:54%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">10.8%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-flat">&#x2192;&#x2192;&#x2197;&#x2192;&#x2192;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="tmpl-rank">5</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Giới thiệu liệu trình mới — Collagen</div>
+                <div class="tmpl-name-sub">Cập nhật 05/06/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-zalo">&#x1F4F1; Zalo</span></td>
+              <td data-label="BU"><span class="bu-nd">Ngọc Dung</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>67</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:70%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">35.2%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:44%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">11.1%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:50%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">9.9%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-up">&#x2197;&#x2197;&#x2192;&#x2191;&#x2197;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="tmpl-rank">6</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Khuyến mãi Tháng 6 — Mua 1 tặng 1</div>
+                <div class="tmpl-name-sub">Cập nhật 01/06/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-push">&#x1F514; Push</span></td>
+              <td data-label="BU"><span class="bu-ze">Zema</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>112</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:66%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">33.1%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:40%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">10.1%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:44%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">8.8%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-flat">&#x2192;&#x2197;&#x2192;&#x2192;&#x2192;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="tmpl-rank">7</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Nhắc thanh toán — Phác đồ còn dang dở</div>
+                <div class="tmpl-name-sub">Cập nhật 20/05/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-sms">&#x1F4F2; SMS</span></td>
+              <td data-label="BU"><span class="bu-nd">Ngọc Dung</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>433</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:60%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">30.0%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:32%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">8.1%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:38%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">7.6%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-flat">&#x2192;&#x2192;&#x2192;&#x2197;&#x2192;</span>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="tmpl-rank">8</div></td>
+              <td data-label="Tên Template">
+                <div class="tmpl-name">Tái kích hoạt KH không quay lại 90 ngày</div>
+                <div class="tmpl-name-sub">Cập nhật 11/05/2026</div>
+              </td>
+              <td data-label="Kênh"><span class="ch-email">&#x2709; Email</span></td>
+              <td data-label="BU"><span class="bu-nd">Ngọc Dung</span></td>
+              <td data-label="Số lần dùng" class="num"><strong>58</strong></td>
+              <td data-label="Open Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:55%;background:#0066cc;"></div></div>
+                  <span class="rate-val" style="color:#004d99;">27.4%</span>
+                </div>
+              </td>
+              <td data-label="Click Rate">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:26%;background:#f5a623;"></div></div>
+                  <span class="rate-val" style="color:#8a5d0f;">6.6%</span>
+                </div>
+              </td>
+              <td data-label="Conversion">
+                <div class="rate-bar-wrap">
+                  <div class="rate-bar"><div class="rate-bar-fill" style="width:30%;background:#30d158;"></div></div>
+                  <span class="rate-val" style="color:#1a7a31;">5.9%</span>
+                </div>
+              </td>
+              <td style="text-align:center;" data-label="Trend">
+                <span class="trend-spark trend-down">&#x2198;&#x2192;&#x2198;&#x2193;&#x2198;</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span>Hiển thị 1–8 / 28 template đang dùng</span>
+        <div style="display:flex;gap:4px;">
+          <button style="width:30px;height:30px;border-radius:var(--radius-sm);border:1px solid var(--ink-08);background:var(--ink-00);color:var(--ink-60);cursor:pointer;font-size:12px;">&#x2190;</button>
+          <button style="width:30px;height:30px;border-radius:var(--radius-sm);border:1px solid var(--brand-primary);background:var(--brand-primary);color:#fff;cursor:pointer;font-size:12px;">1</button>
+          <button style="width:30px;height:30px;border-radius:var(--radius-sm);border:1px solid var(--ink-08);background:var(--ink-00);color:var(--ink-60);cursor:pointer;font-size:12px;">2</button>
+          <button style="width:30px;height:30px;border-radius:var(--radius-sm);border:1px solid var(--ink-08);background:var(--ink-00);color:var(--ink-60);cursor:pointer;font-size:12px;">3</button>
+          <button style="width:30px;height:30px;border-radius:var(--radius-sm);border:1px solid var(--ink-08);background:var(--ink-00);color:var(--ink-60);cursor:pointer;font-size:12px;">4</button>
+          <button style="width:30px;height:30px;border-radius:var(--radius-sm);border:1px solid var(--ink-08);background:var(--ink-00);color:var(--ink-60);cursor:pointer;font-size:12px;">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template Usage by Channel -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">&#x1F4CA; Mức độ sử dụng theo kênh</span>
+        <span style="font-size:12px;color:var(--ink-48);">Tháng 6/2026</span>
+      </div>
+      <div class="channel-list">
+        <div class="channel-row">
+          <div class="channel-name">Email</div>
+          <div class="channel-bar-wrap">
+            <div class="channel-bar-track">
+              <div class="channel-bar-fill" style="width:42%;background:var(--brand-primary);">42%</div>
+            </div>
+          </div>
+          <div class="channel-meta">
+            <span class="channel-count">18</span> template &nbsp;·&nbsp; <span style="color:var(--ink-32);">6,241 lượt gửi</span>
+          </div>
+        </div>
+        <div class="channel-row">
+          <div class="channel-name">Zalo</div>
+          <div class="channel-bar-wrap">
+            <div class="channel-bar-track">
+              <div class="channel-bar-fill" style="width:31%;background:#0070ba;">31%</div>
+            </div>
+          </div>
+          <div class="channel-meta">
+            <span class="channel-count">12</span> template &nbsp;·&nbsp; <span style="color:var(--ink-32);">4,588 lượt gửi</span>
+          </div>
+        </div>
+        <div class="channel-row">
+          <div class="channel-name">SMS</div>
+          <div class="channel-bar-wrap">
+            <div class="channel-bar-track">
+              <div class="channel-bar-fill" style="width:19%;background:var(--warning);">19%</div>
+            </div>
+          </div>
+          <div class="channel-meta">
+            <span class="channel-count">8</span> template &nbsp;·&nbsp; <span style="color:var(--ink-32);">2,814 lượt gửi</span>
+          </div>
+        </div>
+        <div class="channel-row">
+          <div class="channel-name">Push</div>
+          <div class="channel-bar-wrap">
+            <div class="channel-bar-track">
+              <div class="channel-bar-fill" style="width:8%;background:var(--bu-zema);">8%</div>
+            </div>
+          </div>
+          <div class="channel-meta">
+            <span class="channel-count">4</span> template &nbsp;·&nbsp; <span style="color:var(--ink-32);">1,184 lượt gửi</span>
+          </div>
+        </div>
+      </div>
+      <!-- Small stat row -->
+      <div style="display:flex;gap:0;border-top:1px solid var(--ink-04);">
+        <div style="flex:1;padding:14px 20px;text-align:center;border-right:1px solid var(--ink-04);">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-48);font-weight:600;margin-bottom:4px;">Tổng lượt gửi T6</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--ink-100);">14,827</div>
+        </div>
+        <div style="flex:1;padding:14px 20px;text-align:center;border-right:1px solid var(--ink-04);">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-48);font-weight:600;margin-bottom:4px;">Kênh hiệu quả nhất</div>
+          <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:#0070ba;">Zalo</div>
+          <div style="font-size:12px;color:var(--ink-48);">Open rate 41.1%</div>
+        </div>
+        <div style="flex:1;padding:14px 20px;text-align:center;border-right:1px solid var(--ink-04);">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-48);font-weight:600;margin-bottom:4px;">Conversion cao nhất</div>
+          <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--brand-primary);">Email</div>
+          <div style="font-size:12px;color:var(--ink-48);">CVR trung bình 11.4%</div>
+        </div>
+        <div style="flex:1;padding:14px 20px;text-align:center;">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-48);font-weight:600;margin-bottom:4px;">Template mới tháng này</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--bu-ocany);">5</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Template Comparison -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">&#x1F4CB; So sánh Template</span>
+        <span style="font-size:12px;color:var(--ink-48);">Chọn 2 template để so sánh chi tiết</span>
+      </div>
+      <div class="compare-selectors">
+        <label>Template A:</label>
+        <select class="compare-select" onchange="updateComparison()">
+          <option selected>Sinh nhật VIP — Ưu đãi đặc biệt</option>
+          <option>Nhắc lịch dưỡng da định kỳ</option>
+          <option>Flash Sale cuối tuần — Giảm 30%</option>
+          <option>Chào mừng thành viên mới</option>
+          <option>Giới thiệu liệu trình mới — Collagen</option>
+        </select>
+        <span class="compare-vs">VS</span>
+        <label>Template B:</label>
+        <select class="compare-select" onchange="updateComparison()">
+          <option>Sinh nhật VIP — Ưu đãi đặc biệt</option>
+          <option selected>Nhắc lịch dưỡng da định kỳ</option>
+          <option>Flash Sale cuối tuần — Giảm 30%</option>
+          <option>Chào mừng thành viên mới</option>
+          <option>Giới thiệu liệu trình mới — Collagen</option>
+        </select>
+      </div>
+
+      <!-- Legend row -->
+      <div style="display:flex;gap:16px;padding:12px 20px;background:var(--ink-02);border-bottom:1px solid var(--ink-04);">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:12px;height:12px;border-radius:3px;background:#e5f1ff;border:1.5px solid #004d99;"></div>
+          <span style="font-size:13px;font-weight:600;color:#004d99;">Sinh nhật VIP — Ưu đãi đặc biệt</span>
+          <span class="ch-email" style="font-size:11px;">&#x2709; Email</span>
+          <span class="bu-nd">Ngọc Dung</span>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink-32);">VS</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:12px;height:12px;border-radius:3px;background:var(--bu-zema-bg);border:1.5px solid var(--bu-zema);"></div>
+          <span style="font-size:13px;font-weight:600;color:var(--bu-zema);">Nhắc lịch dưỡng da định kỳ</span>
+          <span class="ch-zalo" style="font-size:11px;">&#x1F4F1; Zalo</span>
+          <span class="bu-nd">Ngọc Dung</span>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="width:160px;">Chỉ số</th>
+              <th class="tmpl-a">Sinh nhật VIP</th>
+              <th class="tmpl-b">Nhắc lịch dưỡng da</th>
+              <th>Đánh giá</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Số lần sử dụng</td>
+              <td class="val-a">148 lần</td>
+              <td class="val-b">215 lần</td>
+              <td class="winner-b">B dùng nhiều hơn +45%</td>
+            </tr>
+            <tr>
+              <td>Open Rate</td>
+              <td class="val-a">44.8%</td>
+              <td class="val-b">41.1%</td>
+              <td class="winner-a">&#x1F3C6; A cao hơn +3.7pp</td>
+            </tr>
+            <tr>
+              <td>Click Rate</td>
+              <td class="val-a">18.2%</td>
+              <td class="val-b">15.4%</td>
+              <td class="winner-a">&#x1F3C6; A cao hơn +2.8pp</td>
+            </tr>
+            <tr>
+              <td>Conversion Rate</td>
+              <td class="val-a">15.3%</td>
+              <td class="val-b">13.7%</td>
+              <td class="winner-a">&#x1F3C6; A cao hơn +1.6pp</td>
+            </tr>
+            <tr>
+              <td>Avg Revenue / Send</td>
+              <td class="val-a">48,200 ₫</td>
+              <td class="val-b">31,500 ₫</td>
+              <td class="winner-a">&#x1F3C6; A cao hơn +53%</td>
+            </tr>
+            <tr>
+              <td>Unsubscribe Rate</td>
+              <td class="val-a">0.12%</td>
+              <td class="val-b">0.08%</td>
+              <td class="winner-b">B ít unsubscribe hơn</td>
+            </tr>
+            <tr>
+              <td>Thời gian gửi tối ưu</td>
+              <td class="val-a" style="font-size:13px;">09:00 – 10:00</td>
+              <td class="val-b" style="font-size:13px;">11:00 – 13:00</td>
+              <td class="tie">Khác nhau theo kênh</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:14px 20px;background:var(--info-subtle);border-top:1px solid #c8dff6;display:flex;align-items:flex-start;gap:10px;">
+        <span style="font-size:16px;flex-shrink:0;">&#x1F4A1;</span>
+        <div style="font-size:13px;color:var(--info-ink);">
+          <strong>Nhận xét tự động:</strong> Template <em>"Sinh nhật VIP"</em> vượt trội về Open Rate (+3.7pp) và Conversion (+1.6pp), phù hợp cho chiến dịch doanh thu. Template <em>"Nhắc lịch dưỡng da"</em> được sử dụng nhiều hơn và có unsubscribe rate thấp hơn — phù hợp cho nurturing dài hạn.
+        </div>
+      </div>
+    </div>
+
+    <!-- Templates cần tối ưu -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">&#x26A0;&#xFE0F; Templates cần tối ưu</span>
+        <span class="badge badge-warning">4 template cần xem lại</span>
+      </div>
+      <div class="low-perf-list">
+
+        <!-- Item 1 -->
+        <div class="low-perf-item">
+          <div class="low-perf-left">
+            <div class="low-perf-name">Giảm giá cuối năm — Xả kho 2026</div>
+            <div class="low-perf-meta">
+              <span class="ch-email">&#x2709; Email</span>
+              <span class="bu-ze">Zema</span>
+              <span style="font-size:12px;color:var(--ink-48);">Dùng lần cuối: 03/06/2026</span>
+            </div>
+            <div class="low-perf-metrics">
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Open Rate</span>
+                <span class="low-perf-metric-val bad">11.2%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Click Rate</span>
+                <span class="low-perf-metric-val bad">2.1%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Conversion</span>
+                <span class="low-perf-metric-val bad">0.8%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Số lần dùng</span>
+                <span class="low-perf-metric-val ok">23</span>
+              </div>
+            </div>
+            <div class="low-perf-suggestion">
+              <span>&#x1F4CC;</span>
+              <span>Subject line quá dài (76 ký tự), thử rút ngắn xuống dưới 50 ký tự. Open rate thấp hơn trung bình 23pp — xem xét A/B test subject mới.</span>
+            </div>
+          </div>
+          <div class="low-perf-right">
+            <a href="ui-template-editor.html" class="btn btn-sm btn-secondary">&#x270F; Chỉnh sửa</a>
+            <button class="btn btn-sm btn-ghost">Xem chi tiết</button>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="low-perf-item">
+          <div class="low-perf-left">
+            <div class="low-perf-name">Nhắc nhở tái khám — Thông báo chung</div>
+            <div class="low-perf-meta">
+              <span class="ch-sms">&#x1F4F2; SMS</span>
+              <span class="bu-nd">Ngọc Dung</span>
+              <span style="font-size:12px;color:var(--ink-48);">Dùng lần cuối: 07/06/2026</span>
+            </div>
+            <div class="low-perf-metrics">
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Open Rate</span>
+                <span class="low-perf-metric-val ok">18.4%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Click Rate</span>
+                <span class="low-perf-metric-val bad">1.3%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Conversion</span>
+                <span class="low-perf-metric-val bad">1.1%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Số lần dùng</span>
+                <span class="low-perf-metric-val ok">87</span>
+              </div>
+            </div>
+            <div class="low-perf-suggestion">
+              <span>&#x1F4CC;</span>
+              <span>Nội dung SMS quá chung chung, thiếu tên khách và liệu trình cụ thể. Thêm personalization token <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;">{{ten_kh}}</code> và <code style="background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;">{{lieu_trinh}}</code> để tăng click rate.</span>
+            </div>
+          </div>
+          <div class="low-perf-right">
+            <a href="ui-template-editor.html" class="btn btn-sm btn-secondary">&#x270F; Chỉnh sửa</a>
+            <button class="btn btn-sm btn-ghost">Xem chi tiết</button>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="low-perf-item">
+          <div class="low-perf-left">
+            <div class="low-perf-name">Push thông báo — Điểm thưởng sắp hết hạn</div>
+            <div class="low-perf-meta">
+              <span class="ch-push">&#x1F514; Push</span>
+              <span class="bu-oc">Ocany</span>
+              <span style="font-size:12px;color:var(--ink-48);">Dùng lần cuối: 01/06/2026</span>
+            </div>
+            <div class="low-perf-metrics">
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Open Rate</span>
+                <span class="low-perf-metric-val bad">9.7%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Click Rate</span>
+                <span class="low-perf-metric-val bad">3.2%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Conversion</span>
+                <span class="low-perf-metric-val bad">1.8%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Số lần dùng</span>
+                <span class="low-perf-metric-val ok">44</span>
+              </div>
+            </div>
+            <div class="low-perf-suggestion">
+              <span>&#x1F4CC;</span>
+              <span>Tiêu đề push notification thiếu urgency. Thêm cụm từ có thời hạn cụ thể như "Điểm hết hạn trong 3 ngày nữa!" để tăng tỷ lệ mở. Cân nhắc gửi lúc 19:00–21:00 thay vì 08:00.</span>
+            </div>
+          </div>
+          <div class="low-perf-right">
+            <a href="ui-template-editor.html" class="btn btn-sm btn-secondary">&#x270F; Chỉnh sửa</a>
+            <button class="btn btn-sm btn-ghost">Xem chi tiết</button>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="low-perf-item">
+          <div class="low-perf-left">
+            <div class="low-perf-name">Email giới thiệu sản phẩm — Template cũ 2024</div>
+            <div class="low-perf-meta">
+              <span class="ch-email">&#x2709; Email</span>
+              <span class="bu-ze">Zema</span>
+              <span style="font-size:12px;color:var(--ink-48);">Dùng lần cuối: 28/05/2026</span>
+              <span class="badge badge-danger badge-dot">Cần cập nhật</span>
+            </div>
+            <div class="low-perf-metrics">
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Open Rate</span>
+                <span class="low-perf-metric-val bad">13.9%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Click Rate</span>
+                <span class="low-perf-metric-val bad">2.8%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Conversion</span>
+                <span class="low-perf-metric-val bad">0.4%</span>
+              </div>
+              <div class="low-perf-metric">
+                <span class="low-perf-metric-label">Số lần dùng</span>
+                <span class="low-perf-metric-val ok">31</span>
+              </div>
+            </div>
+            <div class="low-perf-suggestion">
+              <span>&#x1F4CC;</span>
+              <span>Template được thiết kế từ 2024, hình ảnh không còn phù hợp với brand mới. Cân nhắc archive và tạo template mới từ <a href="ui-template-editor.html" style="color:var(--warning-ink);font-weight:600;text-decoration:none;">Template Editor</a>.</span>
+            </div>
+          </div>
+          <div class="low-perf-right">
+            <a href="ui-template-editor.html" class="btn btn-sm btn-secondary">&#x270F; Chỉnh sửa</a>
+            <button class="btn btn-sm btn-ghost" style="color:var(--danger);">Archive</button>
+          </div>
+        </div>
+
+      </div><!-- /low-perf-list -->
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /content -->
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+function toggleCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+
+// Time filter pill interaction
+document.querySelectorAll('.time-filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.time-filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+function updateComparison() {
+  // Placeholder — in a real implementation this would re-fetch comparison data
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Chỉnh sửa Template</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* ══ TOPNAV ══ */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.topnav-icon-btn { width: 32px; height: 32px; border-radius: 50%; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 16px; transition: background 0.12s; }
+.topnav-icon-btn:hover { background: var(--ink-04); }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+/* ══ SIDEBAR ══ */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: width 0.25s ease; }
+.sidebar.open { transform: translateX(0) !important; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; box-shadow: var(--shadow-sm); }
+
+/* ══ CONTENT ══ */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ BUTTONS ══ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-ghost { background: none; color: var(--brand-primary); border: none; padding: 7px 12px; }
+.btn-ghost:hover { background: var(--brand-primary-subtle); }
+.btn-sm { font-size: 12px; padding: 5px 12px; }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: #e03028; }
+
+/* ══ PAGE HEADER ══ */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.breadcrumb { font-size: 13px; color: var(--ink-48); display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.breadcrumb a { color: var(--brand-primary); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.page-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+.page-header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* ══ FORM BASICS ══ */
+.form-label { display: block; font-size: 13px; font-weight: 500; color: var(--ink-80); margin-bottom: 6px; }
+.form-label .req { color: var(--danger); margin-left: 2px; }
+.form-hint { font-size: 12px; color: var(--ink-48); margin-top: 5px; }
+.form-input { width: 100%; height: 38px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 0 12px; font-size: 14px; color: var(--ink-100); font-family: var(--font-text); transition: border-color 0.12s, box-shadow 0.12s; background: var(--ink-00); }
+.form-input:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.form-textarea { width: 100%; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 10px 12px; font-size: 14px; color: var(--ink-100); font-family: var(--font-text); resize: vertical; transition: border-color 0.12s, box-shadow 0.12s; line-height: 1.6; }
+.form-textarea:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.form-select { width: 100%; height: 38px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 0 28px 0 12px; font-size: 14px; color: var(--ink-100); font-family: var(--font-text); background: var(--ink-00); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; cursor: pointer; }
+.form-select:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.form-row { margin-bottom: 18px; }
+.form-row:last-child { margin-bottom: 0; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+
+/* ══ EDITOR LAYOUT ══ */
+.editor-layout { display: grid; grid-template-columns: 60fr 40fr; gap: 0; min-height: calc(100vh - var(--nav-h) - 69px); align-items: start; }
+
+/* ══ LEFT PANEL ══ */
+.editor-left { padding: 24px 20px 40px 32px; border-right: 1px solid var(--ink-08); }
+.panel-section { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 16px; }
+.panel-section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-48); margin-bottom: 16px; }
+
+/* Channel radio cards */
+.channel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.channel-card { border: 2px solid var(--ink-08); border-radius: var(--radius-lg); padding: 12px 10px; text-align: center; cursor: pointer; transition: all 0.15s; position: relative; }
+.channel-card:hover { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.channel-card.selected { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.channel-card input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+.channel-card-icon { font-size: 22px; margin-bottom: 5px; }
+.channel-card-name { font-size: 12px; font-weight: 600; color: var(--ink-80); }
+.channel-card.selected .channel-card-name { color: var(--brand-primary); }
+.channel-card-sub { font-size: 11px; color: var(--ink-48); margin-top: 2px; }
+
+/* Subject line row (shown for Email only) */
+.subject-row { margin-bottom: 18px; display: block; }
+.subject-row.hidden { display: none; }
+
+/* Toolbar */
+.editor-toolbar-wrap { border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.editor-toolbar { background: var(--ink-02); border-bottom: 1px solid var(--ink-08); padding: 8px 12px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.toolbar-btn { width: 28px; height: 28px; border: 1px solid var(--ink-08); border-radius: var(--radius-sm); background: var(--ink-00); color: var(--ink-60); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; transition: all 0.12s; }
+.toolbar-btn:hover { background: var(--brand-primary-subtle); color: var(--brand-primary); border-color: #c8dff6; }
+.toolbar-sep { width: 1px; height: 20px; background: var(--ink-08); margin: 0 4px; }
+.editor-body-wrap { min-height: 220px; position: relative; }
+.editor-body { width: 100%; min-height: 220px; border: none; padding: 14px; font-size: 14px; color: var(--ink-80); font-family: var(--font-text); line-height: 1.7; resize: vertical; outline: none; background: var(--ink-00); }
+.editor-body:focus { background: #fafbfd; }
+
+/* Short-code chips */
+.shortcode-row { background: var(--ink-02); border-top: 1px solid var(--ink-08); padding: 10px 12px; }
+.shortcode-label { font-size: 12px; color: var(--ink-48); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.shortcode-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sc-chip { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--bu-zema-bg); color: var(--bu-zema); cursor: pointer; transition: all 0.12s; font-family: var(--font-mono); border: 1px solid transparent; user-select: none; }
+.sc-chip:hover { background: var(--bu-zema); color: #fff; border-color: var(--bu-zema); }
+.sc-chip:active { transform: scale(0.95); }
+
+/* ══ RIGHT PANEL ══ */
+.editor-right { padding: 24px 32px 40px 20px; position: sticky; top: calc(var(--nav-h) + 69px); }
+.preview-panel { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.preview-panel-header { padding: 14px 18px; border-bottom: 1px solid var(--ink-08); display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--ink-02); }
+.preview-panel-title { font-size: 13px; font-weight: 700; color: var(--ink-80); display: flex; align-items: center; gap: 7px; }
+.preview-live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); display: inline-block; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+.preview-customer-row { padding: 12px 18px; border-bottom: 1px solid var(--ink-04); background: var(--ink-00); display: flex; align-items: center; gap: 10px; }
+.preview-customer-row label { font-size: 12px; color: var(--ink-48); white-space: nowrap; flex-shrink: 0; }
+.preview-customer-select { flex: 1; height: 32px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 0 28px 0 10px; font-size: 13px; color: var(--ink-100); font-family: var(--font-text); background: var(--ink-00); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; cursor: pointer; }
+.preview-customer-select:focus { outline: none; border-color: var(--brand-primary); }
+
+/* Channel preview shells */
+.preview-body { padding: 16px 18px 20px; }
+.preview-shell { border-radius: var(--radius-lg); overflow: hidden; }
+
+/* Email preview */
+.preview-email { border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; font-size: 13px; }
+.preview-email-meta { background: var(--ink-02); padding: 10px 14px; border-bottom: 1px solid var(--ink-08); }
+.preview-email-meta-row { display: flex; gap: 8px; font-size: 12px; color: var(--ink-48); margin-bottom: 3px; }
+.preview-email-meta-row:last-child { margin-bottom: 0; }
+.preview-email-meta-row strong { color: var(--ink-80); min-width: 40px; }
+.preview-email-subject { padding: 10px 14px; border-bottom: 1px solid var(--ink-04); font-weight: 600; font-size: 14px; color: var(--ink-100); line-height: 1.4; }
+.preview-email-body { padding: 16px 14px; color: var(--ink-80); line-height: 1.7; font-size: 13px; }
+
+/* SMS preview */
+.preview-sms { display: none; }
+.sms-bubble-wrap { padding: 12px 0; display: flex; flex-direction: column; gap: 8px; }
+.sms-sender { font-size: 11px; color: var(--ink-48); text-align: center; margin-bottom: 4px; }
+.sms-bubble { background: var(--ink-04); border-radius: 18px 18px 18px 4px; padding: 10px 14px; font-size: 13px; color: var(--ink-80); line-height: 1.5; max-width: 90%; }
+.sms-time { font-size: 11px; color: var(--ink-32); margin-top: 4px; }
+
+/* Zalo preview */
+.preview-zalo { display: none; }
+.zalo-card { border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.zalo-card-header { background: #0068ff; color: #fff; padding: 12px 14px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.zalo-card-body { padding: 14px; font-size: 13px; color: var(--ink-80); line-height: 1.6; }
+.zalo-card-btn { display: block; text-align: center; background: #0068ff; color: #fff; border-radius: var(--radius-md); padding: 9px; font-size: 13px; font-weight: 600; margin-top: 12px; }
+
+/* Push preview */
+.preview-push { display: none; }
+.push-phone { background: #1c1c1e; border-radius: 24px; padding: 20px 14px; max-width: 260px; margin: 0 auto; }
+.push-status { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+.push-notification { background: rgba(255,255,255,0.12); backdrop-filter: blur(8px); border-radius: 14px; padding: 10px 14px; }
+.push-noti-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.push-noti-icon { width: 22px; height: 22px; border-radius: 6px; background: var(--bu-ngocdung); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.push-noti-app { font-size: 11px; color: rgba(255,255,255,0.6); }
+.push-noti-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+.push-noti-body { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+.push-noti-time { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+
+/* Customer info box */
+.preview-customer-info { background: var(--ink-02); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 14px; border: 1px solid var(--ink-08); }
+.customer-info-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-48); margin-bottom: 8px; }
+.customer-info-grid { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 12px; }
+.ci-label { color: var(--ink-48); }
+.ci-val { color: var(--ink-80); font-weight: 500; }
+
+/* Stats row */
+.preview-stats { display: flex; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--ink-08); }
+.preview-stat { flex: 1; text-align: center; }
+.preview-stat-val { font-size: 15px; font-weight: 700; color: var(--brand-primary); }
+.preview-stat-label { font-size: 10px; color: var(--ink-48); margin-top: 2px; }
+
+/* Char counter */
+.char-counter { font-size: 12px; color: var(--ink-48); text-align: right; margin-top: 5px; }
+.char-counter.warn { color: var(--warning-ink); }
+.char-counter.danger { color: var(--danger); }
+
+/* Save status toast */
+.save-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--ink-100); color: #fff; font-size: 13px; padding: 10px 20px; border-radius: var(--radius-pill); box-shadow: var(--shadow-md); opacity: 0; transition: opacity 0.3s; z-index: 9999; pointer-events: none; white-space: nowrap; }
+.save-toast.show { opacity: 1; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-section-label::after { content: ""; display: block; width: 24px; height: 1px; background: var(--ink-08); margin: 0 auto; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .content { margin-left: 64px; }
+  .page-header { padding: 14px 24px; }
+  .editor-left { padding: 20px 16px 40px 24px; }
+  .editor-right { padding: 20px 24px 40px 16px; }
+  .editor-layout { grid-template-columns: 58fr 42fr; }
+}
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-section-label::after { display: none; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; }
+  .topnav-bu-switch { display: none; }
+  .page-header { padding: 12px 16px; gap: 10px; }
+  .page-title { font-size: 16px; }
+  .editor-layout { grid-template-columns: 1fr; }
+  .editor-left { padding: 16px; border-right: none; border-bottom: 1px solid var(--ink-08); }
+  .editor-right { padding: 16px; position: static; }
+  .channel-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-row-2 { grid-template-columns: 1fr; }
+  .page-header-actions .btn-ghost { display: none; }
+}
+@media (max-width: 479px) {
+  .channel-grid { grid-template-columns: 1fr 1fr; }
+  .preview-stats { flex-wrap: wrap; }
+  .preview-stat { min-width: 45%; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topnav -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Ngọc Dung</span>
+    <button class="topnav-icon-btn" title="Thông báo">&#x1F514;</button>
+    <span style="font-size:12px;color:var(--ink-48);">Mai Lan</span>
+    <div class="topnav-avatar">ML</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item active" href="ui-template-list.html"><span class="sidebar-icon">&#x1F4CB;</span> Templates</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main content -->
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb">
+        <a href="ui-template-list.html">Templates</a>
+        <span>/</span>
+        <span style="color:var(--ink-80);font-weight:500;">Chỉnh sửa template</span>
+      </div>
+      <div class="page-title">Chỉnh sửa Template</div>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-ghost" onclick="cancelEdit()">&#x2715; Hủy</button>
+      <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+      <button class="btn btn-primary" onclick="publishTemplate()">&#x2714; Lưu &amp; Xuất bản</button>
+    </div>
+  </div>
+
+  <!-- Two-panel layout -->
+  <div class="editor-layout">
+
+    <!-- ══ LEFT: Editor ══ -->
+    <div class="editor-left">
+
+      <!-- Template name -->
+      <div class="panel-section">
+        <div class="panel-section-title">Thông tin template</div>
+
+        <div class="form-row">
+          <label class="form-label">Tên template <span class="req">*</span></label>
+          <input type="text" class="form-input" id="templateName"
+            value="Chăm sóc sau liệu trình — Ngọc Dung">
+          <div class="form-hint">Tên nội bộ để quản lý, khách hàng sẽ không thấy.</div>
+        </div>
+
+        <div class="form-row-2">
+          <div>
+            <label class="form-label">BU áp dụng <span class="req">*</span></label>
+            <select class="form-select" id="buSelect" onchange="updatePreview()">
+              <option value="all">Tất cả BU</option>
+              <option value="ngocdung" selected>Ngọc Dung</option>
+              <option value="zema">Zema</option>
+              <option value="ocany">Ocany</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Mục đích <span class="req">*</span></label>
+            <select class="form-select" id="purposeSelect" onchange="updatePreview()">
+              <option value="cskh" selected>Chăm sóc</option>
+              <option value="promo">Khuyến mãi</option>
+              <option value="reminder">Nhắc lịch</option>
+              <option value="welcome">Welcome</option>
+              <option value="winback">Win-back</option>
+              <option value="upsell">Upsell</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Channel selection -->
+      <div class="panel-section">
+        <div class="panel-section-title">Kênh gửi <span style="color:var(--danger);font-weight:400;">*</span></div>
+        <div class="channel-grid" id="channelGrid">
+          <label class="channel-card selected" onclick="selectChannel('email', this)">
+            <input type="radio" name="channel" value="email" checked>
+            <div class="channel-card-icon">&#x2709;</div>
+            <div class="channel-card-name">Email</div>
+            <div class="channel-card-sub">Open rate ~28%</div>
+          </label>
+          <label class="channel-card" onclick="selectChannel('sms', this)">
+            <input type="radio" name="channel" value="sms">
+            <div class="channel-card-icon">&#x1F4F1;</div>
+            <div class="channel-card-name">SMS</div>
+            <div class="channel-card-sub">Đọc ngay, tức thì</div>
+          </label>
+          <label class="channel-card" onclick="selectChannel('zalo', this)">
+            <input type="radio" name="channel" value="zalo">
+            <div class="channel-card-icon">&#x1F4AC;</div>
+            <div class="channel-card-name">Zalo OA</div>
+            <div class="channel-card-sub">Open rate 55%+</div>
+          </label>
+          <label class="channel-card" onclick="selectChannel('push', this)">
+            <input type="radio" name="channel" value="push">
+            <div class="channel-card-icon">&#x1F514;</div>
+            <div class="channel-card-name">Push</div>
+            <div class="channel-card-sub">App notification</div>
+          </label>
+        </div>
+        <div class="form-hint" style="margin-top:10px;" id="channelHint">&#x2714; Đã chọn: <strong>Email</strong> — chi phí ~1,200 đ / 1,000 email</div>
+      </div>
+
+      <!-- Content editor -->
+      <div class="panel-section" style="padding:0;">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--ink-04);display:flex;align-items:center;justify-content:space-between;">
+          <div class="panel-section-title" style="margin-bottom:0;">Nội dung template <span style="color:var(--danger);font-weight:400;">*</span></div>
+          <span style="font-size:12px;color:var(--ink-48);">Nhấn <kbd style="background:var(--ink-04);border:1px solid var(--ink-16);border-radius:4px;padding:1px 5px;font-family:var(--font-mono);font-size:11px;">{{</kbd> để xem danh sách short-code</span>
+        </div>
+
+        <!-- Subject line (Email only) -->
+        <div id="subjectRow" class="subject-row" style="padding:0 0 0 0;border-bottom:1px solid var(--ink-04);">
+          <div style="padding:12px 14px;">
+            <label class="form-label" style="font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-48);margin-bottom:5px;">Tiêu đề email (Subject) <span class="req">*</span></label>
+            <input type="text" id="subjectInput" class="form-input"
+              value="Cảm ơn chị {{ten_khach}} — Ngọc Dung gửi lời thăm hỏi sau liệu trình &#x1F338;"
+              oninput="updatePreview()" style="border:none;box-shadow:none;padding:0;height:auto;font-size:14px;font-weight:500;color:var(--ink-100);">
+          </div>
+        </div>
+
+        <!-- Toolbar + textarea -->
+        <div class="editor-toolbar-wrap" style="border:none;border-radius:0;">
+          <div class="editor-toolbar">
+            <button class="toolbar-btn" title="In đậm" onclick="formatText('bold')"><strong>B</strong></button>
+            <button class="toolbar-btn" title="In nghiêng" onclick="formatText('italic')" style="font-style:italic;">I</button>
+            <button class="toolbar-btn" title="Gạch chân" onclick="formatText('underline')" style="text-decoration:underline;">U</button>
+            <div class="toolbar-sep"></div>
+            <button class="toolbar-btn" title="Chèn link" onclick="insertLink()">&#x1F517;</button>
+            <button class="toolbar-btn" title="Chèn ảnh" onclick="alert('Mở file picker...')">&#x1F5BC;</button>
+            <div class="toolbar-sep"></div>
+            <button class="toolbar-btn" title="Căn trái" onclick="formatText('justifyLeft')">&#x2261;</button>
+            <button class="toolbar-btn" title="Căn giữa" onclick="formatText('justifyCenter')">&#x2262;</button>
+            <div class="toolbar-sep"></div>
+            <button class="toolbar-btn" title="Hoàn tác" onclick="document.execCommand('undo')" style="font-size:14px;">&#x21B6;</button>
+            <button class="toolbar-btn" title="Làm lại" onclick="document.execCommand('redo')" style="font-size:14px;">&#x21B7;</button>
+          </div>
+          <div id="emailEditor" class="editor-body" contenteditable="true"
+            oninput="onEditorInput()"
+            style="min-height:240px;">
+            <p>Chào chị <strong>{{ten_khach}}</strong>,</p>
+            <br>
+            <p>Cảm ơn chị đã tin tưởng và trải nghiệm dịch vụ <strong>{{dich_vu_gan_nhat}}</strong> tại <strong>Ngọc Dung {{ten_chi_nhanh}}</strong>. Đội ngũ chúng tôi rất vui khi được đồng hành cùng chị trong hành trình chăm sóc sắc đẹp.</p>
+            <br>
+            <p>Hiện tại điểm tích lũy của chị là <strong>{{so_diem}} điểm</strong> — hạng <strong>{{tier}}</strong>. Hãy giữ gìn và tiếp tục tích điểm để nhận nhiều ưu đãi hơn nhé!</p>
+            <br>
+            <p>Nếu chị có bất kỳ câu hỏi nào, hãy liên hệ nhân viên <strong>{{ten_nhan_vien}}</strong> — người đã trực tiếp phục vụ chị, hoặc đặt lịch hẹn tiếp theo vào <strong>{{ngay_hen}}</strong>.</p>
+            <br>
+            <p>Chúc chị luôn rạng rỡ và tự tin! &#x1F338;</p>
+            <br>
+            <p>Trân trọng,<br><em>Đội ngũ Ngọc Dung {{ten_chi_nhanh}}</em></p>
+          </div>
+          <!-- Short-code chips -->
+          <div class="shortcode-row">
+            <div class="shortcode-label">
+              <span style="font-size:14px;">&#x26A1;</span>
+              Chèn short-code — nhấp để chèn tại vị trí con trỏ:
+            </div>
+            <div class="shortcode-chips">
+              <span class="sc-chip" onclick="insertShortcode('{{ten_khach}}')">{{ten_khach}}</span>
+              <span class="sc-chip" onclick="insertShortcode('{{dich_vu_gan_nhat}}')">{{dich_vu_gan_nhat}}</span>
+              <span class="sc-chip" onclick="insertShortcode('{{tier}}')">{{tier}}</span>
+              <span class="sc-chip" onclick="insertShortcode('{{ten_chi_nhanh}}')">{{ten_chi_nhanh}}</span>
+              <span class="sc-chip" onclick="insertShortcode('{{so_diem}}')">{{so_diem}}</span>
+              <span class="sc-chip" onclick="insertShortcode('{{ngay_hen}}')">{{ngay_hen}}</span>
+              <span class="sc-chip" onclick="insertShortcode('{{ten_nhan_vien}}')">{{ten_nhan_vien}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Char counter -->
+        <div style="padding:6px 14px 10px;display:flex;justify-content:space-between;align-items:center;background:var(--ink-02);border-top:1px solid var(--ink-04);">
+          <span style="font-size:12px;color:var(--ink-48);" id="lastSavedLabel">&#x1F4BE; Tự động lưu nháp lúc 14:27</span>
+          <span class="char-counter" id="charCounter">0 ký tự</span>
+        </div>
+      </div>
+
+    </div><!-- /editor-left -->
+
+    <!-- ══ RIGHT: Preview ══ -->
+    <div class="editor-right">
+      <div class="preview-panel">
+        <div class="preview-panel-header">
+          <div class="preview-panel-title">
+            <span class="preview-live-dot"></span>
+            Xem trước
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="refreshPreview()" title="Làm mới preview">&#x21BA; Làm mới</button>
+        </div>
+
+        <div class="preview-customer-row">
+          <label>Khách mẫu:</label>
+          <select class="preview-customer-select" id="customerSelect" onchange="changeCustomer()">
+            <option value="hong">Nguyễn Thị Hồng — Diamond</option>
+            <option value="lan">Trần Thị Lan — Platinum</option>
+            <option value="mai">Lê Thị Mai — Gold</option>
+            <option value="thu">Phạm Thu Hà — Silver</option>
+          </select>
+        </div>
+
+        <div class="preview-body">
+
+          <!-- Customer info mini card -->
+          <div class="preview-customer-info" id="customerInfoCard">
+            <div class="customer-info-title">Thông tin khách mẫu</div>
+            <div class="customer-info-grid" id="customerInfoGrid">
+              <span class="ci-label">Tên:</span><span class="ci-val" id="ci-name">Nguyễn Thị Hồng</span>
+              <span class="ci-label">Hạng:</span><span class="ci-val" id="ci-tier">&#x1F48E; Diamond</span>
+              <span class="ci-label">Điểm:</span><span class="ci-val" id="ci-points">8,450 điểm</span>
+              <span class="ci-label">Chi nhánh:</span><span class="ci-val" id="ci-branch">Q.3 Nguyễn Thị Minh Khai</span>
+              <span class="ci-label">Nhân viên:</span><span class="ci-val" id="ci-staff">Phạm Thùy Linh</span>
+              <span class="ci-label">Dịch vụ:</span><span class="ci-val" id="ci-service">Nâng cơ RF Thermage</span>
+              <span class="ci-label">Ngày hẹn:</span><span class="ci-val" id="ci-appt">20/06/2026</span>
+            </div>
+          </div>
+
+          <!-- Email preview (default) -->
+          <div id="previewEmail" class="preview-email">
+            <div class="preview-email-meta">
+              <div class="preview-email-meta-row">
+                <strong>Từ:</strong> Ngọc Dung Spa &amp; Beauty &lt;chamsoc@ngocdung.vn&gt;
+              </div>
+              <div class="preview-email-meta-row">
+                <strong>Đến:</strong> <span id="prev-to">hong.nguyen@gmail.com</span>
+              </div>
+            </div>
+            <div class="preview-email-subject" id="prev-subject">
+              Cảm ơn chị Hồng — Ngọc Dung gửi lời thăm hỏi sau liệu trình &#x1F338;
+            </div>
+            <div class="preview-email-body" id="prev-body">
+              <p>Chào chị <strong>Hồng</strong>,</p>
+              <br>
+              <p>Cảm ơn chị đã tin tưởng và trải nghiệm dịch vụ <strong>Nâng cơ RF Thermage</strong> tại <strong>Ngọc Dung Q.3 Nguyễn Thị Minh Khai</strong>. Đội ngũ chúng tôi rất vui khi được đồng hành cùng chị trong hành trình chăm sóc sắc đẹp.</p>
+              <br>
+              <p>Hiện tại điểm tích lũy của chị là <strong>8,450 điểm</strong> — hạng <strong>Diamond</strong>. Hãy giữ gìn và tiếp tục tích điểm để nhận nhiều ưu đãi hơn nhé!</p>
+              <br>
+              <p>Nếu chị có bất kỳ câu hỏi nào, hãy liên hệ nhân viên <strong>Phạm Thùy Linh</strong> — người đã trực tiếp phục vụ chị, hoặc đặt lịch hẹn tiếp theo vào <strong>20/06/2026</strong>.</p>
+              <br>
+              <p>Chúc chị luôn rạng rỡ và tự tin! &#x1F338;</p>
+              <br>
+              <p>Trân trọng,<br><em>Đội ngũ Ngọc Dung Q.3 Nguyễn Thị Minh Khai</em></p>
+            </div>
+          </div>
+
+          <!-- SMS preview -->
+          <div id="previewSMS" class="preview-sms">
+            <div class="sms-bubble-wrap">
+              <div class="sms-sender">NGOCDUNG SPA</div>
+              <div class="sms-bubble" id="sms-bubble-text">
+                Chào chị Hồng, cảm ơn chị đã trải nghiệm Nâng cơ RF Thermage tại Ngọc Dung Q.3. Điểm hiện tại: 8,450 đ. Đặt lịch hẹn tiếp: 20/06/2026. Liên hệ: 1800-1234.
+              </div>
+              <div class="sms-time">Hôm nay, 09:15</div>
+            </div>
+          </div>
+
+          <!-- Zalo preview -->
+          <div id="previewZalo" class="preview-zalo">
+            <div class="zalo-card">
+              <div class="zalo-card-header">
+                <span>&#x1F4AC;</span> Ngọc Dung Spa &amp; Beauty
+              </div>
+              <div class="zalo-card-body" id="zalo-body-text">
+                <p>Chào chị <strong>Hồng</strong> &#x1F338;</p>
+                <p style="margin-top:8px;">Cảm ơn chị đã trải nghiệm <strong>Nâng cơ RF Thermage</strong> tại <strong>Ngọc Dung Q.3</strong>.</p>
+                <p style="margin-top:8px;">Điểm tích lũy hiện tại: <strong>8,450 điểm</strong> — hạng <strong>Diamond</strong>.</p>
+                <p style="margin-top:8px;">Nhân viên phụ trách: <strong>Phạm Thùy Linh</strong>.</p>
+                <p style="margin-top:8px;">Lịch hẹn tiếp theo: <strong>20/06/2026</strong>.</p>
+                <a href="#" class="zalo-card-btn" onclick="return false;">Đặt lịch ngay</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Push preview -->
+          <div id="previewPush" class="preview-push">
+            <div class="push-phone">
+              <div class="push-status">
+                <span>09:15</span>
+                <span>&#x1F4F6; &#x1F50B;</span>
+              </div>
+              <div class="push-notification">
+                <div class="push-noti-header">
+                  <div class="push-noti-icon">&#x1F338;</div>
+                  <span class="push-noti-app">Ngọc Dung &middot; vừa xong</span>
+                </div>
+                <div class="push-noti-title" id="push-title">Ngọc Dung nhớ chị Hồng &#x1F338;</div>
+                <div class="push-noti-body" id="push-body">Cảm ơn chị đã trải nghiệm Nâng cơ RF Thermage. Đặt lịch hẹn tiếp theo ngay hôm nay!</div>
+                <div class="push-noti-time">Hôm nay lúc 09:15</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="preview-stats">
+            <div class="preview-stat">
+              <div class="preview-stat-val" id="stat-used">24</div>
+              <div class="preview-stat-label">Campaign dùng</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-val" style="color:var(--success-ink);" id="stat-open">34.2%</div>
+              <div class="preview-stat-label">Open rate TB</div>
+            </div>
+            <div class="preview-stat">
+              <div class="preview-stat-val" style="color:var(--bu-zema);" id="stat-click">8.7%</div>
+              <div class="preview-stat-label">Click rate TB</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /editor-right -->
+
+  </div><!-- /editor-layout -->
+
+</div><!-- /content -->
+
+<!-- Save toast -->
+<div class="save-toast" id="saveToast"></div>
+
+<script>
+// ── Sample customer data ──
+const customers = {
+  hong: {
+    name: 'Hồng', fullName: 'Nguyễn Thị Hồng', email: 'hong.nguyen@gmail.com',
+    tier: 'Diamond', tierIcon: '&#x1F48E;', points: '8,450',
+    branch: 'Q.3 Nguyễn Thị Minh Khai', staff: 'Phạm Thùy Linh',
+    service: 'Nâng cơ RF Thermage', appt: '20/06/2026'
+  },
+  lan: {
+    name: 'Lan', fullName: 'Trần Thị Lan', email: 'lan.tran@yahoo.com',
+    tier: 'Platinum', tierIcon: '&#x1FA84;', points: '5,210',
+    branch: 'Quận 1 Lê Lợi', staff: 'Nguyễn Hoài Thu',
+    service: 'Điêu khắc chân mày Nano', appt: '22/06/2026'
+  },
+  mai: {
+    name: 'Mai', fullName: 'Lê Thị Mai', email: 'mai.le@gmail.com',
+    tier: 'Gold', tierIcon: '&#x1F947;', points: '2,780',
+    branch: 'Bình Thạnh Đinh Tiên Hoàng', staff: 'Trần Minh Châu',
+    service: 'Triệt lông Laser Diode', appt: '25/06/2026'
+  },
+  thu: {
+    name: 'Hà', fullName: 'Phạm Thu Hà', email: 'tha.pham@outlook.com',
+    tier: 'Silver', tierIcon: '&#x1F948;', points: '1,140',
+    branch: 'Tân Bình Hoàng Văn Thụ', staff: 'Lê Phương Anh',
+    service: 'Chăm sóc da cơ bản', appt: '28/06/2026'
+  }
+};
+
+let currentChannel = 'email';
+let currentCustomer = 'hong';
+let savedRange = null;
+
+// Channel hints
+const channelHints = {
+  email: '&#x2714; Đã chọn: <strong>Email</strong> — chi phí ~1,200 đ / 1,000 email',
+  sms:   '&#x2714; Đã chọn: <strong>SMS</strong> — chi phí ~350 đ / SMS (160 ký tự)',
+  zalo:  '&#x2714; Đã chọn: <strong>Zalo OA</strong> — chi phí ~200 đ / tin nhắn ZNS',
+  push:  '&#x2714; Đã chọn: <strong>Push Notification</strong> — miễn phí (qua app)'
+};
+
+function selectChannel(channel, cardEl) {
+  currentChannel = channel;
+  // Update card styles
+  document.querySelectorAll('.channel-card').forEach(c => c.classList.remove('selected'));
+  cardEl.classList.add('selected');
+  // Hint
+  document.getElementById('channelHint').innerHTML = channelHints[channel];
+  // Show/hide subject row
+  document.getElementById('subjectRow').style.display = (channel === 'email') ? 'block' : 'none';
+  // Show correct preview
+  document.getElementById('previewEmail').style.display = (channel === 'email') ? 'block' : 'none';
+  document.getElementById('previewSMS').style.display  = (channel === 'sms')   ? 'block' : 'none';
+  document.getElementById('previewZalo').style.display = (channel === 'zalo')  ? 'block' : 'none';
+  document.getElementById('previewPush').style.display = (channel === 'push')  ? 'block' : 'none';
+  // Update stats for channel
+  const stats = {
+    email: ['24', '34.2%', '8.7%'],
+    sms:   ['18', '89.5%', '12.4%'],
+    zalo:  ['9',  '58.3%', '21.6%'],
+    push:  ['6',  '42.1%', '6.3%']
+  };
+  const s = stats[channel];
+  document.getElementById('stat-used').textContent  = s[0];
+  document.getElementById('stat-open').textContent  = s[1];
+  document.getElementById('stat-click').textContent = s[2];
+}
+
+function changeCustomer() {
+  currentCustomer = document.getElementById('customerSelect').value;
+  updateCustomerInfo();
+  updatePreview();
+}
+
+function updateCustomerInfo() {
+  const c = customers[currentCustomer];
+  document.getElementById('ci-name').textContent    = c.fullName;
+  document.getElementById('ci-tier').innerHTML      = c.tierIcon + ' ' + c.tier;
+  document.getElementById('ci-points').textContent  = c.points + ' điểm';
+  document.getElementById('ci-branch').textContent  = c.branch;
+  document.getElementById('ci-staff').textContent   = c.staff;
+  document.getElementById('ci-service').textContent = c.service;
+  document.getElementById('ci-appt').textContent    = c.appt;
+}
+
+function resolveShortcodes(text) {
+  const c = customers[currentCustomer];
+  return text
+    .replace(/\{\{ten_khach\}\}/g, c.name)
+    .replace(/\{\{dich_vu_gan_nhat\}\}/g, c.service)
+    .replace(/\{\{tier\}\}/g, c.tier)
+    .replace(/\{\{ten_chi_nhanh\}\}/g, c.branch)
+    .replace(/\{\{so_diem\}\}/g, c.points)
+    .replace(/\{\{ngay_hen\}\}/g, c.appt)
+    .replace(/\{\{ten_nhan_vien\}\}/g, c.staff);
+}
+
+function updatePreview() {
+  const c = customers[currentCustomer];
+  const editorHtml = document.getElementById('emailEditor').innerHTML;
+  const editorText = document.getElementById('emailEditor').innerText;
+
+  // Subject
+  const rawSubject = document.getElementById('subjectInput').value;
+  const resolvedSubject = resolveShortcodes(rawSubject);
+  document.getElementById('prev-subject').textContent = resolvedSubject;
+
+  // Email body — resolve shortcodes in HTML
+  const resolvedHtml = resolveShortcodes(editorHtml);
+  document.getElementById('prev-body').innerHTML = resolvedHtml;
+  document.getElementById('prev-to').textContent = c.email;
+
+  // SMS bubble
+  const smsText = resolveShortcodes(
+    'Chào chị {{ten_khach}}, cảm ơn chị đã trải nghiệm {{dich_vu_gan_nhat}} tại Ngọc Dung {{ten_chi_nhanh}}. Điểm hiện tại: {{so_diem}} đ. Lịch hẹn: {{ngay_hen}}. Liên hệ: 1800-1234.'
+  );
+  document.getElementById('sms-bubble-text').textContent = smsText;
+
+  // Zalo body
+  const c2 = c;
+  document.getElementById('zalo-body-text').innerHTML = `
+    <p>Chào chị <strong>${c2.name}</strong> &#x1F338;</p>
+    <p style="margin-top:8px;">Cảm ơn chị đã trải nghiệm <strong>${c2.service}</strong> tại <strong>Ngọc Dung ${c2.branch}</strong>.</p>
+    <p style="margin-top:8px;">Điểm tích lũy hiện tại: <strong>${c2.points} điểm</strong> — hạng <strong>${c2.tier}</strong>.</p>
+    <p style="margin-top:8px;">Nhân viên phụ trách: <strong>${c2.staff}</strong>.</p>
+    <p style="margin-top:8px;">Lịch hẹn tiếp theo: <strong>${c2.appt}</strong>.</p>
+    <a href="#" class="zalo-card-btn" onclick="return false;">Đặt lịch ngay</a>
+  `;
+
+  // Push
+  document.getElementById('push-title').textContent = `Ngọc Dung nhớ chị ${c2.name} \u1F338`;
+  document.getElementById('push-body').textContent  = `Cảm ơn chị đã trải nghiệm ${c2.service}. Đặt lịch hẹn tiếp theo ngay hôm nay!`;
+
+  // Char counter
+  const len = editorText.length;
+  const cc = document.getElementById('charCounter');
+  cc.textContent = len + ' ký tự';
+  cc.className = 'char-counter' + (len > 2000 ? ' danger' : len > 1500 ? ' warn' : '');
+}
+
+function onEditorInput() {
+  updatePreview();
+  // Save cursor for shortcode insertion
+}
+
+// Save selection before clicking a chip (since clicking chip moves focus)
+function saveSelection() {
+  const sel = window.getSelection();
+  if (sel.rangeCount > 0) {
+    savedRange = sel.getRangeAt(0);
+  }
+}
+
+document.getElementById('emailEditor').addEventListener('keyup', saveSelection);
+document.getElementById('emailEditor').addEventListener('mouseup', saveSelection);
+document.getElementById('emailEditor').addEventListener('focus', saveSelection);
+
+function insertShortcode(code) {
+  const editor = document.getElementById('emailEditor');
+  editor.focus();
+  if (savedRange) {
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+    document.execCommand('insertText', false, code);
+    savedRange = null;
+  } else {
+    document.execCommand('insertText', false, code);
+  }
+  updatePreview();
+}
+
+function formatText(cmd) {
+  document.getElementById('emailEditor').focus();
+  document.execCommand(cmd, false, null);
+}
+
+function insertLink() {
+  const url = prompt('Nhập URL:', 'https://ngocdung.vn');
+  if (url) {
+    document.getElementById('emailEditor').focus();
+    document.execCommand('createLink', false, url);
+  }
+}
+
+function saveDraft() {
+  const now = new Date();
+  const time = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('lastSavedLabel').textContent = '\uD83D\uDCBE Đã lưu nháp lúc ' + time;
+  showToast('\uD83D\uDCBE Đã lưu nháp lúc ' + time);
+}
+
+function publishTemplate() {
+  const name = document.getElementById('templateName').value.trim();
+  if (!name) { alert('Vui lòng nhập tên template.'); document.getElementById('templateName').focus(); return; }
+  if (confirm('Xuất bản template "' + name + '"?\n\nTemplate sẽ có thể được sử dụng ngay trong các campaign.')) {
+    showToast('\u2714 Template đã được xuất bản thành công!');
+    setTimeout(() => { location.href = 'ui-template-list.html'; }, 1400);
+  }
+}
+
+function cancelEdit() {
+  if (confirm('Hủy chỉnh sửa? Các thay đổi chưa lưu sẽ bị mất.')) {
+    location.href = 'ui-template-list.html';
+  }
+}
+
+function refreshPreview() {
+  updatePreview();
+  showToast('&#x21BA; Đã cập nhật preview');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('saveToast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+
+function toggleCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+
+// Handle {{ trigger for shortcode hint
+document.getElementById('emailEditor').addEventListener('keydown', function(e) {
+  // Could show autocomplete — for now just a hint
+});
+
+// Init
+updateCustomerInfo();
+updatePreview();
+
+// Auto-save every 90 seconds
+setInterval(function() {
+  const now = new Date();
+  const time = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('lastSavedLabel').textContent = '\uD83D\uDCBE Tự động lưu nháp lúc ' + time;
+}, 90000);
+</script>
+</body>
+</html>

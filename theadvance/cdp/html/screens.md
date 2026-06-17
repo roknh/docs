@@ -1,7 +1,7 @@
 # CDP TheAdvance — Danh sách màn hình UI
 
-> Theo spec `cdp_spec.html` — 26 screens, 10 modules
-> Tiến độ: **26/26 done** ✅
+> Theo spec `cdp_spec.html` — 29 screens, 10 modules
+> Tiến độ: **29/29 done** ✅
 
 | # | File | Screen | Mô tả | Role | Status |
 |---|------|--------|-------|------|--------|
@@ -12,7 +12,7 @@
 | S5 | `ui-segment-builder.html` | Segment Builder | Tạo/sửa segment bằng UI | Marketing, Analyst | Done |
 | S6 | `ui-segment-list.html` | Segment List | Danh sách segment đã tạo | Marketing | Done |
 | S7 | `ui-rfm-dashboard.html` | RFM Dashboard | Ma trận RFM, drill-down | Marketing, Management | Done |
-| S8 | `ui-campaign-create.html` | Campaign Create | Tạo campaign mới | Marketing | Done |
+| S8 | `ui-campaign-create.html` | Campaign Create | Tạo campaign mới (chọn template hoặc nhập trực tiếp) | Marketing | Done |
 | S9 | `ui-campaign-list.html` | Campaign List | Danh sách campaign, status, kết quả | Marketing | Done |
 | S10 | `ui-campaign-detail.html` | Campaign Detail | Chi tiết kết quả 1 campaign | Marketing | Done |
 | S11 | `ui-workflow-builder.html` | Workflow Builder | Tạo automation workflow | Marketing | Done |
@@ -31,13 +31,16 @@
 | S24 | `ui-consent-center.html` | Consent Center | Per-channel consent toggles, PDPA compliance, change log | Admin, CS | Done |
 | S25 | `ui-audit-log.html` | Audit Log | Action-typed log stream, expandable JSON, export | Super Admin | Done |
 | S26 | `ui-custom-dashboard.html` | Custom Dashboard Builder | Drag & drop widgets, layout grid, widget settings | All (theo quyền) | Done |
+| S27 | `ui-template-list.html` | Template List | Danh sách template mẫu, filter kênh/BU/mục đích, sort theo hiệu quả | Marketing | Done |
+| S28 | `ui-template-editor.html` | Template Editor | Tạo/sửa template, chèn short-code autocomplete, preview với data khách thực | Marketing | Done |
+| S29 | `ui-template-analytics.html` | Template Analytics | Thống kê hiệu quả template: usage, open/click/conversion, trend, so sánh | Marketing, Management | Done |
 
 ## Tài liệu hỗ trợ
 
 | File | Mô tả |
 |------|-------|
 | `design-system.html` | Living style guide — design tokens, components, responsive breakpoints |
-| `cdp_spec.html` | Spec gốc — 10 modules, 29 features, 3 phases |
+| `cdp_spec.html` | Spec gốc — 10 modules, 30 features, 3 phases |
 
 ## Quy ước
 
@@ -50,5 +53,5 @@
 - Phone format: 0901-xxx-xxx (dashes)
 - Lifecycle Stage: LEAD / TRIAL / ACTIVE / LOYAL / LAPSED / CHURNED
 - Health Status: HEALTHY / ATTENTION / AT_RISK / CRITICAL
-- Sidebar navigation: tất cả 25 screens (trừ login) có full menu links qua lại
+- Sidebar navigation: tất cả 29 screens (trừ login) có full menu links qua lại
 - Web server: `http://localhost:8080`

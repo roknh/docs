@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Danh sách Message Templates</title>
+<style>
+/* ── Design Tokens ── */
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #004d99;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-100);
+  background: var(--ink-02);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ TOPNAV ══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; gap: 16px;
+}
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.topnav-icon-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+/* ══ SIDEBAR ══ */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar {
+  position: fixed; top: var(--nav-h); left: 0;
+  width: var(--sidebar-w); height: calc(100vh - var(--nav-h));
+  background: var(--ink-00); border-right: 1px solid var(--ink-08);
+  overflow-y: auto; overflow-x: hidden; z-index: 100;
+  transition: width 0.25s ease;
+}
+.sidebar.open { transform: translateX(0) !important; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-item.active { border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+.sidebar.collapsed .sidebar-item { position: relative; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+
+/* ══ CONTENT ══ */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ BUTTONS ══ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-ghost { background: none; color: var(--brand-primary); border: none; }
+.btn-ghost:hover { background: var(--brand-primary-subtle); }
+.btn-danger-ghost { background: none; color: var(--danger); border: none; cursor: pointer; font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: var(--radius-md); }
+.btn-danger-ghost:hover { background: var(--danger-subtle); }
+
+/* ══ BADGES ══ */
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
+.badge-success { background: var(--success-subtle); color: var(--success-ink); }
+.badge-warning { background: var(--warning-subtle); color: var(--warning-ink); }
+.badge-danger { background: var(--danger-subtle); color: var(--danger-ink); }
+.badge-info { background: var(--info-subtle); color: var(--info); }
+.badge-neutral { background: var(--ink-04); color: var(--ink-60); }
+.badge-purple { background: #ede9fd; color: #6c5ce7; }
+
+/* Channel badges */
+.type-email { background: #e5f1ff; color: #004d99; }
+.type-sms { background: #e6f9ec; color: #1a7a31; }
+.type-push { background: #fef5e6; color: #8a5d0f; }
+.type-zalo { background: #e5f6ff; color: #0070ba; }
+
+/* BU badges */
+.bu-ngocdung { background: var(--bu-ngocdung-bg); color: var(--bu-ngocdung); }
+.bu-zema { background: var(--bu-zema-bg); color: var(--bu-zema); }
+.bu-ocany { background: var(--bu-ocany-bg); color: var(--bu-ocany); }
+.bu-all { background: var(--ink-04); color: var(--ink-60); }
+
+/* ══ PAGE HEADER ══ */
+.page-header {
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08);
+  padding: 20px 32px;
+}
+.breadcrumb { font-size: 12px; color: var(--ink-48); margin-bottom: 6px; }
+.breadcrumb a { color: var(--ink-48); text-decoration: none; }
+.breadcrumb a:hover { color: var(--brand-primary); }
+.breadcrumb span { margin: 0 6px; }
+.page-title-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+.page-header-actions { display: flex; align-items: center; gap: 8px; }
+
+/* ══ FILTER BAR ══ */
+.filter-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 16px 32px;
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08);
+}
+.filter-select {
+  height: 34px; border: 1px solid var(--ink-08); border-radius: var(--radius-md);
+  background: var(--ink-00); padding: 0 28px 0 12px; font-size: 13px;
+  color: var(--ink-80); font-family: var(--font-text); cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+}
+.filter-select:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.filter-search {
+  height: 34px; border: 1px solid var(--ink-08); border-radius: var(--radius-md);
+  padding: 0 12px 0 32px; font-size: 13px; color: var(--ink-80);
+  font-family: var(--font-text); min-width: 220px; flex: 1;
+  background: var(--ink-00) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 10px center;
+}
+.filter-search:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.filter-spacer { flex: 1; }
+.filter-label { font-size: 12px; color: var(--ink-48); font-weight: 500; white-space: nowrap; }
+
+/* ══ TEMPLATE GRID ══ */
+.templates-area { padding: 24px 32px 40px; }
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* ══ TEMPLATE CARD ══ */
+.tpl-card {
+  background: var(--ink-00);
+  border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.tpl-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--ink-16);
+}
+
+.tpl-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.tpl-card-name { font-size: 14px; font-weight: 600; color: var(--ink-100); line-height: 1.35; flex: 1; }
+
+.tpl-card-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+
+.tpl-card-preview {
+  background: var(--ink-02);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  color: var(--ink-60);
+  line-height: 1.55;
+  font-family: var(--font-text);
+  border-left: 3px solid var(--ink-08);
+  flex: 1;
+}
+.tpl-card-preview-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-32); margin-bottom: 4px; }
+.tpl-card-preview-text { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+.tpl-card-stats {
+  display: flex; align-items: center; gap: 0;
+  border-top: 1px solid var(--ink-04);
+  border-bottom: 1px solid var(--ink-04);
+  padding: 10px 0;
+  margin-bottom: 12px;
+}
+.tpl-stat {
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid var(--ink-04);
+}
+.tpl-stat:last-child { border-right: none; }
+.tpl-stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-32); margin-bottom: 2px; }
+.tpl-stat-value { font-size: 14px; font-weight: 700; color: var(--ink-100); font-variant-numeric: tabular-nums; }
+.tpl-stat-value.stat-good { color: var(--success-ink); }
+.tpl-stat-value.stat-warn { color: var(--warning-ink); }
+
+.tpl-card-footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.tpl-card-meta { font-size: 11px; color: var(--ink-48); }
+.tpl-card-actions { display: flex; align-items: center; gap: 4px; }
+.action-btn {
+  height: 28px; padding: 0 8px;
+  border-radius: var(--radius-sm); border: 1px solid var(--ink-08);
+  background: var(--ink-00); color: var(--ink-48); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 500; font-family: var(--font-text);
+  transition: all 0.12s; text-decoration: none; white-space: nowrap;
+}
+.action-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.action-btn.primary-action { background: var(--brand-primary-subtle); color: var(--brand-primary); border-color: #c8dff6; }
+.action-btn.primary-action:hover { background: var(--brand-primary); color: #fff; }
+.action-btn.danger { }
+.action-btn.danger:hover { background: var(--danger-subtle); color: var(--danger); border-color: var(--danger-subtle); }
+
+/* Empty state */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink-48);
+}
+.empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state-title { font-size: 16px; font-weight: 600; color: var(--ink-80); margin-bottom: 6px; }
+.empty-state-sub { font-size: 13px; }
+
+/* Results info */
+.results-info {
+  font-size: 13px; color: var(--ink-48);
+  padding: 0 0 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-section-label::after { content: ""; display: block; width: 24px; height: 1px; background: var(--ink-08); margin: 0 auto; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .templates-grid { grid-template-columns: 1fr; }
+  .filter-bar { padding: 12px 24px; }
+  .templates-area { padding: 20px 24px 32px; }
+  .page-header { padding: 16px 24px; }
+}
+
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-section-label::after { display: none; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; }
+  .topnav-bu-switch { display: none; }
+  .topnav-right > span:first-child { display: none; }
+  .page-header { padding: 16px; }
+  .page-title { font-size: 18px; }
+  .filter-bar { padding: 12px 16px; gap: 8px; }
+  .filter-search { min-width: 0; }
+  .templates-area { padding: 16px; }
+  .templates-grid { grid-template-columns: 1fr; gap: 12px; }
+  .tpl-card { padding: 16px; }
+  .tpl-card-stats { gap: 0; }
+  .tpl-stat-value { font-size: 13px; }
+  .page-header-actions { flex-wrap: wrap; }
+}
+
+@media (max-width: 479px) {
+  .tpl-card-footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .tpl-card-actions { width: 100%; flex-wrap: wrap; }
+  .results-info { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Ngọc Dung</span>
+    <button class="topnav-icon-btn" title="Thông báo">🔔</button>
+    <span style="font-size:12px;color:var(--ink-48);">Mai Lan</span>
+    <div class="topnav-avatar">ML</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item active" href="ui-template-list.html"><span class="sidebar-icon">&#x1F4CB;</span> Templates</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()" title="Thu gọn menu">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="ui-dashboard.html">Dashboard</a>
+      <span>/</span>
+      <span>Templates</span>
+    </div>
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x1F4CB; Message Templates</div>
+        <div class="page-subtitle">36 templates · Được dùng trong 148 campaigns</div>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-secondary">&#x2B06; Import</button>
+        <a href="ui-template-editor.html" class="btn btn-primary">&#x2B; Tạo Template</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <input type="text" class="filter-search" placeholder="Tìm tên template..." id="searchInput" oninput="filterTemplates()">
+    <select class="filter-select" id="filterKenh" onchange="filterTemplates()">
+      <option value="">Tất cả kênh</option>
+      <option value="Email">&#x2709; Email</option>
+      <option value="SMS">&#x1F4F1; SMS</option>
+      <option value="Zalo">&#x1F4AC; Zalo OA</option>
+      <option value="Push">&#x1F514; Push</option>
+    </select>
+    <select class="filter-select" id="filterBU" onchange="filterTemplates()">
+      <option value="">Tất cả BU</option>
+      <option value="Ngọc Dung">Ngọc Dung</option>
+      <option value="Zema">Zema</option>
+      <option value="Ocany">Ocany</option>
+    </select>
+    <select class="filter-select" id="filterMucDich" onchange="filterTemplates()">
+      <option value="">Tất cả mục đích</option>
+      <option value="Chăm sóc">Chăm sóc</option>
+      <option value="Khuyến mãi">Khuyến mãi</option>
+      <option value="Nhắc lịch">Nhắc lịch</option>
+      <option value="Welcome">Welcome</option>
+      <option value="Win-back">Win-back</option>
+      <option value="Upsell">Upsell</option>
+    </select>
+    <div class="filter-spacer"></div>
+    <span class="filter-label">Sắp xếp:</span>
+    <select class="filter-select" id="sortBy" onchange="filterTemplates()">
+      <option value="used">Dùng nhiều nhất</option>
+      <option value="openrate">Open Rate cao nhất</option>
+      <option value="clickrate">Click Rate cao nhất</option>
+      <option value="conversion">Conversion cao nhất</option>
+      <option value="modified">Mới sửa gần nhất</option>
+    </select>
+  </div>
+
+  <!-- Templates Area -->
+  <div class="templates-area">
+    <div class="results-info">
+      <span id="resultsCount">Hiển thị 9 templates</span>
+    </div>
+
+    <div class="templates-grid" id="templatesGrid">
+
+      <!-- Template 1: Email / Ngọc Dung / Chăm sóc -->
+      <div class="tpl-card" data-kenh="Email" data-bu="Ngọc Dung" data-mucdich="Chăm sóc" data-used="47" data-openrate="41.2" data-clickrate="12.8" data-conversion="4.1" data-modified="2026-06-10">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Chăm sóc sau liệu trình — Cảm ơn &amp; nhắc tái khám</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-email">&#x2709; Email</span>
+          <span class="badge bu-ngocdung">Ngọc Dung</span>
+          <span class="badge badge-neutral">Chăm sóc</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">Kính chào {{ho_ten}}, cảm ơn bạn đã tin tưởng trải nghiệm dịch vụ tại Ngọc Dung. Để đạt kết quả tốt nhất, chúng tôi khuyến khích bạn tái khám sau {{so_ngay}} ngày...</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">47 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value stat-good">41.2%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value stat-good">12.8%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value stat-good">4.1%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 10/06/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" title="Nhân bản template" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" title="Xóa template" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 2: SMS / Ngọc Dung / Khuyến mãi -->
+      <div class="tpl-card" data-kenh="SMS" data-bu="Ngọc Dung" data-mucdich="Khuyến mãi" data-used="38" data-openrate="0" data-clickrate="9.4" data-conversion="3.2" data-modified="2026-06-08">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Flash Sale cuối tuần — Giảm 30% dịch vụ làm đẹp</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-sms">&#x1F4F1; SMS</span>
+          <span class="badge bu-ngocdung">Ngọc Dung</span>
+          <span class="badge badge-warning">Khuyến mãi</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">[Ngọc Dung] {{ho_ten}} ơi! FLASH SALE cuối tuần — Giảm 30% toàn bộ dịch vụ làm đẹp. Đặt lịch ngay: {{link_dat_lich}} (HSD: {{ngay_het_han}})</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">38 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value" style="color:var(--ink-32);">—</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value stat-good">9.4%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value">3.2%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 08/06/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 3: Zalo / Ngọc Dung / Nhắc lịch -->
+      <div class="tpl-card" data-kenh="Zalo" data-bu="Ngọc Dung" data-mucdich="Nhắc lịch" data-used="62" data-openrate="54.7" data-clickrate="18.3" data-conversion="5.6" data-modified="2026-06-12">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Nhắc lịch hẹn ngày mai — Xác nhận hoặc đổi lịch</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-zalo">&#x1F4AC; Zalo OA</span>
+          <span class="badge bu-ngocdung">Ngọc Dung</span>
+          <span class="badge badge-info">Nhắc lịch</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">Xin chào {{ho_ten}}! Bạn có lịch hẹn tại Ngọc Dung {{chi_nhanh}} vào {{gio_hen}} ngày {{ngay_hen}}. Nhấn XÁC NHẬN để giữ lịch hoặc ĐỔI LỊCH nếu cần thay đổi...</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">62 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value stat-good">54.7%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value stat-good">18.3%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value stat-good">5.6%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 12/06/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 4: Email / Zema / Welcome -->
+      <div class="tpl-card" data-kenh="Email" data-bu="Zema" data-mucdich="Welcome" data-used="29" data-openrate="47.8" data-clickrate="21.5" data-conversion="8.3" data-modified="2026-06-05">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Welcome Email — Chào mừng thành viên mới Zema</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-email">&#x2709; Email</span>
+          <span class="badge bu-zema">Zema</span>
+          <span class="badge badge-success">Welcome</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">Chào mừng {{ho_ten}} đến với Zema — Thế giới thời trang hiện đại! Tài khoản của bạn đã được kích hoạt. Khám phá bộ sưu tập mới nhất và nhận ưu đãi 15% cho đơn hàng đầu tiên...</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">29 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value stat-good">47.8%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value stat-good">21.5%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value stat-good">8.3%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 05/06/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 5: SMS / Zema / Win-back -->
+      <div class="tpl-card" data-kenh="SMS" data-bu="Zema" data-mucdich="Win-back" data-used="15" data-openrate="0" data-clickrate="7.2" data-conversion="2.8" data-modified="2026-05-28">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Win-back SMS — Nhớ bạn rồi, quay lại với ưu đãi độc quyền</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-sms">&#x1F4F1; SMS</span>
+          <span class="badge bu-zema">Zema</span>
+          <span class="badge badge-danger">Win-back</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">[Zema] {{ho_ten}} ơi, chúng tôi nhớ bạn! Đã {{so_ngay}} ngày bạn chưa ghé Zema. Dùng mã {{ma_giam_gia}} giảm 20% cho đơn hàng tiếp theo. HSD: {{ngay_het_han}}</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">15 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value" style="color:var(--ink-32);">—</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value">7.2%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value">2.8%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 28/05/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 6: Push / Ocany / Upsell -->
+      <div class="tpl-card" data-kenh="Push" data-bu="Ocany" data-mucdich="Upsell" data-used="23" data-openrate="24.6" data-clickrate="8.1" data-conversion="1.9" data-modified="2026-06-03">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Upsell Push — Nâng cấp gói Ocany Premium ngay hôm nay</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-push">&#x1F514; Push</span>
+          <span class="badge bu-ocany">Ocany</span>
+          <span class="badge badge-purple">Upsell</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">{{ho_ten}}, gói Premium Ocany giúp bạn tiết kiệm đến 40%! Bạn đã sử dụng Ocany {{so_thang}} tháng — đây là thời điểm hoàn hảo để nâng cấp trải nghiệm...</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">23 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value">24.6%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value">8.1%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value stat-warn">1.9%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 03/06/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 7: Email / Ngọc Dung / Sinh nhật / Khuyến mãi -->
+      <div class="tpl-card" data-kenh="Email" data-bu="Ngọc Dung" data-mucdich="Khuyến mãi" data-used="51" data-openrate="58.4" data-clickrate="24.7" data-conversion="9.2" data-modified="2026-06-01">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Email sinh nhật VIP — Quà tặng &amp; ưu đãi đặc biệt</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-email">&#x2709; Email</span>
+          <span class="badge bu-ngocdung">Ngọc Dung</span>
+          <span class="badge badge-warning">Khuyến mãi</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">Kính chúc {{ho_ten}} sinh nhật vui vẻ! Ngọc Dung trân trọng gửi đến bạn phần quà sinh nhật đặc biệt: Voucher {{gia_tri_voucher}} và dịch vụ facial miễn phí trong tháng {{thang_sinh_nhat}}...</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">51 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value stat-good">58.4%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value stat-good">24.7%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value stat-good">9.2%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 01/06/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 8: Zalo / Ocany / Chăm sóc -->
+      <div class="tpl-card" data-kenh="Zalo" data-bu="Ocany" data-mucdich="Chăm sóc" data-used="34" data-openrate="49.1" data-clickrate="15.6" data-conversion="4.8" data-modified="2026-05-25">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Chăm sóc khách hàng — Khảo sát hài lòng sau mua</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-zalo">&#x1F4AC; Zalo OA</span>
+          <span class="badge bu-ocany">Ocany</span>
+          <span class="badge badge-neutral">Chăm sóc</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">Xin chào {{ho_ten}}! Ocany muốn biết bạn cảm thấy thế nào về đơn hàng #{{ma_don_hang}} đặt ngày {{ngay_dat}}. Chỉ 30 giây để đánh giá — ý kiến của bạn giúp chúng tôi phục vụ tốt hơn...</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">34 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value stat-good">49.1%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value stat-good">15.6%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value stat-good">4.8%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 25/05/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Template 9: Push / Zema / Khuyến mãi -->
+      <div class="tpl-card" data-kenh="Push" data-bu="Zema" data-mucdich="Khuyến mãi" data-used="19" data-openrate="31.5" data-clickrate="13.2" data-conversion="3.7" data-modified="2026-06-14">
+        <div class="tpl-card-header">
+          <div class="tpl-card-name">Push thông báo sale — Zema New Collection ra mắt</div>
+        </div>
+        <div class="tpl-card-tags">
+          <span class="badge type-push">&#x1F514; Push</span>
+          <span class="badge bu-zema">Zema</span>
+          <span class="badge badge-warning">Khuyến mãi</span>
+        </div>
+        <div class="tpl-card-preview">
+          <div class="tpl-card-preview-label">Nội dung mẫu</div>
+          <div class="tpl-card-preview-text">BST {{ten_collection}} của Zema vừa ra mắt! Hơn 200 mẫu mới — phong cách {{phong_cach}} đang chờ bạn khám phá. Mua sớm nhận thêm ưu đãi Early Bird -10%...</div>
+        </div>
+        <div class="tpl-card-stats">
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Đã dùng</div>
+            <div class="tpl-stat-value">19 lần</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Open</div>
+            <div class="tpl-stat-value">31.5%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Click</div>
+            <div class="tpl-stat-value stat-good">13.2%</div>
+          </div>
+          <div class="tpl-stat">
+            <div class="tpl-stat-label">Conversion</div>
+            <div class="tpl-stat-value">3.7%</div>
+          </div>
+        </div>
+        <div class="tpl-card-footer">
+          <span class="tpl-card-meta">Sửa lần cuối: 14/06/2026</span>
+          <div class="tpl-card-actions">
+            <a href="ui-template-editor.html" class="action-btn primary-action">&#x270F; Sửa</a>
+            <button class="action-btn" onclick="cloneTemplate(this)">&#x2398; Nhân bản</button>
+            <a href="ui-template-analytics.html" class="action-btn">&#x1F4CA; Thống kê</a>
+            <button class="action-btn danger" onclick="deleteTemplate(this)">&#x1F5D1;</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /templates-grid -->
+  </div><!-- /templates-area -->
+
+</div><!-- /content -->
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+function toggleCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+
+function filterTemplates() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const kenh = document.getElementById('filterKenh').value;
+  const bu = document.getElementById('filterBU').value;
+  const mucDich = document.getElementById('filterMucDich').value;
+  const sortBy = document.getElementById('sortBy').value;
+
+  const cards = Array.from(document.querySelectorAll('.tpl-card'));
+  let visible = [];
+
+  cards.forEach(card => {
+    const name = card.querySelector('.tpl-card-name').textContent.toLowerCase();
+    const preview = card.querySelector('.tpl-card-preview-text').textContent.toLowerCase();
+    const cardKenh = card.dataset.kenh || '';
+    const cardBU = card.dataset.bu || '';
+    const cardMucDich = card.dataset.mucdich || '';
+
+    const matchSearch = !search || name.includes(search) || preview.includes(search);
+    const matchKenh = !kenh || cardKenh === kenh;
+    const matchBU = !bu || cardBU === bu;
+    const matchMucDich = !mucDich || cardMucDich === mucDich;
+
+    if (matchSearch && matchKenh && matchBU && matchMucDich) {
+      card.style.display = '';
+      visible.push(card);
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Sort visible cards
+  const grid = document.getElementById('templatesGrid');
+  visible.sort((a, b) => {
+    if (sortBy === 'used') return parseInt(b.dataset.used) - parseInt(a.dataset.used);
+    if (sortBy === 'openrate') return parseFloat(b.dataset.openrate) - parseFloat(a.dataset.openrate);
+    if (sortBy === 'clickrate') return parseFloat(b.dataset.clickrate) - parseFloat(a.dataset.clickrate);
+    if (sortBy === 'conversion') return parseFloat(b.dataset.conversion) - parseFloat(a.dataset.conversion);
+    if (sortBy === 'modified') return b.dataset.modified.localeCompare(a.dataset.modified);
+    return 0;
+  });
+
+  // Remove empty state if exists
+  const existingEmpty = grid.querySelector('.empty-state');
+  if (existingEmpty) existingEmpty.remove();
+
+  if (visible.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = '<div class="empty-state-icon">&#x1F4CB;</div><div class="empty-state-title">Không tìm thấy template</div><div class="empty-state-sub">Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</div>';
+    grid.appendChild(empty);
+  } else {
+    // Reorder DOM
+    visible.forEach(card => grid.appendChild(card));
+  }
+
+  document.getElementById('resultsCount').textContent =
+    'Hiển thị ' + visible.length + ' template' + (visible.length !== 1 ? 's' : '');
+}
+
+function cloneTemplate(btn) {
+  const card = btn.closest('.tpl-card');
+  const name = card.querySelector('.tpl-card-name').textContent;
+  alert('Đã nhân bản template:\n"' + name + '"\n\nBản sao mới đã được tạo với tên: "Copy — ' + name + '"');
+}
+
+function deleteTemplate(btn) {
+  const card = btn.closest('.tpl-card');
+  const name = card.querySelector('.tpl-card-name').textContent;
+  if (confirm('Xóa template "' + name + '"?\n\nHành động này không thể hoàn tác.')) {
+    card.style.transition = 'opacity 0.2s, transform 0.2s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.97)';
+    setTimeout(() => {
+      card.remove();
+      filterTemplates();
+    }, 200);
+  }
+}
+</script>
+</body>
+</html>

@@ -146,8 +146,8 @@ body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: 
 .step-text.done { color: var(--ink-60); }
 
 /* ══ WIZARD BODY ══ */
-.wizard-body { padding: 24px 32px; display: flex; flex-direction: column; align-items: center; }
-.wizard-panel { width: 100%; max-width: 720px; }
+.wizard-body { padding: 24px 32px; }
+.wizard-panel { width: 100%; }
 .wizard-panel-title { font-family: var(--font-display); font-size: 19px; font-weight: 600; margin-bottom: 4px; }
 .wizard-panel-sub { font-size: 13px; color: var(--ink-48); margin-bottom: 24px; }
 
@@ -336,6 +336,7 @@ body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: 
     <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
     <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
     <a class="sidebar-item active" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-template-list.html"><span class="sidebar-icon">&#x1F4CB;</span> Templates</a>
     <a class="sidebar-item" href="ui-lead-list.html">
       <span class="sidebar-icon">&#x260E;</span> Leads
       <span class="sidebar-item-badge">12</span>
@@ -436,29 +437,6 @@ body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: 
         <div class="wizard-panel-sub">Đặt tên và chọn kênh gửi cho campaign</div>
 
         <div class="form-section">
-          <div class="form-section-title">Thông tin chung</div>
-          <div class="form-row">
-            <label class="form-label">Tên Campaign <span class="req">*</span></label>
-            <input type="text" class="form-input" id="campaignName" placeholder="VD: Chăm sóc KH VIP Ngọc Dung tháng 7/2026" value="Chăm sóc KH VIP Ngọc Dung tháng 7/2026">
-            <div class="form-hint">Tên nội bộ, khách hàng sẽ không thấy tên này</div>
-          </div>
-          <div class="form-row">
-            <label class="form-label">Mô tả <span style="font-size:12px;font-weight:400;color:var(--ink-48);">(tùy chọn)</span></label>
-            <textarea class="form-textarea" id="campaignDesc" placeholder="Mô tả ngắn về mục tiêu của campaign này...">Campaign email chăm sóc khách hàng VIP Diamond và Platinum nhân dịp kỷ niệm 1 năm thành lập Ngọc Dung Chi nhánh Q.3</textarea>
-          </div>
-          <div class="form-row">
-            <label class="form-label">Tags <span style="font-size:12px;font-weight:400;color:var(--ink-48);">(tùy chọn)</span></label>
-            <div class="tags-input-wrapper" onclick="document.getElementById('tagInput').focus()">
-              <span class="tag-chip">VIP <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
-              <span class="tag-chip">Chăm sóc <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
-              <span class="tag-chip">Q3-2026 <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
-              <input type="text" class="tags-input" id="tagInput" placeholder="Nhập tag, Enter để thêm..." onkeydown="addTag(event)">
-            </div>
-            <div class="form-hint">Nhấn Enter để thêm tag mới</div>
-          </div>
-        </div>
-
-        <div class="form-section">
           <div class="form-section-title">Kênh gửi <span style="color:var(--danger);">*</span></div>
           <div class="channel-grid">
             <div class="channel-card selected" onclick="selectChannel(this)">
@@ -483,6 +461,29 @@ body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: 
             </div>
           </div>
           <div class="form-hint" style="margin-top:10px;">&#x2714; Đã chọn: <strong>Email</strong> — chi phí ~1,200 đ/1,000 email</div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Thông tin chung</div>
+          <div class="form-row">
+            <label class="form-label">Tên Campaign <span class="req">*</span></label>
+            <input type="text" class="form-input" id="campaignName" placeholder="VD: Chăm sóc KH VIP Ngọc Dung tháng 7/2026" value="Chăm sóc KH VIP Ngọc Dung tháng 7/2026">
+            <div class="form-hint">Tên nội bộ, khách hàng sẽ không thấy tên này</div>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Mô tả <span style="font-size:12px;font-weight:400;color:var(--ink-48);">(tùy chọn)</span></label>
+            <textarea class="form-textarea" id="campaignDesc" placeholder="Mô tả ngắn về mục tiêu của campaign này...">Campaign email chăm sóc khách hàng VIP Diamond và Platinum nhân dịp kỷ niệm 1 năm thành lập Ngọc Dung Chi nhánh Q.3</textarea>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Tags <span style="font-size:12px;font-weight:400;color:var(--ink-48);">(tùy chọn)</span></label>
+            <div class="tags-input-wrapper" onclick="document.getElementById('tagInput').focus()">
+              <span class="tag-chip">VIP <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
+              <span class="tag-chip">Chăm sóc <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
+              <span class="tag-chip">Q3-2026 <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
+              <input type="text" class="tags-input" id="tagInput" placeholder="Nhập tag, Enter để thêm..." onkeydown="addTag(event)">
+            </div>
+            <div class="form-hint">Nhấn Enter để thêm tag mới</div>
+          </div>
         </div>
 
         <div class="wizard-nav">
