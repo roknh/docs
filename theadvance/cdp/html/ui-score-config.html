@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Score Config</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --tier-diamond: #7c3aed;
+  --tier-diamond-bg: #f3eefc;
+  --tier-gold: #d97706;
+  --tier-gold-bg: #fef9ee;
+  --health-green: #30d158;
+  --health-yellow: #f5a623;
+  --health-orange: #ff9500;
+  --health-red: #ff453a;
+  --bu-ngocdung: #e84393;
+  --font-display: "SF Pro Display","Inter",system-ui,-apple-system,sans-serif;
+  --font-text: "SF Pro Text","Inter",system-ui,-apple-system,sans-serif;
+  --font-mono: "SF Mono","JetBrains Mono",monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-100);background:var(--ink-02);-webkit-font-smoothing:antialiased;}
+
+/* ── Shell ── */
+.topnav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--ink-00);border-bottom:1px solid var(--ink-08);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
+.topnav-brand{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink-100);text-decoration:none;}
+.topnav-brand span{color:var(--brand-primary);}
+.topnav-search{width:320px;height:32px;border-radius:var(--radius-pill);background:var(--ink-04);border:1px solid var(--ink-08);padding:0 16px;font-size:13px;color:#fff;}
+.topnav-search::placeholder{color:var(--ink-32);}
+.topnav-search:focus{outline:none;background:var(--ink-08);}
+.topnav-right{display:flex;align-items:center;gap:16px;}
+.topnav-avatar{width:28px;height:28px;border-radius:50%;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+.topnav-bu-switch{font-size:12px;color:var(--ink-60);background:var(--ink-04);border:1px solid var(--ink-08);padding:4px 12px;border-radius:var(--radius-pill);cursor:pointer;}
+.topnav-icon-btn{background:none;border:none;color:var(--ink-60);cursor:pointer;font-size:18px;}
+.sidebar{position:fixed;top:var(--nav-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--nav-h));background:var(--ink-00);border-right:1px solid var(--ink-08);overflow-y:auto;overflow-x:hidden;z-index:100;transition:width 0.25s ease;}
+.sidebar.collapsed{width:64px;}
+.sidebar.collapsed .sidebar-section-label{font-size:0;padding:12px 0 4px;}
+.sidebar.collapsed .sidebar-item{padding:10px 0;justify-content:center;gap:0;font-size:0;border-left:none;}
+.sidebar.collapsed .sidebar-item.active{border-left:none;}
+.sidebar.collapsed .sidebar-icon{font-size:20px;width:auto;}
+.sidebar.collapsed .sidebar-toggle{right:0;left:0;display:flex;justify-content:center;}
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse{display:none;}
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand{display:block;}
+.sidebar-toggle-btn .toggle-expand{display:none;}
+.sidebar-toggle{position:absolute;bottom:12px;right:12px;}
+.sidebar-toggle-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--ink-08);background:var(--ink-00);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-48);font-size:14px;box-shadow:var(--shadow-sm);}
+.sidebar-toggle-btn:hover{background:var(--ink-02);}
+.sidebar-section{padding:20px 0 8px;}
+.sidebar-section-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-32);padding:0 20px 8px;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:14px;color:var(--ink-60);cursor:pointer;transition:all 0.12s;text-decoration:none;border-left:3px solid transparent;}
+.sidebar-item:hover{background:var(--ink-02);color:var(--ink-100);}
+.sidebar-item.active{background:var(--brand-primary-subtle);color:var(--brand-primary);font-weight:500;border-left-color:var(--brand-primary);}
+.sidebar-icon{width:20px;text-align:center;font-size:16px;flex-shrink:0;}
+.sidebar-item-badge{margin-left:auto;font-size:11px;font-weight:600;background:var(--danger-subtle);color:var(--danger);padding:1px 7px;border-radius:var(--radius-pill);}
+.content{margin-left:var(--sidebar-w);margin-top:var(--nav-h);min-height:calc(100vh - var(--nav-h));transition:margin-left 0.25s ease;}
+.content.sidebar-collapsed{margin-left:64px;}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font-text);font-size:13px;font-weight:500;padding:7px 16px;border-radius:var(--radius-md);border:none;cursor:pointer;transition:all 0.12s;text-decoration:none;white-space:nowrap;}
+.btn-primary{background:var(--brand-primary);color:#fff;}
+.btn-primary:hover{background:var(--brand-primary-hover);}
+.btn-secondary{background:var(--ink-00);color:var(--ink-80);border:1px solid var(--ink-08);}
+.btn-secondary:hover{background:var(--ink-02);}
+.btn-danger{background:var(--danger-subtle);color:var(--danger-ink);border:1px solid rgba(255,69,58,0.2);}
+.btn-danger:hover{background:var(--danger);color:#fff;}
+.btn-sm{font-size:12px;padding:5px 10px;}
+
+/* ── Page Header ── */
+.page-header{background:var(--ink-00);border-bottom:1px solid var(--ink-08);padding:20px 32px;}
+.page-title-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.page-title{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.3px;}
+.page-subtitle{font-size:13px;color:var(--ink-48);margin-top:2px;}
+.page-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ── Section layout ── */
+.page-body{padding:24px 32px;display:flex;flex-direction:column;gap:24px;}
+.section-card{background:var(--ink-00);border:1px solid var(--ink-08);border-radius:var(--radius-lg);padding:24px;}
+.section-title{font-size:16px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.section-desc{font-size:13px;color:var(--ink-48);margin-bottom:20px;}
+
+/* ── Weight validation bar ── */
+.weight-validation{background:var(--ink-04);border:1px solid var(--ink-08);border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.weight-bar-wrap{flex:1;height:10px;background:var(--ink-08);border-radius:5px;overflow:hidden;display:flex;}
+.weight-bar-segment{height:100%;transition:width 0.3s;}
+.weight-monetary{background:#6c5ce7;}
+.weight-engagement{background:#0a84ff;}
+.weight-loyalty{background:#30d158;}
+.weight-social{background:#f5a623;}
+.weight-total-label{font-size:13px;font-weight:600;white-space:nowrap;}
+.weight-total-ok{color:var(--success-ink);}
+.weight-total-err{color:var(--danger-ink);}
+.weight-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--ink-60);}
+.weight-legend-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle;}
+
+/* ── Score component rows ── */
+.score-components{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.score-component{border:1px solid var(--ink-08);border-radius:var(--radius-lg);padding:18px 20px;}
+.sc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sc-name{font-size:14px;font-weight:600;}
+.sc-weight-badge{font-size:14px;font-weight:700;color:var(--brand-primary);}
+.sc-color-monetary .sc-name{color:#6c5ce7;}
+.sc-color-engagement .sc-name{color:#0a84ff;}
+.sc-color-loyalty .sc-name{color:var(--success-ink);}
+.sc-color-social .sc-name{color:var(--warning-ink);}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.slider-row input[type=range]{flex:1;height:6px;accent-color:var(--brand-primary);cursor:pointer;}
+.slider-val{width:40px;text-align:right;font-size:14px;font-weight:700;color:var(--brand-primary);}
+.sc-subcriteria{display:flex;flex-direction:column;gap:6px;}
+.sc-sub-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--ink-02);border-radius:var(--radius-sm);}
+.sc-sub-name{font-size:12px;color:var(--ink-60);}
+.sc-sub-weight{display:flex;align-items:center;gap:8px;}
+.sc-sub-weight input[type=range]{width:80px;height:4px;accent-color:var(--ink-32);cursor:pointer;}
+.sc-sub-val{font-size:12px;font-weight:600;color:var(--ink-48);width:30px;text-align:right;}
+
+/* ── Tier thresholds ── */
+.tier-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.tier-card{border-radius:var(--radius-md);padding:14px 12px;text-align:center;border:1px solid transparent;}
+.tier-diamond-card{background:var(--tier-diamond-bg);border-color:rgba(124,58,237,0.2);}
+.tier-platinum-card{background:#f8f8ff;border-color:#c0c0e0;}
+.tier-gold-card{background:var(--tier-gold-bg);border-color:rgba(217,119,6,0.2);}
+.tier-silver-card{background:#f5f5f5;border-color:#c8c8c8;}
+.tier-bronze-card{background:#fdf5ef;border-color:#e0c8b0;}
+.tier-name{font-size:12px;font-weight:700;margin-bottom:8px;}
+.tier-diamond-card .tier-name{color:var(--tier-diamond);}
+.tier-platinum-card .tier-name{color:#5050a0;}
+.tier-gold-card .tier-name{color:var(--tier-gold);}
+.tier-silver-card .tier-name{color:#707070;}
+.tier-bronze-card .tier-name{color:#a06030;}
+.tier-input-row{display:flex;align-items:center;gap:4px;justify-content:center;margin-bottom:8px;}
+.tier-input-row span{font-size:11px;color:var(--ink-48);}
+.tier-input{width:68px;height:32px;text-align:center;font-size:14px;font-weight:700;border:1.5px solid var(--ink-08);border-radius:var(--radius-sm);background:var(--ink-00);}
+.tier-input:focus{outline:none;border-color:var(--brand-primary);}
+.tier-dist{font-size:11px;color:var(--ink-48);}
+.tier-dist strong{color:var(--ink-60);}
+
+/* ── Health Score CHS ── */
+.chs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;}
+.chs-factor{background:var(--ink-02);border:1px solid var(--ink-08);border-radius:var(--radius-md);padding:14px;}
+.chs-factor-name{font-size:12px;font-weight:600;color:var(--ink-60);margin-bottom:4px;}
+.chs-factor-weight{font-size:20px;font-weight:700;color:var(--brand-primary);margin-bottom:10px;}
+.chs-factor-slider{width:100%;height:4px;accent-color:var(--brand-primary);cursor:pointer;display:block;}
+
+.chs-thresholds{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.chs-th-card{border-radius:var(--radius-md);padding:12px;}
+.chs-healthy{background:var(--success-subtle);}
+.chs-attention{background:var(--warning-subtle);}
+.chs-at-risk{background:#fff3e0;}
+.chs-critical{background:var(--danger-subtle);}
+.chs-th-label{font-size:11px;font-weight:600;margin-bottom:6px;}
+.chs-healthy .chs-th-label{color:var(--success-ink);}
+.chs-attention .chs-th-label{color:var(--warning-ink);}
+.chs-at-risk .chs-th-label{color:#8a5d0f;}
+.chs-critical .chs-th-label{color:var(--danger-ink);}
+.chs-th-input{width:100%;height:32px;text-align:center;font-size:14px;font-weight:600;border:1.5px solid var(--ink-08);border-radius:var(--radius-sm);background:var(--ink-00);}
+.chs-th-input:focus{outline:none;border-color:var(--brand-primary);}
+.chs-th-desc{font-size:10px;color:var(--ink-48);margin-top:4px;}
+
+/* ── Lifecycle config ── */
+.lifecycle-config-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.lc-item{background:var(--ink-02);border:1px solid var(--ink-08);border-radius:var(--radius-md);padding:14px 16px;}
+.lc-transition{font-size:12px;font-weight:500;color:var(--ink-48);margin-bottom:4px;}
+.lc-label{font-size:14px;font-weight:600;margin-bottom:10px;}
+.lc-input-row{display:flex;align-items:center;gap:8px;}
+.lc-input{width:64px;height:32px;text-align:center;font-size:14px;font-weight:600;border:1.5px solid var(--ink-08);border-radius:var(--radius-sm);background:var(--ink-00);}
+.lc-input:focus{outline:none;border-color:var(--brand-primary);}
+.lc-input-unit{font-size:12px;color:var(--ink-48);}
+.lc-note{font-size:11px;color:var(--ink-32);margin-top:4px;}
+
+/* ── Change History ── */
+.change-history table{width:100%;border-collapse:collapse;font-size:13px;}
+.change-history th{text-align:left;font-size:11px;font-weight:600;color:var(--ink-32);text-transform:uppercase;letter-spacing:0.05em;padding:6px 12px;border-bottom:1.5px solid var(--ink-08);}
+.change-history td{padding:10px 12px;border-bottom:1px solid var(--ink-04);vertical-align:top;}
+.change-history tr:last-child td{border-bottom:none;}
+.change-history tr:hover td{background:var(--ink-02);}
+.change-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:2px 8px;border-radius:var(--radius-pill);}
+.change-weight{background:var(--brand-primary-subtle);color:var(--brand-primary);}
+.change-tier{background:var(--tier-gold-bg);color:#92400e;}
+.change-lifecycle{background:var(--success-subtle);color:var(--success-ink);}
+.change-health{background:#fff3e0;color:#8a5d0f;}
+
+/* ── Save bar ── */
+.save-bar{position:sticky;bottom:0;background:var(--ink-00);border-top:1px solid var(--ink-08);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:50;box-shadow:0 -2px 8px rgba(0,0,0,0.06);}
+.save-bar-info{font-size:13px;color:var(--ink-48);}
+.save-bar-info strong{color:var(--ink-80);}
+.save-bar-actions{display:flex;gap:8px;}
+.unsaved-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--warning);margin-right:6px;}
+
+/* ── Responsive ── */
+@media(max-width:1023px){
+  .sidebar{transform:translateX(-100%);}
+  .content{margin-left:0;}
+  .score-components{grid-template-columns:1fr;}
+  .tier-grid{grid-template-columns:repeat(3,1fr);}
+  .chs-grid{grid-template-columns:repeat(2,1fr);}
+  .chs-thresholds{grid-template-columns:repeat(2,1fr);}
+  .lifecycle-config-grid{grid-template-columns:repeat(2,1fr);}
+  .topnav-search{width:200px;}
+}
+@media(max-width:767px){
+  .page-body{padding:16px;}
+  .page-header{padding:16px;}
+  .tier-grid{grid-template-columns:repeat(2,1fr);}
+  .chs-grid{grid-template-columns:1fr 1fr;}
+  .lifecycle-config-grid{grid-template-columns:1fr;}
+  .topnav-search{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Ngọc Dung ▾</span>
+    <button class="topnav-icon-btn">🔔</button>
+    <div class="topnav-avatar">AD</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item active" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+      <span class="toggle-collapse">◀</span>
+      <span class="toggle-expand">▶</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x2699; Score Config</div>
+        <div class="page-subtitle">Cấu hình tham số tính điểm Unified Score, Health Score và Lifecycle</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary btn-sm" onclick="previewImpact()">👁 Preview tác động</button>
+        <button class="btn btn-secondary btn-sm" onclick="resetDefaults()">↩ Reset mặc định</button>
+        <button class="btn btn-primary btn-sm" onclick="saveConfig()">💾 Lưu thay đổi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- 1. Unified Score -->
+    <div class="section-card">
+      <div class="section-title">🏆 Unified Score — Cấu hình trọng số</div>
+      <div class="section-desc">Tổng 4 thành phần phải bằng đúng 100%. Kéo slider để điều chỉnh tỉ lệ đóng góp vào điểm tổng hợp.</div>
+
+      <!-- Validation bar -->
+      <div class="weight-validation">
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-48);margin-bottom:6px;">
+            <span>Tổng trọng số</span>
+            <span id="totalPct" class="weight-total-label weight-total-ok">100% ✓</span>
+          </div>
+          <div class="weight-bar-wrap">
+            <div class="weight-bar-segment weight-monetary" id="bar-monetary" style="width:30%;"></div>
+            <div class="weight-bar-segment weight-engagement" id="bar-engagement" style="width:30%;"></div>
+            <div class="weight-bar-segment weight-loyalty" id="bar-loyalty" style="width:20%;"></div>
+            <div class="weight-bar-segment weight-social" id="bar-social" style="width:20%;"></div>
+          </div>
+        </div>
+        <div class="weight-legend">
+          <span><span class="weight-legend-dot" style="background:#6c5ce7;"></span>Monetary</span>
+          <span><span class="weight-legend-dot" style="background:#0a84ff;"></span>Engagement</span>
+          <span><span class="weight-legend-dot" style="background:#30d158;"></span>Loyalty</span>
+          <span><span class="weight-legend-dot" style="background:#f5a623;"></span>Social</span>
+        </div>
+      </div>
+
+      <div class="score-components">
+
+        <!-- Monetary -->
+        <div class="score-component sc-color-monetary">
+          <div class="sc-header">
+            <div class="sc-name">💰 Monetary</div>
+            <div class="sc-weight-badge" id="val-monetary">30%</div>
+          </div>
+          <div class="slider-row">
+            <input type="range" min="5" max="60" value="30" id="sl-monetary"
+              oninput="updateWeight('monetary',this.value)">
+            <span class="slider-val" id="show-monetary">30%</span>
+          </div>
+          <div class="sc-subcriteria">
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Tổng chi tiêu (Total spend)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="50" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">50%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Giá trị đơn trung bình (AOV)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="30" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">30%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Tần suất mua (Frequency)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="20" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">20%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Engagement -->
+        <div class="score-component sc-color-engagement">
+          <div class="sc-header">
+            <div class="sc-name">📱 Engagement</div>
+            <div class="sc-weight-badge" id="val-engagement">30%</div>
+          </div>
+          <div class="slider-row">
+            <input type="range" min="5" max="60" value="30" id="sl-engagement"
+              oninput="updateWeight('engagement',this.value)">
+            <span class="slider-val" id="show-engagement">30%</span>
+          </div>
+          <div class="sc-subcriteria">
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Mở app (App opens / tháng)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="40" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">40%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Tương tác Zalo OA</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="35" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">35%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Mở email (Email open rate)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="25" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">25%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loyalty -->
+        <div class="score-component sc-color-loyalty">
+          <div class="sc-header">
+            <div class="sc-name">🎗 Loyalty</div>
+            <div class="sc-weight-badge" id="val-loyalty">20%</div>
+          </div>
+          <div class="slider-row">
+            <input type="range" min="5" max="60" value="20" id="sl-loyalty"
+              oninput="updateWeight('loyalty',this.value)">
+            <span class="slider-val" id="show-loyalty">20%</span>
+          </div>
+          <div class="sc-subcriteria">
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Thời gian là khách (Tenure)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="45" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">45%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Giới thiệu bạn bè (Referrals)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="35" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">35%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">NPS Score</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="20" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">20%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div class="score-component sc-color-social">
+          <div class="sc-header">
+            <div class="sc-name">🌐 Social</div>
+            <div class="sc-weight-badge" id="val-social">20%</div>
+          </div>
+          <div class="slider-row">
+            <input type="range" min="5" max="60" value="20" id="sl-social"
+              oninput="updateWeight('social',this.value)">
+            <span class="slider-val" id="show-social">20%</span>
+          </div>
+          <div class="sc-subcriteria">
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Đánh giá sản phẩm (Reviews)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="40" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">40%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Chia sẻ mạng xã hội</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="35" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">35%</span>
+              </div>
+            </div>
+            <div class="sc-sub-item">
+              <span class="sc-sub-name">Tham gia cộng đồng (Community)</span>
+              <div class="sc-sub-weight">
+                <input type="range" min="10" max="60" value="25" oninput="this.nextElementSibling.textContent=this.value+'%'">
+                <span class="sc-sub-val">25%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. Tier Thresholds -->
+    <div class="section-card">
+      <div class="section-title">🏅 Ngưỡng phân hạng khách hàng</div>
+      <div class="section-desc">Chỉnh ngưỡng điểm để phân nhóm tier. Thay đổi sẽ ảnh hưởng đến phân loại của 124,580 khách hàng.</div>
+      <div class="tier-grid">
+        <div class="tier-card tier-diamond-card">
+          <div class="tier-name">💎 Diamond</div>
+          <div class="tier-input-row">
+            <span>≥</span>
+            <input class="tier-input" type="number" value="850" min="700" max="1000" oninput="markUnsaved()">
+          </div>
+          <div class="tier-dist"><strong>2,140</strong> khách (1.7%)</div>
+        </div>
+        <div class="tier-card tier-platinum-card">
+          <div class="tier-name">🥈 Platinum</div>
+          <div class="tier-input-row">
+            <span>≥</span>
+            <input class="tier-input" type="number" value="700" min="500" max="849" oninput="markUnsaved()">
+          </div>
+          <div class="tier-dist"><strong>8,420</strong> khách (6.8%)</div>
+        </div>
+        <div class="tier-card tier-gold-card">
+          <div class="tier-name">🥇 Gold</div>
+          <div class="tier-input-row">
+            <span>≥</span>
+            <input class="tier-input" type="number" value="500" min="300" max="699" oninput="markUnsaved()">
+          </div>
+          <div class="tier-dist"><strong>22,840</strong> khách (18.3%)</div>
+        </div>
+        <div class="tier-card tier-silver-card">
+          <div class="tier-name">🥈 Silver</div>
+          <div class="tier-input-row">
+            <span>≥</span>
+            <input class="tier-input" type="number" value="300" min="100" max="499" oninput="markUnsaved()">
+          </div>
+          <div class="tier-dist"><strong>45,620</strong> khách (36.6%)</div>
+        </div>
+        <div class="tier-card tier-bronze-card">
+          <div class="tier-name">🏆 Bronze</div>
+          <div class="tier-input-row">
+            <span>&lt;</span>
+            <input class="tier-input" type="number" value="300" disabled style="background:var(--ink-04);color:var(--ink-48);">
+          </div>
+          <div class="tier-dist"><strong>45,560</strong> khách (36.6%)</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:10px 14px;background:var(--info-subtle);border-radius:var(--radius-md);font-size:12px;color:var(--info);">
+        ℹ️ Preview: với ngưỡng hiện tại, <strong>3,204 khách</strong> sẽ thay đổi hạng so với tháng trước. Nhấn "Preview tác động" để xem chi tiết.
+      </div>
+    </div>
+
+    <!-- 3. Health Score CHS -->
+    <div class="section-card">
+      <div class="section-title">❤️ Customer Health Score (CHS)</div>
+      <div class="section-desc">4 yếu tố sức khỏe khách hàng, mỗi yếu tố chiếm 25%. Điều chỉnh ngưỡng phân loại Healthy / Attention / At Risk / Critical.</div>
+
+      <div class="chs-grid">
+        <div class="chs-factor">
+          <div class="chs-factor-name">📈 Recency</div>
+          <div class="chs-factor-weight">25%</div>
+          <input class="chs-factor-slider" type="range" min="5" max="50" value="25" disabled>
+          <div style="font-size:11px;color:var(--ink-32);margin-top:4px;">Ngày mua gần nhất</div>
+        </div>
+        <div class="chs-factor">
+          <div class="chs-factor-name">🔁 Frequency</div>
+          <div class="chs-factor-weight">25%</div>
+          <input class="chs-factor-slider" type="range" min="5" max="50" value="25" disabled>
+          <div style="font-size:11px;color:var(--ink-32);margin-top:4px;">Số lần mua / 90 ngày</div>
+        </div>
+        <div class="chs-factor">
+          <div class="chs-factor-name">💬 Engagement</div>
+          <div class="chs-factor-weight">25%</div>
+          <input class="chs-factor-slider" type="range" min="5" max="50" value="25" disabled>
+          <div style="font-size:11px;color:var(--ink-32);margin-top:4px;">App + Zalo + Email</div>
+        </div>
+        <div class="chs-factor">
+          <div class="chs-factor-name">💰 Spend trend</div>
+          <div class="chs-factor-weight">25%</div>
+          <input class="chs-factor-slider" type="range" min="5" max="50" value="25" disabled>
+          <div style="font-size:11px;color:var(--ink-32);margin-top:4px;">Xu hướng chi tiêu</div>
+        </div>
+      </div>
+
+      <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--ink-60);">Ngưỡng phân loại sức khỏe</div>
+      <div class="chs-thresholds">
+        <div class="chs-th-card chs-healthy">
+          <div class="chs-th-label">🟢 Healthy</div>
+          <input class="chs-th-input" type="number" value="70" min="50" max="100" oninput="markUnsaved()">
+          <div class="chs-th-desc">CHS ≥ ngưỡng này = Healthy</div>
+        </div>
+        <div class="chs-th-card chs-attention">
+          <div class="chs-th-label">🟡 Attention</div>
+          <input class="chs-th-input" type="number" value="50" min="30" max="69" oninput="markUnsaved()">
+          <div class="chs-th-desc">CHS từ 50–69</div>
+        </div>
+        <div class="chs-th-card chs-at-risk">
+          <div class="chs-th-label">🟠 At Risk</div>
+          <input class="chs-th-input" type="number" value="30" min="10" max="49" oninput="markUnsaved()">
+          <div class="chs-th-desc">CHS từ 30–49</div>
+        </div>
+        <div class="chs-th-card chs-critical">
+          <div class="chs-th-label">🔴 Critical</div>
+          <input class="chs-th-input" type="number" value="30" disabled style="background:rgba(255,255,255,0.5);color:var(--danger-ink);">
+          <div class="chs-th-desc">CHS &lt; 30 = Critical</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Lifecycle Transition Config -->
+    <div class="section-card">
+      <div class="section-title">🔄 Cấu hình Lifecycle Transition</div>
+      <div class="section-desc">Điều chỉnh ngưỡng ngày để xác định khi nào khách chuyển sang giai đoạn lifecycle tiếp theo.</div>
+      <div class="lifecycle-config-grid">
+        <div class="lc-item">
+          <div class="lc-transition">Lead → Trial</div>
+          <div class="lc-label">Sau lần mua đầu tiên</div>
+          <div class="lc-input-row">
+            <input class="lc-input" type="number" value="1" min="1" max="7" oninput="markUnsaved()">
+            <span class="lc-input-unit">ngày</span>
+          </div>
+          <div class="lc-note">Ngay sau khi có đơn hàng đầu tiên</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-transition">Trial → Active</div>
+          <div class="lc-label">Mua lại trong vòng</div>
+          <div class="lc-input-row">
+            <input class="lc-input" type="number" value="30" min="7" max="90" oninput="markUnsaved()">
+            <span class="lc-input-unit">ngày</span>
+          </div>
+          <div class="lc-note">Có ≥ 2 đơn trong 30 ngày đầu</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-transition">Active → Loyal</div>
+          <div class="lc-label">Duy trì hoạt động trong</div>
+          <div class="lc-input-row">
+            <input class="lc-input" type="number" value="90" min="30" max="365" oninput="markUnsaved()">
+            <span class="lc-input-unit">ngày</span>
+          </div>
+          <div class="lc-note">≥ 5 đơn và tenure ≥ 90 ngày</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-transition">Active / Loyal → Lapsed</div>
+          <div class="lc-label">Không mua trong</div>
+          <div class="lc-input-row">
+            <input class="lc-input" type="number" value="61" min="30" max="180" oninput="markUnsaved()">
+            <span class="lc-input-unit">ngày</span>
+          </div>
+          <div class="lc-note">Ngưỡng hiện tại: 61 ngày không có đơn</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-transition">Lapsed → Churned</div>
+          <div class="lc-label">Không mua trong</div>
+          <div class="lc-input-row">
+            <input class="lc-input" type="number" value="180" min="90" max="365" oninput="markUnsaved()">
+            <span class="lc-input-unit">ngày</span>
+          </div>
+          <div class="lc-note">Churned sau 180 ngày im lặng</div>
+        </div>
+        <div class="lc-item">
+          <div class="lc-transition">Churned → Re-active</div>
+          <div class="lc-label">Mua lại sau khi Churned</div>
+          <div class="lc-input-row">
+            <input class="lc-input" type="number" value="1" min="1" max="7" oninput="markUnsaved()">
+            <span class="lc-input-unit">đơn</span>
+          </div>
+          <div class="lc-note">1 đơn mới → chuyển về Active</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Change History -->
+    <div class="section-card">
+      <div class="section-title">📋 Lịch sử thay đổi</div>
+      <div class="section-desc">10 thay đổi gần nhất được lưu lại để kiểm toán.</div>
+      <div class="change-history">
+        <table>
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Người thực hiện</th>
+              <th>Loại thay đổi</th>
+              <th>Chi tiết</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026-06-15 09:20</td>
+              <td>Nguyễn Thị Admin</td>
+              <td><span class="change-badge change-weight">Trọng số</span></td>
+              <td>Monetary: 25% → 30%, Social: 25% → 20%</td>
+              <td><button class="btn btn-secondary btn-sm">Xem diff</button></td>
+            </tr>
+            <tr>
+              <td>2026-06-12 14:05</td>
+              <td>Nguyễn Thị Admin</td>
+              <td><span class="change-badge change-tier">Tier</span></td>
+              <td>Diamond threshold: 800 → 850</td>
+              <td><button class="btn btn-secondary btn-sm">Xem diff</button></td>
+            </tr>
+            <tr>
+              <td>2026-06-10 11:30</td>
+              <td>Trần Văn Sysadmin</td>
+              <td><span class="change-badge change-lifecycle">Lifecycle</span></td>
+              <td>Lapsed threshold: 45 ngày → 61 ngày</td>
+              <td><button class="btn btn-secondary btn-sm">Xem diff</button></td>
+            </tr>
+            <tr>
+              <td>2026-06-08 16:00</td>
+              <td>Nguyễn Thị Admin</td>
+              <td><span class="change-badge change-health">Health Score</span></td>
+              <td>Critical threshold: 25 → 30</td>
+              <td><button class="btn btn-secondary btn-sm">Xem diff</button></td>
+            </tr>
+            <tr>
+              <td>2026-06-01 10:00</td>
+              <td>Hệ thống</td>
+              <td><span class="change-badge change-weight">Trọng số</span></td>
+              <td>Khởi tạo cấu hình mặc định (v1.0)</td>
+              <td><button class="btn btn-secondary btn-sm">Xem diff</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <!-- Sticky Save Bar -->
+  <div class="save-bar" id="saveBar" style="display:none;">
+    <div class="save-bar-info">
+      <span class="unsaved-dot"></span>
+      <strong>Có thay đổi chưa lưu.</strong> Nhấn "Lưu" để áp dụng hoặc "Hủy" để bỏ qua.
+    </div>
+    <div class="save-bar-actions">
+      <button class="btn btn-secondary" onclick="cancelChanges()">Hủy thay đổi</button>
+      <button class="btn btn-primary" onclick="saveConfig()">💾 Lưu thay đổi</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('collapsed');
+  document.getElementById('content').classList.toggle('sidebar-collapsed');
+}
+
+const weights={monetary:30,engagement:30,loyalty:20,social:20};
+function updateWeight(key,val){
+  weights[key]=parseInt(val);
+  document.getElementById('val-'+key).textContent=val+'%';
+  document.getElementById('show-'+key).textContent=val+'%';
+  const total=Object.values(weights).reduce((a,b)=>a+b,0);
+  const pctEl=document.getElementById('totalPct');
+  pctEl.textContent=total+'% '+(total===100?'✓':'⚠ Cần đủ 100%');
+  pctEl.className='weight-total-label '+(total===100?'weight-total-ok':'weight-total-err');
+  Object.entries(weights).forEach(([k,v])=>{
+    document.getElementById('bar-'+k).style.width=v+'%';
+  });
+  markUnsaved();
+}
+
+function markUnsaved(){
+  document.getElementById('saveBar').style.display='flex';
+}
+function saveConfig(){
+  document.getElementById('saveBar').style.display='none';
+  const toast=document.createElement('div');
+  toast.style.cssText='position:fixed;bottom:80px;right:32px;background:#1a7a31;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);';
+  toast.textContent='✓ Đã lưu cấu hình thành công';
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(),3000);
+}
+function cancelChanges(){
+  document.getElementById('saveBar').style.display='none';
+}
+function resetDefaults(){
+  if(confirm('Reset về cấu hình mặc định? Tất cả thay đổi chưa lưu sẽ mất.')){
+    updateWeight('monetary',30);updateWeight('engagement',30);
+    updateWeight('loyalty',20);updateWeight('social',20);
+    document.getElementById('sl-monetary').value=30;
+    document.getElementById('sl-engagement').value=30;
+    document.getElementById('sl-loyalty').value=20;
+    document.getElementById('sl-social').value=20;
+  }
+}
+function previewImpact(){
+  alert('Preview tác động: Mở modal hiển thị phân phối khách hàng theo cấu hình mới vs hiện tại.');
+}
+</script>
+</body>
+</html>

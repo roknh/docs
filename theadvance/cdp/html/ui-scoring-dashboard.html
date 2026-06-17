@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Scoring Dashboard</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f; --ink-80: #333333; --ink-60: #555555;
+  --ink-48: #7a7a7a; --ink-32: #a0a0a0; --ink-16: #cccccc;
+  --ink-08: #e0e0e0; --ink-04: #f0f0f0; --ink-02: #f5f5f7; --ink-00: #ffffff;
+  --success: #30d158; --success-subtle: #e6f9ec; --success-ink: #1a7a31;
+  --warning: #f5a623; --warning-subtle: #fef5e6; --warning-ink: #8a5d0f;
+  --danger: #ff453a; --danger-subtle: #fde8e7; --danger-ink: #9b1c15;
+  --info: #0a84ff; --info-subtle: #e5f1ff; --info-ink: #004d99;
+  --tier-diamond: #7c3aed; --tier-diamond-bg: #f3eefc;
+  --tier-platinum: #6b7280; --tier-platinum-bg: #f3f4f6;
+  --tier-gold: #d97706; --tier-gold-bg: #fef9ee;
+  --tier-silver: #9ca3af; --tier-silver-bg: #f9fafb;
+  --tier-bronze: #c4744a; --tier-bronze-bg: #fdf4ef;
+  --bu-ngocdung: #e84393; --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7; --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894; --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
+  --radius-xl: 16px; --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px; --sidebar-w: 260px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* Shell */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search { width: 320px; height: 32px; border-radius: var(--radius-pill); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: transform 0.25s ease, width 0.25s ease; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; position: relative; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+
+/* Tags */
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: var(--radius-pill); font-weight: 500; }
+.tag-diamond { background: var(--tier-diamond-bg); color: var(--tier-diamond); }
+.tag-platinum { background: var(--tier-platinum-bg); color: var(--tier-platinum); }
+.tag-gold { background: var(--tier-gold-bg); color: var(--tier-gold); }
+.tag-silver { background: var(--tier-silver-bg); color: #6b7280; }
+.tag-bronze { background: var(--tier-bronze-bg); color: var(--tier-bronze); }
+
+/* Page layout */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 20px 32px; }
+.page-title-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+.page-actions { display: flex; gap: 8px; align-items: center; }
+
+/* Filter bar */
+.filter-bar { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 12px 32px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.filter-select { height: 34px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); background: var(--ink-00); color: var(--ink-80); font-size: 13px; padding: 0 10px; font-family: var(--font-text); cursor: pointer; }
+.filter-select:focus { outline: none; border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(0,102,204,0.15); }
+.filter-label { font-size: 12px; color: var(--ink-48); font-weight: 500; }
+.filter-divider { width: 1px; height: 20px; background: var(--ink-08); }
+
+/* Main content */
+.page-body { padding: 28px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+/* KPI row */
+.kpi-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 14px; }
+.kpi-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 16px 18px; }
+.kpi-label { font-size: 12px; color: var(--ink-48); font-weight: 500; margin-bottom: 6px; }
+.kpi-value { font-family: var(--font-display); font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+.kpi-sub { font-size: 12px; color: var(--ink-48); margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+.kpi-trend-up { color: var(--success-ink); }
+.kpi-trend-down { color: var(--danger-ink); }
+.kpi-card.tier-d .kpi-value { color: var(--tier-diamond); }
+.kpi-card.tier-p .kpi-value { color: var(--tier-platinum); }
+.kpi-card.tier-g .kpi-value { color: var(--tier-gold); }
+.kpi-card.tier-s .kpi-value { color: var(--tier-silver); }
+.kpi-card.tier-b .kpi-value { color: var(--tier-bronze); }
+
+/* Chart grid */
+.chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.chart-grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+/* Cards */
+.card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 22px 24px; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.card-title { font-size: 15px; font-weight: 600; }
+.card-subtitle { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.card-badge { font-size: 11px; background: var(--ink-02); color: var(--ink-60); padding: 3px 10px; border-radius: var(--radius-pill); }
+
+/* SVG charts placeholder area */
+.chart-area { width: 100%; }
+
+/* Histogram bars */
+.histogram-wrap { display: flex; gap: 3px; align-items: flex-end; height: 140px; padding: 0 4px; }
+.hist-bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.hist-bar { width: 100%; border-radius: 3px 3px 0 0; transition: opacity 0.15s; cursor: pointer; }
+.hist-bar:hover { opacity: 0.8; }
+.hist-label { font-size: 9px; color: var(--ink-48); text-align: center; }
+
+/* Donut */
+.donut-wrap { display: flex; gap: 24px; align-items: center; }
+.donut-svg { flex-shrink: 0; }
+.donut-legend { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.donut-legend-item { display: flex; align-items: center; gap: 8px; }
+.donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.donut-legend-label { font-size: 13px; color: var(--ink-60); flex: 1; }
+.donut-legend-count { font-size: 13px; font-weight: 600; }
+.donut-legend-pct { font-size: 11px; color: var(--ink-48); margin-left: 4px; }
+
+/* Trend line chart */
+.line-chart-wrap { position: relative; }
+
+/* Migration table */
+.mig-table { width: 100%; border-collapse: collapse; }
+.mig-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-48); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--ink-08); white-space: nowrap; }
+.mig-table td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid var(--ink-04); vertical-align: middle; }
+.mig-table tr:last-child td { border-bottom: none; }
+.mig-table tr:hover td { background: var(--ink-02); }
+.mig-arrow { font-size: 16px; color: var(--ink-32); }
+.mig-up { color: var(--success-ink); font-weight: 600; }
+.mig-down { color: var(--danger-ink); font-weight: 600; }
+.mig-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); }
+
+/* Top movers table */
+.movers-table { width: 100%; border-collapse: collapse; }
+.movers-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-48); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--ink-08); }
+.movers-table td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid var(--ink-04); vertical-align: middle; }
+.movers-table tr:last-child td { border-bottom: none; }
+.movers-table tr:hover td { background: var(--ink-02); }
+.score-pill { display: inline-flex; align-items: center; font-size: 13px; font-weight: 700; }
+.score-change { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); }
+.score-change-up { background: var(--success-subtle); color: var(--success-ink); }
+.score-change-down { background: var(--danger-subtle); color: var(--danger-ink); }
+
+/* Lifecycle crosstab */
+.crosstab { width: 100%; border-collapse: collapse; }
+.crosstab th { font-size: 11px; font-weight: 600; color: var(--ink-48); padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--ink-08); }
+.crosstab th:first-child { text-align: left; }
+.crosstab td { padding: 10px; text-align: center; border-bottom: 1px solid var(--ink-04); font-size: 13px; }
+.crosstab td:first-child { text-align: left; font-weight: 500; font-size: 12px; }
+.crosstab tr:last-child td { border-bottom: none; }
+.crosstab-score { font-weight: 700; font-size: 15px; }
+.crosstab-count { font-size: 11px; color: var(--ink-48); }
+
+/* Lifecycle stage mini badges */
+.lc-badge { display: inline-flex; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: var(--radius-pill); letter-spacing: 0.03em; }
+.lc-lead { background: var(--info-subtle); color: var(--info-ink); }
+.lc-trial { background: #f0e6ff; color: #6b21a8; }
+.lc-active { background: var(--success-subtle); color: var(--success-ink); }
+.lc-loyal { background: var(--tier-gold-bg); color: #92400e; }
+.lc-lapsed { background: var(--warning-subtle); color: var(--warning-ink); }
+.lc-churned { background: var(--danger-subtle); color: var(--danger-ink); }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .kpi-row { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 1023px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .content { margin-left: 0 !important; }
+  .hamburger { display: flex; align-items: center; justify-content: center; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .chart-grid-2 { grid-template-columns: 1fr; }
+  .chart-grid-3 { grid-template-columns: 1fr; }
+  .page-body { padding: 20px 16px; }
+  .page-header { padding: 16px; }
+  .filter-bar { padding: 10px 16px; }
+}
+@media (max-width: 767px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .donut-wrap { flex-direction: column; }
+  .mig-table, .movers-table { display: none; }
+  .mobile-cards { display: flex !important; }
+  .topnav-search { display: none; }
+}
+.mobile-cards { display: none; flex-direction: column; gap: 10px; }
+.mobile-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 14px; }
+.mobile-card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.mobile-card-label { font-size: 12px; color: var(--ink-48); }
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleMobileSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Tất cả BU ▾</span>
+    <div class="topnav-avatar">QM</div>
+  </div>
+</nav>
+
+<!-- Sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item active" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Thu gọn">
+      <span class="toggle-collapse">&#x276E;</span>
+      <span class="toggle-expand">&#x276F;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main content -->
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x2605; Scoring Dashboard</div>
+        <div class="page-subtitle">Phân tích điểm tích lũy toàn hệ thống — cập nhật lần cuối: 16/06/2026 08:00</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary btn-sm">&#x21BA; Làm mới</button>
+        <button class="btn btn-secondary btn-sm">&#x2B73; Xuất báo cáo</button>
+        <button class="btn btn-primary btn-sm">&#x2699; Cấu hình scoring</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Lọc:</span>
+    <select class="filter-select">
+      <option>Tất cả BU</option>
+      <option>Ngọc Dung</option>
+      <option>Zema</option>
+      <option>Ocany</option>
+    </select>
+    <select class="filter-select">
+      <option>Tháng 6/2026</option>
+      <option>Tháng 5/2026</option>
+      <option>Quý 2/2026</option>
+      <option>6 tháng gần nhất</option>
+    </select>
+    <select class="filter-select">
+      <option>Tất cả hạng</option>
+      <option>Diamond</option>
+      <option>Platinum</option>
+      <option>Gold</option>
+      <option>Silver</option>
+      <option>Bronze</option>
+    </select>
+    <div class="filter-divider"></div>
+    <select class="filter-select">
+      <option>Tất cả vòng đời</option>
+      <option>LEAD</option>
+      <option>TRIAL</option>
+      <option>ACTIVE</option>
+      <option>LOYAL</option>
+      <option>LAPSED</option>
+      <option>CHURNED</option>
+    </select>
+  </div>
+
+  <div class="page-body">
+
+    <!-- KPI Row -->
+    <div class="kpi-row">
+      <div class="kpi-card" style="border-top: 3px solid var(--brand-primary);">
+        <div class="kpi-label">Tổng KH đã chấm điểm</div>
+        <div class="kpi-value" style="color: var(--brand-primary);">24.871</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">&#x2197; +1.243</span> so với tháng trước</div>
+      </div>
+      <div class="kpi-card" style="border-top: 3px solid var(--ink-48);">
+        <div class="kpi-label">Điểm trung bình</div>
+        <div class="kpi-value" style="color: var(--ink-80);">547</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">&#x2197; +18 pts</span> vs T5</div>
+      </div>
+      <div class="kpi-card tier-d" style="border-top: 3px solid var(--tier-diamond);">
+        <div class="kpi-label">&#x2666; Diamond</div>
+        <div class="kpi-value">1.204</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">&#x2197; +87</span> (4.8%)</div>
+      </div>
+      <div class="kpi-card tier-p" style="border-top: 3px solid var(--tier-platinum);">
+        <div class="kpi-label">&#x25C6; Platinum</div>
+        <div class="kpi-value">2.891</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">&#x2197; +156</span> (11.6%)</div>
+      </div>
+      <div class="kpi-card tier-g" style="border-top: 3px solid var(--tier-gold);">
+        <div class="kpi-label">&#x25B2; Gold</div>
+        <div class="kpi-value">6.432</div>
+        <div class="kpi-sub"><span class="kpi-trend-up">&#x2197; +312</span> (25.9%)</div>
+      </div>
+      <div class="kpi-card tier-s" style="border-top: 3px solid var(--tier-silver);">
+        <div class="kpi-label">&#x25A0; Silver</div>
+        <div class="kpi-value">8.120</div>
+        <div class="kpi-sub"><span class="kpi-trend-down">&#x2198; -44</span> (32.6%)</div>
+      </div>
+      <div class="kpi-card tier-b" style="border-top: 3px solid var(--tier-bronze);">
+        <div class="kpi-label">&#x25CF; Bronze</div>
+        <div class="kpi-value">6.224</div>
+        <div class="kpi-sub"><span class="kpi-trend-down">&#x2198; -268</span> (25.0%)</div>
+      </div>
+    </div>
+
+    <!-- Chart row 1: Histogram + Donut -->
+    <div class="chart-grid-2">
+      <!-- Score Distribution Histogram -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Phân bố điểm khách hàng</div>
+            <div class="card-subtitle">Histogram điểm 0–1000 | 24.871 khách hàng</div>
+          </div>
+          <span class="card-badge">Tháng 6/2026</span>
+        </div>
+        <svg width="100%" height="170" viewBox="0 0 520 170" style="overflow: visible;">
+          <!-- Y axis labels -->
+          <text x="0" y="20" font-size="10" fill="#a0a0a0">4.000</text>
+          <text x="0" y="60" font-size="10" fill="#a0a0a0">3.000</text>
+          <text x="0" y="100" font-size="10" fill="#a0a0a0">2.000</text>
+          <text x="0" y="140" font-size="10" fill="#a0a0a0">1.000</text>
+          <!-- Grid lines -->
+          <line x1="36" y1="15" x2="516" y2="15" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="36" y1="55" x2="516" y2="55" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="36" y1="95" x2="516" y2="95" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="36" y1="135" x2="516" y2="135" stroke="#e0e0e0" stroke-width="1" stroke-dasharray="3,3"/>
+
+          <!-- Bars: 10 groups (0-99, 100-199, ..., 900-999) -->
+          <!-- Bronze range 0-399 -->
+          <rect x="38" y="129" width="44" height="8" rx="2" fill="#c4744a" opacity="0.8"/>
+          <rect x="90" y="112" width="44" height="25" rx="2" fill="#c4744a" opacity="0.8"/>
+          <rect x="142" y="85" width="44" height="52" rx="2" fill="#c4744a" opacity="0.8"/>
+          <!-- Silver 400-599 -->
+          <rect x="194" y="55" width="44" height="82" rx="2" fill="#9ca3af" opacity="0.85"/>
+          <rect x="246" y="15" width="44" height="122" rx="2" fill="#9ca3af" opacity="0.85"/>
+          <!-- Gold 600-749 -->
+          <rect x="298" y="30" width="44" height="107" rx="2" fill="#d97706" opacity="0.85"/>
+          <rect x="350" y="60" width="44" height="77" rx="2" fill="#d97706" opacity="0.85"/>
+          <!-- Platinum 750-849 -->
+          <rect x="402" y="88" width="44" height="49" rx="2" fill="#6b7280" opacity="0.85"/>
+          <!-- Diamond 850+ -->
+          <rect x="454" y="110" width="44" height="27" rx="2" fill="#7c3aed" opacity="0.9"/>
+
+          <!-- X axis labels -->
+          <text x="60" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">0–99</text>
+          <text x="112" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">100–199</text>
+          <text x="164" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">200–299</text>
+          <text x="216" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">300–399</text>
+          <text x="268" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">400–499</text>
+          <text x="320" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">500–599</text>
+          <text x="372" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">600–699</text>
+          <text x="424" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">700–799</text>
+          <text x="476" y="158" font-size="9" fill="#a0a0a0" text-anchor="middle">800–999</text>
+
+          <!-- Average line -->
+          <line x1="310" y1="10" x2="310" y2="145" stroke="#0066cc" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="314" y="10" font-size="10" fill="#0066cc" font-weight="600">⌀ 547</text>
+        </svg>
+        <div style="display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: var(--tier-bronze); display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:var(--tier-bronze);border-radius:2px;display:inline-block;"></span>Bronze (0–399)</span>
+          <span style="font-size: 11px; color: #6b7280; display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#9ca3af;border-radius:2px;display:inline-block;"></span>Silver (400–599)</span>
+          <span style="font-size: 11px; color: var(--tier-gold); display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:var(--tier-gold);border-radius:2px;display:inline-block;"></span>Gold (600–749)</span>
+          <span style="font-size: 11px; color: var(--tier-platinum); display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:var(--tier-platinum);border-radius:2px;display:inline-block;"></span>Platinum (750–849)</span>
+          <span style="font-size: 11px; color: var(--tier-diamond); display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:var(--tier-diamond);border-radius:2px;display:inline-block;"></span>Diamond (850+)</span>
+        </div>
+      </div>
+
+      <!-- Donut chart - Tier breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Cơ cấu hạng thành viên</div>
+            <div class="card-subtitle">Tổng 24.871 khách hàng</div>
+          </div>
+        </div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" width="140" height="140" viewBox="0 0 140 140">
+            <!-- Diamond 4.8% ~17.3deg -->
+            <circle cx="70" cy="70" r="50" fill="none" stroke="#7c3aed" stroke-width="22"
+              stroke-dasharray="30 284" stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
+            <!-- Platinum 11.6% ~41.7deg -->
+            <circle cx="70" cy="70" r="50" fill="none" stroke="#6b7280" stroke-width="22"
+              stroke-dasharray="73 241" stroke-dashoffset="-30" transform="rotate(-90 70 70)"/>
+            <!-- Gold 25.9% ~93.2deg -->
+            <circle cx="70" cy="70" r="50" fill="none" stroke="#d97706" stroke-width="22"
+              stroke-dasharray="163 151" stroke-dashoffset="-103" transform="rotate(-90 70 70)"/>
+            <!-- Silver 32.6% ~117.4deg -->
+            <circle cx="70" cy="70" r="50" fill="none" stroke="#9ca3af" stroke-width="22"
+              stroke-dasharray="205 109" stroke-dashoffset="-266" transform="rotate(-90 70 70)"/>
+            <!-- Bronze 25.0% ~90deg - remainder -->
+            <circle cx="70" cy="70" r="50" fill="none" stroke="#c4744a" stroke-width="22"
+              stroke-dasharray="157 157" stroke-dashoffset="-471" transform="rotate(-90 70 70)"/>
+            <text x="70" y="66" text-anchor="middle" font-size="18" font-weight="700" fill="#1d1d1f">24.8K</text>
+            <text x="70" y="82" text-anchor="middle" font-size="10" fill="#7a7a7a">khách hàng</text>
+          </svg>
+          <div class="donut-legend">
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background: #7c3aed;"></div>
+              <span class="donut-legend-label">Diamond</span>
+              <span class="donut-legend-count" style="color:#7c3aed;">1.204</span>
+              <span class="donut-legend-pct">4.8%</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background: #6b7280;"></div>
+              <span class="donut-legend-label">Platinum</span>
+              <span class="donut-legend-count" style="color:#6b7280;">2.891</span>
+              <span class="donut-legend-pct">11.6%</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background: #d97706;"></div>
+              <span class="donut-legend-label">Gold</span>
+              <span class="donut-legend-count" style="color:#d97706;">6.432</span>
+              <span class="donut-legend-pct">25.9%</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background: #9ca3af;"></div>
+              <span class="donut-legend-label">Silver</span>
+              <span class="donut-legend-count" style="color:#9ca3af;">8.120</span>
+              <span class="donut-legend-pct">32.6%</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background: #c4744a;"></div>
+              <span class="donut-legend-label">Bronze</span>
+              <span class="donut-legend-count" style="color:#c4744a;">6.224</span>
+              <span class="donut-legend-pct">25.0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart row 2: Score trend + Migration table -->
+    <div class="chart-grid-3">
+      <!-- Score Trend Line Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Xu hướng điểm trung bình</div>
+            <div class="card-subtitle">6 tháng gần nhất (Jan–Jun 2026)</div>
+          </div>
+          <span class="card-badge">&#x2197; +18 pts/tháng</span>
+        </div>
+        <svg width="100%" height="160" viewBox="0 0 500 160" preserveAspectRatio="none">
+          <!-- Grid lines -->
+          <line x1="40" y1="10" x2="490" y2="10" stroke="#e0e0e0" stroke-dasharray="3,3"/>
+          <line x1="40" y1="42" x2="490" y2="42" stroke="#e0e0e0" stroke-dasharray="3,3"/>
+          <line x1="40" y1="74" x2="490" y2="74" stroke="#e0e0e0" stroke-dasharray="3,3"/>
+          <line x1="40" y1="106" x2="490" y2="106" stroke="#e0e0e0" stroke-dasharray="3,3"/>
+          <!-- Y labels -->
+          <text x="2" y="14" font-size="10" fill="#a0a0a0">600</text>
+          <text x="2" y="46" font-size="10" fill="#a0a0a0">560</text>
+          <text x="2" y="78" font-size="10" fill="#a0a0a0">520</text>
+          <text x="2" y="110" font-size="10" fill="#a0a0a0">480</text>
+          <!-- Area fill -->
+          <defs>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0066cc" stop-opacity="0.15"/>
+              <stop offset="100%" stop-color="#0066cc" stop-opacity="0.01"/>
+            </linearGradient>
+          </defs>
+          <polygon points="50,110 130,95 210,80 290,62 370,45 450,28 450,120 50,120" fill="url(#lineGrad)"/>
+          <!-- Line -->
+          <polyline points="50,110 130,95 210,80 290,62 370,45 450,28" fill="none" stroke="#0066cc" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- Dots -->
+          <circle cx="50" cy="110" r="4" fill="#fff" stroke="#0066cc" stroke-width="2"/>
+          <circle cx="130" cy="95" r="4" fill="#fff" stroke="#0066cc" stroke-width="2"/>
+          <circle cx="210" cy="80" r="4" fill="#fff" stroke="#0066cc" stroke-width="2"/>
+          <circle cx="290" cy="62" r="4" fill="#fff" stroke="#0066cc" stroke-width="2"/>
+          <circle cx="370" cy="45" r="4" fill="#fff" stroke="#0066cc" stroke-width="2"/>
+          <circle cx="450" cy="28" r="5" fill="#0066cc" stroke="#fff" stroke-width="2"/>
+          <!-- X labels -->
+          <text x="50" y="140" font-size="10" fill="#a0a0a0" text-anchor="middle">T1</text>
+          <text x="130" y="140" font-size="10" fill="#a0a0a0" text-anchor="middle">T2</text>
+          <text x="210" y="140" font-size="10" fill="#a0a0a0" text-anchor="middle">T3</text>
+          <text x="290" y="140" font-size="10" fill="#a0a0a0" text-anchor="middle">T4</text>
+          <text x="370" y="140" font-size="10" fill="#a0a0a0" text-anchor="middle">T5</text>
+          <text x="450" y="140" font-size="10" fill="#0066cc" text-anchor="middle" font-weight="600">T6</text>
+          <!-- Score labels on points -->
+          <text x="50" y="105" font-size="10" fill="#555" text-anchor="middle">459</text>
+          <text x="130" y="90" font-size="10" fill="#555" text-anchor="middle">476</text>
+          <text x="210" y="75" font-size="10" fill="#555" text-anchor="middle">498</text>
+          <text x="290" y="57" font-size="10" fill="#555" text-anchor="middle">518</text>
+          <text x="370" y="40" font-size="10" fill="#555" text-anchor="middle">529</text>
+          <text x="450" y="23" font-size="10" fill="#0066cc" text-anchor="middle" font-weight="700">547</text>
+        </svg>
+      </div>
+
+      <!-- Tier Migration Table -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Dịch chuyển hạng tháng này</div>
+            <div class="card-subtitle">So sánh T6 vs T5/2026</div>
+          </div>
+        </div>
+        <table class="mig-table">
+          <thead>
+            <tr>
+              <th>Từ → Đến</th>
+              <th style="text-align:right;">KH</th>
+              <th style="text-align:right;">Tỉ lệ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span class="mig-badge tag-gold">Gold</span>
+                <span class="mig-arrow"> → </span>
+                <span class="mig-badge tag-diamond">Diamond</span>
+              </td>
+              <td style="text-align:right;" class="mig-up">+234</td>
+              <td style="text-align:right;" class="mig-up">&#x2197; 3.6%</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="mig-badge tag-silver">Silver</span>
+                <span class="mig-arrow"> → </span>
+                <span class="mig-badge tag-gold">Gold</span>
+              </td>
+              <td style="text-align:right;" class="mig-up">+156</td>
+              <td style="text-align:right;" class="mig-up">&#x2197; 1.9%</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="mig-badge tag-bronze">Bronze</span>
+                <span class="mig-arrow"> → </span>
+                <span class="mig-badge tag-silver">Silver</span>
+              </td>
+              <td style="text-align:right;" class="mig-up">+98</td>
+              <td style="text-align:right;" class="mig-up">&#x2197; 1.6%</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="mig-badge tag-gold">Gold</span>
+                <span class="mig-arrow"> → </span>
+                <span class="mig-badge tag-silver">Silver</span>
+              </td>
+              <td style="text-align:right;" class="mig-down">-89</td>
+              <td style="text-align:right;" class="mig-down">&#x2198; 1.4%</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="mig-badge tag-silver">Silver</span>
+                <span class="mig-arrow"> → </span>
+                <span class="mig-badge tag-bronze">Bronze</span>
+              </td>
+              <td style="text-align:right;" class="mig-down">-67</td>
+              <td style="text-align:right;" class="mig-down">&#x2198; 0.8%</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="mig-badge tag-diamond">Diamond</span>
+                <span class="mig-arrow"> → </span>
+                <span class="mig-badge tag-platinum">Platinum</span>
+              </td>
+              <td style="text-align:right;" class="mig-down">-23</td>
+              <td style="text-align:right;" class="mig-down">&#x2198; 0.3%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Row 3: Top Movers + Lifecycle Crosstab -->
+    <div class="chart-grid-2">
+      <!-- Top Movers -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Top người thay đổi điểm nhiều nhất</div>
+            <div class="card-subtitle">So sánh điểm tháng 6 vs tháng 5/2026</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-secondary btn-sm" onclick="showMovers('up')" id="btn-up" style="background:var(--success-subtle); color:var(--success-ink); border-color:transparent;">&#x2197; Tăng mạnh</button>
+            <button class="btn btn-secondary btn-sm" onclick="showMovers('down')" id="btn-down">&#x2198; Giảm mạnh</button>
+          </div>
+        </div>
+
+        <!-- Top gainers -->
+        <div id="movers-up">
+          <table class="movers-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Khách hàng</th>
+                <th>BU</th>
+                <th>Hạng</th>
+                <th>Điểm cũ</th>
+                <th>Điểm mới</th>
+                <th>Thay đổi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--ink-32);">1</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Nguyễn Thị Hoa</a><br><span style="font-size:11px;color:var(--ink-48);">0901-234-567</span></td>
+                <td><span style="background:var(--bu-ngocdung-bg);color:var(--bu-ngocdung);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ngọc Dung</span></td>
+                <td><span class="tag tag-diamond">Diamond</span></td>
+                <td style="font-weight:600;">624</td>
+                <td style="font-weight:700;color:var(--tier-diamond);">892</td>
+                <td><span class="score-change score-change-up">&#x2197; +268</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">2</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Trần Minh Khôi</a><br><span style="font-size:11px;color:var(--ink-48);">0909-445-678</span></td>
+                <td><span style="background:var(--bu-zema-bg);color:var(--bu-zema);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Zema</span></td>
+                <td><span class="tag tag-platinum">Platinum</span></td>
+                <td style="font-weight:600;">580</td>
+                <td style="font-weight:700;color:var(--tier-platinum);">821</td>
+                <td><span class="score-change score-change-up">&#x2197; +241</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">3</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Lê Phương Anh</a><br><span style="font-size:11px;color:var(--ink-48);">0938-112-900</span></td>
+                <td><span style="background:var(--bu-ocany-bg);color:var(--bu-ocany);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ocany</span></td>
+                <td><span class="tag tag-gold">Gold</span></td>
+                <td style="font-weight:600;">489</td>
+                <td style="font-weight:700;color:var(--tier-gold);">712</td>
+                <td><span class="score-change score-change-up">&#x2197; +223</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">4</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Phạm Văn Đức</a><br><span style="font-size:11px;color:var(--ink-48);">0912-567-234</span></td>
+                <td><span style="background:var(--bu-ngocdung-bg);color:var(--bu-ngocdung);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ngọc Dung</span></td>
+                <td><span class="tag tag-gold">Gold</span></td>
+                <td style="font-weight:600;">512</td>
+                <td style="font-weight:700;color:var(--tier-gold);">724</td>
+                <td><span class="score-change score-change-up">&#x2197; +212</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">5</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Hoàng Thị Lan</a><br><span style="font-size:11px;color:var(--ink-48);">0977-890-123</span></td>
+                <td><span style="background:var(--bu-zema-bg);color:var(--bu-zema);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Zema</span></td>
+                <td><span class="tag tag-silver">Silver</span></td>
+                <td style="font-weight:600;">348</td>
+                <td style="font-weight:700;color:var(--tier-silver);">542</td>
+                <td><span class="score-change score-change-up">&#x2197; +194</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Top losers (hidden) -->
+        <div id="movers-down" style="display:none;">
+          <table class="movers-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Khách hàng</th>
+                <th>BU</th>
+                <th>Hạng cũ</th>
+                <th>Điểm cũ</th>
+                <th>Điểm mới</th>
+                <th>Thay đổi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--ink-32);">1</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Võ Thành Long</a><br><span style="font-size:11px;color:var(--ink-48);">0908-321-456</span></td>
+                <td><span style="background:var(--bu-ngocdung-bg);color:var(--bu-ngocdung);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ngọc Dung</span></td>
+                <td><span class="tag tag-diamond">Diamond</span></td>
+                <td style="font-weight:600;">910</td>
+                <td style="font-weight:700;color:var(--danger);">672</td>
+                <td><span class="score-change score-change-down">&#x2198; -238</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">2</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Ngô Thị Bích</a><br><span style="font-size:11px;color:var(--ink-48);">0903-678-012</span></td>
+                <td><span style="background:var(--bu-ocany-bg);color:var(--bu-ocany);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ocany</span></td>
+                <td><span class="tag tag-platinum">Platinum</span></td>
+                <td style="font-weight:600;">812</td>
+                <td style="font-weight:700;color:var(--danger);">618</td>
+                <td><span class="score-change score-change-down">&#x2198; -194</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">3</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Dương Văn Tài</a><br><span style="font-size:11px;color:var(--ink-48);">0963-234-789</span></td>
+                <td><span style="background:var(--bu-zema-bg);color:var(--bu-zema);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Zema</span></td>
+                <td><span class="tag tag-gold">Gold</span></td>
+                <td style="font-weight:600;">698</td>
+                <td style="font-weight:700;color:var(--danger);">521</td>
+                <td><span class="score-change score-change-down">&#x2198; -177</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">4</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Bùi Thị Xuân</a><br><span style="font-size:11px;color:var(--ink-48);">0945-112-678</span></td>
+                <td><span style="background:var(--bu-ngocdung-bg);color:var(--bu-ngocdung);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ngọc Dung</span></td>
+                <td><span class="tag tag-gold">Gold</span></td>
+                <td style="font-weight:600;">654</td>
+                <td style="font-weight:700;color:var(--danger);">493</td>
+                <td><span class="score-change score-change-down">&#x2198; -161</span></td>
+              </tr>
+              <tr>
+                <td style="color:var(--ink-32);">5</td>
+                <td><a href="ui-customer360.html" style="color:var(--brand-primary);text-decoration:none;font-weight:500;">Lý Quang Vinh</a><br><span style="font-size:11px;color:var(--ink-48);">0988-445-901</span></td>
+                <td><span style="background:var(--bu-ocany-bg);color:var(--bu-ocany);font-size:11px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ocany</span></td>
+                <td><span class="tag tag-silver">Silver</span></td>
+                <td style="font-weight:600;">478</td>
+                <td style="font-weight:700;color:var(--danger);">332</td>
+                <td><span class="score-change score-change-down">&#x2198; -146</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Lifecycle Crosstab -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Điểm trung bình theo vòng đời</div>
+            <div class="card-subtitle">Cross-tab: Lifecycle Stage × Score Tier</div>
+          </div>
+        </div>
+        <table class="crosstab">
+          <thead>
+            <tr>
+              <th>Giai đoạn</th>
+              <th>TB Điểm</th>
+              <th>KH</th>
+              <th>Hạng chủ yếu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="lc-badge lc-lead">LEAD</span></td>
+              <td><span class="crosstab-score" style="color:var(--tier-bronze);">218</span></td>
+              <td><span class="crosstab-count">2.341</span></td>
+              <td><span class="tag tag-bronze">Bronze</span></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-trial">TRIAL</span></td>
+              <td><span class="crosstab-score" style="color:var(--tier-silver);">384</span></td>
+              <td><span class="crosstab-count">3.128</span></td>
+              <td><span class="tag tag-silver">Silver</span></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-active">ACTIVE</span></td>
+              <td><span class="crosstab-score" style="color:var(--tier-gold);">612</span></td>
+              <td><span class="crosstab-count">9.456</span></td>
+              <td><span class="tag tag-gold">Gold</span></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-loyal">LOYAL</span></td>
+              <td><span class="crosstab-score" style="color:var(--tier-diamond);">841</span></td>
+              <td><span class="crosstab-count">4.102</span></td>
+              <td><span class="tag tag-diamond">Diamond</span></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-lapsed">LAPSED</span></td>
+              <td><span class="crosstab-score" style="color:var(--tier-silver);">423</span></td>
+              <td><span class="crosstab-count">3.890</span></td>
+              <td><span class="tag tag-silver">Silver</span></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-churned">CHURNED</span></td>
+              <td><span class="crosstab-score" style="color:var(--tier-bronze);">196</span></td>
+              <td><span class="crosstab-count">1.954</span></td>
+              <td><span class="tag tag-bronze">Bronze</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 16px; padding: 12px; background: var(--info-subtle); border-radius: var(--radius-md); font-size: 12px; color: var(--info-ink);">
+          <strong>Nhận xét:</strong> Khách LOYAL có điểm trung bình 841 — cao nhất. Khách CHURNED chỉ đạt 196 — cần chiến dịch tái kích hoạt.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /content -->
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('mobile-open');
+  overlay.classList.toggle('show');
+}
+function showMovers(type) {
+  document.getElementById('movers-up').style.display = type === 'up' ? 'block' : 'none';
+  document.getElementById('movers-down').style.display = type === 'down' ? 'block' : 'none';
+  document.getElementById('btn-up').style.background = type === 'up' ? 'var(--success-subtle)' : '';
+  document.getElementById('btn-up').style.color = type === 'up' ? 'var(--success-ink)' : '';
+  document.getElementById('btn-up').style.borderColor = type === 'up' ? 'transparent' : '';
+  document.getElementById('btn-down').style.background = type === 'down' ? 'var(--danger-subtle)' : '';
+  document.getElementById('btn-down').style.color = type === 'down' ? 'var(--danger-ink)' : '';
+  document.getElementById('btn-down').style.borderColor = type === 'down' ? 'transparent' : '';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Hướng dẫn sử dụng</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #004d99;
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --toc-w: 280px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: var(--font-text);
+  color: var(--ink-80);
+  background: var(--ink-02);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Top Header ── */
+.guide-header {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px;
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 1000;
+}
+.guide-header-left { display: flex; align-items: center; gap: 16px; }
+.guide-header-left img { height: 36px; }
+.guide-header-left .header-divider { width: 1px; height: 24px; background: var(--ink-08); }
+.guide-header-left .header-title {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600; color: var(--ink-80);
+}
+.guide-header-right { display: flex; align-items: center; gap: 12px; }
+.guide-header-right .version-badge {
+  font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill);
+  background: var(--brand-primary-subtle); color: var(--brand-primary);
+}
+.btn-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--ink-08); background: var(--ink-00);
+  font-size: 13px; color: var(--ink-60); cursor: pointer;
+  text-decoration: none; font-family: var(--font-text); transition: all 0.12s;
+}
+.btn-back:hover { background: var(--ink-02); color: var(--ink-100); }
+
+/* ── TOC Sidebar ── */
+.toc-sidebar {
+  position: fixed; top: 56px; left: 0; width: var(--toc-w);
+  height: calc(100vh - 56px); background: var(--ink-00);
+  border-right: 1px solid var(--ink-08); overflow-y: auto;
+  padding: 20px 0; z-index: 100;
+}
+.toc-section-title {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-32); padding: 12px 20px 6px; margin-top: 4px;
+}
+.toc-link {
+  display: block; padding: 7px 20px 7px 24px;
+  font-size: 13px; color: var(--ink-60); text-decoration: none;
+  border-left: 3px solid transparent; transition: all 0.12s;
+  line-height: 1.4;
+}
+.toc-link:hover { color: var(--brand-primary); background: var(--ink-02); }
+.toc-link.active { color: var(--brand-primary); border-left-color: var(--brand-primary); background: var(--brand-primary-subtle); font-weight: 500; }
+.toc-link.sub { padding-left: 36px; font-size: 12px; color: var(--ink-48); }
+.toc-link.sub:hover { color: var(--brand-primary); }
+
+/* ── Main Content ── */
+.guide-content {
+  margin-left: var(--toc-w); margin-top: 56px;
+  padding: 32px 40px 80px;
+}
+
+/* ── Cover Section ── */
+.cover-section {
+  background: var(--ink-00); border-radius: var(--radius-xl);
+  padding: 48px; margin-bottom: 32px; border: 1px solid var(--ink-08);
+  text-align: center;
+}
+.cover-section h1 {
+  font-family: var(--font-display); font-size: 32px; font-weight: 700;
+  color: var(--ink-100); margin-bottom: 8px; letter-spacing: -0.5px;
+}
+.cover-sub { font-size: 16px; color: var(--ink-48); margin-bottom: 24px; }
+.cover-meta { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+.cover-meta-item { font-size: 12px; color: var(--ink-48); }
+.cover-meta-item strong { color: var(--ink-80); }
+.bu-row { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+.bu-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; border-radius: var(--radius-pill);
+  font-size: 12px; font-weight: 600; border: 1px solid var(--ink-08);
+}
+.bu-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* ── Section ── */
+.section {
+  background: var(--ink-00); border-radius: var(--radius-xl);
+  padding: 36px 40px; margin-bottom: 24px; border: 1px solid var(--ink-08);
+}
+.section h2 {
+  font-family: var(--font-display); font-size: 22px; font-weight: 700;
+  color: var(--ink-100); margin-bottom: 6px; letter-spacing: -0.3px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--ink-04);
+}
+.section h2 .section-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--brand-primary); color: #fff;
+  font-size: 13px; font-weight: 700; margin-right: 10px; vertical-align: middle;
+}
+.section h3 {
+  font-family: var(--font-display); font-size: 16px; font-weight: 600;
+  color: var(--ink-100); margin: 24px 0 10px;
+}
+.section h4 {
+  font-size: 14px; font-weight: 600; color: var(--ink-80); margin: 18px 0 8px;
+}
+.section p { margin-bottom: 12px; font-size: 14px; }
+.section ul, .section ol { margin: 8px 0 16px 20px; font-size: 14px; }
+.section li { margin-bottom: 6px; }
+
+/* ── Cards ── */
+.feature-card {
+  background: var(--ink-02); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 12px;
+}
+.feature-card-title {
+  font-size: 14px; font-weight: 600; color: var(--ink-100); margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.feature-card-title .icon { font-size: 18px; }
+.feature-card p { font-size: 13px; color: var(--ink-60); margin: 0; }
+
+/* ── Tables ── */
+.guide-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  font-size: 13px; margin: 12px 0 20px; border-radius: var(--radius-md); overflow: hidden;
+  border: 1px solid var(--ink-08);
+}
+.guide-table thead th {
+  background: var(--ink-02); padding: 10px 14px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--ink-48); text-align: left;
+  border-bottom: 1px solid var(--ink-08);
+}
+.guide-table tbody td {
+  padding: 10px 14px; border-bottom: 1px solid var(--ink-04);
+  color: var(--ink-80); vertical-align: top;
+}
+.guide-table tbody tr:last-child td { border-bottom: none; }
+.guide-table tbody tr:hover { background: var(--ink-02); }
+
+/* ── Tags / Badges ── */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; padding: 2px 8px;
+  border-radius: var(--radius-pill); white-space: nowrap;
+}
+.tag-blue { background: var(--brand-primary-subtle); color: var(--brand-primary); }
+.tag-green { background: var(--success-subtle); color: var(--success-ink); }
+.tag-yellow { background: var(--warning-subtle); color: var(--warning-ink); }
+.tag-red { background: var(--danger-subtle); color: var(--danger-ink); }
+.tag-orange { background: #fff3e0; color: #8a5d0f; }
+.tag-purple { background: #f3eefc; color: #7c3aed; }
+.tag-nd { background: var(--bu-ngocdung-bg); color: var(--bu-ngocdung); }
+.tag-ze { background: var(--bu-zema-bg); color: var(--bu-zema); }
+.tag-oc { background: var(--bu-ocany-bg); color: var(--bu-ocany); }
+
+/* ── Callout ── */
+.callout {
+  padding: 14px 18px; border-radius: var(--radius-md);
+  margin: 12px 0 16px; font-size: 13px; line-height: 1.6;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.callout-info { background: var(--info-subtle); color: var(--info-ink); border: 1px solid rgba(10,132,255,0.15); }
+.callout-warn { background: var(--warning-subtle); color: var(--warning-ink); border: 1px solid rgba(245,166,35,0.2); }
+.callout-tip { background: var(--success-subtle); color: var(--success-ink); border: 1px solid rgba(48,209,88,0.2); }
+
+/* ── Step list ── */
+.steps { counter-reset: step; list-style: none; margin-left: 0; padding-left: 0; }
+.steps li {
+  counter-increment: step; position: relative;
+  padding-left: 36px; margin-bottom: 14px; font-size: 14px;
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 1px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--brand-primary); color: #fff;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Keyboard shortcut ── */
+kbd {
+  display: inline-block; padding: 2px 6px; border-radius: 4px;
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-60);
+  box-shadow: 0 1px 0 var(--ink-08);
+}
+
+/* ── Flow diagram ── */
+.flow {
+  display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+  margin: 12px 0 16px; font-size: 12px;
+}
+.flow-step {
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  background: var(--brand-primary-subtle); color: var(--brand-primary);
+  font-weight: 600; white-space: nowrap;
+}
+.flow-arrow { color: var(--ink-16); font-size: 16px; padding: 0 4px; }
+
+/* ── Screenshot placeholder ── */
+.screenshot-placeholder {
+  background: var(--ink-04); border: 2px dashed var(--ink-16);
+  border-radius: var(--radius-lg); padding: 32px;
+  text-align: center; color: var(--ink-32); font-size: 13px;
+  margin: 12px 0 16px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1023px) {
+  .toc-sidebar { display: none; }
+  .guide-content { margin-left: 0; padding: 24px 20px 60px; }
+  .toc-toggle { display: flex; }
+}
+@media (max-width: 767px) {
+  .guide-header { padding: 0 16px; }
+  .cover-section { padding: 28px 20px; }
+  .cover-section h1 { font-size: 24px; }
+  .section { padding: 24px 20px; }
+  .section h2 { font-size: 18px; }
+  .cover-meta { flex-direction: column; gap: 6px; }
+  .guide-table { font-size: 12px; }
+  .guide-table thead th, .guide-table tbody td { padding: 8px 10px; }
+  .flow { gap: 4px; }
+  .flow-step { font-size: 11px; padding: 4px 10px; }
+}
+@media (max-width: 479px) {
+  .guide-content { padding: 16px 12px 40px; }
+  .section { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="guide-header">
+  <div class="guide-header-left">
+    <img src="logo-theadvance.png" alt="TheAdvance">
+    <div class="header-divider"></div>
+    <span class="header-title">Hướng dẫn sử dụng CDP</span>
+  </div>
+  <div class="guide-header-right">
+    <span class="version-badge">v1.0 — Tháng 6/2026</span>
+    <a href="ui-dashboard.html" class="btn-back">&#x2190; Vào hệ thống</a>
+  </div>
+</header>
+
+<!-- ═══ TOC SIDEBAR ═══ -->
+<nav class="toc-sidebar" id="tocSidebar">
+  <div class="toc-section-title">Bắt đầu</div>
+  <a class="toc-link" href="#cover">Giới thiệu</a>
+  <a class="toc-link" href="#login">Đăng nhập</a>
+  <a class="toc-link" href="#navigation">Điều hướng</a>
+  <a class="toc-link" href="#roles">Vai trò & phân quyền</a>
+
+  <div class="toc-section-title">Quản lý khách hàng</div>
+  <a class="toc-link" href="#customer-list">Danh sách khách hàng</a>
+  <a class="toc-link" href="#customer360">Customer 360</a>
+  <a class="toc-link" href="#lifecycle">Lifecycle & Health</a>
+
+  <div class="toc-section-title">Phân khúc</div>
+  <a class="toc-link" href="#segment">Segment Builder</a>
+  <a class="toc-link" href="#rfm">RFM Dashboard</a>
+
+  <div class="toc-section-title">Chiến dịch</div>
+  <a class="toc-link" href="#campaign">Tạo chiến dịch</a>
+  <a class="toc-link" href="#campaign-tracking">Theo dõi kết quả</a>
+  <a class="toc-link" href="#workflow">Workflow tự động</a>
+
+  <div class="toc-section-title">Lead Management</div>
+  <a class="toc-link" href="#leads">Quản lý lead</a>
+  <a class="toc-link" href="#pipeline">Lead Pipeline</a>
+
+  <div class="toc-section-title">Phân tích & Báo cáo</div>
+  <a class="toc-link" href="#dashboard">Dashboard</a>
+  <a class="toc-link" href="#scoring">Scoring</a>
+  <a class="toc-link" href="#health">Health Map</a>
+  <a class="toc-link" href="#analytics">Analytics nâng cao</a>
+  <a class="toc-link" href="#dealer">Dealer Dashboard</a>
+
+  <div class="toc-section-title">Quản trị hệ thống</div>
+  <a class="toc-link" href="#connectors">Cấu hình Connectors</a>
+  <a class="toc-link" href="#pipeline-monitor">Pipeline Monitor</a>
+  <a class="toc-link" href="#score-config">Cấu hình Scoring</a>
+  <a class="toc-link" href="#users">Người dùng & Phân quyền</a>
+  <a class="toc-link" href="#consent">Consent Center</a>
+  <a class="toc-link" href="#audit">Audit Log</a>
+
+  <div class="toc-section-title">Phụ lục</div>
+  <a class="toc-link" href="#glossary">Thuật ngữ</a>
+  <a class="toc-link" href="#faq">FAQ</a>
+</nav>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="guide-content">
+
+  <!-- ── Cover ── -->
+  <div class="cover-section" id="cover">
+    <img src="logo-theadvance.png" alt="TheAdvance" style="height:48px;margin-bottom:20px;">
+    <h1>Hướng dẫn sử dụng CDP</h1>
+    <p class="cover-sub">Customer Data Platform — Nền tảng dữ liệu khách hàng hợp nhất</p>
+    <div class="cover-meta">
+      <span class="cover-meta-item"><strong>Phiên bản:</strong> 1.0</span>
+      <span class="cover-meta-item"><strong>Cập nhật:</strong> 16/06/2026</span>
+      <span class="cover-meta-item"><strong>Đối tượng:</strong> Người dùng cuối</span>
+    </div>
+    <div class="bu-row">
+      <span class="bu-chip"><span class="bu-dot" style="background:#e84393;"></span> Ngọc Dung</span>
+      <span class="bu-chip"><span class="bu-dot" style="background:#6c5ce7;"></span> Zema</span>
+      <span class="bu-chip"><span class="bu-dot" style="background:#00b894;"></span> Ocany</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 1. ĐĂNG NHẬP                          -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="login">
+    <h2><span class="section-num">1</span> Đăng nhập</h2>
+
+    <h3>1.1. Truy cập hệ thống</h3>
+    <p>Mở trình duyệt và truy cập địa chỉ CDP do quản trị viên cung cấp. Màn hình đăng nhập sẽ hiển thị.</p>
+
+    <h3>1.2. Các bước đăng nhập</h3>
+    <ol class="steps">
+      <li><strong>Chọn Business Unit (BU)</strong> — chọn đơn vị kinh doanh bạn thuộc về: <span class="tag tag-nd">Ngọc Dung</span> <span class="tag tag-ze">Zema</span> <span class="tag tag-oc">Ocany</span> hoặc <span class="tag tag-blue">Holding</span> (nếu bạn có quyền xem toàn bộ).</li>
+      <li><strong>Nhập email nội bộ</strong> — sử dụng email @theadvance.vn được cấp.</li>
+      <li><strong>Nhập mật khẩu</strong> — mật khẩu phải có tối thiểu 8 ký tự.</li>
+      <li><strong>Xác thực 2 bước (MFA)</strong> — nhập mã OTP 6 số từ ứng dụng Authenticator hoặc email.</li>
+    </ol>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">&#x1F6C8;</span>
+      <div>Nếu quên mật khẩu, nhấn "Quên mật khẩu?" để nhận link reset qua email. Nếu không nhận được, liên hệ <strong>support@theadvance.vn</strong>.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 2. ĐIỀU HƯỚNG                         -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="navigation">
+    <h2><span class="section-num">2</span> Điều hướng hệ thống</h2>
+
+    <h3>2.1. Thanh điều hướng trên (Top Navigation)</h3>
+    <p>Luôn hiển thị ở đầu trang, gồm:</p>
+    <ul>
+      <li><strong>Logo TheAdvance</strong> — nhấn để quay về Dashboard.</li>
+      <li><strong>Thanh tìm kiếm</strong> — tìm nhanh khách hàng theo tên, SĐT, email.</li>
+      <li><strong>Chuyển BU</strong> — chuyển đổi giữa các đơn vị kinh doanh (nếu có quyền).</li>
+      <li><strong>Thông báo</strong> — chuông thông báo khi có alert hoặc task mới.</li>
+      <li><strong>Tài khoản</strong> — tên và avatar người dùng hiện tại.</li>
+    </ul>
+
+    <h3>2.2. Menu bên (Sidebar)</h3>
+    <p>Sidebar bên trái chứa tất cả các chức năng, chia thành nhóm:</p>
+
+    <table class="guide-table">
+      <thead>
+        <tr><th>Nhóm</th><th>Các mục</th><th>Mô tả</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Chính</strong></td>
+          <td>Dashboard, Customers, Segments, Campaigns, Leads</td>
+          <td>Các chức năng sử dụng hàng ngày</td>
+        </tr>
+        <tr>
+          <td><strong>Analytics</strong></td>
+          <td>Scoring, Health Map, RFM, Cohort, Journey</td>
+          <td>Phân tích và báo cáo</td>
+        </tr>
+        <tr>
+          <td><strong>System</strong></td>
+          <td>Connectors, Pipeline, Score Config, Users &amp; Roles, Consent, Audit Log</td>
+          <td>Quản trị hệ thống (cần quyền Admin)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div>Trên tablet, sidebar sẽ thu gọn thành icon. Trên mobile, nhấn nút &#x2630; (hamburger) ở góc trái để mở menu.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 3. VAI TRÒ & PHÂN QUYỀN              -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="roles">
+    <h2><span class="section-num">3</span> Vai trò & Phân quyền</h2>
+    <p>Hệ thống phân quyền theo mô hình <strong>Holding → BU → Chi nhánh → Nhân viên</strong>. Mỗi vai trò chỉ thấy dữ liệu thuộc phạm vi của mình.</p>
+
+    <table class="guide-table">
+      <thead>
+        <tr><th>Vai trò</th><th>Phạm vi dữ liệu</th><th>Quyền chính</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Super Admin</strong></td><td>Tất cả BU</td><td>Cấu hình hệ thống, quản lý user, xem cross-BU</td></tr>
+        <tr><td><strong>Data Analyst</strong></td><td>Tất cả BU (read-only)</td><td>Xem data, tạo segment, tạo report</td></tr>
+        <tr><td><strong>BU Admin</strong></td><td>BU mình</td><td>Cấu hình BU, tạo campaign, quản lý user BU</td></tr>
+        <tr><td><strong>Branch Manager</strong></td><td>Chi nhánh mình</td><td>Xem report chi nhánh, xem khách chi nhánh</td></tr>
+        <tr><td><strong>Marketing</strong></td><td>BU mình</td><td>Tạo campaign, tạo segment, xem report marketing</td></tr>
+        <tr><td><strong>Telesale</strong></td><td>Lead được assign</td><td>Xem lead, cập nhật trạng thái, ghi chú</td></tr>
+        <tr><td><strong>CS Staff</strong></td><td>Khách được assign</td><td>Xem profile khách, ghi chú, tạo task</td></tr>
+        <tr><td><strong>Staff</strong></td><td>Khách của mình</td><td>Xem profile khách khi check-in/phục vụ</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">&#x26A0;</span>
+      <div><strong>Bảo mật PII:</strong> Số điện thoại và email hiển thị dạng <code>0901-xxx-xxx</code> cho role không được phép xem thông tin đầy đủ.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 4. DANH SÁCH KHÁCH HÀNG              -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="customer-list">
+    <h2><span class="section-num">4</span> Danh sách khách hàng</h2>
+    <p>Màn hình <strong>Customers</strong> hiển thị toàn bộ khách hàng thuộc phạm vi quyền của bạn, với các thông tin quan trọng trên mỗi dòng.</p>
+
+    <h3>4.1. Thông tin hiển thị</h3>
+    <table class="guide-table">
+      <thead>
+        <tr><th>Cột</th><th>Mô tả</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Khách hàng</strong></td><td>Tên + mã khách (avatar màu theo BU)</td></tr>
+        <tr><td><strong>SĐT</strong></td><td>Số điện thoại dạng 0901-xxx-xxx</td></tr>
+        <tr><td><strong>Email</strong></td><td>Email liên hệ (hover để xem đầy đủ nếu bị cắt)</td></tr>
+        <tr><td><strong>BU</strong></td><td>Đơn vị kinh doanh: <span class="tag tag-nd">Ngọc Dung</span> <span class="tag tag-ze">Zema</span> <span class="tag tag-oc">Ocany</span></td></tr>
+        <tr><td><strong>Tier</strong></td><td>Hạng khách hàng: Diamond, Gold, Silver, Bronze</td></tr>
+        <tr><td><strong>Lifecycle</strong></td><td>Giai đoạn vòng đời: LEAD → TRIAL → ACTIVE → LOYAL → LAPSED → CHURNED</td></tr>
+        <tr><td><strong>Health</strong></td><td>Điểm sức khỏe + trạng thái (ví dụ: <span class="tag tag-green">87 · Healthy</span>)</td></tr>
+        <tr><td><strong>Lần cuối</strong></td><td>Ngày tương tác gần nhất</td></tr>
+        <tr><td><strong>Thao tác</strong></td><td>Xem 360°, gửi email, ghi chú (hiện khi hover)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4.2. Tìm kiếm & Lọc</h3>
+    <p>Sử dụng thanh filter phía trên bảng để lọc theo:</p>
+    <ul>
+      <li><strong>Tìm kiếm</strong> — theo tên, SĐT, email, mã khách.</li>
+      <li><strong>BU</strong> — lọc theo đơn vị kinh doanh.</li>
+      <li><strong>Tier</strong> — lọc theo hạng khách hàng.</li>
+      <li><strong>Lifecycle</strong> — lọc theo giai đoạn vòng đời.</li>
+      <li><strong>Health Status</strong> — lọc theo trạng thái sức khỏe.</li>
+      <li><strong>Khoảng thời gian</strong> — lọc theo ngày tương tác gần nhất.</li>
+    </ul>
+
+    <h3>4.3. Thao tác hàng loạt</h3>
+    <p>Tick chọn nhiều khách hàng, thanh thao tác sẽ hiện lên cho phép: thêm vào segment, gửi campaign, xuất danh sách, hoặc gán nhân viên phụ trách.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 5. CUSTOMER 360                       -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="customer360">
+    <h2><span class="section-num">5</span> Customer 360</h2>
+    <p>Hồ sơ toàn diện của một khách hàng, tổng hợp dữ liệu từ tất cả các nguồn. Truy cập bằng cách nhấn vào tên khách hàng từ danh sách hoặc dùng nút <strong>👁 Xem 360°</strong>.</p>
+
+    <h3>5.1. Thông tin header</h3>
+    <p>Phần đầu trang hiển thị: tên, avatar, hạng tier, lifecycle stage, health score, SĐT, email, BU, chi nhánh, nhân viên phụ trách.</p>
+
+    <h3>5.2. Các tab dữ liệu</h3>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x1F4CA;</span> Overview</div>
+      <p>Tổng quan: KPI chính (tổng chi tiêu, LTV, số lần ghé, NPS), điểm scoring, segment thuộc về.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x1F4B3;</span> Giao dịch</div>
+      <p>Lịch sử giao dịch chi tiết: ngày, chi nhánh, dịch vụ/sản phẩm, số tiền, phương thức thanh toán.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x23F3;</span> Timeline</div>
+      <p>Dòng thời gian hợp nhất tất cả sự kiện: ghé spa, mua hàng online, gọi hotline, click email, v.v.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x2B50;</span> Scoring</div>
+      <p>Chi tiết các thành phần điểm: Monetary, Engagement, Loyalty, Social. Biểu đồ xu hướng.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x1F489;</span> Liệu trình</div>
+      <p>Danh sách liệu trình đang/đã thực hiện, tiến độ từng buổi (dành cho Ngọc Dung, Zema).</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x1F4E8;</span> Campaigns</div>
+      <p>Lịch sử các chiến dịch đã gửi đến khách: trạng thái mở, click, chuyển đổi.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x1F4DD;</span> Notes</div>
+      <p>Ghi chú nội bộ từ các nhân viên: CS, telesale, marketing. Có thể thêm ghi chú mới.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 6. LIFECYCLE & HEALTH                 -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="lifecycle">
+    <h2><span class="section-num">6</span> Lifecycle Stage & Health Status</h2>
+    <p>Mỗi khách hàng có 2 chỉ số trạng thái độc lập, luôn hiển thị xuyên suốt hệ thống:</p>
+
+    <h3>6.1. Lifecycle Stage — Vòng đời khách hàng</h3>
+    <p>Mô tả khách đang ở giai đoạn nào trong hành trình với thương hiệu:</p>
+    <table class="guide-table">
+      <thead><tr><th>Stage</th><th>Ý nghĩa</th><th>Ví dụ</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-blue">LEAD</span></td><td>Tiềm năng, chưa sử dụng dịch vụ</td><td>Đăng ký form trên website</td></tr>
+        <tr><td><span class="tag tag-purple">TRIAL</span></td><td>Đang dùng thử</td><td>Đến spa lần đầu, mua hàng thử</td></tr>
+        <tr><td><span class="tag tag-green">ACTIVE</span></td><td>Đang sử dụng dịch vụ thường xuyên</td><td>Ghé spa mỗi tháng</td></tr>
+        <tr><td><span class="tag" style="background:#fef9ee;color:#92400e;">LOYAL</span></td><td>Trung thành, mua lại nhiều lần</td><td>Khách Diamond 2 năm liên tục</td></tr>
+        <tr><td><span class="tag tag-yellow">LAPSED</span></td><td>Ngừng tương tác, có nguy cơ rời bỏ</td><td>Không ghé 3 tháng</td></tr>
+        <tr><td><span class="tag tag-red">CHURNED</span></td><td>Đã rời bỏ hoàn toàn</td><td>Không tương tác > 6 tháng</td></tr>
+      </tbody>
+    </table>
+
+    <h3>6.2. Health Status — Sức khỏe mối quan hệ</h3>
+    <p>Đo bằng Customer Health Score (CHS) từ 0-100, dựa trên 4 yếu tố: xu hướng engagement, NPS, recency, complaint.</p>
+    <table class="guide-table">
+      <thead><tr><th>Trạng thái</th><th>Điểm CHS</th><th>Ý nghĩa</th><th>Hành động</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">&#x1F7E2; Healthy</span></td><td>70 – 100</td><td>Mọi thứ tốt</td><td>Tiếp tục chăm sóc bình thường</td></tr>
+        <tr><td><span class="tag tag-yellow">&#x1F7E1; Attention</span></td><td>40 – 69</td><td>Dấu hiệu giảm</td><td>Gửi ưu đãi re-engagement</td></tr>
+        <tr><td><span class="tag tag-orange">&#x1F7E0; At Risk</span></td><td>10 – 39</td><td>Nguy cơ churn cao</td><td>CS gọi điện trong 48h</td></tr>
+        <tr><td><span class="tag tag-red">&#x1F534; Critical</span></td><td>0 – 9</td><td>Sắp mất khách</td><td>Escalate manager, ưu đãi đặc biệt</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">&#x1F6C8;</span>
+      <div>Lifecycle Stage và Health Status là <strong>hai chiều độc lập</strong>. Ví dụ: khách LOYAL vẫn có thể ở trạng thái At Risk nếu gần đây có complaint hoặc giảm tần suất ghé.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 7. SEGMENT BUILDER                    -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="segment">
+    <h2><span class="section-num">7</span> Segment Builder</h2>
+    <p>Tạo nhóm khách hàng dựa trên các điều kiện lọc linh hoạt. Segment được tính lại tự động theo lịch.</p>
+
+    <h3>7.1. Tạo segment mới</h3>
+    <ol class="steps">
+      <li>Vào menu <strong>Segments</strong> → nhấn <strong>+ Tạo Segment</strong>.</li>
+      <li>Đặt tên và mô tả cho segment.</li>
+      <li>Thêm điều kiện lọc — có thể kết hợp AND/OR:
+        <ul style="margin-top:6px;">
+          <li><strong>Demographics:</strong> giới tính, độ tuổi, vùng miền, BU</li>
+          <li><strong>Transactional:</strong> tổng chi tiêu, AOV, tần suất mua</li>
+          <li><strong>Behavioral:</strong> lần cuối ghé, kênh tương tác</li>
+          <li><strong>Scoring:</strong> tier, health status, RFM segment</li>
+          <li><strong>Lifecycle:</strong> stage hiện tại</li>
+        </ul>
+      </li>
+      <li>Nhấn <strong>Preview</strong> để xem số lượng khách thỏa mãn.</li>
+      <li>Nhấn <strong>Lưu</strong> — segment sẽ được tự động cập nhật.</li>
+    </ol>
+
+    <h3>7.2. Danh sách segment</h3>
+    <p>Vào <strong>Segments → Danh sách</strong> để xem tất cả segment đã tạo: tên, số khách, trạng thái (Active/Paused), ngày tạo, người tạo. Có thể sửa, nhân bản, hoặc xóa.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 8. RFM                                -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="rfm">
+    <h2><span class="section-num">8</span> RFM Dashboard</h2>
+    <p><strong>RFM (Recency – Frequency – Monetary)</strong> là mô hình phân khúc khách hàng dựa trên 3 yếu tố: gần đây mua khi nào, mua thường xuyên không, và chi tiêu bao nhiêu.</p>
+
+    <h3>8.1. Ma trận RFM</h3>
+    <p>Dashboard hiển thị ma trận 11 segment chuẩn, mỗi ô hiện số khách và % tổng. Nhấn vào ô để xem danh sách khách chi tiết.</p>
+
+    <table class="guide-table">
+      <thead><tr><th>Segment</th><th>Đặc điểm</th><th>Hành động đề xuất</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Champions</strong></td><td>R cao, F cao, M cao</td><td>Reward, giữ chặt, mời KOC</td></tr>
+        <tr><td><strong>Loyal</strong></td><td>F cao, M cao</td><td>Upsell, cross-sell, cross-BU</td></tr>
+        <tr><td><strong>Potential Loyalist</strong></td><td>R cao, F-M trung bình</td><td>Nurture lên Loyal</td></tr>
+        <tr><td><strong>New Customers</strong></td><td>R cao, F thấp</td><td>Onboarding tốt, welcome series</td></tr>
+        <tr><td><strong>Promising</strong></td><td>R cao, M trung bình</td><td>Khuyến khích quay lại</td></tr>
+        <tr><td><strong>Need Attention</strong></td><td>Tất cả trung bình</td><td>Gửi ưu đãi nhắc nhở</td></tr>
+        <tr><td><strong>About to Sleep</strong></td><td>R-F đang giảm</td><td>Re-engage ngay</td></tr>
+        <tr><td><strong>At Risk</strong></td><td>R thấp, F-M cao</td><td>Win-back campaign</td></tr>
+        <tr><td><strong>Can't Lose</strong></td><td>R thấp, F-M rất cao</td><td>Escalate CS, ưu đãi mạnh</td></tr>
+        <tr><td><strong>Hibernating</strong></td><td>R-F-M đều thấp</td><td>Low-cost reactivation</td></tr>
+        <tr><td><strong>Lost</strong></td><td>R-F-M rất thấp</td><td>Last-chance offer hoặc ngừng chi phí</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">&#x1F6C8;</span>
+      <div>RFM được cấu hình riêng theo BU: Ngọc Dung/Zema tính theo lượt đến spa và chi tiêu dịch vụ; Ocany B2C tính theo đơn hàng online; Ocany B2B tính theo đơn đại lý theo quý.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 9. CAMPAIGN                           -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="campaign">
+    <h2><span class="section-num">9</span> Tạo chiến dịch</h2>
+
+    <h3>9.1. Quy trình tạo campaign</h3>
+    <div class="flow">
+      <span class="flow-step">Chọn Segment</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Chọn kênh</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Soạn nội dung</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Đặt lịch gửi</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Review</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Launch</span>
+    </div>
+
+    <ol class="steps">
+      <li><strong>Chọn segment đích:</strong> chọn từ danh sách segment có sẵn hoặc tạo mới.</li>
+      <li><strong>Chọn kênh gửi:</strong> Zalo OA, SMS, Email, Push Notification, In-app message. Có thể chọn nhiều kênh.</li>
+      <li><strong>Soạn nội dung:</strong> sử dụng merge fields để cá nhân hóa:
+        <ul style="margin-top:6px;">
+          <li><code>{{ten_khach}}</code> — Tên khách hàng</li>
+          <li><code>{{dich_vu_gan_nhat}}</code> — Dịch vụ gần nhất</li>
+          <li><code>{{tier}}</code> — Hạng hiện tại</li>
+          <li><code>{{ten_chi_nhanh}}</code> — Chi nhánh quen</li>
+        </ul>
+      </li>
+      <li><strong>Đặt lịch:</strong> gửi ngay hoặc hẹn giờ. Hệ thống ước lượng chi phí trước khi gửi.</li>
+      <li><strong>Review & Approve:</strong> Marketing tạo → Manager duyệt → Hệ thống gửi. Khách đã opt-out sẽ tự động bị loại.</li>
+    </ol>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">&#x26A0;</span>
+      <div>Hệ thống tự động loại khách hàng đã từ chối nhận tin (opt-out) khỏi danh sách gửi để đảm bảo tuân thủ PDPA.</div>
+    </div>
+  </div>
+
+  <!-- ── Campaign Tracking ── -->
+  <div class="section" id="campaign-tracking">
+    <h2><span class="section-num">10</span> Theo dõi kết quả chiến dịch</h2>
+
+    <h3>10.1. Danh sách Campaign</h3>
+    <p>Vào <strong>Campaigns → Danh sách</strong> để xem tất cả chiến dịch: tên, trạng thái (Draft / Scheduled / Running / Completed), kênh, segment, ngày gửi, kết quả tóm tắt.</p>
+
+    <h3>10.2. Chi tiết Campaign</h3>
+    <p>Nhấn vào một campaign để xem báo cáo chi tiết:</p>
+    <ul>
+      <li><strong>Delivery:</strong> số lượng gửi, gửi thành công, gửi thất bại.</li>
+      <li><strong>Engagement:</strong> tỷ lệ mở (open rate), tỷ lệ click (CTR).</li>
+      <li><strong>Conversion:</strong> số khách chuyển đổi (đặt lịch, mua hàng), ROAS.</li>
+      <li><strong>Chi phí:</strong> tổng chi phí gửi theo kênh.</li>
+      <li><strong>Timeline:</strong> biểu đồ phản hồi theo thời gian.</li>
+    </ul>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 11. WORKFLOW                          -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="workflow">
+    <h2><span class="section-num">11</span> Workflow tự động</h2>
+    <p>Tạo chuỗi hành động tự động kích hoạt bởi sự kiện hoặc thời gian, sử dụng giao diện kéo-thả.</p>
+
+    <h3>11.1. Các thành phần</h3>
+    <table class="guide-table">
+      <thead><tr><th>Loại</th><th>Ví dụ</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Trigger</strong> (khởi đầu)</td><td>Khách vào segment mới, hoàn thành liệu trình, score thay đổi, ngày sinh nhật</td></tr>
+        <tr><td><strong>Condition</strong> (điều kiện)</td><td>Nếu tier = Diamond, nếu health ≤ 40, nếu đã mở email</td></tr>
+        <tr><td><strong>Action</strong> (hành động)</td><td>Gửi Zalo/SMS/Email, tạo task cho CS, thêm tag, cập nhật score</td></tr>
+        <tr><td><strong>Wait</strong> (chờ)</td><td>Chờ 2 ngày, chờ đến 9h sáng</td></tr>
+      </tbody>
+    </table>
+
+    <h3>11.2. Ví dụ workflow</h3>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x1F48E;</span> Chăm sóc sau liệu trình (Ngọc Dung)</div>
+      <p>Trigger: hoàn thành liệu trình → Chờ 1 ngày → Gửi Zalo cảm ơn → Chờ 7 ngày → Gửi khảo sát NPS → Nếu NPS ≥ 8 → Mời review Google → Nếu NPS &lt; 6 → Tạo task CS gọi lại.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-title"><span class="icon">&#x1F4E6;</span> Nurture đại lý mới (Ocany)</div>
+      <p>Trigger: đại lý mới ký hợp đồng → Gửi welcome kit → Chờ 14 ngày → Kiểm tra đơn hàng đầu tiên → Nếu chưa đặt → Sales gọi hỗ trợ → Nếu đã đặt → Gửi chương trình ưu đãi tháng đầu.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 12. LEAD                              -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="leads">
+    <h2><span class="section-num">12</span> Quản lý Lead</h2>
+
+    <h3>12.1. Nguồn lead</h3>
+    <p>Lead tự động đổ vào hệ thống từ: Facebook Lead Ads, Zalo form, website form, nhập thủ công, import CSV. Mỗi lead được auto-assign cho telesale theo rule phân bổ.</p>
+
+    <h3>12.2. Danh sách lead</h3>
+    <p>Vào <strong>Leads → Danh sách</strong> để xem lead được giao. Sắp xếp theo Lead Score (Hot / Warm / Cold) để ưu tiên liên hệ.</p>
+
+    <h3>12.3. Quy trình xử lý</h3>
+    <div class="flow">
+      <span class="flow-step">Nhận lead</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Xem profile</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Gọi điện</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Cập nhật trạng thái</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Đặt lịch hẹn</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Chốt</span>
+    </div>
+  </div>
+
+  <!-- ── Pipeline ── -->
+  <div class="section" id="pipeline">
+    <h2><span class="section-num">13</span> Lead Pipeline</h2>
+    <p>Giao diện Kanban hiển thị lead theo từng giai đoạn. Kéo-thả card lead giữa các cột để cập nhật trạng thái.</p>
+
+    <h3>13.1. Pipeline Thẩm mỹ (Ngọc Dung, Zema)</h3>
+    <div class="flow">
+      <span class="flow-step">Mới</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Liên hệ</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Tư vấn</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Đặt hẹn</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Đến spa</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Chốt</span>
+    </div>
+
+    <h3>13.2. Pipeline B2B (Ocany)</h3>
+    <div class="flow">
+      <span class="flow-step">Mới</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Qualify</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Demo</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Đề xuất</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Đàm phán</span><span class="flow-arrow">→</span>
+      <span class="flow-step">Ký HĐ</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 14. DASHBOARD                         -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="dashboard">
+    <h2><span class="section-num">14</span> Dashboard</h2>
+
+    <h3>14.1. Dashboard mặc định</h3>
+    <p>Trang chủ hiển thị overview theo role: KPI cards (tổng khách, doanh thu, leads mới, health alerts), biểu đồ xu hướng, danh sách cần xử lý.</p>
+
+    <h3>14.2. Custom Dashboard</h3>
+    <p>Vào <strong>Custom Dashboard</strong> để tạo dashboard riêng bằng cách kéo-thả widgets:</p>
+    <ul>
+      <li><strong>KPI Card:</strong> hiển thị 1 số liệu + trend.</li>
+      <li><strong>Chart:</strong> biểu đồ line, bar, pie, donut.</li>
+      <li><strong>Table:</strong> bảng dữ liệu tùy chỉnh.</li>
+      <li><strong>Funnel:</strong> biểu đồ phễu chuyển đổi.</li>
+    </ul>
+    <p>Mỗi widget có thể lọc theo BU, chi nhánh, khoảng thời gian.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 15. SCORING                           -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="scoring">
+    <h2><span class="section-num">15</span> Scoring Dashboard</h2>
+    <p>Tổng quan hệ thống chấm điểm khách hàng. Unified Customer Score tổng 0-1000 điểm, chia thành 4 thành phần:</p>
+
+    <table class="guide-table">
+      <thead><tr><th>Thành phần</th><th>Max</th><th>Trọng số</th><th>Đo lường</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Monetary</strong></td><td>300</td><td>30%</td><td>Chi tiêu 12 tháng, AOV, tăng trưởng, tỷ lệ dịch vụ cao cấp</td></tr>
+        <tr><td><strong>Engagement</strong></td><td>300</td><td>30%</td><td>Tương tác gần đây (ghé spa, mua online, gọi hotline...) với time-decay</td></tr>
+        <tr><td><strong>Loyalty</strong></td><td>200</td><td>20%</td><td>Thời gian là khách, tần suất quay lại, consistency, cross-BU</td></tr>
+        <tr><td><strong>Social</strong></td><td>200</td><td>20%</td><td>Referral, review, social mention, follower reach</td></tr>
+      </tbody>
+    </table>
+
+    <h3>15.1. Tier — Hạng khách hàng</h3>
+    <table class="guide-table">
+      <thead><tr><th>Hạng</th><th>Điểm</th><th>% Khách</th><th>Quyền lợi</th></tr></thead>
+      <tbody>
+        <tr><td>&#x1F48E; <strong>Diamond</strong></td><td>850 – 1000</td><td>Top 2%</td><td>CS riêng, ưu đãi exclusive, event VIP</td></tr>
+        <tr><td>&#x1F947; <strong>Platinum</strong></td><td>700 – 849</td><td>Top 10%</td><td>Ưu tiên lịch hẹn, gift birthday, hotline riêng</td></tr>
+        <tr><td>&#x1F948; <strong>Gold</strong></td><td>500 – 699</td><td>Top 30%</td><td>Voucher định kỳ, early access khuyến mãi</td></tr>
+        <tr><td>&#x1F949; <strong>Silver</strong></td><td>300 – 499</td><td>Top 60%</td><td>Chương trình tích điểm chuẩn</td></tr>
+        <tr><td><strong>Bronze</strong></td><td>0 – 299</td><td>Còn lại</td><td>Nurture lên hạng cao hơn</td></tr>
+      </tbody>
+    </table>
+
+    <p>Dashboard hiển thị: phân bố tier (pie chart), xu hướng score trung bình, migration chart (khách chuyển hạng qua các tháng).</p>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 16. HEALTH MAP                        -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="health">
+    <h2><span class="section-num">16</span> Health Dashboard</h2>
+    <p>Bản đồ sức khỏe khách hàng theo mô hình đèn giao thông. Dành cho CS Manager theo dõi và can thiệp kịp thời.</p>
+
+    <h3>16.1. Các chỉ số chính</h3>
+    <ul>
+      <li><strong>Phân bố Health:</strong> bao nhiêu % Healthy / Attention / At Risk / Critical.</li>
+      <li><strong>Alerts:</strong> danh sách khách vừa chuyển sang At Risk hoặc Critical.</li>
+      <li><strong>Drill-down:</strong> nhấn vào nhóm bất kỳ để xem danh sách khách chi tiết.</li>
+    </ul>
+
+    <div class="callout callout-tip">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div>Khi khách chuyển từ Healthy sang At Risk, hệ thống tự động tạo task cho CS liên hệ trong vòng 48 giờ.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 17. ANALYTICS                         -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="analytics">
+    <h2><span class="section-num">17</span> Analytics nâng cao</h2>
+
+    <h3>17.1. Cohort Retention</h3>
+    <p>Phân tích tỷ lệ giữ chân khách theo nhóm (cohort) — ví dụ: khách đăng ký tháng 1 thì sau 3 tháng còn bao nhiêu % quay lại. Giúp đánh giá hiệu quả onboarding và chương trình loyalty.</p>
+
+    <h3>17.2. Customer Journey Map</h3>
+    <p>Bản đồ hành trình khách hàng: từ lần tiếp xúc đầu tiên (quảng cáo, website) đến chuyển đổi (mua hàng, đặt lịch) và các touchpoint tiếp theo. Hiển thị tỷ lệ chuyển đổi giữa các bước.</p>
+
+    <h3>17.3. Channel Attribution</h3>
+    <p>Đánh giá đóng góp của từng kênh marketing (Facebook, Google, Zalo, Email, SMS...) vào kết quả chuyển đổi. Hỗ trợ các mô hình: First-touch, Last-touch, Linear, Time-decay.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 18. DEALER                            -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="dealer">
+    <h2><span class="section-num">18</span> Dealer Dashboard <span class="tag tag-oc">Ocany</span></h2>
+    <p>Dành riêng cho Ocany — theo dõi sức khỏe và hiệu suất mạng lưới đại lý.</p>
+
+    <h3>18.1. Dealer Health Score</h3>
+    <p>Mỗi đại lý được chấm điểm dựa trên: doanh số, tăng trưởng, tồn kho, công nợ, mức độ hoạt động.</p>
+
+    <h3>18.2. Ranking</h3>
+    <p>Xếp hạng đại lý theo vùng và toàn quốc. Drill-down vào từng đại lý để xem chi tiết đơn hàng, lịch sử thanh toán, trend doanh số.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- 19-24. QUẢN TRỊ HỆ THỐNG             -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="connectors">
+    <h2><span class="section-num">19</span> Cấu hình Data Connectors</h2>
+    <p><strong>Role yêu cầu:</strong> Admin</p>
+    <p>Quản lý kết nối dữ liệu từ các hệ thống bên ngoài vào CDP. Mỗi connector hiển thị trạng thái kết nối, lần sync gần nhất, số records.</p>
+
+    <h3>19.1. Danh sách nguồn dữ liệu</h3>
+    <table class="guide-table">
+      <thead><tr><th>Connector</th><th>Loại</th><th>BU</th></tr></thead>
+      <tbody>
+        <tr><td>POS — Ngọc Dung</td><td>Point of Sale</td><td><span class="tag tag-nd">Ngọc Dung</span></td></tr>
+        <tr><td>E-commerce — Shopee</td><td>Marketplace</td><td><span class="tag tag-oc">Ocany</span></td></tr>
+        <tr><td>Zalo OA</td><td>Messaging</td><td>All BU</td></tr>
+        <tr><td>Facebook Ads</td><td>Advertising</td><td><span class="tag tag-nd">Ngọc Dung</span></td></tr>
+        <tr><td>Google Ads</td><td>Advertising</td><td><span class="tag tag-nd">Ngọc Dung</span></td></tr>
+        <tr><td>Mobile App SDK</td><td>Native SDK</td><td><span class="tag tag-oc">Ocany</span></td></tr>
+        <tr><td>Email — SendGrid</td><td>Email Service</td><td>All BU</td></tr>
+        <tr><td>CRM — Internal</td><td>CRM System</td><td>All BU</td></tr>
+        <tr><td>Website Tracking</td><td>JavaScript SDK</td><td>All BU</td></tr>
+      </tbody>
+    </table>
+
+    <h3>19.2. Quản lý connector</h3>
+    <p>Nhấn vào card connector để xem cấu hình (API endpoint, credentials, tần suất sync), lịch sử sync, và thực hiện: Sync ngay, Chỉnh sửa, Ngắt kết nối.</p>
+  </div>
+
+  <div class="section" id="pipeline-monitor">
+    <h2><span class="section-num">20</span> Pipeline Monitor</h2>
+    <p><strong>Role yêu cầu:</strong> Admin</p>
+    <p>Theo dõi trạng thái pipeline xử lý dữ liệu: các bước DAG (Extract → Transform → Load → Validate), độ mới dữ liệu (data freshness), lỗi và cảnh báo. Tự động refresh.</p>
+  </div>
+
+  <div class="section" id="score-config">
+    <h2><span class="section-num">21</span> Cấu hình Scoring</h2>
+    <p><strong>Role yêu cầu:</strong> Admin</p>
+    <p>Điều chỉnh hệ thống chấm điểm:</p>
+    <ul>
+      <li><strong>Trọng số:</strong> kéo slider để thay đổi tỷ trọng Monetary / Engagement / Loyalty / Social.</li>
+      <li><strong>Ngưỡng tier:</strong> chỉnh điểm cắt cho Diamond, Platinum, Gold, Silver, Bronze.</li>
+      <li><strong>Health thresholds:</strong> điều chỉnh ngưỡng CHS cho Healthy / Attention / At Risk / Critical.</li>
+      <li><strong>Lifecycle transitions:</strong> cấu hình điều kiện tự động chuyển stage.</li>
+    </ul>
+
+    <div class="callout callout-warn">
+      <span class="callout-icon">&#x26A0;</span>
+      <div>Luôn nhấn <strong>Preview Impact</strong> trước khi áp dụng thay đổi scoring. Hệ thống sẽ hiển thị bao nhiêu khách bị ảnh hưởng và thay đổi tier.</div>
+    </div>
+  </div>
+
+  <div class="section" id="users">
+    <h2><span class="section-num">22</span> Người dùng & Phân quyền</h2>
+    <p><strong>Role yêu cầu:</strong> Super Admin</p>
+    <p>Quản lý tài khoản người dùng: tạo mới, vô hiệu hóa, gán role và BU. Xem ma trận phân quyền theo role — mỗi role card hiển thị danh sách quyền chi tiết.</p>
+  </div>
+
+  <div class="section" id="consent">
+    <h2><span class="section-num">23</span> Consent Center</h2>
+    <p><strong>Role yêu cầu:</strong> Admin, CS</p>
+    <p>Quản lý đồng ý nhận tin của khách hàng theo từng kênh: Email, SMS, Zalo, Phone, Ads. Tuân thủ PDPA.</p>
+    <ul>
+      <li><strong>Toggle consent:</strong> bật/tắt từng kênh cho từng khách.</li>
+      <li><strong>Change log:</strong> lịch sử thay đổi consent (ai thay đổi, khi nào, kênh nào).</li>
+      <li><strong>Bulk update:</strong> cập nhật hàng loạt khi có chiến dịch opt-in mới.</li>
+    </ul>
+  </div>
+
+  <div class="section" id="audit">
+    <h2><span class="section-num">24</span> Audit Log</h2>
+    <p><strong>Role yêu cầu:</strong> Super Admin</p>
+    <p>Nhật ký tất cả hành động trên hệ thống: ai làm gì, khi nào, trên đối tượng nào. Mỗi entry có thể mở rộng xem JSON chi tiết. Hỗ trợ lọc theo loại hành động, người dùng, thời gian, và export.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- THUẬT NGỮ                             -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="glossary">
+    <h2><span class="section-num">&#x1F4D6;</span> Thuật ngữ</h2>
+
+    <table class="guide-table">
+      <thead><tr><th style="width:180px;">Thuật ngữ</th><th>Định nghĩa</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CDP</strong></td><td>Customer Data Platform — nền tảng hợp nhất dữ liệu khách hàng từ mọi nguồn.</td></tr>
+        <tr><td><strong>BU</strong></td><td>Business Unit — đơn vị kinh doanh (Ngọc Dung, Zema, Ocany).</td></tr>
+        <tr><td><strong>Customer 360</strong></td><td>Hồ sơ khách hàng toàn diện, tổng hợp từ mọi nguồn dữ liệu.</td></tr>
+        <tr><td><strong>Identity Resolution</strong></td><td>Quá trình nhận diện và gộp các bản ghi thuộc cùng 1 khách hàng.</td></tr>
+        <tr><td><strong>RFM</strong></td><td>Recency-Frequency-Monetary — mô hình phân khúc dựa trên hành vi mua.</td></tr>
+        <tr><td><strong>Segment</strong></td><td>Nhóm khách hàng có đặc điểm chung, dùng để target chiến dịch.</td></tr>
+        <tr><td><strong>Lifecycle Stage</strong></td><td>Giai đoạn vòng đời: LEAD → TRIAL → ACTIVE → LOYAL → LAPSED → CHURNED.</td></tr>
+        <tr><td><strong>Health Score (CHS)</strong></td><td>Điểm sức khỏe mối quan hệ 0-100: Healthy / Attention / At Risk / Critical.</td></tr>
+        <tr><td><strong>Tier</strong></td><td>Hạng khách hàng dựa trên Unified Score: Diamond, Platinum, Gold, Silver, Bronze.</td></tr>
+        <tr><td><strong>LTV</strong></td><td>Lifetime Value — tổng giá trị khách mang lại trong suốt vòng đời.</td></tr>
+        <tr><td><strong>AOV</strong></td><td>Average Order Value — giá trị trung bình mỗi đơn/lần ghé.</td></tr>
+        <tr><td><strong>NPS</strong></td><td>Net Promoter Score — chỉ số đo lường sự hài lòng và khả năng giới thiệu.</td></tr>
+        <tr><td><strong>ROAS</strong></td><td>Return On Ad Spend — doanh thu trên chi phí quảng cáo.</td></tr>
+        <tr><td><strong>CAC</strong></td><td>Customer Acquisition Cost — chi phí thu hút 1 khách mới.</td></tr>
+        <tr><td><strong>CTR</strong></td><td>Click-Through Rate — tỷ lệ click trên số lượt hiển thị/gửi.</td></tr>
+        <tr><td><strong>KOL / KOC</strong></td><td>Key Opinion Leader / Consumer — người có ảnh hưởng trên mạng xã hội.</td></tr>
+        <tr><td><strong>Time-decay</strong></td><td>Cơ chế giảm giá trị điểm theo thời gian (hành vi cũ bớt quan trọng).</td></tr>
+        <tr><td><strong>Merge fields</strong></td><td>Biến cá nhân hóa trong nội dung chiến dịch (ví dụ: <code>{{ten_khach}}</code>).</td></tr>
+        <tr><td><strong>Opt-out</strong></td><td>Khách hàng từ chối nhận tin qua một kênh cụ thể.</td></tr>
+        <tr><td><strong>PDPA</strong></td><td>Personal Data Protection Act — luật bảo vệ dữ liệu cá nhân.</td></tr>
+        <tr><td><strong>SSO</strong></td><td>Single Sign-On — đăng nhập một lần, dùng nhiều hệ thống.</td></tr>
+        <tr><td><strong>MFA</strong></td><td>Multi-Factor Authentication — xác thực đa yếu tố.</td></tr>
+        <tr><td><strong>DAG</strong></td><td>Directed Acyclic Graph — đồ thị mô tả quy trình xử lý dữ liệu pipeline.</td></tr>
+        <tr><td><strong>PII</strong></td><td>Personally Identifiable Information — thông tin định danh cá nhân (SĐT, email, CCCD).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- FAQ                                   -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="faq">
+    <h2><span class="section-num">?</span> Câu hỏi thường gặp</h2>
+
+    <h4>Tôi không đăng nhập được?</h4>
+    <p>Kiểm tra: (1) email phải là @theadvance.vn, (2) chọn đúng BU, (3) nhập đúng mật khẩu. Nếu quên mật khẩu, nhấn "Quên mật khẩu". Nếu vẫn không được, liên hệ Admin hoặc support@theadvance.vn.</p>
+
+    <h4>Tại sao tôi không thấy một số menu?</h4>
+    <p>Menu hiển thị theo phân quyền. Ví dụ: Telesale chỉ thấy Leads và Dashboard. Nếu cần thêm quyền, liên hệ BU Admin hoặc Super Admin.</p>
+
+    <h4>Tôi chỉ thấy data của 1 BU, muốn xem tất cả?</h4>
+    <p>Bạn cần có quyền cấp Holding. Liên hệ Super Admin để được cấp quyền cross-BU nếu công việc yêu cầu.</p>
+
+    <h4>Customer Health Score cập nhật khi nào?</h4>
+    <p>CHS cập nhật batch hàng ngày và real-time khi có sự kiện quan trọng (complaint, purchase, long absence).</p>
+
+    <h4>Làm sao biết khách nào cần chăm sóc gấp?</h4>
+    <p>Vào <strong>Health Dashboard</strong>, lọc nhóm <span class="tag tag-red">Critical</span> và <span class="tag tag-orange">At Risk</span>. Hệ thống cũng tự động tạo alert trên Dashboard khi khách chuyển trạng thái xấu.</p>
+
+    <h4>Tôi tạo campaign nhưng không gửi được?</h4>
+    <p>Campaign cần Manager duyệt trước khi gửi. Kiểm tra trạng thái có phải đang "Pending Approval" không. Ngoài ra, đảm bảo segment có ít nhất 1 khách chưa opt-out ở kênh đã chọn.</p>
+
+    <h4>Score của khách thay đổi bất thường?</h4>
+    <p>Score sử dụng time-decay — hành vi cũ tự động giảm giá trị. Nếu khách không tương tác, score sẽ giảm dần. Vào <strong>Customer 360 → tab Scoring</strong> để xem chi tiết từng thành phần.</p>
+
+    <h4>Khách đã yêu cầu xóa dữ liệu (theo PDPA)?</h4>
+    <p>Vào <strong>Consent Center</strong>, tìm khách và xử lý yêu cầu. Liên hệ Super Admin nếu cần xóa hoàn toàn profile. Mọi thao tác đều được ghi vào Audit Log.</p>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div style="text-align:center;padding:32px 0 16px;color:var(--ink-32);font-size:12px;">
+    <p>© 2026 TheAdvance Group — CDP User Guide v1.0</p>
+    <p>Liên hệ hỗ trợ: <a href="mailto:support@theadvance.vn" style="color:var(--brand-primary);">support@theadvance.vn</a></p>
+  </div>
+
+</main>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+// TOC active state on scroll
+const tocLinks = document.querySelectorAll('.toc-link');
+const sections = [];
+tocLinks.forEach(link => {
+  const href = link.getAttribute('href');
+  if (href && href.startsWith('#')) {
+    const el = document.getElementById(href.slice(1));
+    if (el) sections.push({ link, el });
+  }
+});
+
+function updateActiveToc() {
+  const scrollY = window.scrollY + 80;
+  let current = sections[0];
+  for (const s of sections) {
+    if (s.el.offsetTop <= scrollY) current = s;
+  }
+  tocLinks.forEach(l => l.classList.remove('active'));
+  if (current) current.link.classList.add('active');
+}
+window.addEventListener('scroll', updateActiveToc, { passive: true });
+updateActiveToc();
+
+// Smooth scroll for TOC links
+tocLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      const target = document.getElementById(href.slice(1));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', href);
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>

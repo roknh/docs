@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Pipeline Monitor</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display","Inter",system-ui,-apple-system,sans-serif;
+  --font-text: "SF Pro Text","Inter",system-ui,-apple-system,sans-serif;
+  --font-mono: "SF Mono","JetBrains Mono",monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-100);background:var(--ink-02);-webkit-font-smoothing:antialiased;}
+
+/* ── Top Nav ── */
+.topnav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--ink-00);border-bottom:1px solid var(--ink-08);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
+.topnav-brand{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink-100);text-decoration:none;}
+.topnav-brand span{color:var(--brand-primary);}
+.topnav-search{width:320px;height:32px;border-radius:var(--radius-pill);background:var(--ink-04);border:1px solid var(--ink-08);padding:0 16px;font-size:13px;color:var(--ink-80);font-family:var(--font-text);}
+.topnav-search::placeholder{color:var(--ink-32);}
+.topnav-search:focus{outline:none;background:var(--ink-08);}
+.topnav-right{display:flex;align-items:center;gap:16px;}
+.topnav-avatar{width:28px;height:28px;border-radius:50%;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+.topnav-bu-switch{font-size:12px;color:var(--ink-60);background:var(--ink-04);border:1px solid var(--ink-08);padding:4px 12px;border-radius:var(--radius-pill);cursor:pointer;}
+.topnav-icon-btn{background:none;border:none;color:var(--ink-60);cursor:pointer;font-size:18px;line-height:1;}
+
+/* ── Sidebar ── */
+.sidebar{position:fixed;top:var(--nav-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--nav-h));background:var(--ink-00);border-right:1px solid var(--ink-08);overflow-y:auto;overflow-x:hidden;z-index:100;transition:width 0.25s ease;}
+.sidebar.collapsed{width:64px;}
+.sidebar.collapsed .sidebar-section-label{font-size:0;padding:12px 0 4px;text-align:center;}
+.sidebar.collapsed .sidebar-item{padding:10px 0;justify-content:center;gap:0;font-size:0;border-left:none;}
+.sidebar.collapsed .sidebar-item.active{border-left:none;}
+.sidebar.collapsed .sidebar-icon{font-size:20px;width:auto;}
+.sidebar.collapsed .sidebar-item-badge{position:absolute;top:2px;right:8px;font-size:9px;padding:0 5px;margin:0;}
+.sidebar.collapsed .sidebar-item{position:relative;}
+.sidebar.collapsed .sidebar-toggle{right:0;left:0;display:flex;justify-content:center;}
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse{display:none;}
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand{display:block;}
+.sidebar-toggle-btn .toggle-expand{display:none;}
+.sidebar-toggle{position:absolute;bottom:12px;right:12px;}
+.sidebar-toggle-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--ink-08);background:var(--ink-00);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-48);font-size:14px;transition:all 0.15s;box-shadow:var(--shadow-sm);}
+.sidebar-toggle-btn:hover{background:var(--ink-02);color:var(--ink-100);}
+.sidebar-section{padding:20px 0 8px;}
+.sidebar-section-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-32);padding:0 20px 8px;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:14px;color:var(--ink-60);cursor:pointer;transition:all 0.12s;text-decoration:none;border-left:3px solid transparent;}
+.sidebar-item:hover{background:var(--ink-02);color:var(--ink-100);}
+.sidebar-item.active{background:var(--brand-primary-subtle);color:var(--brand-primary);font-weight:500;border-left-color:var(--brand-primary);}
+.sidebar-icon{width:20px;text-align:center;font-size:16px;flex-shrink:0;}
+.sidebar-item-badge{margin-left:auto;font-size:11px;font-weight:600;background:var(--danger-subtle);color:var(--danger);padding:1px 7px;border-radius:var(--radius-pill);}
+
+/* ── Content ── */
+.content{margin-left:var(--sidebar-w);margin-top:var(--nav-h);min-height:calc(100vh - var(--nav-h));padding:0;transition:margin-left 0.25s ease;}
+.content.sidebar-collapsed{margin-left:64px;}
+
+/* ── Page Header ── */
+.page-header{background:var(--ink-00);border-bottom:1px solid var(--ink-08);padding:20px 32px;}
+.page-title-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.page-title{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.3px;}
+.page-subtitle{font-size:13px;color:var(--ink-48);margin-top:2px;}
+.page-actions{display:flex;align-items:center;gap:8px;}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font-text);font-size:13px;font-weight:500;padding:7px 16px;border-radius:var(--radius-md);border:none;cursor:pointer;transition:all 0.12s;text-decoration:none;white-space:nowrap;}
+.btn-primary{background:var(--brand-primary);color:#fff;}
+.btn-primary:hover{background:var(--brand-primary-hover);}
+.btn-secondary{background:var(--ink-00);color:var(--ink-80);border:1px solid var(--ink-08);}
+.btn-secondary:hover{background:var(--ink-02);}
+.btn-danger{background:var(--danger);color:#fff;}
+.btn-danger:hover{background:#d93025;}
+.btn-sm{font-size:12px;padding:5px 10px;}
+.btn-xs{font-size:11px;padding:3px 8px;border-radius:var(--radius-sm);}
+.btn-ghost{background:none;color:var(--brand-primary);border:none;}
+.btn-ghost:hover{background:var(--brand-primary-subtle);}
+
+/* ── Toggle ── */
+.toggle-switch{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-60);cursor:pointer;}
+.toggle-track{width:36px;height:20px;border-radius:10px;background:var(--ink-08);position:relative;transition:background 0.2s;}
+.toggle-track.on{background:var(--success);}
+.toggle-thumb{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px;left:2px;transition:left 0.2s;box-shadow:var(--shadow-xs);}
+.toggle-track.on .toggle-thumb{left:18px;}
+
+/* ── Body ── */
+.page-body{padding:24px 32px;}
+
+/* ── Stats Row ── */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px;}
+.stat-card{background:var(--ink-00);border:1px solid var(--ink-08);border-radius:var(--radius-lg);padding:18px 20px;}
+.stat-label{font-size:12px;color:var(--ink-48);font-weight:500;margin-bottom:6px;}
+.stat-value{font-size:26px;font-weight:700;font-family:var(--font-display);letter-spacing:-0.5px;line-height:1.1;}
+.stat-sub{font-size:11px;color:var(--ink-32);margin-top:4px;}
+.stat-green .stat-value{color:var(--success-ink);}
+.stat-red .stat-value{color:var(--danger);}
+.stat-blue .stat-value{color:var(--brand-primary);}
+
+/* ── Freshness Bar ── */
+.freshness-panel{background:var(--ink-00);border:1px solid var(--ink-08);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:24px;}
+.freshness-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.freshness-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.freshness-item{display:flex;flex-direction:column;gap:4px;}
+.freshness-source{font-size:12px;font-weight:600;color:var(--ink-60);}
+.freshness-bar-wrap{height:6px;background:var(--ink-04);border-radius:3px;overflow:hidden;}
+.freshness-bar-fill{height:100%;border-radius:3px;}
+.freshness-fresh .freshness-bar-fill{background:var(--success);}
+.freshness-stale .freshness-bar-fill{background:var(--warning);}
+.freshness-old .freshness-bar-fill{background:var(--danger);}
+.freshness-age{font-size:11px;color:var(--ink-48);}
+
+/* ── Filter Bar ── */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-bar select{height:34px;padding:0 10px;border:1px solid var(--ink-08);border-radius:var(--radius-md);font-size:13px;color:var(--ink-80);background:var(--ink-00);cursor:pointer;}
+.filter-bar select:focus{outline:none;border-color:var(--brand-primary);}
+.search-input{height:34px;padding:0 12px;border:1px solid var(--ink-08);border-radius:var(--radius-md);font-size:13px;color:var(--ink-80);background:var(--ink-00);width:220px;}
+.search-input:focus{outline:none;border-color:var(--brand-primary);}
+.filter-label{font-size:13px;color:var(--ink-48);}
+
+/* ── Pipeline Cards ── */
+.pipeline-list{display:flex;flex-direction:column;gap:12px;}
+.pipeline-card{background:var(--ink-00);border:1px solid var(--ink-08);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow 0.15s;}
+.pipeline-card:hover{box-shadow:var(--shadow-md);}
+.pipeline-card.failed{border-left:4px solid var(--danger);}
+.pipeline-card.running{border-left:4px solid var(--brand-primary);}
+.pipeline-card.success{border-left:4px solid var(--success);}
+.pipeline-card.queued{border-left:4px solid var(--ink-32);}
+.pipeline-header{display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;}
+.pipeline-expand-btn{background:none;border:none;cursor:pointer;color:var(--ink-32);font-size:18px;flex-shrink:0;line-height:1;transition:transform 0.2s;}
+.pipeline-expand-btn.open{transform:rotate(90deg);}
+.pipeline-name{font-size:15px;font-weight:600;flex:1;}
+.pipeline-meta{display:flex;align-items:center;gap:16px;flex-shrink:0;flex-wrap:wrap;}
+.pipeline-meta-item{display:flex;flex-direction:column;align-items:flex-end;gap:1px;}
+.pipeline-meta-label{font-size:10px;color:var(--ink-32);text-transform:uppercase;letter-spacing:0.05em;}
+.pipeline-meta-value{font-size:13px;font-weight:500;color:var(--ink-80);}
+.pipeline-actions{display:flex;gap:6px;flex-shrink:0;}
+
+/* Status badges */
+.status-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:3px 10px;border-radius:var(--radius-pill);}
+.status-badge::before{content:"";width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.status-running{background:var(--info-subtle);color:var(--info);}
+.status-running::before{background:var(--info);animation:pulse 1.2s infinite;}
+.status-success{background:var(--success-subtle);color:var(--success-ink);}
+.status-success::before{background:var(--success);}
+.status-failed{background:var(--danger-subtle);color:var(--danger-ink);}
+.status-failed::before{background:var(--danger);}
+.status-queued{background:var(--ink-04);color:var(--ink-60);}
+.status-queued::before{background:var(--ink-32);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* Expandable body */
+.pipeline-body{display:none;border-top:1px solid var(--ink-04);padding:0 20px 20px;}
+.pipeline-body.open{display:block;}
+.pipeline-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding-top:16px;}
+
+/* DAG steps */
+.dag-section-title{font-size:12px;font-weight:600;color:var(--ink-48);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;}
+.dag-steps{display:flex;align-items:center;gap:0;}
+.dag-step{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;position:relative;}
+.dag-step-box{width:80px;height:40px;border-radius:var(--radius-sm);border:1.5px solid var(--ink-08);background:var(--ink-02);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--ink-60);text-align:center;padding:4px;}
+.dag-step-box.done{border-color:var(--success);background:var(--success-subtle);color:var(--success-ink);}
+.dag-step-box.active{border-color:var(--brand-primary);background:var(--brand-primary-subtle);color:var(--brand-primary);animation:border-pulse 1.5s infinite;}
+.dag-step-box.error{border-color:var(--danger);background:var(--danger-subtle);color:var(--danger-ink);}
+.dag-step-duration{font-size:10px;color:var(--ink-32);}
+.dag-arrow{font-size:16px;color:var(--ink-16);flex-shrink:0;margin:0 2px;}
+@keyframes border-pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,102,204,0.2);}50%{box-shadow:0 0 0 4px rgba(0,102,204,0.1);}}
+
+/* Run history mini table */
+.run-history table{width:100%;border-collapse:collapse;font-size:12px;}
+.run-history th{text-align:left;font-size:10px;font-weight:600;color:var(--ink-32);text-transform:uppercase;letter-spacing:0.05em;padding:4px 8px;border-bottom:1px solid var(--ink-08);}
+.run-history td{padding:6px 8px;border-bottom:1px solid var(--ink-04);color:var(--ink-60);}
+.run-history tr:last-child td{border-bottom:none;}
+.run-history tr:hover td{background:var(--ink-02);}
+.run-history .s-ok{color:var(--success-ink);}
+.run-history .s-fail{color:var(--danger-ink);}
+
+/* Error banner */
+.error-banner{background:var(--danger-subtle);border:1px solid rgba(255,69,58,0.2);border-radius:var(--radius-md);padding:10px 14px;margin-top:12px;display:flex;align-items:flex-start;gap:10px;}
+.error-banner-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.error-banner-text{flex:1;font-size:12px;color:var(--danger-ink);line-height:1.5;}
+.error-banner-text strong{display:block;margin-bottom:2px;}
+
+/* ── Responsive ── */
+@media(max-width:1023px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.mobile-open{transform:translateX(0);}
+  .content{margin-left:0;}
+  .stats-row{grid-template-columns:repeat(3,1fr);}
+  .topnav-search{width:200px;}
+  .pipeline-body-grid{grid-template-columns:1fr;}
+}
+@media(max-width:767px){
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .page-header{padding:16px 16px;}
+  .page-body{padding:16px 16px;}
+  .topnav-search{display:none;}
+  .pipeline-meta{gap:8px;}
+  .pipeline-meta-item:nth-child(n+3){display:none;}
+  .freshness-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Ngọc Dung ▾</span>
+    <button class="topnav-icon-btn" title="Thông báo">🔔</button>
+    <div class="topnav-avatar">AD</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item active" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+      <span class="toggle-collapse">◀</span>
+      <span class="toggle-expand">▶</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x1F4CA; Pipeline Monitor</div>
+        <div class="page-subtitle">Giám sát trạng thái data pipeline theo thời gian thực</div>
+      </div>
+      <div class="page-actions">
+        <label class="toggle-switch" onclick="toggleAutoRefresh(this)">
+          <div class="toggle-track on" id="refreshTrack">
+            <div class="toggle-thumb"></div>
+          </div>
+          <span id="refreshLabel">Auto-refresh 30s</span>
+        </label>
+        <button class="btn btn-secondary btn-sm" onclick="refreshAll()">⟳ Refresh ngay</button>
+        <button class="btn btn-secondary btn-sm">&#x2B07; Xuất báo cáo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Stats Overview -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Tổng pipelines</div>
+        <div class="stat-value">8</div>
+        <div class="stat-sub">Đang hoạt động</div>
+      </div>
+      <div class="stat-card stat-blue">
+        <div class="stat-label">Đang chạy</div>
+        <div class="stat-value" style="color:var(--info);">2</div>
+        <div class="stat-sub">Trong 5 phút qua</div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-label">Thành công (24h)</div>
+        <div class="stat-value">47</div>
+        <div class="stat-sub">Tỉ lệ: 92.2%</div>
+      </div>
+      <div class="stat-card stat-red">
+        <div class="stat-label">Thất bại (24h)</div>
+        <div class="stat-value" style="color:var(--danger);">4</div>
+        <div class="stat-sub">Cần xử lý: 1</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Thời gian TB</div>
+        <div class="stat-value" style="font-size:22px;">4m 38s</div>
+        <div class="stat-sub">Trung bình mỗi run</div>
+      </div>
+    </div>
+
+    <!-- Data Freshness -->
+    <div class="freshness-panel">
+      <div class="freshness-title">
+        🕒 Độ tươi dữ liệu theo nguồn
+        <span style="font-size:11px;font-weight:400;color:var(--ink-48);">Cập nhật lúc 14:32</span>
+      </div>
+      <div class="freshness-grid">
+        <div class="freshness-item freshness-fresh">
+          <div class="freshness-source">POS Ngọc Dung</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:98%;"></div></div>
+          <div class="freshness-age">5 phút trước</div>
+        </div>
+        <div class="freshness-item freshness-fresh">
+          <div class="freshness-source">App Events</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:95%;"></div></div>
+          <div class="freshness-age">12 phút trước</div>
+        </div>
+        <div class="freshness-item freshness-fresh">
+          <div class="freshness-source">Facebook Leads</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:90%;"></div></div>
+          <div class="freshness-age">28 phút trước</div>
+        </div>
+        <div class="freshness-item freshness-stale">
+          <div class="freshness-source">CRM Contact</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:60%;"></div></div>
+          <div class="freshness-age">1 giờ 45 phút trước</div>
+        </div>
+        <div class="freshness-item freshness-stale">
+          <div class="freshness-source">Shopee Orders</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:45%;"></div></div>
+          <div class="freshness-age">2 giờ 10 phút trước</div>
+        </div>
+        <div class="freshness-item freshness-fresh">
+          <div class="freshness-source">ClickHouse ETL</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:99%;"></div></div>
+          <div class="freshness-age">3 phút trước</div>
+        </div>
+        <div class="freshness-item freshness-stale">
+          <div class="freshness-source">Lifecycle Calc</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:50%;"></div></div>
+          <div class="freshness-age">2 giờ trước</div>
+        </div>
+        <div class="freshness-item freshness-old">
+          <div class="freshness-source">Health Score</div>
+          <div class="freshness-bar-wrap"><div class="freshness-bar-fill" style="width:20%;"></div></div>
+          <div class="freshness-age" style="color:var(--danger-ink);">6 giờ trước ⚠️</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <span class="filter-label">Lọc:</span>
+      <select onchange="filterPipelines(this.value)">
+        <option value="all">Tất cả trạng thái</option>
+        <option value="running">🔵 Đang chạy</option>
+        <option value="success">🟢 Thành công</option>
+        <option value="failed">🔴 Thất bại</option>
+        <option value="queued">⚪ Chờ</option>
+      </select>
+      <select>
+        <option>Tất cả nguồn</option>
+        <option>POS</option>
+        <option>E-commerce</option>
+        <option>CRM</option>
+        <option>Analytics</option>
+      </select>
+      <input class="search-input" type="search" placeholder="Tìm pipeline...">
+    </div>
+
+    <!-- Pipeline List -->
+    <div class="pipeline-list">
+
+      <!-- 1. POS Sync Ngọc Dung — FAILED -->
+      <div class="pipeline-card failed" data-status="failed">
+        <div class="pipeline-header" onclick="togglePipeline('p1')">
+          <button class="pipeline-expand-btn" id="btn-p1">▶</button>
+          <div>
+            <div class="pipeline-name">POS Sync Ngọc Dung</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: POS • Loại: Incremental</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-failed">Thất bại</span>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Lần chạy cuối</span>
+              <span class="pipeline-meta-value">14:05 hôm nay</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Thời lượng</span>
+              <span class="pipeline-meta-value">2m 18s</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Records</span>
+              <span class="pipeline-meta-value" style="color:var(--danger-ink);">0 / 1,240</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Lần tới</span>
+              <span class="pipeline-meta-value">14:35</span>
+            </div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-danger btn-xs" onclick="event.stopPropagation()">⟳ Retry</button>
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">Logs</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p1">
+          <div class="error-banner">
+            <span class="error-banner-icon">⛔</span>
+            <div class="error-banner-text">
+              <strong>Lỗi kết nối: Connection timeout tại bước Load</strong>
+              ClickHouse connection refused at host 49.213.88.45:8123 — max retry (3) exceeded. Last error at 14:07:32. Kiểm tra firewall rule hoặc trạng thái ClickHouse server.
+            </div>
+            <button class="btn btn-danger btn-xs" style="flex-shrink:0;" onclick="event.stopPropagation()">⟳ Retry</button>
+          </div>
+          <div class="pipeline-body-grid">
+            <div>
+              <div class="dag-section-title">Các bước xử lý</div>
+              <div class="dag-steps">
+                <div class="dag-step">
+                  <div class="dag-step-box done">Extract</div>
+                  <div class="dag-step-duration">0m 45s</div>
+                </div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step">
+                  <div class="dag-step-box done">Transform</div>
+                  <div class="dag-step-duration">0m 52s</div>
+                </div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step">
+                  <div class="dag-step-box error">Load</div>
+                  <div class="dag-step-duration">0m 41s ✗</div>
+                </div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step">
+                  <div class="dag-step-box">Validate</div>
+                  <div class="dag-step-duration">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="run-history">
+              <div class="dag-section-title">Lịch sử 10 lần chạy gần nhất</div>
+              <table>
+                <thead>
+                  <tr><th>Thời gian</th><th>Trạng thái</th><th>Records</th><th>Thời lượng</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>14:05</td><td class="s-fail">✗ Thất bại</td><td>0</td><td>2m 18s</td></tr>
+                  <tr><td>13:35</td><td class="s-ok">✓ OK</td><td>1,240</td><td>3m 12s</td></tr>
+                  <tr><td>13:05</td><td class="s-ok">✓ OK</td><td>986</td><td>2m 58s</td></tr>
+                  <tr><td>12:35</td><td class="s-ok">✓ OK</td><td>1,105</td><td>3m 05s</td></tr>
+                  <tr><td>12:05</td><td class="s-fail">✗ Thất bại</td><td>0</td><td>2m 04s</td></tr>
+                  <tr><td>11:35</td><td class="s-ok">✓ OK</td><td>872</td><td>2m 48s</td></tr>
+                  <tr><td>11:05</td><td class="s-ok">✓ OK</td><td>1,022</td><td>3m 01s</td></tr>
+                  <tr><td>10:35</td><td class="s-ok">✓ OK</td><td>795</td><td>2m 52s</td></tr>
+                  <tr><td>10:05</td><td class="s-ok">✓ OK</td><td>1,340</td><td>3m 22s</td></tr>
+                  <tr><td>09:35</td><td class="s-ok">✓ OK</td><td>918</td><td>2m 44s</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Shopee Orders — RUNNING -->
+      <div class="pipeline-card running" data-status="running">
+        <div class="pipeline-header" onclick="togglePipeline('p2')">
+          <button class="pipeline-expand-btn" id="btn-p2">▶</button>
+          <div>
+            <div class="pipeline-name">Shopee Orders</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: E-commerce • Loại: Incremental</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-running">Đang chạy</span>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Bắt đầu</span>
+              <span class="pipeline-meta-value">14:28 hôm nay</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Đã chạy</span>
+              <span class="pipeline-meta-value">4m 12s</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Records</span>
+              <span class="pipeline-meta-value" style="color:var(--brand-primary);">3,418 / ~5,000</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Lần tới</span>
+              <span class="pipeline-meta-value">16:30</span>
+            </div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">⏸ Dừng</button>
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">Logs</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p2">
+          <div class="pipeline-body-grid" style="padding-top:16px;">
+            <div>
+              <div class="dag-section-title">Các bước xử lý</div>
+              <div class="dag-steps">
+                <div class="dag-step">
+                  <div class="dag-step-box done">Extract</div>
+                  <div class="dag-step-duration">1m 20s</div>
+                </div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step">
+                  <div class="dag-step-box done">Transform</div>
+                  <div class="dag-step-duration">1m 45s</div>
+                </div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step">
+                  <div class="dag-step-box active">Load</div>
+                  <div class="dag-step-duration">1m 07s…</div>
+                </div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step">
+                  <div class="dag-step-box">Validate</div>
+                  <div class="dag-step-duration">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="run-history">
+              <div class="dag-section-title">Lịch sử gần nhất</div>
+              <table>
+                <thead><tr><th>Thời gian</th><th>Trạng thái</th><th>Records</th><th>Thời lượng</th></tr></thead>
+                <tbody>
+                  <tr><td>14:28</td><td style="color:var(--info);">⟳ Đang chạy</td><td>3,418…</td><td>4m 12s</td></tr>
+                  <tr><td>12:28</td><td class="s-ok">✓ OK</td><td>4,982</td><td>6m 14s</td></tr>
+                  <tr><td>10:28</td><td class="s-ok">✓ OK</td><td>5,210</td><td>6m 32s</td></tr>
+                  <tr><td>08:28</td><td class="s-ok">✓ OK</td><td>3,670</td><td>5m 48s</td></tr>
+                  <tr><td>06:28</td><td class="s-ok">✓ OK</td><td>2,104</td><td>4m 22s</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. CRM Contact Sync — SUCCESS -->
+      <div class="pipeline-card success" data-status="success">
+        <div class="pipeline-header" onclick="togglePipeline('p3')">
+          <button class="pipeline-expand-btn" id="btn-p3">▶</button>
+          <div>
+            <div class="pipeline-name">CRM Contact Sync</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: CRM • Loại: Full refresh</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-success">Thành công</span>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Lần chạy cuối</span>
+              <span class="pipeline-meta-value">13:00 hôm nay</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Thời lượng</span>
+              <span class="pipeline-meta-value">8m 42s</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Records</span>
+              <span class="pipeline-meta-value">124,580</span>
+            </div>
+            <div class="pipeline-meta-item">
+              <span class="pipeline-meta-label">Lần tới</span>
+              <span class="pipeline-meta-value">15:00</span>
+            </div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">▶ Run ngay</button>
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">Logs</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p3">
+          <div class="pipeline-body-grid" style="padding-top:16px;">
+            <div>
+              <div class="dag-section-title">Các bước xử lý</div>
+              <div class="dag-steps">
+                <div class="dag-step"><div class="dag-step-box done">Extract</div><div class="dag-step-duration">2m 15s</div></div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step"><div class="dag-step-box done">Transform</div><div class="dag-step-duration">3m 42s</div></div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step"><div class="dag-step-box done">Load</div><div class="dag-step-duration">2m 18s</div></div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step"><div class="dag-step-box done">Validate</div><div class="dag-step-duration">0m 27s</div></div>
+              </div>
+            </div>
+            <div class="run-history">
+              <div class="dag-section-title">Lịch sử gần nhất</div>
+              <table>
+                <thead><tr><th>Thời gian</th><th>Trạng thái</th><th>Records</th><th>Thời lượng</th></tr></thead>
+                <tbody>
+                  <tr><td>13:00</td><td class="s-ok">✓ OK</td><td>124,580</td><td>8m 42s</td></tr>
+                  <tr><td>11:00</td><td class="s-ok">✓ OK</td><td>124,210</td><td>8m 58s</td></tr>
+                  <tr><td>09:00</td><td class="s-ok">✓ OK</td><td>123,890</td><td>8m 34s</td></tr>
+                  <tr><td>07:00</td><td class="s-ok">✓ OK</td><td>123,540</td><td>9m 02s</td></tr>
+                  <tr><td>05:00</td><td class="s-ok">✓ OK</td><td>123,120</td><td>8m 48s</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. App Events — RUNNING -->
+      <div class="pipeline-card running" data-status="running">
+        <div class="pipeline-header" onclick="togglePipeline('p4')">
+          <button class="pipeline-expand-btn" id="btn-p4">▶</button>
+          <div>
+            <div class="pipeline-name">App Events</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: Mobile App • Loại: Streaming</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-running">Đang chạy</span>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Bắt đầu</span><span class="pipeline-meta-value">00:00 hôm nay</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Events/phút</span><span class="pipeline-meta-value" style="color:var(--brand-primary);">~420</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Tổng hôm nay</span><span class="pipeline-meta-value">3.6M</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần tới</span><span class="pipeline-meta-value">Continuous</span></div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">Logs</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p4">
+          <div style="padding-top:16px;font-size:13px;color:var(--ink-48);">Pipeline streaming liên tục — không có lịch sử run theo batch. Xem Logs để theo dõi event ingestion.</div>
+        </div>
+      </div>
+
+      <!-- 5. Facebook Leads — SUCCESS -->
+      <div class="pipeline-card success" data-status="success">
+        <div class="pipeline-header" onclick="togglePipeline('p5')">
+          <button class="pipeline-expand-btn" id="btn-p5">▶</button>
+          <div>
+            <div class="pipeline-name">Facebook Leads</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: Meta Ads • Loại: Incremental</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-success">Thành công</span>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần chạy cuối</span><span class="pipeline-meta-value">14:00 hôm nay</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Thời lượng</span><span class="pipeline-meta-value">1m 08s</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Records</span><span class="pipeline-meta-value">38</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần tới</span><span class="pipeline-meta-value">15:00</span></div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">▶ Run ngay</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p5">
+          <div class="pipeline-body-grid" style="padding-top:16px;">
+            <div>
+              <div class="dag-section-title">Các bước xử lý</div>
+              <div class="dag-steps">
+                <div class="dag-step"><div class="dag-step-box done">Extract</div><div class="dag-step-duration">0m 22s</div></div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step"><div class="dag-step-box done">Transform</div><div class="dag-step-duration">0m 28s</div></div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step"><div class="dag-step-box done">Load</div><div class="dag-step-duration">0m 14s</div></div>
+                <span class="dag-arrow">→</span>
+                <div class="dag-step"><div class="dag-step-box done">Validate</div><div class="dag-step-duration">0m 04s</div></div>
+              </div>
+            </div>
+            <div class="run-history">
+              <div class="dag-section-title">Lịch sử gần nhất</div>
+              <table>
+                <thead><tr><th>Thời gian</th><th>Trạng thái</th><th>Records</th><th>Thời lượng</th></tr></thead>
+                <tbody>
+                  <tr><td>14:00</td><td class="s-ok">✓ OK</td><td>38</td><td>1m 08s</td></tr>
+                  <tr><td>13:00</td><td class="s-ok">✓ OK</td><td>52</td><td>1m 14s</td></tr>
+                  <tr><td>12:00</td><td class="s-ok">✓ OK</td><td>29</td><td>1m 02s</td></tr>
+                  <tr><td>11:00</td><td class="s-fail">✗ Thất bại</td><td>0</td><td>0m 48s</td></tr>
+                  <tr><td>10:00</td><td class="s-ok">✓ OK</td><td>44</td><td>1m 10s</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. ClickHouse ETL — SUCCESS -->
+      <div class="pipeline-card success" data-status="success">
+        <div class="pipeline-header" onclick="togglePipeline('p6')">
+          <button class="pipeline-expand-btn" id="btn-p6">▶</button>
+          <div>
+            <div class="pipeline-name">ClickHouse ETL</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: Internal • Loại: Materialized View Refresh</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-success">Thành công</span>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần chạy cuối</span><span class="pipeline-meta-value">14:30 hôm nay</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Thời lượng</span><span class="pipeline-meta-value">0m 48s</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Records</span><span class="pipeline-meta-value">12.4M</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần tới</span><span class="pipeline-meta-value">14:35</span></div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">Logs</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p6" style="display:none;"></div>
+      </div>
+
+      <!-- 7. Health Score Calc — QUEUED -->
+      <div class="pipeline-card queued" data-status="queued">
+        <div class="pipeline-header" onclick="togglePipeline('p7')">
+          <button class="pipeline-expand-btn" id="btn-p7">▶</button>
+          <div>
+            <div class="pipeline-name">Health Score Calc</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: Analytics • Loại: Batch compute</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-queued">Chờ</span>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần chạy cuối</span><span class="pipeline-meta-value">08:00 hôm nay</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Thời lượng TB</span><span class="pipeline-meta-value">18m 32s</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Records</span><span class="pipeline-meta-value" style="color:var(--ink-32);">—</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lịch</span><span class="pipeline-meta-value">08:00 & 20:00</span></div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">▶ Run ngay</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p7" style="display:none;"></div>
+      </div>
+
+      <!-- 8. Lifecycle Update — SUCCESS -->
+      <div class="pipeline-card success" data-status="success">
+        <div class="pipeline-header" onclick="togglePipeline('p8')">
+          <button class="pipeline-expand-btn" id="btn-p8">▶</button>
+          <div>
+            <div class="pipeline-name">Lifecycle Update</div>
+            <div style="font-size:12px;color:var(--ink-48);">Nguồn: Analytics • Loại: Batch compute</div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="status-badge status-success">Thành công</span>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần chạy cuối</span><span class="pipeline-meta-value">12:00 hôm nay</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Thời lượng</span><span class="pipeline-meta-value">22m 14s</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Records</span><span class="pipeline-meta-value">124,580</span></div>
+            <div class="pipeline-meta-item"><span class="pipeline-meta-label">Lần tới</span><span class="pipeline-meta-value">18:00</span></div>
+          </div>
+          <div class="pipeline-actions">
+            <button class="btn btn-secondary btn-xs" onclick="event.stopPropagation()">▶ Run ngay</button>
+          </div>
+        </div>
+        <div class="pipeline-body" id="body-p8" style="display:none;"></div>
+      </div>
+
+    </div><!-- /pipeline-list -->
+  </div><!-- /page-body -->
+</main>
+
+<script>
+function toggleSidebar(){
+  const s=document.getElementById('sidebar');
+  const c=document.getElementById('content');
+  s.classList.toggle('collapsed');
+  c.classList.toggle('sidebar-collapsed');
+}
+function togglePipeline(id){
+  const body=document.getElementById('body-'+id);
+  const btn=document.getElementById('btn-'+id);
+  const isOpen=body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
+  if(!isOpen && !body.innerHTML.trim()){
+    body.innerHTML='<div style="padding:16px 0;font-size:13px;color:var(--ink-48);">Không có dữ liệu chi tiết.</div>';
+    body.classList.add('open');
+  }
+}
+function toggleAutoRefresh(el){
+  const track=document.getElementById('refreshTrack');
+  const label=document.getElementById('refreshLabel');
+  const isOn=track.classList.toggle('on');
+  label.textContent=isOn?'Auto-refresh 30s':'Auto-refresh (tắt)';
+}
+function refreshAll(){
+  const btn=event.currentTarget;
+  btn.textContent='⟳ Đang refresh...';
+  setTimeout(()=>{btn.textContent='⟳ Refresh ngay';},1500);
+}
+function filterPipelines(val){
+  document.querySelectorAll('.pipeline-card').forEach(card=>{
+    if(val==='all'||card.dataset.status===val){
+      card.style.display='';
+    }else{
+      card.style.display='none';
+    }
+  });
+}
+// Auto-open failed pipeline
+togglePipeline('p1');
+</script>
+</body>
+</html>

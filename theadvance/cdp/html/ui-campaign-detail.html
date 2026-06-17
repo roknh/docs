@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Chi tiết Campaign</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #004d99;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* ══ TOPNAV ══ */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search { width: 320px; height: 32px; border-radius: var(--radius-pill); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+/* ══ SIDEBAR ══ */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: width 0.25s ease; }
+.sidebar.open { transform: translateX(0) !important; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; box-shadow: var(--shadow-sm); }
+
+/* ══ CONTENT ══ */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ BUTTONS ══ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-ghost { background: none; color: var(--brand-primary); border: none; }
+.btn-ghost:hover { background: var(--brand-primary-subtle); }
+.btn-danger { background: var(--danger-subtle); color: var(--danger-ink); border: none; }
+
+/* ══ BADGES ══ */
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
+.badge-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.badge-success { background: var(--success-subtle); color: var(--success-ink); }
+.badge-warning { background: var(--warning-subtle); color: var(--warning-ink); }
+.badge-danger { background: var(--danger-subtle); color: var(--danger-ink); }
+.badge-info { background: var(--info-subtle); color: var(--info); }
+.badge-neutral { background: var(--ink-04); color: var(--ink-60); }
+.type-email { background: #e5f1ff; color: #004d99; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: var(--radius-pill); }
+.type-zalo { background: #e5f6ff; color: #0070ba; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: var(--radius-pill); }
+
+/* ══ PAGE HEADER ══ */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 20px 32px; }
+.breadcrumb { font-size: 13px; color: var(--ink-48); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+.breadcrumb a { color: var(--brand-primary); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.campaign-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.campaign-header-left { flex: 1; min-width: 0; }
+.campaign-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 8px; }
+.campaign-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--ink-48); }
+.campaign-meta-sep { color: var(--ink-16); }
+.campaign-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: flex-start; }
+
+/* ══ BODY LAYOUT ══ */
+.page-body { padding: 24px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+/* ══ KPI CARDS ══ */
+.kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.kpi-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 16px 18px; }
+.kpi-card.kpi-primary { border-top: 3px solid var(--brand-primary); }
+.kpi-card.kpi-success { border-top: 3px solid var(--success); }
+.kpi-card.kpi-warning { border-top: 3px solid var(--warning); }
+.kpi-card.kpi-info { border-top: 3px solid var(--info); }
+.kpi-card.kpi-purple { border-top: 3px solid var(--bu-zema); }
+.kpi-card.kpi-danger { border-top: 3px solid var(--danger); }
+.kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); margin-bottom: 6px; }
+.kpi-value { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--ink-100); letter-spacing: -0.5px; line-height: 1.1; }
+.kpi-rate { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.kpi-rate.good { color: var(--success-ink); }
+.kpi-rate.warn { color: var(--warning-ink); }
+.kpi-sub { font-size: 11px; color: var(--ink-48); margin-top: 2px; }
+
+/* ══ CARDS ══ */
+.card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.card-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--ink-04); }
+.card-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+.card-body { padding: 20px; }
+
+/* ══ CHARTS GRID ══ */
+.charts-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* Line Chart (CSS-only SVG simulation) */
+.line-chart-area { padding: 20px 20px 0; }
+.line-chart-svg { width: 100%; height: 180px; }
+.line-chart-labels { display: flex; justify-content: space-between; padding: 6px 4px 16px; font-size: 11px; color: var(--ink-48); }
+
+/* Donut chart (pure CSS) */
+.donut-wrapper { display: flex; align-items: center; gap: 20px; padding: 20px; }
+.donut-chart { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+.donut-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.donut-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.donut-center-val { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--ink-100); line-height: 1; }
+.donut-center-lbl { font-size: 10px; color: var(--ink-48); }
+.donut-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.donut-legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-60); }
+.donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.donut-legend-pct { margin-left: auto; font-weight: 600; color: var(--ink-100); }
+
+/* Heatmap */
+.heatmap-grid { display: grid; grid-template-columns: 36px repeat(24, 1fr); gap: 2px; padding: 16px 20px 20px; }
+.heatmap-label { font-size: 10px; color: var(--ink-48); display: flex; align-items: center; justify-content: flex-end; padding-right: 4px; }
+.heatmap-col-label { font-size: 9px; color: var(--ink-48); text-align: center; }
+.heatmap-cell { height: 18px; border-radius: 2px; background: var(--ink-04); }
+.hm-0 { background: var(--ink-04); }
+.hm-1 { background: #cce5ff; }
+.hm-2 { background: #99ccff; }
+.hm-3 { background: #66b2ff; }
+.hm-4 { background: #3399ff; }
+.hm-5 { background: var(--brand-primary); }
+.hm-peak { background: #003d7a; }
+
+/* ══ RECIPIENT TABLE ══ */
+.table-wrapper { overflow-x: auto; }
+table.recipient-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+table.recipient-table thead th { background: var(--ink-02); padding: 10px 16px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); text-align: left; white-space: nowrap; border-bottom: 1px solid var(--ink-08); }
+table.recipient-table tbody tr { transition: background 0.12s; }
+table.recipient-table tbody tr:hover { background: var(--ink-02); }
+table.recipient-table tbody td { padding: 11px 16px; border-bottom: 1px solid var(--ink-04); color: var(--ink-80); vertical-align: middle; }
+table.recipient-table tbody tr:last-child td { border-bottom: none; }
+.recip-name { font-weight: 500; color: var(--ink-100); }
+.recip-email { font-size: 12px; color: var(--ink-48); }
+.status-delivered { color: var(--success-ink); background: var(--success-subtle); }
+.status-opened { color: #004d99; background: #e5f1ff; }
+.status-clicked { color: var(--bu-zema); background: var(--bu-zema-bg); }
+.status-bounced { color: var(--danger-ink); background: var(--danger-subtle); }
+
+/* ══ A/B TEST SECTION ══ */
+.ab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; }
+.ab-variant { border: 1px solid var(--ink-08); border-radius: var(--radius-md); overflow: hidden; }
+.ab-variant-header { padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+.ab-variant-a { background: linear-gradient(135deg, #e5f1ff, #f0f7ff); border-color: #c8dff6; }
+.ab-variant-b { background: linear-gradient(135deg, #ede9fd, #f5f3ff); border-color: #d4c8f8; }
+.ab-variant-label { font-size: 13px; font-weight: 700; }
+.ab-variant-a .ab-variant-label { color: #004d99; }
+.ab-variant-b .ab-variant-label { color: var(--bu-zema); }
+.ab-winner { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--success-subtle); color: var(--success-ink); }
+.ab-metrics { padding: 14px 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ab-metric-lbl { font-size: 10px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.ab-metric-val { font-size: 18px; font-weight: 700; color: var(--ink-100); margin-top: 2px; }
+.ab-metric-rate { font-size: 11px; color: var(--ink-48); }
+.ab-bar { height: 4px; background: var(--ink-04); border-radius: 2px; margin: 10px 16px 14px; overflow: hidden; }
+.ab-bar-fill-a { height: 100%; background: var(--brand-primary); border-radius: 2px; width: 39%; }
+.ab-bar-fill-b { height: 100%; background: var(--bu-zema); border-radius: 2px; width: 28%; }
+.ab-subtext { font-size: 11px; color: var(--ink-48); padding: 0 16px; margin-bottom: 10px; }
+
+/* ══ PAGINATION ══ */
+.pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-top: 1px solid var(--ink-04); font-size: 13px; color: var(--ink-48); flex-wrap: wrap; gap: 10px; }
+.page-btns { display: flex; gap: 4px; }
+.page-btn { width: 30px; height: 30px; border-radius: var(--radius-sm); border: 1px solid var(--ink-08); background: var(--ink-00); color: var(--ink-60); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.page-btn.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .charts-grid { grid-template-columns: 1fr; }
+  .chart-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-section-label::after { content: ""; display: block; width: 24px; height: 1px; background: var(--ink-08); margin: 0 auto; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .page-header { padding: 16px 24px; }
+  .page-body { padding: 20px 24px; }
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .ab-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-section-label::after { display: none; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; }
+  .topnav-search { max-width: 120px; height: 30px; font-size: 12px; }
+  .topnav-brand { font-size: 15px; }
+  .topnav-bu-switch { display: none; }
+  .topnav-right > span:first-child { display: none; }
+  .page-header { padding: 16px; }
+  .campaign-title { font-size: 17px; }
+  .campaign-actions { width: 100%; flex-wrap: wrap; }
+  .page-body { padding: 16px; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .kpi-value { font-size: 22px; }
+  .charts-grid { grid-template-columns: 1fr; }
+  .chart-row { grid-template-columns: 1fr; }
+  .ab-grid { grid-template-columns: 1fr; }
+  .heatmap-grid { grid-template-columns: 30px repeat(12, 1fr); gap: 2px; }
+  .heatmap-grid > :nth-child(n+14):nth-child(-n+37) { display: none; }
+  .ab-metrics { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .ab-metric-val { font-size: 16px; }
+  /* Recipient table → block */
+  table.recipient-table, table.recipient-table thead, table.recipient-table tbody, table.recipient-table tr, table.recipient-table th, table.recipient-table td { display: block; }
+  table.recipient-table thead { display: none; }
+  table.recipient-table tbody tr { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; }
+  table.recipient-table tbody td { padding: 3px 0; border-bottom: none; font-size: 13px; }
+  table.recipient-table tbody td::before { content: attr(data-label); font-size: 10px; font-weight: 600; color: var(--ink-48); text-transform: uppercase; margin-right: 6px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Ngọc Dung</span>
+    <span style="font-size:12px;color:var(--ink-48);">Mai Lan</span>
+    <div class="topnav-avatar">ML</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item active" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="ui-campaign-list.html">Campaigns</a>
+      <span>/</span>
+      <span style="color:var(--ink-100);font-weight:500;">Chăm sóc KH VIP Ngọc Dung T6</span>
+    </div>
+    <div class="campaign-header">
+      <div class="campaign-header-left">
+        <div class="campaign-title">Chăm sóc KH VIP Ngọc Dung tháng 6/2026</div>
+        <div class="campaign-meta">
+          <span class="type-email">&#x2709; Email</span>
+          <span class="badge badge-dot badge-success">Hoàn thành</span>
+          <span class="campaign-meta-sep">|</span>
+          <span>Gửi lúc 09:00 · Thứ 3, 10/06/2026</span>
+          <span class="campaign-meta-sep">|</span>
+          <span>Tạo bởi <strong style="color:var(--ink-80);">Mai Lan</strong></span>
+          <span class="campaign-meta-sep">|</span>
+          <span>Segment: <strong style="color:var(--ink-80);">VIP Diamond &amp; Platinum</strong></span>
+        </div>
+      </div>
+      <div class="campaign-actions">
+        <button class="btn btn-secondary">&#x2398; Nhân bản</button>
+        <button class="btn btn-secondary">&#x23F8; Tạm dừng</button>
+        <button class="btn btn-primary">&#x1F4C4; Xuất báo cáo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-label">Đã gửi</div>
+        <div class="kpi-value">12,450</div>
+        <div class="kpi-sub">Tổng người nhận</div>
+      </div>
+      <div class="kpi-card kpi-success">
+        <div class="kpi-label">Đã nhận</div>
+        <div class="kpi-value">12,214</div>
+        <div class="kpi-rate good">98.1% Delivery Rate</div>
+      </div>
+      <div class="kpi-card kpi-info">
+        <div class="kpi-label">Đã mở</div>
+        <div class="kpi-value">4,892</div>
+        <div class="kpi-rate good">39.3% Open Rate</div>
+      </div>
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-label">Đã click</div>
+        <div class="kpi-value">1,247</div>
+        <div class="kpi-rate warn">10.0% CTR</div>
+      </div>
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-label">Chuyển đổi</div>
+        <div class="kpi-value">386</div>
+        <div class="kpi-rate good">3.1% CVR</div>
+      </div>
+      <div class="kpi-card kpi-danger">
+        <div class="kpi-label">Hủy đăng ký</div>
+        <div class="kpi-value">24</div>
+        <div class="kpi-rate" style="color:var(--danger);">0.19% Unsubscribe</div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1: Open/Click over time + Device breakdown -->
+    <div class="charts-grid">
+      <!-- Line chart -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Hiệu suất theo thời gian</span>
+          <div style="display:flex;gap:16px;font-size:12px;">
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:3px;background:var(--brand-primary);display:inline-block;border-radius:2px;"></span> Open Rate</span>
+            <span style="display:flex;align-items:center;gap:5px;"><span style="width:12px;height:3px;background:var(--warning);display:inline-block;border-radius:2px;"></span> Click Rate</span>
+          </div>
+        </div>
+        <div class="line-chart-area">
+          <!-- SVG Line Chart -->
+          <svg class="line-chart-svg" viewBox="0 0 600 180" preserveAspectRatio="none">
+            <!-- Grid lines -->
+            <line x1="0" y1="36" x2="600" y2="36" stroke="#f0f0f0" stroke-width="1"/>
+            <line x1="0" y1="72" x2="600" y2="72" stroke="#f0f0f0" stroke-width="1"/>
+            <line x1="0" y1="108" x2="600" y2="108" stroke="#f0f0f0" stroke-width="1"/>
+            <line x1="0" y1="144" x2="600" y2="144" stroke="#f0f0f0" stroke-width="1"/>
+            <!-- Y axis labels -->
+            <text x="4" y="39" font-size="12" fill="#a0a0a0">40%</text>
+            <text x="4" y="75" font-size="12" fill="#a0a0a0">30%</text>
+            <text x="4" y="111" font-size="12" fill="#a0a0a0">20%</text>
+            <text x="4" y="147" font-size="12" fill="#a0a0a0">10%</text>
+            <!-- Open Rate line (blue) -->
+            <polyline points="50,140 100,60 150,45 200,50 250,55 300,58 350,62 400,65 450,68 500,72 550,75" fill="none" stroke="#0066cc" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Click Rate line (orange) -->
+            <polyline points="50,160 100,110 150,100 200,105 250,108 300,112 350,115 400,118 450,120 500,122 550,125" fill="none" stroke="#f5a623" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- Open Rate area -->
+            <polygon points="50,180 50,140 100,60 150,45 200,50 250,55 300,58 350,62 400,65 450,68 500,72 550,75 550,180" fill="rgba(0,102,204,0.06)"/>
+            <!-- Data points – Open -->
+            <circle cx="100" cy="60" r="3" fill="#0066cc"/>
+            <circle cx="150" cy="45" r="3" fill="#0066cc"/>
+            <circle cx="200" cy="50" r="3" fill="#0066cc"/>
+            <circle cx="300" cy="58" r="3" fill="#0066cc"/>
+            <circle cx="400" cy="65" r="3" fill="#0066cc"/>
+            <circle cx="550" cy="75" r="3" fill="#0066cc"/>
+            <!-- Data points – Click -->
+            <circle cx="100" cy="110" r="3" fill="#f5a623"/>
+            <circle cx="150" cy="100" r="3" fill="#f5a623"/>
+            <circle cx="300" cy="112" r="3" fill="#f5a623"/>
+            <circle cx="550" cy="125" r="3" fill="#f5a623"/>
+          </svg>
+          <div class="line-chart-labels">
+            <span>0h</span><span>2h</span><span>4h</span><span>6h</span><span>8h</span><span>10h</span><span>12h</span><span>14h</span><span>16h</span><span>18h</span><span>20h</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Donut: Device breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Thiết bị mở email</span>
+        </div>
+        <div class="donut-wrapper">
+          <div class="donut-chart">
+            <svg class="donut-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#f0f0f0" stroke-width="14"/>
+              <!-- Mobile: 54% -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#0066cc" stroke-width="14"
+                stroke-dasharray="128.8 238.8" stroke-dashoffset="0"/>
+              <!-- Desktop: 31% -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#f5a623" stroke-width="14"
+                stroke-dasharray="73.9 293.7" stroke-dashoffset="-128.8"/>
+              <!-- Tablet: 15% -->
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#30d158" stroke-width="14"
+                stroke-dasharray="35.8 331.8" stroke-dashoffset="-202.7"/>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-center-val">4,892</div>
+              <div class="donut-center-lbl">lượt mở</div>
+            </div>
+          </div>
+          <div class="donut-legend">
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:#0066cc;"></div>
+              <span>&#x1F4F1; Mobile</span>
+              <span class="donut-legend-pct">54%</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:#f5a623;"></div>
+              <span>&#x1F4BB; Desktop</span>
+              <span class="donut-legend-pct">31%</span>
+            </div>
+            <div class="donut-legend-item">
+              <div class="donut-legend-dot" style="background:#30d158;"></div>
+              <span>&#x1F4F2; Tablet</span>
+              <span class="donut-legend-pct">15%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Heatmap -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Heatmap tương tác theo giờ</span>
+        <span style="font-size:12px;color:var(--ink-48);">Trong 24h đầu tiên sau khi gửi</span>
+      </div>
+      <div style="overflow-x:auto;">
+        <div class="heatmap-grid" style="min-width:600px;">
+          <!-- Hour labels row -->
+          <div></div>
+          <div class="heatmap-col-label">0</div><div class="heatmap-col-label">1</div><div class="heatmap-col-label">2</div>
+          <div class="heatmap-col-label">3</div><div class="heatmap-col-label">4</div><div class="heatmap-col-label">5</div>
+          <div class="heatmap-col-label">6</div><div class="heatmap-col-label">7</div><div class="heatmap-col-label">8</div>
+          <div class="heatmap-col-label">9</div><div class="heatmap-col-label">10</div><div class="heatmap-col-label">11</div>
+          <div class="heatmap-col-label">12</div><div class="heatmap-col-label">13</div><div class="heatmap-col-label">14</div>
+          <div class="heatmap-col-label">15</div><div class="heatmap-col-label">16</div><div class="heatmap-col-label">17</div>
+          <div class="heatmap-col-label">18</div><div class="heatmap-col-label">19</div><div class="heatmap-col-label">20</div>
+          <div class="heatmap-col-label">21</div><div class="heatmap-col-label">22</div><div class="heatmap-col-label">23</div>
+          <!-- Open rate row -->
+          <div class="heatmap-label">Open</div>
+          <div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div>
+          <div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-1"></div>
+          <div class="heatmap-cell hm-1"></div><div class="heatmap-cell hm-2"></div><div class="heatmap-cell hm-3"></div>
+          <div class="heatmap-cell hm-peak"></div><div class="heatmap-cell hm-5"></div><div class="heatmap-cell hm-4"></div>
+          <div class="heatmap-cell hm-3"></div><div class="heatmap-cell hm-3"></div><div class="heatmap-cell hm-2"></div>
+          <div class="heatmap-cell hm-2"></div><div class="heatmap-cell hm-1"></div><div class="heatmap-cell hm-2"></div>
+          <div class="heatmap-cell hm-3"></div><div class="heatmap-cell hm-4"></div><div class="heatmap-cell hm-3"></div>
+          <div class="heatmap-cell hm-2"></div><div class="heatmap-cell hm-1"></div><div class="heatmap-cell hm-0"></div>
+          <!-- Click row -->
+          <div class="heatmap-label">Click</div>
+          <div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div>
+          <div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div>
+          <div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-1"></div><div class="heatmap-cell hm-2"></div>
+          <div class="heatmap-cell hm-peak"></div><div class="heatmap-cell hm-4"></div><div class="heatmap-cell hm-3"></div>
+          <div class="heatmap-cell hm-2"></div><div class="heatmap-cell hm-2"></div><div class="heatmap-cell hm-1"></div>
+          <div class="heatmap-cell hm-1"></div><div class="heatmap-cell hm-1"></div><div class="heatmap-cell hm-1"></div>
+          <div class="heatmap-cell hm-2"></div><div class="heatmap-cell hm-3"></div><div class="heatmap-cell hm-2"></div>
+          <div class="heatmap-cell hm-1"></div><div class="heatmap-cell hm-0"></div><div class="heatmap-cell hm-0"></div>
+        </div>
+        <!-- Legend -->
+        <div style="display:flex;align-items:center;gap:6px;padding:4px 20px 16px;font-size:11px;color:var(--ink-48);">
+          <span>Thấp</span>
+          <div style="width:16px;height:12px;background:#f0f0f0;border-radius:2px;"></div>
+          <div style="width:16px;height:12px;background:#cce5ff;border-radius:2px;"></div>
+          <div style="width:16px;height:12px;background:#66b2ff;border-radius:2px;"></div>
+          <div style="width:16px;height:12px;background:var(--brand-primary);border-radius:2px;"></div>
+          <div style="width:16px;height:12px;background:#003d7a;border-radius:2px;"></div>
+          <span>Cao</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- A/B Test Results -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">&#x1F9EA; Kết quả A/B Test</span>
+        <span style="font-size:12px;color:var(--ink-48);">Kiểm tra: Subject Line · 50/50 phân chia</span>
+      </div>
+      <div class="ab-grid">
+        <!-- Variant A -->
+        <div class="ab-variant">
+          <div class="ab-variant-header ab-variant-a">
+            <div>
+              <div class="ab-variant-label">Variant A — Subject gốc</div>
+              <div style="font-size:12px;color:var(--ink-60);margin-top:2px;">"Ưu đãi VIP dành riêng cho bạn 🌸"</div>
+            </div>
+            <span class="ab-winner">&#x1F3C6; Chiến thắng</span>
+          </div>
+          <div class="ab-metrics">
+            <div>
+              <div class="ab-metric-lbl">Gửi</div>
+              <div class="ab-metric-val">6,225</div>
+            </div>
+            <div>
+              <div class="ab-metric-lbl">Mở</div>
+              <div class="ab-metric-val">2,814</div>
+              <div class="ab-metric-rate">39.3%</div>
+            </div>
+            <div>
+              <div class="ab-metric-lbl">Click</div>
+              <div class="ab-metric-val">743</div>
+              <div class="ab-metric-rate">10.6%</div>
+            </div>
+          </div>
+          <div class="ab-bar"><div class="ab-bar-fill-a"></div></div>
+          <div class="ab-subtext">Open rate cao hơn +11.3pp so với Variant B · Độ tin cậy 97%</div>
+        </div>
+        <!-- Variant B -->
+        <div class="ab-variant">
+          <div class="ab-variant-header ab-variant-b">
+            <div>
+              <div class="ab-variant-label">Variant B — Subject mới</div>
+              <div style="font-size:12px;color:var(--ink-60);margin-top:2px;">"Quà tặng đặc biệt chờ bạn tại Ngọc Dung"</div>
+            </div>
+          </div>
+          <div class="ab-metrics">
+            <div>
+              <div class="ab-metric-lbl">Gửi</div>
+              <div class="ab-metric-val">6,225</div>
+            </div>
+            <div>
+              <div class="ab-metric-lbl">Mở</div>
+              <div class="ab-metric-val">2,078</div>
+              <div class="ab-metric-rate">28.0%</div>
+            </div>
+            <div>
+              <div class="ab-metric-lbl">Click</div>
+              <div class="ab-metric-val">504</div>
+              <div class="ab-metric-rate">6.8%</div>
+            </div>
+          </div>
+          <div class="ab-bar"><div class="ab-bar-fill-b"></div></div>
+          <div class="ab-subtext">Open rate 28% — thấp hơn Variant A</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recipient list -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Danh sách người nhận</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <select style="height:30px;border:1px solid var(--ink-08);border-radius:var(--radius-md);padding:0 24px 0 10px;font-size:12px;background:var(--ink-00);appearance:none;cursor:pointer;">
+            <option>Tất cả trạng thái</option>
+            <option>Đã nhận</option>
+            <option>Đã mở</option>
+            <option>Đã click</option>
+            <option>Bounce</option>
+          </select>
+          <button class="btn btn-sm btn-secondary">&#x1F4E5; Xuất CSV</button>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <table class="recipient-table">
+          <thead>
+            <tr>
+              <th>Tên khách hàng</th>
+              <th>Email</th>
+              <th>Số điện thoại</th>
+              <th>Trạng thái</th>
+              <th>Thời gian</th>
+              <th>Thiết bị</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Tên"><div class="recip-name">Nguyễn Thị Lan Anh</div></td>
+              <td data-label="Email"><div class="recip-email">lananh@gmail.com</div></td>
+              <td data-label="SĐT" style="font-size:13px;color:var(--ink-60);">0901 234 567</td>
+              <td data-label="Trạng thái"><span class="badge status-clicked">&#x2714; Đã click</span></td>
+              <td data-label="Thời gian" style="font-size:12px;color:var(--ink-48);">09:14 · 10/06</td>
+              <td data-label="Thiết bị" style="font-size:12px;color:var(--ink-48);">&#x1F4F1; iPhone</td>
+            </tr>
+            <tr>
+              <td data-label="Tên"><div class="recip-name">Trần Minh Hương</div></td>
+              <td data-label="Email"><div class="recip-email">minhuong.tran@outlook.com</div></td>
+              <td data-label="SĐT" style="font-size:13px;color:var(--ink-60);">0912 345 678</td>
+              <td data-label="Trạng thái"><span class="badge status-opened">&#x1F4E7; Đã mở</span></td>
+              <td data-label="Thời gian" style="font-size:12px;color:var(--ink-48);">09:22 · 10/06</td>
+              <td data-label="Thiết bị" style="font-size:12px;color:var(--ink-48);">&#x1F4BB; Mac</td>
+            </tr>
+            <tr>
+              <td data-label="Tên"><div class="recip-name">Phạm Thị Bích Ngọc</div></td>
+              <td data-label="Email"><div class="recip-email">bichngoc.pham@yahoo.com</div></td>
+              <td data-label="SĐT" style="font-size:13px;color:var(--ink-60);">0933 456 789</td>
+              <td data-label="Trạng thái"><span class="badge status-clicked">&#x2714; Đã click</span></td>
+              <td data-label="Thời gian" style="font-size:12px;color:var(--ink-48);">09:31 · 10/06</td>
+              <td data-label="Thiết bị" style="font-size:12px;color:var(--ink-48);">&#x1F4F1; Android</td>
+            </tr>
+            <tr>
+              <td data-label="Tên"><div class="recip-name">Lê Hoàng Kim Thoa</div></td>
+              <td data-label="Email"><div class="recip-email">kimthoa.le@gmail.com</div></td>
+              <td data-label="SĐT" style="font-size:13px;color:var(--ink-60);">0945 567 890</td>
+              <td data-label="Trạng thái"><span class="badge status-delivered">&#x2709; Đã nhận</span></td>
+              <td data-label="Thời gian" style="font-size:12px;color:var(--ink-48);">09:00 · 10/06</td>
+              <td data-label="Thiết bị" style="font-size:12px;color:var(--ink-48);">—</td>
+            </tr>
+            <tr>
+              <td data-label="Tên"><div class="recip-name">Đặng Thị Thu Hà</div></td>
+              <td data-label="Email"><div class="recip-email">thuha.dang@company.vn</div></td>
+              <td data-label="SĐT" style="font-size:13px;color:var(--ink-60);">0956 678 901</td>
+              <td data-label="Trạng thái"><span class="badge status-bounced">&#x2715; Bounce</span></td>
+              <td data-label="Thời gian" style="font-size:12px;color:var(--ink-48);">09:00 · 10/06</td>
+              <td data-label="Thiết bị" style="font-size:12px;color:var(--ink-48);">—</td>
+            </tr>
+            <tr>
+              <td data-label="Tên"><div class="recip-name">Võ Thị Mỹ Linh</div></td>
+              <td data-label="Email"><div class="recip-email">mylinh.vo@gmail.com</div></td>
+              <td data-label="SĐT" style="font-size:13px;color:var(--ink-60);">0967 789 012</td>
+              <td data-label="Trạng thái"><span class="badge status-clicked">&#x2714; Đã click</span></td>
+              <td data-label="Thời gian" style="font-size:12px;color:var(--ink-48);">10:15 · 10/06</td>
+              <td data-label="Thiết bị" style="font-size:12px;color:var(--ink-48);">&#x1F4BB; Windows</td>
+            </tr>
+            <tr>
+              <td data-label="Tên"><div class="recip-name">Nguyễn Hạnh Nguyên</div></td>
+              <td data-label="Email"><div class="recip-email">hanhnguyen09@gmail.com</div></td>
+              <td data-label="SĐT" style="font-size:13px;color:var(--ink-60);">0978 890 123</td>
+              <td data-label="Trạng thái"><span class="badge status-opened">&#x1F4E7; Đã mở</span></td>
+              <td data-label="Thời gian" style="font-size:12px;color:var(--ink-48);">11:42 · 10/06</td>
+              <td data-label="Thiết bị" style="font-size:12px;color:var(--ink-48);">&#x1F4F2; iPad</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span>Hiển thị 1–7 / 12,450 người nhận</span>
+        <div class="page-btns">
+          <button class="page-btn">&#x2190;</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn" style="width:auto;padding:0 8px;">...</button>
+          <button class="page-btn">1779</button>
+          <button class="page-btn">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+</div><!-- /content -->
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+function toggleCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+</script>
+</body>
+</html>

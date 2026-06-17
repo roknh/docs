@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Dashboard Builder</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display","Inter",system-ui,-apple-system,sans-serif;
+  --font-text: "SF Pro Text","Inter",system-ui,-apple-system,sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+  --builder-sidebar: 280px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+/* Topnav */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+
+/* Sidebar */
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; z-index: 100; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+
+/* Content area */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); display: flex; flex-direction: column; }
+
+/* ══ BUILDER TOOLBAR ══ */
+.builder-toolbar {
+  background: var(--ink-00);
+  border-bottom: 1px solid var(--ink-08);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 50;
+}
+
+.dashboard-name-input {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink-100);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 5px 10px;
+  background: transparent;
+  min-width: 200px;
+  transition: all 0.15s;
+}
+.dashboard-name-input:hover { border-color: var(--ink-08); background: var(--ink-02); }
+.dashboard-name-input:focus { outline: none; border-color: var(--brand-primary); background: var(--ink-00); }
+
+.toolbar-sep { width: 1px; height: 24px; background: var(--ink-08); flex-shrink: 0; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 14px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-success { background: var(--success-subtle); color: var(--success-ink); border: 1px solid #b7efca; }
+.btn-success:hover { background: #d0f5de; }
+
+/* Layout selector */
+.layout-selector { display: flex; gap: 4px; padding: 3px; background: var(--ink-04); border-radius: var(--radius-md); }
+.layout-btn { width: 30px; height: 26px; border-radius: var(--radius-sm); border: none; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--ink-48); transition: all 0.12s; }
+.layout-btn:hover { background: var(--ink-08); }
+.layout-btn.active { background: var(--ink-00); color: var(--ink-100); box-shadow: var(--shadow-sm); }
+
+/* Dashboard selector pill */
+.dashboard-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 5px 12px; border-radius: var(--radius-pill); border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; color: var(--ink-60); transition: all 0.12s; }
+.dashboard-pill:hover { background: var(--ink-02); }
+.dashboard-pill.active { background: var(--brand-primary-subtle); color: var(--brand-primary); border-color: var(--brand-primary); font-weight: 500; }
+
+/* Toolbar right */
+.toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+/* ══ BUILDER LAYOUT ══ */
+.builder-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Widget Palette (left slide-out) */
+.widget-palette {
+  width: var(--builder-sidebar);
+  background: var(--ink-00);
+  border-right: 1px solid var(--ink-08);
+  overflow-y: auto;
+  flex-shrink: 0;
+  transition: width 0.25s ease, transform 0.25s ease;
+}
+.widget-palette.collapsed { width: 0; overflow: hidden; }
+
+.palette-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--ink-08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.palette-title { font-size: 14px; font-weight: 600; color: var(--ink-100); }
+.palette-close { width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--ink-04); cursor: pointer; font-size: 14px; color: var(--ink-48); display: flex; align-items: center; justify-content: center; }
+.palette-close:hover { background: var(--ink-08); }
+
+.palette-search { padding: 10px 16px; border-bottom: 1px solid var(--ink-04); }
+.palette-search input { width: 100%; height: 32px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); padding: 0 10px; font-size: 13px; font-family: var(--font-text); background: var(--ink-02); }
+.palette-search input:focus { outline: none; border-color: var(--brand-primary); }
+
+.palette-section { padding: 16px 0 8px; }
+.palette-section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-32); padding: 0 16px 10px; }
+.palette-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 12px; }
+.palette-widget {
+  background: var(--ink-02);
+  border: 1.5px dashed var(--ink-16);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  cursor: grab;
+  transition: all 0.12s;
+  text-align: center;
+  user-select: none;
+}
+.palette-widget:hover {
+  background: var(--brand-primary-subtle);
+  border-color: var(--brand-primary);
+  transform: translateY(-1px);
+}
+.palette-widget:active { cursor: grabbing; transform: scale(0.97); }
+.palette-widget-icon { font-size: 20px; margin-bottom: 4px; }
+.palette-widget-label { font-size: 11px; font-weight: 500; color: var(--ink-60); }
+
+/* ══ CANVAS ══ */
+.canvas-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background: #eef0f4;
+  min-width: 0;
+}
+
+.canvas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 1400px;
+}
+
+/* Grid rows */
+.canvas-row { display: grid; gap: 16px; }
+.canvas-row-4 { grid-template-columns: repeat(4, 1fr); }
+.canvas-row-3 { grid-template-columns: 2fr 1fr; }
+.canvas-row-2 { grid-template-columns: 1fr 1fr; }
+.canvas-row-custom { grid-template-columns: 2fr 1fr; }
+
+/* Drop zone */
+.drop-zone {
+  border: 2px dashed var(--ink-16);
+  border-radius: var(--radius-lg);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-32);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: rgba(255,255,255,0.5);
+}
+.drop-zone:hover { border-color: var(--brand-primary); color: var(--brand-primary); background: var(--brand-primary-subtle); }
+
+/* Widget card */
+.widget-card {
+  background: var(--ink-00);
+  border-radius: var(--radius-lg);
+  border: 1.5px solid var(--ink-08);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+.widget-card:hover { box-shadow: var(--shadow-md); border-color: var(--ink-16); }
+.widget-card.selected { border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(0,102,204,0.15); }
+
+/* Widget header */
+.widget-header {
+  padding: 12px 14px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.widget-drag-handle {
+  color: var(--ink-32);
+  font-size: 16px;
+  cursor: grab;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.widget-drag-handle:active { cursor: grabbing; }
+.widget-title { font-size: 13px; font-weight: 600; color: var(--ink-60); flex: 1; }
+.widget-actions { display: flex; gap: 2px; opacity: 0; transition: opacity 0.12s; }
+.widget-card:hover .widget-actions { opacity: 1; }
+.widget-action-btn {
+  width: 24px; height: 24px; border-radius: var(--radius-sm);
+  border: none; background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--ink-48);
+  transition: all 0.1s;
+}
+.widget-action-btn:hover { background: var(--ink-04); color: var(--ink-100); }
+.widget-action-btn.remove:hover { background: var(--danger-subtle); color: var(--danger-ink); }
+
+/* Widget body */
+.widget-body { padding: 0 16px 16px; }
+
+/* ── KPI Widget ── */
+.kpi-widget-value { font-size: 32px; font-weight: 700; color: var(--ink-100); line-height: 1.1; }
+.kpi-widget-label { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.kpi-widget-delta { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; margin-top: 8px; padding: 2px 8px; border-radius: var(--radius-pill); }
+.delta-up { background: var(--success-subtle); color: var(--success-ink); }
+.delta-down { background: var(--danger-subtle); color: var(--danger-ink); }
+.delta-neutral { background: var(--ink-04); color: var(--ink-60); }
+
+/* ── Sparkline ── */
+.sparkline-area { margin-top: 8px; height: 40px; position: relative; overflow: hidden; }
+.sparkline-svg { width: 100%; height: 100%; }
+
+/* ── Line Chart Widget ── */
+.chart-widget { padding: 0 16px 16px; }
+.chart-area { height: 160px; position: relative; margin-top: 8px; }
+.chart-svg { width: 100%; height: 100%; overflow: visible; }
+.chart-label-x { display: flex; justify-content: space-between; margin-top: 4px; font-size: 10px; color: var(--ink-32); }
+.chart-legend { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+.chart-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink-60); }
+.chart-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Donut Widget ── */
+.donut-wrap { display: flex; gap: 16px; align-items: center; }
+.donut-svg-wrap { flex-shrink: 0; position: relative; width: 100px; height: 100px; }
+.donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+.donut-center-value { font-size: 18px; font-weight: 700; color: var(--ink-100); line-height: 1; }
+.donut-center-label { font-size: 10px; color: var(--ink-48); margin-top: 2px; }
+.donut-legend { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.donut-legend-item { display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+.donut-legend-left { display: flex; align-items: center; gap: 6px; }
+.donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.donut-pct { font-weight: 600; color: var(--ink-80); }
+
+/* ── Table Widget ── */
+.table-widget { font-size: 12px; }
+.table-widget thead th { padding: 6px 10px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-48); border-bottom: 1px solid var(--ink-08); text-align: left; }
+.table-widget tbody td { padding: 7px 10px; border-bottom: 1px solid var(--ink-04); color: var(--ink-80); }
+.table-widget tbody tr:last-child td { border-bottom: none; }
+.table-widget tbody tr:hover td { background: var(--ink-02); }
+
+/* ── Bar Chart ── */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; margin-top: 8px; padding: 0 4px; }
+.bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.bar-fill { width: 100%; border-radius: 3px 3px 0 0; min-height: 4px; transition: all 0.3s; }
+.bar-label { font-size: 9px; color: var(--ink-48); white-space: nowrap; }
+.bar-val { font-size: 10px; font-weight: 600; color: var(--ink-60); }
+
+/* Resize handle (visual only) */
+.resize-handle {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  cursor: se-resize;
+  opacity: 0;
+  transition: opacity 0.12s;
+  color: var(--ink-32);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.widget-card:hover .resize-handle { opacity: 1; }
+
+/* Widget settings panel (slide-in from right) */
+.settings-panel {
+  width: 280px;
+  background: var(--ink-00);
+  border-left: 1px solid var(--ink-08);
+  flex-shrink: 0;
+  overflow-y: auto;
+  transition: width 0.25s, transform 0.25s;
+}
+.settings-panel.hidden { width: 0; overflow: hidden; }
+
+.settings-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--ink-08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.settings-title { font-size: 14px; font-weight: 600; }
+.settings-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+.settings-group { display: flex; flex-direction: column; gap: 6px; }
+.settings-label { font-size: 12px; font-weight: 600; color: var(--ink-60); }
+.settings-input { height: 34px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); padding: 0 10px; font-size: 13px; font-family: var(--font-text); color: var(--ink-80); width: 100%; }
+.settings-input:focus { outline: none; border-color: var(--brand-primary); }
+.settings-select { height: 34px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); padding: 0 10px; font-size: 13px; font-family: var(--font-text); color: var(--ink-80); background: var(--ink-00); width: 100%; cursor: pointer; }
+.settings-select:focus { outline: none; border-color: var(--brand-primary); }
+.settings-divider { height: 1px; background: var(--ink-08); }
+
+/* Saved dashboards */
+.saved-list { padding: 8px 0; }
+.saved-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; font-size: 13px; color: var(--ink-60); cursor: pointer; transition: background 0.12s; border-radius: var(--radius-sm); margin: 0 4px; }
+.saved-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.saved-item.active-dash { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; }
+.saved-item-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* Canvas empty drop zone */
+.add-row-btn { border: 2px dashed var(--ink-16); border-radius: var(--radius-lg); height: 60px; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--ink-32); font-size: 13px; cursor: pointer; background: rgba(255,255,255,0.5); transition: all 0.15s; margin-top: 4px; }
+.add-row-btn:hover { border-color: var(--brand-primary); color: var(--brand-primary); background: var(--brand-primary-subtle); }
+
+/* Drag-over state */
+.widget-card.dragging { opacity: 0.5; border-style: dashed; }
+.widget-card.drag-over { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+
+/* Badges */
+.badge-sm { display: inline-flex; align-items: center; font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: var(--radius-pill); }
+.badge-nd { background: var(--bu-ngocdung-bg); color: var(--bu-ngocdung); }
+.badge-ze { background: var(--bu-zema-bg); color: var(--bu-zema); }
+.badge-oc { background: var(--bu-ocany-bg); color: var(--bu-ocany); }
+.badge-success { background: var(--success-subtle); color: var(--success-ink); }
+
+/* Tooltip hint */
+.canvas-hint { text-align: center; color: var(--ink-32); font-size: 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+@media (max-width: 1023px) {
+  .widget-palette { display: none; }
+  .canvas-row-4 { grid-template-columns: repeat(2, 1fr); }
+  .canvas-row-3 { grid-template-columns: 1fr; }
+  .settings-panel { display: none; }
+  .canvas-area { padding: 16px; }
+}
+
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .content { margin-left: 0; }
+  .canvas-row-4 { grid-template-columns: 1fr 1fr; }
+  .canvas-row-3 { grid-template-columns: 1fr; }
+  .canvas-row-2 { grid-template-columns: 1fr; }
+  .canvas-row-custom { grid-template-columns: 1fr; }
+  .builder-toolbar { padding: 8px 12px; gap: 8px; }
+  .toolbar-right .btn span { display: none; }
+  .kpi-widget-value { font-size: 24px; }
+  .canvas-area { padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topnav -->
+<nav class="topnav">
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span style="font-size:12px;color:var(--ink-48);">Dashboard Builder</span>
+    <div class="topnav-avatar">AT</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+</aside>
+
+<!-- Content -->
+<div class="content">
+
+  <!-- Builder Toolbar -->
+  <div class="builder-toolbar">
+    <!-- Dashboard name -->
+    <input class="dashboard-name-input" type="text" value="Marketing Dashboard" id="dash-name"
+      title="Nhấn để đổi tên dashboard">
+
+    <div class="toolbar-sep"></div>
+
+    <!-- Saved dashboards -->
+    <button class="dashboard-pill active-dash" onclick="switchDash(this,'Marketing Dashboard')">
+      &#x25A3; Marketing Overview
+    </button>
+    <button class="dashboard-pill" onclick="switchDash(this,'CS Daily')">
+      &#x263A; CS Daily
+    </button>
+    <button class="dashboard-pill" onclick="switchDash(this,'Management Weekly')">
+      &#x2261; Management Weekly
+    </button>
+    <button class="btn btn-secondary btn-sm" onclick="newDash()">&#x2B; Mới</button>
+
+    <div class="toolbar-sep"></div>
+
+    <!-- Layout selector -->
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:12px;color:var(--ink-48);">Layout:</span>
+      <div class="layout-selector">
+        <button class="layout-btn" title="1 cột" onclick="setLayout(1,this)">&#x2503;</button>
+        <button class="layout-btn active" title="2–3 cột (tự do)" onclick="setLayout(2,this)">&#x2016;</button>
+        <button class="layout-btn" title="3 cột đều" onclick="setLayout(3,this)">&#x2AF4;</button>
+      </div>
+    </div>
+
+    <!-- Right side -->
+    <div class="toolbar-right">
+      <button class="btn btn-secondary btn-sm" id="palette-toggle-btn" onclick="togglePalette()">&#x25E7; <span>Widget</span></button>
+      <button class="btn btn-secondary btn-sm" onclick="toggleSettings()">&#x2699; <span>Cài đặt</span></button>
+      <button class="btn btn-secondary btn-sm" onclick="shareDialog()">&#x1F4E4; <span>Chia sẻ</span></button>
+      <button class="btn btn-success" onclick="saveDash()">&#x2714; <span>Lưu</span></button>
+    </div>
+  </div>
+
+  <!-- Builder body -->
+  <div class="builder-layout">
+
+    <!-- Widget Palette -->
+    <div class="widget-palette" id="widget-palette">
+      <div class="palette-header">
+        <div class="palette-title">Widget Palette</div>
+        <button class="palette-close" onclick="togglePalette()">&#x2715;</button>
+      </div>
+      <div class="palette-search">
+        <input type="search" placeholder="Tìm widget…" oninput="filterWidgets(this.value)">
+      </div>
+
+      <!-- KPI -->
+      <div class="palette-section">
+        <div class="palette-section-label">KPI</div>
+        <div class="palette-grid">
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'kpi-number')" title="Kéo vào canvas">
+            <div class="palette-widget-icon">&#x1F522;</div>
+            <div class="palette-widget-label">Số đơn</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'kpi-trend')">
+            <div class="palette-widget-icon">&#x1F4C8;</div>
+            <div class="palette-widget-label">Xu hướng</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'gauge')">
+            <div class="palette-widget-icon">&#x1F7E1;</div>
+            <div class="palette-widget-label">Gauge</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'conversion')">
+            <div class="palette-widget-icon">&#x25B6;</div>
+            <div class="palette-widget-label">Chuyển đổi</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="palette-section">
+        <div class="palette-section-label">Biểu đồ</div>
+        <div class="palette-grid">
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'line-chart')">
+            <div class="palette-widget-icon">&#x1F4C9;</div>
+            <div class="palette-widget-label">Line</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'bar-chart')">
+            <div class="palette-widget-icon">&#x1F4CA;</div>
+            <div class="palette-widget-label">Bar</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'donut')">
+            <div class="palette-widget-icon">&#x25EF;</div>
+            <div class="palette-widget-label">Donut</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'heatmap')">
+            <div class="palette-widget-icon">&#x25A6;</div>
+            <div class="palette-widget-label">Heatmap</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tables -->
+      <div class="palette-section">
+        <div class="palette-section-label">Bảng</div>
+        <div class="palette-grid">
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'customer-table')">
+            <div class="palette-widget-icon">&#x263A;</div>
+            <div class="palette-widget-label">Khách hàng</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'segment-table')">
+            <div class="palette-widget-icon">&#x25CE;</div>
+            <div class="palette-widget-label">Phân khúc</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'campaign-table')">
+            <div class="palette-widget-icon">&#x2709;</div>
+            <div class="palette-widget-label">Chiến dịch</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'lead-table')">
+            <div class="palette-widget-icon">&#x260E;</div>
+            <div class="palette-widget-label">Leads</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other -->
+      <div class="palette-section">
+        <div class="palette-section-label">Khác</div>
+        <div class="palette-grid">
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'timeline')">
+            <div class="palette-widget-icon">&#x23F1;</div>
+            <div class="palette-widget-label">Timeline</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'health-matrix')">
+            <div class="palette-widget-icon">&#x2661;</div>
+            <div class="palette-widget-label">Health Matrix</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'rfm-grid')">
+            <div class="palette-widget-icon">&#x2261;</div>
+            <div class="palette-widget-label">RFM Grid</div>
+          </div>
+          <div class="palette-widget" draggable="true" ondragstart="dragWidget(event,'text-note')">
+            <div class="palette-widget-icon">&#x1F4DD;</div>
+            <div class="palette-widget-label">Ghi chú</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- Canvas Area -->
+    <div class="canvas-area" id="canvas-area" ondragover="event.preventDefault()" ondrop="dropOnCanvas(event)">
+
+      <div class="canvas-hint">
+        &#x2630; Kéo &amp; thả widget từ bảng trái · Nhấn &#x2699; để cài đặt · Kéo tay nắm &#x22EE;&#x22EE; để sắp xếp lại
+      </div>
+
+      <div class="canvas-grid" id="canvas-grid">
+
+        <!-- Row 1: 4 KPI widgets -->
+        <div class="canvas-row canvas-row-4" id="row-1">
+
+          <!-- KPI: Total customers -->
+          <div class="widget-card" draggable="true" onclick="selectWidget(this,'Tổng khách hàng')" ondragstart="dragStart(event)" ondragover="event.preventDefault()" ondrop="dropOnWidget(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Tổng khách hàng</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Tổng khách hàng')" title="Cài đặt">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)" title="Xóa">&#x2715;</button>
+              </div>
+            </div>
+            <div class="widget-body">
+              <div class="kpi-widget-value">24,817</div>
+              <div class="kpi-widget-label">Tất cả BU · Tháng 6/2026</div>
+              <div class="kpi-widget-delta delta-up">&#x25B2; 847 so tháng trước</div>
+              <div class="sparkline-area">
+                <svg class="sparkline-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
+                  <polyline points="0,35 12,30 24,28 36,20 48,22 60,15 72,12 84,8 100,5"
+                    fill="none" stroke="#0066cc" stroke-width="2" stroke-linecap="round"/>
+                  <polygon points="0,35 12,30 24,28 36,20 48,22 60,15 72,12 84,8 100,5 100,40 0,40"
+                    fill="rgba(0,102,204,0.08)"/>
+                </svg>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+          <!-- KPI: New this month -->
+          <div class="widget-card" draggable="true" onclick="selectWidget(this,'Khách mới tháng này')" ondragstart="dragStart(event)" ondragover="event.preventDefault()" ondrop="dropOnWidget(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Khách mới tháng này</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Khách mới tháng này')">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+              </div>
+            </div>
+            <div class="widget-body">
+              <div class="kpi-widget-value" style="color:var(--success);">+1,284</div>
+              <div class="kpi-widget-label">Tháng 6/2026</div>
+              <div class="kpi-widget-delta delta-up">&#x25B2; 18.3% vs. tháng 5</div>
+              <div class="sparkline-area">
+                <svg class="sparkline-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
+                  <polyline points="0,30 12,26 24,32 36,18 48,14 60,20 72,10 84,6 100,8"
+                    fill="none" stroke="#30d158" stroke-width="2"/>
+                  <polygon points="0,30 12,26 24,32 36,18 48,14 60,20 72,10 84,6 100,8 100,40 0,40"
+                    fill="rgba(48,209,88,0.08)"/>
+                </svg>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+          <!-- KPI: Avg health score -->
+          <div class="widget-card" draggable="true" onclick="selectWidget(this,'Điểm sức khỏe TB')" ondragstart="dragStart(event)" ondragover="event.preventDefault()" ondrop="dropOnWidget(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Điểm sức khỏe TB</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Điểm sức khỏe TB')">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+              </div>
+            </div>
+            <div class="widget-body">
+              <div class="kpi-widget-value" style="color:#f5a623;">67.4</div>
+              <div class="kpi-widget-label">/ 100 · Tất cả khách hàng</div>
+              <div class="kpi-widget-delta delta-down">&#x25BC; 1.2 so tháng trước</div>
+              <div class="sparkline-area">
+                <svg class="sparkline-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
+                  <polyline points="0,10 12,12 24,8 36,14 48,16 60,18 72,20 84,22 100,24"
+                    fill="none" stroke="#f5a623" stroke-width="2"/>
+                  <polygon points="0,10 12,12 24,8 36,14 48,16 60,18 72,20 84,22 100,24 100,40 0,40"
+                    fill="rgba(245,166,35,0.08)"/>
+                </svg>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+          <!-- KPI: Campaign ROI -->
+          <div class="widget-card" draggable="true" onclick="selectWidget(this,'Campaign ROI')" ondragstart="dragStart(event)" ondragover="event.preventDefault()" ondrop="dropOnWidget(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Campaign ROI</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Campaign ROI')">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+              </div>
+            </div>
+            <div class="widget-body">
+              <div class="kpi-widget-value" style="color:#6c5ce7;">312%</div>
+              <div class="kpi-widget-label">Tháng 6 · Email + SMS</div>
+              <div class="kpi-widget-delta delta-up">&#x25B2; +34% vs. tháng 5</div>
+              <div class="sparkline-area">
+                <svg class="sparkline-svg" viewBox="0 0 100 40" preserveAspectRatio="none">
+                  <polyline points="0,32 12,28 24,22 36,26 48,18 60,14 72,12 84,8 100,6"
+                    fill="none" stroke="#6c5ce7" stroke-width="2"/>
+                  <polygon points="0,32 12,28 24,22 36,26 48,18 60,14 72,12 84,8 100,6 100,40 0,40"
+                    fill="rgba(108,92,231,0.08)"/>
+                </svg>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+        </div><!-- end row 1 -->
+
+        <!-- Row 2: Revenue line chart + BU donut -->
+        <div class="canvas-row canvas-row-3" id="row-2">
+
+          <!-- Revenue Trend Line Chart -->
+          <div class="widget-card" style="grid-column: 1;" draggable="true" onclick="selectWidget(this,'Xu hướng doanh thu')" ondragstart="dragStart(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Xu hướng doanh thu</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Xu hướng doanh thu')">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+              </div>
+            </div>
+            <div class="chart-widget">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                <div style="font-size:20px;font-weight:700;color:var(--ink-100);">4.82 tỷ</div>
+                <div style="font-size:12px;"><span class="badge-sm badge-success">&#x25B2; 12.4%</span></div>
+              </div>
+              <div class="chart-area">
+                <svg class="chart-svg" viewBox="0 0 400 140" preserveAspectRatio="none">
+                  <!-- Grid lines -->
+                  <line x1="0" y1="20" x2="400" y2="20" stroke="#f0f0f0" stroke-width="1"/>
+                  <line x1="0" y1="55" x2="400" y2="55" stroke="#f0f0f0" stroke-width="1"/>
+                  <line x1="0" y1="90" x2="400" y2="90" stroke="#f0f0f0" stroke-width="1"/>
+                  <line x1="0" y1="125" x2="400" y2="125" stroke="#f0f0f0" stroke-width="1"/>
+                  <!-- Ngọc Dung line -->
+                  <polyline points="0,110 50,95 100,85 150,78 200,70 250,60 300,52 350,44 400,38"
+                    fill="none" stroke="#e84393" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <polygon points="0,110 50,95 100,85 150,78 200,70 250,60 300,52 350,44 400,38 400,130 0,130"
+                    fill="rgba(232,67,147,0.06)"/>
+                  <!-- Zema line -->
+                  <polyline points="0,120 50,115 100,108 150,100 200,95 250,88 300,80 350,75 400,68"
+                    fill="none" stroke="#6c5ce7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Ocany line -->
+                  <polyline points="0,128 50,122 100,118 150,114 200,110 250,106 300,100 350,94 400,88"
+                    fill="none" stroke="#00b894" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Dots on Ngọc Dung -->
+                  <circle cx="400" cy="38" r="4" fill="#e84393"/>
+                  <circle cx="400" cy="68" r="4" fill="#6c5ce7"/>
+                  <circle cx="400" cy="88" r="4" fill="#00b894"/>
+                </svg>
+              </div>
+              <div class="chart-label-x">
+                <span>T1</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>T8</span><span>T6/26</span>
+              </div>
+              <div class="chart-legend">
+                <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#e84393;"></div>Ngọc Dung</div>
+                <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#6c5ce7;"></div>Zema</div>
+                <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#00b894;"></div>Ocany</div>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+          <!-- BU Distribution Donut -->
+          <div class="widget-card" draggable="true" onclick="selectWidget(this,'Phân bổ theo BU')" ondragstart="dragStart(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Phân bổ theo BU</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Phân bổ theo BU')">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+              </div>
+            </div>
+            <div class="widget-body">
+              <div class="donut-wrap">
+                <div class="donut-svg-wrap">
+                  <svg width="100" height="100" viewBox="0 0 100 100">
+                    <!-- Background circle -->
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#f0f0f0" stroke-width="14"/>
+                    <!-- Ngọc Dung: 48.2% = 302.7 deg -->
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#e84393" stroke-width="14"
+                      stroke-dasharray="114.9 238.7" stroke-dashoffset="59.7" transform="rotate(-90 50 50)"/>
+                    <!-- Zema: 31.5% = 197.6 deg -->
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#6c5ce7" stroke-width="14"
+                      stroke-dasharray="75.1 278.5" stroke-dashoffset="-55.2" transform="rotate(-90 50 50)"/>
+                    <!-- Ocany: 20.3% = 127.5 deg -->
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#00b894" stroke-width="14"
+                      stroke-dasharray="48.4 305.2" stroke-dashoffset="-130.3" transform="rotate(-90 50 50)"/>
+                  </svg>
+                  <div class="donut-center">
+                    <div class="donut-center-value">3</div>
+                    <div class="donut-center-label">BU</div>
+                  </div>
+                </div>
+                <div class="donut-legend">
+                  <div class="donut-legend-item">
+                    <div class="donut-legend-left"><div class="donut-legend-dot" style="background:#e84393;"></div><span>Ngọc Dung</span></div>
+                    <span class="donut-pct">48.2%</span>
+                  </div>
+                  <div class="donut-legend-item">
+                    <div class="donut-legend-left"><div class="donut-legend-dot" style="background:#6c5ce7;"></div><span>Zema</span></div>
+                    <span class="donut-pct">31.5%</span>
+                  </div>
+                  <div class="donut-legend-item">
+                    <div class="donut-legend-left"><div class="donut-legend-dot" style="background:#00b894;"></div><span>Ocany</span></div>
+                    <span class="donut-pct">20.3%</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Mini bar comparison -->
+              <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+                <div style="font-size:11px;font-weight:600;color:var(--ink-48);text-transform:uppercase;letter-spacing:0.05em;">Doanh thu tháng này</div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#e84393;">Ngọc Dung</span><strong>2.32 tỷ</strong></div>
+                  <div style="height:5px;background:var(--ink-08);border-radius:3px;"><div style="width:70%;height:100%;background:#e84393;border-radius:3px;"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#6c5ce7;">Zema</span><strong>1.52 tỷ</strong></div>
+                  <div style="height:5px;background:var(--ink-08);border-radius:3px;"><div style="width:46%;height:100%;background:#6c5ce7;border-radius:3px;"></div></div>
+                </div>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:#00b894;">Ocany</span><strong>0.98 tỷ</strong></div>
+                  <div style="height:5px;background:var(--ink-08);border-radius:3px;"><div style="width:30%;height:100%;background:#00b894;border-radius:3px;"></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+        </div><!-- end row 2 -->
+
+        <!-- Row 3: Top Segments + Recent Campaigns -->
+        <div class="canvas-row canvas-row-2" id="row-3">
+
+          <!-- Top Segments table -->
+          <div class="widget-card" draggable="true" onclick="selectWidget(this,'Top phân khúc')" ondragstart="dragStart(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Top phân khúc</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Top phân khúc')">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+              </div>
+            </div>
+            <div class="widget-body" style="padding-top:0;">
+              <table class="table-widget" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th>Phân khúc</th>
+                    <th style="text-align:right;">KH</th>
+                    <th style="text-align:right;">% tổng</th>
+                    <th>Sức khỏe TB</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><div style="font-weight:500;font-size:12px;">VIP Diamond</div><span class="badge-sm badge-nd">Ngọc Dung</span></td>
+                    <td style="text-align:right;font-weight:600;">1,284</td>
+                    <td style="text-align:right;color:var(--ink-48);">5.2%</td>
+                    <td><span style="color:var(--success);font-weight:600;">87</span></td>
+                  </tr>
+                  <tr>
+                    <td><div style="font-weight:500;font-size:12px;">Khách thân thiết</div><span class="badge-sm badge-ze">Zema</span></td>
+                    <td style="text-align:right;font-weight:600;">3,812</td>
+                    <td style="text-align:right;color:var(--ink-48);">15.4%</td>
+                    <td><span style="color:var(--success);font-weight:600;">74</span></td>
+                  </tr>
+                  <tr>
+                    <td><div style="font-weight:500;font-size:12px;">Mới 30 ngày</div><span class="badge-sm badge-oc">Ocany</span></td>
+                    <td style="text-align:right;font-weight:600;">2,140</td>
+                    <td style="text-align:right;color:var(--ink-48);">8.6%</td>
+                    <td><span style="color:var(--warning);font-weight:600;">52</span></td>
+                  </tr>
+                  <tr>
+                    <td><div style="font-weight:500;font-size:12px;">Có nguy cơ rời</div><span class="badge-sm badge-nd">Ngọc Dung</span></td>
+                    <td style="text-align:right;font-weight:600;">847</td>
+                    <td style="text-align:right;color:var(--ink-48);">3.4%</td>
+                    <td><span style="color:var(--danger);font-weight:600;">31</span></td>
+                  </tr>
+                  <tr>
+                    <td><div style="font-weight:500;font-size:12px;">RFM Champions</div><span class="badge-sm badge-ze">Zema</span></td>
+                    <td style="text-align:right;font-weight:600;">4,521</td>
+                    <td style="text-align:right;color:var(--ink-48);">18.2%</td>
+                    <td><span style="color:var(--success);font-weight:600;">91</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin-top:8px;text-align:right;">
+                <a href="ui-segment-list.html" style="font-size:12px;color:var(--brand-primary);text-decoration:none;">Xem tất cả →</a>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+          <!-- Recent Campaigns table -->
+          <div class="widget-card" draggable="true" onclick="selectWidget(this,'Chiến dịch gần đây')" ondragstart="dragStart(event)">
+            <div class="widget-header">
+              <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+              <span class="widget-title">Chiến dịch gần đây</span>
+              <div class="widget-actions">
+                <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('Chiến dịch gần đây')">&#x2699;</button>
+                <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+              </div>
+            </div>
+            <div class="widget-body" style="padding-top:0;">
+              <table class="table-widget" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th>Chiến dịch</th>
+                    <th style="text-align:right;">Gửi</th>
+                    <th style="text-align:right;">Mở</th>
+                    <th style="text-align:right;">CTR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div style="font-weight:500;font-size:12px;">Flash Sale T6 Zema</div>
+                      <div style="font-size:10px;color:var(--ink-48);">Email · 14/06</div>
+                    </td>
+                    <td style="text-align:right;font-weight:600;">8,241</td>
+                    <td style="text-align:right;">42.3%</td>
+                    <td style="text-align:right;color:var(--success);font-weight:600;">8.7%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="font-weight:500;font-size:12px;">Re-engage VIP ND</div>
+                      <div style="font-size:10px;color:var(--ink-48);">SMS · 12/06</div>
+                    </td>
+                    <td style="text-align:right;font-weight:600;">1,847</td>
+                    <td style="text-align:right;">—</td>
+                    <td style="text-align:right;color:var(--success);font-weight:600;">6.2%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="font-weight:500;font-size:12px;">Chào mừng Ocany</div>
+                      <div style="font-size:10px;color:var(--ink-48);">Email + Push · 10/06</div>
+                    </td>
+                    <td style="text-align:right;font-weight:600;">2,140</td>
+                    <td style="text-align:right;">38.9%</td>
+                    <td style="text-align:right;color:var(--warning);font-weight:600;">4.1%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="font-weight:500;font-size:12px;">Giảm giá sinh nhật</div>
+                      <div style="font-size:10px;color:var(--ink-48);">Zalo · 08/06</div>
+                    </td>
+                    <td style="text-align:right;font-weight:600;">3,512</td>
+                    <td style="text-align:right;">61.4%</td>
+                    <td style="text-align:right;color:var(--success);font-weight:600;">12.3%</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div style="font-weight:500;font-size:12px;">Chăm sóc At-Risk</div>
+                      <div style="font-size:10px;color:var(--ink-48);">Email · 05/06</div>
+                    </td>
+                    <td style="text-align:right;font-weight:600;">847</td>
+                    <td style="text-align:right;">29.1%</td>
+                    <td style="text-align:right;color:var(--danger);font-weight:600;">1.8%</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin-top:8px;text-align:right;">
+                <a href="ui-campaign-list.html" style="font-size:12px;color:var(--brand-primary);text-decoration:none;">Xem tất cả →</a>
+              </div>
+            </div>
+            <div class="resize-handle">&#x2921;</div>
+          </div>
+
+        </div><!-- end row 3 -->
+
+        <!-- Drop zone to add new row -->
+        <div class="add-row-btn" onclick="addNewRow()">
+          &#x2B; Thêm hàng mới
+        </div>
+
+      </div><!-- end canvas-grid -->
+    </div><!-- end canvas-area -->
+
+    <!-- Widget Settings Panel -->
+    <div class="settings-panel hidden" id="settings-panel">
+      <div class="settings-header">
+        <div class="settings-title" id="settings-widget-name">Cài đặt Widget</div>
+        <button class="palette-close" onclick="toggleSettings()">&#x2715;</button>
+      </div>
+      <div class="settings-body">
+        <div class="settings-group">
+          <div class="settings-label">Tiêu đề</div>
+          <input class="settings-input" type="text" id="settings-title-input" value="Tổng khách hàng">
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">Nguồn dữ liệu</div>
+          <select class="settings-select">
+            <option>Khách hàng — tất cả</option>
+            <option>Khách hàng — Ngọc Dung</option>
+            <option>Khách hàng — Zema</option>
+            <option>Khách hàng — Ocany</option>
+            <option>Chiến dịch</option>
+            <option>Phân khúc</option>
+            <option>Leads</option>
+          </select>
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">Phạm vi thời gian</div>
+          <select class="settings-select">
+            <option>Tháng này</option>
+            <option>7 ngày qua</option>
+            <option>30 ngày qua</option>
+            <option>Quý này</option>
+            <option>Năm nay</option>
+            <option>Tùy chỉnh</option>
+          </select>
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">Lọc theo BU</div>
+          <select class="settings-select">
+            <option>Tất cả BU</option>
+            <option>Ngọc Dung</option>
+            <option>Zema</option>
+            <option>Ocany</option>
+          </select>
+        </div>
+        <div class="settings-divider"></div>
+        <div class="settings-group">
+          <div class="settings-label">Loại hiển thị</div>
+          <select class="settings-select">
+            <option>Số đơn (KPI)</option>
+            <option>Xu hướng (với sparkline)</option>
+            <option>Gauge</option>
+            <option>So sánh kỳ trước</option>
+          </select>
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">Màu nền</div>
+          <div style="display:flex;gap:8px;margin-top:2px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:white;border:2px solid var(--brand-primary);cursor:pointer;" title="Trắng"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#e8f2fc;border:2px solid var(--ink-08);cursor:pointer;" title="Xanh nhạt"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#e6f9ec;border:2px solid var(--ink-08);cursor:pointer;" title="Xanh lá nhạt"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#fce4f1;border:2px solid var(--ink-08);cursor:pointer;" title="Hồng nhạt"></div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#ede9fd;border:2px solid var(--ink-08);cursor:pointer;" title="Tím nhạt"></div>
+          </div>
+        </div>
+        <div class="settings-divider"></div>
+        <button class="btn btn-primary" style="width:100%;" onclick="applySettings()">&#x2714; Áp dụng</button>
+        <button class="btn btn-secondary" style="width:100%;color:var(--danger-ink);border-color:var(--danger-subtle);" onclick="deleteWidget()">&#x1F5D1; Xóa widget này</button>
+      </div>
+    </div>
+
+  </div><!-- end builder-layout -->
+
+</div><!-- end content -->
+
+<!-- Save Toast -->
+<div id="save-toast" style="position:fixed;bottom:24px;right:24px;background:#1d1d1f;color:#fff;padding:12px 20px;border-radius:var(--radius-md);font-size:14px;font-weight:500;display:none;z-index:9999;box-shadow:var(--shadow-md);transition:opacity 0.3s;">
+  &#x2714; Dashboard đã lưu thành công
+</div>
+
+<script>
+// Palette toggle
+let paletteOpen = true;
+function togglePalette() {
+  paletteOpen = !paletteOpen;
+  const p = document.getElementById('widget-palette');
+  p.classList.toggle('collapsed', !paletteOpen);
+}
+
+// Settings panel toggle
+let settingsOpen = false;
+function toggleSettings() {
+  settingsOpen = !settingsOpen;
+  document.getElementById('settings-panel').classList.toggle('hidden', !settingsOpen);
+}
+
+// Open settings for a specific widget
+function openSettings(name) {
+  settingsOpen = true;
+  document.getElementById('settings-panel').classList.remove('hidden');
+  document.getElementById('settings-widget-name').textContent = name;
+  document.getElementById('settings-title-input').value = name;
+}
+
+// Select widget
+let selectedWidget = null;
+function selectWidget(el, name) {
+  if (selectedWidget) selectedWidget.classList.remove('selected');
+  selectedWidget = el;
+  el.classList.add('selected');
+  openSettings(name);
+}
+
+// Remove widget
+function removeWidget(btn) {
+  const card = btn.closest('.widget-card');
+  if (confirm('Xóa widget "' + card.querySelector('.widget-title').textContent + '"?')) {
+    card.style.transition = 'opacity 0.2s, transform 0.2s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.95)';
+    setTimeout(() => card.remove(), 200);
+  }
+}
+
+// Layout
+function setLayout(cols, btn) {
+  document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Dashboard switch
+function switchDash(btn, name) {
+  document.querySelectorAll('.dashboard-pill').forEach(b => b.classList.remove('active-dash'));
+  btn.classList.add('active-dash');
+  document.getElementById('dash-name').value = name;
+}
+
+// New dashboard
+function newDash() {
+  const name = prompt('Tên dashboard mới:', 'Dashboard mới');
+  if (name) {
+    const toolbar = document.querySelector('.builder-toolbar');
+    const newPill = document.createElement('button');
+    newPill.className = 'dashboard-pill';
+    newPill.textContent = '▣ ' + name;
+    newPill.onclick = () => switchDash(newPill, name);
+    toolbar.insertBefore(newPill, toolbar.querySelector('.toolbar-sep:nth-of-type(2)'));
+    switchDash(newPill, name);
+  }
+}
+
+// Save
+function saveDash() {
+  const toast = document.getElementById('save-toast');
+  toast.style.display = 'block';
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.style.display='none', 300); }, 2500);
+}
+
+// Share
+function shareDialog() {
+  alert('Tạo liên kết chia sẻ dashboard:\nhttps://cdp.theadvance.vn/dashboard/share/mkt-overview-abc123\n\nLiên kết đã sao chép vào clipboard!');
+}
+
+// Add new row
+function addNewRow() {
+  const grid = document.getElementById('canvas-grid');
+  const dropBtn = grid.querySelector('.add-row-btn');
+  const row = document.createElement('div');
+  row.className = 'canvas-row canvas-row-2';
+  row.innerHTML = `
+    <div class="drop-zone" ondragover="event.preventDefault()" ondrop="dropOnZone(event,this)">&#x2B; Kéo widget vào đây</div>
+    <div class="drop-zone" ondragover="event.preventDefault()" ondrop="dropOnZone(event,this)">&#x2B; Kéo widget vào đây</div>
+  `;
+  grid.insertBefore(row, dropBtn);
+}
+
+// Drag & drop (simplified visual)
+let draggingEl = null;
+let draggingType = null;
+
+function dragWidget(e, type) {
+  draggingType = type;
+  draggingEl = null;
+  e.dataTransfer.setData('widget-type', type);
+}
+
+function dragStart(e) {
+  draggingEl = e.currentTarget;
+  draggingEl.classList.add('dragging');
+  e.dataTransfer.setData('moving', '1');
+}
+
+document.addEventListener('dragend', () => {
+  if (draggingEl) { draggingEl.classList.remove('dragging'); draggingEl = null; }
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+});
+
+function dropOnCanvas(e) {
+  const type = e.dataTransfer.getData('widget-type');
+  if (!type) return;
+  const grid = document.getElementById('canvas-grid');
+  const addBtn = grid.querySelector('.add-row-btn');
+  const row = document.createElement('div');
+  row.className = 'canvas-row canvas-row-2';
+  const card = makeNewWidget(type);
+  row.appendChild(card);
+  grid.insertBefore(row, addBtn);
+}
+
+function dropOnZone(e, zone) {
+  e.stopPropagation();
+  const type = e.dataTransfer.getData('widget-type');
+  if (!type) return;
+  const card = makeNewWidget(type);
+  zone.replaceWith(card);
+}
+
+function dropOnWidget(e) {
+  e.stopPropagation();
+  const type = e.dataTransfer.getData('widget-type');
+  if (!type) return;
+  const target = e.currentTarget;
+  const card = makeNewWidget(type);
+  target.parentNode.insertBefore(card, target.nextSibling);
+}
+
+function makeNewWidget(type) {
+  const labels = {
+    'kpi-number': 'Số đơn', 'kpi-trend': 'Xu hướng', 'gauge': 'Gauge',
+    'line-chart': 'Biểu đồ Line', 'bar-chart': 'Biểu đồ Bar', 'donut': 'Donut',
+    'heatmap': 'Heatmap', 'customer-table': 'DS Khách hàng', 'segment-table': 'DS Phân khúc',
+    'campaign-table': 'DS Chiến dịch', 'lead-table': 'DS Leads',
+    'timeline': 'Timeline', 'health-matrix': 'Health Matrix', 'rfm-grid': 'RFM Grid',
+    'text-note': 'Ghi chú', 'conversion': 'Tỉ lệ chuyển đổi'
+  };
+  const name = labels[type] || type;
+  const card = document.createElement('div');
+  card.className = 'widget-card';
+  card.draggable = true;
+  card.innerHTML = `
+    <div class="widget-header">
+      <span class="widget-drag-handle">&#x22EE;&#x22EE;</span>
+      <span class="widget-title">${name}</span>
+      <div class="widget-actions">
+        <button class="widget-action-btn" onclick="event.stopPropagation();openSettings('${name}')">&#x2699;</button>
+        <button class="widget-action-btn remove" onclick="event.stopPropagation();removeWidget(this)">&#x2715;</button>
+      </div>
+    </div>
+    <div class="widget-body">
+      <div style="height:80px;display:flex;align-items:center;justify-content:center;color:var(--ink-32);font-size:13px;border:1.5px dashed var(--ink-16);border-radius:var(--radius-md);">
+        <span>&#x2B; Cấu hình nguồn dữ liệu</span>
+      </div>
+    </div>
+    <div class="resize-handle">&#x2921;</div>
+  `;
+  card.onclick = () => selectWidget(card, name);
+  card.ondragstart = (e) => dragStart(e);
+  return card;
+}
+
+// Filter palette widgets
+function filterWidgets(q) {
+  document.querySelectorAll('.palette-widget').forEach(w => {
+    const label = w.querySelector('.palette-widget-label').textContent.toLowerCase();
+    w.style.display = !q || label.includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+// Apply settings
+function applySettings() {
+  if (selectedWidget) {
+    const newTitle = document.getElementById('settings-title-input').value;
+    selectedWidget.querySelector('.widget-title').textContent = newTitle;
+  }
+  document.getElementById('settings-panel').classList.add('hidden');
+  settingsOpen = false;
+}
+
+function deleteWidget() {
+  if (selectedWidget && confirm('Xóa widget này?')) {
+    selectedWidget.remove();
+    selectedWidget = null;
+    document.getElementById('settings-panel').classList.add('hidden');
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — RFM Dashboard</title>
+<style>
+/* ── Design Tokens ── */
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  /* RFM segment colors */
+  --rfm-champions: #1a7a31;
+  --rfm-loyal: #0066cc;
+  --rfm-potential: #6c5ce7;
+  --rfm-new: #00b894;
+  --rfm-promising: #0a84ff;
+  --rfm-need-attention: #f5a623;
+  --rfm-about-to-sleep: #ff9500;
+  --rfm-at-risk: #ff6b35;
+  --rfm-cannot-lose: #e84393;
+  --rfm-hibernating: #a0a0a0;
+  --rfm-lost: #555555;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-100);
+  background: var(--ink-02);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ SHELL ══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+}
+.topnav-brand {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  color: var(--ink-100); text-decoration: none; white-space: nowrap;
+}
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search {
+  width: 320px; height: 32px; border-radius: var(--radius-pill);
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text);
+}
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--brand-primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+}
+.topnav-bu-switch {
+  font-size: 12px; color: var(--ink-60);
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer;
+}
+.hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 32px; height: 32px; position: relative; flex-shrink: 0;
+}
+.hamburger span {
+  display: block; width: 18px; height: 2px; background: var(--ink-80);
+  border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s;
+}
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); z-index: 99;
+}
+.sidebar-overlay.show { display: block; }
+.sidebar.open { transform: translateX(0) !important; }
+.sidebar {
+  position: fixed; top: var(--nav-h); left: 0;
+  width: var(--sidebar-w); height: calc(100vh - var(--nav-h));
+  background: var(--ink-00); border-right: 1px solid var(--ink-08);
+  overflow-y: auto; overflow-x: hidden; z-index: 100;
+  transition: width 0.25s ease;
+}
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-item.active { border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--ink-08); background: var(--ink-00);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-48); font-size: 14px; box-shadow: var(--shadow-sm); transition: all 0.15s;
+}
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.content { transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px; font-size: 14px; color: var(--ink-60);
+  cursor: pointer; transition: all 0.12s; text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active {
+  background: var(--brand-primary-subtle); color: var(--brand-primary);
+  font-weight: 500; border-left-color: var(--brand-primary);
+}
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge {
+  margin-left: auto; font-size: 11px; font-weight: 600;
+  background: var(--danger-subtle); color: var(--danger);
+  padding: 1px 7px; border-radius: var(--radius-pill);
+}
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); }
+
+/* ══ BUTTONS ══ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: var(--font-text); font-size: 13px; font-weight: 500;
+  padding: 7px 16px; border-radius: var(--radius-md); border: none;
+  cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap;
+}
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+
+/* ══ PAGE HEADER ══ */
+.page-header {
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08);
+  padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.page-header-left { display: flex; flex-direction: column; gap: 4px; }
+.breadcrumb { font-size: 13px; color: var(--ink-48); display: flex; align-items: center; gap: 6px; }
+.breadcrumb a { color: var(--brand-primary); text-decoration: none; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+
+/* ══ FILTER BAR ══ */
+.filter-bar {
+  padding: 14px 32px; background: var(--ink-00); border-bottom: 1px solid var(--ink-08);
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.filter-label { font-size: 12px; font-weight: 600; color: var(--ink-48); }
+.filter-select {
+  height: 34px; border-radius: var(--radius-md); border: 1px solid var(--ink-08);
+  background: var(--ink-00); padding: 0 28px 0 10px; font-size: 13px;
+  color: var(--ink-80); font-family: var(--font-text); cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center;
+}
+.filter-select:focus { outline: none; border-color: var(--brand-primary); }
+.filter-spacer { flex: 1; }
+.date-range {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--ink-60);
+}
+.date-btn {
+  padding: 5px 12px; border-radius: var(--radius-pill); border: 1px solid var(--ink-08);
+  background: var(--ink-00); font-size: 12px; font-weight: 500; cursor: pointer;
+  color: var(--ink-60); transition: all 0.12s; font-family: var(--font-text);
+}
+.date-btn.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+.date-btn:hover:not(.active) { background: var(--ink-02); }
+
+/* ══ PAGE BODY ══ */
+.page-body { padding: 24px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+/* ══ KPI STRIP ══ */
+.kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+.kpi-card {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); padding: 20px;
+}
+.kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); margin-bottom: 6px; }
+.kpi-value { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--ink-100); letter-spacing: -0.5px; line-height: 1; }
+.kpi-sub { font-size: 12px; color: var(--ink-48); margin-top: 6px; }
+.kpi-trend { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 600; margin-top: 4px; }
+.kpi-up { color: var(--success-ink); }
+.kpi-down { color: var(--danger-ink); }
+
+/* ══ MAIN GRID ══ */
+.main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start; }
+
+/* ══ RFM MATRIX ══ */
+.matrix-card {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.matrix-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--ink-04);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.matrix-title { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+.matrix-subtitle { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.matrix-body { padding: 20px; }
+
+/* Axis labels */
+.matrix-wrapper { display: flex; gap: 0; }
+.matrix-y-axis {
+  display: flex; flex-direction: column-reverse; justify-content: space-around;
+  width: 28px; flex-shrink: 0; margin-bottom: 36px;
+}
+.matrix-y-label {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--ink-32); text-align: center;
+  height: 20%;
+  display: flex; align-items: center; justify-content: center;
+}
+.matrix-inner { flex: 1; }
+.matrix-axis-title {
+  font-size: 11px; font-weight: 700; color: var(--ink-32);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  text-align: center; margin-bottom: 4px;
+}
+.matrix-y-title {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  transform: rotate(180deg);
+  font-size: 11px; font-weight: 700; color: var(--ink-32);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  display: flex; align-items: center; justify-content: center;
+  width: 14px; margin-right: 4px; margin-bottom: 36px;
+}
+
+/* Grid */
+.rfm-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 3px;
+}
+.rfm-cell {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  cursor: pointer;
+  transition: transform 0.12s, box-shadow 0.12s;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  position: relative;
+  border: 2px solid transparent;
+}
+.rfm-cell:hover {
+  transform: scale(1.06);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 2;
+}
+.rfm-cell.selected {
+  border-color: var(--ink-100);
+  transform: scale(1.06);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 3;
+}
+.rfm-cell-name {
+  font-size: 9px; font-weight: 700; line-height: 1.2;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.rfm-cell-count {
+  font-size: 14px; font-weight: 700; line-height: 1; margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.rfm-cell-pct { font-size: 9px; font-weight: 500; margin-top: 2px; opacity: 0.8; }
+
+/* x-axis labels */
+.matrix-x-axis {
+  display: flex; margin-top: 6px; padding-left: 0;
+}
+.matrix-x-label {
+  flex: 1; text-align: center;
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--ink-32);
+}
+
+/* Legend */
+.rfm-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--ink-04); }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink-60); }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ══ RIGHT PANEL ══ */
+.right-panel { display: flex; flex-direction: column; gap: 16px; }
+
+/* Drilldown panel */
+.drilldown-panel {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.drilldown-header {
+  padding: 14px 16px; border-bottom: 1px solid var(--ink-04);
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.drilldown-seg-name { font-size: 14px; font-weight: 700; }
+.drilldown-seg-sub { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.drilldown-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--ink-48); font-size: 18px; padding: 0; line-height: 1;
+  flex-shrink: 0;
+}
+.drilldown-close:hover { color: var(--ink-100); }
+.drilldown-body { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+.drilldown-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.drilldown-kpi {
+  background: var(--ink-02); border-radius: var(--radius-md);
+  padding: 12px; text-align: center;
+}
+.drilldown-kpi-value { font-size: 20px; font-weight: 700; color: var(--ink-100); letter-spacing: -0.5px; }
+.drilldown-kpi-label { font-size: 11px; color: var(--ink-48); margin-top: 2px; }
+
+.drilldown-customers { display: flex; flex-direction: column; gap: 2px; }
+.drilldown-cust-title { font-size: 12px; font-weight: 600; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+.drilldown-cust-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--radius-md);
+  transition: background 0.12s; cursor: pointer;
+}
+.drilldown-cust-row:hover { background: var(--ink-02); }
+.cust-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.cust-name { font-size: 13px; font-weight: 600; color: var(--ink-100); }
+.cust-meta { font-size: 11px; color: var(--ink-48); }
+.cust-score { font-size: 13px; font-weight: 700; color: var(--brand-primary); margin-left: auto; flex-shrink: 0; }
+
+.drilldown-actions { display: flex; gap: 8px; }
+
+/* Score bars (R, F, M avg) */
+.score-bars { display: flex; flex-direction: column; gap: 10px; }
+.score-bar-row { display: flex; align-items: center; gap: 10px; }
+.score-bar-label { font-size: 12px; font-weight: 700; color: var(--ink-48); width: 14px; text-align: center; }
+.score-bar-bg { flex: 1; height: 8px; background: var(--ink-04); border-radius: 4px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.score-bar-val { font-size: 12px; font-weight: 700; color: var(--ink-80); min-width: 24px; text-align: right; }
+
+/* ══ CHARTS ROW ══ */
+.charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.chart-card {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.chart-header { padding: 14px 20px; border-bottom: 1px solid var(--ink-04); }
+.chart-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.chart-subtitle { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.chart-body { padding: 20px; }
+
+/* Bar chart (distribution) */
+.bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 120px; }
+.bar-chart-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar-chart-bar {
+  width: 100%; border-radius: 4px 4px 0 0;
+  transition: height 0.4s ease;
+  min-height: 4px;
+}
+.bar-chart-label { font-size: 9px; color: var(--ink-48); text-align: center; line-height: 1.2; word-break: break-word; font-weight: 600; }
+.bar-chart-val { font-size: 10px; font-weight: 700; color: var(--ink-60); }
+
+/* Migration flow (Sankey-style simplified) */
+.migration-flow { display: flex; flex-direction: column; gap: 8px; }
+.migration-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.migration-from { min-width: 110px; font-weight: 600; color: var(--ink-80); }
+.migration-arrow { color: var(--ink-32); font-size: 14px; }
+.migration-to { flex: 1; color: var(--ink-60); }
+.migration-count {
+  font-size: 11px; font-weight: 700; padding: 2px 8px;
+  border-radius: var(--radius-pill); min-width: 44px; text-align: center;
+}
+.mig-up { background: var(--success-subtle); color: var(--success-ink); }
+.mig-down { background: var(--danger-subtle); color: var(--danger-ink); }
+.mig-neutral { background: var(--ink-04); color: var(--ink-60); }
+
+/* ══ BADGE ══ */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; padding: 3px 10px;
+  border-radius: var(--radius-pill); white-space: nowrap;
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1199px) {
+  .kpi-strip { grid-template-columns: repeat(3, 1fr); }
+  .main-grid { grid-template-columns: 1fr; }
+  .drilldown-panel { order: -1; }
+  .charts-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .page-body { padding: 20px 24px; }
+  .page-header { padding: 16px 24px; }
+  .filter-bar { padding: 12px 24px; }
+  .topnav-search { width: 260px; }
+}
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; gap: 8px; }
+  .topnav-search { width: 100%; min-width: 0; flex: 1; height: 30px; font-size: 12px; }
+  .topnav-brand { font-size: 15px; }
+  .topnav-bu-switch { display: none; }
+  .topnav-right { gap: 8px; }
+  .page-header { padding: 16px; flex-direction: column; align-items: flex-start; }
+  .page-body { padding: 16px; }
+  .filter-bar { padding: 12px 16px; flex-wrap: wrap; }
+  .kpi-strip { grid-template-columns: 1fr 1fr; }
+  .rfm-cell-name { font-size: 7px; }
+  .rfm-cell-count { font-size: 11px; }
+  .rfm-cell-pct { display: none; }
+}
+@media (max-width: 479px) {
+  .kpi-strip { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Holding (All BU)</span>
+    <span style="font-size:12px;color:var(--ink-48);">Lê Management</span>
+    <div class="topnav-avatar">LM</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item active" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()" title="Thu gọn menu">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="breadcrumb">
+        <a href="#">Analytics</a> <span>/</span>
+        <span style="color:var(--ink-100);font-weight:500;">RFM Dashboard</span>
+      </div>
+      <div class="page-title">Phân tích RFM</div>
+      <div class="page-subtitle">Recency · Frequency · Monetary — Ma trận phân khúc khách hàng 5×5</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="exportRFM()">&#x2B07; Xuất báo cáo</button>
+      <button class="btn btn-secondary" onclick="scheduleRFM()">&#x23F1; Lên lịch chạy lại</button>
+      <button class="btn btn-primary" onclick="runRFM()">&#x25B6; Chạy RFM ngay</button>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <span class="filter-label">BU:</span>
+    <select class="filter-select" onchange="reloadMatrix()">
+      <option selected>Tất cả BU</option>
+      <option>Ngọc Dung</option>
+      <option>Zema</option>
+      <option>Ocany</option>
+    </select>
+    <span class="filter-label" style="margin-left:8px;">Khoảng thời gian:</span>
+    <div class="date-range">
+      <button class="date-btn" onclick="setDateRange(this, '30d')">30 ngày</button>
+      <button class="date-btn active" onclick="setDateRange(this, '90d')">90 ngày</button>
+      <button class="date-btn" onclick="setDateRange(this, '180d')">6 tháng</button>
+      <button class="date-btn" onclick="setDateRange(this, '365d')">1 năm</button>
+    </div>
+    <div class="filter-spacer"></div>
+    <span style="font-size:12px;color:var(--ink-48);">&#x1F551; Cập nhật: 16/06/2026, 02:00 AM (tự động mỗi ngày)</span>
+  </div>
+
+  <!-- Page Body -->
+  <div class="page-body">
+
+    <!-- KPI Strip -->
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-label">Tổng KH phân tích</div>
+        <div class="kpi-value">60,891</div>
+        <div class="kpi-sub">Trong 90 ngày qua · All BU</div>
+        <div class="kpi-trend kpi-up">&#x25B2; +2.3% vs kỳ trước</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Recency Score</div>
+        <div class="kpi-value" style="color:var(--brand-primary);">3.2</div>
+        <div class="kpi-sub">/ 5.0 — Trung bình</div>
+        <div class="kpi-trend kpi-up">&#x25B2; +0.1 vs kỳ trước</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Frequency Score</div>
+        <div class="kpi-value" style="color:var(--bu-zema);">2.8</div>
+        <div class="kpi-sub">/ 5.0 — Dưới trung bình</div>
+        <div class="kpi-trend kpi-down">&#x25BC; -0.2 vs kỳ trước</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Monetary Score</div>
+        <div class="kpi-value" style="color:var(--bu-ocany);">3.6</div>
+        <div class="kpi-sub">/ 5.0 — Khá tốt</div>
+        <div class="kpi-trend kpi-up">&#x25B2; +0.3 vs kỳ trước</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Champions & Loyal</div>
+        <div class="kpi-value" style="color:var(--rfm-champions);">14,280</div>
+        <div class="kpi-sub">23.5% tổng KH — Nhóm tốt nhất</div>
+        <div class="kpi-trend kpi-up">&#x25B2; +680 KH vs kỳ trước</div>
+      </div>
+    </div>
+
+    <!-- Main Grid: Matrix + Right Panel -->
+    <div class="main-grid">
+
+      <!-- RFM Matrix -->
+      <div class="matrix-card">
+        <div class="matrix-header">
+          <div>
+            <div class="matrix-title">Ma trận RFM 5×5</div>
+            <div class="matrix-subtitle">Click vào ô để xem chi tiết phân khúc</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-sm btn-secondary" onclick="toggleHeatmap()">&#x1F321; Nhiệt đồ</button>
+            <button class="btn btn-sm btn-secondary" onclick="exportMatrix()">&#x2B07; Xuất</button>
+          </div>
+        </div>
+        <div class="matrix-body">
+          <div style="display:flex;gap:0;">
+            <!-- Y-axis title + labels -->
+            <div style="display:flex;flex-direction:column;margin-bottom:36px;">
+              <div class="matrix-y-title">Recency ▲</div>
+            </div>
+            <div style="display:flex;flex-direction:column;margin-bottom:36px;">
+              <div class="matrix-y-label">5</div>
+              <div class="matrix-y-label">4</div>
+              <div class="matrix-y-label">3</div>
+              <div class="matrix-y-label">2</div>
+              <div class="matrix-y-label">1</div>
+            </div>
+            <!-- Grid area -->
+            <div style="flex:1;display:flex;flex-direction:column;">
+              <div class="rfm-grid" id="rfmGrid">
+                <!-- cells rendered by JS -->
+              </div>
+              <!-- X-axis labels -->
+              <div class="matrix-x-axis" style="margin-top:6px;">
+                <div class="matrix-x-label">1</div>
+                <div class="matrix-x-label">2</div>
+                <div class="matrix-x-label">3</div>
+                <div class="matrix-x-label">4</div>
+                <div class="matrix-x-label">5</div>
+              </div>
+              <div class="matrix-axis-title" style="margin-top:4px;">Frequency + Monetary ▶</div>
+            </div>
+          </div>
+
+          <!-- Legend -->
+          <div class="rfm-legend" id="rfmLegend">
+            <!-- rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="right-panel" id="rightPanel">
+
+        <!-- Drilldown Panel (default: Champions) -->
+        <div class="drilldown-panel" id="drilldownPanel">
+          <div class="drilldown-header">
+            <div>
+              <div class="drilldown-seg-name" id="ddSegName">&#x1F3C6; Champions</div>
+              <div class="drilldown-seg-sub" id="ddSegSub">R=5, F=5, M=5 — Nhóm tốt nhất</div>
+            </div>
+            <button class="drilldown-close" onclick="resetDrilldown()">&#x2715;</button>
+          </div>
+          <div class="drilldown-body">
+
+            <!-- Mini KPIs -->
+            <div class="drilldown-kpis" id="ddKpis">
+              <div class="drilldown-kpi">
+                <div class="drilldown-kpi-value" id="ddCount">3,240</div>
+                <div class="drilldown-kpi-label">Khách hàng</div>
+              </div>
+              <div class="drilldown-kpi">
+                <div class="drilldown-kpi-value" id="ddPct">5.3%</div>
+                <div class="drilldown-kpi-label">% tổng KH</div>
+              </div>
+              <div class="drilldown-kpi">
+                <div class="drilldown-kpi-value" id="ddAvgSpend">24.8tr</div>
+                <div class="drilldown-kpi-label">Avg. Chi tiêu</div>
+              </div>
+              <div class="drilldown-kpi">
+                <div class="drilldown-kpi-value" id="ddRecency">7 ngày</div>
+                <div class="drilldown-kpi-label">Avg. Recency</div>
+              </div>
+            </div>
+
+            <!-- RFM Score bars -->
+            <div class="score-bars">
+              <div class="score-bar-row">
+                <span class="score-bar-label">R</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" id="barR" style="width:100%;background:var(--rfm-champions);"></div></div>
+                <span class="score-bar-val" id="valR">5.0</span>
+              </div>
+              <div class="score-bar-row">
+                <span class="score-bar-label">F</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" id="barF" style="width:100%;background:var(--rfm-champions);"></div></div>
+                <span class="score-bar-val" id="valF">5.0</span>
+              </div>
+              <div class="score-bar-row">
+                <span class="score-bar-label">M</span>
+                <div class="score-bar-bg"><div class="score-bar-fill" id="barM" style="width:100%;background:var(--rfm-champions);"></div></div>
+                <span class="score-bar-val" id="valM">5.0</span>
+              </div>
+            </div>
+
+            <!-- Customer list preview -->
+            <div class="drilldown-customers">
+              <div class="drilldown-cust-title">Mẫu khách hàng</div>
+              <div id="custList">
+                <!-- rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="drilldown-actions">
+              <button class="btn btn-secondary btn-sm" style="flex:1;" onclick="createSegmentFromCell()">&#x25CE; Tạo Segment</button>
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="viewAllCustomers()">&#x1F441; Xem tất cả</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trend Summary (mini chart proxy) -->
+        <div class="drilldown-panel">
+          <div class="drilldown-header">
+            <div>
+              <div class="drilldown-seg-name" style="font-size:14px;">&#x1F4CA; Biến động nhóm (90 ngày)</div>
+              <div class="drilldown-seg-sub">Thay đổi số lượng theo phân khúc</div>
+            </div>
+          </div>
+          <div class="drilldown-body" style="padding:12px 16px;">
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--rfm-champions);flex-shrink:0;"></span>
+                <span style="flex:1;color:var(--ink-60);">Champions</span>
+                <span style="color:var(--success-ink);font-weight:700;">+680 &#x25B2;</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--rfm-loyal);flex-shrink:0;"></span>
+                <span style="flex:1;color:var(--ink-60);">Loyal Customers</span>
+                <span style="color:var(--success-ink);font-weight:700;">+312 &#x25B2;</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--rfm-at-risk);flex-shrink:0;"></span>
+                <span style="flex:1;color:var(--ink-60);">At Risk</span>
+                <span style="color:var(--danger-ink);font-weight:700;">-528 &#x25BC;</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--rfm-cannot-lose);flex-shrink:0;"></span>
+                <span style="flex:1;color:var(--ink-60);">Cannot Lose Them</span>
+                <span style="color:var(--danger-ink);font-weight:700;">-144 &#x25BC;</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--rfm-new);flex-shrink:0;"></span>
+                <span style="flex:1;color:var(--ink-60);">New Customers</span>
+                <span style="color:var(--success-ink);font-weight:700;">+1,240 &#x25B2;</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--rfm-hibernating);flex-shrink:0;"></span>
+                <span style="flex:1;color:var(--ink-60);">Hibernating</span>
+                <span style="color:var(--ink-48);font-weight:700;">+86 &#x25B6;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end right panel -->
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-row">
+
+      <!-- Distribution Bar Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">&#x1F4CA; Phân bổ khách hàng theo phân khúc RFM</div>
+          <div class="chart-subtitle">Top 10 phân khúc · Tổng 60,891 KH</div>
+        </div>
+        <div class="chart-body">
+          <div class="bar-chart" id="distChart">
+            <!-- rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Migration Flow -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">&#x21C4; Di chuyển phân khúc (90 ngày)</div>
+          <div class="chart-subtitle">Từ → Đến phân khúc nào</div>
+        </div>
+        <div class="chart-body">
+          <div class="migration-flow">
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-need-attention);">Need Attention</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">Loyal Customers</span>
+              <span class="migration-count mig-up">+284 &#x25B2;</span>
+            </div>
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-loyal);">Loyal Customers</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">Champions</span>
+              <span class="migration-count mig-up">+192 &#x25B2;</span>
+            </div>
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-promising);">Promising</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">New Customers</span>
+              <span class="migration-count mig-up">+558 &#x25B2;</span>
+            </div>
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-champions);">Champions</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">At Risk</span>
+              <span class="migration-count mig-down">-88 &#x25BC;</span>
+            </div>
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-loyal);">Loyal Customers</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">Need Attention</span>
+              <span class="migration-count mig-down">-156 &#x25BC;</span>
+            </div>
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-at-risk);">At Risk</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">Hibernating</span>
+              <span class="migration-count mig-down">-234 &#x25BC;</span>
+            </div>
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-about-to-sleep);">About To Sleep</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">Lost Customers</span>
+              <span class="migration-count mig-down">-112 &#x25BC;</span>
+            </div>
+            <div class="migration-row">
+              <span class="migration-from" style="color:var(--rfm-hibernating);">Hibernating</span>
+              <span class="migration-arrow">&#x2192;</span>
+              <span class="migration-to">New Customers</span>
+              <span class="migration-count mig-neutral">+44 &#x25B6;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ──────── RFM MATRIX DATA ────────
+// 5x5 grid: row = R score (5 top, 1 bottom), col = F+M combined score (1 left, 5 right)
+// Grid is laid out row by row from top (R=5) to bottom (R=1)
+const RFM_CELLS = [
+  // R=5 (row 1 visual top)
+  { r:5, fm:1, name:"Promising",       count:1820, pct:3.0, color:"#a8d8ea", textColor:"#1a4a5e", segKey:"promising" },
+  { r:5, fm:2, name:"New Customers",   count:2940, pct:4.8, color:"#63c8a8", textColor:"#0c3d2a", segKey:"new" },
+  { r:5, fm:3, name:"Potential Loyal", count:3120, pct:5.1, color:"#4cae8e", textColor:"#ffffff", segKey:"potential" },
+  { r:5, fm:4, name:"Loyal",           count:4080, pct:6.7, color:"#2997ff", textColor:"#ffffff", segKey:"loyal" },
+  { r:5, fm:5, name:"Champions",       count:3240, pct:5.3, color:"#1a7a31", textColor:"#ffffff", segKey:"champions" },
+
+  // R=4
+  { r:4, fm:1, name:"About To Sleep",  count:2360, pct:3.9, color:"#ffe0a0", textColor:"#5a3e00", segKey:"aboutToSleep" },
+  { r:4, fm:2, name:"Need Attention",  count:3540, pct:5.8, color:"#ffd166", textColor:"#5a3e00", segKey:"needAttention" },
+  { r:4, fm:3, name:"Loyal",           count:3680, pct:6.0, color:"#4d8de0", textColor:"#ffffff", segKey:"loyal" },
+  { r:4, fm:4, name:"Loyal",           count:2980, pct:4.9, color:"#2997ff", textColor:"#ffffff", segKey:"loyal" },
+  { r:4, fm:5, name:"Champions",       count:1820, pct:3.0, color:"#1a7a31", textColor:"#ffffff", segKey:"champions" },
+
+  // R=3
+  { r:3, fm:1, name:"At Risk",         count:4120, pct:6.8, color:"#ff9966", textColor:"#5a1a00", segKey:"atRisk" },
+  { r:3, fm:2, name:"Need Attention",  count:2840, pct:4.7, color:"#ffd166", textColor:"#5a3e00", segKey:"needAttention" },
+  { r:3, fm:3, name:"Need Attention",  count:2560, pct:4.2, color:"#f5c842", textColor:"#4a3000", segKey:"needAttention" },
+  { r:3, fm:4, name:"Loyal",           count:2040, pct:3.3, color:"#4d8de0", textColor:"#ffffff", segKey:"loyal" },
+  { r:3, fm:5, name:"Loyal",           count:1340, pct:2.2, color:"#2997ff", textColor:"#ffffff", segKey:"loyal" },
+
+  // R=2
+  { r:2, fm:1, name:"Hibernating",     count:3820, pct:6.3, color:"#d0d0d0", textColor:"#333333", segKey:"hibernating" },
+  { r:2, fm:2, name:"At Risk",         count:2340, pct:3.8, color:"#ff9966", textColor:"#5a1a00", segKey:"atRisk" },
+  { r:2, fm:3, name:"At Risk",         count:1580, pct:2.6, color:"#ff7740", textColor:"#ffffff", segKey:"atRisk" },
+  { r:2, fm:4, name:"Cannot Lose",     count:1240, pct:2.0, color:"#e84393", textColor:"#ffffff", segKey:"cannotLose" },
+  { r:2, fm:5, name:"Cannot Lose",     count:640,  pct:1.1, color:"#c2006b", textColor:"#ffffff", segKey:"cannotLose" },
+
+  // R=1 (bottom)
+  { r:1, fm:1, name:"Lost",            count:4440, pct:7.3, color:"#888888", textColor:"#ffffff", segKey:"lost" },
+  { r:1, fm:2, name:"Lost",            count:2120, pct:3.5, color:"#888888", textColor:"#ffffff", segKey:"lost" },
+  { r:1, fm:3, name:"Hibernating",     count:1640, pct:2.7, color:"#b0b0b0", textColor:"#333333", segKey:"hibernating" },
+  { r:1, fm:4, name:"At Risk",         count:880,  pct:1.4, color:"#ff9966", textColor:"#5a1a00", segKey:"atRisk" },
+  { r:1, fm:5, name:"Cannot Lose",     count:520,  pct:0.9, color:"#e84393", textColor:"#ffffff", segKey:"cannotLose" },
+];
+
+const SEG_INFO = {
+  champions:    { label:"Champions",         desc:"R=5, F=4–5, M=4–5 — Nhóm tốt nhất", r:5.0, f:5.0, m:5.0, avgSpend:"24.8tr", recency:"7 ngày", emoji:"🏆" },
+  loyal:        { label:"Loyal Customers",   desc:"R=3–5, F=3–5, M=3–5 — Khách trung thành", r:4.5, f:4.2, m:4.0, avgSpend:"15.4tr", recency:"18 ngày", emoji:"⭐" },
+  potential:    { label:"Potential Loyal",   desc:"R=5, F=2–3, M=2–3 — Có tiềm năng", r:5.0, f:2.5, m:2.8, avgSpend:"8.2tr", recency:"12 ngày", emoji:"🌟" },
+  new:          { label:"New Customers",     desc:"R=4–5, F=1–2, M=1–2 — Mới tham gia", r:4.8, f:1.4, m:1.6, avgSpend:"3.1tr", recency:"10 ngày", emoji:"🆕" },
+  promising:    { label:"Promising",         desc:"R=5, F=1, M=1 — Tiềm năng nhưng chưa mua nhiều", r:5.0, f:1.2, m:1.0, avgSpend:"2.4tr", recency:"8 ngày", emoji:"💡" },
+  needAttention:{ label:"Need Attention",    desc:"R=3–4, F=2–3, M=2–3 — Cần chăm sóc", r:3.5, f:2.6, m:2.4, avgSpend:"7.8tr", recency:"42 ngày", emoji:"⚠️" },
+  aboutToSleep: { label:"About To Sleep",    desc:"R=4, F=1–2, M=1–2 — Sắp ngủ đông", r:4.0, f:1.6, m:1.4, avgSpend:"4.2tr", recency:"25 ngày", emoji:"😴" },
+  atRisk:       { label:"At Risk",           desc:"R=1–3, F=3–5, M=3–5 — Nguy cơ rời bỏ", r:2.0, f:3.8, m:3.6, avgSpend:"12.6tr", recency:"95 ngày", emoji:"🔴" },
+  cannotLose:   { label:"Cannot Lose Them",  desc:"R=1–2, F=4–5, M=4–5 — Phải giữ bằng mọi giá", r:1.5, f:4.6, m:4.8, avgSpend:"28.4tr", recency:"120 ngày", emoji:"🚨" },
+  hibernating:  { label:"Hibernating",       desc:"R=1–2, F=1–2, M=1–2 — Đang không hoạt động", r:1.8, f:1.4, m:1.2, avgSpend:"3.8tr", recency:"200 ngày", emoji:"❄️" },
+  lost:         { label:"Lost Customers",    desc:"R=1, F=1–2, M=1–2 — Đã mất", r:1.0, f:1.2, m:1.0, avgSpend:"2.1tr", recency:"320 ngày", emoji:"😞" },
+};
+
+const SAMPLE_CUSTOMERS = {
+  champions: [
+    { name:"Nguyễn Thị A", bg:"#1a7a31", initials:"NA", meta:"Diamond · TP.HCM", score:892 },
+    { name:"Trần Minh B",  bg:"#1a7a31", initials:"TB", meta:"Diamond · Hà Nội",  score:875 },
+    { name:"Lê Thị C",     bg:"#1a7a31", initials:"LC", meta:"Diamond · TP.HCM",  score:863 },
+  ],
+  loyal: [
+    { name:"Phạm Văn D",   bg:"#2997ff", initials:"PD", meta:"Gold · Đà Nẵng",    score:742 },
+    { name:"Võ Thị E",     bg:"#2997ff", initials:"VE", meta:"Gold · TP.HCM",     score:718 },
+    { name:"Hoàng Văn F",  bg:"#2997ff", initials:"HF", meta:"Gold · Hà Nội",     score:699 },
+  ],
+  atRisk: [
+    { name:"Đặng Thị G",   bg:"#ff6b35", initials:"DG", meta:"Silver · TP.HCM",  score:520 },
+    { name:"Bùi Văn H",    bg:"#ff6b35", initials:"BH", meta:"Silver · Hà Nội",  score:498 },
+    { name:"Ngô Thị I",    bg:"#ff6b35", initials:"NI", meta:"Silver · Cần Thơ", score:471 },
+  ],
+  cannotLose: [
+    { name:"Mai Thị J",    bg:"#e84393", initials:"MJ", meta:"Diamond · TP.HCM", score:812 },
+    { name:"Đinh Văn K",   bg:"#e84393", initials:"DK", meta:"Gold · Hà Nội",    score:756 },
+  ],
+};
+function getSampleCustomers(segKey) {
+  return SAMPLE_CUSTOMERS[segKey] || SAMPLE_CUSTOMERS.loyal;
+}
+
+let selectedCell = null;
+
+function renderMatrix() {
+  const grid = document.getElementById('rfmGrid');
+  grid.innerHTML = RFM_CELLS.map((cell, i) => `
+    <div class="rfm-cell" id="cell-${i}"
+         style="background:${cell.color};color:${cell.textColor};"
+         onclick="selectCell(${i})"
+         title="${cell.name}: ${cell.count.toLocaleString('vi-VN')} KH (${cell.pct}%)">
+      <div class="rfm-cell-name">${cell.name}</div>
+      <div class="rfm-cell-count">${(cell.count/1000).toFixed(1)}k</div>
+      <div class="rfm-cell-pct">${cell.pct}%</div>
+    </div>`).join('');
+}
+
+const LEGEND_SEGS = [
+  { key:"champions", color:"#1a7a31", label:"Champions" },
+  { key:"loyal",     color:"#2997ff", label:"Loyal" },
+  { key:"potential", color:"#4cae8e", label:"Potential Loyal" },
+  { key:"new",       color:"#63c8a8", label:"New Customers" },
+  { key:"promising", color:"#a8d8ea", label:"Promising" },
+  { key:"needAttention", color:"#ffd166", label:"Need Attention" },
+  { key:"aboutToSleep",  color:"#ffe0a0", label:"About To Sleep" },
+  { key:"atRisk",    color:"#ff9966", label:"At Risk" },
+  { key:"cannotLose",color:"#e84393", label:"Cannot Lose" },
+  { key:"hibernating",color:"#d0d0d0",label:"Hibernating" },
+  { key:"lost",      color:"#888888", label:"Lost Customers" },
+];
+function renderLegend() {
+  document.getElementById('rfmLegend').innerHTML = LEGEND_SEGS.map(s =>
+    `<div class="legend-item">
+      <div class="legend-dot" style="background:${s.color};"></div>
+      <span>${s.label}</span>
+    </div>`).join('');
+}
+
+function selectCell(idx) {
+  // Remove old selection
+  if (selectedCell !== null) {
+    document.getElementById('cell-' + selectedCell)?.classList.remove('selected');
+  }
+  selectedCell = idx;
+  document.getElementById('cell-' + idx).classList.add('selected');
+  const cell = RFM_CELLS[idx];
+  const seg = SEG_INFO[cell.segKey] || SEG_INFO.loyal;
+  // Update drilldown
+  document.getElementById('ddSegName').textContent = (seg.emoji || '') + ' ' + seg.label;
+  document.getElementById('ddSegSub').textContent = seg.desc;
+  document.getElementById('ddCount').textContent = cell.count.toLocaleString('vi-VN');
+  document.getElementById('ddPct').textContent = cell.pct + '%';
+  document.getElementById('ddAvgSpend').textContent = seg.avgSpend;
+  document.getElementById('ddRecency').textContent = seg.recency;
+  document.getElementById('barR').style.width = (seg.r / 5 * 100) + '%';
+  document.getElementById('barF').style.width = (seg.f / 5 * 100) + '%';
+  document.getElementById('barM').style.width = (seg.m / 5 * 100) + '%';
+  document.getElementById('barR').style.background = cell.color;
+  document.getElementById('barF').style.background = cell.color;
+  document.getElementById('barM').style.background = cell.color;
+  document.getElementById('valR').textContent = seg.r.toFixed(1);
+  document.getElementById('valF').textContent = seg.f.toFixed(1);
+  document.getElementById('valM').textContent = seg.m.toFixed(1);
+  // Customer list
+  const custs = getSampleCustomers(cell.segKey);
+  document.getElementById('custList').innerHTML = custs.map(c => `
+    <div class="drilldown-cust-row">
+      <div class="cust-avatar" style="background:${c.bg};">${c.initials}</div>
+      <div>
+        <div class="cust-name">${c.name}</div>
+        <div class="cust-meta">${c.meta}</div>
+      </div>
+      <span class="cust-score">${c.score}</span>
+    </div>`).join('');
+}
+
+function resetDrilldown() {
+  if (selectedCell !== null) {
+    document.getElementById('cell-' + selectedCell)?.classList.remove('selected');
+    selectedCell = null;
+  }
+  // Reset to champions default
+  selectCell(4);
+}
+
+// Distribution bar chart
+const DIST_DATA = [
+  { label:"At Risk",         count:6820, color:"#ff9966" },
+  { label:"Lost",            count:6560, color:"#888888" },
+  { label:"Loyal",           count:5960, color:"#2997ff" },  // was split, summed
+  { label:"Need Attn",       count:5400, color:"#ffd166" },
+  { label:"New",             count:4240, color:"#63c8a8" },
+  { label:"Champions",       count:5060, color:"#1a7a31" },
+  { label:"Hibernating",     count:3960, color:"#d0d0d0" },
+  { label:"Potential",       count:3120, color:"#4cae8e" },
+  { label:"Cannot Lose",     count:2400, color:"#e84393" },
+  { label:"About Sleep",     count:2360, color:"#ffe0a0" },
+];
+function renderDistChart() {
+  const max = Math.max(...DIST_DATA.map(d => d.count));
+  document.getElementById('distChart').innerHTML = DIST_DATA.map(d => `
+    <div class="bar-chart-group">
+      <span class="bar-chart-val">${(d.count/1000).toFixed(1)}k</span>
+      <div class="bar-chart-bar" style="height:${Math.round(d.count/max*100)}px;background:${d.color};"></div>
+      <span class="bar-chart-label">${d.label}</span>
+    </div>`).join('');
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebarOverlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+function toggleCollapse() {
+  const sb = document.getElementById('sidebar');
+  const ct = document.getElementById('content');
+  sb.classList.toggle('collapsed');
+  ct.classList.toggle('sidebar-collapsed');
+}
+function setDateRange(btn, range) {
+  document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleHeatmap() { alert('Chế độ nhiệt đồ sẽ tô màu theo mật độ tuyến tính.'); }
+function exportMatrix() { alert('Đang xuất ma trận RFM...'); }
+function exportRFM() { alert('Đang xuất báo cáo RFM...'); }
+function scheduleRFM() { alert('Cấu hình lịch chạy RFM định kỳ.'); }
+function runRFM() { alert('Đang chạy phân tích RFM... (thường mất 2–5 phút)'); }
+function createSegmentFromCell() { window.location.href = 'ui-segment-builder.html'; }
+function viewAllCustomers() { alert('Mở danh sách khách hàng trong phân khúc này.'); }
+function reloadMatrix() { renderMatrix(); selectCell(4); }
+
+// Init
+renderMatrix();
+renderLegend();
+renderDistChart();
+selectCell(4); // default select Champions
+</script>
+</body>
+</html>

@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Audit Log</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #0050a0;
+  --font-display: "SF Pro Display","Inter",system-ui,-apple-system,sans-serif;
+  --font-text: "SF Pro Text","Inter",system-ui,-apple-system,sans-serif;
+  --font-mono: "SF Mono","JetBrains Mono",monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* Topnav */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search { width: 320px; height: 32px; border-radius: var(--radius-pill); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+
+/* Sidebar */
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; z-index: 100; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+
+/* Content */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); }
+
+/* Page header */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 20px 32px; }
+.page-title-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+
+/* KPI stats row */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px 32px 0; }
+.stat-card { background: var(--ink-00); border-radius: var(--radius-lg); border: 1px solid var(--ink-08); padding: 18px 20px; display: flex; align-items: center; gap: 14px; }
+.stat-icon { width: 40px; height: 40px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.stat-icon-blue { background: var(--info-subtle); }
+.stat-icon-gray { background: var(--ink-04); }
+.stat-icon-red { background: var(--danger-subtle); }
+.stat-icon-teal { background: #e0f8f1; }
+.stat-value { font-size: 22px; font-weight: 700; color: var(--ink-100); line-height: 1.1; }
+.stat-label { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.stat-delta { font-size: 11px; font-weight: 600; margin-top: 4px; }
+.delta-up { color: var(--success-ink); }
+.delta-down { color: var(--danger-ink); }
+
+/* Real-time badge */
+.live-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--success-ink); background: var(--success-subtle); padding: 4px 12px; border-radius: var(--radius-pill); }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+/* Filter bar */
+.filter-bar { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 12px 32px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 24px; }
+.filter-select { height: 34px; padding: 0 10px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); background: var(--ink-00); font-size: 13px; color: var(--ink-80); font-family: var(--font-text); cursor: pointer; }
+.filter-select:focus { outline: none; border-color: var(--brand-primary); }
+.filter-input { height: 34px; padding: 0 10px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); background: var(--ink-00); font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.filter-input:focus { outline: none; border-color: var(--brand-primary); }
+.filter-sep { margin-left: auto; }
+
+/* Main body */
+.main-body { padding: 24px 32px; }
+
+/* Table card */
+.card { background: var(--ink-00); border-radius: var(--radius-lg); border: 1px solid var(--ink-08); }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--ink-08); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.card-title { font-size: 15px; font-weight: 600; }
+.card-subtitle { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+
+/* Table */
+.table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-main { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+.table-main thead th { background: var(--ink-02); padding: 10px 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); text-align: left; white-space: nowrap; border-bottom: 1px solid var(--ink-08); }
+.table-main thead th:first-child { padding-left: 20px; }
+.table-main tbody tr { transition: background 0.12s; cursor: pointer; }
+.table-main tbody tr:hover { background: var(--ink-02); }
+.table-main tbody tr.expanded { background: var(--brand-primary-subtle); }
+.table-main tbody td { padding: 11px 14px; border-bottom: 1px solid var(--ink-04); color: var(--ink-80); vertical-align: middle; }
+.table-main tbody td:first-child { padding-left: 20px; }
+.table-main tbody tr:last-child td { border-bottom: none; }
+
+/* Timestamp cell */
+.ts-cell { font-size: 12px; color: var(--ink-48); white-space: nowrap; }
+.ts-date { font-weight: 500; color: var(--ink-80); }
+
+/* User cell */
+.user-cell { display: flex; align-items: center; gap: 8px; }
+.user-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+/* Action badge */
+.action-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-pill); white-space: nowrap; }
+.ab-login    { background: var(--info-subtle);    color: var(--info-ink); }
+.ab-view     { background: var(--ink-04);          color: var(--ink-60); }
+.ab-create   { background: var(--success-subtle);  color: var(--success-ink); }
+.ab-update   { background: var(--warning-subtle);  color: var(--warning-ink); }
+.ab-delete   { background: var(--danger-subtle);   color: var(--danger-ink); }
+.ab-export   { background: #f3eefc;                color: #5b21b6; }
+.ab-config   { background: #e0f8f1;                color: #065f46; }
+
+/* Resource badge */
+.res-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--ink-04); color: var(--ink-60); white-space: nowrap; }
+
+/* Status badge */
+.status-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-pill); }
+.status-success { background: var(--success-subtle); color: var(--success-ink); }
+.status-failed  { background: var(--danger-subtle);  color: var(--danger-ink); }
+.status-warning { background: var(--warning-subtle); color: var(--warning-ink); }
+
+/* Expand button */
+.expand-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: var(--ink-48); transition: all 0.12s; flex-shrink: 0; }
+.expand-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+
+/* Expanded detail row */
+.detail-row { display: none; }
+.detail-row.open { display: table-row; }
+.detail-row td { background: #f8f9fb; padding: 0 20px 16px 60px; border-bottom: 1px solid var(--ink-08); }
+.detail-panel { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 14px; }
+.detail-title { font-size: 11px; font-weight: 600; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.detail-json { font-family: var(--font-mono); font-size: 11px; color: var(--ink-80); line-height: 1.6; white-space: pre-wrap; word-break: break-all; max-height: 160px; overflow-y: auto; }
+.detail-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; color: var(--ink-48); margin-top: 10px; }
+.detail-meta strong { color: var(--ink-80); }
+
+/* IP cell */
+.ip-cell { font-family: var(--font-mono); font-size: 12px; color: var(--ink-48); white-space: nowrap; }
+
+/* Details cell */
+.details-cell { max-width: 200px; font-size: 12px; color: var(--ink-60); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Mobile cards */
+.mobile-cards { display: none; padding: 16px; }
+.mobile-card { background: var(--ink-00); border-radius: var(--radius-lg); border: 1px solid var(--ink-08); padding: 14px; margin-bottom: 10px; }
+.mobile-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.mobile-card-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--ink-04); font-size: 12px; }
+.mobile-card-row:last-child { border-bottom: none; }
+.mobile-card-label { color: var(--ink-48); }
+
+@media (max-width: 1200px) {
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (max-width: 1023px) {
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+  .filter-bar { padding: 10px 20px; }
+}
+
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .content { margin-left: 0; }
+  .topnav-search { width: 160px; }
+  .stats-row { grid-template-columns: 1fr 1fr; padding: 16px; gap: 10px; }
+  .stat-value { font-size: 18px; }
+  .filter-bar { padding: 10px 16px; }
+  .main-body { padding: 16px; }
+  .page-header { padding: 16px; }
+  .table-container { display: none; }
+  .mobile-cards { display: block; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topnav -->
+<nav class="topnav">
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Tất cả BU ▾</span>
+    <div class="topnav-avatar">SA</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item active" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+</aside>
+
+<!-- Content -->
+<main class="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x1F4D1; Audit Log</div>
+        <div class="page-subtitle">Nhật ký hoạt động hệ thống — Super Admin</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="live-badge"><span class="live-dot"></span> Trực tiếp</span>
+        <button class="btn btn-secondary" onclick="exportCSV()">&#x21E9; Xuất CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-blue">&#x1F4CA;</div>
+      <div>
+        <div class="stat-value">1,842</div>
+        <div class="stat-label">Tổng sự kiện hôm nay</div>
+        <div class="stat-delta delta-up">&#x25B2; 12% so hôm qua</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-gray">&#x1F465;</div>
+      <div>
+        <div class="stat-value">34</div>
+        <div class="stat-label">Người dùng hoạt động</div>
+        <div class="stat-delta" style="color:var(--ink-48);">Trong 24h qua</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-red">&#x26A0;</div>
+      <div>
+        <div class="stat-value" style="color:var(--danger);">7</div>
+        <div class="stat-label">Thao tác thất bại</div>
+        <div class="stat-delta delta-down">&#x25BC; Cần xem xét</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon stat-icon-teal">&#x2699;</div>
+      <div>
+        <div class="stat-value" style="color:#065f46;">12</div>
+        <div class="stat-label">Thay đổi cấu hình</div>
+        <div class="stat-delta" style="color:var(--ink-48);">Hôm nay</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <select class="filter-select" title="Người dùng">
+      <option>Tất cả người dùng</option>
+      <option>Nguyễn Minh Trí (Admin)</option>
+      <option>Trần Thị Hoa (CS)</option>
+      <option>Lê Văn Đức (Marketing)</option>
+      <option>System</option>
+    </select>
+    <select class="filter-select" title="Loại hành động">
+      <option>Tất cả hành động</option>
+      <option>Login</option>
+      <option>View</option>
+      <option>Create</option>
+      <option>Update</option>
+      <option>Delete</option>
+      <option>Export</option>
+      <option>Config Change</option>
+    </select>
+    <select class="filter-select" title="Loại tài nguyên">
+      <option>Tất cả tài nguyên</option>
+      <option>Customer</option>
+      <option>Segment</option>
+      <option>Campaign</option>
+      <option>User</option>
+      <option>System</option>
+    </select>
+    <select class="filter-select" title="Trạng thái">
+      <option>Tất cả trạng thái</option>
+      <option>Thành công</option>
+      <option>Thất bại</option>
+      <option>Cảnh báo</option>
+    </select>
+    <input class="filter-input" type="datetime-local" value="2026-06-16T00:00" style="width:160px;">
+    <span style="color:var(--ink-48);font-size:13px;">→</span>
+    <input class="filter-input" type="datetime-local" value="2026-06-16T23:59" style="width:160px;">
+    <div class="filter-sep">
+      <button class="btn btn-secondary btn-sm">&#x1F50D; Lọc</button>
+    </div>
+  </div>
+
+  <!-- Main body -->
+  <div class="main-body">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Nhật ký sự kiện</div>
+          <div class="card-subtitle">Mới nhất lên đầu · 1.842 sự kiện hôm nay</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn btn-secondary btn-sm" onclick="toggleAutoRefresh(this)">&#x25B6; Tự làm mới</button>
+          <button class="btn btn-secondary btn-sm">Xóa bộ lọc</button>
+        </div>
+      </div>
+
+      <!-- Desktop table -->
+      <div class="table-container">
+        <table class="table-main" id="log-table">
+          <thead>
+            <tr>
+              <th style="width:32px;"></th>
+              <th>Thời gian</th>
+              <th>Người dùng</th>
+              <th>Hành động</th>
+              <th>Tài nguyên</th>
+              <th>Chi tiết</th>
+              <th>IP</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody id="log-tbody">
+
+            <!-- Row 1 -->
+            <tr onclick="toggleRow(this, 'detail-1')">
+              <td><button class="expand-btn" id="btn-1">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 09:47:23</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#fce4f1;color:#e84393;">MT</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Nguyễn Minh Trí</div>
+                    <div style="font-size:11px;color:var(--ink-48);">Super Admin</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-config">&#x2699; Config Change</span></td>
+              <td><span class="res-badge">System</span></td>
+              <td class="details-cell">Thay đổi giới hạn rate limit API từ 1000 → 2000 req/min</td>
+              <td class="ip-cell">192.168.1.101</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-1">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết sự kiện</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-094723-001",
+  "resource": "system/config/rate_limit",
+  "action": "config_change",
+  "changes": {
+    "api_rate_limit": { "before": 1000, "after": 2000, "unit": "req/min" }
+  },
+  "user_agent": "Mozilla/5.0 Chrome/126.0",
+  "session_id": "sess_abc123def456"
+}</div>
+                  <div class="detail-meta">
+                    <span>Session: <strong>sess_abc123def456</strong></span>
+                    <span>Browser: <strong>Chrome 126</strong></span>
+                    <span>Thời gian xử lý: <strong>42ms</strong></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr onclick="toggleRow(this, 'detail-2')">
+              <td><button class="expand-btn" id="btn-2">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 09:43:11</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#ede9fd;color:#6c5ce7;">TH</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Trần Thị Hoa</div>
+                    <div style="font-size:11px;color:var(--ink-48);">CS Team</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-export">&#x21E9; Export</span></td>
+              <td><span class="res-badge">Customer</span></td>
+              <td class="details-cell">Xuất danh sách khách hàng Ngọc Dung (3.214 bản ghi)</td>
+              <td class="ip-cell">10.0.0.45</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-2">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết sự kiện</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-094311-002",
+  "resource": "customer/export",
+  "filters": { "bu": "ngocdung", "status": "active" },
+  "record_count": 3214,
+  "file": "customer_export_20260616_094311.csv",
+  "file_size": "4.2MB"
+}</div>
+                  <div class="detail-meta">
+                    <span>File: <strong>customer_export_20260616.csv</strong></span>
+                    <span>Số bản ghi: <strong>3.214</strong></span>
+                    <span>Kích thước: <strong>4.2 MB</strong></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 3 - Failed -->
+            <tr onclick="toggleRow(this, 'detail-3')" style="background:#fff8f8;">
+              <td><button class="expand-btn" id="btn-3">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date" style="color:var(--danger);">16/06 09:38:55</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#e0f8f1;color:#00b894;">LD</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Lê Văn Đức</div>
+                    <div style="font-size:11px;color:var(--ink-48);">Marketing</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-delete">&#x1F5D1; Delete</span></td>
+              <td><span class="res-badge">Segment</span></td>
+              <td class="details-cell">Xóa segment "VIP Q2 2026" — bị từ chối (phân quyền)</td>
+              <td class="ip-cell">172.16.0.88</td>
+              <td><span class="status-badge status-failed">&#x2717; Thất bại</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-3">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết lỗi</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-093855-003",
+  "resource": "segment/SEG-00421",
+  "action": "delete",
+  "error": {
+    "code": "PERMISSION_DENIED",
+    "message": "User does not have DELETE permission on Segment resource",
+    "required_role": "admin",
+    "current_role": "marketing"
+  }
+}</div>
+                  <div class="detail-meta">
+                    <span>Mã lỗi: <strong style="color:var(--danger-ink);">PERMISSION_DENIED</strong></span>
+                    <span>Quyền cần: <strong>admin</strong></span>
+                    <span>Quyền hiện tại: <strong>marketing</strong></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 4 -->
+            <tr onclick="toggleRow(this, 'detail-4')">
+              <td><button class="expand-btn" id="btn-4">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 09:30:02</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#fce4f1;color:#e84393;">PH</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Phạm Thị Hương</div>
+                    <div style="font-size:11px;color:var(--ink-48);">Marketing</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-create">&#x2795; Create</span></td>
+              <td><span class="res-badge">Campaign</span></td>
+              <td class="details-cell">Tạo chiến dịch "Flash Sale Tháng 6 — Zema"</td>
+              <td class="ip-cell">10.0.0.52</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-4">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết sự kiện</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-093002-004",
+  "resource": "campaign/CMP-00891",
+  "action": "create",
+  "campaign": {
+    "name": "Flash Sale Tháng 6 — Zema",
+    "bu": "zema",
+    "channel": ["email","sms"],
+    "target_segment": "SEG-00385",
+    "schedule": "2026-06-18T10:00:00"
+  }
+}</div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 5 -->
+            <tr onclick="toggleRow(this, 'detail-5')">
+              <td><button class="expand-btn" id="btn-5">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 09:15:44</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#e5f1ff;color:#0050a0;">BT</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Bùi Thanh Tùng</div>
+                    <div style="font-size:11px;color:var(--ink-48);">Admin</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-login">&#x1F511; Login</span></td>
+              <td><span class="res-badge">User</span></td>
+              <td class="details-cell">Đăng nhập thành công vào hệ thống CDP</td>
+              <td class="ip-cell">203.162.4.17</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-5">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết sự kiện</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-091544-005",
+  "action": "login",
+  "auth_method": "password",
+  "mfa": true,
+  "location": "TP. Hồ Chí Minh, VN",
+  "device": "MacBook Pro (macOS 15.3)"
+}</div>
+                  <div class="detail-meta">
+                    <span>MFA: <strong style="color:var(--success-ink);">Có</strong></span>
+                    <span>Thiết bị: <strong>MacBook Pro</strong></span>
+                    <span>Vị trí: <strong>TP. HCM, VN</strong></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 6 - Warning -->
+            <tr onclick="toggleRow(this, 'detail-6')" style="background:#fffdf5;">
+              <td><button class="expand-btn" id="btn-6">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date" style="color:var(--warning-ink);">16/06 09:02:18</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#ede9fd;color:#6c5ce7;">VK</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Vũ Khánh Linh</div>
+                    <div style="font-size:11px;color:var(--ink-48);">CS Team</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-update">&#x270E; Update</span></td>
+              <td><span class="res-badge">Customer</span></td>
+              <td class="details-cell">Cập nhật điểm sức khỏe khách hàng #CUS-00142 thủ công</td>
+              <td class="ip-cell">10.0.0.34</td>
+              <td><span class="status-badge status-warning">&#x26A0; Cảnh báo</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-6">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết cảnh báo</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-090218-006",
+  "resource": "customer/CUS-00142",
+  "action": "update",
+  "warning": "Manual health score override detected",
+  "changes": {
+    "health_score": { "before": 42, "after": 78, "override": true }
+  }
+}</div>
+                  <div class="detail-meta">
+                    <span>Cảnh báo: <strong style="color:var(--warning-ink);">Điểm sức khỏe bị ghi đè thủ công</strong></span>
+                    <span>Thay đổi: <strong>42 → 78</strong></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 7 -->
+            <tr onclick="toggleRow(this, 'detail-7')">
+              <td><button class="expand-btn" id="btn-7">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 08:55:30</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#fce4f1;color:#e84393;">MT</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Nguyễn Minh Trí</div>
+                    <div style="font-size:11px;color:var(--ink-48);">Super Admin</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-create">&#x2795; Create</span></td>
+              <td><span class="res-badge">User</span></td>
+              <td class="details-cell">Tạo tài khoản CS mới — Ngô Thị Bích Ngọc</td>
+              <td class="ip-cell">192.168.1.101</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-7">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết sự kiện</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-085530-007",
+  "resource": "user/USR-00089",
+  "action": "create",
+  "new_user": { "name": "Ngô Thị Bích Ngọc", "email": "ngoc.ngo@theadvance.vn", "role": "cs" }
+}</div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 8 -->
+            <tr onclick="toggleRow(this, 'detail-8')">
+              <td><button class="expand-btn" id="btn-8">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 08:40:07</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#e0f8f1;color:#00b894;">LD</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Lê Văn Đức</div>
+                    <div style="font-size:11px;color:var(--ink-48);">Marketing</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-view">&#x1F441; View</span></td>
+              <td><span class="res-badge">Segment</span></td>
+              <td class="details-cell">Xem chi tiết segment "Khách VIP không mua 90 ngày"</td>
+              <td class="ip-cell">172.16.0.88</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-8">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết sự kiện</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-084007-008",
+  "resource": "segment/SEG-00312",
+  "action": "view",
+  "duration_ms": 187
+}</div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 9 - Failed login -->
+            <tr onclick="toggleRow(this, 'detail-9')" style="background:#fff8f8;">
+              <td><button class="expand-btn" id="btn-9">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date" style="color:var(--danger);">16/06 08:22:41</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#f0f0f0;color:#7a7a7a;">??</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;color:var(--ink-48);">unknown@email.com</div>
+                    <div style="font-size:11px;color:var(--danger);">Không xác định</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-login">&#x1F511; Login</span></td>
+              <td><span class="res-badge">User</span></td>
+              <td class="details-cell">Đăng nhập thất bại — sai mật khẩu lần 3</td>
+              <td class="ip-cell" style="color:var(--danger);">45.14.48.201</td>
+              <td><span class="status-badge status-failed">&#x2717; Thất bại</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-9">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết lỗi bảo mật</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-082241-009",
+  "action": "login_failed",
+  "email": "unknown@email.com",
+  "attempt": 3,
+  "lock_account": false,
+  "geo": { "country": "VN", "city": "Hà Nội" },
+  "threat_level": "medium"
+}</div>
+                  <div class="detail-meta">
+                    <span>Lần thử: <strong style="color:var(--danger-ink);">3/5</strong></span>
+                    <span>IP nước ngoài: <strong>Không</strong></span>
+                    <span>Mức độ: <strong style="color:var(--warning-ink);">Trung bình</strong></span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Row 10 -->
+            <tr onclick="toggleRow(this, 'detail-10')">
+              <td><button class="expand-btn" id="btn-10">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 08:10:59</div></td>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#fce4f1;color:#e84393;">PH</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">Phạm Thị Hương</div>
+                    <div style="font-size:11px;color:var(--ink-48);">Marketing</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="action-badge ab-update">&#x270E; Update</span></td>
+              <td><span class="res-badge">Campaign</span></td>
+              <td class="details-cell">Cập nhật lịch gửi chiến dịch Email Tháng 6</td>
+              <td class="ip-cell">10.0.0.52</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-10">
+              <td colspan="8">
+                <div class="detail-panel">
+                  <div class="detail-title">Chi tiết sự kiện</div>
+                  <div class="detail-json">{
+  "event_id": "EVT-20260616-081059-010",
+  "resource": "campaign/CMP-00877",
+  "action": "update",
+  "changes": {
+    "schedule": { "before": "2026-06-17T09:00", "after": "2026-06-18T10:00" }
+  }
+}</div>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Rows 11-15 condensed -->
+            <tr onclick="toggleRow(this,'detail-11')">
+              <td><button class="expand-btn" id="btn-11">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 07:55:12</div></td>
+              <td><div class="user-cell"><div class="user-avatar" style="background:#e5f1ff;color:#0050a0;">BT</div><div><div style="font-size:13px;font-weight:500;">Bùi Thanh Tùng</div><div style="font-size:11px;color:var(--ink-48);">Admin</div></div></div></td>
+              <td><span class="action-badge ab-config">&#x2699; Config Change</span></td>
+              <td><span class="res-badge">System</span></td>
+              <td class="details-cell">Cập nhật cài đặt thông báo email hệ thống</td>
+              <td class="ip-cell">203.162.4.17</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-11"><td colspan="8"><div class="detail-panel"><div class="detail-title">Chi tiết</div><div class="detail-json">{ "event_id": "EVT-20260616-075512-011", "resource": "system/notifications", "change": "email_alerts_enabled: false → true" }</div></div></td></tr>
+
+            <tr onclick="toggleRow(this,'detail-12')">
+              <td><button class="expand-btn" id="btn-12">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 07:41:08</div></td>
+              <td><div class="user-cell"><div class="user-avatar" style="background:#ede9fd;color:#6c5ce7;">TH</div><div><div style="font-size:13px;font-weight:500;">Trần Thị Hoa</div><div style="font-size:11px;color:var(--ink-48);">CS Team</div></div></div></td>
+              <td><span class="action-badge ab-view">&#x1F441; View</span></td>
+              <td><span class="res-badge">Customer</span></td>
+              <td class="details-cell">Xem hồ sơ khách hàng Nguyễn Thị Lan (#CUS-00142)</td>
+              <td class="ip-cell">10.0.0.45</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-12"><td colspan="8"><div class="detail-panel"><div class="detail-title">Chi tiết</div><div class="detail-json">{ "event_id": "EVT-20260616-074108-012", "resource": "customer/CUS-00142", "action": "view", "duration_ms": 94 }</div></div></td></tr>
+
+            <tr onclick="toggleRow(this,'detail-13')" style="background:#fff8f8;">
+              <td><button class="expand-btn" id="btn-13">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date" style="color:var(--danger);">16/06 07:28:33</div></td>
+              <td><div class="user-cell"><div class="user-avatar" style="background:#e0f8f1;color:#00b894;">VK</div><div><div style="font-size:13px;font-weight:500;">Vũ Khánh Linh</div><div style="font-size:11px;color:var(--ink-48);">CS Team</div></div></div></td>
+              <td><span class="action-badge ab-export">&#x21E9; Export</span></td>
+              <td><span class="res-badge">Customer</span></td>
+              <td class="details-cell">Xuất dữ liệu thất bại — vượt giới hạn 5.000 bản ghi</td>
+              <td class="ip-cell">10.0.0.34</td>
+              <td><span class="status-badge status-failed">&#x2717; Thất bại</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-13"><td colspan="8"><div class="detail-panel"><div class="detail-title">Chi tiết lỗi</div><div class="detail-json">{ "event_id": "EVT-20260616-072833-013", "error": { "code": "EXPORT_LIMIT_EXCEEDED", "limit": 5000, "requested": 8241 } }</div></div></td></tr>
+
+            <tr onclick="toggleRow(this,'detail-14')">
+              <td><button class="expand-btn" id="btn-14">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 07:05:00</div></td>
+              <td><div class="user-cell"><div class="user-avatar" style="background:#f0f0f0;color:#555;">SYS</div><div><div style="font-size:13px;font-weight:500;">System</div><div style="font-size:11px;color:var(--ink-48);">Automated</div></div></div></td>
+              <td><span class="action-badge ab-config">&#x2699; Config Change</span></td>
+              <td><span class="res-badge">System</span></td>
+              <td class="details-cell">Tự động chạy job tính điểm sức khỏe định kỳ</td>
+              <td class="ip-cell">127.0.0.1</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-14"><td colspan="8"><div class="detail-panel"><div class="detail-title">Chi tiết</div><div class="detail-json">{ "event_id": "EVT-20260616-070500-014", "job": "health_score_recalc", "records_processed": 24817, "duration_seconds": 43 }</div></div></td></tr>
+
+            <tr onclick="toggleRow(this,'detail-15')">
+              <td><button class="expand-btn" id="btn-15">&#x25BC;</button></td>
+              <td class="ts-cell"><div class="ts-date">16/06 06:30:22</div></td>
+              <td><div class="user-cell"><div class="user-avatar" style="background:#fce4f1;color:#e84393;">MT</div><div><div style="font-size:13px;font-weight:500;">Nguyễn Minh Trí</div><div style="font-size:11px;color:var(--ink-48);">Super Admin</div></div></div></td>
+              <td><span class="action-badge ab-login">&#x1F511; Login</span></td>
+              <td><span class="res-badge">User</span></td>
+              <td class="details-cell">Đăng nhập thành công — đăng nhập đầu ngày</td>
+              <td class="ip-cell">192.168.1.101</td>
+              <td><span class="status-badge status-success">&#x2714; Thành công</span></td>
+            </tr>
+            <tr class="detail-row" id="detail-15"><td colspan="8"><div class="detail-panel"><div class="detail-title">Chi tiết</div><div class="detail-json">{ "event_id": "EVT-20260616-063022-015", "action": "login", "mfa": true, "auth_method": "password" }</div></div></td></tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile cards -->
+      <div class="mobile-cards">
+        <div class="mobile-card" style="border-left:3px solid #065f46;">
+          <div class="mobile-card-header">
+            <div class="user-avatar" style="background:#fce4f1;color:#e84393;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;">MT</div>
+            <div><div style="font-size:13px;font-weight:600;">Nguyễn Minh Trí</div><div style="font-size:11px;color:var(--ink-48);">16/06 09:47:23</div></div>
+            <span class="status-badge status-success" style="margin-left:auto;">&#x2714; OK</span>
+          </div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Hành động</span><span class="action-badge ab-config">&#x2699; Config Change</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Tài nguyên</span><span class="res-badge">System</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">IP</span><span style="font-family:var(--font-mono);font-size:12px;">192.168.1.101</span></div>
+        </div>
+        <div class="mobile-card" style="border-left:3px solid var(--danger);">
+          <div class="mobile-card-header">
+            <div class="user-avatar" style="background:#e0f8f1;color:#00b894;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;">LD</div>
+            <div><div style="font-size:13px;font-weight:600;">Lê Văn Đức</div><div style="font-size:11px;color:var(--ink-48);">16/06 09:38:55</div></div>
+            <span class="status-badge status-failed" style="margin-left:auto;">&#x2717; Lỗi</span>
+          </div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Hành động</span><span class="action-badge ab-delete">&#x1F5D1; Delete</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Tài nguyên</span><span class="res-badge">Segment</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Lỗi</span><span style="font-size:12px;color:var(--danger-ink);">PERMISSION_DENIED</span></div>
+        </div>
+        <div class="mobile-card" style="border-left:3px solid var(--warning);">
+          <div class="mobile-card-header">
+            <div class="user-avatar" style="background:#ede9fd;color:#6c5ce7;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;">VK</div>
+            <div><div style="font-size:13px;font-weight:600;">Vũ Khánh Linh</div><div style="font-size:11px;color:var(--ink-48);">16/06 09:02:18</div></div>
+            <span class="status-badge status-warning" style="margin-left:auto;">&#x26A0; Cảnh báo</span>
+          </div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Hành động</span><span class="action-badge ab-update">&#x270E; Update</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Tài nguyên</span><span class="res-badge">Customer</span></div>
+          <div class="mobile-card-row"><span class="mobile-card-label">Cảnh báo</span><span style="font-size:12px;color:var(--warning-ink);">Manual override</span></div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div style="padding:14px 20px;border-top:1px solid var(--ink-04);display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-48);flex-wrap:wrap;gap:8px;">
+        <span>Hiển thị 1–15 / 1.842 sự kiện</span>
+        <div style="display:flex;gap:4px;">
+          <button class="btn btn-secondary btn-sm">&#x2039; Trước</button>
+          <button class="btn btn-primary btn-sm">1</button>
+          <button class="btn btn-secondary btn-sm">2</button>
+          <button class="btn btn-secondary btn-sm">3</button>
+          <span style="padding:5px 6px;">…</span>
+          <button class="btn btn-secondary btn-sm">123</button>
+          <button class="btn btn-secondary btn-sm">Sau &#x203A;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+function toggleRow(row, detailId) {
+  const detail = document.getElementById(detailId);
+  const num = detailId.replace('detail-', '');
+  const btn = document.getElementById('btn-' + num);
+  const isOpen = detail.classList.contains('open');
+  detail.classList.toggle('open');
+  btn.textContent = isOpen ? '▼' : '▲';
+  row.classList.toggle('expanded', !isOpen);
+}
+
+let autoRefresh = false;
+let refreshTimer = null;
+function toggleAutoRefresh(btn) {
+  autoRefresh = !autoRefresh;
+  if (autoRefresh) {
+    btn.textContent = '⏸ Dừng làm mới';
+    btn.style.color = 'var(--success-ink)';
+    refreshTimer = setInterval(() => {
+      // Simulate new row appearing
+      const now = new Date();
+      const ts = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+      console.log('Auto-refresh: ' + ts);
+    }, 5000);
+  } else {
+    btn.textContent = '▶ Tự làm mới';
+    btn.style.color = '';
+    clearInterval(refreshTimer);
+  }
+}
+
+function exportCSV() {
+  alert('Đang xuất nhật ký kiểm tra... File CSV sẽ được tải về trong giây lát.');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Workflow Builder</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #004d99;
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+
+  /* Node colors */
+  --node-trigger: #0066cc;
+  --node-trigger-bg: #e8f2fc;
+  --node-wait: #6c5ce7;
+  --node-wait-bg: #ede9fd;
+  --node-condition: #f5a623;
+  --node-condition-bg: #fef5e6;
+  --node-action: #00b894;
+  --node-action-bg: #e0f8f1;
+  --node-end: #ff453a;
+  --node-end-bg: #fde8e7;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; overflow: hidden; }
+
+/* ══ SHELL ══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; gap: 16px;
+}
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: width 0.25s ease; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-item.active { border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+.sidebar.collapsed .sidebar-item { position: relative; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+
+/* ══ BUILDER LAYOUT ══ */
+.builder-layout {
+  position: fixed;
+  top: var(--nav-h);
+  left: var(--sidebar-w);
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.25s ease;
+}
+.builder-layout.sidebar-collapsed { left: 64px; }
+
+/* ── Workflow Toolbar ── */
+.wf-toolbar {
+  height: 56px;
+  background: var(--ink-00);
+  border-bottom: 1px solid var(--ink-08);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 12px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-xs);
+  z-index: 10;
+}
+.wf-name-input {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  color: var(--ink-100);
+  min-width: 200px;
+  background: transparent;
+}
+.wf-name-input:hover { text-decoration: underline dotted var(--ink-32); }
+.wf-name-input:focus { background: var(--ink-02); border-radius: var(--radius-sm); padding: 2px 8px; }
+.wf-status-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; padding: 3px 12px;
+  border-radius: var(--radius-pill); cursor: pointer;
+  transition: all 0.12s;
+}
+.wf-status-draft { background: var(--ink-04); color: var(--ink-48); }
+.wf-status-active { background: var(--success-subtle); color: var(--success-ink); }
+.wf-status-paused { background: var(--warning-subtle); color: var(--warning-ink); }
+.wf-status-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.wf-divider { width: 1px; height: 24px; background: var(--ink-08); }
+.wf-toolbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-success { background: var(--success); color: #fff; }
+.btn-success:hover { background: #25b84c; }
+.btn-sm { font-size: 12px; padding: 5px 12px; }
+.btn-warning { background: var(--warning-subtle); color: var(--warning-ink); border: 1px solid rgba(245,166,35,0.3); }
+
+.wf-template-select {
+  height: 32px; border-radius: var(--radius-md); border: 1px solid var(--ink-08);
+  background: var(--ink-00); padding: 0 28px 0 10px; font-size: 13px;
+  color: var(--ink-80); font-family: var(--font-text); cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a0a0a0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+  outline: none;
+}
+
+/* ── 3-panel body ── */
+.wf-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Left Panel — Node Palette */
+.wf-palette {
+  width: 220px;
+  background: var(--ink-00);
+  border-right: 1px solid var(--ink-08);
+  overflow-y: auto;
+  flex-shrink: 0;
+  padding: 16px 12px;
+}
+.palette-section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-32);
+  padding: 0 4px 8px; margin-top: 12px;
+}
+.palette-section-label:first-child { margin-top: 0; }
+.palette-node {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: var(--radius-md);
+  font-size: 13px; font-weight: 500; color: var(--ink-80);
+  cursor: grab; margin-bottom: 4px;
+  border: 1.5px dashed transparent;
+  transition: all 0.12s;
+  user-select: none;
+}
+.palette-node:hover { background: var(--ink-02); border-color: var(--ink-08); }
+.palette-node:active { cursor: grabbing; }
+.palette-node-icon {
+  width: 32px; height: 32px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.palette-node-icon.trigger { background: var(--node-trigger-bg); color: var(--node-trigger); }
+.palette-node-icon.wait { background: var(--node-wait-bg); color: var(--node-wait); }
+.palette-node-icon.condition { background: var(--node-condition-bg); color: var(--node-condition); }
+.palette-node-icon.action { background: var(--node-action-bg); color: var(--node-action); }
+.palette-node-icon.end { background: var(--node-end-bg); color: var(--node-end); }
+.palette-node-info { flex: 1; min-width: 0; }
+.palette-node-name { font-size: 13px; font-weight: 600; color: var(--ink-100); }
+.palette-node-desc { font-size: 11px; color: var(--ink-48); }
+
+/* Canvas */
+.wf-canvas {
+  flex: 1;
+  overflow: auto;
+  background: #f0f2f5;
+  position: relative;
+  background-image: radial-gradient(circle, #d0d4db 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.canvas-inner {
+  position: relative;
+  width: 1600px;
+  height: 900px;
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/* SVG connector lines */
+.wf-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.connector { fill: none; stroke: var(--ink-16); stroke-width: 2; }
+.connector-label { font-size: 11px; fill: var(--ink-48); font-family: var(--font-text); font-weight: 600; }
+
+/* Workflow Nodes */
+.wf-node {
+  position: absolute;
+  width: 200px;
+  border-radius: var(--radius-lg);
+  background: var(--ink-00);
+  box-shadow: var(--shadow-md);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s;
+  user-select: none;
+}
+.wf-node:hover { box-shadow: var(--shadow-lg); }
+.wf-node.selected { border-color: var(--brand-primary); box-shadow: 0 0 0 3px var(--brand-primary-subtle), var(--shadow-lg); }
+
+.wf-node-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-bottom: 1px solid var(--ink-04);
+}
+.wf-node-icon {
+  width: 30px; height: 30px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.node-trigger .wf-node-header { background: var(--node-trigger-bg); }
+.node-trigger .wf-node-icon { background: var(--node-trigger); color: #fff; }
+.node-wait .wf-node-header { background: var(--node-wait-bg); }
+.node-wait .wf-node-icon { background: var(--node-wait); color: #fff; }
+.node-condition .wf-node-header { background: var(--node-condition-bg); }
+.node-condition .wf-node-icon { background: var(--node-condition); color: #fff; }
+.node-action .wf-node-header { background: var(--node-action-bg); }
+.node-action .wf-node-icon { background: var(--node-action); color: #fff; }
+.node-end .wf-node-header { background: var(--node-end-bg); }
+.node-end .wf-node-icon { background: var(--node-end); color: #fff; }
+
+.wf-node-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.node-trigger .wf-node-type { color: var(--node-trigger); }
+.node-wait .wf-node-type { color: var(--node-wait); }
+.node-condition .wf-node-type { color: var(--node-condition); }
+.node-action .wf-node-type { color: var(--node-action); }
+.node-end .wf-node-type { color: var(--node-end); }
+.wf-node-title { font-size: 13px; font-weight: 600; color: var(--ink-100); }
+
+.wf-node-body { padding: 10px 14px 12px; }
+.wf-node-detail { font-size: 12px; color: var(--ink-48); }
+.wf-node-detail strong { color: var(--ink-80); }
+
+.wf-node-port {
+  position: absolute; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--ink-00); border: 2px solid var(--ink-16);
+  transition: all 0.12s; cursor: crosshair;
+}
+.wf-node-port:hover { background: var(--brand-primary); border-color: var(--brand-primary); transform: scale(1.4); }
+.port-out { bottom: -5px; left: 50%; transform: translateX(-50%); }
+.port-out-yes { bottom: -5px; left: 30%; transform: translateX(-50%); }
+.port-out-no { bottom: -5px; left: 70%; transform: translateX(-50%); }
+
+/* Condition branches label */
+.branch-labels {
+  display: flex; justify-content: space-around;
+  padding: 0 10px 4px; font-size: 10px; font-weight: 700;
+  color: var(--ink-32); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.branch-yes { color: var(--success-ink); }
+.branch-no { color: var(--danger-ink); }
+
+/* Add node button */
+.add-node-btn {
+  position: absolute;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--ink-00); border: 2px solid var(--ink-16);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: var(--ink-32); cursor: pointer;
+  transition: all 0.15s; line-height: 1;
+  box-shadow: var(--shadow-xs);
+}
+.add-node-btn:hover { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; transform: scale(1.2); }
+
+/* Right Panel — Properties */
+.wf-props {
+  width: 280px;
+  background: var(--ink-00);
+  border-left: 1px solid var(--ink-08);
+  overflow-y: auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+.wf-props-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--ink-08);
+  display: flex; align-items: center; gap: 10px;
+}
+.wf-props-icon { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+.wf-props-title { font-size: 14px; font-weight: 600; color: var(--ink-100); }
+.wf-props-type { font-size: 11px; color: var(--ink-48); }
+.wf-props-body { padding: 16px 20px; flex: 1; overflow-y: auto; }
+.prop-group { margin-bottom: 20px; }
+.prop-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-48); margin-bottom: 6px; display: block; }
+.prop-input {
+  width: 100%; height: 34px; border-radius: var(--radius-md);
+  border: 1px solid var(--ink-08); background: var(--ink-02);
+  padding: 0 10px; font-size: 13px; color: var(--ink-80);
+  font-family: var(--font-text); outline: none; transition: all 0.12s;
+}
+.prop-input:focus { border-color: var(--brand-primary); background: var(--ink-00); box-shadow: var(--shadow-focus); }
+.prop-select {
+  width: 100%; height: 34px; border-radius: var(--radius-md);
+  border: 1px solid var(--ink-08); background: var(--ink-02);
+  padding: 0 28px 0 10px; font-size: 13px; color: var(--ink-80);
+  font-family: var(--font-text); outline: none; cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a0a0a0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+}
+.prop-select:focus { border-color: var(--brand-primary); background-color: var(--ink-00); }
+.prop-textarea {
+  width: 100%; border-radius: var(--radius-md);
+  border: 1px solid var(--ink-08); background: var(--ink-02);
+  padding: 8px 10px; font-size: 13px; color: var(--ink-80);
+  font-family: var(--font-text); outline: none; transition: all 0.12s;
+  resize: vertical; min-height: 72px;
+}
+.prop-textarea:focus { border-color: var(--brand-primary); background: var(--ink-00); }
+.prop-row { display: flex; gap: 8px; }
+.prop-row .prop-group { flex: 1; margin-bottom: 0; }
+.prop-hint { font-size: 11px; color: var(--ink-48); margin-top: 4px; }
+.wf-props-empty { padding: 40px 20px; text-align: center; color: var(--ink-32); }
+.wf-props-empty-icon { font-size: 32px; margin-bottom: 12px; }
+.wf-props-empty p { font-size: 13px; line-height: 1.5; }
+.wf-props-footer { padding: 12px 20px; border-top: 1px solid var(--ink-08); display: flex; gap: 8px; }
+
+/* Canvas zoom controls */
+.canvas-controls {
+  position: absolute; bottom: 20px; right: 20px;
+  display: flex; gap: 4px;
+  background: var(--ink-00);
+  border: 1px solid var(--ink-08);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  z-index: 10;
+}
+.canvas-ctrl-btn {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: var(--ink-60); cursor: pointer;
+  border: none; background: none; transition: all 0.12s;
+  border-right: 1px solid var(--ink-08);
+}
+.canvas-ctrl-btn:last-child { border-right: none; }
+.canvas-ctrl-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.canvas-zoom-label { display: flex; align-items: center; padding: 0 10px; font-size: 11px; font-weight: 600; color: var(--ink-48); min-width: 46px; text-align: center; justify-content: center; border-right: 1px solid var(--ink-08); }
+
+/* Node stats */
+.wf-stats-bar {
+  padding: 8px 20px;
+  background: var(--ink-02);
+  border-top: 1px solid var(--ink-08);
+  display: flex; align-items: center; gap: 20px;
+  font-size: 12px; color: var(--ink-48);
+  flex-shrink: 0;
+}
+.wf-stat { display: flex; align-items: center; gap: 5px; }
+.wf-stat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .builder-layout { left: 64px; }
+  .wf-palette { width: 180px; }
+  .wf-props { width: 240px; }
+}
+@media (max-width: 767px) {
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .builder-layout { left: 0; }
+  .wf-palette { display: none; }
+  .wf-props { width: 220px; }
+  .topnav { padding: 0 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Ngọc Dung ▾</span>
+    <div class="topnav-avatar">MK</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item active" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+      <span class="toggle-collapse">&#x276E;</span>
+      <span class="toggle-expand">&#x276F;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Builder Layout -->
+<div class="builder-layout" id="builderLayout">
+
+  <!-- Toolbar -->
+  <div class="wf-toolbar">
+    <input class="wf-name-input" type="text" value="Trial Nurture — Ngọc Dung" />
+    <span class="wf-status-badge wf-status-draft">Draft</span>
+    <div class="wf-divider"></div>
+    <select class="wf-template-select" onchange="loadTemplate(this.value)">
+      <option value="">Chọn template...</option>
+      <option value="trial">Trial Nurture</option>
+      <option value="retention">Post-Treatment Retention</option>
+      <option value="winback">Win-back LAPSED</option>
+      <option value="vip">VIP Care</option>
+    </select>
+    <div class="wf-toolbar-right">
+      <button class="btn btn-secondary btn-sm" onclick="showHistory()">&#x21BB; Lịch sử</button>
+      <button class="btn btn-secondary btn-sm">&#x1F4CB; Kiểm tra</button>
+      <button class="btn btn-secondary btn-sm">&#x1F4BE; Lưu</button>
+      <button class="btn btn-success btn-sm" onclick="activateWf()">&#x25B6; Kích hoạt</button>
+    </div>
+  </div>
+
+  <!-- Body: Palette + Canvas + Props -->
+  <div class="wf-body">
+
+    <!-- Left Palette -->
+    <div class="wf-palette">
+      <div class="palette-section-label">Trigger</div>
+      <div class="palette-node" draggable="true" data-type="trigger">
+        <div class="palette-node-icon trigger">&#x26A1;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Trigger</div>
+          <div class="palette-node-desc">Sự kiện khởi đầu</div>
+        </div>
+      </div>
+
+      <div class="palette-section-label">Điều khiển luồng</div>
+      <div class="palette-node" draggable="true" data-type="wait">
+        <div class="palette-node-icon wait">&#x23F3;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Chờ</div>
+          <div class="palette-node-desc">Delay / lịch gửi</div>
+        </div>
+      </div>
+      <div class="palette-node" draggable="true" data-type="condition">
+        <div class="palette-node-icon condition">&#x2194;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Điều kiện</div>
+          <div class="palette-node-desc">Rẽ nhánh if/else</div>
+        </div>
+      </div>
+
+      <div class="palette-section-label">Hành động</div>
+      <div class="palette-node" draggable="true" data-type="email">
+        <div class="palette-node-icon action">&#x2709;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Gửi Email</div>
+          <div class="palette-node-desc">Email marketing</div>
+        </div>
+      </div>
+      <div class="palette-node" draggable="true" data-type="sms">
+        <div class="palette-node-icon action">&#x1F4F1;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Gửi SMS</div>
+          <div class="palette-node-desc">Tin nhắn văn bản</div>
+        </div>
+      </div>
+      <div class="palette-node" draggable="true" data-type="zalo">
+        <div class="palette-node-icon action" style="background:#e0f8f1; color:#00b894; font-weight:700; font-size:11px;">ZNS</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Zalo ZNS</div>
+          <div class="palette-node-desc">Thông báo Zalo</div>
+        </div>
+      </div>
+      <div class="palette-node" draggable="true" data-type="push">
+        <div class="palette-node-icon action">&#x1F514;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Push Notification</div>
+          <div class="palette-node-desc">App notification</div>
+        </div>
+      </div>
+      <div class="palette-node" draggable="true" data-type="tag">
+        <div class="palette-node-icon action">&#x1F3F7;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Cập nhật Tag</div>
+          <div class="palette-node-desc">Gắn / gỡ tag</div>
+        </div>
+      </div>
+      <div class="palette-node" draggable="true" data-type="score">
+        <div class="palette-node-icon action">&#x2605;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Cộng điểm</div>
+          <div class="palette-node-desc">Điều chỉnh score</div>
+        </div>
+      </div>
+
+      <div class="palette-section-label">Kết thúc</div>
+      <div class="palette-node" draggable="true" data-type="end">
+        <div class="palette-node-icon end">&#x25A0;</div>
+        <div class="palette-node-info">
+          <div class="palette-node-name">Kết thúc</div>
+          <div class="palette-node-desc">Cuối workflow</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas -->
+    <div class="wf-canvas" id="wfCanvas">
+      <div class="canvas-inner" id="canvasInner">
+
+        <!-- SVG connectors -->
+        <svg class="wf-svg" id="wfSvg">
+          <!-- Trigger → Wait 1d -->
+          <path class="connector" d="M 340 118 L 340 160 L 500 160 L 500 200" />
+          <!-- Wait 1d → Action: App Chat -->
+          <path class="connector" d="M 500 288 L 500 330 L 500 370" />
+          <!-- Action → Wait 7d -->
+          <path class="connector" d="M 500 458 L 500 498" />
+          <!-- Wait 7d → Condition -->
+          <path class="connector" d="M 500 586 L 500 626 L 660 626 L 660 666" />
+          <!-- Condition → Branch YES (Send Offer) -->
+          <path class="connector" d="M 660 754 L 660 794 L 480 794 L 480 830" />
+          <!-- Branch YES text -->
+          <text class="connector-label branch-yes" x="590" y="810" fill="#1a7a31">CÓ</text>
+          <!-- Condition → Branch NO (End) -->
+          <path class="connector" d="M 660 754 L 660 794 L 840 794 L 840 830" />
+          <!-- Branch NO text -->
+          <text class="connector-label branch-no" x="750" y="810" fill="#9b1c15">KHÔNG</text>
+        </svg>
+
+        <!-- Node 1: Trigger -->
+        <div class="wf-node node-trigger selected" style="left: 240px; top: 40px;" onclick="selectNode('trigger')">
+          <div class="wf-node-header">
+            <div class="wf-node-icon">&#x26A1;</div>
+            <div>
+              <div class="wf-node-type">Trigger</div>
+              <div class="wf-node-title">Khách bắt đầu Trial</div>
+            </div>
+          </div>
+          <div class="wf-node-body">
+            <div class="wf-node-detail">Lifecycle: <strong>LEAD → TRIAL</strong></div>
+            <div class="wf-node-detail" style="margin-top:3px;">BU: <strong>Ngọc Dung</strong></div>
+          </div>
+          <div class="wf-node-port port-out"></div>
+        </div>
+
+        <!-- Node 2: Wait 1d -->
+        <div class="wf-node node-wait" style="left: 400px; top: 200px;" onclick="selectNode('wait1')">
+          <div class="wf-node-header">
+            <div class="wf-node-icon">&#x23F3;</div>
+            <div>
+              <div class="wf-node-type">Wait</div>
+              <div class="wf-node-title">Chờ 1 ngày</div>
+            </div>
+          </div>
+          <div class="wf-node-body">
+            <div class="wf-node-detail">Delay: <strong>1 ngày</strong></div>
+            <div class="wf-node-detail" style="margin-top:3px;">Giờ gửi: <strong>9:00 – 21:00</strong></div>
+          </div>
+          <div class="wf-node-port port-out"></div>
+        </div>
+
+        <!-- Node 3: Action - App Chat -->
+        <div class="wf-node node-action" style="left: 400px; top: 370px;" onclick="selectNode('action1')">
+          <div class="wf-node-header">
+            <div class="wf-node-icon">&#x1F4AC;</div>
+            <div>
+              <div class="wf-node-type">Action</div>
+              <div class="wf-node-title">Gửi App Chat</div>
+            </div>
+          </div>
+          <div class="wf-node-body">
+            <div class="wf-node-detail">Kênh: <strong>App In-App</strong></div>
+            <div class="wf-node-detail" style="margin-top:3px;">Template: <strong>Trial Welcome</strong></div>
+          </div>
+          <div class="wf-node-port port-out"></div>
+        </div>
+
+        <!-- Node 4: Wait 7d -->
+        <div class="wf-node node-wait" style="left: 400px; top: 498px;" onclick="selectNode('wait2')">
+          <div class="wf-node-header">
+            <div class="wf-node-icon">&#x23F3;</div>
+            <div>
+              <div class="wf-node-type">Wait</div>
+              <div class="wf-node-title">Chờ 7 ngày</div>
+            </div>
+          </div>
+          <div class="wf-node-body">
+            <div class="wf-node-detail">Delay: <strong>7 ngày</strong></div>
+            <div class="wf-node-detail" style="margin-top:3px;">Hoặc khi có booking</div>
+          </div>
+          <div class="wf-node-port port-out"></div>
+        </div>
+
+        <!-- Node 5: Condition -->
+        <div class="wf-node node-condition" style="left: 560px; top: 666px;" onclick="selectNode('cond1')">
+          <div class="wf-node-header">
+            <div class="wf-node-icon">&#x2194;</div>
+            <div>
+              <div class="wf-node-type">Condition</div>
+              <div class="wf-node-title">Đã đặt lịch?</div>
+            </div>
+          </div>
+          <div class="wf-node-body">
+            <div class="wf-node-detail">Nếu: <strong>booking_count &gt; 0</strong></div>
+          </div>
+          <div class="branch-labels">
+            <span class="branch-yes">Có ▼</span>
+            <span class="branch-no">Không ▼</span>
+          </div>
+          <div class="wf-node-port port-out-yes"></div>
+          <div class="wf-node-port port-out-no"></div>
+        </div>
+
+        <!-- Node 6a: Action - Send Offer (YES branch) -->
+        <div class="wf-node node-action" style="left: 380px; top: 830px;" onclick="selectNode('action2')">
+          <div class="wf-node-header">
+            <div class="wf-node-icon" style="font-size:11px; font-weight:700; background:#00b894; color:#fff;">ZNS</div>
+            <div>
+              <div class="wf-node-type">Action</div>
+              <div class="wf-node-title">Gửi Zalo ZNS</div>
+            </div>
+          </div>
+          <div class="wf-node-body">
+            <div class="wf-node-detail">Template: <strong>Ưu đãi Trial</strong></div>
+            <div class="wf-node-detail" style="margin-top:3px;">Giảm: <strong>20% lần đầu</strong></div>
+          </div>
+          <div class="wf-node-port port-out"></div>
+        </div>
+
+        <!-- Node 6b: End (NO branch) -->
+        <div class="wf-node node-end" style="left: 740px; top: 830px;" onclick="selectNode('end1')">
+          <div class="wf-node-header">
+            <div class="wf-node-icon">&#x25A0;</div>
+            <div>
+              <div class="wf-node-type">End</div>
+              <div class="wf-node-title">Kết thúc</div>
+            </div>
+          </div>
+          <div class="wf-node-body">
+            <div class="wf-node-detail">Gắn tag: <strong>trial-no-booking</strong></div>
+          </div>
+        </div>
+
+      </div><!-- /canvas-inner -->
+
+      <!-- Canvas controls -->
+      <div class="canvas-controls">
+        <button class="canvas-ctrl-btn" title="Thu nhỏ">−</button>
+        <span class="canvas-zoom-label">100%</span>
+        <button class="canvas-ctrl-btn" title="Phóng to">+</button>
+        <button class="canvas-ctrl-btn" title="Vừa màn hình" style="font-size:12px;">&#x2922;</button>
+      </div>
+
+    </div><!-- /canvas -->
+
+    <!-- Right Properties -->
+    <div class="wf-props">
+      <div class="wf-props-header">
+        <div class="wf-props-icon" style="background: var(--node-trigger-bg); color: var(--node-trigger);">&#x26A1;</div>
+        <div>
+          <div class="wf-props-title">Trigger</div>
+          <div class="wf-props-type">Sự kiện khởi đầu</div>
+        </div>
+      </div>
+      <div class="wf-props-body">
+        <div class="prop-group">
+          <label class="prop-label">Tên node</label>
+          <input class="prop-input" type="text" value="Khách bắt đầu Trial" />
+        </div>
+        <div class="prop-group">
+          <label class="prop-label">Sự kiện trigger</label>
+          <select class="prop-select">
+            <option selected>Lifecycle chuyển sang TRIAL</option>
+            <option>Đặt lịch lần đầu</option>
+            <option>Đăng ký tài khoản</option>
+            <option>Hoàn thành dịch vụ</option>
+            <option>Không hoạt động 30 ngày</option>
+          </select>
+        </div>
+        <div class="prop-group">
+          <label class="prop-label">BU áp dụng</label>
+          <select class="prop-select">
+            <option selected>Ngọc Dung</option>
+            <option>Zema</option>
+            <option>Ocany</option>
+            <option>Tất cả</option>
+          </select>
+        </div>
+        <div class="prop-group">
+          <label class="prop-label">Điều kiện lọc thêm</label>
+          <input class="prop-input" type="text" placeholder="e.g. source = 'facebook'" />
+          <div class="prop-hint">Để trống nếu áp dụng cho tất cả</div>
+        </div>
+        <div class="prop-group">
+          <label class="prop-label">Tần suất kích hoạt</label>
+          <select class="prop-select">
+            <option selected>Mỗi khách chỉ 1 lần</option>
+            <option>Mỗi lần sự kiện xảy ra</option>
+            <option>Tối đa 1 lần / 30 ngày</option>
+          </select>
+        </div>
+        <div class="prop-group">
+          <label class="prop-label">Ghi chú</label>
+          <textarea class="prop-textarea" placeholder="Ghi chú nội bộ..."></textarea>
+        </div>
+      </div>
+      <div class="wf-props-footer">
+        <button class="btn btn-secondary btn-sm" style="flex:1;">Xóa node</button>
+        <button class="btn btn-primary btn-sm" style="flex:1;">Áp dụng</button>
+      </div>
+    </div>
+
+  </div><!-- /wf-body -->
+
+  <!-- Stats bar -->
+  <div class="wf-stats-bar">
+    <span class="wf-stat">
+      <span class="wf-stat-dot" style="background:var(--node-trigger);"></span>
+      1 Trigger
+    </span>
+    <span class="wf-stat">
+      <span class="wf-stat-dot" style="background:var(--node-wait);"></span>
+      2 Wait
+    </span>
+    <span class="wf-stat">
+      <span class="wf-stat-dot" style="background:var(--node-condition);"></span>
+      1 Condition
+    </span>
+    <span class="wf-stat">
+      <span class="wf-stat-dot" style="background:var(--node-action);"></span>
+      2 Action
+    </span>
+    <span class="wf-stat">
+      <span class="wf-stat-dot" style="background:var(--node-end);"></span>
+      1 End
+    </span>
+    <span style="margin-left:auto;">Cập nhật: 16/06/2026 09:42</span>
+    <span style="color:var(--success-ink); font-weight:600;">&#x2713; Workflow hợp lệ</span>
+  </div>
+
+</div><!-- /builder-layout -->
+
+<script>
+function toggleSidebar() {
+  const s = document.getElementById('sidebar');
+  const l = document.getElementById('builderLayout');
+  s.classList.toggle('collapsed');
+  l.classList.toggle('sidebar-collapsed');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+function selectNode(id) {
+  document.querySelectorAll('.wf-node').forEach(n => n.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+function activateWf() {
+  const badge = document.querySelector('.wf-status-badge');
+  if (badge.classList.contains('wf-status-draft')) {
+    badge.classList.remove('wf-status-draft');
+    badge.classList.add('wf-status-active');
+    badge.textContent = 'Active';
+    alert('Workflow đã được kích hoạt!');
+  } else {
+    badge.classList.remove('wf-status-active');
+    badge.classList.add('wf-status-paused');
+    badge.textContent = 'Paused';
+  }
+}
+function showHistory() {
+  alert('Lịch sử thay đổi:\n• 16/06/2026 09:42 — Minh Khoa tạo mới\n• 16/06/2026 09:38 — Minh Khoa chỉnh sửa điều kiện');
+}
+function loadTemplate(val) {
+  if (!val) return;
+  const names = {
+    trial: 'Trial Nurture — Ngọc Dung',
+    retention: 'Post-Treatment Retention',
+    winback: 'Win-back LAPSED',
+    vip: 'VIP Care'
+  };
+  document.querySelector('.wf-name-input').value = names[val];
+  alert('Đã tải template: ' + names[val]);
+}
+</script>
+</body>
+</html>

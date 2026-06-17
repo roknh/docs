@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Health Dashboard</title>
+<style>
+:root {
+  --brand-primary: #0066cc; --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc; --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f; --ink-80: #333333; --ink-60: #555555;
+  --ink-48: #7a7a7a; --ink-32: #a0a0a0; --ink-16: #cccccc;
+  --ink-08: #e0e0e0; --ink-04: #f0f0f0; --ink-02: #f5f5f7; --ink-00: #ffffff;
+  --success: #30d158; --success-subtle: #e6f9ec; --success-ink: #1a7a31;
+  --warning: #f5a623; --warning-subtle: #fef5e6; --warning-ink: #8a5d0f;
+  --danger: #ff453a; --danger-subtle: #fde8e7; --danger-ink: #9b1c15;
+  --info: #0a84ff; --info-subtle: #e5f1ff; --info-ink: #004d99;
+  --health-green: #30d158; --health-yellow: #f5a623;
+  --health-orange: #ff9500; --health-red: #ff453a;
+  --tier-diamond: #7c3aed; --tier-diamond-bg: #f3eefc;
+  --tier-gold: #d97706; --tier-gold-bg: #fef9ee;
+  --bu-ngocdung: #e84393; --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7; --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894; --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
+  --radius-xl: 16px; --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px; --sidebar-w: 260px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* Shell */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search { width: 320px; height: 32px; border-radius: var(--radius-pill); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: transform 0.25s ease, width 0.25s ease; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; position: relative; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-danger { background: var(--danger-subtle); color: var(--danger-ink); border: 1px solid rgba(255,69,58,0.15); }
+
+/* Page */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 20px 32px; }
+.page-title-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+.page-actions { display: flex; gap: 8px; }
+.filter-bar { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 12px 32px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.filter-select { height: 34px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); background: var(--ink-00); color: var(--ink-80); font-size: 13px; padding: 0 10px; font-family: var(--font-text); cursor: pointer; }
+.filter-label { font-size: 12px; color: var(--ink-48); font-weight: 500; }
+.filter-divider { width: 1px; height: 20px; background: var(--ink-08); }
+.page-body { padding: 28px 32px; display: flex; flex-direction: column; gap: 24px; }
+.card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 22px 24px; }
+.card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
+.card-title { font-size: 15px; font-weight: 600; }
+.card-subtitle { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.chart-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Health status big cards */
+.health-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.health-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 20px; position: relative; overflow: hidden; }
+.health-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.health-card-healthy::before { background: var(--health-green); }
+.health-card-attention::before { background: var(--health-yellow); }
+.health-card-atrisk::before { background: var(--health-orange); }
+.health-card-critical::before { background: var(--health-red); }
+.health-card-icon { font-size: 24px; margin-bottom: 10px; }
+.health-card-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.health-card-count { font-family: var(--font-display); font-size: 32px; font-weight: 700; letter-spacing: -0.5px; line-height: 1; margin-bottom: 4px; }
+.health-card-pct { font-size: 15px; font-weight: 500; color: var(--ink-48); margin-bottom: 8px; }
+.health-card-trend { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.trend-up { color: var(--success-ink); }
+.trend-down { color: var(--danger-ink); }
+.trend-warn { color: var(--warning-ink); }
+.health-card-healthy .health-card-count { color: var(--health-green); }
+.health-card-attention .health-card-count { color: var(--health-yellow); }
+.health-card-atrisk .health-card-count { color: var(--health-orange); }
+.health-card-critical .health-card-count { color: var(--health-red); }
+.health-card-bar { height: 6px; background: var(--ink-04); border-radius: var(--radius-pill); margin-top: 10px; }
+.health-card-bar-fill { height: 100%; border-radius: var(--radius-pill); }
+
+/* Health map - bubble scatter viz */
+.health-map-wrap { position: relative; width: 100%; }
+.health-map-svg { width: 100%; }
+
+/* Lifecycle × Health matrix */
+.matrix-table { width: 100%; border-collapse: collapse; }
+.matrix-table th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); padding: 8px 10px; text-align: center; border-bottom: 2px solid var(--ink-08); }
+.matrix-table th:first-child { text-align: left; }
+.matrix-table td { padding: 0; border: 1px solid var(--ink-08); font-size: 12px; font-weight: 600; text-align: center; }
+.matrix-table td:first-child { padding: 10px 12px; text-align: left; border-left: none; border-right: 2px solid var(--ink-08); background: var(--ink-00) !important; }
+.matrix-cell { padding: 10px 6px; cursor: pointer; transition: opacity 0.15s; }
+.matrix-cell:hover { opacity: 0.85; }
+.matrix-num { font-size: 14px; font-weight: 700; }
+.matrix-pct { font-size: 10px; font-weight: 400; margin-top: 1px; opacity: 0.8; }
+
+/* Cell urgency color coding */
+.cell-low { background: #f0fff4; color: #15803d; }
+.cell-med { background: #fffbeb; color: #92400e; }
+.cell-high { background: #fff3e0; color: #c2410c; }
+.cell-critical { background: #fef2f2; color: #991b1b; }
+.cell-empty { background: var(--ink-02); color: var(--ink-32); }
+
+/* Alert feed */
+.alert-feed { display: flex; flex-direction: column; gap: 10px; }
+.alert-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid transparent; }
+.alert-item-critical { background: var(--danger-subtle); border-color: rgba(255,69,58,0.2); }
+.alert-item-warning { background: #fff3e0; border-color: rgba(255,149,0,0.2); }
+.alert-item-attention { background: var(--warning-subtle); border-color: rgba(245,166,35,0.2); }
+.alert-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.alert-dot-critical { background: var(--health-red); }
+.alert-dot-warning { background: var(--health-orange); }
+.alert-dot-attention { background: var(--health-yellow); }
+.alert-content { flex: 1; }
+.alert-name { font-size: 13px; font-weight: 600; }
+.alert-desc { font-size: 12px; color: var(--ink-60); margin-top: 2px; }
+.alert-time { font-size: 11px; color: var(--ink-48); flex-shrink: 0; white-space: nowrap; }
+.alert-badges { display: flex; gap: 5px; margin-top: 5px; }
+
+/* CHS factor mini charts */
+.chs-factors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.chs-factor-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 14px 16px; }
+.chs-factor-label { font-size: 11px; font-weight: 600; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.chs-factor-value { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.chs-bar-row { display: flex; flex-direction: column; gap: 5px; }
+.chs-mini-bar { display: flex; align-items: center; gap: 6px; }
+.chs-mini-label { font-size: 10px; color: var(--ink-48); width: 50px; flex-shrink: 0; }
+.chs-mini-track { flex: 1; height: 6px; background: var(--ink-04); border-radius: var(--radius-pill); overflow: hidden; }
+.chs-mini-fill { height: 100%; border-radius: var(--radius-pill); }
+.chs-mini-pct { font-size: 10px; color: var(--ink-48); width: 30px; text-align: right; flex-shrink: 0; }
+
+/* Early warning signals */
+.warning-list { display: flex; flex-direction: column; gap: 8px; }
+.warning-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-md); background: var(--ink-02); border: 1px solid var(--ink-08); }
+.warning-icon { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; }
+.warning-text { flex: 1; }
+.warning-title { font-size: 13px; font-weight: 600; }
+.warning-desc { font-size: 11px; color: var(--ink-48); margin-top: 1px; }
+.warning-count { font-size: 14px; font-weight: 700; text-align: right; flex-shrink: 0; }
+.warning-badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: var(--radius-pill); }
+
+/* LC tags */
+.lc-badge { display: inline-flex; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: var(--radius-pill); letter-spacing: 0.03em; }
+.lc-lead { background: var(--info-subtle); color: var(--info-ink); }
+.lc-trial { background: #f0e6ff; color: #6b21a8; }
+.lc-active { background: var(--success-subtle); color: var(--success-ink); }
+.lc-loyal { background: var(--tier-gold-bg); color: #92400e; }
+.lc-lapsed { background: var(--warning-subtle); color: var(--warning-ink); }
+.lc-churned { background: var(--danger-subtle); color: var(--danger-ink); }
+.hs-tag { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: var(--radius-pill); }
+.hs-tag::before { content: ""; width: 5px; height: 5px; border-radius: 50%; }
+.hs-healthy { background: var(--success-subtle); color: var(--success-ink); }
+.hs-healthy::before { background: var(--health-green); }
+.hs-attention { background: var(--warning-subtle); color: var(--warning-ink); }
+.hs-attention::before { background: var(--health-yellow); }
+.hs-atrisk { background: #fff3e0; color: #c2410c; }
+.hs-atrisk::before { background: var(--health-orange); }
+.hs-critical { background: var(--danger-subtle); color: var(--danger-ink); }
+.hs-critical::before { background: var(--health-red); }
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .content { margin-left: 0 !important; }
+  .hamburger { display: flex; align-items: center; justify-content: center; }
+  .health-cards { grid-template-columns: repeat(2, 1fr); }
+  .chs-factors { grid-template-columns: repeat(2, 1fr); }
+  .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; }
+  .page-body { padding: 20px 16px; }
+  .page-header, .filter-bar { padding: 16px; }
+}
+@media (max-width: 767px) {
+  .topnav-search { display: none; }
+  .health-cards { grid-template-columns: repeat(2, 1fr); }
+  .chs-factors { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleMobileSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Tất cả BU ▾</span>
+    <div class="topnav-avatar">CS</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item active" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+      <span class="toggle-collapse">&#x276E;</span>
+      <span class="toggle-expand">&#x276F;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main content -->
+<div class="content" id="content">
+
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x2661; Health Dashboard</div>
+        <div class="page-subtitle">Theo dõi sức khỏe khách hàng (CHS) — vai trò: CS Manager — cập nhật: 16/06/2026 08:30</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary btn-sm">&#x21BA; Làm mới</button>
+        <button class="btn btn-danger btn-sm">&#x26A0; 47 Cảnh báo</button>
+        <button class="btn btn-secondary btn-sm">&#x2B73; Xuất</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <span class="filter-label">Lọc:</span>
+    <select class="filter-select">
+      <option>Tất cả BU</option>
+      <option>Ngọc Dung</option>
+      <option>Zema</option>
+      <option>Ocany</option>
+    </select>
+    <select class="filter-select">
+      <option>Tất cả chi nhánh</option>
+      <option>TP. Hồ Chí Minh</option>
+      <option>Hà Nội</option>
+      <option>Đà Nẵng</option>
+      <option>Cần Thơ</option>
+    </select>
+    <select class="filter-select">
+      <option>Tất cả vòng đời</option>
+      <option>LEAD</option>
+      <option>TRIAL</option>
+      <option>ACTIVE</option>
+      <option>LOYAL</option>
+      <option>LAPSED</option>
+      <option>CHURNED</option>
+    </select>
+    <div class="filter-divider"></div>
+    <select class="filter-select">
+      <option>Tháng 6/2026</option>
+      <option>7 ngày qua</option>
+      <option>30 ngày qua</option>
+      <option>Quý 2/2026</option>
+    </select>
+  </div>
+
+  <div class="page-body">
+
+    <!-- Health Status Big Cards -->
+    <div class="health-cards">
+      <div class="health-card health-card-healthy">
+        <div class="health-card-icon">&#x1F7E2;</div>
+        <div class="health-card-label" style="color: var(--success-ink);">Healthy</div>
+        <div class="health-card-count">11.842</div>
+        <div class="health-card-pct">47.6%</div>
+        <div class="health-card-trend trend-up">&#x2197; +342 so với tháng trước</div>
+        <div class="health-card-bar"><div class="health-card-bar-fill" style="width:47.6%;background:var(--health-green);"></div></div>
+        <div style="font-size:11px;color:var(--ink-48);margin-top:6px;">CHS 70–100</div>
+      </div>
+      <div class="health-card health-card-attention">
+        <div class="health-card-icon">&#x1F7E1;</div>
+        <div class="health-card-label" style="color: var(--warning-ink);">Attention</div>
+        <div class="health-card-count">7.234</div>
+        <div class="health-card-pct">29.1%</div>
+        <div class="health-card-trend trend-warn">&#x2192; -18 ổn định</div>
+        <div class="health-card-bar"><div class="health-card-bar-fill" style="width:29.1%;background:var(--health-yellow);"></div></div>
+        <div style="font-size:11px;color:var(--ink-48);margin-top:6px;">CHS 40–69</div>
+      </div>
+      <div class="health-card health-card-atrisk">
+        <div class="health-card-icon">&#x1F7E0;</div>
+        <div class="health-card-label" style="color: #c2410c;">At Risk</div>
+        <div class="health-card-count">4.118</div>
+        <div class="health-card-pct">16.6%</div>
+        <div class="health-card-trend trend-down">&#x2198; +127 tăng đáng lo</div>
+        <div class="health-card-bar"><div class="health-card-bar-fill" style="width:16.6%;background:var(--health-orange);"></div></div>
+        <div style="font-size:11px;color:var(--ink-48);margin-top:6px;">CHS 10–39</div>
+      </div>
+      <div class="health-card health-card-critical">
+        <div class="health-card-icon">&#x1F534;</div>
+        <div class="health-card-label" style="color: var(--danger-ink);">Critical</div>
+        <div class="health-card-count">1.677</div>
+        <div class="health-card-pct">6.7%</div>
+        <div class="health-card-trend trend-down">&#x2198; +47 cần can thiệp ngay</div>
+        <div class="health-card-bar"><div class="health-card-bar-fill" style="width:6.7%;background:var(--health-red);"></div></div>
+        <div style="font-size:11px;color:var(--ink-48);margin-top:6px;">CHS 0–9</div>
+      </div>
+    </div>
+
+    <!-- Health Map + Alert Feed -->
+    <div class="chart-grid-2">
+      <!-- Health Map - Treemap visualization -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Health Map — Phân bố CHS</div>
+            <div class="card-subtitle">Treemap theo nhóm khách hàng | diện tích = số lượng KH</div>
+          </div>
+          <button class="btn btn-secondary btn-sm">&#x26F6; Mở rộng</button>
+        </div>
+        <svg width="100%" height="260" viewBox="0 0 480 260" style="border-radius: 8px; overflow: hidden;">
+          <!-- HEALTHY block (top-left, largest) -->
+          <rect x="0" y="0" width="228" height="150" fill="#30d158" opacity="0.85" rx="4"/>
+          <text x="114" y="65" text-anchor="middle" font-size="13" font-weight="700" fill="white">HEALTHY</text>
+          <text x="114" y="85" text-anchor="middle" font-size="22" font-weight="800" fill="white">11.842</text>
+          <text x="114" y="103" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.85)">47.6% — CHS 70–100</text>
+
+          <!-- ATTENTION block (top-right) -->
+          <rect x="232" y="0" width="248" height="150" fill="#f5a623" opacity="0.85" rx="4"/>
+          <text x="356" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="white">ATTENTION</text>
+          <text x="356" y="80" text-anchor="middle" font-size="22" font-weight="800" fill="white">7.234</text>
+          <text x="356" y="98" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.85)">29.1% — CHS 40–69</text>
+
+          <!-- AT RISK block (bottom-left) -->
+          <rect x="0" y="154" width="310" height="106" fill="#ff9500" opacity="0.85" rx="4"/>
+          <text x="155" y="198" text-anchor="middle" font-size="13" font-weight="700" fill="white">AT RISK</text>
+          <text x="155" y="220" text-anchor="middle" font-size="20" font-weight="800" fill="white">4.118</text>
+          <text x="155" y="238" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.85)">16.6% — CHS 10–39</text>
+
+          <!-- CRITICAL block (bottom-right) -->
+          <rect x="314" y="154" width="166" height="106" fill="#ff453a" opacity="0.85" rx="4"/>
+          <text x="397" y="198" text-anchor="middle" font-size="12" font-weight="700" fill="white">CRITICAL</text>
+          <text x="397" y="220" text-anchor="middle" font-size="18" font-weight="800" fill="white">1.677</text>
+          <text x="397" y="238" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.85)">6.7% — CHS 0–9</text>
+        </svg>
+        <div style="display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap;">
+          <span style="font-size:11px; display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;background:var(--health-green);border-radius:2px;display:inline-block;"></span>Healthy</span>
+          <span style="font-size:11px; display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;background:var(--health-yellow);border-radius:2px;display:inline-block;"></span>Attention</span>
+          <span style="font-size:11px; display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;background:var(--health-orange);border-radius:2px;display:inline-block;"></span>At Risk</span>
+          <span style="font-size:11px; display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;background:var(--health-red);border-radius:2px;display:inline-block;"></span>Critical</span>
+        </div>
+      </div>
+
+      <!-- Alert feed -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">&#x26A0; Cảnh báo thay đổi CHS</div>
+            <div class="card-subtitle">Khách hàng vừa xuống hạng sức khỏe — 24h qua</div>
+          </div>
+          <button class="btn btn-secondary btn-sm">Xem tất cả</button>
+        </div>
+        <div class="alert-feed">
+          <div class="alert-item alert-item-critical">
+            <div class="alert-dot alert-dot-critical"></div>
+            <div class="alert-content">
+              <div class="alert-name"><a href="ui-customer360.html" style="color:var(--danger-ink);text-decoration:none;">Nguyễn Thị Mai Anh</a></div>
+              <div class="alert-desc">Healthy → Critical (CHS 82 → 6) — hủy 3 lịch liên tiếp, không mở app 18 ngày</div>
+              <div class="alert-badges">
+                <span class="lc-badge lc-active">ACTIVE</span>
+                <span class="hs-tag hs-critical">CRITICAL</span>
+                <span style="background:var(--bu-ngocdung-bg);color:var(--bu-ngocdung);font-size:10px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ngọc Dung</span>
+              </div>
+            </div>
+            <div class="alert-time">15 phút trước</div>
+          </div>
+          <div class="alert-item alert-item-critical">
+            <div class="alert-dot alert-dot-critical"></div>
+            <div class="alert-content">
+              <div class="alert-name"><a href="ui-customer360.html" style="color:var(--danger-ink);text-decoration:none;">Trần Văn Hùng</a></div>
+              <div class="alert-desc">Attention → Critical (CHS 45 → 4) — đánh giá 1 sao, khiếu nại chưa giải quyết</div>
+              <div class="alert-badges">
+                <span class="lc-badge lc-loyal">LOYAL</span>
+                <span class="hs-tag hs-critical">CRITICAL</span>
+                <span style="background:var(--bu-zema-bg);color:var(--bu-zema);font-size:10px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Zema</span>
+              </div>
+            </div>
+            <div class="alert-time">42 phút trước</div>
+          </div>
+          <div class="alert-item alert-item-warning">
+            <div class="alert-dot alert-dot-warning"></div>
+            <div class="alert-content">
+              <div class="alert-name"><a href="ui-customer360.html" style="color:#c2410c;text-decoration:none;">Lê Minh Phúc</a></div>
+              <div class="alert-desc">Healthy → At Risk (CHS 71 → 28) — giảm tần suất đặt lịch từ 4x/tháng xuống 1x</div>
+              <div class="alert-badges">
+                <span class="lc-badge lc-active">ACTIVE</span>
+                <span class="hs-tag hs-atrisk">AT RISK</span>
+                <span style="background:var(--bu-ocany-bg);color:var(--bu-ocany);font-size:10px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ocany</span>
+              </div>
+            </div>
+            <div class="alert-time">2 giờ trước</div>
+          </div>
+          <div class="alert-item alert-item-warning">
+            <div class="alert-dot alert-dot-warning"></div>
+            <div class="alert-content">
+              <div class="alert-name"><a href="ui-customer360.html" style="color:#c2410c;text-decoration:none;">Phạm Thị Thu</a></div>
+              <div class="alert-desc">Attention → At Risk (CHS 52 → 19) — gỡ cài đặt app, email bounce 2 lần</div>
+              <div class="alert-badges">
+                <span class="lc-badge lc-lapsed">LAPSED</span>
+                <span class="hs-tag hs-atrisk">AT RISK</span>
+                <span style="background:var(--bu-ngocdung-bg);color:var(--bu-ngocdung);font-size:10px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Ngọc Dung</span>
+              </div>
+            </div>
+            <div class="alert-time">3 giờ trước</div>
+          </div>
+          <div class="alert-item alert-item-attention">
+            <div class="alert-dot alert-dot-attention"></div>
+            <div class="alert-content">
+              <div class="alert-name"><a href="ui-customer360.html" style="color:var(--warning-ink);text-decoration:none;">Hoàng Văn Bình</a></div>
+              <div class="alert-desc">Healthy → Attention (CHS 78 → 48) — chưa sử dụng dịch vụ trong 21 ngày</div>
+              <div class="alert-badges">
+                <span class="lc-badge lc-active">ACTIVE</span>
+                <span class="hs-tag hs-attention">ATTENTION</span>
+                <span style="background:var(--bu-zema-bg);color:var(--bu-zema);font-size:10px;padding:2px 7px;border-radius:var(--radius-pill);font-weight:600;">Zema</span>
+              </div>
+            </div>
+            <div class="alert-time">5 giờ trước</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lifecycle × Health Matrix -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Ma trận Lifecycle × Health Status</div>
+          <div class="card-subtitle">Số khách hàng tại mỗi ô | Màu sắc = mức độ ưu tiên can thiệp</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:12px;color:var(--ink-48);">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:#f0fff4;border:1px solid #86efac;border-radius:2px;display:inline-block;"></span>Ổn</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:#fffbeb;border:1px solid #fde68a;border-radius:2px;display:inline-block;"></span>Theo dõi</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:#fff3e0;border:1px solid #fdba74;border-radius:2px;display:inline-block;"></span>Ưu tiên</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:12px;height:12px;background:#fef2f2;border:1px solid #fca5a5;border-radius:2px;display:inline-block;"></span>Khẩn cấp</span>
+        </div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="matrix-table" style="min-width: 560px;">
+          <thead>
+            <tr>
+              <th style="min-width:110px;">Lifecycle ↓ / Health →</th>
+              <th style="color:var(--success-ink);">&#x1F7E2; HEALTHY</th>
+              <th style="color:var(--warning-ink);">&#x1F7E1; ATTENTION</th>
+              <th style="color:#c2410c;">&#x1F7E0; AT RISK</th>
+              <th style="color:var(--danger-ink);">&#x1F534; CRITICAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="lc-badge lc-lead">LEAD</span></td>
+              <td class="cell-low"><div class="matrix-cell"><div class="matrix-num">412</div><div class="matrix-pct">17.6%</div></div></td>
+              <td class="cell-med"><div class="matrix-cell"><div class="matrix-num">876</div><div class="matrix-pct">37.4%</div></div></td>
+              <td class="cell-high"><div class="matrix-cell"><div class="matrix-num">734</div><div class="matrix-pct">31.4%</div></div></td>
+              <td class="cell-critical"><div class="matrix-cell"><div class="matrix-num">319</div><div class="matrix-pct">13.6%</div></div></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-trial">TRIAL</span></td>
+              <td class="cell-low"><div class="matrix-cell"><div class="matrix-num">1.456</div><div class="matrix-pct">46.5%</div></div></td>
+              <td class="cell-med"><div class="matrix-cell"><div class="matrix-num">1.023</div><div class="matrix-pct">32.7%</div></div></td>
+              <td class="cell-high"><div class="matrix-cell"><div class="matrix-num">523</div><div class="matrix-pct">16.7%</div></div></td>
+              <td class="cell-critical"><div class="matrix-cell"><div class="matrix-num">126</div><div class="matrix-pct">4.0%</div></div></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-active">ACTIVE</span></td>
+              <td class="cell-low"><div class="matrix-cell"><div class="matrix-num">6.234</div><div class="matrix-pct">65.9%</div></div></td>
+              <td class="cell-med"><div class="matrix-cell"><div class="matrix-num">2.456</div><div class="matrix-pct">26.0%</div></div></td>
+              <td class="cell-high"><div class="matrix-cell"><div class="matrix-num">621</div><div class="matrix-pct">6.6%</div></div></td>
+              <td class="cell-critical"><div class="matrix-cell"><div class="matrix-num">145</div><div class="matrix-pct">1.5%</div></div></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-loyal">LOYAL</span></td>
+              <td class="cell-low"><div class="matrix-cell"><div class="matrix-num">3.121</div><div class="matrix-pct">76.1%</div></div></td>
+              <td class="cell-med"><div class="matrix-cell"><div class="matrix-num">756</div><div class="matrix-pct">18.4%</div></div></td>
+              <td class="cell-high"><div class="matrix-cell"><div class="matrix-num">178</div><div class="matrix-pct">4.3%</div></div></td>
+              <td class="cell-critical"><div class="matrix-cell"><div class="matrix-num">47</div><div class="matrix-pct">1.1%</div></div></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-lapsed">LAPSED</span></td>
+              <td class="cell-low"><div class="matrix-cell"><div class="matrix-num">412</div><div class="matrix-pct">10.6%</div></div></td>
+              <td class="cell-med"><div class="matrix-cell"><div class="matrix-num">1.876</div><div class="matrix-pct">48.2%</div></div></td>
+              <td class="cell-high"><div class="matrix-cell"><div class="matrix-num">1.234</div><div class="matrix-pct">31.7%</div></div></td>
+              <td class="cell-critical"><div class="matrix-cell"><div class="matrix-num">368</div><div class="matrix-pct">9.5%</div></div></td>
+            </tr>
+            <tr>
+              <td><span class="lc-badge lc-churned">CHURNED</span></td>
+              <td class="cell-low"><div class="matrix-cell"><div class="matrix-num">207</div><div class="matrix-pct">10.6%</div></div></td>
+              <td class="cell-med"><div class="matrix-cell"><div class="matrix-num">247</div><div class="matrix-pct">12.6%</div></div></td>
+              <td class="cell-high"><div class="matrix-cell"><div class="matrix-num">828</div><div class="matrix-pct">42.4%</div></div></td>
+              <td class="cell-critical"><div class="matrix-cell"><div class="matrix-num">672</div><div class="matrix-pct">34.4%</div></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:14px;font-size:12px;color:var(--danger-ink);background:var(--danger-subtle);padding:10px 14px;border-radius:var(--radius-md);">
+        <strong>&#x26A0; Khẩn cấp:</strong> 1.500 KH LAPSED+CHURNED ở trạng thái CRITICAL — cần chiến dịch winback ngay. 368 KH LOYAL/ACTIVE đang ở CRITICAL là báo động đỏ.
+      </div>
+    </div>
+
+    <!-- Early Warning Signals + CHS Factors -->
+    <div class="chart-grid-2">
+      <!-- Early Warning Signals -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">&#x1F6A8; Tín hiệu cảnh báo sớm</div>
+            <div class="card-subtitle">Các sự kiện rủi ro được phát hiện trong 30 ngày qua</div>
+          </div>
+          <button class="btn btn-secondary btn-sm">Xuất danh sách</button>
+        </div>
+        <div class="warning-list">
+          <div class="warning-item" style="border-left: 3px solid var(--health-red);">
+            <div class="warning-icon">&#x2605;</div>
+            <div class="warning-text">
+              <div class="warning-title">Đánh giá &#x2264; 3 sao</div>
+              <div class="warning-desc">Khách hàng để lại review tiêu cực trong 30 ngày</div>
+            </div>
+            <div class="warning-count" style="color:var(--danger);">
+              <div style="font-size:20px;font-weight:800;">342</div>
+              <div style="font-size:10px;color:var(--ink-48);">KH</div>
+            </div>
+          </div>
+          <div class="warning-item" style="border-left: 3px solid var(--health-red);">
+            <div class="warning-icon">&#x1F4F1;</div>
+            <div class="warning-text">
+              <div class="warning-title">Gỡ cài đặt ứng dụng</div>
+              <div class="warning-desc">App bị uninstall hoặc không mở trong 30 ngày</div>
+            </div>
+            <div class="warning-count" style="color:var(--danger);">
+              <div style="font-size:20px;font-weight:800;">218</div>
+              <div style="font-size:10px;color:var(--ink-48);">KH</div>
+            </div>
+          </div>
+          <div class="warning-item" style="border-left: 3px solid var(--health-orange);">
+            <div class="warning-icon">&#x274C;</div>
+            <div class="warning-text">
+              <div class="warning-title">Hủy lịch hẹn lặp lại</div>
+              <div class="warning-desc">Hủy lịch từ 2 lần trở lên trong cùng tháng</div>
+            </div>
+            <div class="warning-count" style="color:var(--health-orange);">
+              <div style="font-size:20px;font-weight:800;">187</div>
+              <div style="font-size:10px;color:var(--ink-48);">KH</div>
+            </div>
+          </div>
+          <div class="warning-item" style="border-left: 3px solid var(--health-orange);">
+            <div class="warning-icon">&#x1F4AC;</div>
+            <div class="warning-text">
+              <div class="warning-title">Khiếu nại chưa giải quyết</div>
+              <div class="warning-desc">Ticket hỗ trợ mở quá 3 ngày chưa xử lý</div>
+            </div>
+            <div class="warning-count" style="color:var(--health-orange);">
+              <div style="font-size:20px;font-weight:800;">94</div>
+              <div style="font-size:10px;color:var(--ink-48);">KH</div>
+            </div>
+          </div>
+          <div class="warning-item" style="border-left: 3px solid var(--health-yellow);">
+            <div class="warning-icon">&#x1F4C5;</div>
+            <div class="warning-text">
+              <div class="warning-title">Không tái khám theo lịch</div>
+              <div class="warning-desc">Quá hạn tái khám được khuyến nghị trên 14 ngày</div>
+            </div>
+            <div class="warning-count" style="color:var(--health-yellow);">
+              <div style="font-size:20px;font-weight:800;">1.243</div>
+              <div style="font-size:10px;color:var(--ink-48);">KH</div>
+            </div>
+          </div>
+          <div class="warning-item" style="border-left: 3px solid var(--health-yellow);">
+            <div class="warning-icon">&#x1F4B3;</div>
+            <div class="warning-text">
+              <div class="warning-title">Thanh toán thất bại</div>
+              <div class="warning-desc">Giao dịch bị từ chối hoặc trả về trong tháng</div>
+            </div>
+            <div class="warning-count" style="color:var(--health-yellow);">
+              <div style="font-size:20px;font-weight:800;">56</div>
+              <div style="font-size:10px;color:var(--ink-48);">KH</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHS Factor Breakdown -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Phân tích thành phần CHS</div>
+            <div class="card-subtitle">4 yếu tố cấu thành CHS (mỗi yếu tố trọng số 25%)</div>
+          </div>
+        </div>
+
+        <!-- Factor 1: Engagement Trend -->
+        <div style="margin-bottom: 20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;">Engagement Trend</div>
+              <div style="font-size:11px;color:var(--ink-48);">Xu hướng tương tác — trọng số 25%</div>
+            </div>
+            <div style="font-size:20px;font-weight:800;color:var(--brand-primary);">64</div>
+          </div>
+          <div class="chs-bar-row">
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Tăng mạnh</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:28%;background:var(--success);"></div></div>
+              <span class="chs-mini-pct">28%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Tăng nhẹ</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:34%;background:var(--health-green);"></div></div>
+              <span class="chs-mini-pct">34%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Ổn định</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:19%;background:var(--ink-16);"></div></div>
+              <span class="chs-mini-pct">19%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Giảm</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:19%;background:var(--danger);"></div></div>
+              <span class="chs-mini-pct">19%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Factor 2: Satisfaction -->
+        <div style="margin-bottom: 20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;">Satisfaction Score</div>
+              <div style="font-size:11px;color:var(--ink-48);">Điểm hài lòng (NPS + review) — trọng số 25%</div>
+            </div>
+            <div style="font-size:20px;font-weight:800;color:var(--health-green);">71</div>
+          </div>
+          <div class="chs-bar-row">
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">4–5 sao</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:62%;background:var(--success);"></div></div>
+              <span class="chs-mini-pct">62%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">3 sao</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:24%;background:var(--warning);"></div></div>
+              <span class="chs-mini-pct">24%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">1–2 sao</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:14%;background:var(--danger);"></div></div>
+              <span class="chs-mini-pct">14%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Factor 3: Recency -->
+        <div style="margin-bottom: 20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;">Recency</div>
+              <div style="font-size:11px;color:var(--ink-48);">Lần dùng dịch vụ gần nhất — trọng số 25%</div>
+            </div>
+            <div style="font-size:20px;font-weight:800;color:var(--health-yellow);">58</div>
+          </div>
+          <div class="chs-bar-row">
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">&lt; 7 ngày</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:38%;background:var(--success);"></div></div>
+              <span class="chs-mini-pct">38%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">7–30 ngày</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:31%;background:var(--warning);"></div></div>
+              <span class="chs-mini-pct">31%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">30–90 ngày</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:20%;background:var(--health-orange);"></div></div>
+              <span class="chs-mini-pct">20%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">&gt; 90 ngày</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:11%;background:var(--danger);"></div></div>
+              <span class="chs-mini-pct">11%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Factor 4: Complaint Status -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;">Complaint Status</div>
+              <div style="font-size:11px;color:var(--ink-48);">Trạng thái khiếu nại — trọng số 25%</div>
+            </div>
+            <div style="font-size:20px;font-weight:800;color:var(--health-green);">76</div>
+          </div>
+          <div class="chs-bar-row">
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Không có</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:71%;background:var(--success);"></div></div>
+              <span class="chs-mini-pct">71%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Đã giải quyết</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:17%;background:var(--info);"></div></div>
+              <span class="chs-mini-pct">17%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Đang xử lý</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:8%;background:var(--warning);"></div></div>
+              <span class="chs-mini-pct">8%</span>
+            </div>
+            <div class="chs-mini-bar">
+              <span class="chs-mini-label">Chưa xử lý</span>
+              <div class="chs-mini-track"><div class="chs-mini-fill" style="width:4%;background:var(--danger);"></div></div>
+              <span class="chs-mini-pct">4%</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;padding:12px;background:var(--info-subtle);border-radius:var(--radius-md);font-size:12px;color:var(--info-ink);">
+          <strong>CHS trung bình hệ thống: 67.3</strong> — ở ngưỡng ATTENTION. Yếu tố yếu nhất: <strong>Recency (58)</strong>.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('mobile-open');
+  overlay.classList.toggle('show');
+}
+</script>
+</body>
+</html>

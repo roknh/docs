@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Lead List</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #004d99;
+  --tier-diamond: #7c3aed;
+  --tier-diamond-bg: #f3eefc;
+  --tier-gold: #d97706;
+  --tier-gold-bg: #fef9ee;
+  --health-green: #30d158;
+  --health-yellow: #f5a623;
+  --health-orange: #ff9500;
+  --health-red: #ff453a;
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+  --lead-hot: #ff453a;
+  --lead-warm: #f5a623;
+  --lead-cold: #0a84ff;
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* ══ SHELL ══ */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search { width: 320px; height: 32px; border-radius: var(--radius-pill); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--bu-ngocdung); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: width 0.25s ease; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-item.active { border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+.sidebar.collapsed .sidebar-item { position: relative; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ BUTTONS ══ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 12px; }
+.btn-xs { font-size: 11px; padding: 3px 9px; }
+.btn-success-sm { background: var(--success-subtle); color: var(--success-ink); border: 1px solid rgba(48,209,88,0.2); font-size: 11px; padding: 3px 9px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-text); font-weight: 500; }
+.btn-success-sm:hover { background: var(--success); color: #fff; }
+.btn-info-sm { background: var(--info-subtle); color: var(--info-ink); border: 1px solid rgba(10,132,255,0.2); font-size: 11px; padding: 3px 9px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-text); font-weight: 500; }
+.btn-info-sm:hover { background: var(--info); color: #fff; }
+.btn-warn-sm { background: var(--warning-subtle); color: var(--warning-ink); border: 1px solid rgba(245,166,35,0.2); font-size: 11px; padding: 3px 9px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-text); font-weight: 500; }
+.btn-warn-sm:hover { background: var(--warning); color: #fff; }
+
+/* ══ PAGE HEADER ══ */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 16px 32px; }
+.breadcrumb { font-size: 12px; color: var(--ink-48); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+.breadcrumb a { color: var(--brand-primary); text-decoration: none; }
+.page-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.page-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+
+/* ══ FILTERS BAR ══ */
+.filters-bar { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 12px 32px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; position: sticky; top: var(--nav-h); z-index: 50; }
+.filter-group { display: flex; align-items: center; gap: 6px; }
+.filter-label { font-size: 12px; color: var(--ink-48); white-space: nowrap; }
+.filter-select { height: 32px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); background: var(--ink-00); padding: 0 28px 0 10px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23a0a0a0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; transition: all 0.12s; outline: none; }
+.filter-select:focus { border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.filter-search-wrap { position: relative; flex: 1; max-width: 260px; }
+.filter-search { width: 100%; height: 32px; border-radius: var(--radius-pill); border: 1px solid var(--ink-08); background: var(--ink-02); padding: 0 14px 0 34px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); outline: none; transition: all 0.12s; }
+.filter-search:focus { border-color: var(--brand-primary); background: var(--ink-00); box-shadow: var(--shadow-focus); }
+.filter-search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--ink-32); pointer-events: none; }
+.filter-score-range { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.score-range-input { width: 60px; height: 32px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); background: var(--ink-00); padding: 0 8px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); outline: none; text-align: center; }
+.score-range-input:focus { border-color: var(--brand-primary); }
+.filters-bar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.filter-active-count { font-size: 11px; font-weight: 600; color: var(--brand-primary); background: var(--brand-primary-subtle); padding: 2px 8px; border-radius: var(--radius-pill); }
+
+/* ══ CONTENT ══ */
+.page-body { padding: 20px 32px 40px; }
+
+/* Stats row */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 14px 18px; }
+.stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-48); margin-bottom: 4px; }
+.stat-value { font-size: 26px; font-weight: 700; color: var(--ink-100); line-height: 1.1; }
+.stat-sub { font-size: 11px; color: var(--ink-48); margin-top: 3px; }
+.stat-up { color: var(--success-ink); font-weight: 600; }
+.stat-card.hot { border-left: 3px solid var(--lead-hot); }
+.stat-card.warm { border-left: 3px solid var(--lead-warm); }
+
+/* Table */
+.table-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.table-card-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid var(--ink-08); }
+.table-card-title { font-size: 14px; font-weight: 600; color: var(--ink-100); }
+.table-card-count { font-size: 13px; color: var(--ink-48); margin-left: 6px; }
+.table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.lead-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+.lead-table thead th { background: var(--ink-02); padding: 10px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-48); text-align: left; white-space: nowrap; border-bottom: 1px solid var(--ink-08); cursor: pointer; user-select: none; }
+.lead-table thead th:hover { color: var(--ink-80); }
+.lead-table thead th:first-child { padding-left: 20px; }
+.lead-table thead th:last-child { padding-right: 20px; }
+.lead-table thead th.sort-desc::after { content: " ▼"; font-size: 9px; color: var(--brand-primary); }
+.lead-table thead th.sort-asc::after { content: " ▲"; font-size: 9px; color: var(--brand-primary); }
+.lead-table tbody tr { transition: background 0.1s; }
+.lead-table tbody tr:hover { background: var(--ink-02); }
+.lead-table tbody td { padding: 11px 12px; border-bottom: 1px solid var(--ink-04); color: var(--ink-80); vertical-align: middle; white-space: nowrap; }
+.lead-table tbody tr:last-child td { border-bottom: none; }
+.lead-table tbody td:first-child { padding-left: 20px; }
+.lead-table tbody td:last-child { padding-right: 20px; }
+
+/* Lead name cell */
+.lead-cell { display: flex; align-items: center; gap: 10px; }
+.lead-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.lead-name { font-weight: 500; color: var(--ink-100); }
+.lead-phone { font-size: 11px; color: var(--ink-48); font-family: var(--font-mono); }
+
+/* Lead score */
+.score-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 38px; height: 22px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; padding: 0 8px; }
+.score-hot { background: var(--danger-subtle); color: var(--lead-hot); border: 1px solid rgba(255,69,58,0.2); }
+.score-warm { background: var(--warning-subtle); color: var(--lead-warm); border: 1px solid rgba(245,166,35,0.2); }
+.score-cold { background: var(--info-subtle); color: var(--lead-cold); border: 1px solid rgba(10,132,255,0.2); }
+.score-label { font-size: 10px; font-weight: 600; margin-left: 3px; }
+
+/* Source tag */
+.source-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-sm); white-space: nowrap; }
+.src-fb { background: #e7eef9; color: #1877f2; }
+.src-zl { background: #e0f2ff; color: #006af5; }
+.src-web { background: var(--info-subtle); color: var(--info-ink); }
+.src-ref { background: var(--tier-diamond-bg); color: var(--tier-diamond); }
+.src-tiktok { background: #ffe8f0; color: #010101; }
+
+/* Lifecycle & Health tags */
+.lifecycle { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); white-space: nowrap; }
+.lc-lead { background: var(--info-subtle); color: var(--info-ink); }
+.lc-trial { background: #f0e6ff; color: #6b21a8; }
+.lc-active { background: var(--success-subtle); color: var(--success-ink); }
+.health-status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); white-space: nowrap; }
+.hs-healthy { background: var(--success-subtle); color: var(--success-ink); }
+.hs-healthy::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--health-green); flex-shrink: 0; }
+.hs-attention { background: var(--warning-subtle); color: var(--warning-ink); }
+.hs-attention::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--health-yellow); flex-shrink: 0; }
+.hs-at-risk { background: #fff3e0; color: #8a5d0f; }
+.hs-at-risk::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--health-orange); flex-shrink: 0; }
+
+/* Lead Status */
+.lead-status { display: inline-flex; align-items: center; font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: var(--radius-pill); white-space: nowrap; }
+.ls-new { background: var(--info-subtle); color: var(--info-ink); }
+.ls-contacted { background: var(--warning-subtle); color: var(--warning-ink); }
+.ls-qualified { background: var(--tier-diamond-bg); color: var(--tier-diamond); }
+.ls-converted { background: var(--success-subtle); color: var(--success-ink); }
+.ls-lost { background: var(--danger-subtle); color: var(--danger-ink); }
+
+/* Row actions */
+.row-actions { display: flex; align-items: center; gap: 4px; }
+.lead-table tbody tr:hover .row-actions { opacity: 1; }
+.act-btn { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: var(--radius-sm); border: 1px solid var(--ink-08); background: var(--ink-00); font-size: 11px; font-weight: 500; color: var(--ink-60); cursor: pointer; font-family: var(--font-text); transition: all 0.12s; white-space: nowrap; }
+.act-btn:hover { background: var(--brand-primary-subtle); color: var(--brand-primary); border-color: var(--brand-primary); }
+.act-btn-call { border-color: rgba(48,209,88,0.3); color: var(--success-ink); background: var(--success-subtle); }
+.act-btn-call:hover { background: var(--success); color: #fff; border-color: var(--success); }
+.act-btn-zalo { border-color: rgba(0,106,245,0.2); color: #006af5; background: #e0f2ff; }
+.act-btn-zalo:hover { background: #006af5; color: #fff; }
+
+/* Assigned agent */
+.agent-cell { display: flex; align-items: center; gap: 6px; }
+.agent-ava { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: #fff; flex-shrink: 0; }
+
+/* Pagination */
+.table-footer { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-top: 1px solid var(--ink-08); background: var(--ink-02); flex-wrap: wrap; gap: 10px; }
+.table-footer-info { font-size: 12px; color: var(--ink-48); }
+.pagination { display: flex; align-items: center; gap: 4px; }
+.page-btn { min-width: 32px; height: 32px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); background: var(--ink-00); font-size: 13px; color: var(--ink-60); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 8px; transition: all 0.12s; font-family: var(--font-text); }
+.page-btn:hover { background: var(--ink-02); }
+.page-btn.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); font-weight: 600; }
+
+/* Mobile card layout */
+.mobile-cards { display: none; }
+.lead-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 10px; }
+.lead-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.lead-card-name { font-size: 14px; font-weight: 600; color: var(--ink-100); }
+.lead-card-phone { font-size: 12px; color: var(--ink-48); font-family: var(--font-mono); margin-top: 2px; }
+.lead-card-score { text-align: right; }
+.lead-card-body { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.lead-card-meta { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--ink-48); margin-bottom: 10px; }
+.lead-card-meta span { display: flex; align-items: center; gap: 4px; }
+.lead-card-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .topnav-search { max-width: 220px; }
+}
+
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; gap: 8px; }
+  .topnav-search { display: none; }
+  .topnav-bu-switch { display: none; }
+  .page-header { padding: 12px 16px; }
+  .page-body { padding: 12px 16px 32px; }
+  .filters-bar { padding: 10px 16px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stat-value { font-size: 20px; }
+  .table-card .table-container { display: none; }
+  .table-card .table-card-header { padding: 12px 16px; }
+  .mobile-cards { display: block; }
+  .table-footer { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <button class="hamburger" onclick="openSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Ngọc Dung ▾</span>
+    <div class="topnav-avatar">TH</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item active" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+      <span class="toggle-collapse">&#x276E;</span>
+      <span class="toggle-expand">&#x276F;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Content -->
+<div class="content" id="mainContent">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="ui-dashboard.html">Dashboard</a> ›
+      <span>Leads</span>
+    </div>
+    <div class="page-header-row">
+      <div>
+        <div class="page-title">&#x260E; Danh sách Lead</div>
+        <div class="page-subtitle">Quản lý và chăm sóc khách hàng tiềm năng</div>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <a href="ui-lead-pipeline.html" class="btn btn-secondary btn-sm">&#x25A6; Kanban</a>
+        <button class="btn btn-secondary btn-sm">&#x2193; Xuất Excel</button>
+        <button class="btn btn-primary btn-sm" onclick="addLead()">+ Thêm lead</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="filter-search-wrap">
+      <span class="filter-search-icon">&#x1F50D;</span>
+      <input class="filter-search" type="text" placeholder="Tên, SĐT, email..." />
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Nguồn</span>
+      <select class="filter-select">
+        <option>Tất cả</option>
+        <option>Facebook</option>
+        <option>Zalo</option>
+        <option>Website</option>
+        <option>Referral</option>
+        <option>TikTok</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Trạng thái</span>
+      <select class="filter-select">
+        <option>Tất cả</option>
+        <option>Mới</option>
+        <option>Đã liên hệ</option>
+        <option>Đủ điều kiện</option>
+        <option>Đã chuyển đổi</option>
+        <option>Mất</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Phụ trách</span>
+      <select class="filter-select">
+        <option>Tất cả</option>
+        <option>Trần Hùng</option>
+        <option>Lê Thị Mai</option>
+        <option>Nguyễn Văn Đức</option>
+        <option>Phạm Thảo Ly</option>
+      </select>
+    </div>
+    <div class="filter-group filter-score-range">
+      <span class="filter-label">Score</span>
+      <input class="score-range-input" type="number" value="0" min="0" max="100" />
+      <span style="color:var(--ink-32);">–</span>
+      <input class="score-range-input" type="number" value="100" min="0" max="100" />
+    </div>
+    <div class="filters-bar-right">
+      <span class="filter-active-count">3 bộ lọc</span>
+      <button class="btn btn-secondary btn-sm">Đặt lại</button>
+    </div>
+  </div>
+
+  <!-- Page Body -->
+  <div class="page-body">
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Tổng Lead</div>
+        <div class="stat-value">248</div>
+        <div class="stat-sub"><span class="stat-up">+18</span> so với tuần trước</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Mới hôm nay</div>
+        <div class="stat-value">12</div>
+        <div class="stat-sub">Facebook: 7, Zalo: 3, Web: 2</div>
+      </div>
+      <div class="stat-card hot">
+        <div class="stat-label" style="color:var(--lead-hot);">&#x1F525; Lead Hot (&ge;80)</div>
+        <div class="stat-value" style="color:var(--lead-hot);">34</div>
+        <div class="stat-sub">Cần liên hệ ngay</div>
+      </div>
+      <div class="stat-card warm">
+        <div class="stat-label">Tỷ lệ chuyển đổi</div>
+        <div class="stat-value">18.4%</div>
+        <div class="stat-sub"><span class="stat-up">+2.1%</span> tháng này</div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <div>
+          <span class="table-card-title">Danh sách Lead</span>
+          <span class="table-card-count">248 kết quả</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span style="font-size:12px; color:var(--ink-48);">Sắp xếp:</span>
+          <select class="filter-select" style="height:28px; font-size:12px;">
+            <option selected>Lead Score (Cao → Thấp)</option>
+            <option>Mới nhất</option>
+            <option>Lần liên hệ gần nhất</option>
+            <option>Tên A-Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Desktop Table -->
+      <div class="table-container">
+        <table class="lead-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" /></th>
+              <th>Khách hàng</th>
+              <th>Nguồn</th>
+              <th>Lifecycle</th>
+              <th>Health</th>
+              <th class="sort-desc">Score</th>
+              <th>Phụ trách</th>
+              <th>Liên hệ gần nhất</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#e84393;">TL</div>
+                  <div>
+                    <div class="lead-name">Trần Thị Lan</div>
+                    <div class="lead-phone">0901-234-567</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-fb">&#x1F30F; Facebook</span></td>
+              <td><span class="lifecycle lc-lead">LEAD</span></td>
+              <td><span class="health-status hs-healthy">Healthy</span></td>
+              <td><span class="score-badge score-hot">92 <span class="score-label">HOT</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#e84393;">TH</div>
+                  Trần Hùng
+                </div>
+              </td>
+              <td>Hôm nay 10:30</td>
+              <td><span class="lead-status ls-contacted">Đã liên hệ</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call" title="Gọi điện">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo" title="Gửi Zalo">Zalo</button>
+                  <button class="act-btn" title="Chuyển đổi">&#x21E8; Chuyển</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#6c5ce7;">NM</div>
+                  <div>
+                    <div class="lead-name">Nguyễn Minh</div>
+                    <div class="lead-phone">0912-345-678</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-zl">&#x1F4AC; Zalo</span></td>
+              <td><span class="lifecycle lc-lead">LEAD</span></td>
+              <td><span class="health-status hs-healthy">Healthy</span></td>
+              <td><span class="score-badge score-hot">88 <span class="score-label">HOT</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#00b894;">LM</div>
+                  Lê Thị Mai
+                </div>
+              </td>
+              <td>Hôm nay 09:15</td>
+              <td><span class="lead-status ls-qualified">Đủ ĐK</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x21E8; Chuyển</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#00b894;">PH</div>
+                  <div>
+                    <div class="lead-name">Phạm Thị Hương</div>
+                    <div class="lead-phone">0903-456-789</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-ref">&#x1F91D; Referral</span></td>
+              <td><span class="lifecycle lc-trial">TRIAL</span></td>
+              <td><span class="health-status hs-attention">Attention</span></td>
+              <td><span class="score-badge score-hot">85 <span class="score-label">HOT</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#0066cc;">ND</div>
+                  Nguyễn Đức
+                </div>
+              </td>
+              <td>Hôm qua 16:22</td>
+              <td><span class="lead-status ls-new">Mới</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x1F465; Giao</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#d97706;">VT</div>
+                  <div>
+                    <div class="lead-name">Vũ Thành Trung</div>
+                    <div class="lead-phone">0935-567-890</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-web">&#x1F310; Website</span></td>
+              <td><span class="lifecycle lc-lead">LEAD</span></td>
+              <td><span class="health-status hs-healthy">Healthy</span></td>
+              <td><span class="score-badge score-warm">74 <span class="score-label">WARM</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#e84393;">TH</div>
+                  Trần Hùng
+                </div>
+              </td>
+              <td>Hôm qua 14:05</td>
+              <td><span class="lead-status ls-contacted">Đã liên hệ</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x21E8; Chuyển</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#7c3aed;">LX</div>
+                  <div>
+                    <div class="lead-name">Lê Xuân Bình</div>
+                    <div class="lead-phone">0918-678-901</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-fb">&#x1F30F; Facebook</span></td>
+              <td><span class="lifecycle lc-lead">LEAD</span></td>
+              <td><span class="health-status hs-attention">Attention</span></td>
+              <td><span class="score-badge score-warm">68 <span class="score-label">WARM</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#00b894;">LM</div>
+                  Lê Thị Mai
+                </div>
+              </td>
+              <td>2 ngày trước</td>
+              <td><span class="lead-status ls-new">Mới</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x1F465; Giao</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#ff9500;">HN</div>
+                  <div>
+                    <div class="lead-name">Hoàng Thị Ngân</div>
+                    <div class="lead-phone">0971-789-012</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-tiktok">&#x266B; TikTok</span></td>
+              <td><span class="lifecycle lc-lead">LEAD</span></td>
+              <td><span class="health-status hs-at-risk">At Risk</span></td>
+              <td><span class="score-badge score-warm">61 <span class="score-label">WARM</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#d97706;">PT</div>
+                  Phạm Thảo
+                </div>
+              </td>
+              <td>3 ngày trước</td>
+              <td><span class="lead-status ls-contacted">Đã liên hệ</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x21E8; Chuyển</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#30d158;">DT</div>
+                  <div>
+                    <div class="lead-name">Đinh Thị Thu</div>
+                    <div class="lead-phone">0908-890-123</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-zl">&#x1F4AC; Zalo</span></td>
+              <td><span class="lifecycle lc-trial">TRIAL</span></td>
+              <td><span class="health-status hs-healthy">Healthy</span></td>
+              <td><span class="score-badge score-warm">58 <span class="score-label">WARM</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#0066cc;">ND</div>
+                  Nguyễn Đức
+                </div>
+              </td>
+              <td>Hôm nay 08:00</td>
+              <td><span class="lead-status ls-qualified">Đủ ĐK</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x21E8; Chuyển</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#a0a0a0;">CL</div>
+                  <div>
+                    <div class="lead-name">Cao Thị Linh</div>
+                    <div class="lead-phone">0946-901-234</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-web">&#x1F310; Website</span></td>
+              <td><span class="lifecycle lc-lead">LEAD</span></td>
+              <td><span class="health-status hs-attention">Attention</span></td>
+              <td><span class="score-badge score-cold">42 <span class="score-label">COLD</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#e84393;">TH</div>
+                  Trần Hùng
+                </div>
+              </td>
+              <td>5 ngày trước</td>
+              <td><span class="lead-status ls-new">Mới</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x1F465; Giao</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td><input type="checkbox" /></td>
+              <td>
+                <div class="lead-cell">
+                  <div class="lead-avatar" style="background:#6c5ce7;">BQ</div>
+                  <div>
+                    <div class="lead-name">Bùi Quang Huy</div>
+                    <div class="lead-phone">0979-012-345</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="source-tag src-ref">&#x1F91D; Referral</span></td>
+              <td><span class="lifecycle lc-lead">LEAD</span></td>
+              <td><span class="health-status hs-at-risk">At Risk</span></td>
+              <td><span class="score-badge score-cold">35 <span class="score-label">COLD</span></span></td>
+              <td>
+                <div class="agent-cell">
+                  <div class="agent-ava" style="background:#00b894;">LM</div>
+                  Lê Thị Mai
+                </div>
+              </td>
+              <td>7 ngày trước</td>
+              <td><span class="lead-status ls-lost">Mất</span></td>
+              <td>
+                <div class="row-actions">
+                  <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+                  <button class="act-btn act-btn-zalo">Zalo</button>
+                  <button class="act-btn">&#x21BA; Mở lại</button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="mobile-cards" style="padding: 12px 16px;">
+
+        <div class="lead-card">
+          <div class="lead-card-header">
+            <div>
+              <div class="lead-card-name">Trần Thị Lan</div>
+              <div class="lead-card-phone">0901-234-567</div>
+            </div>
+            <div class="lead-card-score">
+              <span class="score-badge score-hot">92 HOT</span>
+            </div>
+          </div>
+          <div class="lead-card-body">
+            <span class="source-tag src-fb">Facebook</span>
+            <span class="lifecycle lc-lead">LEAD</span>
+            <span class="health-status hs-healthy">Healthy</span>
+            <span class="lead-status ls-contacted">Đã liên hệ</span>
+          </div>
+          <div class="lead-card-meta">
+            <span>&#x1F464; Trần Hùng</span>
+            <span>&#x1F550; Hôm nay 10:30</span>
+          </div>
+          <div class="lead-card-actions">
+            <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+            <button class="act-btn act-btn-zalo">Zalo</button>
+            <button class="act-btn">&#x21E8; Chuyển đổi</button>
+          </div>
+        </div>
+
+        <div class="lead-card">
+          <div class="lead-card-header">
+            <div>
+              <div class="lead-card-name">Nguyễn Minh</div>
+              <div class="lead-card-phone">0912-345-678</div>
+            </div>
+            <div class="lead-card-score">
+              <span class="score-badge score-hot">88 HOT</span>
+            </div>
+          </div>
+          <div class="lead-card-body">
+            <span class="source-tag src-zl">Zalo</span>
+            <span class="lifecycle lc-lead">LEAD</span>
+            <span class="health-status hs-healthy">Healthy</span>
+            <span class="lead-status ls-qualified">Đủ ĐK</span>
+          </div>
+          <div class="lead-card-meta">
+            <span>&#x1F464; Lê Thị Mai</span>
+            <span>&#x1F550; Hôm nay 09:15</span>
+          </div>
+          <div class="lead-card-actions">
+            <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+            <button class="act-btn act-btn-zalo">Zalo</button>
+            <button class="act-btn">&#x21E8; Chuyển đổi</button>
+          </div>
+        </div>
+
+        <div class="lead-card">
+          <div class="lead-card-header">
+            <div>
+              <div class="lead-card-name">Phạm Thị Hương</div>
+              <div class="lead-card-phone">0903-456-789</div>
+            </div>
+            <div class="lead-card-score">
+              <span class="score-badge score-hot">85 HOT</span>
+            </div>
+          </div>
+          <div class="lead-card-body">
+            <span class="source-tag src-ref">Referral</span>
+            <span class="lifecycle lc-trial">TRIAL</span>
+            <span class="health-status hs-attention">Attention</span>
+            <span class="lead-status ls-new">Mới</span>
+          </div>
+          <div class="lead-card-meta">
+            <span>&#x1F464; Nguyễn Đức</span>
+            <span>&#x1F550; Hôm qua 16:22</span>
+          </div>
+          <div class="lead-card-actions">
+            <button class="act-btn act-btn-call">&#x260E; Gọi</button>
+            <button class="act-btn act-btn-zalo">Zalo</button>
+            <button class="act-btn">&#x1F465; Giao việc</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="table-footer">
+        <div class="table-footer-info">Hiển thị 1–9 / 248 lead</div>
+        <div class="pagination">
+          <button class="page-btn" disabled>&#x276C;</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <span style="font-size:13px; color:var(--ink-32); padding: 0 4px;">...</span>
+          <button class="page-btn">28</button>
+          <button class="page-btn">&#x276D;</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+</div><!-- /content -->
+
+<script>
+function toggleSidebar() {
+  const s = document.getElementById('sidebar');
+  const c = document.getElementById('mainContent');
+  s.classList.toggle('collapsed');
+  c.classList.toggle('sidebar-collapsed');
+}
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+function addLead() {
+  alert('Mở form thêm lead mới...');
+}
+</script>
+</body>
+</html>

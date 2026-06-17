@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Consent Center</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #0050a0;
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display","Inter",system-ui,-apple-system,sans-serif;
+  --font-text: "SF Pro Text","Inter",system-ui,-apple-system,sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* Topnav */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search { width: 320px; height: 32px; border-radius: var(--radius-pill); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+
+/* Sidebar */
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; z-index: 100; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+
+/* Content */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); }
+
+/* Page header */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 20px 32px; }
+.page-title-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+.page-actions { display: flex; gap: 8px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-danger { background: var(--danger-subtle); color: var(--danger-ink); border: 1px solid #f5c6c4; }
+.btn-danger:hover { background: #f9d0ce; }
+
+/* Tags */
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 3px 10px; border-radius: var(--radius-pill); font-weight: 500; }
+
+/* KPI Row */
+.kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 24px 32px; }
+.kpi-card { background: var(--ink-00); border-radius: var(--radius-lg); border: 1px solid var(--ink-08); padding: 20px; }
+.kpi-label { font-size: 12px; color: var(--ink-48); margin-bottom: 6px; }
+.kpi-value { font-size: 26px; font-weight: 700; color: var(--ink-100); line-height: 1.1; }
+.kpi-sub { font-size: 12px; color: var(--ink-48); margin-top: 4px; }
+.kpi-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); margin-top: 6px; }
+.kpi-badge-success { background: var(--success-subtle); color: var(--success-ink); }
+.kpi-badge-warning { background: var(--warning-subtle); color: var(--warning-ink); }
+.kpi-badge-danger { background: var(--danger-subtle); color: var(--danger-ink); }
+
+/* Filter bar */
+.filter-bar { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 12px 32px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.filter-label { font-size: 12px; font-weight: 600; color: var(--ink-48); white-space: nowrap; }
+.filter-select { height: 34px; padding: 0 10px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); background: var(--ink-00); font-size: 13px; color: var(--ink-80); font-family: var(--font-text); cursor: pointer; }
+.filter-select:focus { outline: none; border-color: var(--brand-primary); }
+.filter-input { height: 34px; padding: 0 10px; border-radius: var(--radius-md); border: 1px solid var(--ink-08); background: var(--ink-00); font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.filter-input:focus { outline: none; border-color: var(--brand-primary); }
+.filter-sep { margin-left: auto; }
+
+/* Main body layout */
+.main-body { padding: 24px 32px; display: flex; flex-direction: column; gap: 24px; }
+
+/* Cards */
+.card { background: var(--ink-00); border-radius: var(--radius-lg); border: 1px solid var(--ink-08); }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--ink-08); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.card-title { font-size: 15px; font-weight: 600; color: var(--ink-100); }
+.card-subtitle { font-size: 12px; color: var(--ink-48); margin-top: 1px; }
+.card-body { padding: 20px; }
+
+/* Bulk actions bar */
+.bulk-bar { background: var(--brand-primary-subtle); border: 1px solid #cce0f5; border-radius: var(--radius-md); padding: 10px 16px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--brand-primary); font-weight: 500; }
+.bulk-bar-actions { display: flex; gap: 8px; margin-left: auto; }
+
+/* Consent table */
+.table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-main { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+.table-main thead th { background: var(--ink-02); padding: 10px 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); text-align: left; white-space: nowrap; border-bottom: 1px solid var(--ink-08); }
+.table-main thead th:first-child { padding-left: 20px; border-radius: var(--radius-sm) 0 0 0; }
+.table-main tbody tr { transition: background 0.12s; }
+.table-main tbody tr:hover { background: var(--ink-02); }
+.table-main tbody td { padding: 12px 14px; border-bottom: 1px solid var(--ink-04); color: var(--ink-80); vertical-align: middle; }
+.table-main tbody td:first-child { padding-left: 20px; }
+.table-main tbody tr:last-child td { border-bottom: none; }
+
+/* Customer info cell */
+.customer-cell { display: flex; align-items: center; gap: 10px; }
+.customer-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--brand-primary-subtle); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.customer-name { font-weight: 500; color: var(--ink-100); font-size: 13px; }
+.customer-id { font-size: 11px; color: var(--ink-48); }
+
+/* Consent icon */
+.consent-icon { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; }
+.consent-yes { background: var(--success-subtle); color: var(--success-ink); }
+.consent-no { background: var(--danger-subtle); color: var(--danger-ink); }
+.consent-pending { background: var(--warning-subtle); color: var(--warning-ink); }
+
+/* Consent status badge */
+.consent-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-pill); }
+.consent-granted { background: var(--success-subtle); color: var(--success-ink); }
+.consent-partial { background: var(--warning-subtle); color: var(--warning-ink); }
+.consent-denied { background: var(--danger-subtle); color: var(--danger-ink); }
+
+/* Source badge */
+.source-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--ink-04); color: var(--ink-60); }
+
+/* BU tag */
+.bu-tag { display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: var(--radius-pill); letter-spacing: 0.03em; }
+.bu-nd { background: var(--bu-ngocdung-bg); color: var(--bu-ngocdung); }
+.bu-ze { background: var(--bu-zema-bg); color: var(--bu-zema); }
+.bu-oc { background: var(--bu-ocany-bg); color: var(--bu-ocany); }
+
+/* Action buttons */
+.action-btns { display: flex; gap: 4px; }
+.icon-btn { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--ink-48); transition: all 0.12s; }
+.icon-btn:hover { background: var(--ink-02); color: var(--ink-100); border-color: var(--ink-16); }
+
+/* Checkbox */
+.cb { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand-primary); }
+
+/* Two column layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+/* Consent log */
+.log-list { display: flex; flex-direction: column; }
+.log-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--ink-04); }
+.log-item:last-child { border-bottom: none; }
+.log-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.log-body { flex: 1; min-width: 0; }
+.log-title { font-size: 13px; color: var(--ink-100); line-height: 1.4; }
+.log-title strong { font-weight: 600; }
+.log-meta { font-size: 11px; color: var(--ink-48); margin-top: 2px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.log-channel { font-size: 11px; font-weight: 500; padding: 1px 7px; border-radius: var(--radius-pill); background: var(--ink-04); color: var(--ink-60); }
+.log-change { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; }
+.log-change-from { color: var(--danger-ink); text-decoration: line-through; }
+.log-change-to { color: var(--success-ink); font-weight: 600; }
+
+/* PDPA card */
+.pdpa-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.pdpa-stat { text-align: center; padding: 16px; background: var(--ink-02); border-radius: var(--radius-md); }
+.pdpa-stat-value { font-size: 28px; font-weight: 700; color: var(--ink-100); }
+.pdpa-stat-label { font-size: 12px; color: var(--ink-48); margin-top: 4px; }
+.pdpa-stat-value.danger { color: var(--danger); }
+.pdpa-stat-value.warning { color: var(--warning); }
+
+/* Mobile card layout */
+.mobile-cards { display: none; }
+.mobile-card { background: var(--ink-00); border-radius: var(--radius-lg); border: 1px solid var(--ink-08); padding: 16px; margin-bottom: 12px; }
+.mobile-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.mobile-card-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--ink-04); font-size: 13px; }
+.mobile-card-row:last-child { border-bottom: none; }
+.mobile-card-label { color: var(--ink-48); font-size: 12px; }
+.mobile-card-value { font-weight: 500; color: var(--ink-80); display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.consent-icons-row { display: flex; gap: 6px; align-items: center; }
+
+@media (max-width: 1023px) {
+  .kpi-row { grid-template-columns: repeat(3,1fr); }
+  .two-col { grid-template-columns: 1fr; }
+  .pdpa-grid { grid-template-columns: repeat(3,1fr); }
+}
+
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .content { margin-left: 0; }
+  .topnav-search { width: 180px; }
+  .kpi-row { grid-template-columns: repeat(2,1fr); padding: 16px; gap: 10px; }
+  .kpi-value { font-size: 20px; }
+  .filter-bar { padding: 10px 16px; }
+  .main-body { padding: 16px; gap: 16px; }
+  .page-header { padding: 16px; }
+  .table-container { display: none; }
+  .mobile-cards { display: block; padding: 0; }
+  .two-col { grid-template-columns: 1fr; }
+  .pdpa-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .bulk-bar { flex-wrap: wrap; }
+  .bulk-bar-actions { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topnav -->
+<nav class="topnav">
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Tất cả BU ▾</span>
+    <div class="topnav-avatar">AT</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item active" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+</aside>
+
+<!-- Content -->
+<main class="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x1F6E1; Consent Center</div>
+        <div class="page-subtitle">Quản lý đồng ý của khách hàng — PDPA / Chính sách bảo mật</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary">&#x21E9; Xuất báo cáo</button>
+        <button class="btn btn-primary">&#x2709; Gửi yêu cầu đồng ý lại</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Tổng khách hàng</div>
+      <div class="kpi-value">24,817</div>
+      <div class="kpi-sub">Trong hệ thống</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Đã chấp thuận (Opt-in)</div>
+      <div class="kpi-value">78.4%</div>
+      <div class="kpi-badge kpi-badge-success">&#x25B2; 2.1% so tháng trước</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Consent Marketing</div>
+      <div class="kpi-value">71.2%</div>
+      <div class="kpi-badge kpi-badge-success">&#x25B2; 0.8%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Consent Xử lý dữ liệu</div>
+      <div class="kpi-value">85.6%</div>
+      <div class="kpi-badge kpi-badge-success">&#x25B2; 1.2%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Yêu cầu đang chờ</div>
+      <div class="kpi-value" style="color:var(--warning)">14</div>
+      <div class="kpi-badge kpi-badge-warning">&#x23F1; Xóa dữ liệu: 6</div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="filter-group">
+      <span class="filter-label">Loại consent:</span>
+      <select class="filter-select">
+        <option>Tất cả</option>
+        <option>Marketing Email</option>
+        <option>Marketing SMS</option>
+        <option>Marketing Push</option>
+        <option>Marketing Zalo</option>
+        <option>Xử lý dữ liệu</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Trạng thái:</span>
+      <select class="filter-select">
+        <option>Tất cả</option>
+        <option>Đã chấp thuận hoàn toàn</option>
+        <option>Chấp thuận một phần</option>
+        <option>Từ chối hoàn toàn</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">BU:</span>
+      <select class="filter-select">
+        <option>Tất cả BU</option>
+        <option>Ngọc Dung</option>
+        <option>Zema</option>
+        <option>Ocany</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Cập nhật:</span>
+      <input class="filter-input" type="date" value="2026-05-01" style="width:130px;">
+      <span style="color:var(--ink-48);font-size:13px;">→</span>
+      <input class="filter-input" type="date" value="2026-06-16" style="width:130px;">
+    </div>
+    <div class="filter-sep">
+      <button class="btn btn-secondary btn-sm">&#x1F50D; Lọc</button>
+    </div>
+  </div>
+
+  <!-- Main body -->
+  <div class="main-body">
+
+    <!-- Consent Table -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Danh sách đồng ý khách hàng</div>
+          <div class="card-subtitle">10 khách hàng — hiển thị trang 1/2.482</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span style="font-size:12px;color:var(--ink-48);">Đã chọn: <strong id="sel-count">0</strong></span>
+          <button class="btn btn-secondary btn-sm" onclick="bulkExport()">&#x21E9; Xuất</button>
+          <button class="btn btn-secondary btn-sm" onclick="bulkReconsent()">&#x2709; Gửi lại</button>
+        </div>
+      </div>
+
+      <!-- Desktop table -->
+      <div class="table-container">
+        <table class="table-main">
+          <thead>
+            <tr>
+              <th><input type="checkbox" class="cb" onclick="toggleAll(this)"></th>
+              <th>Khách hàng</th>
+              <th>Điện thoại</th>
+              <th style="text-align:center">Email</th>
+              <th style="text-align:center">SMS</th>
+              <th style="text-align:center">Push</th>
+              <th style="text-align:center">Zalo</th>
+              <th>Xử lý dữ liệu</th>
+              <th>BU</th>
+              <th>Nguồn</th>
+              <th>Cập nhật</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#fce4f1;color:#e84393;">NT</div>
+                  <div>
+                    <div class="customer-name">Nguyễn Thị Lan</div>
+                    <div class="customer-id">#CUS-00142</div>
+                  </div>
+                </div>
+              </td>
+              <td style="font-size:13px;">0901-234-567</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td><span class="consent-status consent-granted">● Đã chấp thuận</span></td>
+              <td><span class="bu-tag bu-nd">Ngọc Dung</span></td>
+              <td><span class="source-badge">&#x1F4F1; App</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">14/06/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn" title="Xem lịch sử">&#x1F4DC;</button>
+                  <button class="icon-btn" title="Chỉnh sửa">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#ede9fd;color:#6c5ce7;">TH</div>
+                  <div>
+                    <div class="customer-name">Trần Văn Hùng</div>
+                    <div class="customer-id">#CUS-00287</div>
+                  </div>
+                </div>
+              </td>
+              <td>0912-345-678</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td><span class="consent-status consent-granted">● Đã chấp thuận</span></td>
+              <td><span class="bu-tag bu-ze">Zema</span></td>
+              <td><span class="source-badge">&#x1F310; Web</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">12/06/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn" title="Xem lịch sử">&#x1F4DC;</button>
+                  <button class="icon-btn" title="Chỉnh sửa">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#e0f8f1;color:#00b894;">PM</div>
+                  <div>
+                    <div class="customer-name">Phạm Thị Mai</div>
+                    <div class="customer-id">#CUS-00394</div>
+                  </div>
+                </div>
+              </td>
+              <td>0933-456-789</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-pending">?</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td><span class="consent-status consent-partial">◑ Một phần</span></td>
+              <td><span class="bu-tag bu-oc">Ocany</span></td>
+              <td><span class="source-badge">&#x270D; Thủ công</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">10/06/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#fce4f1;color:#e84393;">LQ</div>
+                  <div>
+                    <div class="customer-name">Lê Quang Minh</div>
+                    <div class="customer-id">#CUS-00512</div>
+                  </div>
+                </div>
+              </td>
+              <td>0945-567-890</td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td><span class="consent-status consent-denied">✗ Từ chối</span></td>
+              <td><span class="bu-tag bu-nd">Ngọc Dung</span></td>
+              <td><span class="source-badge">&#x1F4F1; App</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">08/06/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#ede9fd;color:#6c5ce7;">VO</div>
+                  <div>
+                    <div class="customer-name">Võ Thị Oanh</div>
+                    <div class="customer-id">#CUS-00631</div>
+                  </div>
+                </div>
+              </td>
+              <td>0956-678-901</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td><span class="consent-status consent-granted">● Đã chấp thuận</span></td>
+              <td><span class="bu-tag bu-ze">Zema</span></td>
+              <td><span class="source-badge">&#x1F310; Web</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">05/06/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#e0f8f1;color:#00b894;">HT</div>
+                  <div>
+                    <div class="customer-name">Hoàng Thị Thanh</div>
+                    <div class="customer-id">#CUS-00745</div>
+                  </div>
+                </div>
+              </td>
+              <td>0967-789-012</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-pending">?</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td><span class="consent-status consent-partial">◑ Một phần</span></td>
+              <td><span class="bu-tag bu-oc">Ocany</span></td>
+              <td><span class="source-badge">&#x1F4F1; App</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">03/06/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#fce4f1;color:#e84393;">BN</div>
+                  <div>
+                    <div class="customer-name">Bùi Ngọc Hà</div>
+                    <div class="customer-id">#CUS-00892</div>
+                  </div>
+                </div>
+              </td>
+              <td>0978-890-123</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td><span class="consent-status consent-granted">● Đã chấp thuận</span></td>
+              <td><span class="bu-tag bu-nd">Ngọc Dung</span></td>
+              <td><span class="source-badge">&#x1F310; Web</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">01/06/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#ede9fd;color:#6c5ce7;">DQ</div>
+                  <div>
+                    <div class="customer-name">Đặng Quốc Bảo</div>
+                    <div class="customer-id">#CUS-01023</div>
+                  </div>
+                </div>
+              </td>
+              <td>0989-901-234</td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-no">✗</span></td>
+              <td><span class="consent-status consent-denied">✗ Từ chối</span></td>
+              <td><span class="bu-tag bu-ze">Zema</span></td>
+              <td><span class="source-badge">&#x270D; Thủ công</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">28/05/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#e0f8f1;color:#00b894;">NK</div>
+                  <div>
+                    <div class="customer-name">Ngô Thị Kim Chi</div>
+                    <div class="customer-id">#CUS-01157</div>
+                  </div>
+                </div>
+              </td>
+              <td>0901-012-345</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-pending">?</span></td>
+              <td><span class="consent-status consent-partial">◑ Một phần</span></td>
+              <td><span class="bu-tag bu-oc">Ocany</span></td>
+              <td><span class="source-badge">&#x1F4F1; App</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">25/05/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="cb"></td>
+              <td>
+                <div class="customer-cell">
+                  <div class="customer-avatar" style="background:#fce4f1;color:#e84393;">TT</div>
+                  <div>
+                    <div class="customer-name">Trịnh Thị Thu</div>
+                    <div class="customer-id">#CUS-01284</div>
+                  </div>
+                </div>
+              </td>
+              <td>0912-123-456</td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td style="text-align:center"><span class="consent-icon consent-yes">✓</span></td>
+              <td><span class="consent-status consent-granted">● Đã chấp thuận</span></td>
+              <td><span class="bu-tag bu-nd">Ngọc Dung</span></td>
+              <td><span class="source-badge">&#x1F310; Web</span></td>
+              <td style="font-size:12px;color:var(--ink-48);">20/05/2026</td>
+              <td>
+                <div class="action-btns">
+                  <button class="icon-btn">&#x1F4DC;</button>
+                  <button class="icon-btn">&#x270E;</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile cards -->
+      <div class="mobile-cards" style="padding:16px;">
+        <!-- Card 1 -->
+        <div class="mobile-card">
+          <div class="mobile-card-header">
+            <div class="customer-avatar" style="width:38px;height:38px;background:#fce4f1;color:#e84393;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;">NT</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">Nguyễn Thị Lan</div>
+              <div style="font-size:12px;color:var(--ink-48);">#CUS-00142 · 0901-234-567</div>
+            </div>
+            <span class="consent-status consent-granted" style="margin-left:auto;">● Hoàn toàn</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-label">Marketing channels</span>
+            <div class="consent-icons-row">
+              <span class="consent-icon consent-yes" style="width:24px;height:24px;font-size:12px;">✓</span>
+              <span style="font-size:11px;color:var(--ink-48);">Email</span>
+              <span class="consent-icon consent-yes" style="width:24px;height:24px;font-size:12px;">✓</span>
+              <span style="font-size:11px;color:var(--ink-48);">SMS</span>
+              <span class="consent-icon consent-yes" style="width:24px;height:24px;font-size:12px;">✓</span>
+              <span style="font-size:11px;color:var(--ink-48);">Zalo</span>
+            </div>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-label">Nguồn / Cập nhật</span>
+            <div class="mobile-card-value"><span class="source-badge">&#x1F4F1; App</span> · 14/06/2026</div>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="mobile-card">
+          <div class="mobile-card-header">
+            <div class="customer-avatar" style="width:38px;height:38px;background:#ede9fd;color:#6c5ce7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;">TH</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">Trần Văn Hùng</div>
+              <div style="font-size:12px;color:var(--ink-48);">#CUS-00287 · 0912-345-678</div>
+            </div>
+            <span class="consent-status consent-partial" style="margin-left:auto;">◑ Một phần</span>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-label">Marketing channels</span>
+            <div class="consent-icons-row">
+              <span class="consent-icon consent-yes" style="width:24px;height:24px;font-size:12px;">✓</span>
+              <span style="font-size:11px;color:var(--ink-48);">Email</span>
+              <span class="consent-icon consent-no" style="width:24px;height:24px;font-size:12px;">✗</span>
+              <span style="font-size:11px;color:var(--ink-48);">SMS</span>
+              <span class="consent-icon consent-yes" style="width:24px;height:24px;font-size:12px;">✓</span>
+              <span style="font-size:11px;color:var(--ink-48);">Zalo</span>
+            </div>
+          </div>
+          <div class="mobile-card-row">
+            <span class="mobile-card-label">Nguồn / Cập nhật</span>
+            <div class="mobile-card-value"><span class="source-badge">&#x1F310; Web</span> · 12/06/2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div style="padding:16px 20px;border-top:1px solid var(--ink-04);display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-48);">
+        <span>Hiển thị 1–10 / 24.817 khách hàng</span>
+        <div style="display:flex;gap:4px;">
+          <button class="btn btn-secondary btn-sm">&#x2039; Trước</button>
+          <button class="btn btn-primary btn-sm">1</button>
+          <button class="btn btn-secondary btn-sm">2</button>
+          <button class="btn btn-secondary btn-sm">3</button>
+          <span style="padding:5px 8px;">…</span>
+          <button class="btn btn-secondary btn-sm">2.482</button>
+          <button class="btn btn-secondary btn-sm">Sau &#x203A;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two columns: Log + PDPA -->
+    <div class="two-col">
+
+      <!-- Consent Change Log -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">&#x1F4CB; Nhật ký thay đổi consent</div>
+            <div class="card-subtitle">Các thay đổi gần đây từ tất cả kênh</div>
+          </div>
+          <button class="btn btn-secondary btn-sm">Xem tất cả</button>
+        </div>
+        <div class="card-body" style="padding:0 20px;">
+          <div class="log-list">
+
+            <div class="log-item">
+              <div class="log-avatar" style="background:#fce4f1;color:#e84393;">NL</div>
+              <div class="log-body">
+                <div class="log-title"><strong>Nguyễn Thị Lan</strong> đã bật <strong>Marketing Push</strong></div>
+                <div class="log-meta">
+                  <span>14/06/2026 · 09:32</span>
+                  <span class="log-channel">App</span>
+                  <span class="log-change"><span class="log-change-from">Tắt</span> → <span class="log-change-to">Bật</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="log-item">
+              <div class="log-avatar" style="background:#ede9fd;color:#6c5ce7;">TH</div>
+              <div class="log-body">
+                <div class="log-title"><strong>Trần Văn Hùng</strong> đã tắt <strong>Marketing SMS</strong></div>
+                <div class="log-meta">
+                  <span>13/06/2026 · 15:18</span>
+                  <span class="log-channel">Web</span>
+                  <span class="log-change"><span class="log-change-to" style="color:var(--success-ink);">Bật</span> → <span class="log-change-from" style="text-decoration:none;color:var(--danger-ink);">Tắt</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="log-item">
+              <div class="log-avatar" style="background:#e0f8f1;color:#00b894;">PM</div>
+              <div class="log-body">
+                <div class="log-title"><strong>Phạm Thị Mai</strong> đã gửi yêu cầu <strong>xóa dữ liệu</strong></div>
+                <div class="log-meta">
+                  <span>12/06/2026 · 11:45</span>
+                  <span class="log-channel">App</span>
+                  <span style="color:var(--warning);font-size:11px;font-weight:600;">&#x23F1; Đang xử lý</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="log-item">
+              <div class="log-avatar" style="background:#fce4f1;color:#e84393;">LM</div>
+              <div class="log-body">
+                <div class="log-title"><strong>Lê Quang Minh</strong> đã từ chối <strong>tất cả marketing</strong></div>
+                <div class="log-meta">
+                  <span>11/06/2026 · 08:05</span>
+                  <span class="log-channel">App</span>
+                  <span class="log-change"><span class="log-change-from">Một phần</span> → <span style="color:var(--danger-ink);font-weight:600;">Từ chối</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="log-item">
+              <div class="log-avatar" style="background:#ede9fd;color:#6c5ce7;">VO</div>
+              <div class="log-body">
+                <div class="log-title"><strong>Võ Thị Oanh</strong> đã bật <strong>Marketing Zalo</strong></div>
+                <div class="log-meta">
+                  <span>10/06/2026 · 16:22</span>
+                  <span class="log-channel">Web</span>
+                  <span class="log-change"><span class="log-change-from">Tắt</span> → <span class="log-change-to">Bật</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="log-item">
+              <div class="log-avatar" style="background:#e0f8f1;color:#00b894;">BN</div>
+              <div class="log-body">
+                <div class="log-title"><strong>Bùi Ngọc Hà</strong> đã chấp thuận <strong>Xử lý dữ liệu</strong> lần đầu</div>
+                <div class="log-meta">
+                  <span>09/06/2026 · 10:14</span>
+                  <span class="log-channel">Thủ công</span>
+                  <span class="log-change"><span class="log-change-from">Chưa có</span> → <span class="log-change-to">Đồng ý</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="log-item">
+              <div class="log-avatar" style="background:#fce4f1;color:#e84393;">NK</div>
+              <div class="log-body">
+                <div class="log-title"><strong>Ngô Thị Kim Chi</strong> đã tắt <strong>Marketing Push</strong></div>
+                <div class="log-meta">
+                  <span>07/06/2026 · 19:48</span>
+                  <span class="log-channel">App</span>
+                  <span class="log-change"><span class="log-change-to" style="color:var(--success-ink);">Bật</span> → <span class="log-change-from" style="text-decoration:none;color:var(--danger-ink);">Tắt</span></span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- PDPA Compliance Summary -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">&#x2696; Tuân thủ PDPA / Bảo mật</div>
+              <div class="card-subtitle">Tổng quan yêu cầu về quyền riêng tư</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="pdpa-grid">
+              <div class="pdpa-stat">
+                <div class="pdpa-stat-value">47</div>
+                <div class="pdpa-stat-label">Yêu cầu xóa dữ liệu (tổng)</div>
+              </div>
+              <div class="pdpa-stat">
+                <div class="pdpa-stat-value warning">6</div>
+                <div class="pdpa-stat-label">Đang chờ xử lý</div>
+              </div>
+              <div class="pdpa-stat">
+                <div class="pdpa-stat-value" style="color:var(--success);">41</div>
+                <div class="pdpa-stat-label">Đã hoàn thành</div>
+              </div>
+            </div>
+            <div style="margin-top:16px;padding:12px;background:var(--ink-02);border-radius:var(--radius-md);">
+              <div style="font-size:12px;font-weight:600;color:var(--ink-60);margin-bottom:8px;">Thời gian xử lý trung bình</div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div style="font-size:24px;font-weight:700;color:var(--brand-primary);">3.2 ngày</div>
+                <div style="font-size:12px;color:var(--ink-48);">Mục tiêu PDPA: ≤ 30 ngày<br><span style="color:var(--success-ink);font-weight:600;">&#x2714; Đang tuân thủ</span></div>
+              </div>
+            </div>
+            <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--ink-60);">Yêu cầu truy cập dữ liệu</span>
+                <strong>12 yêu cầu</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--ink-60);">Yêu cầu chỉnh sửa dữ liệu</span>
+                <strong>8 yêu cầu</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--ink-60);">Yêu cầu phản đối xử lý</span>
+                <strong style="color:var(--warning);">3 yêu cầu</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consent coverage by BU -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">&#x1F4CA; Tỉ lệ opt-in theo BU</div>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                <span style="font-weight:600;color:#e84393;">Ngọc Dung</span>
+                <span style="font-weight:600;">82.1%</span>
+              </div>
+              <div style="height:8px;background:var(--ink-08);border-radius:var(--radius-pill);overflow:hidden;">
+                <div style="height:100%;width:82.1%;background:#e84393;border-radius:var(--radius-pill);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                <span style="font-weight:600;color:#6c5ce7;">Zema</span>
+                <span style="font-weight:600;">75.4%</span>
+              </div>
+              <div style="height:8px;background:var(--ink-08);border-radius:var(--radius-pill);overflow:hidden;">
+                <div style="height:100%;width:75.4%;background:#6c5ce7;border-radius:var(--radius-pill);"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+                <span style="font-weight:600;color:#00b894;">Ocany</span>
+                <span style="font-weight:600;">79.8%</span>
+              </div>
+              <div style="height:8px;background:var(--ink-08);border-radius:var(--radius-pill);overflow:hidden;">
+                <div style="height:100%;width:79.8%;background:#00b894;border-radius:var(--radius-pill);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end two-col -->
+
+  </div><!-- end main-body -->
+</main>
+
+<script>
+function toggleAll(master) {
+  document.querySelectorAll('tbody .cb').forEach(cb => cb.checked = master.checked);
+  updateSelCount();
+}
+function updateSelCount() {
+  const n = document.querySelectorAll('tbody .cb:checked').length;
+  document.getElementById('sel-count').textContent = n;
+}
+document.querySelectorAll('tbody .cb').forEach(cb => cb.addEventListener('change', updateSelCount));
+
+function bulkExport() { alert('Xuất báo cáo consent cho ' + document.querySelectorAll('tbody .cb:checked').length + ' khách hàng đã chọn.'); }
+function bulkReconsent() { alert('Gửi yêu cầu đồng ý lại cho ' + document.querySelectorAll('tbody .cb:checked').length + ' khách hàng.'); }
+</script>
+
+</body>
+</html>

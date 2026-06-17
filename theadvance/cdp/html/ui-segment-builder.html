@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Segment Builder</title>
+<style>
+/* ── Design Tokens ── */
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-100);
+  background: var(--ink-02);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ SHELL ══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+}
+.topnav-brand {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  color: var(--ink-100); text-decoration: none; white-space: nowrap;
+}
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search {
+  width: 320px; height: 32px; border-radius: var(--radius-pill);
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  padding: 0 16px; font-size: 13px; color: var(--ink-80);
+  font-family: var(--font-text);
+}
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--brand-primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+}
+.topnav-bu-switch {
+  font-size: 12px; color: var(--ink-60);
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer;
+}
+.hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 32px; height: 32px; position: relative; flex-shrink: 0;
+}
+.hamburger span {
+  display: block; width: 18px; height: 2px; background: var(--ink-80);
+  border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s;
+}
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); z-index: 99;
+}
+.sidebar-overlay.show { display: block; }
+.sidebar.open { transform: translateX(0) !important; }
+
+.sidebar {
+  position: fixed; top: var(--nav-h); left: 0;
+  width: var(--sidebar-w); height: calc(100vh - var(--nav-h));
+  background: var(--ink-00); border-right: 1px solid var(--ink-08);
+  overflow-y: auto; overflow-x: hidden; z-index: 100;
+  transition: width 0.25s ease;
+}
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-item.active { border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--ink-08); background: var(--ink-00);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-48); font-size: 14px; transition: all 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.content { transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-32);
+  padding: 0 20px 8px;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px; font-size: 14px; color: var(--ink-60);
+  cursor: pointer; transition: all 0.12s; text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active {
+  background: var(--brand-primary-subtle); color: var(--brand-primary);
+  font-weight: 500; border-left-color: var(--brand-primary);
+}
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge {
+  margin-left: auto; font-size: 11px; font-weight: 600;
+  background: var(--danger-subtle); color: var(--danger);
+  padding: 1px 7px; border-radius: var(--radius-pill);
+}
+.content {
+  margin-left: var(--sidebar-w); margin-top: var(--nav-h);
+  min-height: calc(100vh - var(--nav-h));
+}
+
+/* ══ BUTTONS ══ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: var(--font-text); font-size: 13px; font-weight: 500;
+  padding: 7px 16px; border-radius: var(--radius-md); border: none;
+  cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap;
+}
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-ghost { background: none; color: var(--brand-primary); border: 1px solid var(--brand-primary); }
+.btn-ghost:hover { background: var(--brand-primary-subtle); }
+.btn-danger-ghost { background: none; color: var(--danger); border: none; }
+.btn-danger-ghost:hover { background: var(--danger-subtle); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-xs { font-size: 11px; padding: 4px 8px; }
+.btn-icon { padding: 7px; border-radius: var(--radius-md); }
+
+/* ══ PAGE HEADER ══ */
+.page-header {
+  background: var(--ink-00);
+  border-bottom: 1px solid var(--ink-08);
+  padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  flex-wrap: wrap;
+}
+.page-header-left { display: flex; flex-direction: column; gap: 4px; }
+.breadcrumb {
+  font-size: 13px; color: var(--ink-48);
+  display: flex; align-items: center; gap: 6px;
+}
+.breadcrumb a { color: var(--brand-primary); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.page-title {
+  font-family: var(--font-display); font-size: 22px; font-weight: 600;
+  letter-spacing: -0.3px; color: var(--ink-100);
+}
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+.page-header-actions { display: flex; gap: 8px; align-items: center; }
+
+/* ══ CARDS ══ */
+.card {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; border-bottom: 1px solid var(--ink-04);
+}
+.card-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.card-body { padding: 20px; }
+
+/* ══ BUILDER LAYOUT ══ */
+.builder-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+  padding: 24px 32px;
+  align-items: start;
+}
+
+/* ══ SEGMENT CANVAS ══ */
+.segment-canvas { display: flex; flex-direction: column; gap: 12px; }
+
+.segment-group {
+  background: var(--ink-00);
+  border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.segment-group-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  background: var(--ink-02);
+  border-bottom: 1px solid var(--ink-08);
+}
+.group-number {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--brand-primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; flex-shrink: 0;
+}
+.group-label { font-size: 13px; font-weight: 600; color: var(--ink-80); flex: 1; }
+.group-logic-toggle {
+  display: flex; border: 1px solid var(--ink-08); border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+.logic-btn {
+  padding: 3px 12px; font-size: 11px; font-weight: 700;
+  background: none; border: none; cursor: pointer;
+  color: var(--ink-48); transition: all 0.12s;
+  letter-spacing: 0.04em;
+}
+.logic-btn.active-and { background: #2ecc71; color: #fff; }
+.logic-btn.active-or { background: #e67e22; color: #fff; }
+.logic-btn:hover:not(.active-and):not(.active-or) { background: var(--ink-04); }
+
+.group-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+/* ══ CONDITION ROW ══ */
+.condition-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  background: var(--ink-02);
+  border: 1px solid var(--ink-08);
+  border-radius: var(--radius-md);
+  transition: all 0.12s;
+  cursor: grab;
+  position: relative;
+}
+.condition-row:hover { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.condition-row.dragging { opacity: 0.5; cursor: grabbing; }
+.drag-handle {
+  color: var(--ink-32); font-size: 14px; cursor: grab;
+  flex-shrink: 0; user-select: none;
+}
+.condition-field-select,
+.condition-operator-select,
+.condition-value-input {
+  border: 1px solid var(--ink-08); border-radius: var(--radius-md);
+  background: var(--ink-00); font-family: var(--font-text); font-size: 13px;
+  color: var(--ink-80); padding: 6px 10px;
+  transition: border-color 0.12s;
+  appearance: none; -webkit-appearance: none;
+  cursor: pointer;
+}
+.condition-field-select { min-width: 170px; }
+.condition-operator-select { min-width: 110px; }
+.condition-value-input { flex: 1; min-width: 100px; cursor: text; }
+.condition-field-select:focus,
+.condition-operator-select:focus,
+.condition-value-input:focus {
+  outline: none; border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+}
+.condition-delete {
+  width: 28px; height: 28px; border-radius: var(--radius-md);
+  border: none; background: none; cursor: pointer; color: var(--ink-32);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 15px; transition: all 0.12s;
+}
+.condition-delete:hover { background: var(--danger-subtle); color: var(--danger); }
+
+/* connector label between conditions */
+.condition-connector {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 12px;
+}
+.condition-connector-line {
+  flex: 1; height: 1px; background: var(--ink-08);
+}
+.condition-connector-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--ink-48); text-transform: uppercase;
+  padding: 2px 8px; background: var(--ink-04); border-radius: var(--radius-pill);
+}
+
+/* add condition btn */
+.add-condition-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; border-radius: var(--radius-md);
+  border: 1px dashed var(--ink-16); background: none;
+  color: var(--brand-primary); font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all 0.12s; width: 100%;
+  font-family: var(--font-text);
+}
+.add-condition-btn:hover { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+
+/* between groups connector */
+.group-connector {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 20px;
+}
+.group-connector-line { flex: 1; height: 1px; background: var(--ink-08); }
+.group-connector-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  padding: 4px 16px; border-radius: var(--radius-pill);
+  background: var(--ink-100); color: #fff;
+  text-transform: uppercase;
+}
+
+/* Add group button */
+.add-group-row {
+  display: flex; justify-content: center;
+}
+.add-group-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: var(--radius-pill);
+  border: 1.5px dashed var(--ink-16); background: none;
+  color: var(--ink-60); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.12s;
+  font-family: var(--font-text);
+}
+.add-group-btn:hover { border-color: var(--brand-primary); color: var(--brand-primary); background: var(--brand-primary-subtle); }
+
+/* ══ RIGHT PANEL ══ */
+.right-panel { display: flex; flex-direction: column; gap: 16px; }
+
+/* Preview card */
+.preview-card {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); overflow: hidden;
+  position: sticky; top: calc(var(--nav-h) + 16px);
+}
+.preview-header {
+  padding: 14px 20px; border-bottom: 1px solid var(--ink-04);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.preview-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
+.preview-refresh {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid var(--ink-08); background: var(--ink-00);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; color: var(--ink-48);
+  transition: all 0.12s;
+}
+.preview-refresh:hover { background: var(--ink-02); color: var(--brand-primary); }
+
+.preview-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.preview-count {
+  text-align: center; padding: 20px;
+  background: var(--brand-primary-subtle); border-radius: var(--radius-md);
+}
+.preview-count-number {
+  font-family: var(--font-display); font-size: 40px; font-weight: 700;
+  color: var(--brand-primary); letter-spacing: -1px; line-height: 1;
+}
+.preview-count-label { font-size: 12px; color: var(--ink-48); margin-top: 4px; }
+.preview-pct {
+  font-size: 11px; color: var(--success-ink); background: var(--success-subtle);
+  padding: 2px 10px; border-radius: var(--radius-pill); margin-top: 8px;
+  display: inline-block;
+}
+
+.preview-breakdown { display: flex; flex-direction: column; gap: 8px; }
+.preview-breakdown-title { font-size: 12px; font-weight: 600; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; }
+.preview-bu-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.preview-bu-name { font-size: 13px; color: var(--ink-80); flex: 1; }
+.preview-bu-bar-bg { flex: 2; height: 4px; background: var(--ink-04); border-radius: 2px; overflow: hidden; }
+.preview-bu-bar-fill { height: 100%; border-radius: 2px; }
+.preview-bu-count { font-size: 12px; font-weight: 600; color: var(--ink-60); min-width: 36px; text-align: right; }
+
+.preview-actions { display: flex; flex-direction: column; gap: 8px; }
+
+/* ══ SAVE FORM ══ */
+.save-form { display: flex; flex-direction: column; gap: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label { font-size: 12px; font-weight: 600; color: var(--ink-60); }
+.form-input,
+.form-textarea,
+.form-select {
+  border: 1px solid var(--ink-08); border-radius: var(--radius-md);
+  background: var(--ink-00); font-family: var(--font-text); font-size: 13px;
+  color: var(--ink-80); padding: 8px 12px; width: 100%;
+  transition: border-color 0.12s;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  outline: none; border-color: var(--brand-primary);
+  box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+}
+.form-textarea { resize: vertical; min-height: 72px; }
+.form-select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+.form-hint { font-size: 11px; color: var(--ink-32); }
+
+/* ══ CRITERIA REFERENCE ══ */
+.criteria-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.criteria-chip {
+  font-size: 11px; padding: 3px 10px; border-radius: var(--radius-pill);
+  background: var(--ink-04); color: var(--ink-60); cursor: pointer;
+  border: 1px solid var(--ink-08); transition: all 0.12s;
+  white-space: nowrap;
+}
+.criteria-chip:hover { background: var(--brand-primary-subtle); color: var(--brand-primary); border-color: var(--brand-primary); }
+.criteria-section-title { font-size: 11px; font-weight: 600; color: var(--ink-32); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+
+/* ══ TAGS ══ */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 500;
+}
+.tag-dynamic { background: var(--info-subtle); color: var(--info); }
+.tag-static { background: var(--ink-04); color: var(--ink-60); }
+.bu-tag {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: var(--radius-pill); letter-spacing: 0.03em;
+}
+.bu-nd { background: var(--bu-ngocdung-bg); color: var(--bu-ngocdung); }
+.bu-ze { background: var(--bu-zema-bg); color: var(--bu-zema); }
+.bu-oc { background: var(--bu-ocany-bg); color: var(--bu-ocany); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .builder-layout { grid-template-columns: 1fr; padding: 20px 24px; }
+  .preview-card { position: static; }
+  .topnav-search { width: 260px; }
+  .page-header { padding: 16px 24px; }
+}
+
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; gap: 8px; }
+  .topnav-search { width: 100%; min-width: 0; flex: 1; height: 30px; font-size: 12px; }
+  .topnav-brand { font-size: 15px; white-space: nowrap; }
+  .topnav-bu-switch { display: none; }
+  .topnav-right { gap: 8px; }
+  .page-header { padding: 16px; flex-direction: column; align-items: flex-start; }
+  .page-header-actions { width: 100%; }
+  .builder-layout { padding: 16px; gap: 16px; }
+  .condition-row { flex-wrap: wrap; }
+  .condition-field-select, .condition-operator-select { min-width: unset; flex: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Holding (All BU)</span>
+    <span style="font-size:12px;color:var(--ink-48);">Nguyễn Marketing</span>
+    <div class="topnav-avatar">NM</div>
+  </div>
+</nav>
+
+<!-- Sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item active" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()" title="Thu gọn menu">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="breadcrumb">
+        <a href="ui-segment-list.html">Segments</a> <span>/</span>
+        <span style="color:var(--ink-100);font-weight:500;">Tạo Segment mới</span>
+      </div>
+      <div class="page-title">Segment Builder</div>
+      <div class="page-subtitle">Xây dựng điều kiện lọc khách hàng theo logic AND / OR</div>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="window.history.back()">&#x2715; Hủy</button>
+      <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+      <button class="btn btn-primary" onclick="publishSegment()">&#x2713; Xuất bản Segment</button>
+    </div>
+  </div>
+
+  <!-- Builder Layout -->
+  <div class="builder-layout">
+
+    <!-- ═══ LEFT: CANVAS ═══ -->
+    <div class="segment-canvas" id="segmentCanvas">
+
+      <!-- Criteria Quick Reference -->
+      <div class="card">
+        <div class="card-header" style="cursor:pointer;" onclick="toggleCriteria()">
+          <span class="card-title">&#x1F4CB; Tiêu chí có thể dùng</span>
+          <span style="font-size:12px;color:var(--ink-48);" id="criteriaToggleLabel">Ẩn ▲</span>
+        </div>
+        <div class="card-body" id="criteriaPanel">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;">
+            <div>
+              <div class="criteria-section-title">&#x1F464; Nhân khẩu học</div>
+              <div class="criteria-chips">
+                <span class="criteria-chip" onclick="addConditionWithField('demographics','Tuổi')">Tuổi</span>
+                <span class="criteria-chip" onclick="addConditionWithField('demographics','Giới tính')">Giới tính</span>
+                <span class="criteria-chip" onclick="addConditionWithField('demographics','Tỉnh / Thành')">Tỉnh / Thành</span>
+                <span class="criteria-chip" onclick="addConditionWithField('demographics','Quận / Huyện')">Quận / Huyện</span>
+                <span class="criteria-chip" onclick="addConditionWithField('demographics','Nghề nghiệp')">Nghề nghiệp</span>
+              </div>
+            </div>
+            <div>
+              <div class="criteria-section-title">&#x1F4CA; Hành vi</div>
+              <div class="criteria-chips">
+                <span class="criteria-chip" onclick="addConditionWithField('behavior','Số lần ghé thăm')">Số lần ghé thăm</span>
+                <span class="criteria-chip" onclick="addConditionWithField('behavior','Lần ghé thăm cuối')">Lần ghé thăm cuối</span>
+                <span class="criteria-chip" onclick="addConditionWithField('behavior','Tổng chi tiêu')">Tổng chi tiêu</span>
+                <span class="criteria-chip" onclick="addConditionWithField('behavior','Số lần mua hàng')">Số lần mua hàng</span>
+                <span class="criteria-chip" onclick="addConditionWithField('behavior','Dịch vụ đã dùng')">Dịch vụ đã dùng</span>
+              </div>
+            </div>
+            <div>
+              <div class="criteria-section-title">&#x2605; Scoring</div>
+              <div class="criteria-chips">
+                <span class="criteria-chip" onclick="addConditionWithField('scoring','Hạng thành viên')">Hạng thành viên</span>
+                <span class="criteria-chip" onclick="addConditionWithField('scoring','Health Score')">Health Score</span>
+                <span class="criteria-chip" onclick="addConditionWithField('scoring','RFM Score')">RFM Score</span>
+                <span class="criteria-chip" onclick="addConditionWithField('scoring','Nhóm RFM')">Nhóm RFM</span>
+              </div>
+            </div>
+            <div>
+              <div class="criteria-section-title">&#x1F3E2; BU Membership</div>
+              <div class="criteria-chips">
+                <span class="criteria-chip bu-nd" onclick="addConditionWithField('bu','BU Ngọc Dung')">Ngọc Dung</span>
+                <span class="criteria-chip bu-ze" onclick="addConditionWithField('bu','BU Zema')">Zema</span>
+                <span class="criteria-chip bu-oc" onclick="addConditionWithField('bu','BU Ocany')">Ocany</span>
+                <span class="criteria-chip" onclick="addConditionWithField('bu','Số BU tham gia')">Số BU tham gia</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 1 -->
+      <div class="segment-group" id="group-1">
+        <div class="segment-group-header">
+          <div class="group-number">1</div>
+          <div class="group-label">Nhóm điều kiện 1</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;color:var(--ink-48);">Logic trong nhóm:</span>
+            <div class="group-logic-toggle">
+              <button class="logic-btn active-and" onclick="setGroupLogic(1,'AND',this)">AND</button>
+              <button class="logic-btn" onclick="setGroupLogic(1,'OR',this)">OR</button>
+            </div>
+            <button class="btn btn-xs btn-danger-ghost" onclick="deleteGroup(1)" title="Xóa nhóm" style="margin-left:4px;">&#x1F5D1;</button>
+          </div>
+        </div>
+        <div class="group-body" id="group-1-body">
+
+          <!-- Condition 1 -->
+          <div class="condition-row" draggable="true">
+            <span class="drag-handle" title="Kéo để sắp xếp">&#x2630;</span>
+            <select class="condition-field-select">
+              <optgroup label="Nhân khẩu học">
+                <option selected>Tuổi</option>
+                <option>Giới tính</option>
+                <option>Tỉnh / Thành</option>
+                <option>Nghề nghiệp</option>
+              </optgroup>
+              <optgroup label="Hành vi">
+                <option>Tổng chi tiêu</option>
+                <option>Số lần ghé thăm</option>
+                <option>Lần ghé thăm cuối</option>
+                <option>Dịch vụ đã dùng</option>
+              </optgroup>
+              <optgroup label="Scoring">
+                <option>Hạng thành viên</option>
+                <option>Health Score</option>
+                <option>RFM Score</option>
+                <option>Nhóm RFM</option>
+              </optgroup>
+              <optgroup label="BU Membership">
+                <option>BU Ngọc Dung</option>
+                <option>BU Zema</option>
+                <option>BU Ocany</option>
+              </optgroup>
+            </select>
+            <select class="condition-operator-select">
+              <option>≥ lớn hơn bằng</option>
+              <option>≤ nhỏ hơn bằng</option>
+              <option>= bằng</option>
+              <option>≠ khác</option>
+              <option>trong khoảng</option>
+            </select>
+            <input class="condition-value-input" type="text" value="25" placeholder="Giá trị..." />
+            <button class="condition-delete" title="Xóa điều kiện">&#x2715;</button>
+          </div>
+
+          <!-- AND connector -->
+          <div class="condition-connector">
+            <div class="condition-connector-line"></div>
+            <span class="condition-connector-label">AND</span>
+            <div class="condition-connector-line"></div>
+          </div>
+
+          <!-- Condition 2 -->
+          <div class="condition-row" draggable="true">
+            <span class="drag-handle" title="Kéo để sắp xếp">&#x2630;</span>
+            <select class="condition-field-select">
+              <optgroup label="Nhân khẩu học">
+                <option>Tuổi</option>
+                <option>Giới tính</option>
+                <option selected>Tỉnh / Thành</option>
+                <option>Nghề nghiệp</option>
+              </optgroup>
+              <optgroup label="Hành vi">
+                <option>Tổng chi tiêu</option>
+                <option>Số lần ghé thăm</option>
+                <option>Lần ghé thăm cuối</option>
+                <option>Dịch vụ đã dùng</option>
+              </optgroup>
+              <optgroup label="Scoring">
+                <option>Hạng thành viên</option>
+                <option>Health Score</option>
+                <option>RFM Score</option>
+                <option>Nhóm RFM</option>
+              </optgroup>
+            </select>
+            <select class="condition-operator-select">
+              <option>≥ lớn hơn bằng</option>
+              <option>≤ nhỏ hơn bằng</option>
+              <option selected>= bằng</option>
+              <option>≠ khác</option>
+              <option>trong khoảng</option>
+              <option>có trong danh sách</option>
+            </select>
+            <input class="condition-value-input" type="text" value="TP. Hồ Chí Minh" placeholder="Giá trị..." />
+            <button class="condition-delete" title="Xóa điều kiện">&#x2715;</button>
+          </div>
+
+          <!-- AND connector -->
+          <div class="condition-connector">
+            <div class="condition-connector-line"></div>
+            <span class="condition-connector-label">AND</span>
+            <div class="condition-connector-line"></div>
+          </div>
+
+          <!-- Condition 3 -->
+          <div class="condition-row" draggable="true">
+            <span class="drag-handle" title="Kéo để sắp xếp">&#x2630;</span>
+            <select class="condition-field-select">
+              <optgroup label="Scoring">
+                <option>Hạng thành viên</option>
+                <option>Health Score</option>
+                <option>RFM Score</option>
+                <option selected>Nhóm RFM</option>
+              </optgroup>
+            </select>
+            <select class="condition-operator-select">
+              <option>= bằng</option>
+              <option selected>có trong danh sách</option>
+              <option>không có trong</option>
+            </select>
+            <input class="condition-value-input" type="text" value="Champions, Loyal Customers" placeholder="Giá trị..." />
+            <button class="condition-delete" title="Xóa điều kiện">&#x2715;</button>
+          </div>
+
+          <!-- Add condition -->
+          <button class="add-condition-btn" onclick="addCondition(1)">
+            <span style="font-size:16px;line-height:1;">+</span> Thêm điều kiện vào nhóm 1
+          </button>
+        </div>
+      </div>
+
+      <!-- Group connector -->
+      <div class="group-connector">
+        <div class="group-connector-line"></div>
+        <span class="group-connector-badge">OR</span>
+        <div class="group-connector-line"></div>
+      </div>
+
+      <!-- Group 2 -->
+      <div class="segment-group" id="group-2">
+        <div class="segment-group-header">
+          <div class="group-number" style="background:var(--bu-zema);">2</div>
+          <div class="group-label">Nhóm điều kiện 2</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;color:var(--ink-48);">Logic trong nhóm:</span>
+            <div class="group-logic-toggle">
+              <button class="logic-btn active-and" onclick="setGroupLogic(2,'AND',this)">AND</button>
+              <button class="logic-btn" onclick="setGroupLogic(2,'OR',this)">OR</button>
+            </div>
+            <button class="btn btn-xs btn-danger-ghost" onclick="deleteGroup(2)" title="Xóa nhóm" style="margin-left:4px;">&#x1F5D1;</button>
+          </div>
+        </div>
+        <div class="group-body" id="group-2-body">
+          <div class="condition-row" draggable="true">
+            <span class="drag-handle">&#x2630;</span>
+            <select class="condition-field-select">
+              <optgroup label="Hành vi">
+                <option>Tổng chi tiêu</option>
+                <option>Số lần ghé thăm</option>
+                <option selected>Lần ghé thăm cuối</option>
+                <option>Dịch vụ đã dùng</option>
+              </optgroup>
+            </select>
+            <select class="condition-operator-select">
+              <option>≥ lớn hơn bằng</option>
+              <option>≤ nhỏ hơn bằng</option>
+              <option>= bằng</option>
+              <option selected>≤ trong vòng</option>
+            </select>
+            <input class="condition-value-input" type="text" value="90 ngày" placeholder="Giá trị..." />
+            <button class="condition-delete">&#x2715;</button>
+          </div>
+          <div class="condition-connector">
+            <div class="condition-connector-line"></div>
+            <span class="condition-connector-label">AND</span>
+            <div class="condition-connector-line"></div>
+          </div>
+          <div class="condition-row" draggable="true">
+            <span class="drag-handle">&#x2630;</span>
+            <select class="condition-field-select">
+              <optgroup label="Hành vi">
+                <option selected>Tổng chi tiêu</option>
+                <option>Số lần ghé thăm</option>
+                <option>Lần ghé thăm cuối</option>
+              </optgroup>
+            </select>
+            <select class="condition-operator-select">
+              <option selected>≥ lớn hơn bằng</option>
+              <option>≤ nhỏ hơn bằng</option>
+              <option>= bằng</option>
+            </select>
+            <input class="condition-value-input" type="text" value="5,000,000 ₫" placeholder="Giá trị..." />
+            <button class="condition-delete">&#x2715;</button>
+          </div>
+          <button class="add-condition-btn" onclick="addCondition(2)">
+            <span style="font-size:16px;line-height:1;">+</span> Thêm điều kiện vào nhóm 2
+          </button>
+        </div>
+      </div>
+
+      <!-- Add group button -->
+      <div class="add-group-row">
+        <button class="add-group-btn" onclick="addGroup()">
+          <span style="font-size:18px;line-height:1;">+</span> Thêm nhóm điều kiện
+        </button>
+      </div>
+
+    </div>
+    <!-- end segment canvas -->
+
+    <!-- ═══ RIGHT PANEL ═══ -->
+    <div class="right-panel">
+
+      <!-- Preview Count -->
+      <div class="preview-card">
+        <div class="preview-header">
+          <span class="preview-title">&#x1F441; Preview</span>
+          <button class="preview-refresh" onclick="refreshPreview()" title="Làm mới">&#x21BB;</button>
+        </div>
+        <div class="preview-body">
+          <div class="preview-count">
+            <div class="preview-count-number" id="previewCount">8,342</div>
+            <div class="preview-count-label">khách hàng phù hợp điều kiện</div>
+            <span class="preview-pct">&#x2191; 13.7% tổng KH</span>
+          </div>
+
+          <div class="preview-breakdown">
+            <div class="preview-breakdown-title">Phân bổ theo BU</div>
+            <div class="preview-bu-row">
+              <span class="preview-bu-name">&#x1F3E5; Ngọc Dung</span>
+              <div class="preview-bu-bar-bg">
+                <div class="preview-bu-bar-fill" style="width:68%;background:var(--bu-ngocdung);"></div>
+              </div>
+              <span class="preview-bu-count">5,672</span>
+            </div>
+            <div class="preview-bu-row">
+              <span class="preview-bu-name">&#x1F9F4; Ocany</span>
+              <div class="preview-bu-bar-bg">
+                <div class="preview-bu-bar-fill" style="width:22%;background:var(--bu-ocany);"></div>
+              </div>
+              <span class="preview-bu-count">1,836</span>
+            </div>
+            <div class="preview-bu-row">
+              <span class="preview-bu-name">&#x1F4A8; Zema</span>
+              <div class="preview-bu-bar-bg">
+                <div class="preview-bu-bar-fill" style="width:10%;background:var(--bu-zema);"></div>
+              </div>
+              <span class="preview-bu-count">834</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;font-size:12px;color:var(--ink-48);background:var(--ink-02);border-radius:var(--radius-md);padding:10px 12px;">
+            <span>&#x1F551;</span>
+            <span>Dữ liệu cập nhật lúc 14:23 — 16/06/2026</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Form -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">&#x1F4BE; Thông tin Segment</span>
+        </div>
+        <div class="card-body">
+          <div class="save-form">
+            <div class="form-group">
+              <label class="form-label">Tên segment *</label>
+              <input class="form-input" type="text" value="KH Premium TP.HCM" placeholder="VD: KH VIP Hà Nội" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mô tả</label>
+              <textarea class="form-textarea" placeholder="Mô tả ngắn về mục đích của segment này...">Khách hàng hạng Champion và Loyal, thuộc TP.HCM, tuổi từ 25 trở lên. Mục tiêu chiến dịch upsell Q3/2026.</textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Loại segment</label>
+              <select class="form-select">
+                <option selected>Dynamic (cập nhật tự động)</option>
+                <option>Static (chụp tại thời điểm)</option>
+              </select>
+              <span class="form-hint">Dynamic: tự cập nhật mỗi ngày theo điều kiện đã chọn</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">BU áp dụng</label>
+              <select class="form-select">
+                <option selected>Tất cả BU (All)</option>
+                <option>Ngọc Dung</option>
+                <option>Zema</option>
+                <option>Ocany</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <input class="form-input" type="text" value="premium, upsell, q3-2026" placeholder="Nhập tag, phân cách bằng dấu phẩy" />
+            </div>
+            <div style="display:flex;gap:8px;padding-top:4px;">
+              <button class="btn btn-secondary" style="flex:1;" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+              <button class="btn btn-primary" style="flex:2;" onclick="publishSegment()">&#x2713; Xuất bản</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- end right panel -->
+  </div>
+
+</div>
+<!-- end content -->
+
+<script>
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebarOverlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+function toggleCollapse() {
+  const sb = document.getElementById('sidebar');
+  const ct = document.getElementById('content');
+  sb.classList.toggle('collapsed');
+  ct.classList.toggle('sidebar-collapsed');
+}
+function toggleCriteria() {
+  const panel = document.getElementById('criteriaPanel');
+  const label = document.getElementById('criteriaToggleLabel');
+  if (panel.style.display === 'none') {
+    panel.style.display = '';
+    label.textContent = 'Ẩn ▲';
+  } else {
+    panel.style.display = 'none';
+    label.textContent = 'Hiện ▼';
+  }
+}
+function setGroupLogic(groupId, logic, btn) {
+  const toggle = btn.closest('.group-logic-toggle');
+  toggle.querySelectorAll('.logic-btn').forEach(b => {
+    b.classList.remove('active-and', 'active-or');
+  });
+  btn.classList.add(logic === 'AND' ? 'active-and' : 'active-or');
+  // Update connectors
+  const body = document.getElementById('group-' + groupId + '-body');
+  body.querySelectorAll('.condition-connector-label').forEach(el => {
+    el.textContent = logic;
+  });
+}
+let groupCount = 2;
+function addGroup() {
+  groupCount++;
+  const canvas = document.getElementById('segmentCanvas');
+  const addRow = canvas.querySelector('.add-group-row');
+  const colors = ['#0066cc','#6c5ce7','#00b894','#e84393','#f5a623'];
+  const color = colors[(groupCount - 1) % colors.length];
+  const connector = document.createElement('div');
+  connector.className = 'group-connector';
+  connector.innerHTML = `<div class="group-connector-line"></div><span class="group-connector-badge">OR</span><div class="group-connector-line"></div>`;
+  const group = document.createElement('div');
+  group.className = 'segment-group';
+  group.id = 'group-' + groupCount;
+  group.innerHTML = `
+    <div class="segment-group-header">
+      <div class="group-number" style="background:${color};">${groupCount}</div>
+      <div class="group-label">Nhóm điều kiện ${groupCount}</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;color:var(--ink-48);">Logic trong nhóm:</span>
+        <div class="group-logic-toggle">
+          <button class="logic-btn active-and" onclick="setGroupLogic(${groupCount},'AND',this)">AND</button>
+          <button class="logic-btn" onclick="setGroupLogic(${groupCount},'OR',this)">OR</button>
+        </div>
+        <button class="btn btn-xs btn-danger-ghost" onclick="deleteGroup(${groupCount})" title="Xóa nhóm" style="margin-left:4px;">&#x1F5D1;</button>
+      </div>
+    </div>
+    <div class="group-body" id="group-${groupCount}-body">
+      ${makeConditionRow()}
+      <button class="add-condition-btn" onclick="addCondition(${groupCount})">
+        <span style="font-size:16px;line-height:1;">+</span> Thêm điều kiện vào nhóm ${groupCount}
+      </button>
+    </div>`;
+  canvas.insertBefore(connector, addRow);
+  canvas.insertBefore(group, addRow);
+  updatePreview();
+}
+function makeConditionRow() {
+  return `<div class="condition-row" draggable="true">
+    <span class="drag-handle">&#x2630;</span>
+    <select class="condition-field-select">
+      <optgroup label="Nhân khẩu học"><option selected>Tuổi</option><option>Giới tính</option><option>Tỉnh / Thành</option></optgroup>
+      <optgroup label="Hành vi"><option>Tổng chi tiêu</option><option>Số lần ghé thăm</option><option>Lần ghé thăm cuối</option></optgroup>
+      <optgroup label="Scoring"><option>Hạng thành viên</option><option>Health Score</option><option>Nhóm RFM</option></optgroup>
+      <optgroup label="BU"><option>BU Ngọc Dung</option><option>BU Zema</option><option>BU Ocany</option></optgroup>
+    </select>
+    <select class="condition-operator-select">
+      <option selected>≥ lớn hơn bằng</option><option>≤ nhỏ hơn bằng</option><option>= bằng</option><option>≠ khác</option>
+    </select>
+    <input class="condition-value-input" type="text" placeholder="Giá trị..." />
+    <button class="condition-delete" onclick="this.closest('.condition-row').remove(); updatePreview();">&#x2715;</button>
+  </div>`;
+}
+function addCondition(groupId) {
+  const body = document.getElementById('group-' + groupId + '-body');
+  const addBtn = body.querySelector('.add-condition-btn');
+  const logicLabel = body.closest('.segment-group').querySelector('.logic-btn.active-and') ? 'AND' : 'OR';
+  const connector = document.createElement('div');
+  connector.className = 'condition-connector';
+  connector.innerHTML = `<div class="condition-connector-line"></div><span class="condition-connector-label">${logicLabel}</span><div class="condition-connector-line"></div>`;
+  const row = document.createElement('div');
+  row.innerHTML = makeConditionRow();
+  body.insertBefore(connector, addBtn);
+  body.insertBefore(row.firstElementChild, addBtn);
+  updatePreview();
+}
+function addConditionWithField(category, fieldName) {
+  addCondition(1);
+  const rows = document.querySelectorAll('#group-1-body .condition-row');
+  const lastRow = rows[rows.length - 1];
+  const sel = lastRow.querySelector('.condition-field-select');
+  for (let opt of sel.options) {
+    if (opt.text === fieldName) { opt.selected = true; break; }
+  }
+}
+function deleteGroup(groupId) {
+  const group = document.getElementById('group-' + groupId);
+  if (!group) return;
+  // also remove the preceding connector
+  const prev = group.previousElementSibling;
+  if (prev && prev.classList.contains('group-connector')) prev.remove();
+  group.remove();
+  updatePreview();
+}
+function refreshPreview() {
+  const el = document.getElementById('previewCount');
+  el.style.opacity = '0.3';
+  setTimeout(() => {
+    const val = Math.floor(Math.random() * 5000) + 5000;
+    el.textContent = val.toLocaleString('vi-VN');
+    el.style.opacity = '1';
+  }, 600);
+}
+function updatePreview() {
+  setTimeout(refreshPreview, 200);
+}
+function saveDraft() {
+  alert('Đã lưu nháp segment!');
+}
+function publishSegment() {
+  alert('Segment đã xuất bản thành công!');
+}
+</script>
+</body>
+</html>

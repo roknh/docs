@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Users &amp; Roles</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+  --font-display: "SF Pro Display","Inter",system-ui,-apple-system,sans-serif;
+  --font-text: "SF Pro Text","Inter",system-ui,-apple-system,sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--font-text);font-size:15px;line-height:1.5;color:var(--ink-100);background:var(--ink-02);-webkit-font-smoothing:antialiased;}
+
+/* ── Shell ── */
+.topnav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--ink-00);border-bottom:1px solid var(--ink-08);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 20px;}
+.topnav-brand{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--ink-100);text-decoration:none;}
+.topnav-brand span{color:var(--brand-primary);}
+.topnav-search{width:320px;height:32px;border-radius:var(--radius-pill);background:var(--ink-04);border:1px solid var(--ink-08);padding:0 16px;font-size:13px;color:#fff;}
+.topnav-search::placeholder{color:var(--ink-32);}
+.topnav-search:focus{outline:none;background:var(--ink-08);}
+.topnav-right{display:flex;align-items:center;gap:16px;}
+.topnav-avatar{width:28px;height:28px;border-radius:50%;background:var(--brand-primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;}
+.topnav-bu-switch{font-size:12px;color:var(--ink-60);background:var(--ink-04);border:1px solid var(--ink-08);padding:4px 12px;border-radius:var(--radius-pill);cursor:pointer;}
+.topnav-icon-btn{background:none;border:none;color:var(--ink-60);cursor:pointer;font-size:18px;}
+.sidebar{position:fixed;top:var(--nav-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--nav-h));background:var(--ink-00);border-right:1px solid var(--ink-08);overflow-y:auto;overflow-x:hidden;z-index:100;transition:width 0.25s ease;}
+.sidebar.collapsed{width:64px;}
+.sidebar.collapsed .sidebar-section-label{font-size:0;padding:12px 0 4px;}
+.sidebar.collapsed .sidebar-item{padding:10px 0;justify-content:center;gap:0;font-size:0;border-left:none;}
+.sidebar.collapsed .sidebar-item.active{border-left:none;}
+.sidebar.collapsed .sidebar-icon{font-size:20px;width:auto;}
+.sidebar.collapsed .sidebar-item-badge{position:absolute;top:2px;right:8px;font-size:9px;padding:0 5px;margin:0;}
+.sidebar.collapsed .sidebar-item{position:relative;}
+.sidebar.collapsed .sidebar-toggle{right:0;left:0;display:flex;justify-content:center;}
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse{display:none;}
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand{display:block;}
+.sidebar-toggle-btn .toggle-expand{display:none;}
+.sidebar-toggle{position:absolute;bottom:12px;right:12px;}
+.sidebar-toggle-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--ink-08);background:var(--ink-00);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink-48);font-size:14px;box-shadow:var(--shadow-sm);}
+.sidebar-toggle-btn:hover{background:var(--ink-02);}
+.sidebar-section{padding:20px 0 8px;}
+.sidebar-section-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-32);padding:0 20px 8px;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:8px 20px;font-size:14px;color:var(--ink-60);cursor:pointer;transition:all 0.12s;text-decoration:none;border-left:3px solid transparent;}
+.sidebar-item:hover{background:var(--ink-02);color:var(--ink-100);}
+.sidebar-item.active{background:var(--brand-primary-subtle);color:var(--brand-primary);font-weight:500;border-left-color:var(--brand-primary);}
+.sidebar-icon{width:20px;text-align:center;font-size:16px;flex-shrink:0;}
+.sidebar-item-badge{margin-left:auto;font-size:11px;font-weight:600;background:var(--danger-subtle);color:var(--danger);padding:1px 7px;border-radius:var(--radius-pill);}
+.content{margin-left:var(--sidebar-w);margin-top:var(--nav-h);min-height:calc(100vh - var(--nav-h));transition:margin-left 0.25s ease;}
+.content.sidebar-collapsed{margin-left:64px;}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font-text);font-size:13px;font-weight:500;padding:7px 16px;border-radius:var(--radius-md);border:none;cursor:pointer;transition:all 0.12s;text-decoration:none;white-space:nowrap;}
+.btn-primary{background:var(--brand-primary);color:#fff;}
+.btn-primary:hover{background:var(--brand-primary-hover);}
+.btn-secondary{background:var(--ink-00);color:var(--ink-80);border:1px solid var(--ink-08);}
+.btn-secondary:hover{background:var(--ink-02);}
+.btn-danger-ghost{background:none;color:var(--danger-ink);border:none;padding:4px 8px;}
+.btn-danger-ghost:hover{background:var(--danger-subtle);}
+.btn-ghost{background:none;color:var(--brand-primary);border:none;padding:4px 8px;}
+.btn-ghost:hover{background:var(--brand-primary-subtle);}
+.btn-sm{font-size:12px;padding:5px 10px;}
+.btn-xs{font-size:11px;padding:3px 8px;}
+
+/* ── Page Header ── */
+.page-header{background:var(--ink-00);border-bottom:1px solid var(--ink-08);padding:20px 32px;}
+.page-title-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.page-title{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.3px;}
+.page-subtitle{font-size:13px;color:var(--ink-48);margin-top:2px;}
+.page-actions{display:flex;gap:8px;}
+
+/* ── Tab Bar ── */
+.tab-bar{display:flex;border-bottom:1px solid var(--ink-08);background:var(--ink-00);padding:0 32px;}
+.tab-item{padding:12px 20px;font-size:14px;font-weight:500;color:var(--ink-48);cursor:pointer;border-bottom:2.5px solid transparent;transition:all 0.12s;white-space:nowrap;}
+.tab-item:hover{color:var(--ink-80);}
+.tab-item.active{color:var(--brand-primary);border-bottom-color:var(--brand-primary);}
+
+/* ── Tab Panels ── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── Page Body ── */
+.page-body{padding:24px 32px;}
+
+/* ── Filter Row ── */
+.filter-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-row select{height:34px;padding:0 10px;border:1px solid var(--ink-08);border-radius:var(--radius-md);font-size:13px;color:var(--ink-80);background:var(--ink-00);cursor:pointer;}
+.filter-row select:focus{outline:none;border-color:var(--brand-primary);}
+.search-input{height:34px;padding:0 12px;border:1px solid var(--ink-08);border-radius:var(--radius-md);font-size:13px;color:var(--ink-80);background:var(--ink-00);width:240px;}
+.search-input:focus{outline:none;border-color:var(--brand-primary);}
+.filter-spacer{flex:1;}
+
+/* ── User Table ── */
+.user-table-wrap{background:var(--ink-00);border:1px solid var(--ink-08);border-radius:var(--radius-lg);overflow:hidden;}
+.user-table{width:100%;border-collapse:collapse;}
+.user-table th{text-align:left;font-size:11px;font-weight:600;color:var(--ink-32);text-transform:uppercase;letter-spacing:0.05em;padding:10px 16px;border-bottom:1.5px solid var(--ink-08);background:var(--ink-02);white-space:nowrap;}
+.user-table td{padding:12px 16px;border-bottom:1px solid var(--ink-04);vertical-align:middle;}
+.user-table tr:last-child td{border-bottom:none;}
+.user-table tr:hover td{background:var(--ink-02);}
+
+/* Avatar + name */
+.user-cell{display:flex;align-items:center;gap:10px;}
+.user-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.user-name{font-size:14px;font-weight:500;}
+.user-email-small{font-size:12px;color:var(--ink-48);}
+
+/* Status badge */
+.status-pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:2px 9px;border-radius:var(--radius-pill);}
+.status-pill::before{content:"";width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.sp-active{background:var(--success-subtle);color:var(--success-ink);}
+.sp-active::before{background:var(--success);}
+.sp-inactive{background:var(--ink-04);color:var(--ink-48);}
+.sp-inactive::before{background:var(--ink-32);}
+.sp-locked{background:var(--danger-subtle);color:var(--danger-ink);}
+.sp-locked::before{background:var(--danger);}
+
+/* Role badge */
+.role-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 8px;border-radius:var(--radius-pill);}
+.rb-admin{background:#fce4f1;color:#c0144c;}
+.rb-superadmin{background:#1d1d1f;color:#fff;}
+.rb-marketing{background:var(--info-subtle);color:#004080;}
+.rb-cs{background:var(--bu-ocany-bg);color:#007a60;}
+.rb-telesale{background:var(--bu-zema-bg);color:#4a35b0;}
+.rb-analyst{background:var(--tier-gold-bg);color:#8a5a00;}
+.rb-management{background:#f0e6ff;color:#5a1db8;}
+
+/* BU tags */
+.bu-tag{display:inline-block;font-size:10px;font-weight:600;padding:1px 6px;border-radius:var(--radius-pill);margin-right:3px;}
+.bu-nd{background:var(--bu-ngocdung-bg);color:var(--bu-ngocdung);}
+.bu-zm{background:var(--bu-zema-bg);color:var(--bu-zema);}
+.bu-oc{background:var(--bu-ocany-bg);color:var(--bu-ocany);}
+
+/* Action buttons in table */
+.table-actions{display:flex;gap:4px;}
+
+/* Mobile cards */
+.user-cards{display:none;flex-direction:column;gap:12px;}
+.user-card{background:var(--ink-00);border:1px solid var(--ink-08);border-radius:var(--radius-lg);padding:16px;}
+.user-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.user-card-body{display:flex;flex-direction:column;gap:6px;}
+.user-card-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;}
+.user-card-label{color:var(--ink-48);}
+.user-card-actions{display:flex;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--ink-04);}
+
+/* ── Role Cards (Roles tab) ── */
+.roles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;}
+.role-card{background:var(--ink-00);border:1px solid var(--ink-08);border-radius:var(--radius-lg);padding:20px;transition:box-shadow 0.15s;}
+.role-card:hover{box-shadow:var(--shadow-md);}
+.role-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.role-card-name{font-size:16px;font-weight:700;}
+.role-card-desc{font-size:12px;color:var(--ink-48);margin-top:2px;}
+.role-card-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.role-user-count{font-size:12px;color:var(--ink-48);background:var(--ink-02);padding:3px 8px;border-radius:var(--radius-pill);}
+
+/* Permission matrix */
+.perm-section-title{font-size:11px;font-weight:600;color:var(--ink-32);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;}
+.perm-module{margin-bottom:10px;}
+.perm-module-name{font-size:12px;font-weight:600;color:var(--ink-60);margin-bottom:6px;}
+.perm-checkboxes{display:flex;gap:8px;flex-wrap:wrap;}
+.perm-check{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--ink-60);}
+.perm-check input[type=checkbox]{accent-color:var(--brand-primary);width:13px;height:13px;cursor:pointer;}
+.perm-check-on{color:var(--success-ink);font-weight:500;}
+.perm-check-off{color:var(--ink-32);}
+.role-card-actions{display:flex;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid var(--ink-04);}
+
+/* ── Add user inline form (modal) ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--ink-00);border-radius:var(--radius-xl);padding:28px;width:480px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,0.25);}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:4px;}
+.modal-desc{font-size:13px;color:var(--ink-48);margin-bottom:20px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.form-group{display:flex;flex-direction:column;gap:4px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:12px;font-weight:600;color:var(--ink-60);}
+.form-input{height:36px;padding:0 12px;border:1.5px solid var(--ink-08);border-radius:var(--radius-md);font-size:13px;color:var(--ink-80);background:var(--ink-00);}
+.form-input:focus{outline:none;border-color:var(--brand-primary);}
+.form-select{height:36px;padding:0 10px;border:1.5px solid var(--ink-08);border-radius:var(--radius-md);font-size:13px;color:var(--ink-80);background:var(--ink-00);cursor:pointer;}
+.form-select:focus{outline:none;border-color:var(--brand-primary);}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--ink-48);}
+.modal-close:hover{color:var(--ink-100);}
+
+/* ── Responsive ── */
+@media(max-width:1023px){
+  .sidebar{transform:translateX(-100%);}
+  .content{margin-left:0;}
+  .topnav-search{width:200px;}
+  .roles-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:767px){
+  .page-body{padding:16px;}
+  .page-header{padding:16px;}
+  .tab-bar{padding:0 16px;}
+  .topnav-search{display:none;}
+  .user-table-wrap{display:none;}
+  .user-cards{display:flex;}
+  .filter-row .search-input{width:100%;}
+  .roles-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<nav class="topnav">
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">Ngọc Dung ▾</span>
+    <button class="topnav-icon-btn">🔔</button>
+    <div class="topnav-avatar">SA</div>
+  </div>
+</nav>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item active" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+      <span class="toggle-collapse">◀</span>
+      <span class="toggle-expand">▶</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x1F465; Users &amp; Roles</div>
+        <div class="page-subtitle">Quản lý người dùng và phân quyền hệ thống CDP — Super Admin</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary btn-sm" onclick="openAddUserModal()">+ Thêm user</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item active" onclick="switchTab('users',this)">👤 Người dùng</div>
+    <div class="tab-item" onclick="switchTab('roles',this)">🔑 Roles &amp; Quyền</div>
+  </div>
+
+  <!-- ─── TAB: USERS ─── -->
+  <div class="tab-panel active" id="tab-users">
+    <div class="page-body">
+
+      <!-- Filter Row -->
+      <div class="filter-row">
+        <input class="search-input" type="search" placeholder="Tìm tên, email...">
+        <select>
+          <option>Tất cả role</option>
+          <option>Super Admin</option>
+          <option>Admin</option>
+          <option>Marketing</option>
+          <option>CS Staff</option>
+          <option>Telesale</option>
+          <option>Analyst</option>
+          <option>Management</option>
+        </select>
+        <select>
+          <option>Tất cả BU</option>
+          <option>Ngọc Dung</option>
+          <option>Zema</option>
+          <option>Ocany</option>
+        </select>
+        <select>
+          <option>Tất cả trạng thái</option>
+          <option>Active</option>
+          <option>Inactive</option>
+          <option>Locked</option>
+        </select>
+        <div class="filter-spacer"></div>
+        <span style="font-size:13px;color:var(--ink-48);">8 người dùng</span>
+      </div>
+
+      <!-- Desktop Table -->
+      <div class="user-table-wrap">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>Người dùng</th>
+              <th>Role</th>
+              <th>BU Access</th>
+              <th>Trạng thái</th>
+              <th>Đăng nhập lần cuối</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#1d1d1f;">SA</div>
+                  <div>
+                    <div class="user-name">Trần Văn Sysadmin</div>
+                    <div class="user-email-small">sysadmin@theadvance.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-superadmin">Super Admin</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+                <span class="bu-tag bu-zm">Zema</span>
+                <span class="bu-tag bu-oc">Ocany</span>
+              </td>
+              <td><span class="status-pill sp-active">Active</span></td>
+              <td style="font-size:13px;color:var(--ink-60);">Hôm nay 08:14</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Trần Văn Sysadmin')">Sửa</button>
+                  <button class="btn btn-danger-ghost btn-xs" title="Không thể vô hiệu Super Admin" disabled style="opacity:0.4;">Vô hiệu</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#c0144c;">NT</div>
+                  <div>
+                    <div class="user-name">Nguyễn Thị Admin</div>
+                    <div class="user-email-small">admin@ngocdung.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-admin">Admin</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+              </td>
+              <td><span class="status-pill sp-active">Active</span></td>
+              <td style="font-size:13px;color:var(--ink-60);">Hôm nay 09:52</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Nguyễn Thị Admin')">Sửa</button>
+                  <button class="btn btn-danger-ghost btn-xs" onclick="deactivateUser('Nguyễn Thị Admin')">Vô hiệu</button>
+                  <button class="btn btn-secondary btn-xs" onclick="resetPwd('Nguyễn Thị Admin')">Reset mật khẩu</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#0a84ff;">LM</div>
+                  <div>
+                    <div class="user-name">Lê Thị Marketing</div>
+                    <div class="user-email-small">marketing@ngocdung.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-marketing">Marketing Manager</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+                <span class="bu-tag bu-zm">Zema</span>
+              </td>
+              <td><span class="status-pill sp-active">Active</span></td>
+              <td style="font-size:13px;color:var(--ink-60);">Hôm qua 17:30</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Lê Thị Marketing')">Sửa</button>
+                  <button class="btn btn-danger-ghost btn-xs" onclick="deactivateUser('Lê Thị Marketing')">Vô hiệu</button>
+                  <button class="btn btn-secondary btn-xs" onclick="resetPwd('Lê Thị Marketing')">Reset mật khẩu</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#00b894;">PH</div>
+                  <div>
+                    <div class="user-name">Phạm Văn Hỗ Trợ</div>
+                    <div class="user-email-small">cs1@ngocdung.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-cs">CS Staff</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+              </td>
+              <td><span class="status-pill sp-active">Active</span></td>
+              <td style="font-size:13px;color:var(--ink-60);">Hôm nay 10:18</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Phạm Văn Hỗ Trợ')">Sửa</button>
+                  <button class="btn btn-danger-ghost btn-xs" onclick="deactivateUser('Phạm Văn Hỗ Trợ')">Vô hiệu</button>
+                  <button class="btn btn-secondary btn-xs" onclick="resetPwd('Phạm Văn Hỗ Trợ')">Reset mật khẩu</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#6c5ce7;">TT</div>
+                  <div>
+                    <div class="user-name">Trịnh Thị Telesale</div>
+                    <div class="user-email-small">tele01@ngocdung.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-telesale">Telesale</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+              </td>
+              <td><span class="status-pill sp-active">Active</span></td>
+              <td style="font-size:13px;color:var(--ink-60);">Hôm nay 11:05</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Trịnh Thị Telesale')">Sửa</button>
+                  <button class="btn btn-danger-ghost btn-xs" onclick="deactivateUser('Trịnh Thị Telesale')">Vô hiệu</button>
+                  <button class="btn btn-secondary btn-xs" onclick="resetPwd('Trịnh Thị Telesale')">Reset mật khẩu</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#d97706;">DA</div>
+                  <div>
+                    <div class="user-name">Đặng Văn Analyst</div>
+                    <div class="user-email-small">analyst@theadvance.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-analyst">Analyst</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+                <span class="bu-tag bu-zm">Zema</span>
+                <span class="bu-tag bu-oc">Ocany</span>
+              </td>
+              <td><span class="status-pill sp-active">Active</span></td>
+              <td style="font-size:13px;color:var(--ink-60);">2026-06-14 16:44</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Đặng Văn Analyst')">Sửa</button>
+                  <button class="btn btn-danger-ghost btn-xs" onclick="deactivateUser('Đặng Văn Analyst')">Vô hiệu</button>
+                  <button class="btn btn-secondary btn-xs" onclick="resetPwd('Đặng Văn Analyst')">Reset mật khẩu</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:#5a1db8;">BG</div>
+                  <div>
+                    <div class="user-name">Bùi Thị Giám đốc</div>
+                    <div class="user-email-small">director@theadvance.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-management">Management</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+                <span class="bu-tag bu-zm">Zema</span>
+                <span class="bu-tag bu-oc">Ocany</span>
+              </td>
+              <td><span class="status-pill sp-inactive">Inactive</span></td>
+              <td style="font-size:13px;color:var(--ink-48);">2026-06-10 09:00</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Bùi Thị Giám đốc')">Sửa</button>
+                  <button class="btn btn-ghost btn-xs" onclick="activateUser('Bùi Thị Giám đốc')" style="color:var(--success-ink);">Kích hoạt</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar" style="background:var(--danger);">HN</div>
+                  <div>
+                    <div class="user-name">Hoàng Văn Nghi ngờ</div>
+                    <div class="user-email-small">ex-staff@ngocdung.vn</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="role-badge rb-cs">CS Staff</span></td>
+              <td>
+                <span class="bu-tag bu-nd">Ngọc Dung</span>
+              </td>
+              <td><span class="status-pill sp-locked">Bị khóa</span></td>
+              <td style="font-size:13px;color:var(--danger-ink);">2026-06-01 — Khóa 5 lần sai mật khẩu</td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-ghost btn-xs" onclick="editUser('Hoàng Văn Nghi ngờ')">Sửa</button>
+                  <button class="btn btn-secondary btn-xs" onclick="unlockUser('Hoàng Văn Nghi ngờ')">Mở khóa</button>
+                  <button class="btn btn-danger-ghost btn-xs" onclick="deactivateUser('Hoàng Văn Nghi ngờ')">Xóa</button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Cards -->
+      <div class="user-cards">
+        <div class="user-card">
+          <div class="user-card-header">
+            <div class="user-avatar" style="background:#1d1d1f;width:40px;height:40px;font-size:14px;">SA</div>
+            <div>
+              <div class="user-name">Trần Văn Sysadmin</div>
+              <div class="user-email-small">sysadmin@theadvance.vn</div>
+            </div>
+          </div>
+          <div class="user-card-body">
+            <div class="user-card-row"><span class="user-card-label">Role</span><span class="role-badge rb-superadmin">Super Admin</span></div>
+            <div class="user-card-row"><span class="user-card-label">BU</span><span><span class="bu-tag bu-nd">ND</span><span class="bu-tag bu-zm">ZM</span><span class="bu-tag bu-oc">OC</span></span></div>
+            <div class="user-card-row"><span class="user-card-label">Trạng thái</span><span class="status-pill sp-active">Active</span></div>
+            <div class="user-card-row"><span class="user-card-label">Đăng nhập</span><span style="font-size:13px;color:var(--ink-60);">Hôm nay 08:14</span></div>
+          </div>
+          <div class="user-card-actions">
+            <button class="btn btn-secondary btn-sm" style="flex:1;">Sửa</button>
+          </div>
+        </div>
+        <div class="user-card">
+          <div class="user-card-header">
+            <div class="user-avatar" style="background:#c0144c;width:40px;height:40px;font-size:14px;">NT</div>
+            <div>
+              <div class="user-name">Nguyễn Thị Admin</div>
+              <div class="user-email-small">admin@ngocdung.vn</div>
+            </div>
+          </div>
+          <div class="user-card-body">
+            <div class="user-card-row"><span class="user-card-label">Role</span><span class="role-badge rb-admin">Admin</span></div>
+            <div class="user-card-row"><span class="user-card-label">BU</span><span class="bu-tag bu-nd">Ngọc Dung</span></div>
+            <div class="user-card-row"><span class="user-card-label">Trạng thái</span><span class="status-pill sp-active">Active</span></div>
+            <div class="user-card-row"><span class="user-card-label">Đăng nhập</span><span style="font-size:13px;color:var(--ink-60);">Hôm nay 09:52</span></div>
+          </div>
+          <div class="user-card-actions">
+            <button class="btn btn-secondary btn-sm" style="flex:1;">Sửa</button>
+            <button class="btn btn-danger-ghost btn-sm" style="flex:1;">Vô hiệu</button>
+            <button class="btn btn-secondary btn-sm" style="flex:1;">Reset pwd</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── TAB: ROLES ─── -->
+  <div class="tab-panel" id="tab-roles">
+    <div class="page-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div>
+          <div style="font-size:15px;font-weight:600;">7 roles đang hoạt động</div>
+          <div style="font-size:13px;color:var(--ink-48);">Mỗi role có bộ quyền riêng trên từng module</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="createRole()">+ Tạo role mới</button>
+      </div>
+      <div class="roles-grid">
+
+        <!-- Super Admin -->
+        <div class="role-card">
+          <div class="role-card-header">
+            <div>
+              <div class="role-card-name">🛡 Super Admin</div>
+              <div class="role-card-desc">Toàn quyền hệ thống, quản lý user và cấu hình</div>
+            </div>
+            <span class="role-badge rb-superadmin">System</span>
+          </div>
+          <div class="role-card-meta">
+            <span class="role-user-count">👤 1 người dùng</span>
+            <span style="font-size:11px;color:var(--ink-32);">Không thể chỉnh sửa</span>
+          </div>
+          <div class="perm-section-title">Quyền truy cập</div>
+          <div class="perm-module">
+            <div class="perm-module-name">Tất cả module</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked disabled> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked disabled> Tạo</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked disabled> Sửa</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked disabled> Xóa</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked disabled> Cấu hình</label>
+            </div>
+          </div>
+          <div class="role-card-actions">
+            <button class="btn btn-secondary btn-sm" disabled style="opacity:0.4;">Sửa role</button>
+          </div>
+        </div>
+
+        <!-- Admin -->
+        <div class="role-card">
+          <div class="role-card-header">
+            <div>
+              <div class="role-card-name">⚙️ Admin</div>
+              <div class="role-card-desc">Quản trị BU, cấu hình pipeline và score</div>
+            </div>
+            <span class="role-badge rb-admin">Admin</span>
+          </div>
+          <div class="role-card-meta">
+            <span class="role-user-count">👤 1 người dùng</span>
+          </div>
+          <div class="perm-section-title">Quyền theo module</div>
+          <div class="perm-module">
+            <div class="perm-module-name">Customers / Segments</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Tạo</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Sửa</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xóa</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Campaigns</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Tạo</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Sửa</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xóa</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">System Config</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Sửa</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Xóa</label>
+            </div>
+          </div>
+          <div class="role-card-actions">
+            <button class="btn btn-secondary btn-sm">Sửa role</button>
+            <button class="btn btn-ghost btn-sm">Nhân đôi</button>
+          </div>
+        </div>
+
+        <!-- Marketing -->
+        <div class="role-card">
+          <div class="role-card-header">
+            <div>
+              <div class="role-card-name">📣 Marketing Manager</div>
+              <div class="role-card-desc">Tạo campaign, quản lý segment, xem analytics</div>
+            </div>
+            <span class="role-badge rb-marketing">Marketing</span>
+          </div>
+          <div class="role-card-meta">
+            <span class="role-user-count">👤 1 người dùng</span>
+          </div>
+          <div class="perm-section-title">Quyền theo module</div>
+          <div class="perm-module">
+            <div class="perm-module-name">Customers</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Sửa</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Xóa</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Segments</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Tạo</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Sửa</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Xóa</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Campaigns</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Tạo</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Sửa</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Xóa</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Analytics</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Xuất</label>
+            </div>
+          </div>
+          <div class="role-card-actions">
+            <button class="btn btn-secondary btn-sm">Sửa role</button>
+            <button class="btn btn-ghost btn-sm">Nhân đôi</button>
+          </div>
+        </div>
+
+        <!-- CS Staff -->
+        <div class="role-card">
+          <div class="role-card-header">
+            <div>
+              <div class="role-card-name">🎧 CS Staff</div>
+              <div class="role-card-desc">Xem thông tin khách hàng, ghi chú, không tạo campaign</div>
+            </div>
+            <span class="role-badge rb-cs">CS</span>
+          </div>
+          <div class="role-card-meta">
+            <span class="role-user-count">👤 2 người dùng</span>
+          </div>
+          <div class="perm-section-title">Quyền theo module</div>
+          <div class="perm-module">
+            <div class="perm-module-name">Customers</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Ghi chú</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Sửa</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Xóa</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Leads</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Cập nhật</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Campaigns / System</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-off"><input type="checkbox"> Không có quyền</label>
+            </div>
+          </div>
+          <div class="role-card-actions">
+            <button class="btn btn-secondary btn-sm">Sửa role</button>
+            <button class="btn btn-ghost btn-sm">Nhân đôi</button>
+          </div>
+        </div>
+
+        <!-- Telesale -->
+        <div class="role-card">
+          <div class="role-card-header">
+            <div>
+              <div class="role-card-name">📞 Telesale</div>
+              <div class="role-card-desc">Xem danh sách lead, gọi điện, cập nhật kết quả cuộc gọi</div>
+            </div>
+            <span class="role-badge rb-telesale">Telesale</span>
+          </div>
+          <div class="role-card-meta">
+            <span class="role-user-count">👤 1 người dùng</span>
+          </div>
+          <div class="perm-section-title">Quyền theo module</div>
+          <div class="perm-module">
+            <div class="perm-module-name">Leads</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem (được giao)</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Cập nhật</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Customers</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem (giới hạn)</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Sửa</label>
+            </div>
+          </div>
+          <div class="role-card-actions">
+            <button class="btn btn-secondary btn-sm">Sửa role</button>
+            <button class="btn btn-ghost btn-sm">Nhân đôi</button>
+          </div>
+        </div>
+
+        <!-- Analyst -->
+        <div class="role-card">
+          <div class="role-card-header">
+            <div>
+              <div class="role-card-name">📊 Analyst</div>
+              <div class="role-card-desc">Xem toàn bộ analytics, xuất dữ liệu, không thay đổi cấu hình</div>
+            </div>
+            <span class="role-badge rb-analyst">Analyst</span>
+          </div>
+          <div class="role-card-meta">
+            <span class="role-user-count">👤 1 người dùng</span>
+          </div>
+          <div class="perm-section-title">Quyền theo module</div>
+          <div class="perm-module">
+            <div class="perm-module-name">Analytics (All BU)</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xuất Excel/CSV</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Customers / Segments</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-off"><input type="checkbox"> Sửa</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">System / Config</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-off"><input type="checkbox"> Không có quyền</label>
+            </div>
+          </div>
+          <div class="role-card-actions">
+            <button class="btn btn-secondary btn-sm">Sửa role</button>
+            <button class="btn btn-ghost btn-sm">Nhân đôi</button>
+          </div>
+        </div>
+
+        <!-- Management -->
+        <div class="role-card">
+          <div class="role-card-header">
+            <div>
+              <div class="role-card-name">👔 Management</div>
+              <div class="role-card-desc">Xem dashboard tổng hợp và báo cáo cấp lãnh đạo</div>
+            </div>
+            <span class="role-badge rb-management">Management</span>
+          </div>
+          <div class="role-card-meta">
+            <span class="role-user-count">👤 1 người dùng</span>
+          </div>
+          <div class="perm-section-title">Quyền theo module</div>
+          <div class="perm-module">
+            <div class="perm-module-name">Dashboard / Analytics</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xem</label>
+              <label class="perm-check perm-check-on"><input type="checkbox" checked> Xuất báo cáo</label>
+            </div>
+          </div>
+          <div class="perm-module">
+            <div class="perm-module-name">Mọi thứ khác</div>
+            <div class="perm-checkboxes">
+              <label class="perm-check perm-check-off"><input type="checkbox"> Chỉ xem (không sửa)</label>
+            </div>
+          </div>
+          <div class="role-card-actions">
+            <button class="btn btn-secondary btn-sm">Sửa role</button>
+            <button class="btn btn-ghost btn-sm">Nhân đôi</button>
+          </div>
+        </div>
+
+      </div><!-- /roles-grid -->
+    </div>
+  </div><!-- /tab-roles -->
+
+</main>
+
+<!-- Add User Modal -->
+<div class="modal-overlay" id="addUserModal" onclick="closeModalOutside(event)">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" onclick="closeAddUserModal()">✕</button>
+    <div class="modal-title">Thêm người dùng mới</div>
+    <div class="modal-desc">Người dùng sẽ nhận email kích hoạt tài khoản sau khi tạo.</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Họ tên *</label>
+        <input class="form-input" type="text" placeholder="Nguyễn Văn A">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input class="form-input" type="email" placeholder="email@ngocdung.vn">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Số điện thoại</label>
+        <input class="form-input" type="tel" placeholder="0901-xxx-xxx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role *</label>
+        <select class="form-select">
+          <option value="">Chọn role...</option>
+          <option>Admin</option>
+          <option>Marketing Manager</option>
+          <option>CS Staff</option>
+          <option>Telesale</option>
+          <option>Analyst</option>
+          <option>Management</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">BU Access *</label>
+        <div style="display:flex;gap:16px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
+            <input type="checkbox" checked style="accent-color:var(--bu-ngocdung);">
+            <span class="bu-tag bu-nd">Ngọc Dung</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
+            <input type="checkbox" style="accent-color:var(--bu-zema);">
+            <span class="bu-tag bu-zm">Zema</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
+            <input type="checkbox" style="accent-color:var(--bu-ocany);">
+            <span class="bu-tag bu-oc">Ocany</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeAddUserModal()">Hủy</button>
+      <button class="btn btn-primary" onclick="submitAddUser()">Tạo &amp; gửi email kích hoạt</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('collapsed');
+  document.getElementById('content').classList.toggle('sidebar-collapsed');
+}
+function switchTab(id,el){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+}
+function openAddUserModal(){
+  document.getElementById('addUserModal').classList.add('open');
+}
+function closeAddUserModal(){
+  document.getElementById('addUserModal').classList.remove('open');
+}
+function closeModalOutside(e){
+  if(e.target===document.getElementById('addUserModal')) closeAddUserModal();
+}
+function submitAddUser(){
+  closeAddUserModal();
+  showToast('✓ Đã tạo user và gửi email kích hoạt','success');
+}
+function editUser(name){
+  showToast('Mở form sửa user: '+name,'info');
+}
+function deactivateUser(name){
+  if(confirm('Vô hiệu tài khoản '+name+'?')){
+    showToast('✓ Đã vô hiệu tài khoản '+name,'warning');
+  }
+}
+function activateUser(name){
+  showToast('✓ Đã kích hoạt tài khoản '+name,'success');
+}
+function unlockUser(name){
+  showToast('✓ Đã mở khóa tài khoản '+name,'success');
+}
+function resetPwd(name){
+  if(confirm('Gửi email reset mật khẩu cho '+name+'?')){
+    showToast('✓ Đã gửi email reset mật khẩu','success');
+  }
+}
+function createRole(){
+  showToast('Mở form tạo role mới...','info');
+}
+function showToast(msg,type){
+  const colors={success:'#1a7a31',warning:'#8a5d0f',info:'var(--brand-primary)'};
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:32px;right:32px;background:'+(colors[type]||'#333')+';color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);max-width:320px;';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+</script>
+</body>
+</html>

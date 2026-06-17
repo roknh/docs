@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Tạo Campaign</title>
+<style>
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: var(--font-text); font-size: 15px; line-height: 1.5; color: var(--ink-100); background: var(--ink-02); -webkit-font-smoothing: antialiased; }
+
+/* ══ TOPNAV ══ */
+.topnav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; gap: 16px; }
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search { width: 320px; height: 32px; border-radius: var(--radius-pill); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text); }
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+/* ══ SIDEBAR ══ */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar { position: fixed; top: var(--nav-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--nav-h)); background: var(--ink-00); border-right: 1px solid var(--ink-08); overflow-y: auto; overflow-x: hidden; z-index: 100; transition: width 0.25s ease; }
+.sidebar.open { transform: translateX(0) !important; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; box-shadow: var(--shadow-sm); }
+
+/* ══ CONTENT ══ */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ BUTTONS ══ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-ghost { background: none; color: var(--brand-primary); border: none; padding: 7px 12px; }
+.btn-ghost:hover { background: var(--brand-primary-subtle); }
+.btn-sm { font-size: 12px; padding: 5px 12px; }
+.btn-lg { font-size: 15px; padding: 10px 24px; }
+
+/* ══ PAGE HEADER ══ */
+.page-header { background: var(--ink-00); border-bottom: 1px solid var(--ink-08); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.breadcrumb { font-size: 13px; color: var(--ink-48); display: flex; align-items: center; gap: 6px; }
+.breadcrumb a { color: var(--brand-primary); text-decoration: none; }
+.page-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+.header-draft-btn { display: flex; align-items: center; gap: 8px; }
+
+/* ══ STEPPER ══ */
+.stepper-bar {
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08);
+  padding: 0 32px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.stepper-bar::-webkit-scrollbar { display: none; }
+.stepper { display: flex; align-items: center; min-width: max-content; }
+.step { display: flex; align-items: center; gap: 0; }
+.step-connector { width: 40px; height: 2px; background: var(--ink-08); flex-shrink: 0; }
+.step-connector.done { background: var(--brand-primary); }
+.step-item { display: flex; align-items: center; gap: 10px; padding: 16px 0; cursor: pointer; white-space: nowrap; }
+.step-circle { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--ink-16); background: var(--ink-00); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--ink-32); flex-shrink: 0; transition: all 0.2s; }
+.step-circle.done { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+.step-circle.active { border-color: var(--brand-primary); color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(0,102,204,0.15); }
+.step-text { font-size: 13px; color: var(--ink-32); font-weight: 500; transition: color 0.2s; }
+.step-text.active { color: var(--brand-primary); font-weight: 600; }
+.step-text.done { color: var(--ink-60); }
+
+/* ══ WIZARD BODY ══ */
+.wizard-body { padding: 24px 32px; display: flex; flex-direction: column; align-items: center; }
+.wizard-panel { width: 100%; max-width: 720px; }
+.wizard-panel-title { font-family: var(--font-display); font-size: 19px; font-weight: 600; margin-bottom: 4px; }
+.wizard-panel-sub { font-size: 13px; color: var(--ink-48); margin-bottom: 24px; }
+
+/* ══ FORM ══ */
+.form-section { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+.form-section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-48); margin-bottom: 16px; }
+.form-row { margin-bottom: 18px; }
+.form-row:last-child { margin-bottom: 0; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+.form-label { display: block; font-size: 13px; font-weight: 500; color: var(--ink-80); margin-bottom: 6px; }
+.form-label .req { color: var(--danger); margin-left: 2px; }
+.form-hint { font-size: 12px; color: var(--ink-48); margin-top: 5px; }
+.form-input { width: 100%; height: 38px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 0 12px; font-size: 14px; color: var(--ink-100); font-family: var(--font-text); transition: border-color 0.12s, box-shadow 0.12s; background: var(--ink-00); }
+.form-input:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.form-textarea { width: 100%; min-height: 80px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 10px 12px; font-size: 14px; color: var(--ink-100); font-family: var(--font-text); resize: vertical; transition: border-color 0.12s, box-shadow 0.12s; }
+.form-textarea:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.form-select { width: 100%; height: 38px; border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 0 28px 0 12px; font-size: 14px; color: var(--ink-100); font-family: var(--font-text); background: var(--ink-00); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; cursor: pointer; }
+.form-select:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+
+/* Channel type cards */
+.channel-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.channel-card { border: 2px solid var(--ink-08); border-radius: var(--radius-lg); padding: 14px 12px; text-align: center; cursor: pointer; transition: all 0.15s; }
+.channel-card:hover { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.channel-card.selected { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.channel-card-icon { font-size: 24px; margin-bottom: 6px; }
+.channel-card-name { font-size: 13px; font-weight: 600; color: var(--ink-80); }
+.channel-card.selected .channel-card-name { color: var(--brand-primary); }
+.channel-card-sub { font-size: 11px; color: var(--ink-48); margin-top: 2px; }
+
+/* Tags input */
+.tags-input-wrapper { border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 6px 8px; min-height: 38px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; background: var(--ink-00); cursor: text; }
+.tags-input-wrapper:focus-within { border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.tag-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; padding: 2px 8px; border-radius: var(--radius-pill); background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; }
+.tag-chip-remove { cursor: pointer; opacity: 0.6; font-size: 11px; }
+.tag-chip-remove:hover { opacity: 1; }
+.tags-input { border: none; outline: none; font-size: 13px; color: var(--ink-100); font-family: var(--font-text); min-width: 80px; flex: 1; background: transparent; padding: 2px; }
+
+/* Segment selection */
+.segment-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.segment-option { border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 12px 14px; cursor: pointer; transition: all 0.12s; display: flex; align-items: center; gap: 12px; }
+.segment-option:hover { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.segment-option.selected { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.segment-option input[type="radio"] { accent-color: var(--brand-primary); width: 15px; height: 15px; flex-shrink: 0; }
+.segment-option-info { flex: 1; }
+.segment-option-name { font-size: 14px; font-weight: 500; color: var(--ink-100); }
+.segment-option-sub { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.segment-option-count { font-size: 12px; font-weight: 600; color: var(--brand-primary); background: var(--brand-primary-subtle); padding: 2px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
+
+/* Reach estimate */
+.reach-box { background: linear-gradient(135deg, #e8f2fc, #f0f7ff); border: 1px solid #c8dff6; border-radius: var(--radius-lg); padding: 16px 20px; display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.reach-icon { font-size: 28px; }
+.reach-val { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--brand-primary); }
+.reach-label { font-size: 12px; color: var(--ink-60); margin-top: 2px; }
+.reach-warning { font-size: 12px; color: var(--warning-ink); background: var(--warning-subtle); padding: 8px 12px; border-radius: var(--radius-md); margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+
+/* Template editor */
+.template-editor { border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.editor-toolbar { background: var(--ink-02); border-bottom: 1px solid var(--ink-08); padding: 8px 12px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.toolbar-btn { width: 28px; height: 28px; border: 1px solid var(--ink-08); border-radius: var(--radius-sm); background: var(--ink-00); color: var(--ink-60); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; transition: all 0.12s; }
+.toolbar-btn:hover { background: var(--brand-primary-subtle); color: var(--brand-primary); border-color: #c8dff6; }
+.toolbar-sep { width: 1px; height: 20px; background: var(--ink-08); margin: 0 4px; }
+.editor-subject { padding: 12px 14px; border-bottom: 1px solid var(--ink-04); }
+.editor-subject-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-48); margin-bottom: 5px; }
+.editor-subject-input { width: 100%; border: none; outline: none; font-size: 14px; color: var(--ink-100); font-family: var(--font-text); }
+.editor-body { padding: 14px; min-height: 200px; font-size: 14px; color: var(--ink-80); line-height: 1.7; outline: none; }
+.editor-body:focus { background: #fafbfd; }
+.editor-footer { background: var(--ink-02); border-top: 1px solid var(--ink-08); padding: 8px 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.editor-footer-label { font-size: 12px; color: var(--ink-48); }
+.var-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); background: var(--bu-zema-bg); color: var(--bu-zema); cursor: pointer; transition: all 0.12s; font-family: var(--font-mono); }
+.var-chip:hover { background: var(--bu-zema); color: #fff; }
+
+/* Schedule options */
+.schedule-options { display: flex; flex-direction: column; gap: 8px; }
+.schedule-option { border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 14px 16px; cursor: pointer; transition: all 0.12s; display: flex; align-items: flex-start; gap: 12px; }
+.schedule-option:hover { border-color: var(--brand-primary); }
+.schedule-option.selected { border-color: var(--brand-primary); background: var(--brand-primary-subtle); }
+.schedule-option input[type="radio"] { margin-top: 2px; accent-color: var(--brand-primary); width: 15px; height: 15px; flex-shrink: 0; }
+.schedule-option-title { font-size: 14px; font-weight: 600; color: var(--ink-100); }
+.schedule-option-sub { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.schedule-datetime-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.schedule-recurring-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.recurring-chip { border: 1px solid var(--ink-08); border-radius: var(--radius-md); padding: 8px; text-align: center; cursor: pointer; font-size: 12px; font-weight: 500; color: var(--ink-60); transition: all 0.12s; }
+.recurring-chip.selected { border-color: var(--brand-primary); background: var(--brand-primary-subtle); color: var(--brand-primary); }
+.recurring-chip:hover { border-color: var(--brand-primary); }
+
+/* Review section */
+.review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.review-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); padding: 18px; }
+.review-card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-48); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+.review-card-edit { font-size: 12px; color: var(--brand-primary); cursor: pointer; text-transform: none; letter-spacing: 0; font-weight: 500; }
+.review-item { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--ink-04); font-size: 13px; }
+.review-item:last-child { border-bottom: none; padding-bottom: 0; }
+.review-item-label { color: var(--ink-48); flex-shrink: 0; }
+.review-item-value { color: var(--ink-80); font-weight: 500; text-align: right; }
+.review-content-preview { background: var(--ink-02); border-radius: var(--radius-md); padding: 12px 14px; font-size: 13px; color: var(--ink-60); line-height: 1.6; margin-top: 8px; border: 1px solid var(--ink-08); }
+.review-confirm { background: linear-gradient(135deg, #e8f2fc, #f0f7ff); border: 1px solid #c8dff6; border-radius: var(--radius-lg); padding: 16px 20px; margin-top: 16px; display: flex; align-items: center; gap: 12px; }
+.review-confirm-icon { font-size: 28px; flex-shrink: 0; }
+.review-confirm-text { font-size: 14px; color: var(--ink-60); }
+.review-confirm-text strong { color: var(--ink-100); }
+.review-confirm-cta { margin-left: auto; flex-shrink: 0; }
+
+/* ══ WIZARD NAV ══ */
+.wizard-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 24px; }
+.wizard-nav-right { display: flex; gap: 10px; }
+
+/* ══ HIDDEN PANELS ══ */
+.wizard-step { display: none; }
+.wizard-step.active { display: block; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-section-label::after { content: ""; display: block; width: 24px; height: 1px; background: var(--ink-08); margin: 0 auto; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .page-header { padding: 14px 24px; }
+  .stepper-bar { padding: 0 24px; }
+  .wizard-body { padding: 20px 24px; }
+  .channel-grid { grid-template-columns: repeat(4, 1fr); }
+  .review-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-section-label::after { display: none; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; }
+  .topnav-search { max-width: 120px; height: 30px; font-size: 12px; }
+  .topnav-brand { font-size: 15px; }
+  .topnav-bu-switch { display: none; }
+  .topnav-right > span:first-child { display: none; }
+  .page-header { padding: 12px 16px; flex-wrap: wrap; gap: 10px; }
+  .page-title { font-size: 16px; }
+  .stepper-bar { padding: 0 16px; }
+  .step-text { font-size: 12px; }
+  .step-circle { width: 24px; height: 24px; font-size: 11px; }
+  .step-connector { width: 20px; }
+  .wizard-body { padding: 16px; }
+  .wizard-panel { max-width: 100%; }
+  .channel-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-row-2 { grid-template-columns: 1fr; }
+  .schedule-datetime-row { grid-template-columns: 1fr; }
+  .schedule-recurring-opts { grid-template-columns: repeat(2, 1fr); }
+  .review-grid { grid-template-columns: 1fr; }
+  .wizard-nav { flex-direction: column-reverse; align-items: stretch; }
+  .wizard-nav-right { flex-direction: row-reverse; }
+  .wizard-nav-right .btn-primary { flex: 1; }
+  .reach-box { flex-direction: column; text-align: center; }
+}
+@media (max-width: 479px) {
+  .channel-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Ngọc Dung</span>
+    <span style="font-size:12px;color:var(--ink-48);">Mai Lan</span>
+    <div class="topnav-avatar">ML</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item active" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <div class="breadcrumb">
+        <a href="ui-campaign-list.html">Campaigns</a>
+        <span>/</span>
+        <span style="color:var(--ink-80);font-weight:500;">Tạo Campaign mới</span>
+      </div>
+      <div class="page-title">Tạo Campaign mới</div>
+    </div>
+    <div class="header-draft-btn">
+      <span id="draftStatus" style="font-size:12px;color:var(--ink-48);display:none;">&#x1F4BE; Đã lưu nháp 14:32</span>
+      <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+      <button class="btn btn-secondary" onclick="location.href='ui-campaign-list.html'">&#x2715; Hủy</button>
+    </div>
+  </div>
+
+  <!-- Stepper Bar -->
+  <div class="stepper-bar">
+    <div class="stepper">
+      <div class="step">
+        <div class="step-item" onclick="goStep(1)">
+          <div class="step-circle active" id="sc1">1</div>
+          <div class="step-text active" id="st1">Thông tin cơ bản</div>
+        </div>
+      </div>
+      <div class="step-connector" id="conn1"></div>
+      <div class="step">
+        <div class="step-item" onclick="goStep(2)">
+          <div class="step-circle" id="sc2">2</div>
+          <div class="step-text" id="st2">Đối tượng</div>
+        </div>
+      </div>
+      <div class="step-connector" id="conn2"></div>
+      <div class="step">
+        <div class="step-item" onclick="goStep(3)">
+          <div class="step-circle" id="sc3">3</div>
+          <div class="step-text" id="st3">Nội dung</div>
+        </div>
+      </div>
+      <div class="step-connector" id="conn3"></div>
+      <div class="step">
+        <div class="step-item" onclick="goStep(4)">
+          <div class="step-circle" id="sc4">4</div>
+          <div class="step-text" id="st4">Lịch gửi</div>
+        </div>
+      </div>
+      <div class="step-connector" id="conn4"></div>
+      <div class="step">
+        <div class="step-item" onclick="goStep(5)">
+          <div class="step-circle" id="sc5">5</div>
+          <div class="step-text" id="st5">Xem lại &amp; Xác nhận</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard Body -->
+  <div class="wizard-body">
+    <div class="wizard-panel">
+
+      <!-- STEP 1: Basic Info -->
+      <div class="wizard-step active" id="step1">
+        <div class="wizard-panel-title">Thông tin cơ bản</div>
+        <div class="wizard-panel-sub">Đặt tên và chọn kênh gửi cho campaign</div>
+
+        <div class="form-section">
+          <div class="form-section-title">Thông tin chung</div>
+          <div class="form-row">
+            <label class="form-label">Tên Campaign <span class="req">*</span></label>
+            <input type="text" class="form-input" id="campaignName" placeholder="VD: Chăm sóc KH VIP Ngọc Dung tháng 7/2026" value="Chăm sóc KH VIP Ngọc Dung tháng 7/2026">
+            <div class="form-hint">Tên nội bộ, khách hàng sẽ không thấy tên này</div>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Mô tả <span style="font-size:12px;font-weight:400;color:var(--ink-48);">(tùy chọn)</span></label>
+            <textarea class="form-textarea" id="campaignDesc" placeholder="Mô tả ngắn về mục tiêu của campaign này...">Campaign email chăm sóc khách hàng VIP Diamond và Platinum nhân dịp kỷ niệm 1 năm thành lập Ngọc Dung Chi nhánh Q.3</textarea>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Tags <span style="font-size:12px;font-weight:400;color:var(--ink-48);">(tùy chọn)</span></label>
+            <div class="tags-input-wrapper" onclick="document.getElementById('tagInput').focus()">
+              <span class="tag-chip">VIP <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
+              <span class="tag-chip">Chăm sóc <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
+              <span class="tag-chip">Q3-2026 <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span></span>
+              <input type="text" class="tags-input" id="tagInput" placeholder="Nhập tag, Enter để thêm..." onkeydown="addTag(event)">
+            </div>
+            <div class="form-hint">Nhấn Enter để thêm tag mới</div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Kênh gửi <span style="color:var(--danger);">*</span></div>
+          <div class="channel-grid">
+            <div class="channel-card selected" onclick="selectChannel(this)">
+              <div class="channel-card-icon">&#x2709;</div>
+              <div class="channel-card-name">Email</div>
+              <div class="channel-card-sub">Tỷ lệ chuyển đổi cao</div>
+            </div>
+            <div class="channel-card" onclick="selectChannel(this)">
+              <div class="channel-card-icon">&#x1F4F1;</div>
+              <div class="channel-card-name">SMS</div>
+              <div class="channel-card-sub">Đọc ngay, tức thì</div>
+            </div>
+            <div class="channel-card" onclick="selectChannel(this)">
+              <div class="channel-card-icon">&#x1F514;</div>
+              <div class="channel-card-name">Push</div>
+              <div class="channel-card-sub">App notification</div>
+            </div>
+            <div class="channel-card" onclick="selectChannel(this)">
+              <div class="channel-card-icon">&#x1F4AC;</div>
+              <div class="channel-card-name">Zalo OA</div>
+              <div class="channel-card-sub">Tỷ lệ mở 55%+</div>
+            </div>
+          </div>
+          <div class="form-hint" style="margin-top:10px;">&#x2714; Đã chọn: <strong>Email</strong> — chi phí ~1,200 đ/1,000 email</div>
+        </div>
+
+        <div class="wizard-nav">
+          <button class="btn btn-ghost" onclick="location.href='ui-campaign-list.html'">&#x2190; Quay lại</button>
+          <div class="wizard-nav-right">
+            <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+            <button class="btn btn-primary" onclick="nextStep()">Tiếp theo: Đối tượng &#x2192;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Audience -->
+      <div class="wizard-step" id="step2">
+        <div class="wizard-panel-title">Chọn đối tượng</div>
+        <div class="wizard-panel-sub">Chọn segment hoặc tạo điều kiện lọc nhanh</div>
+
+        <div class="form-section">
+          <div class="form-section-title">Segment hiện có</div>
+          <div class="segment-list">
+            <label class="segment-option selected">
+              <input type="radio" name="segment" value="vip" checked>
+              <div class="segment-option-info">
+                <div class="segment-option-name">VIP Diamond &amp; Platinum</div>
+                <div class="segment-option-sub">Khách hàng hạng Diamond hoặc Platinum, có giao dịch trong 6 tháng gần nhất</div>
+              </div>
+              <span class="segment-option-count">12,450 KH</span>
+            </label>
+            <label class="segment-option">
+              <input type="radio" name="segment" value="new">
+              <div class="segment-option-info">
+                <div class="segment-option-name">Khách mới tháng 6</div>
+                <div class="segment-option-sub">Đăng ký trong 30 ngày qua, chưa có giao dịch</div>
+              </div>
+              <span class="segment-option-count">3,218 KH</span>
+            </label>
+            <label class="segment-option">
+              <input type="radio" name="segment" value="inactive">
+              <div class="segment-option-info">
+                <div class="segment-option-name">Khách hàng ngủ đông</div>
+                <div class="segment-option-sub">Không có giao dịch trong 90 ngày, health score &lt; 40</div>
+              </div>
+              <span class="segment-option-count">8,740 KH</span>
+            </label>
+            <label class="segment-option">
+              <input type="radio" name="segment" value="birthday">
+              <div class="segment-option-info">
+                <div class="segment-option-name">Sinh nhật tháng 7</div>
+                <div class="segment-option-sub">Khách có ngày sinh trong tháng 7/2026</div>
+              </div>
+              <span class="segment-option-count">2,091 KH</span>
+            </label>
+          </div>
+          <button class="btn btn-ghost" onclick="alert('Mở builder tạo segment mới...')">&#x2B; Tạo segment nhanh từ bộ lọc</button>
+        </div>
+
+        <!-- Reach estimate -->
+        <div class="form-section">
+          <div class="form-section-title">Ước tính tiếp cận</div>
+          <div class="reach-box">
+            <div class="reach-icon">&#x1F465;</div>
+            <div>
+              <div class="reach-val">12,450</div>
+              <div class="reach-label">khách hàng đủ điều kiện nhận email</div>
+            </div>
+            <div style="margin-left:auto;text-align:right;">
+              <div style="font-size:12px;color:var(--ink-48);">Có email hợp lệ</div>
+              <div style="font-size:18px;font-weight:700;color:var(--success-ink);">12,214</div>
+              <div style="font-size:12px;color:var(--ink-48);">98.1% có thể gửi được</div>
+            </div>
+          </div>
+          <div class="reach-warning">
+            &#x26A0; 236 khách thiếu địa chỉ email hoặc đã hủy đăng ký — sẽ bị bỏ qua tự động
+          </div>
+        </div>
+
+        <!-- Exclusion -->
+        <div class="form-section">
+          <div class="form-section-title">Loại trừ <span style="font-size:12px;font-weight:400;color:var(--ink-48);">(tùy chọn)</span></div>
+          <div class="form-row">
+            <label class="form-label">Không gửi cho segment</label>
+            <select class="form-select">
+              <option value="">-- Không loại trừ --</option>
+              <option>Khách đã nhận email trong 7 ngày qua</option>
+              <option>Khách đã hủy đăng ký</option>
+              <option>Nhân viên nội bộ</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="wizard-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">&#x2190; Quay lại</button>
+          <div class="wizard-nav-right">
+            <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+            <button class="btn btn-primary" onclick="nextStep()">Tiếp theo: Nội dung &#x2192;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Content -->
+      <div class="wizard-step" id="step3">
+        <div class="wizard-panel-title">Soạn nội dung</div>
+        <div class="wizard-panel-sub">Soạn nội dung email với biến số cá nhân hóa</div>
+
+        <div class="form-section">
+          <div class="form-section-title">Thông tin người gửi</div>
+          <div class="form-row-2">
+            <div>
+              <label class="form-label">Tên hiển thị <span class="req">*</span></label>
+              <input type="text" class="form-input" value="Ngọc Dung Spa &amp; Beauty" placeholder="Tên người/thương hiệu gửi">
+            </div>
+            <div>
+              <label class="form-label">Email người gửi <span class="req">*</span></label>
+              <input type="email" class="form-input" value="chamsoc@ngocdung.vn" placeholder="noreply@brand.vn">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section" style="padding:0;">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--ink-04);">
+            <div class="form-section-title" style="margin-bottom:0;">Nội dung email <span style="color:var(--danger);">*</span></div>
+          </div>
+          <div class="template-editor">
+            <div class="editor-toolbar">
+              <button class="toolbar-btn" title="Bold">B</button>
+              <button class="toolbar-btn" title="Italic" style="font-style:italic;">I</button>
+              <button class="toolbar-btn" title="Underline" style="text-decoration:underline;">U</button>
+              <div class="toolbar-sep"></div>
+              <button class="toolbar-btn" title="Link">&#x1F517;</button>
+              <button class="toolbar-btn" title="Image">&#x1F5BC;</button>
+              <button class="toolbar-btn" title="Button element">&#x25A1;</button>
+              <div class="toolbar-sep"></div>
+              <button class="toolbar-btn" title="Align left">&#x2261;</button>
+              <button class="toolbar-btn" title="Align center">&#x2261;</button>
+              <div class="toolbar-sep"></div>
+              <button class="toolbar-btn" title="Undo" style="font-size:14px;">&#x21B6;</button>
+              <button class="toolbar-btn" title="Redo" style="font-size:14px;">&#x21B7;</button>
+            </div>
+            <div class="editor-subject">
+              <div class="editor-subject-label">Tiêu đề email (Subject)</div>
+              <input type="text" class="editor-subject-input" id="emailSubject" value="Ưu đãi VIP dành riêng cho {{ten_khach}} từ {{bu_name}} 🌸" placeholder="Nhập tiêu đề email...">
+            </div>
+            <div class="editor-body" contenteditable="true" id="emailBody">
+              <p>Xin chào <strong>{{ten_khach}}</strong>,</p>
+              <br>
+              <p>Cảm ơn bạn đã đồng hành cùng <strong>{{bu_name}}</strong> trong suốt thời gian qua. Với tư cách là khách hàng hạng <strong>{{hang_khach}}</strong>, chúng tôi muốn dành tặng bạn ưu đãi đặc biệt:</p>
+              <br>
+              <p>&#x1F381; <strong>Giảm 20% cho tất cả dịch vụ spa cao cấp</strong></p>
+              <p>&#x1F4C5; Áp dụng từ 01/07 đến 31/07/2026</p>
+              <p>&#x1F4CD; Áp dụng tại tất cả chi nhánh {{bu_name}}</p>
+              <br>
+              <p>Đặt lịch ngay hôm nay để đảm bảo khung giờ yêu thích của bạn!</p>
+              <br>
+              <p>Trân trọng,<br><em>Đội ngũ {{bu_name}}</em></p>
+            </div>
+            <div class="editor-footer">
+              <span class="editor-footer-label">Chèn biến số:</span>
+              <span class="var-chip" onclick="insertVar('{{ten_khach}}')">{{ten_khach}}</span>
+              <span class="var-chip" onclick="insertVar('{{bu_name}}')">{{bu_name}}</span>
+              <span class="var-chip" onclick="insertVar('{{hang_khach}}')">{{hang_khach}}</span>
+              <span class="var-chip" onclick="insertVar('{{so_diem}}')">{{so_diem}}</span>
+              <span class="var-chip" onclick="insertVar('{{ngay_sinh}}')">{{ngay_sinh}}</span>
+              <span class="var-chip" onclick="insertVar('{{ma_khuyen_mai}}')">{{ma_khuyen_mai}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- A/B Test toggle -->
+        <div class="form-section">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--ink-100);">&#x1F9EA; A/B Test</div>
+              <div style="font-size:12px;color:var(--ink-48);margin-top:2px;">So sánh 2 phiên bản subject line hoặc nội dung để tìm cái tốt hơn</div>
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <span style="font-size:13px;color:var(--ink-48);">Tắt</span>
+              <div style="position:relative;width:40px;height:22px;border-radius:11px;background:var(--brand-primary);cursor:pointer;" onclick="toggleAB(this)">
+                <div id="abToggleKnob" style="position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:right 0.2s;"></div>
+              </div>
+              <span style="font-size:13px;color:var(--brand-primary);font-weight:500;">Bật</span>
+            </label>
+          </div>
+          <div id="abOptions" style="margin-top:14px;">
+            <div style="font-size:13px;font-weight:500;color:var(--ink-80);margin-bottom:8px;">Variant B — Subject line thay thế</div>
+            <input type="text" class="form-input" value="Quà tặng đặc biệt chờ {{ten_khach}} tại {{bu_name}}" placeholder="Subject line cho Variant B">
+            <div class="form-hint">50% người nhận sẽ nhận Variant A, 50% nhận Variant B. Hệ thống tự động xác định winner sau 4 giờ.</div>
+          </div>
+        </div>
+
+        <div class="wizard-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">&#x2190; Quay lại</button>
+          <div class="wizard-nav-right">
+            <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+            <button class="btn btn-primary" onclick="nextStep()">Tiếp theo: Lịch gửi &#x2192;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Schedule -->
+      <div class="wizard-step" id="step4">
+        <div class="wizard-panel-title">Cài đặt lịch gửi</div>
+        <div class="wizard-panel-sub">Chọn thời điểm phù hợp để tối đa tỷ lệ mở email</div>
+
+        <div class="form-section">
+          <div class="form-section-title">Thời gian gửi <span style="color:var(--danger);">*</span></div>
+          <div class="schedule-options">
+            <!-- Option 1: Send now -->
+            <label class="schedule-option" onclick="selectSchedule(this,'now')">
+              <input type="radio" name="schedule" value="now">
+              <div>
+                <div class="schedule-option-title">&#x26A1; Gửi ngay</div>
+                <div class="schedule-option-sub">Campaign sẽ bắt đầu gửi ngay sau khi bạn xác nhận</div>
+              </div>
+            </label>
+            <!-- Option 2: Scheduled -->
+            <label class="schedule-option selected" onclick="selectSchedule(this,'scheduled')">
+              <input type="radio" name="schedule" value="scheduled" checked>
+              <div style="flex:1;">
+                <div class="schedule-option-title">&#x1F4C5; Lên lịch gửi</div>
+                <div class="schedule-option-sub">Chọn ngày và giờ cụ thể để gửi</div>
+                <div class="schedule-datetime-row" id="datetimeRow">
+                  <div>
+                    <label class="form-label" style="font-size:12px;margin-top:8px;">Ngày gửi</label>
+                    <input type="date" class="form-input" value="2026-07-01">
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:12px;margin-top:8px;">Giờ gửi</label>
+                    <input type="time" class="form-input" value="09:00">
+                  </div>
+                </div>
+                <div class="form-hint" style="margin-top:8px;">&#x1F4A1; Khuyến nghị: gửi lúc 9:00 – 10:00 sáng ngày thường có open rate cao nhất</div>
+              </div>
+            </label>
+            <!-- Option 3: Recurring -->
+            <label class="schedule-option" onclick="selectSchedule(this,'recurring')">
+              <input type="radio" name="schedule" value="recurring">
+              <div style="flex:1;">
+                <div class="schedule-option-title">&#x1F504; Gửi định kỳ</div>
+                <div class="schedule-option-sub">Tự động gửi lại theo chu kỳ</div>
+                <div class="schedule-recurring-opts" id="recurringOpts" style="display:none;">
+                  <div class="recurring-chip selected" onclick="selectRecurring(this)">Hàng ngày</div>
+                  <div class="recurring-chip" onclick="selectRecurring(this)">Hàng tuần</div>
+                  <div class="recurring-chip" onclick="selectRecurring(this)">Hàng tháng</div>
+                  <div class="recurring-chip" onclick="selectRecurring(this)">Hàng quý</div>
+                  <div class="recurring-chip" onclick="selectRecurring(this)">Theo ngày sinh</div>
+                  <div class="recurring-chip" onclick="selectRecurring(this)">Tùy chỉnh</div>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Cài đặt nâng cao</div>
+          <div class="form-row">
+            <label class="form-label">Múi giờ</label>
+            <select class="form-select">
+              <option selected>Asia/Ho_Chi_Minh (UTC+7)</option>
+              <option>UTC</option>
+              <option>Asia/Bangkok (UTC+7)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label">Giới hạn gửi mỗi giờ</label>
+            <select class="form-select">
+              <option>Không giới hạn</option>
+              <option>1,000 email/giờ</option>
+              <option selected>5,000 email/giờ</option>
+              <option>10,000 email/giờ</option>
+            </select>
+            <div class="form-hint">Giới hạn tốc độ gửi để tránh vào spam. Với 12,450 người nhận + 5,000/giờ → hoàn thành trong ~2.5 giờ</div>
+          </div>
+        </div>
+
+        <div class="wizard-nav">
+          <button class="btn btn-ghost" onclick="prevStep()">&#x2190; Quay lại</button>
+          <div class="wizard-nav-right">
+            <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+            <button class="btn btn-primary" onclick="nextStep()">Tiếp theo: Xem lại &#x2192;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5: Review -->
+      <div class="wizard-step" id="step5">
+        <div class="wizard-panel-title">Xem lại &amp; Xác nhận</div>
+        <div class="wizard-panel-sub">Kiểm tra lại tất cả thông tin trước khi gửi</div>
+
+        <div class="review-grid">
+          <!-- Info card -->
+          <div class="review-card">
+            <div class="review-card-title">
+              Thông tin cơ bản
+              <span class="review-card-edit" onclick="goStep(1)">&#x270F; Sửa</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Tên</span>
+              <span class="review-item-value">Chăm sóc KH VIP Ngọc Dung T7</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Kênh</span>
+              <span class="review-item-value" style="color:#004d99;background:#e5f1ff;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;">&#x2709; Email</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Tags</span>
+              <span class="review-item-value">VIP, Chăm sóc, Q3-2026</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Người gửi</span>
+              <span class="review-item-value">chamsoc@ngocdung.vn</span>
+            </div>
+          </div>
+          <!-- Audience card -->
+          <div class="review-card">
+            <div class="review-card-title">
+              Đối tượng
+              <span class="review-card-edit" onclick="goStep(2)">&#x270F; Sửa</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Segment</span>
+              <span class="review-item-value">VIP Diamond &amp; Platinum</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Tổng KH</span>
+              <span class="review-item-value">12,450</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Có thể gửi</span>
+              <span class="review-item-value" style="color:var(--success-ink);">12,214 (98.1%)</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Loại trừ</span>
+              <span class="review-item-value" style="color:var(--ink-48);">Không</span>
+            </div>
+          </div>
+          <!-- Content card -->
+          <div class="review-card">
+            <div class="review-card-title">
+              Nội dung
+              <span class="review-card-edit" onclick="goStep(3)">&#x270F; Sửa</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Subject A</span>
+              <span class="review-item-value" style="font-size:12px;">Ưu đãi VIP dành riêng cho {{ten_khach}}...</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Subject B</span>
+              <span class="review-item-value" style="font-size:12px;">Quà tặng đặc biệt chờ {{ten_khach}}...</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">A/B Test</span>
+              <span class="review-item-value" style="color:var(--bu-zema);">&#x2714; Đã bật</span>
+            </div>
+            <div class="review-content-preview">
+              Xin chào <strong>{{ten_khach}}</strong>, Cảm ơn bạn đã đồng hành cùng <strong>{{bu_name}}</strong>. Ưu đãi 20% dịch vụ spa cao cấp dành riêng cho bạn...
+            </div>
+          </div>
+          <!-- Schedule card -->
+          <div class="review-card">
+            <div class="review-card-title">
+              Lịch gửi
+              <span class="review-card-edit" onclick="goStep(4)">&#x270F; Sửa</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Loại</span>
+              <span class="review-item-value">Lên lịch gửi</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Ngày giờ</span>
+              <span class="review-item-value">09:00 · Thứ 3, 01/07/2026</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Múi giờ</span>
+              <span class="review-item-value">Asia/Ho_Chi_Minh</span>
+            </div>
+            <div class="review-item">
+              <span class="review-item-label">Tốc độ</span>
+              <span class="review-item-value">5,000 email/giờ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm send box -->
+        <div class="review-confirm">
+          <div class="review-confirm-icon">&#x1F680;</div>
+          <div class="review-confirm-text">
+            Campaign sẽ gửi tới <strong>12,214 khách hàng VIP</strong> vào lúc <strong>09:00 ngày 01/07/2026</strong>.<br>
+            Sau khi xác nhận, bạn vẫn có thể hủy trước khi chiến dịch bắt đầu gửi.
+          </div>
+          <div class="review-confirm-cta">
+            <button class="btn btn-primary btn-lg" onclick="confirmCampaign()">&#x2714; Xác nhận &amp; Lên lịch</button>
+          </div>
+        </div>
+
+        <div class="wizard-nav" style="padding-top:16px;">
+          <button class="btn btn-ghost" onclick="prevStep()">&#x2190; Quay lại</button>
+          <div class="wizard-nav-right">
+            <button class="btn btn-secondary" onclick="saveDraft()">&#x1F4BE; Lưu nháp</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wizard-panel -->
+  </div><!-- /wizard-body -->
+
+</div><!-- /content -->
+
+<script>
+let currentStep = 1;
+const totalSteps = 5;
+
+function goStep(n) {
+  if (n < 1 || n > totalSteps) return;
+  // Hide current
+  document.getElementById('step' + currentStep).classList.remove('active');
+  // Update stepper UI
+  for (let i = 1; i <= totalSteps; i++) {
+    const sc = document.getElementById('sc' + i);
+    const st = document.getElementById('st' + i);
+    sc.className = 'step-circle';
+    st.className = 'step-text';
+    if (i < n) { sc.classList.add('done'); sc.innerHTML = '&#x2713;'; st.classList.add('done'); }
+    else if (i === n) { sc.classList.add('active'); sc.innerHTML = i; st.classList.add('active'); }
+    else { sc.innerHTML = i; }
+    // Connectors
+    if (i < totalSteps) {
+      const conn = document.getElementById('conn' + i);
+      if (conn) conn.className = 'step-connector' + (i < n ? ' done' : '');
+    }
+  }
+  currentStep = n;
+  document.getElementById('step' + currentStep).classList.add('active');
+  // Scroll to top of content
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep() { if (currentStep < totalSteps) goStep(currentStep + 1); }
+function prevStep() { if (currentStep > 1) goStep(currentStep - 1); }
+
+function selectChannel(card) {
+  document.querySelectorAll('.channel-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  const name = card.querySelector('.channel-card-name').textContent;
+  document.querySelector('.form-hint').innerHTML = '&#x2714; Đã chọn: <strong>' + name + '</strong>';
+}
+
+function selectSchedule(label, type) {
+  document.querySelectorAll('.schedule-option').forEach(o => o.classList.remove('selected'));
+  label.classList.add('selected');
+  label.querySelector('input').checked = true;
+  const dtRow = document.getElementById('datetimeRow');
+  const recOpts = document.getElementById('recurringOpts');
+  if (dtRow) dtRow.style.display = (type === 'scheduled') ? 'grid' : 'none';
+  if (recOpts) recOpts.style.display = (type === 'recurring') ? 'grid' : 'none';
+}
+
+function selectRecurring(chip) {
+  document.querySelectorAll('.recurring-chip').forEach(c => c.classList.remove('selected'));
+  chip.classList.add('selected');
+}
+
+function addTag(e) {
+  if (e.key === 'Enter') {
+    const input = document.getElementById('tagInput');
+    const val = input.value.trim();
+    if (val) {
+      const chip = document.createElement('span');
+      chip.className = 'tag-chip';
+      chip.innerHTML = val + ' <span class="tag-chip-remove" onclick="removeTag(this)">&#x2715;</span>';
+      input.parentNode.insertBefore(chip, input);
+      input.value = '';
+    }
+    e.preventDefault();
+  }
+}
+
+function removeTag(btn) { btn.parentElement.remove(); }
+
+function insertVar(v) {
+  const body = document.getElementById('emailBody');
+  body.focus();
+  document.execCommand('insertText', false, v);
+}
+
+function toggleAB(toggle) {
+  const knob = document.getElementById('abToggleKnob');
+  const opts = document.getElementById('abOptions');
+  const isOn = knob.style.right === '2px';
+  if (isOn) {
+    knob.style.right = 'auto';
+    knob.style.left = '2px';
+    toggle.style.background = 'var(--ink-16)';
+    opts.style.display = 'none';
+  } else {
+    knob.style.right = '2px';
+    knob.style.left = 'auto';
+    toggle.style.background = 'var(--brand-primary)';
+    opts.style.display = 'block';
+  }
+}
+
+function saveDraft() {
+  const status = document.getElementById('draftStatus');
+  const now = new Date();
+  status.textContent = '&#x1F4BE; Đã lưu nháp ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  status.style.display = 'inline';
+  setTimeout(() => { status.style.display = 'none'; }, 3000);
+}
+
+function confirmCampaign() {
+  if (confirm('Xác nhận lên lịch gửi campaign tới 12,214 khách hàng vào 09:00 ngày 01/07/2026?')) {
+    alert('Campaign đã được lên lịch thành công! Bạn sẽ nhận thông báo khi bắt đầu gửi.');
+    location.href = 'ui-campaign-list.html';
+  }
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+function toggleCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+
+// Init step 1 stepper display
+goStep(1);
+</script>
+</body>
+</html>

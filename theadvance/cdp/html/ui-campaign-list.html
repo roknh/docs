@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Danh sách Campaign</title>
+<style>
+/* ── Design Tokens ── */
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+  --info-ink: #004d99;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-100);
+  background: var(--ink-02);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ TOPNAV ══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; gap: 16px;
+}
+.topnav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--ink-100); text-decoration: none; white-space: nowrap; }
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search {
+  width: 320px; height: 32px; border-radius: var(--radius-pill);
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  padding: 0 16px; font-size: 13px; color: var(--ink-80); font-family: var(--font-text);
+}
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; }
+.topnav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--brand-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+.topnav-bu-switch { font-size: 12px; color: var(--ink-60); background: var(--ink-04); border: 1px solid var(--ink-08); padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer; }
+.hamburger { display: none; background: none; border: none; cursor: pointer; width: 32px; height: 32px; position: relative; flex-shrink: 0; }
+.hamburger span { display: block; width: 18px; height: 2px; background: var(--ink-80); border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s; }
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+/* ══ SIDEBAR ══ */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.show { display: block; }
+.sidebar {
+  position: fixed; top: var(--nav-h); left: 0;
+  width: var(--sidebar-w); height: calc(100vh - var(--nav-h));
+  background: var(--ink-00); border-right: 1px solid var(--ink-08);
+  overflow-y: auto; overflow-x: hidden; z-index: 100;
+  transition: width 0.25s ease;
+}
+.sidebar.open { transform: translateX(0) !important; }
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-item.active { border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+.sidebar.collapsed .sidebar-item { position: relative; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-32); padding: 0 20px 8px; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 20px; font-size: 14px; color: var(--ink-60); cursor: pointer; transition: all 0.12s; text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge { margin-left: auto; font-size: 11px; font-weight: 600; background: var(--danger-subtle); color: var(--danger); padding: 1px 7px; border-radius: var(--radius-pill); }
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--ink-08); background: var(--ink-00); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--ink-48); font-size: 14px; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+
+/* ══ CONTENT ══ */
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ BUTTONS ══ */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-text); font-size: 13px; font-weight: 500; padding: 7px 16px; border-radius: var(--radius-md); border: none; cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap; }
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 10px; }
+.btn-ghost { background: none; color: var(--brand-primary); border: none; }
+.btn-ghost:hover { background: var(--brand-primary-subtle); }
+.btn-danger-ghost { background: none; color: var(--danger); border: none; cursor: pointer; font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: var(--radius-md); }
+.btn-danger-ghost:hover { background: var(--danger-subtle); }
+
+/* ══ BADGES ══ */
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); white-space: nowrap; }
+.badge-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.badge-success { background: var(--success-subtle); color: var(--success-ink); }
+.badge-warning { background: var(--warning-subtle); color: var(--warning-ink); }
+.badge-danger { background: var(--danger-subtle); color: var(--danger-ink); }
+.badge-info { background: var(--info-subtle); color: var(--info); }
+.badge-neutral { background: var(--ink-04); color: var(--ink-60); }
+.badge-purple { background: #ede9fd; color: #6c5ce7; }
+
+/* Channel type badges */
+.type-email { background: #e5f1ff; color: #004d99; }
+.type-sms { background: #e6f9ec; color: #1a7a31; }
+.type-push { background: #fef5e6; color: #8a5d0f; }
+.type-zalo { background: #e5f6ff; color: #0070ba; }
+
+/* ══ PAGE HEADER ══ */
+.page-header {
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08);
+  padding: 20px 32px;
+}
+.page-title-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.page-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 13px; color: var(--ink-48); margin-top: 2px; }
+
+/* ══ QUICK STATS ══ */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  padding: 20px 32px;
+}
+.stat-card {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); padding: 16px 20px;
+}
+.stat-card-label { font-size: 12px; color: var(--ink-48); font-weight: 500; margin-bottom: 6px; }
+.stat-card-value { font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -0.5px; color: var(--ink-100); }
+.stat-card-sub { font-size: 12px; color: var(--ink-48); margin-top: 4px; }
+.stat-card-sub strong { color: var(--success-ink); }
+
+/* ══ FILTER BAR ══ */
+.filter-bar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 0 32px 16px;
+}
+.filter-select {
+  height: 34px; border: 1px solid var(--ink-08); border-radius: var(--radius-md);
+  background: var(--ink-00); padding: 0 28px 0 12px; font-size: 13px;
+  color: var(--ink-80); font-family: var(--font-text); cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a7a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+}
+.filter-select:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.filter-search {
+  height: 34px; border: 1px solid var(--ink-08); border-radius: var(--radius-md);
+  padding: 0 12px 0 32px; font-size: 13px; color: var(--ink-80);
+  font-family: var(--font-text); min-width: 220px; flex: 1;
+  background: var(--ink-00) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237a7a7a' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") no-repeat 10px center;
+}
+.filter-search:focus { outline: none; border-color: var(--brand-primary); box-shadow: var(--shadow-focus); }
+.filter-spacer { flex: 1; }
+
+/* ══ BULK ACTION BAR ══ */
+.bulk-bar {
+  display: none; align-items: center; gap: 10px;
+  padding: 10px 32px; background: var(--brand-primary-subtle);
+  border-bottom: 1px solid #c8dff6;
+  font-size: 13px; color: var(--brand-primary);
+}
+.bulk-bar.show { display: flex; }
+.bulk-bar strong { font-weight: 600; }
+
+/* ══ TABLE ══ */
+.table-container { padding: 0 32px 32px; }
+.table-card { background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg); overflow: hidden; }
+.table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table.campaign-table {
+  width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px;
+}
+table.campaign-table thead th {
+  position: sticky; top: 0;
+  background: var(--ink-02); padding: 10px 14px;
+  font-weight: 600; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--ink-48);
+  text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--ink-08);
+}
+table.campaign-table thead th.col-check { width: 40px; text-align: center; padding: 10px 8px; }
+table.campaign-table thead th.col-num { text-align: right; }
+table.campaign-table tbody tr { transition: background 0.12s; }
+table.campaign-table tbody tr:hover { background: var(--ink-02); }
+table.campaign-table tbody td {
+  padding: 12px 14px; border-bottom: 1px solid var(--ink-04);
+  color: var(--ink-80); vertical-align: middle;
+}
+table.campaign-table tbody tr:last-child td { border-bottom: none; }
+table.campaign-table tbody td.col-check { text-align: center; padding: 12px 8px; }
+table.campaign-table tbody td.col-num { text-align: right; font-variant-numeric: tabular-nums; }
+.campaign-name { font-weight: 500; color: var(--ink-100); font-size: 13px; }
+.campaign-name a { color: inherit; text-decoration: none; }
+.campaign-name a:hover { color: var(--brand-primary); }
+.campaign-segment { font-size: 11px; color: var(--ink-48); margin-top: 2px; }
+
+/* Metric cell */
+.metric-cell { text-align: right; }
+.metric-val { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink-100); }
+.metric-rate { font-size: 11px; color: var(--ink-48); }
+
+/* Actions */
+.row-actions { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+.action-btn { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px solid var(--ink-08); background: var(--ink-00); color: var(--ink-48); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 13px; transition: all 0.12s; }
+.action-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+.action-btn.danger:hover { background: var(--danger-subtle); color: var(--danger); border-color: var(--danger-subtle); }
+
+/* Checkbox */
+input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--brand-primary); cursor: pointer; }
+
+/* Pagination */
+.pagination { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-top: 1px solid var(--ink-04); font-size: 13px; color: var(--ink-48); flex-wrap: wrap; gap: 10px; }
+.page-btns { display: flex; gap: 4px; }
+.page-btn { width: 30px; height: 30px; border-radius: var(--radius-sm); border: 1px solid var(--ink-08); background: var(--ink-00); color: var(--ink-60); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.12s; }
+.page-btn:hover { background: var(--ink-02); }
+.page-btn.active { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+
+/* ══ MOBILE CARDS ══ */
+.campaign-cards { display: none; padding: 0 16px 24px; flex-direction: column; gap: 10px; }
+.campaign-card {
+  background: var(--ink-00); border: 1px solid var(--ink-08); border-radius: var(--radius-lg);
+  padding: 14px 16px;
+}
+.campaign-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.campaign-card-name { font-size: 14px; font-weight: 600; color: var(--ink-100); }
+.campaign-card-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.campaign-card-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; border-top: 1px solid var(--ink-04); padding-top: 10px; }
+.campaign-card-metric { text-align: center; }
+.campaign-card-metric .m-label { font-size: 10px; color: var(--ink-48); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.campaign-card-metric .m-val { font-size: 15px; font-weight: 700; color: var(--ink-100); margin-top: 1px; }
+.campaign-card-metric .m-rate { font-size: 10px; color: var(--ink-48); }
+.campaign-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; color: var(--ink-48); }
+.campaign-card-actions { display: flex; gap: 6px; }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-section-label::after { content: ""; display: block; width: 24px; height: 1px; background: var(--ink-08); margin: 0 auto; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .topnav-search { max-width: 220px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .filter-bar { padding: 0 24px 16px; }
+  .table-container { padding: 0 24px 24px; }
+  .page-header { padding: 16px 24px; }
+  .stats-row { padding: 16px 24px; }
+}
+
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar-toggle { display: none; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; text-align: left; }
+  .sidebar-section-label::after { display: none; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .topnav { padding: 0 12px; }
+  .topnav-search { max-width: 140px; height: 30px; font-size: 12px; }
+  .topnav-brand { font-size: 15px; }
+  .topnav-bu-switch { display: none; }
+  .topnav-right > span:first-child { display: none; }
+  .page-header { padding: 16px; }
+  .page-title { font-size: 18px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 16px; }
+  .stat-card { padding: 12px 14px; }
+  .stat-card-value { font-size: 22px; }
+  .filter-bar { padding: 0 16px 12px; }
+  .filter-search { min-width: 0; }
+  .bulk-bar { padding: 10px 16px; }
+  /* Hide table, show cards */
+  .table-container { display: none; }
+  .campaign-cards { display: flex; }
+}
+
+@media (max-width: 479px) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .filter-bar { gap: 8px; }
+  .campaign-card-metrics { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">&#x25BC; Holding (All BU)</span>
+    <span style="font-size:12px;color:var(--ink-48);">Mai Marketing</span>
+    <div class="topnav-avatar">MM</div>
+  </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item" href="ui-dashboard.html"><span class="sidebar-icon">&#x25A3;</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">&#x263A;</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">&#x25CE;</span> Segments</a>
+    <a class="sidebar-item active" href="ui-campaign-list.html"><span class="sidebar-icon">&#x2709;</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">&#x260E;</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">&#x2605;</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">&#x2661;</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">&#x2261;</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">&#x21C5;</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">&#x2192;</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()" title="Thu gọn menu">
+      <span class="toggle-collapse">&#x00AB;</span>
+      <span class="toggle-expand">&#x00BB;</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content" id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-row">
+      <div>
+        <div class="page-title">&#x2709; Campaigns</div>
+        <div class="page-subtitle">Quản lý toàn bộ chiến dịch gửi tin — Email, SMS, Push, Zalo OA</div>
+      </div>
+      <a href="ui-campaign-create.html" class="btn btn-primary">&#x2B; Tạo Campaign</a>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-card-label">Tổng campaigns</div>
+      <div class="stat-card-value">148</div>
+      <div class="stat-card-sub">Tất cả thời gian</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Đang chạy</div>
+      <div class="stat-card-value" style="color:var(--success-ink);">7</div>
+      <div class="stat-card-sub">3 Email · 2 SMS · 2 Zalo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Hoàn thành tháng này</div>
+      <div class="stat-card-value">24</div>
+      <div class="stat-card-sub"><strong>+18%</strong> so với tháng trước</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Avg. Open Rate</div>
+      <div class="stat-card-value">31.4%</div>
+      <div class="stat-card-sub"><strong>+2.1%</strong> vs benchmark ngành</div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <input type="text" class="filter-search" placeholder="Tìm tên campaign..." />
+    <select class="filter-select">
+      <option value="">Tất cả kênh</option>
+      <option>Email</option>
+      <option>SMS</option>
+      <option>Push</option>
+      <option>Zalo OA</option>
+    </select>
+    <select class="filter-select">
+      <option value="">Tất cả trạng thái</option>
+      <option>Nháp</option>
+      <option>Đã lên lịch</option>
+      <option>Đang chạy</option>
+      <option>Hoàn thành</option>
+      <option>Tạm dừng</option>
+    </select>
+    <select class="filter-select">
+      <option value="">Tất cả thời gian</option>
+      <option>Hôm nay</option>
+      <option>7 ngày qua</option>
+      <option>30 ngày qua</option>
+      <option>Quý này</option>
+    </select>
+    <select class="filter-select">
+      <option value="">Tất cả người tạo</option>
+      <option>Mai Lan</option>
+      <option>Hùng Trần</option>
+      <option>Thu Hương</option>
+    </select>
+  </div>
+
+  <!-- Bulk Action Bar -->
+  <div class="bulk-bar" id="bulkBar">
+    <strong id="selectedCount">0</strong>&nbsp;campaigns đã chọn
+    <button class="btn btn-sm btn-secondary" onclick="bulkPause()">&#x23F8; Tạm dừng</button>
+    <button class="btn btn-sm btn-secondary" onclick="bulkResume()">&#x25B6; Tiếp tục</button>
+    <button class="btn btn-sm" style="background:var(--danger-subtle);color:var(--danger-ink);" onclick="bulkDelete()">&#x1F5D1; Xóa</button>
+    <button class="btn btn-sm btn-ghost" onclick="clearSelection()">&#x2715; Bỏ chọn</button>
+  </div>
+
+  <!-- Desktop Table -->
+  <div class="table-container">
+    <div class="table-card">
+      <div class="table-wrapper">
+        <table class="campaign-table" id="campaignTable">
+          <thead>
+            <tr>
+              <th class="col-check"><input type="checkbox" id="checkAll" onchange="toggleAll(this)"></th>
+              <th>Tên Campaign</th>
+              <th>Kênh</th>
+              <th>Segment</th>
+              <th>Trạng thái</th>
+              <th class="col-num">Gửi</th>
+              <th class="col-num">Mở</th>
+              <th class="col-num">Click</th>
+              <th class="col-num">Chuyển đổi</th>
+              <th>Ngày tạo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1 -->
+            <tr>
+              <td class="col-check"><input type="checkbox" class="row-check" onchange="updateSelection()"></td>
+              <td>
+                <div class="campaign-name"><a href="ui-campaign-detail.html">Chăm sóc KH VIP Ngọc Dung T6</a></div>
+                <div class="campaign-segment">Tạo bởi Mai Lan · Ngọc Dung</div>
+              </td>
+              <td><span class="badge type-email">&#x2709; Email</span></td>
+              <td style="font-size:12px;color:var(--ink-60);">VIP Diamond &amp; Platinum</td>
+              <td><span class="badge badge-dot badge-success">Hoàn thành</span></td>
+              <td class="col-num">
+                <div class="metric-val">12,450</div>
+              </td>
+              <td class="col-num">
+                <div class="metric-val">4,892</div>
+                <div class="metric-rate">39.3%</div>
+              </td>
+              <td class="col-num">
+                <div class="metric-val">1,247</div>
+                <div class="metric-rate">10.0%</div>
+              </td>
+              <td class="col-num">
+                <div class="metric-val">386</div>
+                <div class="metric-rate">3.1%</div>
+              </td>
+              <td style="font-size:12px;color:var(--ink-48);white-space:nowrap;">10/06/2026</td>
+              <td>
+                <div class="row-actions">
+                  <button class="action-btn" title="Xem chi tiết" onclick="location.href='ui-campaign-detail.html'">&#x1F441;</button>
+                  <button class="action-btn" title="Nhân bản">&#x2398;</button>
+                  <button class="action-btn danger" title="Xóa">&#x1F5D1;</button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 2 -->
+            <tr>
+              <td class="col-check"><input type="checkbox" class="row-check" onchange="updateSelection()"></td>
+              <td>
+                <div class="campaign-name"><a href="ui-campaign-detail.html">Flash Sale Zema Weekend 14/6</a></div>
+                <div class="campaign-segment">Tạo bởi Hùng Trần · Zema</div>
+              </td>
+              <td><span class="badge type-sms">&#x1F4F1; SMS</span></td>
+              <td style="font-size:12px;color:var(--ink-60);">Khách từ 25-35 tuổi</td>
+              <td><span class="badge badge-dot badge-success">Hoàn thành</span></td>
+              <td class="col-num"><div class="metric-val">28,100</div></td>
+              <td class="col-num"><div class="metric-val">—</div><div class="metric-rate">N/A</div></td>
+              <td class="col-num"><div class="metric-val">3,412</div><div class="metric-rate">12.1%</div></td>
+              <td class="col-num"><div class="metric-val">892</div><div class="metric-rate">3.2%</div></td>
+              <td style="font-size:12px;color:var(--ink-48);white-space:nowrap;">08/06/2026</td>
+              <td>
+                <div class="row-actions">
+                  <button class="action-btn" title="Xem chi tiết" onclick="location.href='ui-campaign-detail.html'">&#x1F441;</button>
+                  <button class="action-btn" title="Nhân bản">&#x2398;</button>
+                  <button class="action-btn danger" title="Xóa">&#x1F5D1;</button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 3 – Running -->
+            <tr>
+              <td class="col-check"><input type="checkbox" class="row-check" onchange="updateSelection()"></td>
+              <td>
+                <div class="campaign-name"><a href="ui-campaign-detail.html">Nhắc hẹn tái khám tháng 6</a></div>
+                <div class="campaign-segment">Tạo bởi Thu Hương · Ocany</div>
+              </td>
+              <td><span class="badge type-zalo">&#x1F4AC; Zalo OA</span></td>
+              <td style="font-size:12px;color:var(--ink-60);">Khách có lịch hẹn tháng trước</td>
+              <td><span class="badge badge-dot badge-info">Đang chạy</span></td>
+              <td class="col-num"><div class="metric-val">5,230</div></td>
+              <td class="col-num"><div class="metric-val">2,814</div><div class="metric-rate">53.8%</div></td>
+              <td class="col-num"><div class="metric-val">641</div><div class="metric-rate">12.3%</div></td>
+              <td class="col-num"><div class="metric-val">204</div><div class="metric-rate">3.9%</div></td>
+              <td style="font-size:12px;color:var(--ink-48);white-space:nowrap;">12/06/2026</td>
+              <td>
+                <div class="row-actions">
+                  <button class="action-btn" title="Xem chi tiết" onclick="location.href='ui-campaign-detail.html'">&#x1F441;</button>
+                  <button class="action-btn" title="Tạm dừng">&#x23F8;</button>
+                  <button class="action-btn danger" title="Xóa">&#x1F5D1;</button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 4 – Scheduled -->
+            <tr>
+              <td class="col-check"><input type="checkbox" class="row-check" onchange="updateSelection()"></td>
+              <td>
+                <div class="campaign-name"><a href="ui-campaign-detail.html">Ưu đãi sinh nhật tháng 6 — Ngọc Dung</a></div>
+                <div class="campaign-segment">Tạo bởi Mai Lan · Ngọc Dung</div>
+              </td>
+              <td><span class="badge type-email">&#x2709; Email</span></td>
+              <td style="font-size:12px;color:var(--ink-60);">Khách sinh tháng 6</td>
+              <td><span class="badge badge-dot badge-warning">Đã lên lịch</span></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td style="font-size:12px;color:var(--ink-48);white-space:nowrap;">15/06/2026</td>
+              <td>
+                <div class="row-actions">
+                  <button class="action-btn" title="Chỉnh sửa">&#x270F;</button>
+                  <button class="action-btn" title="Nhân bản">&#x2398;</button>
+                  <button class="action-btn danger" title="Xóa">&#x1F5D1;</button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 5 – Paused -->
+            <tr>
+              <td class="col-check"><input type="checkbox" class="row-check" onchange="updateSelection()"></td>
+              <td>
+                <div class="campaign-name"><a href="#">Upsell Ocany Premium Package</a></div>
+                <div class="campaign-segment">Tạo bởi Thu Hương · Ocany</div>
+              </td>
+              <td><span class="badge type-push">&#x1F514; Push</span></td>
+              <td style="font-size:12px;color:var(--ink-60);">Khách dùng App từ 3 tháng+</td>
+              <td><span class="badge badge-dot badge-neutral">Tạm dừng</span></td>
+              <td class="col-num"><div class="metric-val">9,800</div></td>
+              <td class="col-num"><div class="metric-val">2,156</div><div class="metric-rate">22.0%</div></td>
+              <td class="col-num"><div class="metric-val">489</div><div class="metric-rate">5.0%</div></td>
+              <td class="col-num"><div class="metric-val">78</div><div class="metric-rate">0.8%</div></td>
+              <td style="font-size:12px;color:var(--ink-48);white-space:nowrap;">05/06/2026</td>
+              <td>
+                <div class="row-actions">
+                  <button class="action-btn" title="Tiếp tục">&#x25B6;</button>
+                  <button class="action-btn" title="Nhân bản">&#x2398;</button>
+                  <button class="action-btn danger" title="Xóa">&#x1F5D1;</button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 6 – Draft -->
+            <tr>
+              <td class="col-check"><input type="checkbox" class="row-check" onchange="updateSelection()"></td>
+              <td>
+                <div class="campaign-name"><a href="ui-campaign-create.html">Chào hè 2026 — Zema Collection</a></div>
+                <div class="campaign-segment">Tạo bởi Hùng Trần · Zema</div>
+              </td>
+              <td><span class="badge type-email">&#x2709; Email</span></td>
+              <td style="font-size:12px;color:var(--ink-60);">Khách quan tâm thời trang</td>
+              <td><span class="badge badge-dot badge-neutral" style="background:#f3f4f6;color:#6b7280;">Nháp</span></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td class="col-num"><div class="metric-val">—</div></td>
+              <td style="font-size:12px;color:var(--ink-48);white-space:nowrap;">14/06/2026</td>
+              <td>
+                <div class="row-actions">
+                  <button class="action-btn" title="Chỉnh sửa" onclick="location.href='ui-campaign-create.html'">&#x270F;</button>
+                  <button class="action-btn" title="Nhân bản">&#x2398;</button>
+                  <button class="action-btn danger" title="Xóa">&#x1F5D1;</button>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 7 -->
+            <tr>
+              <td class="col-check"><input type="checkbox" class="row-check" onchange="updateSelection()"></td>
+              <td>
+                <div class="campaign-name"><a href="ui-campaign-detail.html">Khảo sát trải nghiệm dịch vụ Q2</a></div>
+                <div class="campaign-segment">Tạo bởi Mai Lan · Holding</div>
+              </td>
+              <td><span class="badge type-zalo">&#x1F4AC; Zalo OA</span></td>
+              <td style="font-size:12px;color:var(--ink-60);">Khách có giao dịch Q2/2026</td>
+              <td><span class="badge badge-dot badge-success">Hoàn thành</span></td>
+              <td class="col-num"><div class="metric-val">41,200</div></td>
+              <td class="col-num"><div class="metric-val">18,954</div><div class="metric-rate">46.0%</div></td>
+              <td class="col-num"><div class="metric-val">9,200</div><div class="metric-rate">22.3%</div></td>
+              <td class="col-num"><div class="metric-val">1,840</div><div class="metric-rate">4.5%</div></td>
+              <td style="font-size:12px;color:var(--ink-48);white-space:nowrap;">01/06/2026</td>
+              <td>
+                <div class="row-actions">
+                  <button class="action-btn" title="Xem chi tiết" onclick="location.href='ui-campaign-detail.html'">&#x1F441;</button>
+                  <button class="action-btn" title="Nhân bản">&#x2398;</button>
+                  <button class="action-btn danger" title="Xóa">&#x1F5D1;</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="pagination">
+        <span>Hiển thị 1–7 / 148 campaigns</span>
+        <div class="page-btns">
+          <button class="page-btn">&#x2190;</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn" style="padding:0 8px;width:auto;">...</button>
+          <button class="page-btn">21</button>
+          <button class="page-btn">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Cards -->
+  <div class="campaign-cards" id="campaignCards">
+    <!-- Card 1 -->
+    <div class="campaign-card">
+      <div class="campaign-card-top">
+        <div class="campaign-card-name">Chăm sóc KH VIP Ngọc Dung T6</div>
+        <span class="badge badge-dot badge-success">Hoàn thành</span>
+      </div>
+      <div class="campaign-card-badges">
+        <span class="badge type-email">&#x2709; Email</span>
+        <span style="font-size:11px;color:var(--ink-48);">VIP Diamond &amp; Platinum</span>
+      </div>
+      <div class="campaign-card-metrics">
+        <div class="campaign-card-metric">
+          <div class="m-label">Gửi</div>
+          <div class="m-val">12,450</div>
+        </div>
+        <div class="campaign-card-metric">
+          <div class="m-label">Mở</div>
+          <div class="m-val">4,892</div>
+          <div class="m-rate">39.3%</div>
+        </div>
+        <div class="campaign-card-metric">
+          <div class="m-label">Click</div>
+          <div class="m-val">1,247</div>
+          <div class="m-rate">10.0%</div>
+        </div>
+      </div>
+      <div class="campaign-card-footer">
+        <span>Mai Lan · 10/06/2026</span>
+        <div class="campaign-card-actions">
+          <button class="btn btn-sm btn-secondary" onclick="location.href='ui-campaign-detail.html'">Xem</button>
+          <button class="btn btn-sm btn-secondary">Nhân bản</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="campaign-card">
+      <div class="campaign-card-top">
+        <div class="campaign-card-name">Flash Sale Zema Weekend 14/6</div>
+        <span class="badge badge-dot badge-success">Hoàn thành</span>
+      </div>
+      <div class="campaign-card-badges">
+        <span class="badge type-sms">&#x1F4F1; SMS</span>
+        <span style="font-size:11px;color:var(--ink-48);">Khách 25–35 tuổi</span>
+      </div>
+      <div class="campaign-card-metrics">
+        <div class="campaign-card-metric">
+          <div class="m-label">Gửi</div>
+          <div class="m-val">28,100</div>
+        </div>
+        <div class="campaign-card-metric">
+          <div class="m-label">Click</div>
+          <div class="m-val">3,412</div>
+          <div class="m-rate">12.1%</div>
+        </div>
+        <div class="campaign-card-metric">
+          <div class="m-label">Chuyển đổi</div>
+          <div class="m-val">892</div>
+          <div class="m-rate">3.2%</div>
+        </div>
+      </div>
+      <div class="campaign-card-footer">
+        <span>Hùng Trần · 08/06/2026</span>
+        <div class="campaign-card-actions">
+          <button class="btn btn-sm btn-secondary" onclick="location.href='ui-campaign-detail.html'">Xem</button>
+          <button class="btn btn-sm btn-secondary">Nhân bản</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 – Running -->
+    <div class="campaign-card" style="border-left:3px solid var(--info);">
+      <div class="campaign-card-top">
+        <div class="campaign-card-name">Nhắc hẹn tái khám tháng 6</div>
+        <span class="badge badge-dot badge-info">Đang chạy</span>
+      </div>
+      <div class="campaign-card-badges">
+        <span class="badge type-zalo">&#x1F4AC; Zalo OA</span>
+        <span style="font-size:11px;color:var(--ink-48);">Khách có lịch hẹn</span>
+      </div>
+      <div class="campaign-card-metrics">
+        <div class="campaign-card-metric">
+          <div class="m-label">Gửi</div>
+          <div class="m-val">5,230</div>
+        </div>
+        <div class="campaign-card-metric">
+          <div class="m-label">Mở</div>
+          <div class="m-val">2,814</div>
+          <div class="m-rate">53.8%</div>
+        </div>
+        <div class="campaign-card-metric">
+          <div class="m-label">Chuyển đổi</div>
+          <div class="m-val">204</div>
+          <div class="m-rate">3.9%</div>
+        </div>
+      </div>
+      <div class="campaign-card-footer">
+        <span>Thu Hương · 12/06/2026</span>
+        <div class="campaign-card-actions">
+          <button class="btn btn-sm btn-secondary" onclick="location.href='ui-campaign-detail.html'">Xem</button>
+          <button class="btn btn-sm btn-secondary">&#x23F8; Dừng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+function toggleCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('content');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+function toggleAll(master) {
+  document.querySelectorAll('.row-check').forEach(cb => cb.checked = master.checked);
+  updateSelection();
+}
+function updateSelection() {
+  const checked = document.querySelectorAll('.row-check:checked').length;
+  const total = document.querySelectorAll('.row-check').length;
+  const bulkBar = document.getElementById('bulkBar');
+  document.getElementById('selectedCount').textContent = checked;
+  bulkBar.classList.toggle('show', checked > 0);
+  document.getElementById('checkAll').checked = checked === total;
+  document.getElementById('checkAll').indeterminate = checked > 0 && checked < total;
+}
+function clearSelection() {
+  document.querySelectorAll('.row-check, #checkAll').forEach(cb => { cb.checked = false; cb.indeterminate = false; });
+  document.getElementById('bulkBar').classList.remove('show');
+}
+function bulkPause() { alert('Tạm dừng ' + document.querySelectorAll('.row-check:checked').length + ' campaign đã chọn'); }
+function bulkResume() { alert('Tiếp tục ' + document.querySelectorAll('.row-check:checked').length + ' campaign đã chọn'); }
+function bulkDelete() { if(confirm('Xóa các campaign đã chọn?')) clearSelection(); }
+</script>
+</body>
+</html>

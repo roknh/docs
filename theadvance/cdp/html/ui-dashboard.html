@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Dashboard</title>
+<style>
+/* ── Design Tokens ── */
+:root {
+  --brand-primary: #0066cc;
+  --brand-primary-hover: #0055aa;
+  --brand-primary-subtle: #e8f2fc;
+  --brand-primary-on-dark: #2997ff;
+
+  --ink-100: #1d1d1f;
+  --ink-80: #333333;
+  --ink-60: #555555;
+  --ink-48: #7a7a7a;
+  --ink-32: #a0a0a0;
+  --ink-16: #cccccc;
+  --ink-08: #e0e0e0;
+  --ink-04: #f0f0f0;
+  --ink-02: #f5f5f7;
+  --ink-00: #ffffff;
+
+  --success: #30d158;
+  --success-subtle: #e6f9ec;
+  --success-ink: #1a7a31;
+  --warning: #f5a623;
+  --warning-subtle: #fef5e6;
+  --warning-ink: #8a5d0f;
+  --danger: #ff453a;
+  --danger-subtle: #fde8e7;
+  --danger-ink: #9b1c15;
+  --info: #0a84ff;
+  --info-subtle: #e5f1ff;
+
+  --tier-diamond: #7c3aed;
+  --tier-diamond-bg: #f3eefc;
+  --tier-gold: #d97706;
+  --tier-gold-bg: #fef9ee;
+
+  --health-green: #30d158;
+  --health-yellow: #f5a623;
+  --health-orange: #ff9500;
+  --health-red: #ff453a;
+
+  --bu-ngocdung: #e84393;
+  --bu-ngocdung-bg: #fce4f1;
+  --bu-zema: #6c5ce7;
+  --bu-zema-bg: #ede9fd;
+  --bu-ocany: #00b894;
+  --bu-ocany-bg: #e0f8f1;
+
+  --font-display: "SF Pro Display", "Inter", system-ui, -apple-system, sans-serif;
+  --font-text: "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-focus: 0 0 0 3px rgba(0,102,204,0.3);
+
+  --nav-h: 52px;
+  --sidebar-w: 260px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-100);
+  background: var(--ink-02);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ SHELL ══ */
+.topnav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+  background: var(--ink-00); border-bottom: 1px solid var(--ink-08); z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; gap: 16px;
+}
+.topnav-brand {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+  color: var(--ink-100); text-decoration: none; white-space: nowrap;
+}
+.topnav-brand span { color: var(--brand-primary); }
+.topnav-search {
+  width: 320px; height: 32px; border-radius: var(--radius-pill);
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  padding: 0 16px; font-size: 13px; color: var(--ink-80);
+  font-family: var(--font-text);
+}
+.topnav-search::placeholder { color: var(--ink-32); }
+.topnav-search:focus { outline: none; background: var(--ink-08); }
+.topnav-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
+.topnav-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--brand-primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600;
+}
+.topnav-bu-switch {
+  font-size: 12px; color: var(--ink-60);
+  background: var(--ink-04); border: 1px solid var(--ink-08);
+  padding: 4px 12px; border-radius: var(--radius-pill); cursor: pointer;
+}
+.topnav-icon-btn {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--ink-04);
+  border: none; cursor: pointer; color: var(--ink-60);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.topnav-icon-btn:hover { background: var(--ink-08); }
+
+.hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 32px; height: 32px; position: relative; flex-shrink: 0;
+}
+.hamburger span {
+  display: block; width: 18px; height: 2px; background: var(--ink-80);
+  border-radius: 1px; position: absolute; left: 7px; transition: all 0.2s;
+}
+.hamburger span:nth-child(1) { top: 10px; }
+.hamburger span:nth-child(2) { top: 15px; }
+.hamburger span:nth-child(3) { top: 20px; }
+
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4); z-index: 99;
+}
+.sidebar-overlay.show { display: block; }
+
+.sidebar {
+  position: fixed; top: var(--nav-h); left: 0;
+  width: var(--sidebar-w); height: calc(100vh - var(--nav-h));
+  background: var(--ink-00); border-right: 1px solid var(--ink-08);
+  overflow-y: auto; overflow-x: hidden; z-index: 100;
+  transition: width 0.25s ease;
+}
+.sidebar.collapsed { width: 64px; }
+.sidebar.collapsed .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+.sidebar.collapsed .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+.sidebar.collapsed .sidebar-item.active { border-left: none; }
+.sidebar.collapsed .sidebar-icon { font-size: 20px; width: auto; }
+.sidebar.collapsed .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+.sidebar.collapsed .sidebar-item { position: relative; }
+.sidebar.collapsed .sidebar-toggle { right: 0; left: 0; display: flex; justify-content: center; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-collapse { display: none; }
+.sidebar.collapsed .sidebar-toggle-btn .toggle-expand { display: block; }
+.sidebar-toggle-btn .toggle-expand { display: none; }
+
+.sidebar-toggle { position: absolute; bottom: 12px; right: 12px; }
+.sidebar-toggle-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--ink-08); background: var(--ink-00);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-48); font-size: 14px; transition: all 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+.sidebar-toggle-btn:hover { background: var(--ink-02); color: var(--ink-100); }
+
+.sidebar-section { padding: 20px 0 8px; }
+.sidebar-section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-32);
+  padding: 0 20px 8px;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 20px; font-size: 14px; color: var(--ink-60);
+  cursor: pointer; transition: all 0.12s; text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: var(--ink-02); color: var(--ink-100); }
+.sidebar-item.active { background: var(--brand-primary-subtle); color: var(--brand-primary); font-weight: 500; border-left-color: var(--brand-primary); }
+.sidebar-icon { width: 20px; text-align: center; font-size: 16px; flex-shrink: 0; }
+.sidebar-item-badge {
+  margin-left: auto; font-size: 11px; font-weight: 600;
+  background: var(--danger-subtle); color: var(--danger);
+  padding: 1px 7px; border-radius: var(--radius-pill);
+}
+
+.content { margin-left: var(--sidebar-w); margin-top: var(--nav-h); min-height: calc(100vh - var(--nav-h)); transition: margin-left 0.25s ease; }
+.content.sidebar-collapsed { margin-left: 64px; }
+
+/* ══ PAGE HEADER ══ */
+.page-header {
+  background: var(--ink-00);
+  border-bottom: 1px solid var(--ink-08);
+  padding: 20px 32px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.page-header-left h1 {
+  font-family: var(--font-display); font-size: 22px; font-weight: 600;
+  letter-spacing: -0.3px; color: var(--ink-100);
+}
+.page-header-left p {
+  font-size: 13px; color: var(--ink-48); margin-top: 2px;
+}
+.page-header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: var(--font-text); font-size: 13px; font-weight: 500;
+  padding: 7px 16px; border-radius: var(--radius-md); border: none;
+  cursor: pointer; transition: all 0.12s; text-decoration: none; white-space: nowrap;
+}
+.btn-primary { background: var(--brand-primary); color: #fff; }
+.btn-primary:hover { background: var(--brand-primary-hover); }
+.btn-secondary { background: var(--ink-00); color: var(--ink-80); border: 1px solid var(--ink-08); }
+.btn-secondary:hover { background: var(--ink-02); }
+.btn-sm { font-size: 12px; padding: 5px 12px; }
+
+/* Period picker */
+.period-switch {
+  display: inline-flex; background: var(--ink-04); border-radius: var(--radius-md);
+  padding: 3px; gap: 2px;
+}
+.period-btn {
+  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  border-radius: var(--radius-sm); border: none; background: transparent;
+  color: var(--ink-48); cursor: pointer; transition: all 0.15s;
+}
+.period-btn.active { background: var(--ink-00); color: var(--ink-100); box-shadow: var(--shadow-xs); }
+
+/* ══ CONTENT AREA ══ */
+.page-body { padding: 24px 32px; }
+
+/* ── KPI Cards ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.kpi-card {
+  background: var(--ink-00);
+  border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: box-shadow 0.15s;
+}
+.kpi-card:hover { box-shadow: var(--shadow-md); }
+.kpi-label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--ink-48); margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.kpi-icon {
+  width: 28px; height: 28px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 30px; font-weight: 600; letter-spacing: -0.5px;
+  color: var(--ink-100); line-height: 1.1; margin-bottom: 6px;
+}
+.kpi-delta {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; font-weight: 600; padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+.kpi-delta-sub { font-size: 12px; color: var(--ink-48); margin-left: 4px; font-weight: 400; }
+.delta-up { background: var(--success-subtle); color: var(--success-ink); }
+.delta-down { background: var(--danger-subtle); color: var(--danger-ink); }
+.delta-neutral { background: var(--ink-04); color: var(--ink-48); }
+
+/* ── Charts Row ── */
+.charts-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ── Bottom Row ── */
+.bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+/* Cards */
+.card {
+  background: var(--ink-00); border: 1px solid var(--ink-08);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; border-bottom: 1px solid var(--ink-04);
+}
+.card-title {
+  font-family: var(--font-display); font-size: 14px; font-weight: 600;
+  color: var(--ink-100);
+}
+.card-subtitle { font-size: 12px; color: var(--ink-48); margin-top: 1px; }
+.card-body { padding: 20px; }
+.card-body-compact { padding: 0; }
+
+/* ── SVG Charts ── */
+.chart-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* Revenue Line Chart */
+.revenue-chart {
+  width: 100%; height: 200px;
+}
+
+/* Donut Chart */
+.donut-wrap {
+  display: flex; align-items: center; gap: 20px;
+}
+.donut-chart-svg {
+  width: 120px; height: 120px; flex-shrink: 0;
+}
+.donut-legend { flex: 1; }
+.donut-legend-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--ink-60); margin-bottom: 8px;
+}
+.donut-legend-item:last-child { margin-bottom: 0; }
+.donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.donut-legend-label { flex: 1; }
+.donut-legend-value { font-weight: 600; color: var(--ink-100); }
+
+/* RFM Heatmap */
+.rfm-grid {
+  display: grid;
+  grid-template-columns: auto repeat(5, 1fr);
+  gap: 3px;
+  font-size: 11px;
+}
+.rfm-header { color: var(--ink-48); font-weight: 600; text-align: center; padding: 4px 2px; }
+.rfm-row-label { color: var(--ink-48); font-weight: 600; display: flex; align-items: center; padding: 2px 6px 2px 0; font-size: 10px; }
+.rfm-cell {
+  border-radius: 4px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: #fff; cursor: pointer;
+  transition: transform 0.1s;
+}
+.rfm-cell:hover { transform: scale(1.08); z-index: 1; position: relative; }
+.rfm-empty { background: var(--ink-04); color: var(--ink-32); }
+
+/* Activities timeline */
+.activity-list { }
+.activity-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 20px; border-bottom: 1px solid var(--ink-04);
+  transition: background 0.1s;
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-item:hover { background: var(--ink-02); }
+.activity-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0; margin-top: 1px;
+}
+.activity-content { flex: 1; min-width: 0; }
+.activity-title { font-size: 13px; font-weight: 500; color: var(--ink-80); }
+.activity-meta { font-size: 12px; color: var(--ink-48); margin-top: 2px; }
+.activity-time { font-size: 11px; color: var(--ink-32); white-space: nowrap; flex-shrink: 0; }
+
+/* Tags / Badges */
+.tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; padding: 2px 8px;
+  border-radius: var(--radius-pill); white-space: nowrap;
+}
+.bu-tag-nd { background: var(--bu-ngocdung-bg); color: var(--bu-ngocdung); }
+.bu-tag-ze { background: var(--bu-zema-bg); color: var(--bu-zema); }
+.bu-tag-oc { background: var(--bu-ocany-bg); color: var(--bu-ocany); }
+
+/* Quick actions */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.quick-action-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 14px 8px; border-radius: var(--radius-md);
+  background: var(--ink-02); border: 1px solid var(--ink-08);
+  cursor: pointer; transition: all 0.15s; text-align: center;
+  text-decoration: none;
+}
+.quick-action-btn:hover { background: var(--brand-primary-subtle); border-color: var(--brand-primary); }
+.quick-action-btn:hover .qa-label { color: var(--brand-primary); }
+.qa-icon {
+  width: 36px; height: 36px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; background: var(--ink-00); border: 1px solid var(--ink-08);
+}
+.qa-label { font-size: 11px; font-weight: 500; color: var(--ink-60); line-height: 1.3; }
+
+/* ── Responsive ── */
+@media (max-width: 1199px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .charts-row { grid-template-columns: 1fr; }
+  .bottom-row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 1023px) {
+  .sidebar { width: 64px; overflow: hidden; }
+  .sidebar-section-label { font-size: 0; padding: 12px 0 4px; text-align: center; }
+  .sidebar-section-label::after { content: ""; display: block; width: 24px; height: 1px; background: var(--ink-08); margin: 0 auto; }
+  .sidebar-item { padding: 10px 0; justify-content: center; gap: 0; font-size: 0; border-left: none; }
+  .sidebar-item.active { border-left: none; border-right: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 20px; width: auto; }
+  .sidebar-item-badge { position: absolute; top: 2px; right: 8px; font-size: 9px; padding: 0 5px; margin: 0; }
+  .sidebar-item { position: relative; }
+  .content { margin-left: 64px; }
+  .topnav-search { max-width: 240px; }
+}
+
+@media (max-width: 767px) {
+  .hamburger { display: block; }
+  .sidebar { width: 260px; transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-section-label { font-size: 11px; padding: 20px 20px 8px; }
+  .sidebar-section-label::after { display: none; }
+  .sidebar-item { padding: 8px 20px; font-size: 14px; justify-content: flex-start; gap: 10px; border-left: 3px solid transparent; }
+  .sidebar-item.active { border-right: none; border-left: 3px solid var(--brand-primary); }
+  .sidebar-icon { font-size: 16px; width: 20px; }
+  .content { margin-left: 0; }
+  .page-header { padding: 14px 16px; flex-wrap: wrap; gap: 10px; }
+  .page-body { padding: 16px; }
+  .kpi-row { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .kpi-value { font-size: 24px; }
+  .charts-row { grid-template-columns: 1fr; }
+  .bottom-row { grid-template-columns: 1fr; }
+  .quick-actions-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .topnav-search { display: none; }
+  .topnav-bu-switch { display: none; }
+  .topnav { padding: 0 12px; gap: 8px; }
+}
+
+@media (max-width: 479px) {
+  .kpi-row { grid-template-columns: 1fr; }
+  .quick-actions-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a class="topnav-brand" href="ui-dashboard.html"><img src="logo-theadvance.png" alt="TheAdvance CDP" style="height:36px;"></a>
+  <div class="topnav-right">
+    <a href="user-guide.html" target="_blank" class="topnav-icon-btn" title="Hướng dẫn" style="text-decoration:none;font-size:15px;color:var(--ink-32);">&#x2139;</a>
+    <span class="topnav-bu-switch">▼ Holding (All BU)</span>
+    <button class="topnav-icon-btn" title="Thông báo">🔔</button>
+    <span style="font-size:12px;color:var(--ink-48);">Nguyễn Admin</span>
+    <div class="topnav-avatar">NA</div>
+  </div>
+</nav>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Main</div>
+    <a class="sidebar-item active" href="ui-dashboard.html"><span class="sidebar-icon">⊡</span> Dashboard</a>
+    <a class="sidebar-item" href="ui-customer-list.html"><span class="sidebar-icon">☺</span> Customers</a>
+    <a class="sidebar-item" href="ui-segment-list.html"><span class="sidebar-icon">◎</span> Segments</a>
+    <a class="sidebar-item" href="ui-campaign-list.html"><span class="sidebar-icon">✉</span> Campaigns</a>
+    <a class="sidebar-item" href="ui-lead-list.html">
+      <span class="sidebar-icon">✆</span> Leads
+      <span class="sidebar-item-badge">12</span>
+    </a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Analytics</div>
+    <a class="sidebar-item" href="ui-scoring-dashboard.html"><span class="sidebar-icon">★</span> Scoring</a>
+    <a class="sidebar-item" href="ui-health-dashboard.html"><span class="sidebar-icon">♡</span> Health Map</a>
+    <a class="sidebar-item" href="ui-rfm-dashboard.html"><span class="sidebar-icon">≡</span> RFM</a>
+    <a class="sidebar-item" href="ui-analytics-cohort.html"><span class="sidebar-icon">⇅</span> Cohort</a>
+    <a class="sidebar-item" href="ui-analytics-journey.html"><span class="sidebar-icon">→</span> Journey</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">System</div>
+    <a class="sidebar-item" href="ui-connector-config.html"><span class="sidebar-icon">&#x26A1;</span> Connectors</a>
+    <a class="sidebar-item" href="ui-pipeline-monitor.html"><span class="sidebar-icon">&#x1F4CA;</span> Pipeline</a>
+    <a class="sidebar-item" href="ui-score-config.html"><span class="sidebar-icon">&#x2699;</span> Score Config</a>
+    <a class="sidebar-item" href="ui-user-role.html"><span class="sidebar-icon">&#x1F465;</span> Users &amp; Roles</a>
+    <a class="sidebar-item" href="ui-consent-center.html"><span class="sidebar-icon">&#x1F6E1;</span> Consent</a>
+    <a class="sidebar-item" href="ui-audit-log.html"><span class="sidebar-icon">&#x1F4D1;</span> Audit Log</a>
+  </div>
+  <div style="height:36px;"></div>
+  <div class="sidebar-toggle">
+    <button class="sidebar-toggle-btn" onclick="toggleCollapse()" title="Thu gọn menu">
+      <span class="toggle-collapse">«</span>
+      <span class="toggle-expand">»</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content" id="mainContent">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1>Dashboard</h1>
+      <p>Tổng quan hoạt động — Tháng 6, 2026</p>
+    </div>
+    <div class="page-header-right">
+      <div class="period-switch">
+        <button class="period-btn">7N</button>
+        <button class="period-btn active">T6</button>
+        <button class="period-btn">Q2</button>
+        <button class="period-btn">YTD</button>
+      </div>
+      <button class="btn btn-secondary btn-sm">⬇ Xuất báo cáo</button>
+      <button class="btn btn-primary btn-sm">+ Tác vụ mới</button>
+    </div>
+  </div>
+
+  <!-- Page Body -->
+  <div class="page-body">
+
+    <!-- ── KPI Row ── -->
+    <div class="kpi-row">
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          Tổng khách hàng
+          <div class="kpi-icon" style="background:#e5f1ff;">👥</div>
+        </div>
+        <div class="kpi-value">184,320</div>
+        <span class="kpi-delta delta-up">▲ 2.4%</span>
+        <span class="kpi-delta-sub">so tháng trước</span>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          Khách mới tháng này
+          <div class="kpi-icon" style="background:#e6f9ec;">🌱</div>
+        </div>
+        <div class="kpi-value">3,847</div>
+        <span class="kpi-delta delta-up">▲ 12.1%</span>
+        <span class="kpi-delta-sub">vs tháng 5</span>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          Doanh thu tháng
+          <div class="kpi-icon" style="background:#fef5e6;">💰</div>
+        </div>
+        <div class="kpi-value">18.4 tỷ</div>
+        <span class="kpi-delta delta-down">▼ 3.2%</span>
+        <span class="kpi-delta-sub">vs tháng 5</span>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          Health Score TB
+          <div class="kpi-icon" style="background:#e6f9ec;">💚</div>
+        </div>
+        <div class="kpi-value">74.2</div>
+        <span class="kpi-delta delta-up">▲ 1.8</span>
+        <span class="kpi-delta-sub">điểm so tháng 5</span>
+      </div>
+
+    </div>
+
+    <!-- ── Charts Row ── -->
+    <div class="charts-row">
+
+      <!-- Revenue Trend (Line Chart) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Doanh thu theo tháng</div>
+            <div class="card-subtitle">So sánh 2025 — 2026 (tỷ VNĐ)</div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:center;font-size:12px;">
+            <span style="display:flex;align-items:center;gap:5px;color:var(--ink-48);">
+              <span style="display:inline-block;width:20px;height:2px;background:var(--brand-primary);border-radius:1px;"></span> 2026
+            </span>
+            <span style="display:flex;align-items:center;gap:5px;color:var(--ink-32);">
+              <span style="display:inline-block;width:20px;height:2px;background:var(--ink-16);border-radius:1px;border-top:2px dashed var(--ink-16);"></span> 2025
+            </span>
+          </div>
+        </div>
+        <div class="card-body" style="padding-top:8px;">
+          <svg viewBox="0 0 680 200" class="revenue-chart" style="overflow:visible;">
+            <defs>
+              <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0066cc" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#0066cc" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Y axis labels -->
+            <text x="0" y="18" font-size="10" fill="#a0a0a0" font-family="system-ui">24</text>
+            <text x="0" y="68" font-size="10" fill="#a0a0a0" font-family="system-ui">19</text>
+            <text x="0" y="118" font-size="10" fill="#a0a0a0" font-family="system-ui">14</text>
+            <text x="0" y="168" font-size="10" fill="#a0a0a0" font-family="system-ui">9</text>
+
+            <!-- Grid lines -->
+            <line x1="30" y1="10" x2="680" y2="10" stroke="#f0f0f0" stroke-width="1"/>
+            <line x1="30" y1="60" x2="680" y2="60" stroke="#f0f0f0" stroke-width="1"/>
+            <line x1="30" y1="110" x2="680" y2="110" stroke="#f0f0f0" stroke-width="1"/>
+            <line x1="30" y1="160" x2="680" y2="160" stroke="#f0f0f0" stroke-width="1"/>
+
+            <!-- Area 2026 -->
+            <path d="M 40 130 L 135 110 L 230 95 L 325 105 L 420 80 L 515 70 L 610 55 L 610 160 L 40 160 Z"
+                  fill="url(#lineGrad)"/>
+
+            <!-- Line 2025 (dashed) -->
+            <polyline points="40,145 135,135 230,125 325,130 420,120 515,115 610,105"
+                      fill="none" stroke="#e0e0e0" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+            <!-- Line 2026 -->
+            <polyline points="40,130 135,110 230,95 325,105 420,80 515,70 610,55"
+                      fill="none" stroke="#0066cc" stroke-width="2.5" stroke-linejoin="round"/>
+
+            <!-- Dots 2026 -->
+            <circle cx="40" cy="130" r="3.5" fill="#0066cc"/>
+            <circle cx="135" cy="110" r="3.5" fill="#0066cc"/>
+            <circle cx="230" cy="95" r="3.5" fill="#0066cc"/>
+            <circle cx="325" cy="105" r="3.5" fill="#0066cc"/>
+            <circle cx="420" cy="80" r="3.5" fill="#0066cc"/>
+            <circle cx="515" cy="70" r="3.5" fill="#0066cc"/>
+            <!-- Current month dot (larger) -->
+            <circle cx="610" cy="55" r="5" fill="#0066cc"/>
+            <circle cx="610" cy="55" r="9" fill="none" stroke="#0066cc" stroke-opacity="0.25" stroke-width="2"/>
+
+            <!-- X axis labels -->
+            <text x="40" y="185" font-size="10" fill="#a0a0a0" text-anchor="middle" font-family="system-ui">T1</text>
+            <text x="135" y="185" font-size="10" fill="#a0a0a0" text-anchor="middle" font-family="system-ui">T2</text>
+            <text x="230" y="185" font-size="10" fill="#a0a0a0" text-anchor="middle" font-family="system-ui">T3</text>
+            <text x="325" y="185" font-size="10" fill="#a0a0a0" text-anchor="middle" font-family="system-ui">T4</text>
+            <text x="420" y="185" font-size="10" fill="#a0a0a0" text-anchor="middle" font-family="system-ui">T5</text>
+            <text x="515" y="185" font-size="10" fill="#a0a0a0" text-anchor="middle" font-family="system-ui">T5</text>
+            <text x="610" y="185" font-size="10" fill="#0066cc" font-weight="600" text-anchor="middle" font-family="system-ui">T6</text>
+
+            <!-- Tooltip for current -->
+            <rect x="570" y="25" width="72" height="24" rx="5" fill="#1d1d1f"/>
+            <text x="606" y="41" font-size="11" fill="#fff" font-weight="600" text-anchor="middle" font-family="system-ui">18.4 tỷ</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Customer by BU (Donut) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Khách theo BU</div>
+            <div class="card-subtitle">Phân phối tháng 6</div>
+          </div>
+        </div>
+        <div class="card-body" style="padding:24px 20px;">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 120 120" class="donut-chart-svg">
+              <!-- Donut segments — total 360° -->
+              <!-- Ngọc Dung: 52% = 187.2° -->
+              <circle cx="60" cy="60" r="42" fill="none" stroke="#e84393"
+                stroke-width="20"
+                stroke-dasharray="137.4 264.6"
+                stroke-dashoffset="0"
+                transform="rotate(-90 60 60)"/>
+              <!-- Zema: 31% = 111.6° -->
+              <circle cx="60" cy="60" r="42" fill="none" stroke="#6c5ce7"
+                stroke-width="20"
+                stroke-dasharray="81.9 320.1"
+                stroke-dashoffset="-137.4"
+                transform="rotate(-90 60 60)"/>
+              <!-- Ocany: 17% = 61.2° -->
+              <circle cx="60" cy="60" r="42" fill="none" stroke="#00b894"
+                stroke-width="20"
+                stroke-dasharray="44.9 357.1"
+                stroke-dashoffset="-219.3"
+                transform="rotate(-90 60 60)"/>
+              <!-- Center text -->
+              <text x="60" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#1d1d1f" font-family="system-ui">184K</text>
+              <text x="60" y="70" text-anchor="middle" font-size="9" fill="#7a7a7a" font-family="system-ui">khách hàng</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="donut-legend-item">
+                <div class="donut-legend-dot" style="background:#e84393;"></div>
+                <span class="donut-legend-label">Ngọc Dung</span>
+                <span class="donut-legend-value">52%</span>
+              </div>
+              <div class="donut-legend-item">
+                <div class="donut-legend-dot" style="background:#6c5ce7;"></div>
+                <span class="donut-legend-label">Zema</span>
+                <span class="donut-legend-value">31%</span>
+              </div>
+              <div class="donut-legend-item">
+                <div class="donut-legend-dot" style="background:#00b894;"></div>
+                <span class="donut-legend-label">Ocany</span>
+                <span class="donut-legend-value">17%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BU revenue breakdown -->
+          <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--ink-04);">
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-32);margin-bottom:10px;">Doanh thu (tỷ)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+                  <span style="color:var(--ink-60);">Ngọc Dung</span>
+                  <span style="font-weight:600;">9.57</span>
+                </div>
+                <div style="height:5px;background:var(--ink-04);border-radius:3px;">
+                  <div style="height:100%;width:52%;background:#e84393;border-radius:3px;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+                  <span style="color:var(--ink-60);">Zema</span>
+                  <span style="font-weight:600;">5.70</span>
+                </div>
+                <div style="height:5px;background:var(--ink-04);border-radius:3px;">
+                  <div style="height:100%;width:31%;background:#6c5ce7;border-radius:3px;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+                  <span style="color:var(--ink-60);">Ocany</span>
+                  <span style="font-weight:600;">3.13</span>
+                </div>
+                <div style="height:5px;background:var(--ink-04);border-radius:3px;">
+                  <div style="height:100%;width:17%;background:#00b894;border-radius:3px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Bottom Row ── -->
+    <div class="bottom-row">
+
+      <!-- RFM Distribution Heatmap -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Phân phối RFM</div>
+            <div class="card-subtitle">Recency × Frequency (nghìn khách)</div>
+          </div>
+          <a href="#" class="btn btn-secondary btn-sm">Chi tiết</a>
+        </div>
+        <div class="card-body" style="padding:16px;">
+          <div class="rfm-grid">
+            <!-- Header row -->
+            <div class="rfm-row-label"></div>
+            <div class="rfm-header">F1</div>
+            <div class="rfm-header">F2</div>
+            <div class="rfm-header">F3</div>
+            <div class="rfm-header">F4</div>
+            <div class="rfm-header">F5</div>
+            <!-- R5 row -->
+            <div class="rfm-row-label">R5</div>
+            <div class="rfm-cell rfm-empty">0.2</div>
+            <div class="rfm-cell" style="background:rgba(0,184,148,0.3);color:#1a7a31;">1.4</div>
+            <div class="rfm-cell" style="background:rgba(0,184,148,0.5);color:#1a7a31;">3.8</div>
+            <div class="rfm-cell" style="background:rgba(0,184,148,0.75);color:#fff;">8.2</div>
+            <div class="rfm-cell" style="background:#00b894;color:#fff;">14.1</div>
+            <!-- R4 row -->
+            <div class="rfm-row-label">R4</div>
+            <div class="rfm-cell rfm-empty">0.5</div>
+            <div class="rfm-cell" style="background:rgba(0,184,148,0.2);color:#1a7a31;">2.1</div>
+            <div class="rfm-cell" style="background:rgba(0,184,148,0.4);color:#1a7a31;">5.6</div>
+            <div class="rfm-cell" style="background:rgba(0,184,148,0.65);color:#fff;">11.3</div>
+            <div class="rfm-cell" style="background:rgba(0,184,148,0.85);color:#fff;">9.7</div>
+            <!-- R3 row -->
+            <div class="rfm-row-label">R3</div>
+            <div class="rfm-cell rfm-empty">1.2</div>
+            <div class="rfm-cell" style="background:rgba(245,166,35,0.3);color:#8a5d0f;">4.4</div>
+            <div class="rfm-cell" style="background:rgba(245,166,35,0.5);color:#8a5d0f;">7.9</div>
+            <div class="rfm-cell" style="background:rgba(245,166,35,0.7);color:#7a4f00;">10.2</div>
+            <div class="rfm-cell" style="background:rgba(245,166,35,0.85);color:#5a3900;">6.1</div>
+            <!-- R2 row -->
+            <div class="rfm-row-label">R2</div>
+            <div class="rfm-cell" style="background:rgba(255,69,58,0.2);color:#9b1c15;">3.1</div>
+            <div class="rfm-cell" style="background:rgba(255,69,58,0.35);color:#9b1c15;">8.7</div>
+            <div class="rfm-cell" style="background:rgba(255,69,58,0.5);color:#9b1c15;">12.4</div>
+            <div class="rfm-cell" style="background:rgba(255,69,58,0.65);color:#fff;">7.3</div>
+            <div class="rfm-cell rfm-empty">2.8</div>
+            <!-- R1 row -->
+            <div class="rfm-row-label">R1</div>
+            <div class="rfm-cell" style="background:rgba(255,69,58,0.7);color:#fff;">15.8</div>
+            <div class="rfm-cell" style="background:rgba(255,69,58,0.55);color:#fff;">9.2</div>
+            <div class="rfm-cell" style="background:rgba(255,69,58,0.35);color:#9b1c15;">4.6</div>
+            <div class="rfm-cell rfm-empty">1.9</div>
+            <div class="rfm-cell rfm-empty">0.4</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--ink-32);margin-top:10px;">
+            <span>● Ít mua/lâu không quay lại</span>
+            <span>● Nhiều mua/gần đây</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Hoạt động gần đây</div>
+            <div class="card-subtitle">24 giờ qua</div>
+          </div>
+          <a href="#" class="btn btn-secondary btn-sm">Xem tất cả</a>
+        </div>
+        <div class="card-body-compact">
+          <div class="activity-list">
+
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#e6f9ec;">🛒</div>
+              <div class="activity-content">
+                <div class="activity-title">Nguyễn Thị Hồng mua dịch vụ Facial</div>
+                <div class="activity-meta"><span class="tag bu-tag-nd">Ngọc Dung</span> · Chi nhánh Quận 1 · 1.850.000đ</div>
+              </div>
+              <div class="activity-time">5p</div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#ede9fd;">⭐</div>
+              <div class="activity-content">
+                <div class="activity-title">Trần Minh Khoa — Health Score tăng lên 82</div>
+                <div class="activity-meta"><span class="tag bu-tag-ze">Zema</span> · Từ 71 → 82 (+11 điểm)</div>
+              </div>
+              <div class="activity-time">18p</div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#fde8e7;">⚠</div>
+              <div class="activity-content">
+                <div class="activity-title">Lê Thị Bích Lan — Cảnh báo Churn risk cao</div>
+                <div class="activity-meta"><span class="tag bu-tag-nd">Ngọc Dung</span> · Chưa ghé thăm 94 ngày</div>
+              </div>
+              <div class="activity-time">34p</div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#e0f8f1;">✨</div>
+              <div class="activity-content">
+                <div class="activity-title">Phạm Quốc Tuấn — Khách hàng mới</div>
+                <div class="activity-meta"><span class="tag bu-tag-oc">Ocany</span> · Đăng ký qua App</div>
+              </div>
+              <div class="activity-time">1g</div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#fef5e6;">📧</div>
+              <div class="activity-content">
+                <div class="activity-title">Campaign "Khuyến mãi sinh nhật T6" kết thúc</div>
+                <div class="activity-meta">1.240 khách / Tỷ lệ mở 38.2% / Chuyển đổi 12.4%</div>
+              </div>
+              <div class="activity-time">2g</div>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-icon" style="background:#e5f1ff;">🔗</div>
+              <div class="activity-content">
+                <div class="activity-title">Sync dữ liệu POS hoàn thành</div>
+                <div class="activity-meta">4.821 giao dịch mới · 0 lỗi</div>
+              </div>
+              <div class="activity-time">3g</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Tác vụ nhanh</div>
+          </div>
+          <div class="card-body">
+            <div class="quick-actions-grid">
+              <a href="ui-customer-list.html" class="quick-action-btn">
+                <div class="qa-icon">👥</div>
+                <div class="qa-label">Danh sách<br>khách hàng</div>
+              </a>
+              <a href="#" class="quick-action-btn">
+                <div class="qa-icon">➕</div>
+                <div class="qa-label">Thêm<br>khách mới</div>
+              </a>
+              <a href="#" class="quick-action-btn">
+                <div class="qa-icon">📊</div>
+                <div class="qa-label">Tạo<br>Segment</div>
+              </a>
+              <a href="#" class="quick-action-btn">
+                <div class="qa-icon">📧</div>
+                <div class="qa-label">Gửi<br>Campaign</div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health Score Summary -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Phân phối Health Score</div>
+              <div class="card-subtitle">Toàn hệ thống</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span style="display:flex;align-items:center;gap:6px;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#30d158;display:inline-block;"></span>
+                    <span style="color:var(--ink-60);">Khỏe mạnh (≥80)</span>
+                  </span>
+                  <span style="font-weight:600;color:#1a7a31;">42,180 <span style="font-weight:400;color:var(--ink-48);">(22.9%)</span></span>
+                </div>
+                <div style="height:6px;background:var(--ink-04);border-radius:3px;">
+                  <div style="height:100%;width:22.9%;background:#30d158;border-radius:3px;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span style="display:flex;align-items:center;gap:6px;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#f5a623;display:inline-block;"></span>
+                    <span style="color:var(--ink-60);">Trung bình (60-79)</span>
+                  </span>
+                  <span style="font-weight:600;color:#8a5d0f;">91,440 <span style="font-weight:400;color:var(--ink-48);">(49.6%)</span></span>
+                </div>
+                <div style="height:6px;background:var(--ink-04);border-radius:3px;">
+                  <div style="height:100%;width:49.6%;background:#f5a623;border-radius:3px;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span style="display:flex;align-items:center;gap:6px;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#ff9500;display:inline-block;"></span>
+                    <span style="color:var(--ink-60);">Nguy cơ (40-59)</span>
+                  </span>
+                  <span style="font-weight:600;color:#8a5d0f;">36,864 <span style="font-weight:400;color:var(--ink-48);">(20.0%)</span></span>
+                </div>
+                <div style="height:6px;background:var(--ink-04);border-radius:3px;">
+                  <div style="height:100%;width:20%;background:#ff9500;border-radius:3px;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">
+                  <span style="display:flex;align-items:center;gap:6px;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#ff453a;display:inline-block;"></span>
+                    <span style="color:var(--ink-60);">Rủi ro cao (&lt;40)</span>
+                  </span>
+                  <span style="font-weight:600;color:#9b1c15;">13,836 <span style="font-weight:400;color:var(--ink-48);">(7.5%)</span></span>
+                </div>
+                <div style="height:6px;background:var(--ink-04);border-radius:3px;">
+                  <div style="height:100%;width:7.5%;background:#ff453a;border-radius:3px;"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end right column -->
+
+    </div><!-- end bottom-row -->
+
+  </div><!-- end page-body -->
+</div><!-- end content -->
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+
+function toggleCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const content = document.getElementById('mainContent');
+  sidebar.classList.toggle('collapsed');
+  content.classList.toggle('sidebar-collapsed');
+}
+
+// Period buttons
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
