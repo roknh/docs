@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netcore — Giải Pháp Hạ Tầng Công Nghệ Toàn Diện</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #0f62fe;
+      --primary-hover: #0050e6;
+      --primary-pressed: #002d9c;
+      --on-primary: #ffffff;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8c8c8c;
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --inverse-canvas: #161616;
+      --inverse-surface-1: #262626;
+      --inverse-ink: #ffffff;
+      --inverse-ink-muted: #c6c6c6;
+      --hairline: #e0e0e0;
+      --success: #24a148;
+      --warning: #f1c21b;
+      --error: #da1e28;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+
+    .container {
+      max-width: 1584px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .eyebrow {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.29;
+      letter-spacing: 0.16px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    /* ── Nav ── */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+      height: 48px;
+      display: flex;
+      align-items: center;
+    }
+    .top-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .top-nav__logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .top-nav__logo img {
+      height: 28px;
+      width: auto;
+    }
+    .top-nav__links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .top-nav__links a {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .top-nav__links a:hover { color: var(--primary); }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 96px 0 80px;
+      background: var(--canvas);
+    }
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero__title {
+      font-size: 76px;
+      font-weight: 300;
+      line-height: 1.17;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+    }
+    .hero__title span { color: var(--primary); }
+    .hero__desc {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--ink-muted);
+      margin-top: 24px;
+      max-width: 540px;
+    }
+    .hero__actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .hero__image {
+      position: relative;
+    }
+    .hero__image img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+    }
+    .hero__stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .hero__stat {
+      padding: 20px 24px;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid var(--hairline);
+    }
+    .hero__stat-number {
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .hero__stat-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--ink-muted);
+      margin-top: 4px;
+      letter-spacing: 0.32px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      line-height: 1.29;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn--primary { background: var(--primary); color: var(--on-primary); }
+    .btn--primary:hover { background: var(--primary-hover); }
+    .btn--secondary { background: var(--ink); color: var(--inverse-ink); }
+    .btn--tertiary { background: var(--canvas); color: var(--primary); border: 1px solid var(--primary); }
+    .btn--ghost { background: transparent; color: var(--primary); padding: 12px 0; }
+    .btn--ghost:hover { text-decoration: underline; }
+    .btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .btn--on-dark { background: var(--on-primary); color: var(--primary); margin-top: 24px; }
+    .btn--on-dark:hover { background: #e8e8e8; }
+
+    /* ── Section ── */
+    .section { padding: 96px 0; }
+    .section--alt { background: var(--surface-1); }
+    .section__header { max-width: 640px; margin-bottom: 48px; }
+    .section__title {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+    .section__subtitle {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--ink-muted);
+      margin-top: 16px;
+    }
+
+    /* ── Image Banner ── */
+    .image-banner {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      margin-bottom: 48px;
+    }
+
+    /* ── Product Tabs ── */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 48px;
+      overflow-x: auto;
+    }
+    .tab {
+      padding: 16px 20px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--ink-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .tab:hover { color: var(--ink); }
+    .tab.active { color: var(--ink); font-weight: 600; border-bottom-color: var(--primary); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Product Section ── */
+    .product {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .product__badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      background: rgba(15, 98, 254, 0.1);
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+    .product__title {
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+    .product__desc {
+      font-size: 16px;
+      color: var(--ink-muted);
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+    .product__image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      margin-top: 24px;
+    }
+    .product__features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .feature-tile {
+      border: 1px solid var(--hairline);
+      padding: 24px;
+      background: var(--canvas);
+    }
+    .section--alt .feature-tile { background: var(--canvas); }
+    .feature-tile__title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.29;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .feature-tile__desc {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: 0.16px;
+      color: var(--ink-muted);
+    }
+    .product__highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .highlight-card {
+      border: 1px solid var(--hairline);
+      padding: 32px;
+      background: var(--canvas);
+    }
+    .highlight-card__number {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .highlight-card__text {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-top: 8px;
+      letter-spacing: 0.16px;
+    }
+    .highlight-card__img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    /* ── Challenges ── */
+    .challenges {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .challenge-card {
+      border: 1px solid var(--hairline);
+      border-top: 2px solid var(--primary);
+      padding: 32px;
+      background: var(--canvas);
+    }
+    .challenge-card__title {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .challenge-card__desc {
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: 0.16px;
+      color: var(--ink-muted);
+    }
+
+    /* ── Why Grid ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .why-card {
+      border: 1px solid var(--hairline);
+      padding: 32px;
+      background: var(--canvas);
+    }
+    .why-card__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+    }
+    .why-card__title {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .why-card__desc {
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: 0.16px;
+      color: var(--ink-muted);
+    }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: var(--primary);
+      padding: 96px 0;
+    }
+    .cta-banner__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .cta-banner__title {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--on-primary);
+    }
+    .cta-banner__desc {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.8);
+      margin-top: 16px;
+    }
+    .cta-banner__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cta-banner__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--on-primary);
+      font-size: 16px;
+    }
+    .cta-banner__item svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--inverse-canvas);
+      padding: 64px 32px;
+      color: var(--inverse-ink-muted);
+    }
+    .footer__inner {
+      max-width: 1584px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 48px;
+    }
+    .footer__brand {
+      margin-bottom: 16px;
+    }
+    .footer__brand img {
+      height: 32px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .footer__tagline {
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: 0.16px;
+      color: var(--inverse-ink-muted);
+    }
+    .footer__col-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--inverse-ink);
+      margin-bottom: 16px;
+      letter-spacing: 0.16px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .footer__links a {
+      font-size: 14px;
+      color: var(--inverse-ink-muted);
+      text-decoration: none;
+      letter-spacing: 0.16px;
+      transition: color 0.15s;
+    }
+    .footer__links a:hover { color: var(--on-primary); }
+    .footer__bottom {
+      max-width: 1584px;
+      margin: 48px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--inverse-surface-1);
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--inverse-ink-muted);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1056px) {
+      .hero__title { font-size: 60px; letter-spacing: -0.4px; }
+      .section__title { font-size: 36px; }
+      .cta-banner__title { font-size: 36px; }
+      .challenges, .why-grid { grid-template-columns: 1fr 1fr; }
+      .footer__inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 672px) {
+      .nav-toggle { display: block; }
+      .top-nav__links { display: none; }
+      .top-nav__links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 48px; left: 0; right: 0;
+        background: var(--canvas); border-bottom: 1px solid var(--hairline);
+        padding: 16px 32px; gap: 16px;
+      }
+      .hero__inner { grid-template-columns: 1fr; }
+      .hero__title { font-size: 42px; letter-spacing: 0; }
+      .hero { padding: 48px 0; }
+      .hero__image img { height: 300px; }
+      .section { padding: 64px 0; }
+      .product { grid-template-columns: 1fr; }
+      .product__features { grid-template-columns: 1fr; }
+      .challenges, .why-grid { grid-template-columns: 1fr; }
+      .tabs { gap: 0; }
+      .tab { padding: 12px 16px; font-size: 13px; }
+      .cta-banner { padding: 64px 0; }
+      .cta-banner__inner { grid-template-columns: 1fr; }
+      .cta-banner__title { font-size: 32px; }
+      .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+      .hero__actions { flex-direction: column; }
+      .image-banner { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════ NAV ════════════ -->
+<nav class="top-nav">
+  <div class="container">
+    <a href="#" class="top-nav__logo"><img src="images/logo.png" alt="Netcore"></a>
+    <button class="nav-toggle" onclick="document.querySelector('.top-nav__links').classList.toggle('open')" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 5h16M2 10h16M2 15h16" stroke="#161616" stroke-width="1.5"/></svg>
+    </button>
+    <ul class="top-nav__links">
+      <li><a href="#infrastructure">Hạ tầng</a></li>
+      <li><a href="#cdn">CDN</a></li>
+      <li><a href="#livestream">Live Stream</a></li>
+      <li><a href="#transcoder">Video Transcoder</a></li>
+      <li><a href="#contact">Liên hệ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__inner">
+      <div>
+        <p class="eyebrow">Netcore — Hạ tầng số cho doanh nghiệp Việt Nam</p>
+        <h1 class="hero__title">Giải pháp công nghệ <span>toàn diện</span></h1>
+        <p class="hero__desc">
+          Từ lưu trữ vật lý đến điện toán đám mây, từ CDN đến Live Stream — Netcore giúp doanh nghiệp vận hành mạnh mẽ, an toàn và sẵn sàng cho tương lai số.
+        </p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">
+            Tư vấn miễn phí
+            <svg viewBox="0 0 16 16"><path d="M8 1l7 7-7 7M1 8h14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+          </a>
+          <a href="#solutions" class="btn btn--tertiary">Khám phá giải pháp</a>
+        </div>
+      </div>
+      <div class="hero__image">
+        <img src="images/hero-datacenter.jpg" alt="Trung tâm dữ liệu Netcore">
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <div class="hero__stat-number">99.9%</div>
+            <div class="hero__stat-label">Cam kết uptime SLA</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">24/7</div>
+            <div class="hero__stat-label">Hỗ trợ kỹ thuật</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">90%</div>
+            <div class="hero__stat-label">Giảm băng thông máy chủ gốc</div>
+          </div>
+          <div class="hero__stat">
+            <div class="hero__stat-number">5 PB</div>
+            <div class="hero__stat-label">Khả năng lưu trữ mở rộng</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ SOLUTIONS (Tabs) ════════════ -->
+<section class="section section--alt" id="solutions">
+  <div class="container">
+    <div class="section__header">
+      <p class="eyebrow">Giải pháp</p>
+      <h2 class="section__title">Hệ sinh thái dịch vụ chuyên biệt</h2>
+      <p class="section__subtitle">Bốn giải pháp cốt lõi, được thiết kế để đáp ứng mọi quy mô và nhu cầu vận hành của doanh nghiệp hiện đại.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab(event, 'tab-infra')">Hạ tầng</button>
+      <button class="tab" onclick="switchTab(event, 'tab-cdn')">CDN</button>
+      <button class="tab" onclick="switchTab(event, 'tab-live')">Live Stream</button>
+      <button class="tab" onclick="switchTab(event, 'tab-transcode')">Video Transcoder</button>
+    </div>
+
+    <!-- ── Tab 1: Hạ Tầng ── -->
+    <div class="tab-panel active" id="tab-infra">
+      <div class="product" id="infrastructure">
+        <div class="product__info">
+          <span class="product__badge">Hạ tầng</span>
+          <h3 class="product__title">Giải pháp hạ tầng công nghệ đỉnh cao</h3>
+          <p class="product__desc">Tối ưu hóa vận hành, bứt phá chuyển đổi số. Netcore cung cấp nền tảng hạ tầng CNTT toàn diện — từ lưu trữ vật lý đến điện toán đám mây.</p>
+          <img src="images/colocation.jpg" alt="Server Colocation" class="product__image">
+          <div class="product__features">
+            <div class="feature-tile">
+              <div class="feature-tile__title">Server Colocation</div>
+              <div class="feature-tile__desc">Đặt máy chủ tại Data Center đạt chuẩn quốc tế. Tiết kiệm chi phí đầu tư, hưởng băng thông lớn tốc độ cao và hệ thống giám sát 24/7.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Dedicated Server</div>
+              <div class="feature-tile__desc">Máy chủ vật lý riêng biệt — toàn quyền kiểm soát phần cứng, hệ điều hành và tài nguyên. Bảo mật tuyệt đối.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Cloud VPS</div>
+              <div class="feature-tile__desc">Linh hoạt mở rộng tài nguyên theo nhu cầu thực tế. Tích hợp VPC bảo mật mạng riêng và sao lưu định kỳ tự động với Snapshot.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Quản lý hợp nhất</div>
+              <div class="feature-tile__desc">Giao diện quản trị tập trung, trực quan giúp kiểm soát toàn bộ tài nguyên chỉ trên một nền tảng duy nhất.</div>
+            </div>
+          </div>
+        </div>
+        <div class="product__highlights">
+          <div class="highlight-card">
+            <img src="images/server-rack.jpg" alt="Server rack" class="highlight-card__img">
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">5 PB</div>
+            <div class="highlight-card__text">Khả năng lưu trữ mở rộng — đáp ứng từ startup đến tập đoàn lớn</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">200K</div>
+            <div class="highlight-card__text">Chỉ từ 200.000đ/tháng cho Cloud VPS</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">Gigabit</div>
+            <div class="highlight-card__text">Kết nối tốc độ cao, ổ cứng SSD/NVMe thế hệ mới</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tab 2: CDN ── -->
+    <div class="tab-panel" id="tab-cdn">
+      <div class="product" id="cdn">
+        <div class="product__info">
+          <span class="product__badge">CDN</span>
+          <h3 class="product__title">Tăng tốc bứt phá, tối ưu vận hành</h3>
+          <p class="product__desc">Giải pháp mạng phân phối nội dung thế hệ mới — nhanh hơn, an toàn hơn, thông minh hơn. Mỗi giây trễ là một cơ hội bị bỏ lỡ.</p>
+          <img src="images/network.jpg" alt="Mạng phân phối nội dung" class="product__image">
+          <div class="product__features">
+            <div class="feature-tile">
+              <div class="feature-tile__title">Tăng tốc vượt trội</div>
+              <div class="feature-tile__desc">Hệ thống máy chủ PoP phân tán toàn cầu đưa nội dung đến gần người dùng nhất, giảm độ trễ tối đa.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Bảo mật 24/7</div>
+              <div class="feature-tile__desc">Tự động phát hiện và chặn đứng tấn công DDoS theo thời gian thực, bảo vệ website và dữ liệu doanh nghiệp.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Tối ưu chi phí</div>
+              <div class="feature-tile__desc">Giảm tới 90% băng thông máy chủ gốc, kết hợp phân tích dữ liệu kinh doanh thông minh.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Phân phối toàn cầu</div>
+              <div class="feature-tile__desc">Mạng lưới PoP đa vùng đảm bảo trải nghiệm nhanh cho người dùng ở bất kỳ đâu trên thế giới.</div>
+            </div>
+          </div>
+        </div>
+        <div class="product__highlights">
+          <div class="highlight-card">
+            <img src="images/globe-network.jpg" alt="Mạng lưới toàn cầu" class="highlight-card__img">
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">90%</div>
+            <div class="highlight-card__text">Giảm băng thông máy chủ gốc</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">&lt;3s</div>
+            <div class="highlight-card__text">90% khách hàng rời bỏ nếu tải quá 3 giây — CDN giải quyết điều đó</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">DDoS</div>
+            <div class="highlight-card__text">Tự động chặn tấn công từ chối dịch vụ theo thời gian thực</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tab 3: Live Stream ── -->
+    <div class="tab-panel" id="tab-live">
+      <div class="product" id="livestream">
+        <div class="product__info">
+          <span class="product__badge">Live Stream</span>
+          <h3 class="product__title">Phát sóng trực tiếp chuyên nghiệp</h3>
+          <p class="product__desc">Kết nối thương hiệu của bạn với hàng triệu khán giả trên toàn thế giới, không giới hạn. Từ sự kiện nhỏ nội bộ đến sự kiện tầm cỡ quốc tế.</p>
+          <img src="images/livestream.jpg" alt="Phát sóng trực tiếp" class="product__image">
+          <div class="product__features">
+            <div class="feature-tile">
+              <div class="feature-tile__title">CDN &amp; Độ trễ siêu thấp</div>
+              <div class="feature-tile__desc">Tối ưu hóa băng thông với hạ tầng CDN hàng đầu, giảm thiểu độ trễ tối đa cho mọi phiên live.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Đa giao thức</div>
+              <div class="feature-tile__desc">Hỗ trợ đầy đủ RTMP, HLS, WebRTC và MPEG-DASH — tương thích mọi nền tảng.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Adaptive Bitrate</div>
+              <div class="feature-tile__desc">Tự động điều chỉnh chất lượng video theo tốc độ mạng người xem, đảm bảo trải nghiệm mượt mà.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Mở rộng không giới hạn</div>
+              <div class="feature-tile__desc">Đáp ứng mọi quy mô — từ sự kiện nhỏ đến hàng triệu người xem đồng thời.</div>
+            </div>
+          </div>
+        </div>
+        <div class="product__highlights">
+          <div class="highlight-card">
+            <img src="images/broadcast.jpg" alt="Phát sóng" class="highlight-card__img">
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">4</div>
+            <div class="highlight-card__text">Giao thức hỗ trợ: RTMP, HLS, WebRTC, MPEG-DASH</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">ABR</div>
+            <div class="highlight-card__text">Adaptive Bitrate Streaming tự động điều chỉnh chất lượng</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">&infin;</div>
+            <div class="highlight-card__text">Mở rộng không giới hạn — từ nội bộ đến quốc tế</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tab 4: Video Transcoder ── -->
+    <div class="tab-panel" id="tab-transcode">
+      <div class="product" id="transcoder">
+        <div class="product__info">
+          <span class="product__badge">Video Transcoder</span>
+          <h3 class="product__title">Tối ưu hóa trải nghiệm video số</h3>
+          <p class="product__desc">Giải pháp chuyển mã video hiệu năng cao — tương thích mọi nền tảng, tiết kiệm băng thông, sẵn sàng cho kỷ nguyên nội dung số.</p>
+          <img src="images/video-production.jpg" alt="Chuyển mã video" class="product__image">
+          <div class="product__features">
+            <div class="feature-tile">
+              <div class="feature-tile__title">Đa định dạng</div>
+              <div class="feature-tile__desc">Hỗ trợ toàn bộ chuẩn video phổ biến: MP4, HLS, DASH, AVI, MKV và nhiều hơn nữa.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Hiệu năng cao</div>
+              <div class="feature-tile__desc">Xử lý song song, tốc độ chuyển mã vượt trội — phù hợp cho hệ thống tải lớn, thời gian thực.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Bảo mật nội dung</div>
+              <div class="feature-tile__desc">Hệ thống mã hóa đầu cuối kết hợp kiểm soát quyền truy cập chặt chẽ, bảo vệ tài sản nội dung số.</div>
+            </div>
+            <div class="feature-tile">
+              <div class="feature-tile__title">Tích hợp linh hoạt</div>
+              <div class="feature-tile__desc">Tích hợp sẵn sàng với CDN, hệ thống Live Stream và các nền tảng CMS phổ biến.</div>
+            </div>
+          </div>
+        </div>
+        <div class="product__highlights">
+          <div class="highlight-card">
+            <img src="images/video-editing.jpg" alt="Video editing" class="highlight-card__img">
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">60%</div>
+            <div class="highlight-card__text">Cắt giảm chi phí lưu trữ và băng thông</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">MP4+</div>
+            <div class="highlight-card__text">Hỗ trợ MP4, HLS, DASH, AVI, MKV và nhiều định dạng khác</div>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-card__number">E2E</div>
+            <div class="highlight-card__text">Mã hóa đầu cuối bảo vệ nội dung số toàn diện</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════ CHALLENGES ════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section__header">
+      <p class="eyebrow">Thách thức</p>
+      <h2 class="section__title">Thách thức của kỷ nguyên số</h2>
+      <p class="section__subtitle">Trong thế giới số, mỗi giây trễ là một cơ hội bị bỏ lỡ. Doanh nghiệp đối mặt với những rào cản nghiêm trọng.</p>
+    </div>
+    <img src="images/challenges.jpg" alt="Thách thức kỷ nguyên số" class="image-banner">
+    <div class="challenges">
+      <div class="challenge-card">
+        <h3 class="challenge-card__title">Website chậm</h3>
+        <p class="challenge-card__desc">90% khách hàng rời bỏ trang web nếu tải quá 3 giây — cơ hội chuyển đổi biến mất trong tích tắc.</p>
+      </div>
+      <div class="challenge-card">
+        <h3 class="challenge-card__title">Tấn công DDoS</h3>
+        <p class="challenge-card__desc">Các cuộc tấn công từ chối dịch vụ ngày càng tinh vi, đe dọa trực tiếp đến uy tín và hoạt động kinh doanh.</p>
+      </div>
+      <div class="challenge-card">
+        <h3 class="challenge-card__title">Tắc nghẽn lưu lượng</h3>
+        <p class="challenge-card__desc">Khi traffic tăng đột biến — mùa sale, sự kiện lớn — hạ tầng cục bộ dễ quá tải, gây gián đoạn dịch vụ.</p>
+      </div>
+      <div class="challenge-card">
+        <h3 class="challenge-card__title">Phân mảnh định dạng</h3>
+        <p class="challenge-card__desc">Sự đa dạng định dạng video (MP4, AVI, MKV) cùng yêu cầu băng thông cao khiến phân phối nội dung trở nên phức tạp.</p>
+      </div>
+      <div class="challenge-card">
+        <h3 class="challenge-card__title">Chi phí hạ tầng</h3>
+        <p class="challenge-card__desc">Đầu tư hạ tầng vật lý tốn kém, khó mở rộng linh hoạt theo nhu cầu kinh doanh thay đổi liên tục.</p>
+      </div>
+      <div class="challenge-card">
+        <h3 class="challenge-card__title">Tiếp cận toàn cầu</h3>
+        <p class="challenge-card__desc">Phát sóng trực tiếp đến hàng triệu người xem khắp thế giới đòi hỏi hạ tầng phân tán và độ trễ siêu thấp.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ WHY NETCORE ════════════ -->
+<section class="section section--alt">
+  <div class="container">
+    <div class="section__header">
+      <p class="eyebrow">Tại sao chọn Netcore</p>
+      <h2 class="section__title">Đối tác công nghệ tin cậy cho hành trình tăng trưởng</h2>
+      <p class="section__subtitle">Netcore không chỉ cung cấp hạ tầng — chúng tôi là đối tác đồng hành cùng sự phát triển bền vững của doanh nghiệp bạn.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <svg class="why-card__icon" viewBox="0 0 48 48" fill="none"><path d="M24 4L6 14v20l18 10 18-10V14L24 4z" stroke="#0f62fe" stroke-width="2"/><path d="M24 24v20M6 14l18 10 18-10" stroke="#0f62fe" stroke-width="2"/></svg>
+        <h3 class="why-card__title">Hiệu suất vượt trội</h3>
+        <p class="why-card__desc">Hạ tầng kết nối Gigabit tốc độ cao, ổ cứng SSD/NVMe thế hệ mới. Khả năng lưu trữ mở rộng lên đến 5 Petabyte. Cam kết SLA rõ ràng.</p>
+      </div>
+      <div class="why-card">
+        <svg class="why-card__icon" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="2" stroke="#0f62fe" stroke-width="2"/><path d="M6 18h36M18 18v24" stroke="#0f62fe" stroke-width="2"/></svg>
+        <h3 class="why-card__title">Quản lý hợp nhất</h3>
+        <p class="why-card__desc">Giao diện quản trị tập trung, trực quan. Từ cấu hình Firewall đến phân phối nội dung qua CDN đa vùng, tất cả tích hợp liền mạch.</p>
+      </div>
+      <div class="why-card">
+        <svg class="why-card__icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#0f62fe" stroke-width="2"/><path d="M24 14v10l7 7" stroke="#0f62fe" stroke-width="2" stroke-linecap="round"/></svg>
+        <h3 class="why-card__title">Sẵn sàng đồng hành</h3>
+        <p class="why-card__desc">Đội ngũ kỹ thuật chuyên môn cao, hỗ trợ 24/7 qua nhiều kênh liên lạc. Cam kết uptime cao, giảm thiểu rủi ro gián đoạn.</p>
+      </div>
+      <div class="why-card">
+        <svg class="why-card__icon" viewBox="0 0 48 48" fill="none"><path d="M8 40l8-16 8 10 8-20 8 12" stroke="#0f62fe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 8v32h32" stroke="#0f62fe" stroke-width="2"/></svg>
+        <h3 class="why-card__title">Tư vấn chiến lược</h3>
+        <p class="why-card__desc">Đội ngũ chuyên gia đồng hành từ bước đầu — từ thiết kế hạ tầng đến tối ưu vận hành, giúp bạn tập trung vào giá trị cốt lõi.</p>
+      </div>
+      <div class="why-card">
+        <svg class="why-card__icon" viewBox="0 0 48 48" fill="none"><path d="M14 34l-6 6M34 34l6 6M24 34v10" stroke="#0f62fe" stroke-width="2" stroke-linecap="round"/><rect x="6" y="8" width="36" height="26" rx="2" stroke="#0f62fe" stroke-width="2"/><path d="M16 20l4 4 8-8" stroke="#0f62fe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3 class="why-card__title">Triển khai thực tế</h3>
+        <p class="why-card__desc">Nhanh chóng, linh hoạt, đúng tiến độ. Triển khai Cloud VPS chỉ trong vài phút, sẵn sàng phục vụ ngay lập tức.</p>
+      </div>
+      <div class="why-card">
+        <svg class="why-card__icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#0f62fe" stroke-width="2"/><path d="M16 24h16M24 16v16" stroke="#0f62fe" stroke-width="2" stroke-linecap="round"/><path d="M15 15l18 18M33 15L15 33" stroke="#0f62fe" stroke-width="1" opacity="0.3"/></svg>
+        <h3 class="why-card__title">Tối ưu chi phí</h3>
+        <p class="why-card__desc">Nguồn lực hợp lý, hiệu quả vượt trội. Giảm tới 90% băng thông máy chủ gốc và 60% chi phí lưu trữ video.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ CTA BANNER ════════════ -->
+<section class="cta-banner" id="contact">
+  <div class="container">
+    <div class="cta-banner__inner">
+      <div>
+        <h2 class="cta-banner__title">Bắt đầu ngay hôm nay</h2>
+        <p class="cta-banner__desc">Đội ngũ chuyên gia Netcore sẵn sàng tư vấn giải pháp phù hợp với quy mô và nhu cầu của doanh nghiệp bạn.</p>
+      </div>
+      <div class="cta-banner__actions">
+        <div class="cta-banner__item">
+          <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+          <span>Tư vấn miễn phí — đánh giá hạ tầng hiện tại</span>
+        </div>
+        <div class="cta-banner__item">
+          <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+          <span>Demo thực tế — trải nghiệm sản phẩm trực tiếp</span>
+        </div>
+        <div class="cta-banner__item">
+          <svg viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+          <span>Triển khai thử nghiệm — đo lường hiệu quả rõ ràng</span>
+        </div>
+        <a href="#" class="btn btn--on-dark">
+          Liên hệ Netcore
+          <svg viewBox="0 0 16 16"><path d="M8 1l7 7-7 7M1 8h14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div>
+      <div class="footer__brand"><img src="images/logo.png" alt="Netcore"></div>
+      <p class="footer__tagline">Hạ tầng số tin cậy cho doanh nghiệp Việt Nam phát triển bền vững trong kỷ nguyên số.<br><br>Truyền tải thông điệp, kết nối tương lai.</p>
+    </div>
+    <div>
+      <div class="footer__col-title">Giải pháp</div>
+      <ul class="footer__links">
+        <li><a href="#infrastructure">Server Colocation</a></li>
+        <li><a href="#infrastructure">Dedicated Server</a></li>
+        <li><a href="#infrastructure">Cloud VPS</a></li>
+        <li><a href="#cdn">CDN</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Dịch vụ</div>
+      <ul class="footer__links">
+        <li><a href="#livestream">Live Stream</a></li>
+        <li><a href="#transcoder">Video Transcoder</a></li>
+        <li><a href="#">Tư vấn hạ tầng</a></li>
+        <li><a href="#">Hỗ trợ kỹ thuật</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Liên hệ</div>
+      <ul class="footer__links">
+        <li><a href="#">netcore.com.vn</a></li>
+        <li><a href="#">Hỗ trợ 24/7</a></li>
+        <li><a href="#">Tư vấn miễn phí</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    &copy; 2024 Netcore. All rights reserved.
+  </div>
+</footer>
+
+<script>
+function switchTab(e, panelId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+</script>
+
+</body>
+</html>
