@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genysic — Proposal cho EVN</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8c8c8c;
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --inverse-canvas: #161616;
+      --inverse-ink: #ffffff;
+      --inverse-ink-muted: #c6c6c6;
+      --hairline: #e0e0e0;
+      --blue-hover: #0050e6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .logo-text {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .header-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--inverse-canvas);
+      color: var(--on-primary);
+      padding: 80px 0;
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      color: var(--inverse-ink-muted);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 60px;
+      font-weight: 300;
+      line-height: 1.17;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--inverse-ink-muted);
+      max-width: 700px;
+    }
+    .hero-meta {
+      margin-top: 48px;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item { font-size: 14px; color: var(--inverse-ink-muted); }
+    .hero-meta-item strong { color: var(--inverse-ink); font-weight: 400; }
+
+    /* Section */
+    .section { padding: 80px 0; }
+    .section-alt { background: var(--surface-1); }
+    .section-eyebrow {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 18px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      max-width: 800px;
+      margin-bottom: 48px;
+    }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; }
+
+    /* Cards */
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+    }
+    .card-number {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .card h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .card-primary-top {
+      border-top: 2px solid var(--primary);
+    }
+
+    /* Capability card */
+    .cap-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+    }
+    .cap-card .icon-wrap {
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .cap-card .icon-wrap svg { fill: var(--on-primary); }
+    .cap-card h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .cap-card .tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 2px 8px;
+      margin-bottom: 12px;
+    }
+    .cap-card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .cap-card ul {
+      margin-top: 16px;
+      list-style: none;
+    }
+    .cap-card ul li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .cap-card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    /* Mapping table */
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .mapping-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--surface-1);
+    }
+    .mapping-table td {
+      font-size: 14px;
+      padding: 16px;
+      border-bottom: 1px solid var(--hairline);
+      vertical-align: top;
+    }
+    .mapping-table tr:hover { background: var(--surface-1); }
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 10px;
+      letter-spacing: 0.32px;
+    }
+    .badge-green { background: #defbe6; color: #0e6027; }
+    .badge-blue { background: #d0e2ff; color: #002d9c; }
+    .badge-yellow { background: #fdf0cd; color: #8e6a00; }
+
+    /* Stats */
+    .stat-bar {
+      display: flex;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 32px 16px;
+      border-right: 1px solid var(--hairline);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-top: 8px;
+    }
+
+    /* Phase timeline */
+    .phase { border-left: 2px solid var(--primary); padding-left: 32px; margin-bottom: 48px; position: relative; }
+    .phase::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 0;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+    }
+    .phase-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .phase h3 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .phase p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .phase ul { list-style: none; margin-top: 12px; }
+    .phase ul li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .phase ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    /* CTA */
+    .cta-banner {
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 64px 0;
+    }
+    .cta-banner h2 {
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .cta-banner p {
+      font-size: 18px;
+      opacity: 0.85;
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+    .cta-banner .btn {
+      display: inline-block;
+      background: var(--canvas);
+      color: var(--primary);
+      font-size: 14px;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-family: inherit;
+      letter-spacing: 0.16px;
+      border: none;
+      cursor: pointer;
+    }
+    .cta-banner .btn:hover { background: var(--surface-1); }
+
+    /* Footer */
+    .footer {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink-muted);
+      padding: 48px 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer p { font-size: 12px; }
+
+    /* Arch diagram */
+    .arch-box {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arch-box-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border: 1px solid var(--primary);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .arch-box-dark {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink);
+      border: 1px solid var(--inverse-canvas);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arch-connector {
+      text-align: center;
+      padding: 8px 0;
+      color: var(--ink-subtle);
+      font-size: 20px;
+    }
+    .arch-row {
+      display: grid;
+      gap: 4px;
+    }
+    .arch-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .arch-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .arch-row-2 { grid-template-columns: repeat(2, 1fr); }
+
+    /* Diff section */
+    .diff-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .diff-col { padding: 32px; }
+    .diff-col h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .diff-col ul { list-style: none; }
+    .diff-col ul li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .section-title { font-size: 28px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .grid-6 { grid-template-columns: repeat(3, 1fr); }
+      .stat-bar { flex-wrap: wrap; }
+      .stat-item { flex: 1 1 50%; border-bottom: 1px solid var(--hairline); }
+      .hero-meta { flex-direction: column; gap: 12px; }
+      .diff-section { grid-template-columns: 1fr; }
+      .container { padding: 0 16px; }
+      .hero { padding: 48px 0; }
+      .section { padding: 48px 0; }
+    }
+
+    @media print {
+      .header { position: relative; }
+      .hero { padding: 40px 0; }
+      .section { padding: 40px 0; break-inside: avoid; }
+      body { font-size: 11px; }
+      .hero h1 { font-size: 36px; }
+      .section-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <img src="images/logo-genysic.webp" alt="Genysic" style="height: 40px; width: auto;">
+      <span class="header-label">Proposal &mdash; Confidential</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow">Proposal</p>
+      <h1>Giải pháp Hạ tầng HPC,<br>AI & Data cho EVN</h1>
+      <p class="hero-sub">
+        Genysic trân trọng giới thiệu năng lực và giải pháp đáp ứng nhu cầu của Tập đoàn Điện lực Việt Nam trong các lĩnh vực: Digital Twin, Trí tuệ nhân tạo, Data Lakehouse, Hạ tầng HPC và Dịch vụ Colocation.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><strong>Khách hàng:</strong>&nbsp; Tập đoàn Điện lực Việt Nam (EVN)</div>
+        <div class="hero-meta-item"><strong>Ngày:</strong>&nbsp; 19/06/2026</div>
+        <div class="hero-meta-item"><strong>Phiên bản:</strong>&nbsp; 1.0</div>
+        <div class="hero-meta-item"><strong>Bảo mật:</strong>&nbsp; Confidential</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Understanding -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Hiểu yêu cầu</p>
+      <h2 class="section-title">5 hạng mục EVN quan tâm</h2>
+      <p class="section-desc">
+        Dựa trên trao đổi ban đầu, Genysic hiểu rằng EVN đang tìm kiếm đối tác có khả năng cung cấp giải pháp toàn diện trên cả 3 trục: Phần mềm, Hạ tầng và Tham khảo thực tế.
+      </p>
+
+      <div class="grid-3">
+        <div class="card card-primary-top">
+          <span class="card-number">01</span>
+          <h3>Digital Twin</h3>
+          <p>Phần mềm mô phỏng số (Digital Twin) cho hệ thống điện &mdash; giám sát real-time, dự báo sự cố và tối ưu vận hành.</p>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">02</span>
+          <h3>Trí tuệ nhân tạo (AI)</h3>
+          <p>Ứng dụng AI vào dự báo phụ tải, phát hiện bất thường, bảo trì dự đoán và tối ưu phân phối điện.</p>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">03</span>
+          <h3>Data Lakehouse</h3>
+          <p>Nền tảng dữ liệu hợp nhất &mdash; tập trung dữ liệu từ SCADA, IoT, hệ thống vận hành phục vụ phân tích và AI.</p>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">04</span>
+          <h3>Công nghệ HPC</h3>
+          <p>High-Performance Computing / xử lý song song &mdash; sức mạnh tính toán để chạy Digital Twin và AI quy mô lớn.</p>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">05</span>
+          <h3>Thuê phần cứng HPC & Colocation</h3>
+          <p>Thuê hạ tầng HPC và vị trí đặt thiết bị tại Data Center &mdash; giảm CAPEX, chuyển sang mô hình OPEX.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mapping -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Đánh giá năng lực</p>
+      <h2 class="section-title">Mapping yêu cầu &mdash; năng lực Genysic</h2>
+      <p class="section-desc">
+        Bảng dưới đây thể hiện mức độ đáp ứng của Genysic cho từng hạng mục EVN yêu cầu, cùng hướng tiếp cận cụ thể.
+      </p>
+
+      <table class="mapping-table">
+        <thead>
+          <tr>
+            <th style="width: 5%">#</th>
+            <th style="width: 20%">Yêu cầu EVN</th>
+            <th style="width: 12%">Mức đáp ứng</th>
+            <th style="width: 63%">Năng lực & hướng tiếp cận Genysic</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01</td>
+            <td><strong>Digital Twin</strong></td>
+            <td><span class="badge badge-blue">Phát triển</span></td>
+            <td>
+              Genysic có năng lực phát triển phần mềm mô phỏng tùy chỉnh (custom simulation platform) dựa trên kinh nghiệm xây dựng hệ thống ERP/data phức tạp. Đội ngũ sẵn sàng phối hợp cùng chuyên gia ngành điện của EVN để xây dựng Digital Twin cho lưới điện, nhà máy hoặc trạm biến áp.
+              <br><br>Hướng tiếp cận: Xây dựng lớp visualization + data integration trên nền tảng dữ liệu realtime, kết hợp engine mô phỏng chuyên ngành (có thể tích hợp open-source framework hoặc partner chuyên biệt).
+            </td>
+          </tr>
+          <tr>
+            <td>02</td>
+            <td><strong>AI / Machine Learning</strong></td>
+            <td><span class="badge badge-green">Sẵn sàng</span></td>
+            <td>
+              Genysic hiện cung cấp hạ tầng GPU NVIDIA H200 (141 GB) cho thuê &mdash; sẵn sàng cho các workload AI/ML từ training đến inference. Đội ngũ có kinh nghiệm triển khai mô hình AI cho phân tích dữ liệu doanh nghiệp, predictive analytics và NLP.
+              <br><br>Hướng tiếp cận: Cung cấp hạ tầng GPU + hỗ trợ MLOps pipeline. Phối hợp với team AI của EVN hoặc phát triển mô hình dự báo phụ tải, phát hiện bất thường trên dữ liệu vận hành.
+            </td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td><strong>Data Lakehouse</strong></td>
+            <td><span class="badge badge-green">Sẵn sàng</span></td>
+            <td>
+              Genysic đã triển khai nền tảng CDP (Customer Data Platform) cho nhiều doanh nghiệp &mdash; kiến trúc data pipeline, ETL/ELT, data warehouse, realtime analytics. Kiến trúc tương đồng với Data Lakehouse, có thể mở rộng cho quy mô EVN.
+              <br><br>Hướng tiếp cận: Xây dựng Data Lakehouse trên kiến trúc modern data stack &mdash; ingestion layer (SCADA, IoT, OT data), storage layer (object storage + columnar format), compute layer (query engine), serving layer (BI dashboard + API).
+            </td>
+          </tr>
+          <tr>
+            <td>04</td>
+            <td><strong>Công nghệ HPC</strong></td>
+            <td><span class="badge badge-green">Sẵn sàng</span></td>
+            <td>
+              Genysic vận hành hạ tầng server hiệu năng cao bao gồm GPU cluster (NVIDIA H200 với NVLink/NVSwitch interconnect) và cloud server doanh nghiệp. Data center đạt chuẩn Tier III.
+              <br><br>Hướng tiếp cận: Cung cấp tư vấn kiến trúc HPC phù hợp workload ngành điện, bao gồm: thiết kế cluster, parallel computing framework, job scheduling, và monitoring.
+            </td>
+          </tr>
+          <tr>
+            <td>05</td>
+            <td><strong>Thuê HPC & Colocation</strong></td>
+            <td><span class="badge badge-green">Sẵn sàng</span></td>
+            <td>
+              Genysic cung cấp dịch vụ cho thuê server (thuê theo giờ/tháng) và colocation tại DC. Cam kết SLA uptime 99.9%, bảo mật đa lớp, kết nối mạng tốc độ cao.
+              <br><br>Hướng tiếp cận: EVN có thể thuê GPU/CPU cluster của Genysic hoặc đặt thiết bị riêng (colocation) tại DC. Hỗ trợ migration, setup và quản trị hạ tầng 24/7.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+
+  <!-- Architecture -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Kiến trúc đề xuất</p>
+      <h2 class="section-title">Tổng quan kiến trúc giải pháp</h2>
+      <p class="section-desc">
+        Sơ đồ kiến trúc tổng thể cho hệ sinh thái Digital Twin + AI + Data Lakehouse trên nền hạ tầng HPC.
+      </p>
+
+      <!-- Architecture Diagram -->
+      <div style="max-width: 900px; margin: 0 auto;">
+        <!-- Layer 1: Data Sources -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Data Sources</div>
+          <div class="arch-row arch-row-4">
+            <div class="arch-box">SCADA / DCS</div>
+            <div class="arch-box">IoT Sensors</div>
+            <div class="arch-box">Hệ thống OT</div>
+            <div class="arch-box">ERP / Business Data</div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 2: Ingestion -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Data Ingestion & Processing</div>
+          <div class="arch-row arch-row-3">
+            <div class="arch-box-primary">Stream Processing (Realtime)</div>
+            <div class="arch-box-primary">Batch ETL/ELT</div>
+            <div class="arch-box-primary">Data Quality & Governance</div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 3: Data Lakehouse -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Data Lakehouse</div>
+          <div class="arch-row arch-row-3">
+            <div class="arch-box-dark">Object Storage (Raw)</div>
+            <div class="arch-box-dark">Columnar Store (Curated)</div>
+            <div class="arch-box-dark">Feature Store (ML-ready)</div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 4: Compute -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">AI & Compute (HPC Cluster)</div>
+          <div class="arch-row arch-row-3">
+            <div class="arch-box">AI/ML Training<br><span style="font-size: 11px; color: var(--ink-subtle);">GPU H200 Cluster</span></div>
+            <div class="arch-box">Simulation Engine<br><span style="font-size: 11px; color: var(--ink-subtle);">Parallel Processing</span></div>
+            <div class="arch-box">Query Engine<br><span style="font-size: 11px; color: var(--ink-subtle);">Analytics</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 5: Application -->
+        <div>
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Application Layer</div>
+          <div class="arch-row arch-row-3">
+            <div class="arch-box-primary">Digital Twin<br><span style="font-size: 11px; opacity: 0.8;">Visualization + Simulation</span></div>
+            <div class="arch-box-primary">AI Dashboard<br><span style="font-size: 11px; opacity: 0.8;">Predictive + Anomaly Detection</span></div>
+            <div class="arch-box-primary">BI & Reporting<br><span style="font-size: 11px; opacity: 0.8;">Realtime Analytics</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities detail -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Chi tiết giải pháp</p>
+      <h2 class="section-title">Năng lực Genysic theo từng lĩnh vực</h2>
+      <p class="section-desc">
+        Chi tiết cách Genysic đáp ứng từng yêu cầu của EVN dựa trên năng lực hiện có và kế hoạch mở rộng.
+      </p>
+
+      <div class="grid-2">
+        <!-- AI & GPU -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M26 2H6a2 2 0 00-2 2v24a2 2 0 002 2h20a2 2 0 002-2V4a2 2 0 00-2-2zm0 26H6V4h20v24zM10 8h12v2H10zm0 4h12v2H10zm0 4h8v2h-8z"/></svg>
+          </div>
+          <span class="tag">Sẵn sàng triển khai</span>
+          <h3>AI & GPU Infrastructure</h3>
+          <p>Hạ tầng GPU NVIDIA H200 hiệu năng cao, sẵn sàng cho mọi workload AI/ML của ngành điện.</p>
+          <ul>
+            <li>GPU NVIDIA H200 &mdash; 141 GB, NVLink/NVSwitch</li>
+            <li>Cho thuê theo giờ hoặc tháng &mdash; linh hoạt chi phí</li>
+            <li>Hỗ trợ LLM training, fine-tuning, inference</li>
+            <li>MLOps pipeline: experiment tracking, model registry, serving</li>
+            <li>Kinh nghiệm triển khai predictive analytics cho doanh nghiệp</li>
+          </ul>
+        </div>
+
+        <!-- Data Lakehouse -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M28 4H4a2 2 0 00-2 2v20a2 2 0 002 2h24a2 2 0 002-2V6a2 2 0 00-2-2zm0 22H4V6h24v20zM6 12h8v2H6zm0 4h20v2H6zm0 4h20v2H6z"/></svg>
+          </div>
+          <span class="tag">Sẵn sàng triển khai</span>
+          <h3>Data Lakehouse / Data Platform</h3>
+          <p>Nền tảng dữ liệu hợp nhất, xây dựng trên kinh nghiệm CDP và data pipeline cho doanh nghiệp lớn.</p>
+          <ul>
+            <li>Kiến trúc modern data stack &mdash; ingestion, storage, compute, serving</li>
+            <li>Hỗ trợ cả streaming (realtime) và batch processing</li>
+            <li>Data quality, governance và lineage tracking</li>
+            <li>Tích hợp dữ liệu từ SCADA, IoT, OT, ERP</li>
+            <li>BI dashboard realtime & self-service analytics</li>
+          </ul>
+        </div>
+
+        <!-- HPC -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M28 10h-6V4a2 2 0 00-2-2H12a2 2 0 00-2 2v6H4a2 2 0 00-2 2v16a2 2 0 002 2h24a2 2 0 002-2V12a2 2 0 00-2-2zM12 4h8v6h-8V4zm16 24H4V12h24v16zM8 18h16v2H8zm0 4h10v2H8z"/></svg>
+          </div>
+          <span class="tag">Sẵn sàng triển khai</span>
+          <h3>HPC & Colocation</h3>
+          <p>Hạ tầng tính toán hiệu năng cao và dịch vụ colocation tại Data Center chuẩn Tier III.</p>
+          <ul>
+            <li>GPU cluster với NVLink/NVSwitch interconnect</li>
+            <li>Data Center chuẩn Tier III &mdash; SLA uptime 99.9%</li>
+            <li>Colocation: thuê vị trí rack, cung cấp điện + cooling + network</li>
+            <li>Kết nối mạng tốc độ cao, low latency</li>
+            <li>Quản trị hạ tầng 24/7, hỗ trợ migration miễn phí</li>
+          </ul>
+        </div>
+
+        <!-- Digital Twin -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M16 2a14 14 0 1014 14A14 14 0 0016 2zm0 26a12 12 0 1112-12 12 12 0 01-12 12zm-1-19h2v8h-2zm0 10h2v2h-2z"/></svg>
+          </div>
+          <span class="tag">Phát triển theo yêu cầu</span>
+          <h3>Digital Twin Platform</h3>
+          <p>Phát triển nền tảng mô phỏng số tùy chỉnh cho hệ thống điện, phối hợp cùng chuyên gia ngành của EVN.</p>
+          <ul>
+            <li>Xây dựng visualization layer: 3D/2D model lưới điện, trạm biến áp</li>
+            <li>Tích hợp dữ liệu realtime từ SCADA/IoT vào mô hình</li>
+            <li>Simulation engine cho scenario planning</li>
+            <li>Có thể tích hợp open-source framework hoặc partner chuyên ngành</li>
+            <li>Kiến trúc microservices, dễ mở rộng và bảo trì</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach / Phases -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Kế hoạch tiếp cận</p>
+      <h2 class="section-title">Lộ trình đề xuất</h2>
+      <p class="section-desc">
+        Genysic đề xuất lộ trình 4 giai đoạn, ưu tiên quick-win trước rồi mở rộng dần.
+      </p>
+
+      <div class="grid-2">
+        <div>
+          <div class="phase">
+            <div class="phase-label">Phase 1 &mdash; Khảo sát & PoC</div>
+            <h3>Đánh giá hiện trạng</h3>
+            <p>Khảo sát hạ tầng và nhu cầu thực tế tại EVN. Xây dựng Proof of Concept cho 1-2 use case ưu tiên.</p>
+            <ul>
+              <li>Workshop với team kỹ thuật EVN</li>
+              <li>Khảo sát nguồn dữ liệu hiện có (SCADA, IoT, hệ thống vận hành)</li>
+              <li>PoC: Data pipeline + AI model cho dự báo phụ tải hoặc phát hiện bất thường</li>
+              <li>Tham quan Data Center Genysic</li>
+            </ul>
+          </div>
+
+          <div class="phase">
+            <div class="phase-label">Phase 2 &mdash; Nền tảng dữ liệu</div>
+            <h3>Data Lakehouse + HPC Setup</h3>
+            <p>Xây dựng nền tảng dữ liệu và chuẩn bị hạ tầng tính toán. Đây là foundation cho Digital Twin và AI.</p>
+            <ul>
+              <li>Thiết kế và triển khai Data Lakehouse</li>
+              <li>Setup HPC cluster hoặc colocation cho EVN</li>
+              <li>Data ingestion pipeline từ các nguồn OT/IT</li>
+              <li>BI dashboard cho monitoring ban đầu</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="phase">
+            <div class="phase-label">Phase 3 &mdash; AI & Analytics</div>
+            <h3>Triển khai mô hình AI</h3>
+            <p>Huấn luyện và triển khai các mô hình AI trên dữ liệu thực, phục vụ vận hành.</p>
+            <ul>
+              <li>Dự báo phụ tải (load forecasting)</li>
+              <li>Phát hiện bất thường (anomaly detection)</li>
+              <li>Bảo trì dự đoán (predictive maintenance)</li>
+              <li>Tối ưu phân phối điện</li>
+            </ul>
+          </div>
+
+          <div class="phase">
+            <div class="phase-label">Phase 4 &mdash; Digital Twin</div>
+            <h3>Mô phỏng số toàn diện</h3>
+            <p>Xây dựng Digital Twin cho hệ thống điện, tích hợp AI và dữ liệu realtime.</p>
+            <ul>
+              <li>Digital Twin cho lưới điện hoặc nhà máy pilot</li>
+              <li>Simulation & scenario planning</li>
+              <li>Tích hợp AI models vào visualization</li>
+              <li>Mở rộng ra toàn hệ thống</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Genysic -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Vì sao chọn Genysic</p>
+      <h2 class="section-title">Lợi thế cạnh tranh</h2>
+
+      <div class="grid-3">
+        <div class="card card-primary-top">
+          <h3>Hạ tầng sẵn sàng</h3>
+          <p>Không cần chờ đợi. GPU H200, Cloud Server và Data Center đã vận hành &mdash; EVN có thể bắt đầu PoC ngay.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Giải pháp đầu-cuối</h3>
+          <p>Từ hạ tầng (HPC, colocation) đến phần mềm (Data Lakehouse, AI, Digital Twin) &mdash; một đối tác, một trách nhiệm.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Linh hoạt chi phí</h3>
+          <p>Mô hình thuê (OPEX) giúp EVN triển khai nhanh mà không cần đầu tư CAPEX lớn ban đầu.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Đội ngũ chuyên gia</h3>
+          <p>50+ kỹ sư giàu kinh nghiệm, am hiểu nhu cầu doanh nghiệp lớn, sẵn sàng hỗ trợ 24/7.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Kinh nghiệm Data Platform</h3>
+          <p>Triển khai CDP/CRM và hệ thống data cho 150+ doanh nghiệp &mdash; nền tảng vững chắc cho Data Lakehouse quy mô EVN.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Cam kết đồng hành</h3>
+          <p>Không chỉ bán sản phẩm &mdash; Genysic đồng hành dài hạn, tư vấn chiến lược và nâng cấp liên tục.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Genysic. Tài liệu mật &mdash; không phân phối ngoài phạm vi được uỷ quyền.</p>
+      <p>genysic.ai</p>
+    </div>
+  </footer>
+
+</body>
+</html>
