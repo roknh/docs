@@ -95,7 +95,7 @@
   }
 
   /* Team grid */
-  .team-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 24px 0; }
+  .team-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin: 24px 0; }
   .team-card {
     background: var(--canvas); border: 1px solid var(--hairline);
     border-radius: 12px; padding: 20px 16px; text-align: center;
@@ -359,7 +359,7 @@
 <section class="hero">
   <div class="hero-eyebrow">Release Plan</div>
   <h1>CDP Development Roadmap</h1>
-  <p class="hero-sub">Kế hoạch phát triển 9 tháng — 5 developers — 43 features across 5 phases</p>
+  <p class="hero-sub">Kế hoạch phát triển 9 tháng — 6 developers — 43 features across 5 phases</p>
   <div class="hero-stats">
     <div class="hero-stat">
       <span class="hero-stat-value">9</span>
@@ -367,7 +367,7 @@
     </div>
     <div class="hero-sep"></div>
     <div class="hero-stat">
-      <span class="hero-stat-value">5</span>
+      <span class="hero-stat-value">6</span>
       <span class="hero-stat-label">Developers</span>
     </div>
     <div class="hero-sep"></div>
@@ -413,8 +413,13 @@
       </div>
       <div class="team-card">
         <span class="team-icon">🎨</span>
-        <div class="team-role">Frontend Dev</div>
-        <div class="team-code">FE — UI toàn bộ: dashboard, Customer 360, segment builder</div>
+        <div class="team-role">Frontend Dev 1</div>
+        <div class="team-code">FE1 — Dashboard, Customer 360, segment builder, analytics</div>
+      </div>
+      <div class="team-card">
+        <span class="team-icon">🖌️</span>
+        <div class="team-role">Frontend Dev 2</div>
+        <div class="team-code">FE2 — Campaign, lead pipeline, workflow builder, template editor</div>
       </div>
       <div class="team-card">
         <span class="team-icon">🔧</span>
@@ -455,14 +460,14 @@
           <td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 1–2</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 1</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">10</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Infra, pipeline, auth, identity, Customer 360</td></tr>
         <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 3</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 1</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">6</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Scoring engine, segmentation, RFM</td></tr>
         <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 4</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 2</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">7</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Campaign, lead pipeline, template, channel</td></tr>
-        <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 5</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 2</span> <span class="ftag">Phase 3</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">7</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Analytics, AI, industry features, scoring nâng cao</td></tr>
-        <tr><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);">↳ Go-live 1</td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"></td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"><strong>30</strong></td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"><strong style="color: var(--green);">🟢 Go-live KH cũ — soft-launch 1 BU</strong></td></tr>
+        <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 5</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 2</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">5</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Analytics, industry features, scoring nâng cao</td></tr>
+        <tr><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);">↳ Go-live 1</td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"></td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"><strong>28</strong></td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"><strong style="color: var(--green);">🟢 Go-live KH cũ — soft-launch 1 BU</strong></td></tr>
 
         <tr style="background: rgba(230,81,0,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);" rowspan="4"><strong style="color: #e65100;">Khách hàng mới</strong><br><span style="font-size: 12px; color: var(--ink-48);">Ads, Social, Tracking</span></td>
           <td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 6</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(230,81,0,0.08); color: #e65100;">Phase 4</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">5</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Ads connectors, social, call center</td></tr>
-        <tr style="background: rgba(230,81,0,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 7</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(230,81,0,0.08); color: #e65100;">Phase 4</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">4</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tracking SDK, lead capture, attribution</td></tr>
+        <tr style="background: rgba(230,81,0,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 7</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(26,35,126,0.08); color: #1a237e;">Phase 3</span> <span class="ftag" style="background: rgba(230,81,0,0.08); color: #e65100;">Phase 4</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">6</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">AI segmentation, predictive scores, tracking SDK, lead capture, attribution</td></tr>
         <tr style="background: rgba(230,81,0,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 8</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(191,54,12,0.08); color: #bf360c;">Phase 5</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">4</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">DMS, omni-channel, event automation, attribution</td></tr>
-        <tr><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;">↳ Go-live 2</td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"></td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"><strong>13</strong></td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"><strong style="color: var(--green);">🟢 Go-live KH mới</strong></td></tr>
+        <tr><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;">↳ Go-live 2</td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"></td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"><strong>15</strong></td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"><strong style="color: var(--green);">🟢 Go-live KH mới + AI</strong></td></tr>
 
         <tr><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><strong style="color: #616161;">Buffer</strong></td>
           <td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 9</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(97,97,97,0.08); color: #616161;">Buffer</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">—</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Stabilization, performance, training, rollout 3 BU</td></tr>
@@ -479,7 +484,7 @@
   <div class="container">
     <div class="section-label section-label-dark">Giai đoạn 1 · Tháng 1–5</div>
     <h2 class="section-title">Khách hàng cũ — POS &amp; CRM</h2>
-    <p style="color: rgba(255,255,255,0.6); margin-bottom: 32px;">30 features · Phase 1 + 2 + 3 · Mục tiêu: hệ thống core hoạt động, hiểu khách cũ, scoring, segmentation, campaign, analytics.</p>
+    <p style="color: rgba(255,255,255,0.6); margin-bottom: 32px;">28 features · Phase 1 + 2 · Mục tiêu: hệ thống core hoạt động, hiểu khách cũ, scoring, segmentation, campaign, analytics.</p>
 
     <!-- Month 1-2 -->
     <div class="month-card">
@@ -511,14 +516,19 @@
               <td><span class="ftag">F1.2</span> Pipeline scheduling, dead letter queue, monitoring</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
+              <td class="dev-name">FE1</td>
               <td>Design system, layout shell, nav → <span class="ftag">F8.1</span> Login SSO, user/role management UI</td>
               <td><span class="ftag">F2.2</span> Customer 360 UI — profile header, BU tabs, timeline, search</td>
             </tr>
             <tr>
+              <td class="dev-name">FE2</td>
+              <td>Component library, shared UI kit, form components</td>
+              <td><span class="ftag">F2.1</span> Merge/unmerge UI, review queue → <span class="ftag">F7.1</span> Consent UI</td>
+            </tr>
+            <tr>
               <td class="dev-name">FD</td>
               <td>CI/CD, staging env, Docker, monitoring → <span class="ftag">F7.1</span> Consent management</td>
-              <td><span class="ftag">F2.1</span> Merge/unmerge UI, review queue → <span class="ftag">F7.1</span> Consent UI</td>
+              <td><span class="ftag">F7.1</span> Consent backend integration + testing</td>
             </tr>
           </tbody>
         </table>
@@ -565,8 +575,12 @@
               <td><span class="ftag">F10.2</span> Monetary Score → <span class="ftag">F10.3</span> Engagement Score → <span class="ftag">F10.6</span> Health Score — batch calculation + scheduler</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
-              <td><span class="ftag">F3.1</span> Segment Builder UI (drag-drop conditions, AND/OR, preview count) → <span class="ftag">F10.8</span> Score Config UI</td>
+              <td class="dev-name">FE1</td>
+              <td><span class="ftag">F3.1</span> Segment Builder UI (drag-drop conditions, AND/OR, preview count)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE2</td>
+              <td><span class="ftag">F10.8</span> Score Config UI → <span class="ftag">F3.3</span> RFM dashboard UI</td>
             </tr>
             <tr>
               <td class="dev-name">FD</td>
@@ -599,7 +613,7 @@
         <span class="feature-count" style="margin-left: 12px;"><strong>7</strong> features</span>
       </div>
       <div class="month-body">
-        <div class="month-goal">Campaign management end-to-end, template system, channel integration (Zalo/SMS/Email), lead pipeline kanban + scoring.</div>
+        <div class="month-goal">Campaign management end-to-end, template system, channel integration (Zalo/SMS), lead pipeline kanban + scoring.</div>
 
         <table class="dev-table">
           <thead><tr><th>Dev</th><th>Công việc chính</th></tr></thead>
@@ -617,12 +631,16 @@
               <td><span class="ftag">F5.3</span> Campaign Analytics — delivery, open, click, conversion metrics, A/B test results</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
-              <td><span class="ftag">F4.1</span> Campaign create UI → <span class="ftag">F6.3</span> Lead Pipeline kanban → <span class="ftag">F4.4</span> Template editor UI</td>
+              <td class="dev-name">FE1</td>
+              <td><span class="ftag">F4.1</span> Campaign create UI → <span class="ftag">F5.3</span> Campaign Analytics UI</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE2</td>
+              <td><span class="ftag">F6.3</span> Lead Pipeline kanban → <span class="ftag">F4.4</span> Template editor UI</td>
             </tr>
             <tr>
               <td class="dev-name">FD</td>
-              <td><span class="ftag">F4.3</span> Channel Integration — Zalo OA send, SMS gateway, Email (SendGrid/SES), delivery webhook tracking</td>
+              <td><span class="ftag">F4.3</span> Channel Integration — Zalo OA send, SMS gateway, delivery webhook tracking</td>
             </tr>
           </tbody>
         </table>
@@ -632,7 +650,7 @@
           <ul>
             <li>Tạo campaign → chọn segment → chọn template/nội dung → chọn kênh → schedule → approve → gửi</li>
             <li>Template: short-code, preview với data khách, version, analytics</li>
-            <li>Gửi qua Zalo OA, SMS, Email — tracking delivery/open/click</li>
+            <li>Gửi qua Zalo OA, SMS — tracking delivery/open/click</li>
             <li>Lead pipeline kanban + lead scoring + conversion tracking</li>
           </ul>
         </div>
@@ -648,11 +666,10 @@
         <span class="month-num">Tháng 5</span>
         <span class="month-title">Analytics, AI &amp; Industry</span>
         <span class="month-badge badge-p2">Phase 2</span>
-        <span class="month-badge badge-p3" style="margin-left: 4px;">Phase 3</span>
-        <span class="feature-count" style="margin-left: 12px;"><strong>7</strong> features</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>5</strong> features</span>
       </div>
       <div class="month-body">
-        <div class="month-goal">Dashboard builder, analytics chuyên sâu, AI segmentation, predictive scores, marketing automation, features ngành (liệu trình, đại lý). UAT + go-live KH cũ.</div>
+        <div class="month-goal">Dashboard builder, analytics chuyên sâu, marketing automation, features ngành (liệu trình, đại lý). UAT + go-live KH cũ.</div>
 
         <table class="dev-table">
           <thead><tr><th>Dev</th><th>Tuần 1–2</th><th>Tuần 3–4</th></tr></thead>
@@ -670,12 +687,17 @@
             <tr>
               <td class="dev-name">DE</td>
               <td><span class="ftag">F5.1</span> Dashboard engine (preset + custom, ClickHouse queries, drill-down)</td>
-              <td><span class="ftag">F3.2</span> AI clustering + <span class="ftag">F10.7</span> Predictive Scores (churn, upsell, cross-BU)</td>
+              <td>Dashboard optimization, data validation, score recalculation tuning</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
+              <td class="dev-name">FE1</td>
               <td><span class="ftag">F5.1</span> Dashboard UI + <span class="ftag">F3.3</span> RFM dashboard UI</td>
-              <td><span class="ftag">F5.2</span> Customer Analytics UI + <span class="ftag">F4.2</span> Workflow Builder UI</td>
+              <td><span class="ftag">F5.2</span> Customer Analytics UI</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE2</td>
+              <td><span class="ftag">F4.2</span> Workflow Builder UI (visual drag-drop)</td>
+              <td><span class="ftag">F9.1</span> Liệu trình UI + <span class="ftag">F9.2</span> Đại lý UI</td>
             </tr>
             <tr>
               <td class="dev-name">FD</td>
@@ -689,14 +711,13 @@
           <div class="deliverable-title">Deliverables</div>
           <ul>
             <li>Dashboard tổng quan + customer analytics (cohort, journey)</li>
-            <li>AI segmentation (auto-clustering, lookalike) + Predictive scores</li>
             <li>Marketing Automation workflow builder (visual drag-drop)</li>
             <li>Quản lý liệu trình (thẩm mỹ) + đại lý (Ocany)</li>
             <li>Loyalty Score + Social Score</li>
           </ul>
         </div>
         <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
-          <span class="ftag">F3.2</span> <span class="ftag">F4.2</span> <span class="ftag">F5.1</span> <span class="ftag">F5.2</span> <span class="ftag">F9.1</span> <span class="ftag">F9.2</span> <span class="ftag">F9.3</span> <span class="ftag">F10.4</span> <span class="ftag">F10.5</span> <span class="ftag">F10.7</span>
+          <span class="ftag">F4.2</span> <span class="ftag">F5.1</span> <span class="ftag">F5.2</span> <span class="ftag">F9.1</span> <span class="ftag">F9.2</span> <span class="ftag">F9.3</span> <span class="ftag">F10.4</span> <span class="ftag">F10.5</span>
         </p>
       </div>
     </div>
@@ -706,7 +727,7 @@
       <span class="milestone-icon">🚀</span>
       <div>
         <div class="milestone-text">Go-live 1 — Khách hàng cũ · Cuối tháng 5</div>
-        <div class="milestone-sub">30/43 features · Phase 1 + 2 + 3 hoàn thành · Soft-launch BU Ngọc Dung trước, rollout Zema + Ocany sau 2 tuần</div>
+        <div class="milestone-sub">28/43 features · Phase 1 + 2 hoàn thành · Soft-launch BU Ngọc Dung trước, rollout Zema + Ocany sau 2 tuần</div>
       </div>
     </div>
 
@@ -721,7 +742,7 @@
   <div class="container">
     <div class="section-label section-label-dark">Giai đoạn 2 · Tháng 6–8</div>
     <h2 class="section-title">Khách hàng mới — Acquisition &amp; Multi-channel</h2>
-    <p style="color: rgba(255,255,255,0.6); margin-bottom: 32px;">13 features · Phase 4 + 5 · Mục tiêu: kết nối ads, social, call center, tracking hành vi website/app, lead attribution, omni-channel automation.</p>
+    <p style="color: rgba(255,255,255,0.6); margin-bottom: 32px;">15 features · Phase 3 + 4 + 5 · Mục tiêu: AI segmentation, predictive scores, kết nối ads, social, call center, tracking hành vi website/app, lead attribution, omni-channel automation.</p>
 
     <!-- Month 6 -->
     <div class="month-card">
@@ -750,8 +771,12 @@
               <td><span class="ftag">F11.1</span> Website Tracking SDK — JS snippet, event batching, identity matching (anonymous → known)</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
+              <td class="dev-name">FE1</td>
               <td><span class="ftag">F1.3</span> Ads connector config UI → Ads dashboard (spend, CPL, ROAS per campaign)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE2</td>
+              <td><span class="ftag">F1.4</span> Social connector UI → <span class="ftag">F1.5</span> Call Center dashboard UI</td>
             </tr>
             <tr>
               <td class="dev-name">FD</td>
@@ -780,11 +805,12 @@
       <div class="month-header">
         <span class="month-num">Tháng 7</span>
         <span class="month-title">Tracking SDK, Lead &amp; Attribution</span>
+        <span class="month-badge badge-p3" style="margin-left: 4px;">Phase 3</span>
         <span class="month-badge badge-p4">Phase 4</span>
-        <span class="feature-count" style="margin-left: 12px;"><strong>4</strong> features</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>6</strong> features</span>
       </div>
       <div class="month-body">
-        <div class="month-goal">Hoàn thiện tracking SDK (website + mobile), lead đa kênh tự động capture, attribution engine, acquisition analytics dashboard.</div>
+        <div class="month-goal">AI segmentation + predictive scores, hoàn thiện tracking SDK (website + mobile), lead đa kênh tự động capture, attribution engine, acquisition analytics dashboard.</div>
 
         <table class="dev-table">
           <thead><tr><th>Dev</th><th>Công việc chính</th></tr></thead>
@@ -799,15 +825,19 @@
             </tr>
             <tr>
               <td class="dev-name">DE</td>
-              <td><span class="ftag">F11.1</span> (hoàn thiện) → <span class="ftag">F11.2</span> Mobile App SDK (iOS + Android) → <span class="ftag">F11.3</span> Landing Page form funnel tracking</td>
+              <td><span class="ftag">F11.1</span> (hoàn thiện) → <span class="ftag">F11.2</span> Mobile App SDK (iOS + Android) → <span class="ftag">F3.2</span> AI clustering + <span class="ftag">F10.7</span> Predictive Scores (churn, upsell, cross-BU)</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
-              <td><span class="ftag">F6.4</span> Lead UI: source badge, velocity dashboard → <span class="ftag">F6.5</span> Attribution UI: touchpoint timeline → <span class="ftag">F5.4</span> Acquisition dashboard</td>
+              <td class="dev-name">FE1</td>
+              <td><span class="ftag">F6.4</span> Lead UI: source badge, velocity dashboard → <span class="ftag">F5.4</span> Acquisition dashboard</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE2</td>
+              <td><span class="ftag">F6.5</span> Attribution UI: touchpoint timeline → <span class="ftag">F11.3</span> LP analytics dashboard</td>
             </tr>
             <tr>
               <td class="dev-name">FD</td>
-              <td><span class="ftag">F5.4</span> Acquisition Analytics backend (CAC, CPL, ROAS, channel mix, cohort by source) → <span class="ftag">F11.3</span> LP analytics dashboard</td>
+              <td><span class="ftag">F5.4</span> Acquisition Analytics backend (CAC, CPL, ROAS, channel mix, cohort by source) → <span class="ftag">F11.3</span> Landing Page form funnel tracking + LP analytics</td>
             </tr>
           </tbody>
         </table>
@@ -815,6 +845,7 @@
         <div class="deliverable">
           <div class="deliverable-title">Deliverables</div>
           <ul>
+            <li>AI segmentation (auto-clustering, lookalike) + Predictive scores (churn, upsell, cross-BU)</li>
             <li>Website Tracking SDK + Mobile SDK production-ready</li>
             <li>Landing Page funnel: LP view → form focus → input → submit → abandon</li>
             <li>Lead từ mọi nguồn (ads, LP, Zalo, walk-in) về 1 pipeline</li>
@@ -823,7 +854,7 @@
           </ul>
         </div>
         <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
-          <span class="ftag">F11.1</span> <span class="ftag">F11.2</span> <span class="ftag">F11.3</span> <span class="ftag">F6.4</span> <span class="ftag">F6.5</span> <span class="ftag">F5.4</span>
+          <span class="ftag">F3.2</span> <span class="ftag">F10.7</span> <span class="ftag">F11.1</span> <span class="ftag">F11.2</span> <span class="ftag">F11.3</span> <span class="ftag">F6.4</span> <span class="ftag">F6.5</span> <span class="ftag">F5.4</span>
         </p>
       </div>
     </div>
@@ -858,9 +889,14 @@
               <td>Data validation toàn bộ + performance optimization</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
+              <td class="dev-name">FE1</td>
               <td><span class="ftag">F4.5</span> Omni-channel workflow builder UI (kéo thả step/kênh/condition)</td>
-              <td><span class="ftag">F4.6</span> Trigger builder UI + <span class="ftag">F5.5</span> Attribution report UI (Sankey, journey)</td>
+              <td><span class="ftag">F5.5</span> Attribution report UI (Sankey, journey)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE2</td>
+              <td><span class="ftag">F4.6</span> Trigger builder UI</td>
+              <td><span class="ftag">F1.7</span> Dealer dashboard UI + UI polish</td>
             </tr>
             <tr>
               <td class="dev-name">FD</td>
@@ -890,7 +926,7 @@
       <span class="milestone-icon">🚀</span>
       <div>
         <div class="milestone-text">Go-live 2 — Khách hàng mới · Cuối tháng 8</div>
-        <div class="milestone-sub">43/43 features · Phase 4 + 5 hoàn thành · Acquisition + multi-channel đi vào production</div>
+        <div class="milestone-sub">43/43 features · Phase 3 + 4 + 5 hoàn thành · AI + Acquisition + multi-channel đi vào production</div>
       </div>
     </div>
 
@@ -930,8 +966,12 @@
               <td>Query optimization ClickHouse, score recalculation tuning, data quality audit, monitoring alert setup</td>
             </tr>
             <tr>
-              <td class="dev-name">FE</td>
+              <td class="dev-name">FE1</td>
               <td>UI polish, responsive testing, accessibility, loading states, error states</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE2</td>
+              <td>Cross-browser testing, mobile responsive, UX consistency audit, component cleanup</td>
             </tr>
             <tr>
               <td class="dev-name">FD</td>
@@ -959,7 +999,7 @@
       <span class="milestone-icon">🏁</span>
       <div>
         <div class="milestone-text">Project Complete · Cuối tháng 9</div>
-        <div class="milestone-sub">43 features · 11 modules · 5 phases · 3 BU live · Hệ thống ổn định sẵn sàng vận hành</div>
+        <div class="milestone-sub">43 features · 11 modules · 5 phases · 6 developers · 3 BU live · Hệ thống ổn định sẵn sàng vận hành</div>
       </div>
     </div>
 
@@ -977,13 +1017,13 @@
 
     <div style="display: flex; gap: 24px; margin: 32px 0; flex-wrap: wrap;">
       <div style="flex: 1; min-width: 180px; text-align: center;">
-        <span style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: var(--primary); display: block;">30</span>
+        <span style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: var(--primary); display: block;">28</span>
         <span style="font-size: 14px; color: var(--ink-48);">KH cũ · Tháng 1–5</span>
       </div>
       <div style="flex: 0; display: flex; align-items: center;"><span style="font-size: 24px; color: var(--hairline);">+</span></div>
       <div style="flex: 1; min-width: 180px; text-align: center;">
-        <span style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: #e65100; display: block;">13</span>
-        <span style="font-size: 14px; color: var(--ink-48);">KH mới · Tháng 6–8</span>
+        <span style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: #e65100; display: block;">15</span>
+        <span style="font-size: 14px; color: var(--ink-48);">KH mới + AI · Tháng 6–8</span>
       </div>
       <div style="flex: 0; display: flex; align-items: center;"><span style="font-size: 24px; color: var(--hairline);">=</span></div>
       <div style="flex: 1; min-width: 180px; text-align: center;">
@@ -1018,7 +1058,7 @@
           <td style="padding: 12px;"><span style="color: #1a237e; font-weight: 600;">Phase 3</span></td>
           <td style="padding: 12px; font-weight: 600;">Intelligence</td>
           <td style="padding: 12px; text-align: center;">4</td>
-          <td style="padding: 12px;">Tháng 5 → <strong style="color: var(--green);">Go-live KH cũ</strong></td>
+          <td style="padding: 12px;">Tháng 5 + 7 → AI features chuyển sang Go-live 2</td>
         </tr>
         <tr style="border-bottom: 1px solid var(--hairline);">
           <td style="padding: 12px;"><span style="color: #e65100; font-weight: 600;">Phase 4</span></td>
@@ -1078,10 +1118,10 @@
         <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F9.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Quản lý đại lý (Ocany)</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
         <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F10.4</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Loyalty Score</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
         <tr><td style="padding:6px 10px; border-bottom:2px solid #0d47a1; color: var(--ink-48);">F10.5</td><td style="padding:6px 10px; border-bottom:2px solid #0d47a1;">Social Score</td><td style="padding:6px 10px; border-bottom:2px solid #0d47a1; text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:2px solid #0d47a1; text-align:center;">T5</td></tr>
-        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F3.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">AI-powered Segmentation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F3.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">AI-powered Segmentation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T7</td></tr>
         <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F4.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Marketing Automation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
         <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F9.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Cross-BU Recommendation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
-        <tr><td style="padding:6px 10px; border-bottom:2px solid #1a237e; color: var(--ink-48);">F10.7</td><td style="padding:6px 10px; border-bottom:2px solid #1a237e;">Predictive Scores</td><td style="padding:6px 10px; border-bottom:2px solid #1a237e; text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:2px solid #1a237e; text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:2px solid #1a237e; color: var(--ink-48);">F10.7</td><td style="padding:6px 10px; border-bottom:2px solid #1a237e;">Predictive Scores</td><td style="padding:6px 10px; border-bottom:2px solid #1a237e; text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:2px solid #1a237e; text-align:center;">T7</td></tr>
         <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Ads Platform Connectors</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T6</td></tr>
         <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.4</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Social &amp; Messaging Connectors</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T6</td></tr>
         <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.5</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Call Center Integration</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T6</td></tr>
@@ -1115,14 +1155,9 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>1 Frontend cho toàn bộ 43 features</strong> — bottleneck rõ nhất</td>
-          <td><span class="risk-high">Cao</span></td>
-          <td>FD hỗ trợ FE từ tháng 3. Xem xét thêm 1 FE contract từ tháng 4. Ưu tiên preset UI trước custom builder.</td>
-        </tr>
-        <tr>
           <td><strong>Tháng 5 dồn 10 features + UAT</strong> — quá tải trước go-live</td>
           <td><span class="risk-high">Cao</span></td>
-          <td>AI features (F3.2, F10.7) làm MVP đơn giản, polish Phase 2. Tách UAT ra 2 tuần cuối, freeze feature từ tuần 3.</td>
+          <td>AI features (F3.2, F10.7) đã chuyển sang Go-live 2 (T7) để giảm tải. Tách UAT ra 2 tuần cuối, freeze feature từ tuần 3.</td>
         </tr>
         <tr>
           <td><strong>Go-live KH cũ tạo bugs ảnh hưởng dev KH mới</strong></td>
@@ -1154,7 +1189,6 @@
 
     <h3 style="font-size: 21px; font-weight: 600; margin: 40px 0 16px;">Khuyến nghị</h3>
     <ol style="font-size: 15px; line-height: 1.8; padding-left: 20px; color: var(--ink-80);">
-      <li><strong>Thêm 1 Frontend (contract)</strong> từ tháng 3 — đây là nút thắt cổ chai lớn nhất của toàn bộ kế hoạch</li>
       <li><strong>Khảo sát API hệ thống nguồn</strong> (POS, CRM từng BU) trước khi bắt đầu — tránh bất ngờ tháng 1</li>
       <li><strong>Soft-launch 1 BU</strong> (Ngọc Dung) khi go-live — không rollout 3 BU cùng lúc</li>
       <li><strong>Feature freeze trước go-live 2 tuần</strong> — chỉ fix bugs, không thêm feature</li>
@@ -1168,6 +1202,7 @@
       <li>Online-Offline Order Unification</li>
       <li>Mobile app cho khách hàng cuối</li>
       <li>AI chatbot phục vụ khách hàng</li>
+      <li>Email Marketing (SendGrid/SES) — channel integration để sau</li>
     </ul>
   </div>
 </section>
