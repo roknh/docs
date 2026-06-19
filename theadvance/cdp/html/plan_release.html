@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP TheAdvance — Release Plan</title>
+<style>
+  :root {
+    --primary: #0066cc;
+    --primary-on-dark: #2997ff;
+    --ink: #1d1d1f;
+    --ink-80: #333333;
+    --ink-48: #7a7a7a;
+    --canvas: #ffffff;
+    --parchment: #f5f5f7;
+    --black: #000000;
+    --on-dark: #ffffff;
+    --hairline: #e0e0e0;
+    --green: #30d158;
+    --orange: #f5a623;
+    --red: #ff453a;
+    --blue: #2997ff;
+    --font: "SF Pro Text", system-ui, -apple-system, sans-serif;
+    --font-display: "SF Pro Display", system-ui, -apple-system, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--font);
+    color: var(--ink);
+    background: var(--canvas);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  /* Nav */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 44px;
+    background: var(--black); z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+  }
+  .nav-brand { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--on-dark); text-decoration: none; }
+  .nav-brand span { color: var(--primary-on-dark); }
+  .nav-meta { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+  /* Hero */
+  .hero {
+    margin-top: 44px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: var(--on-dark);
+    padding: 80px 24px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--primary-on-dark); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-size: 48px; font-weight: 600;
+    line-height: 1.1; margin-bottom: 16px;
+  }
+  .hero-sub {
+    font-size: 21px; color: rgba(255,255,255,0.6); max-width: 600px;
+    margin: 0 auto 40px; line-height: 1.4;
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat-value {
+    font-family: var(--font-display); font-size: 36px; font-weight: 600;
+    color: var(--on-dark); display: block;
+  }
+  .hero-stat-label { font-size: 13px; color: rgba(255,255,255,0.45); }
+  .hero-sep { width: 1px; height: 48px; background: rgba(255,255,255,0.12); }
+
+  /* Container */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* Sections */
+  .section { padding: 64px 0; }
+  .section-alt { background: var(--parchment); }
+  .section-dark { background: #1d1d1f; color: var(--on-dark); }
+  .section-dark-2 { background: #272729; color: var(--on-dark); }
+  .section-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--primary); margin-bottom: 8px;
+  }
+  .section-label-dark { color: var(--primary-on-dark); }
+  .section-title {
+    font-family: var(--font-display); font-size: 34px; font-weight: 600;
+    line-height: 1.12; margin-bottom: 24px;
+  }
+
+  /* Team grid */
+  .team-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 24px 0; }
+  .team-card {
+    background: var(--canvas); border: 1px solid var(--hairline);
+    border-radius: 12px; padding: 20px 16px; text-align: center;
+  }
+  .team-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+  .team-role { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .team-code { font-size: 12px; color: var(--ink-48); }
+
+  /* Timeline */
+  .timeline { margin: 32px 0; }
+  .timeline-bar {
+    display: flex; height: 40px; border-radius: 8px; overflow: hidden;
+    margin-bottom: 12px; font-size: 12px; font-weight: 600; color: white;
+  }
+  .timeline-bar > div {
+    display: flex; align-items: center; justify-content: center;
+    white-space: nowrap; min-width: 60px;
+  }
+  .tl-phase1 { background: #0066cc; flex: 5; }
+  .tl-phase2 { background: #0d47a1; flex: 2; }
+  .tl-pause { background: #4caf50; flex: 1; }
+  .tl-phase4 { background: #e65100; flex: 2; }
+  .tl-phase5 { background: #bf360c; flex: 1; }
+  .tl-buffer { background: #616161; flex: 1; }
+  .timeline-months {
+    display: flex; font-size: 11px; color: var(--ink-48);
+  }
+  .timeline-months span {
+    flex: 1; text-align: center; padding: 4px 0;
+    border-left: 1px solid var(--hairline);
+  }
+  .timeline-months span:first-child { border-left: none; }
+
+  /* Month card */
+  .month-card {
+    border: 1px solid var(--hairline); border-radius: 16px;
+    overflow: hidden; margin-bottom: 24px;
+  }
+  .month-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; border-bottom: 1px solid var(--hairline);
+  }
+  .month-num {
+    font-family: var(--font-display); font-size: 14px; font-weight: 600;
+    color: var(--primary); background: rgba(0,102,204,0.08);
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .month-title { font-family: var(--font-display); font-size: 21px; font-weight: 600; flex: 1; margin-left: 16px; }
+  .month-badge {
+    font-size: 12px; font-weight: 600; padding: 4px 12px;
+    border-radius: 20px; color: white;
+  }
+  .badge-p1 { background: #0066cc; }
+  .badge-p2 { background: #0d47a1; }
+  .badge-p3 { background: #1a237e; }
+  .badge-p4 { background: #e65100; }
+  .badge-p5 { background: #bf360c; }
+  .badge-buffer { background: #616161; }
+  .badge-go-live { background: var(--green); color: #000; }
+  .month-body { padding: 24px; }
+  .month-goal {
+    font-size: 15px; color: var(--ink-80); margin-bottom: 20px;
+    padding: 12px 16px; background: rgba(0,102,204,0.04);
+    border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0;
+  }
+
+  /* Dev table */
+  .dev-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .dev-table th {
+    text-align: left; padding: 8px 12px; background: var(--parchment);
+    font-weight: 600; font-size: 12px; color: var(--ink-48);
+    text-transform: uppercase; letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .dev-table td {
+    padding: 10px 12px; border-bottom: 1px solid rgba(0,0,0,0.04);
+    vertical-align: top; line-height: 1.5;
+  }
+  .dev-table tr:last-child td { border-bottom: none; }
+  .dev-name { font-weight: 600; color: var(--primary); white-space: nowrap; }
+
+  /* Feature tag */
+  .ftag {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px; margin: 1px 2px;
+    background: rgba(0,102,204,0.08); color: var(--primary);
+  }
+  .ftag-done { background: rgba(48,209,88,0.1); color: #2ea043; }
+
+  /* Deliverable */
+  .deliverable {
+    margin-top: 16px; padding: 16px; background: rgba(48,209,88,0.04);
+    border: 1px solid rgba(48,209,88,0.15); border-radius: 10px;
+  }
+  .deliverable-title { font-size: 12px; font-weight: 600; color: #2ea043; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+  .deliverable ul { list-style: none; }
+  .deliverable li { font-size: 13px; padding: 3px 0; }
+  .deliverable li::before { content: "✓ "; color: #2ea043; font-weight: 600; }
+
+  /* Feature count */
+  .feature-count {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--ink-48);
+  }
+  .feature-count strong { color: var(--ink); }
+
+  /* Milestone marker */
+  .milestone {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 24px; margin: 24px 0;
+    background: linear-gradient(135deg, rgba(48,209,88,0.08), rgba(48,209,88,0.02));
+    border: 1px solid rgba(48,209,88,0.2); border-radius: 12px;
+  }
+  .milestone-icon { font-size: 24px; }
+  .milestone-text { font-size: 15px; font-weight: 600; color: #2ea043; }
+  .milestone-sub { font-size: 13px; color: var(--ink-48); }
+
+  /* Summary grid */
+  .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+  .summary-card {
+    border-radius: 12px; padding: 24px; text-align: center;
+  }
+  .summary-card-dark {
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+  }
+  .summary-value {
+    font-family: var(--font-display); font-size: 40px; font-weight: 600; display: block;
+  }
+  .summary-label { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+
+  /* Phase progress table */
+  .phase-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+  .phase-table th {
+    text-align: left; padding: 10px 16px; font-size: 12px;
+    color: rgba(255,255,255,0.4); text-transform: uppercase;
+    letter-spacing: 0.05em; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .phase-table td {
+    padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+  }
+  .phase-table .phase-name-cell { font-weight: 600; }
+  .bar-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; min-width: 120px; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-p1 { background: #0066cc; }
+  .bar-p2 { background: #0d47a1; }
+  .bar-p3 { background: #1a237e; }
+  .bar-p4 { background: #e65100; }
+  .bar-p5 { background: #bf360c; }
+
+  /* Risk table */
+  .risk-table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+  .risk-table th {
+    text-align: left; padding: 10px 12px; background: var(--parchment);
+    font-size: 12px; font-weight: 600; color: var(--ink-48);
+    text-transform: uppercase; border-bottom: 1px solid var(--hairline);
+  }
+  .risk-table td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.04); font-size: 14px; vertical-align: top; }
+  .risk-high { color: var(--red); font-weight: 600; }
+  .risk-med { color: var(--orange); font-weight: 600; }
+
+  /* Footer */
+  .footer {
+    background: var(--black); color: rgba(255,255,255,0.3);
+    padding: 32px 24px; text-align: center; font-size: 12px;
+  }
+
+  /* Dark section — month cards need clear separation from bg */
+  .section-dark .month-card,
+  .section-dark-2 .month-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+  }
+  .section-dark .month-header,
+  .section-dark-2 .month-header {
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .section-dark .month-num,
+  .section-dark-2 .month-num {
+    color: var(--primary-on-dark);
+    background: rgba(41,151,255,0.15);
+    border: 1px solid rgba(41,151,255,0.25);
+  }
+  .section-dark .month-title,
+  .section-dark-2 .month-title { color: var(--on-dark); }
+  .section-dark .month-goal,
+  .section-dark-2 .month-goal {
+    background: rgba(41,151,255,0.08);
+    border-left: 3px solid var(--primary-on-dark);
+    color: rgba(255,255,255,0.85);
+    border-radius: 0 8px 8px 0;
+  }
+  .section-dark .month-body,
+  .section-dark-2 .month-body { background: rgba(255,255,255,0.02); }
+  .section-dark .dev-table th,
+  .section-dark-2 .dev-table th {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .section-dark .dev-table td,
+  .section-dark-2 .dev-table td {
+    color: rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .section-dark .dev-name,
+  .section-dark-2 .dev-name { color: #5cb8ff; }
+  .section-dark .ftag,
+  .section-dark-2 .ftag {
+    background: rgba(41,151,255,0.15);
+    color: #5cb8ff;
+    border: 1px solid rgba(41,151,255,0.2);
+  }
+  .section-dark .deliverable,
+  .section-dark-2 .deliverable {
+    background: rgba(48,209,88,0.06);
+    border: 1px solid rgba(48,209,88,0.2);
+  }
+  .section-dark .deliverable-title,
+  .section-dark-2 .deliverable-title { color: #4ade80; }
+  .section-dark .deliverable li,
+  .section-dark-2 .deliverable li { color: rgba(255,255,255,0.8); }
+  .section-dark .feature-count,
+  .section-dark-2 .feature-count { color: rgba(255,255,255,0.4); }
+  .section-dark .feature-count strong,
+  .section-dark-2 .feature-count strong { color: rgba(255,255,255,0.8); }
+  .section-dark .milestone,
+  .section-dark-2 .milestone {
+    background: rgba(48,209,88,0.08);
+    border: 1px solid rgba(48,209,88,0.25);
+  }
+  .section-dark .milestone-text,
+  .section-dark-2 .milestone-text { color: #4ade80; }
+  .section-dark .milestone-sub,
+  .section-dark-2 .milestone-sub { color: rgba(255,255,255,0.5); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 32px; }
+    .hero-stats { gap: 24px; }
+    .hero-sep { display: none; }
+    .team-grid { grid-template-columns: repeat(3, 1fr); }
+    .summary-grid { grid-template-columns: 1fr; }
+    .dev-table { font-size: 12px; }
+    .dev-table th, .dev-table td { padding: 6px 8px; }
+    .timeline-bar { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="cdp_spec.html" class="nav-brand">CDP <span>TheAdvance</span></a>
+  <span class="nav-meta">Release Plan · Confidential</span>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-eyebrow">Release Plan</div>
+  <h1>CDP Development Roadmap</h1>
+  <p class="hero-sub">Kế hoạch phát triển 9 tháng — 5 developers — 43 features across 5 phases</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-value">9</span>
+      <span class="hero-stat-label">Tháng</span>
+    </div>
+    <div class="hero-sep"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-value">5</span>
+      <span class="hero-stat-label">Developers</span>
+    </div>
+    <div class="hero-sep"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-value">43</span>
+      <span class="hero-stat-label">Features</span>
+    </div>
+    <div class="hero-sep"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-value">5</span>
+      <span class="hero-stat-label">Phases</span>
+    </div>
+    <div class="hero-sep"></div>
+    <div class="hero-stat">
+      <span class="hero-stat-value">2</span>
+      <span class="hero-stat-label">Go-live milestones</span>
+    </div>
+  </div>
+</section>
+
+<!-- Section 1: Overview -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">Overview</div>
+    <h2 class="section-title">Tổng quan kế hoạch</h2>
+
+    <h3 style="font-size: 21px; font-weight: 600; margin: 32px 0 16px;">Team Structure</h3>
+    <div class="team-grid">
+      <div class="team-card">
+        <span class="team-icon">👨‍💻</span>
+        <div class="team-role">Tech Lead</div>
+        <div class="team-code">TL — Senior Backend, architecture, connectors, identity resolution</div>
+      </div>
+      <div class="team-card">
+        <span class="team-icon">⚙️</span>
+        <div class="team-role">Backend Dev</div>
+        <div class="team-code">BE — Scoring, lead, campaign, RBAC, API</div>
+      </div>
+      <div class="team-card">
+        <span class="team-icon">🗄️</span>
+        <div class="team-role">Data Engineer</div>
+        <div class="team-code">DE — Pipeline, ClickHouse, RFM, score calculation, tracking SDK</div>
+      </div>
+      <div class="team-card">
+        <span class="team-icon">🎨</span>
+        <div class="team-role">Frontend Dev</div>
+        <div class="team-code">FE — UI toàn bộ: dashboard, Customer 360, segment builder</div>
+      </div>
+      <div class="team-card">
+        <span class="team-icon">🔧</span>
+        <div class="team-role">Fullstack / DevOps</div>
+        <div class="team-code">FD — Infra, CI/CD, consent, channel integration, support FE</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 21px; font-weight: 600; margin: 32px 0 16px;">Timeline tổng quan</h3>
+    <div class="timeline">
+      <div class="timeline-bar">
+        <div class="tl-phase1">Phase 1 — Foundation</div>
+        <div class="tl-phase2">P2</div>
+        <div class="tl-pause">P3</div>
+        <div style="background: #4caf50; flex: 0.3; font-size: 10px;">✓</div>
+        <div class="tl-phase4">Phase 4</div>
+        <div class="tl-phase5">P5</div>
+        <div class="tl-buffer">Buffer</div>
+      </div>
+      <div class="timeline-months">
+        <span>T1</span><span>T2</span><span>T3</span><span>T4</span><span>T5</span>
+        <span>T6</span><span>T7</span><span>T8</span><span>T9</span>
+      </div>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px;">
+      <thead>
+        <tr style="border-bottom: 2px solid var(--hairline);">
+          <th style="text-align: left; padding: 8px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase;">Giai đoạn</th>
+          <th style="text-align: left; padding: 8px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase;">Tháng</th>
+          <th style="text-align: left; padding: 8px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase;">Phase</th>
+          <th style="text-align: left; padding: 8px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase;">Features</th>
+          <th style="text-align: left; padding: 8px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase;">Focus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);" rowspan="5"><strong style="color: var(--primary);">Khách hàng cũ</strong><br><span style="font-size: 12px; color: var(--ink-48);">POS &amp; CRM</span></td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 1–2</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 1</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">10</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Infra, pipeline, auth, identity, Customer 360</td></tr>
+        <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 3</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 1</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">6</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Scoring engine, segmentation, RFM</td></tr>
+        <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 4</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 2</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">7</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Campaign, lead pipeline, template, channel</td></tr>
+        <tr style="background: rgba(0,102,204,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 5</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag">Phase 2</span> <span class="ftag">Phase 3</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">7</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Analytics, AI, industry features, scoring nâng cao</td></tr>
+        <tr><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);">↳ Go-live 1</td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"></td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"><strong>30</strong></td><td style="padding: 10px 12px; border-bottom: 2px solid var(--primary);"><strong style="color: var(--green);">🟢 Go-live KH cũ — soft-launch 1 BU</strong></td></tr>
+
+        <tr style="background: rgba(230,81,0,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);" rowspan="4"><strong style="color: #e65100;">Khách hàng mới</strong><br><span style="font-size: 12px; color: var(--ink-48);">Ads, Social, Tracking</span></td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 6</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(230,81,0,0.08); color: #e65100;">Phase 4</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">5</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Ads connectors, social, call center</td></tr>
+        <tr style="background: rgba(230,81,0,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 7</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(230,81,0,0.08); color: #e65100;">Phase 4</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">4</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tracking SDK, lead capture, attribution</td></tr>
+        <tr style="background: rgba(230,81,0,0.03);"><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 8</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(191,54,12,0.08); color: #bf360c;">Phase 5</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">4</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">DMS, omni-channel, event automation, attribution</td></tr>
+        <tr><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;">↳ Go-live 2</td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"></td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"><strong>13</strong></td><td style="padding: 10px 12px; border-bottom: 2px solid #e65100;"><strong style="color: var(--green);">🟢 Go-live KH mới</strong></td></tr>
+
+        <tr><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><strong style="color: #616161;">Buffer</strong></td>
+          <td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Tháng 9</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);"><span class="ftag" style="background: rgba(97,97,97,0.08); color: #616161;">Buffer</span></td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">—</td><td style="padding: 10px 12px; border-bottom: 1px solid var(--hairline);">Stabilization, performance, training, rollout 3 BU</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- GIAI ĐOẠN 1: KHÁCH HÀNG CŨ            -->
+<!-- ═══════════════════════════════════════ -->
+
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-label section-label-dark">Giai đoạn 1 · Tháng 1–5</div>
+    <h2 class="section-title">Khách hàng cũ — POS &amp; CRM</h2>
+    <p style="color: rgba(255,255,255,0.6); margin-bottom: 32px;">30 features · Phase 1 + 2 + 3 · Mục tiêu: hệ thống core hoạt động, hiểu khách cũ, scoring, segmentation, campaign, analytics.</p>
+
+    <!-- Month 1-2 -->
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 1–2</span>
+        <span class="month-title">Foundation &amp; Core Data</span>
+        <span class="month-badge badge-p1">Phase 1</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>10</strong> features</span>
+      </div>
+      <div class="month-body">
+        <div class="month-goal">Hạ tầng chạy, data từ POS/CRM chảy vào pipeline, auth + phân quyền, Customer 360 hiển thị profile hợp nhất.</div>
+
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Tuần 1–4</th><th>Tuần 5–8</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td>Architecture, DB schema, API contracts → <span class="ftag">F1.1</span> POS + CRM connector</td>
+              <td><span class="ftag">F2.1</span> Identity Resolution engine — exact match (SĐT, email, CRM ID), cross-BU merge</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td><span class="ftag">F8.1</span> RBAC backend — role, permission, BU/branch scope, row-level security</td>
+              <td><span class="ftag">F8.1</span> Multi-tenant middleware → <span class="ftag">F6.1</span> Lead Capture backend (từ POS/CRM)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td>Infra ClickHouse + queue → <span class="ftag">F1.2</span> Pipeline: cleaning, dedup, SĐT normalize, validation</td>
+              <td><span class="ftag">F1.2</span> Pipeline scheduling, dead letter queue, monitoring</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td>Design system, layout shell, nav → <span class="ftag">F8.1</span> Login SSO, user/role management UI</td>
+              <td><span class="ftag">F2.2</span> Customer 360 UI — profile header, BU tabs, timeline, search</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td>CI/CD, staging env, Docker, monitoring → <span class="ftag">F7.1</span> Consent management</td>
+              <td><span class="ftag">F2.1</span> Merge/unmerge UI, review queue → <span class="ftag">F7.1</span> Consent UI</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Deliverables</div>
+          <ul>
+            <li>Import data từ POS + CRM → pipeline cleaning → lưu raw data</li>
+            <li>Login SSO + phân quyền BU/chi nhánh hoạt động</li>
+            <li>Identity Resolution auto-merge, Customer 360 hiển thị profile cross-BU</li>
+            <li>Consent management, lead capture cơ bản</li>
+          </ul>
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
+          <span class="ftag">F1.1</span> <span class="ftag">F1.2</span> <span class="ftag">F2.1</span> <span class="ftag">F2.2</span> <span class="ftag">F6.1</span> <span class="ftag">F7.1</span> <span class="ftag">F8.1</span> + CSV connector, API skeleton, design system
+        </p>
+      </div>
+    </div>
+
+    <!-- Month 3 -->
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 3</span>
+        <span class="month-title">Scoring &amp; Segmentation</span>
+        <span class="month-badge badge-p1">Phase 1</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>6</strong> features</span>
+      </div>
+      <div class="month-body">
+        <div class="month-goal">Scoring engine đa chiều chạy batch, segment builder kéo thả, RFM 11 segment, Customer 360 hiển thị score + tier.</div>
+
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Công việc chính</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td><span class="ftag">F2.1</span> Fuzzy matching, edge cases (SĐT rác, manual unmerge) → <span class="ftag">F10.1</span> Unified Score aggregation logic</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td><span class="ftag">F10.8</span> Score Config backend (trọng số, tier thresholds, BU config, preview impact) → <span class="ftag">F10.1</span> Unified Score API</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td><span class="ftag">F10.2</span> Monetary Score → <span class="ftag">F10.3</span> Engagement Score → <span class="ftag">F10.6</span> Health Score — batch calculation + scheduler</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td><span class="ftag">F3.1</span> Segment Builder UI (drag-drop conditions, AND/OR, preview count) → <span class="ftag">F10.8</span> Score Config UI</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td><span class="ftag">F3.1</span> Segment calculation engine (dynamic, auto-refresh) → <span class="ftag">F3.3</span> RFM engine (config per BU, 11 segment, batch)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Deliverables</div>
+          <ul>
+            <li>4 loại score chạy batch: Monetary, Engagement, Health, Unified</li>
+            <li>Score config riêng từng BU, preview impact trước khi áp dụng</li>
+            <li>Segment Builder drag-drop, preview số khách</li>
+            <li>RFM ma trận 11 segment, drill-down → tạo campaign</li>
+          </ul>
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
+          <span class="ftag">F3.1</span> <span class="ftag">F3.3</span> <span class="ftag">F10.1</span> <span class="ftag">F10.2</span> <span class="ftag">F10.3</span> <span class="ftag">F10.6</span> <span class="ftag">F10.8</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Month 4 -->
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 4</span>
+        <span class="month-title">Campaign &amp; Lead</span>
+        <span class="month-badge badge-p2">Phase 2</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>7</strong> features</span>
+      </div>
+      <div class="month-body">
+        <div class="month-goal">Campaign management end-to-end, template system, channel integration (Zalo/SMS/Email), lead pipeline kanban + scoring.</div>
+
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Công việc chính</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td><span class="ftag">F4.1</span> Campaign management backend — create, schedule, approve, send engine → <span class="ftag">F4.4</span> Template management backend</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td><span class="ftag">F6.3</span> Lead Pipeline backend (stages, assignment, conversion) → <span class="ftag">F6.2</span> Lead Scoring engine</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td><span class="ftag">F5.3</span> Campaign Analytics — delivery, open, click, conversion metrics, A/B test results</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td><span class="ftag">F4.1</span> Campaign create UI → <span class="ftag">F6.3</span> Lead Pipeline kanban → <span class="ftag">F4.4</span> Template editor UI</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td><span class="ftag">F4.3</span> Channel Integration — Zalo OA send, SMS gateway, Email (SendGrid/SES), delivery webhook tracking</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Deliverables</div>
+          <ul>
+            <li>Tạo campaign → chọn segment → chọn template/nội dung → chọn kênh → schedule → approve → gửi</li>
+            <li>Template: short-code, preview với data khách, version, analytics</li>
+            <li>Gửi qua Zalo OA, SMS, Email — tracking delivery/open/click</li>
+            <li>Lead pipeline kanban + lead scoring + conversion tracking</li>
+          </ul>
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
+          <span class="ftag">F4.1</span> <span class="ftag">F4.3</span> <span class="ftag">F4.4</span> <span class="ftag">F5.3</span> <span class="ftag">F6.2</span> <span class="ftag">F6.3</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Month 5 -->
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 5</span>
+        <span class="month-title">Analytics, AI &amp; Industry</span>
+        <span class="month-badge badge-p2">Phase 2</span>
+        <span class="month-badge badge-p3" style="margin-left: 4px;">Phase 3</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>7</strong> features</span>
+      </div>
+      <div class="month-body">
+        <div class="month-goal">Dashboard builder, analytics chuyên sâu, AI segmentation, predictive scores, marketing automation, features ngành (liệu trình, đại lý). UAT + go-live KH cũ.</div>
+
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Tuần 1–2</th><th>Tuần 3–4</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td><span class="ftag">F9.1</span> Quản lý liệu trình (sessions, progress, reminder)</td>
+              <td><span class="ftag">F4.2</span> Marketing Automation workflow engine (trigger, branch, delay)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td><span class="ftag">F10.4</span> Loyalty Score + <span class="ftag">F10.5</span> Social Score</td>
+              <td><span class="ftag">F5.2</span> Customer Analytics (cohort, journey, lifetime)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td><span class="ftag">F5.1</span> Dashboard engine (preset + custom, ClickHouse queries, drill-down)</td>
+              <td><span class="ftag">F3.2</span> AI clustering + <span class="ftag">F10.7</span> Predictive Scores (churn, upsell, cross-BU)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td><span class="ftag">F5.1</span> Dashboard UI + <span class="ftag">F3.3</span> RFM dashboard UI</td>
+              <td><span class="ftag">F5.2</span> Customer Analytics UI + <span class="ftag">F4.2</span> Workflow Builder UI</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td><span class="ftag">F9.2</span> Quản lý đại lý (Ocany) + <span class="ftag">F9.3</span> Cross-BU Recommendation</td>
+              <td>UAT support + performance testing + data migration 3 BU</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Deliverables</div>
+          <ul>
+            <li>Dashboard tổng quan + customer analytics (cohort, journey)</li>
+            <li>AI segmentation (auto-clustering, lookalike) + Predictive scores</li>
+            <li>Marketing Automation workflow builder (visual drag-drop)</li>
+            <li>Quản lý liệu trình (thẩm mỹ) + đại lý (Ocany)</li>
+            <li>Loyalty Score + Social Score</li>
+          </ul>
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
+          <span class="ftag">F3.2</span> <span class="ftag">F4.2</span> <span class="ftag">F5.1</span> <span class="ftag">F5.2</span> <span class="ftag">F9.1</span> <span class="ftag">F9.2</span> <span class="ftag">F9.3</span> <span class="ftag">F10.4</span> <span class="ftag">F10.5</span> <span class="ftag">F10.7</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Go-live 1 -->
+    <div class="milestone">
+      <span class="milestone-icon">🚀</span>
+      <div>
+        <div class="milestone-text">Go-live 1 — Khách hàng cũ · Cuối tháng 5</div>
+        <div class="milestone-sub">30/43 features · Phase 1 + 2 + 3 hoàn thành · Soft-launch BU Ngọc Dung trước, rollout Zema + Ocany sau 2 tuần</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- GIAI ĐOẠN 2: KHÁCH HÀNG MỚI           -->
+<!-- ═══════════════════════════════════════ -->
+
+<section class="section section-dark-2">
+  <div class="container">
+    <div class="section-label section-label-dark">Giai đoạn 2 · Tháng 6–8</div>
+    <h2 class="section-title">Khách hàng mới — Acquisition &amp; Multi-channel</h2>
+    <p style="color: rgba(255,255,255,0.6); margin-bottom: 32px;">13 features · Phase 4 + 5 · Mục tiêu: kết nối ads, social, call center, tracking hành vi website/app, lead attribution, omni-channel automation.</p>
+
+    <!-- Month 6 -->
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 6</span>
+        <span class="month-title">Ads, Social &amp; Call Center</span>
+        <span class="month-badge badge-p4">Phase 4</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>5</strong> features</span>
+      </div>
+      <div class="month-body">
+        <div class="month-goal">Kết nối FB Ads, Google Ads, TikTok Ads, Zalo OA, Facebook Page, Call Center. Data quảng cáo + social + cuộc gọi chảy vào CDP.</div>
+
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Công việc chính</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td><span class="ftag">F1.3</span> FB Ads API connector (OAuth, metrics sync, lead form webhook) → Google Ads connector → TikTok Ads connector</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td><span class="ftag">F1.3</span> Custom Audience upload (CDP segment → FB/Google) → Ads metrics aggregation API</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td><span class="ftag">F11.1</span> Website Tracking SDK — JS snippet, event batching, identity matching (anonymous → known)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td><span class="ftag">F1.3</span> Ads connector config UI → Ads dashboard (spend, CPL, ROAS per campaign)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td><span class="ftag">F1.4</span> Zalo OA connector (webhook, message sync) + Facebook Page connector → <span class="ftag">F1.5</span> Call Center integration</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Deliverables</div>
+          <ul>
+            <li>FB Ads, Google Ads, TikTok Ads kết nối — sync metrics, lead form, custom audience</li>
+            <li>Zalo OA + Facebook Page message hiển thị trong Customer 360 timeline</li>
+            <li>Call Center cuộc gọi sync — metadata, recording link, agent</li>
+            <li>Website Tracking SDK sẵn sàng nhúng</li>
+          </ul>
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
+          <span class="ftag">F1.3</span> <span class="ftag">F1.4</span> <span class="ftag">F1.5</span> <span class="ftag">F11.1</span> (bắt đầu)
+        </p>
+      </div>
+    </div>
+
+    <!-- Month 7 -->
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 7</span>
+        <span class="month-title">Tracking SDK, Lead &amp; Attribution</span>
+        <span class="month-badge badge-p4">Phase 4</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>4</strong> features</span>
+      </div>
+      <div class="month-body">
+        <div class="month-goal">Hoàn thiện tracking SDK (website + mobile), lead đa kênh tự động capture, attribution engine, acquisition analytics dashboard.</div>
+
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Công việc chính</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td><span class="ftag">F6.4</span> Multi-source Lead Capture — dedup, auto-assign rule, SLA tracking</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td><span class="ftag">F6.5</span> Lead Attribution engine — first/last/multi-touch, UTM parse, fbclid/gclid matching</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td><span class="ftag">F11.1</span> (hoàn thiện) → <span class="ftag">F11.2</span> Mobile App SDK (iOS + Android) → <span class="ftag">F11.3</span> Landing Page form funnel tracking</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td><span class="ftag">F6.4</span> Lead UI: source badge, velocity dashboard → <span class="ftag">F6.5</span> Attribution UI: touchpoint timeline → <span class="ftag">F5.4</span> Acquisition dashboard</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td><span class="ftag">F5.4</span> Acquisition Analytics backend (CAC, CPL, ROAS, channel mix, cohort by source) → <span class="ftag">F11.3</span> LP analytics dashboard</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Deliverables</div>
+          <ul>
+            <li>Website Tracking SDK + Mobile SDK production-ready</li>
+            <li>Landing Page funnel: LP view → form focus → input → submit → abandon</li>
+            <li>Lead từ mọi nguồn (ads, LP, Zalo, walk-in) về 1 pipeline</li>
+            <li>Attribution: CPL, CPA, ROAS breakdown theo source/campaign/keyword</li>
+            <li>Acquisition dashboard: channel comparison, funnel, cohort by source</li>
+          </ul>
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
+          <span class="ftag">F11.1</span> <span class="ftag">F11.2</span> <span class="ftag">F11.3</span> <span class="ftag">F6.4</span> <span class="ftag">F6.5</span> <span class="ftag">F5.4</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Month 8 -->
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 8</span>
+        <span class="month-title">Dealer &amp; Omni-channel</span>
+        <span class="month-badge badge-p5">Phase 5</span>
+        <span class="feature-count" style="margin-left: 12px;"><strong>4</strong> features</span>
+      </div>
+      <div class="month-body">
+        <div class="month-goal">DMS/Dealer connector, omni-channel orchestration (Zalo→SMS→Call), event-triggered automation, omni-channel attribution report.</div>
+
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Tuần 1–2</th><th>Tuần 3–4</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td><span class="ftag">F4.5</span> Omni-channel Orchestration engine (multi-step, multi-channel, branching, A/B test)</td>
+              <td><span class="ftag">F4.5</span> Frequency cap, channel preference, step reporting</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td><span class="ftag">F4.6</span> Event-triggered Automation (event→condition→delay→action, real-time &lt; 5 phút)</td>
+              <td><span class="ftag">F4.6</span> Trigger rule UI, pause/resume, idempotent dedup, log</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td><span class="ftag">F5.5</span> Omni-channel Attribution (multi-touch models, Sankey, assisted conversion)</td>
+              <td>Data validation toàn bộ + performance optimization</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td><span class="ftag">F4.5</span> Omni-channel workflow builder UI (kéo thả step/kênh/condition)</td>
+              <td><span class="ftag">F4.6</span> Trigger builder UI + <span class="ftag">F5.5</span> Attribution report UI (Sankey, journey)</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td><span class="ftag">F1.7</span> DMS/Dealer connector (batch sync, B2B profile, dealer health score)</td>
+              <td>UAT Phase 4-5 + integration testing + staging deploy</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Deliverables</div>
+          <ul>
+            <li>DMS kết nối — dealer profile, sell-in/sell-out, dealer health score</li>
+            <li>Omni-channel workflow: Zalo → SMS → Call theo logic tự động</li>
+            <li>Event-triggered automation: score change, inactivity, milestone → auto action</li>
+            <li>Omni-channel attribution: multi-touch models, assisted conversion report</li>
+          </ul>
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.4);">
+          <span class="ftag">F1.7</span> <span class="ftag">F4.5</span> <span class="ftag">F4.6</span> <span class="ftag">F5.5</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Go-live 2 -->
+    <div class="milestone">
+      <span class="milestone-icon">🚀</span>
+      <div>
+        <div class="milestone-text">Go-live 2 — Khách hàng mới · Cuối tháng 8</div>
+        <div class="milestone-sub">43/43 features · Phase 4 + 5 hoàn thành · Acquisition + multi-channel đi vào production</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- THÁNG 9: BUFFER                        -->
+<!-- ═══════════════════════════════════════ -->
+
+<section class="section section-dark">
+  <div class="container">
+    <div class="section-label section-label-dark">Tháng 9</div>
+    <h2 class="section-title">Stabilization &amp; Rollout</h2>
+    <p style="color: rgba(255,255,255,0.6); margin-bottom: 32px;">Tháng buffer — không feature mới. Tập trung ổn định, tối ưu, training, rollout toàn bộ 3 BU.</p>
+
+    <div class="month-card">
+      <div class="month-header">
+        <span class="month-num">Tháng 9</span>
+        <span class="month-title">Buffer — Stabilize &amp; Optimize</span>
+        <span class="month-badge badge-buffer">Buffer</span>
+      </div>
+      <div class="month-body">
+        <table class="dev-table">
+          <thead><tr><th>Dev</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="dev-name">TL</td>
+              <td>Code review tổng thể, security audit, API documentation, architecture decision records</td>
+            </tr>
+            <tr>
+              <td class="dev-name">BE</td>
+              <td>Bug fixing backlog, API performance optimization, edge case handling</td>
+            </tr>
+            <tr>
+              <td class="dev-name">DE</td>
+              <td>Query optimization ClickHouse, score recalculation tuning, data quality audit, monitoring alert setup</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FE</td>
+              <td>UI polish, responsive testing, accessibility, loading states, error states</td>
+            </tr>
+            <tr>
+              <td class="dev-name">FD</td>
+              <td>Production hardening, backup verification, DR test, monitoring dashboard, training sessions cho 3 BU</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="deliverable">
+          <div class="deliverable-title">Mục tiêu tháng 9</div>
+          <ul>
+            <li>Bug count &lt; 5 critical, &lt; 20 minor</li>
+            <li>API p95 &lt; 500ms, Dashboard load &lt; 3s</li>
+            <li>Rollout cả 3 BU: Ngọc Dung, Zema, Ocany</li>
+            <li>Training completed cho tất cả user roles</li>
+            <li>Documentation: API docs, user guide, admin guide</li>
+            <li>Monitoring + alerting production hoạt động</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final milestone -->
+    <div class="milestone">
+      <span class="milestone-icon">🏁</span>
+      <div>
+        <div class="milestone-text">Project Complete · Cuối tháng 9</div>
+        <div class="milestone-sub">43 features · 11 modules · 5 phases · 3 BU live · Hệ thống ổn định sẵn sàng vận hành</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SUMMARY                                -->
+<!-- ═══════════════════════════════════════ -->
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">Summary</div>
+    <h2 class="section-title">Tổng kết phân bổ</h2>
+
+    <div style="display: flex; gap: 24px; margin: 32px 0; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 180px; text-align: center;">
+        <span style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: var(--primary); display: block;">30</span>
+        <span style="font-size: 14px; color: var(--ink-48);">KH cũ · Tháng 1–5</span>
+      </div>
+      <div style="flex: 0; display: flex; align-items: center;"><span style="font-size: 24px; color: var(--hairline);">+</span></div>
+      <div style="flex: 1; min-width: 180px; text-align: center;">
+        <span style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: #e65100; display: block;">13</span>
+        <span style="font-size: 14px; color: var(--ink-48);">KH mới · Tháng 6–8</span>
+      </div>
+      <div style="flex: 0; display: flex; align-items: center;"><span style="font-size: 24px; color: var(--hairline);">=</span></div>
+      <div style="flex: 1; min-width: 180px; text-align: center;">
+        <span style="font-family: var(--font-display); font-size: 48px; font-weight: 700; color: var(--green); display: block;">43</span>
+        <span style="font-size: 14px; color: var(--ink-48);">Tổng · 9 tháng</span>
+      </div>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 32px 0; font-size: 14px;">
+      <thead>
+        <tr>
+          <th style="text-align: left; padding: 10px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">Phase</th>
+          <th style="text-align: left; padding: 10px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">Tên</th>
+          <th style="text-align: center; padding: 10px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">Features</th>
+          <th style="text-align: left; padding: 10px 12px; font-size: 12px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">Tháng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid var(--hairline);">
+          <td style="padding: 12px;"><span style="color: #0066cc; font-weight: 600;">Phase 1</span></td>
+          <td style="padding: 12px; font-weight: 600;">Foundation — MVP</td>
+          <td style="padding: 12px; text-align: center;">16</td>
+          <td style="padding: 12px;">Tháng 1–3</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--hairline);">
+          <td style="padding: 12px;"><span style="color: #0d47a1; font-weight: 600;">Phase 2</span></td>
+          <td style="padding: 12px; font-weight: 600;">Activation</td>
+          <td style="padding: 12px; text-align: center;">10</td>
+          <td style="padding: 12px;">Tháng 4–5</td>
+        </tr>
+        <tr style="border-bottom: 2px solid var(--primary);">
+          <td style="padding: 12px;"><span style="color: #1a237e; font-weight: 600;">Phase 3</span></td>
+          <td style="padding: 12px; font-weight: 600;">Intelligence</td>
+          <td style="padding: 12px; text-align: center;">4</td>
+          <td style="padding: 12px;">Tháng 5 → <strong style="color: var(--green);">Go-live KH cũ</strong></td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--hairline);">
+          <td style="padding: 12px;"><span style="color: #e65100; font-weight: 600;">Phase 4</span></td>
+          <td style="padding: 12px; font-weight: 600;">Acquisition &amp; Multi-channel</td>
+          <td style="padding: 12px; text-align: center;">9</td>
+          <td style="padding: 12px;">Tháng 6–7</td>
+        </tr>
+        <tr style="border-bottom: 2px solid #e65100;">
+          <td style="padding: 12px;"><span style="color: #bf360c; font-weight: 600;">Phase 5</span></td>
+          <td style="padding: 12px; font-weight: 600;">Dealer &amp; Omni-channel</td>
+          <td style="padding: 12px; text-align: center;">4</td>
+          <td style="padding: 12px;">Tháng 8 → <strong style="color: var(--green);">Go-live KH mới</strong></td>
+        </tr>
+        <tr>
+          <td style="padding: 12px;"></td>
+          <td style="padding: 12px; color: var(--ink-48);">Buffer — Stabilization</td>
+          <td style="padding: 12px; text-align: center; color: var(--ink-48);">—</td>
+          <td style="padding: 12px; color: var(--ink-48);">Tháng 9</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 21px; font-weight: 600; margin: 40px 0 16px;">Feature checklist toàn bộ (43)</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+      <thead>
+        <tr>
+          <th style="text-align: left; padding: 8px 10px; font-size: 11px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">#</th>
+          <th style="text-align: left; padding: 8px 10px; font-size: 11px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">Feature</th>
+          <th style="text-align: center; padding: 8px 10px; font-size: 11px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">Phase</th>
+          <th style="text-align: center; padding: 8px 10px; font-size: 11px; color: var(--ink-48); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid var(--hairline);">Tháng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Data Connectors (POS, CRM, CSV)</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T1–2</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Data Pipeline &amp; Transformation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T1–2</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F2.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Identity Resolution</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T2–3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F2.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Customer 360 Profile</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T2</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F3.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Rule-based Segmentation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F3.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">RFM Analysis</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F5.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Dashboard Builder</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F6.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Lead Capture</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T2</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F6.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Lead Pipeline &amp; Conversion</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T4</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F7.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Consent Management</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T1</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F8.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Phân quyền đa cấp</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T1–2</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F10.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Unified Customer Score</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F10.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Monetary Score</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F10.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Engagement Score</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F10.6</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Health Score</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:2px solid var(--primary); color: var(--ink-48);">F10.8</td><td style="padding:6px 10px; border-bottom:2px solid var(--primary);">Score Configuration</td><td style="padding:6px 10px; border-bottom:2px solid var(--primary); text-align:center;"><span style="color:#0066cc; font-weight:600;">1</span></td><td style="padding:6px 10px; border-bottom:2px solid var(--primary); text-align:center;">T3</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F4.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Campaign Management</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T4</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F4.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Channel Integration</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T4</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F4.4</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Message Template Management</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T4</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F5.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Customer Analytics</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F5.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Campaign Analytics</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T4</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F6.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Lead Scoring</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T4</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F9.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Quản lý liệu trình</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F9.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Quản lý đại lý (Ocany)</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F10.4</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Loyalty Score</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:2px solid #0d47a1; color: var(--ink-48);">F10.5</td><td style="padding:6px 10px; border-bottom:2px solid #0d47a1;">Social Score</td><td style="padding:6px 10px; border-bottom:2px solid #0d47a1; text-align:center;"><span style="color:#0d47a1; font-weight:600;">2</span></td><td style="padding:6px 10px; border-bottom:2px solid #0d47a1; text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F3.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">AI-powered Segmentation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F4.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Marketing Automation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F9.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Cross-BU Recommendation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:2px solid #1a237e; color: var(--ink-48);">F10.7</td><td style="padding:6px 10px; border-bottom:2px solid #1a237e;">Predictive Scores</td><td style="padding:6px 10px; border-bottom:2px solid #1a237e; text-align:center;"><span style="color:#1a237e; font-weight:600;">3</span></td><td style="padding:6px 10px; border-bottom:2px solid #1a237e; text-align:center;">T5</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Ads Platform Connectors</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T6</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.4</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Social &amp; Messaging Connectors</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T6</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.5</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Call Center Integration</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T6</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F11.1</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Website Tracking SDK</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T6–7</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F11.2</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Mobile App Tracking SDK</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T7</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F11.3</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Landing Page &amp; Form Analytics</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T7</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F6.4</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Multi-source Lead Capture</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T7</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F6.5</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Lead Attribution &amp; UTM</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T7</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:2px solid #e65100; color: var(--ink-48);">F5.4</td><td style="padding:6px 10px; border-bottom:2px solid #e65100;">Acquisition &amp; Channel Analytics</td><td style="padding:6px 10px; border-bottom:2px solid #e65100; text-align:center;"><span style="color:#e65100; font-weight:600;">4</span></td><td style="padding:6px 10px; border-bottom:2px solid #e65100; text-align:center;">T7</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F1.7</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">DMS / Dealer Connector</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#bf360c; font-weight:600;">5</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T8</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F4.5</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Omni-channel Orchestration</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#bf360c; font-weight:600;">5</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T8</td></tr>
+        <tr><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); color: var(--ink-48);">F4.6</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline);">Event-triggered Automation</td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;"><span style="color:#bf360c; font-weight:600;">5</span></td><td style="padding:6px 10px; border-bottom:1px solid var(--hairline); text-align:center;">T8</td></tr>
+        <tr><td style="padding:6px 10px; color: var(--ink-48);">F5.5</td><td style="padding:6px 10px;">Omni-channel Attribution</td><td style="padding:6px 10px; text-align:center;"><span style="color:#bf360c; font-weight:600;">5</span></td><td style="padding:6px 10px; text-align:center;">T8</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- RISKS                                  -->
+<!-- ═══════════════════════════════════════ -->
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">Risk Management</div>
+    <h2 class="section-title">Rủi ro &amp; Giải pháp</h2>
+
+    <table class="risk-table">
+      <thead>
+        <tr><th>Rủi ro</th><th>Impact</th><th>Giải pháp</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1 Frontend cho toàn bộ 43 features</strong> — bottleneck rõ nhất</td>
+          <td><span class="risk-high">Cao</span></td>
+          <td>FD hỗ trợ FE từ tháng 3. Xem xét thêm 1 FE contract từ tháng 4. Ưu tiên preset UI trước custom builder.</td>
+        </tr>
+        <tr>
+          <td><strong>Tháng 5 dồn 10 features + UAT</strong> — quá tải trước go-live</td>
+          <td><span class="risk-high">Cao</span></td>
+          <td>AI features (F3.2, F10.7) làm MVP đơn giản, polish Phase 2. Tách UAT ra 2 tuần cuối, freeze feature từ tuần 3.</td>
+        </tr>
+        <tr>
+          <td><strong>Go-live KH cũ tạo bugs ảnh hưởng dev KH mới</strong></td>
+          <td><span class="risk-med">Trung bình</span></td>
+          <td>Dành 20% capacity tháng 6 cho bug fixing. Soft-launch 1 BU trước, không rollout 3 BU cùng lúc.</td>
+        </tr>
+        <tr>
+          <td><strong>POS/CRM không có API hoặc API kém</strong></td>
+          <td><span class="risk-high">Cao</span></td>
+          <td>Khảo sát API hệ thống nguồn TRƯỚC tháng 1. Fallback: CSV import + webhook đẩy data.</td>
+        </tr>
+        <tr>
+          <td><strong>Data quality kém từ hệ thống cũ</strong></td>
+          <td><span class="risk-med">Trung bình</span></td>
+          <td>Phase data cleaning trước import. Dead letter queue cho record lỗi. Chấp nhận 80% clean ban đầu, improve dần.</td>
+        </tr>
+        <tr>
+          <td><strong>Ads/Social API thay đổi hoặc bị giới hạn</strong></td>
+          <td><span class="risk-med">Trung bình</span></td>
+          <td>Dùng API version ổn định (không beta). Error handling + retry. Connector framework từ tháng 1 giúp adapt nhanh.</td>
+        </tr>
+        <tr>
+          <td><strong>User adoption thấp</strong></td>
+          <td><span class="risk-high">Cao</span></td>
+          <td>Training từ tháng 5 (KH cũ go-live). UX đơn giản. Tích hợp vào workflow hiện tại thay vì bắt đổi.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 21px; font-weight: 600; margin: 40px 0 16px;">Khuyến nghị</h3>
+    <ol style="font-size: 15px; line-height: 1.8; padding-left: 20px; color: var(--ink-80);">
+      <li><strong>Thêm 1 Frontend (contract)</strong> từ tháng 3 — đây là nút thắt cổ chai lớn nhất của toàn bộ kế hoạch</li>
+      <li><strong>Khảo sát API hệ thống nguồn</strong> (POS, CRM từng BU) trước khi bắt đầu — tránh bất ngờ tháng 1</li>
+      <li><strong>Soft-launch 1 BU</strong> (Ngọc Dung) khi go-live — không rollout 3 BU cùng lúc</li>
+      <li><strong>Feature freeze trước go-live 2 tuần</strong> — chỉ fix bugs, không thêm feature</li>
+      <li><strong>Connector framework</strong> xây tháng 1–2 → tận dụng lại cho tất cả connectors Phase 4–5</li>
+      <li><strong>Tháng 9 buffer rất quan trọng</strong> — không thêm feature mới, chỉ stabilize và rollout</li>
+    </ol>
+
+    <h3 style="font-size: 21px; font-weight: 600; margin: 40px 0 16px;">Out of scope (để sau)</h3>
+    <ul style="font-size: 15px; line-height: 1.8; color: var(--ink-48);">
+      <li>E-commerce Connectors (Shopee, Lazada, TikTok Shop)</li>
+      <li>Online-Offline Order Unification</li>
+      <li>Mobile app cho khách hàng cuối</li>
+      <li>AI chatbot phục vụ khách hàng</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>CDP TheAdvance · Release Plan v1.0 · 2026-06-19 · Confidential</p>
+  <p style="margin-top: 8px;">Tài liệu liên quan: <a href="cdp_spec.html" style="color: rgba(255,255,255,0.5);">Specification v1.2</a></p>
+</footer>
+
+</body>
+</html>

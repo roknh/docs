@@ -616,6 +616,18 @@
   .dark-table td { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.06); }
   .dark-table tr:hover td { background: rgba(255,255,255,0.04); }
 
+  /* Auto dark tables inside dark sections */
+  .section-dark .table-wrap,
+  .section-dark-2 .table-wrap { border-color: rgba(255,255,255,0.1); }
+  .section-dark thead tr,
+  .section-dark-2 thead tr { background: rgba(255,255,255,0.06); }
+  .section-dark th,
+  .section-dark-2 th { color: rgba(255,255,255,0.5); border-bottom-color: rgba(255,255,255,0.12); }
+  .section-dark td,
+  .section-dark-2 td { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.06); }
+  .section-dark tr:hover td,
+  .section-dark-2 tr:hover td { background: rgba(255,255,255,0.04); }
+
   /* ── Code blocks ── */
   pre {
     background: var(--surface-tile-1);
@@ -1323,7 +1335,7 @@
 
 <!-- Sub Nav -->
 <div class="sub-nav">
-  <span class="sub-nav-title">Specification v1.1</span>
+  <span class="sub-nav-title">Specification v1.2</span>
   <span class="sub-nav-badge pending">🟡 Chờ xác nhận</span>
 </div>
 
@@ -1347,7 +1359,8 @@
         <li><a href="#sec-roles">2.1 User roles</a></li>
         <li><a href="#sec-modules">Tổng quan Modules</a></li>
         <li><a href="#sec-features">2.2 Feature list</a></li>
-        <li><a href="#sec-details">2.3 Chi tiết tính năng</a></li>
+        <li><a href="#sec-details">2.3 Chi tiết (Phase 1–3)</a></li>
+        <li><a href="#module-1-expanded">2.4 Chi tiết (Phase 4–5)</a></li>
       </ul>
       <li class="toc-divider" aria-hidden="true"></li>
       <li><a href="#sec-nfr">3. Yêu cầu phi chức năng</a></li>
@@ -1355,10 +1368,9 @@
       <li><a href="#sec-data">5. Dữ liệu</a></li>
       <li><a href="#sec-integration">6. Tích hợp</a></li>
       <li><a href="#sec-platform">7. Platform</a></li>
-      <li><a href="#sec-phases">8. Kế hoạch phase</a></li>
-      <li><a href="#sec-risks">9. Rủi ro &amp; giả định</a></li>
-      <li><a href="#sec-glossary">10. Glossary</a></li>
-      <li><a href="#sec-changelog">11. Changelog</a></li>
+      <li><a href="#sec-risks">8. Rủi ro &amp; giả định</a></li>
+      <li><a href="#sec-glossary">9. Glossary</a></li>
+      <li><a href="#sec-changelog">10. Changelog</a></li>
       <li class="toc-divider" aria-hidden="true"></li>
     </ul>
   </aside>
@@ -1489,6 +1501,8 @@
                 <li>E-commerce platform</li>
                 <li>Hệ thống kế toán / ERP</li>
                 <li>AI chatbot phục vụ khách hàng</li>
+                <li>E-commerce integration (Shopee, Lazada, TikTok Shop) — để phase sau</li>
+                <li>Online-Offline Order Unification — phụ thuộc e-commerce</li>
               </ul>
             </div>
           </div>
@@ -1534,7 +1548,7 @@
         <!-- 2.1b Module Overview -->
         <div id="sec-modules" style="margin-bottom: 48px;">
           <h3 class="subsection-title">Tổng quan Modules</h3>
-          <p style="color: rgba(255,255,255,0.65); margin-bottom: 20px;">CDP được chia thành 10 module, mỗi module đảm nhận một mảng chức năng riêng biệt:</p>
+          <p style="color: rgba(255,255,255,0.65); margin-bottom: 20px;">CDP được chia thành 11 module, mỗi module đảm nhận một mảng chức năng riêng biệt:</p>
           <div class="dark-table">
             <div class="table-wrap">
               <table>
@@ -1542,21 +1556,22 @@
                   <tr><th>#</th><th>Module</th><th>Mô tả</th><th>Số features</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td>M1</td><td><strong>Data Integration</strong></td><td>Thu thập và chuẩn hoá dữ liệu từ mọi nguồn (POS, CRM, App, Zalo, Ads...)</td><td>2</td></tr>
+                  <tr><td>M1</td><td><strong>Data Integration</strong></td><td>Thu thập và chuẩn hoá dữ liệu từ mọi nguồn (POS, CRM, Ads, Social, Call Center, DMS...)</td><td>6</td></tr>
                   <tr><td>M2</td><td><strong>Identity &amp; Profile</strong></td><td>Hợp nhất danh tính khách hàng, xây dựng Customer 360</td><td>2</td></tr>
                   <tr><td>M3</td><td><strong>Segmentation</strong></td><td>Phân khúc khách hàng theo rule, AI, và RFM</td><td>3</td></tr>
-                  <tr><td>M4</td><td><strong>Campaign &amp; Activation</strong></td><td>Quản lý campaign, template nội dung, automation workflow, kết nối kênh gửi</td><td>4</td></tr>
-                  <tr><td>M5</td><td><strong>Analytics &amp; Reporting</strong></td><td>Dashboard, phân tích khách hàng và campaign</td><td>3</td></tr>
-                  <tr><td>M6</td><td><strong>Lead Management</strong></td><td>Thu lead, chấm điểm lead, theo dõi chuyển đổi</td><td>3</td></tr>
+                  <tr><td>M4</td><td><strong>Campaign &amp; Activation</strong></td><td>Quản lý campaign, template nội dung, automation workflow, omni-channel orchestration</td><td>6</td></tr>
+                  <tr><td>M5</td><td><strong>Analytics &amp; Reporting</strong></td><td>Dashboard, phân tích khách hàng, campaign, acquisition &amp; attribution</td><td>5</td></tr>
+                  <tr><td>M6</td><td><strong>Lead Management</strong></td><td>Thu lead đa kênh, chấm điểm lead, attribution, theo dõi chuyển đổi</td><td>5</td></tr>
                   <tr><td>M7</td><td><strong>Consent &amp; Privacy</strong></td><td>Quản lý đồng ý, tuân thủ quy định dữ liệu</td><td>1</td></tr>
                   <tr><td>M8</td><td><strong>Access Control</strong></td><td>Phân quyền đa cấp theo BU, chi nhánh, vai trò</td><td>1</td></tr>
-                  <tr><td>M9</td><td><strong>Features đặc thù ngành</strong></td><td>Quản lý liệu trình (thẩm mỹ), đại lý, cross-BU</td><td>3</td></tr>
+                  <tr><td>M9</td><td><strong>Features đặc thù ngành</strong></td><td>Quản lý liệu trình (thẩm mỹ), đại lý, cross-BU recommendation</td><td>3</td></tr>
                   <tr><td>M10</td><td><strong>Customer Scoring</strong></td><td>Bộ điểm thống nhất: Health, Engagement, Monetary, Loyalty, Predictive</td><td>8</td></tr>
+                  <tr><td>M11</td><td><strong>Digital Tracking</strong></td><td>Website tracking SDK, Mobile App SDK, Landing Page &amp; Form analytics</td><td>3</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 12px;">Tổng cộng: <strong style="color: rgba(255,255,255,0.8);">10 modules, 30 features</strong> &mdash; triển khai qua 3 phase.</p>
+          <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 12px;">Tổng cộng: <strong style="color: rgba(255,255,255,0.8);">11 modules, 43 features</strong> &mdash; triển khai qua 5 phase. Phase 1–3: khách hàng hiện hữu (POS/CRM). Phase 4–5: acquisition, multi-channel, omni-channel. E-commerce (Shopee, Lazada, TikTok Shop) nằm ngoài scope hiện tại.</p>
         </div>
 
         <!-- 2.2 Feature List -->
@@ -1630,6 +1645,40 @@
                   <tr><td>F10.6</td><td>Health Score</td><td>Scoring</td><td><span class="priority-badge priority-M">M</span></td><td><span class="phase-badge">Phase 1</span></td></tr>
                   <tr><td>F10.7</td><td>Predictive Scores (Churn, Upsell, Cross-BU)</td><td>Scoring</td><td><span class="priority-badge priority-C">C</span></td><td><span class="phase-badge">Phase 3</span></td></tr>
                   <tr><td>F10.8</td><td>Score Configuration &amp; Governance</td><td>Scoring</td><td><span class="priority-badge priority-M">M</span></td><td><span class="phase-badge">Phase 1</span></td></tr>
+                  <tr style="background: rgba(41,151,255,0.06);">
+                    <td colspan="5"><strong style="color: var(--primary-on-dark);">── PHASE 4–5: Acquisition &amp; Multi-channel ──</strong></td>
+                  </tr>
+                  <tr style="background: rgba(41,151,255,0.06);">
+                    <td colspan="5"><strong style="color: var(--primary-on-dark);">Module 1: Data Integration (mở rộng)</strong></td>
+                  </tr>
+                  <tr><td>F1.3</td><td>Ads Platform Connectors (FB Ads, Google Ads, TikTok Ads)</td><td>Integration</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr><td>F1.4</td><td>Social &amp; Messaging Connectors (Zalo OA, Facebook Page)</td><td>Integration</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr><td>F1.5</td><td>Call Center / Tổng đài Integration</td><td>Integration</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr><td>F1.7</td><td>DMS / Dealer System Connector (Ocany)</td><td>Integration</td><td><span class="priority-badge priority-C">C</span></td><td><span class="phase-badge">Phase 5</span></td></tr>
+                  <tr style="background: rgba(41,151,255,0.06);">
+                    <td colspan="5"><strong style="color: var(--primary-on-dark);">Module 11: Digital Tracking (mới)</strong></td>
+                  </tr>
+                  <tr><td>F11.1</td><td>Website Tracking SDK (JavaScript)</td><td>Tracking</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr><td>F11.2</td><td>Mobile App Tracking SDK</td><td>Tracking</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr><td>F11.3</td><td>Landing Page &amp; Form Analytics</td><td>Tracking</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr style="background: rgba(41,151,255,0.06);">
+                    <td colspan="5"><strong style="color: var(--primary-on-dark);">Module 4: Campaign (mở rộng)</strong></td>
+                  </tr>
+                  <tr><td>F4.5</td><td>Omni-channel Orchestration</td><td>Campaign</td><td><span class="priority-badge priority-C">C</span></td><td><span class="phase-badge">Phase 5</span></td></tr>
+                  <tr><td>F4.6</td><td>Event-triggered Automation</td><td>Campaign</td><td><span class="priority-badge priority-C">C</span></td><td><span class="phase-badge">Phase 5</span></td></tr>
+                  <tr style="background: rgba(41,151,255,0.06);">
+                    <td colspan="5"><strong style="color: var(--primary-on-dark);">Module 5: Analytics (mở rộng)</strong></td>
+                  </tr>
+                  <tr><td>F5.4</td><td>Acquisition &amp; Channel Analytics</td><td>Analytics</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr><td>F5.5</td><td>Omni-channel Attribution</td><td>Analytics</td><td><span class="priority-badge priority-C">C</span></td><td><span class="phase-badge">Phase 5</span></td></tr>
+                  <tr style="background: rgba(41,151,255,0.06);">
+                    <td colspan="5"><strong style="color: var(--primary-on-dark);">Module 6: Lead Management (mở rộng)</strong></td>
+                  </tr>
+                  <tr><td>F6.4</td><td>Multi-source Lead Capture (Ads, Landing Page, Social)</td><td>Lead</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr><td>F6.5</td><td>Lead Attribution &amp; UTM Tracking</td><td>Lead</td><td><span class="priority-badge priority-S">S</span></td><td><span class="phase-badge">Phase 4</span></td></tr>
+                  <tr style="background: rgba(41,151,255,0.06);">
+                    <td colspan="5"><strong style="color: var(--primary-on-dark);">Module 9: Features đặc thù (mở rộng)</strong></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -2944,6 +2993,519 @@
       </div>
     </section>
 
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- PHASE 4–5: Acquisition & Multi-channel Feature Details -->
+    <!-- ════════════════════════════════════════════════════════ -->
+
+    <!-- Module 1 expanded — Phase 4 connectors -->
+    <section class="section-parchment section-anchor" id="module-1-expanded">
+      <div class="section-inner">
+        <div class="module-header">
+          <div class="module-num">M1+</div>
+          <div class="module-info">
+            <div class="module-name">Data Integration — Mở rộng</div>
+            <div class="module-desc">Kết nối Ads, Social, Call Center, E-commerce, DMS</div>
+          </div>
+        </div>
+
+        <!-- F1.3 -->
+        <div class="feature-card" id="f1-3">
+          <div class="feature-card-header">
+            <span class="feature-id">F1.3</span>
+            <h4 class="feature-title" style="margin:0;">Ads Platform Connectors</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>marketing manager</strong>, tôi muốn <strong>kết nối dữ liệu quảng cáo từ các nền tảng ads</strong> vào CDP, để <strong>đo lường chi phí thu hút khách và tối ưu ROAS</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Platforms kết nối:</h5>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Platform</th><th>Data thu thập</th><th>Tần suất</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td><strong>Facebook / Meta Ads</strong></td><td>Campaign, ad set, ad metrics (impression, click, spend, conversion), lead form submissions</td><td>API batch mỗi 6h</td></tr>
+                <tr><td>2</td><td><strong>Google Ads</strong></td><td>Campaign, keyword, click, cost, conversion, search term</td><td>API batch daily</td></tr>
+                <tr><td>3</td><td><strong>TikTok Ads</strong></td><td>Campaign metrics, video view, engagement, conversion</td><td>API batch daily</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>OAuth connect cho từng platform — không lưu password, chỉ token</li>
+            <li>Auto-refresh token khi hết hạn</li>
+            <li>Map conversion event từ ads platform → lead/transaction trong CDP</li>
+            <li>Dashboard hiển thị: spend, CPL (Cost Per Lead), CPA (Cost Per Acquisition), ROAS theo campaign</li>
+            <li>Upload custom audience từ CDP segment → ads platform (FB Custom Audience, Google Customer Match)</li>
+          </ul>
+
+          <div class="edge-cases">
+            <div class="edge-cases-title">Edge Cases</div>
+            <ul>
+              <li>Ads account bị disable / token hết hạn → alert + hướng dẫn reconnect</li>
+              <li>Nhiều ads account cho cùng 1 BU → hỗ trợ multi-account</li>
+              <li>Conversion tracking cross-device → match bằng email/phone khi có</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- F1.4 -->
+        <div class="feature-card" id="f1-4">
+          <div class="feature-card-header">
+            <span class="feature-id">F1.4</span>
+            <h4 class="feature-title" style="margin:0;">Social &amp; Messaging Connectors</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>CS manager</strong>, tôi muốn <strong>dữ liệu tương tác từ Zalo OA và Facebook Page</strong> tự động vào CDP, để <strong>thấy toàn bộ lịch sử chat/tương tác trong Customer 360</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Channels:</h5>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Channel</th><th>BU</th><th>Data thu thập</th><th>Cách kết nối</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Zalo OA</strong></td><td>Cả 3</td><td>Follower, message in/out, reaction, broadcast result</td><td>Zalo OA API + Webhook</td></tr>
+                <tr><td><strong>Facebook Page</strong></td><td>Cả 3</td><td>Comment, message, reaction, review</td><td>Graph API + Webhook</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Auto-match: Zalo user → CDP profile bằng SĐT (Zalo OA cung cấp SĐT khi user consent)</li>
+            <li>Tin nhắn hiển thị trong timeline Customer 360</li>
+            <li>Đếm interaction để tính Engagement Score &amp; Social Score</li>
+            <li>Segment theo social engagement: "Follower Zalo nhưng chưa mua", "Đã chat nhưng chưa đặt hẹn"</li>
+          </ul>
+
+          <div class="edge-cases">
+            <div class="edge-cases-title">Edge Cases</div>
+            <ul>
+              <li>Zalo user không share SĐT → lưu anonymous interaction, merge khi có SĐT sau</li>
+              <li>Facebook user comment bằng nickname → không merge được, lưu riêng</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- F1.5 -->
+        <div class="feature-card" id="f1-5">
+          <div class="feature-card-header">
+            <span class="feature-id">F1.5</span>
+            <h4 class="feature-title" style="margin:0;">Call Center / Tổng đài Integration</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>telesale manager</strong>, tôi muốn <strong>dữ liệu cuộc gọi từ tổng đài</strong> tự động vào CDP, để <strong>theo dõi hiệu suất gọi và lịch sử tương tác qua điện thoại</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Data thu thập:</h5>
+          <ul class="styled">
+            <li><strong>Call metadata:</strong> thời gian, thời lượng, hướng (inbound/outbound), agent, disposition (thành công/không nghe/hẹn gọi lại)</li>
+            <li><strong>Recording link:</strong> link file ghi âm (không lưu file trong CDP, chỉ link)</li>
+            <li><strong>Caller ID:</strong> SĐT khách → auto-match với CDP profile</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Kết nối qua webhook hoặc API từ tổng đài (StringeeX, UCALL, Viettel...)</li>
+            <li>Cuộc gọi hiển thị trong timeline Customer 360 với icon riêng</li>
+            <li>Đếm số cuộc gọi để tính Engagement Score</li>
+            <li>Report: tỷ lệ nghe máy, thời lượng trung bình, conversion sau cuộc gọi</li>
+          </ul>
+        </div>
+
+        <!-- F1.7 -->
+        <div class="feature-card" id="f1-7">
+          <div class="feature-card-header">
+            <span class="feature-id">F1.7</span>
+            <h4 class="feature-title" style="margin:0;">DMS / Dealer System Connector</h4>
+            <span class="priority-badge priority-C">Could</span>
+            <span class="phase-badge">Phase 5</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>Ocany distribution manager</strong>, tôi muốn <strong>kết nối dữ liệu từ hệ thống quản lý đại lý (DMS)</strong> vào CDP, để <strong>theo dõi sell-in, sell-out và health score từng đại lý</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Data thu thập:</h5>
+          <ul class="styled">
+            <li><strong>Đại lý profile:</strong> mã, tên, khu vực, tier, hợp đồng, contact person</li>
+            <li><strong>Sell-in:</strong> đơn nhập hàng từ Ocany → đại lý</li>
+            <li><strong>Sell-out:</strong> doanh số bán ra của đại lý (nếu DMS track được)</li>
+            <li><strong>Tồn kho NPP:</strong> hàng tồn tại từng đại lý</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Sync data theo batch (hàng ngày) hoặc API push từ DMS</li>
+            <li>Đại lý được model như 1 loại "customer" đặc biệt trong CDP (B2B profile)</li>
+            <li>Dealer Health Score tự động tính từ: order frequency, order value trend, payment timeliness</li>
+            <li>Dashboard riêng cho dealer performance (xem F9.2)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module 11: Digital Tracking -->
+    <section class="section-dark section-anchor" id="module-11">
+      <div class="section-inner">
+        <div class="module-header" style="background: rgba(41,151,255,0.08); border-left-color: var(--primary-on-dark);">
+          <div class="module-num" style="color: var(--primary-on-dark);">M11</div>
+          <div class="module-info">
+            <div class="module-name" style="color: white;">Digital Tracking</div>
+            <div class="module-desc">Website SDK, Mobile SDK, Landing Page analytics</div>
+          </div>
+        </div>
+
+        <!-- F11.1 -->
+        <div class="feature-card-dark" id="f11-1">
+          <div class="feature-card-header">
+            <span class="feature-id feature-id-dark">F11.1</span>
+            <h4 class="feature-title" style="margin:0; color:white;">Website Tracking SDK</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>marketing team</strong>, tôi muốn <strong>theo dõi hành vi khách trên website</strong> (xem trang, click, tìm kiếm, đặt hẹn), để <strong>hiểu intent và retarget hiệu quả</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Cách hoạt động:</h5>
+          <ul class="styled">
+            <li><strong>JavaScript snippet</strong> nhúng vào tất cả website của 3 BU</li>
+            <li>Tự động track: page view, click, scroll depth, time on page, form interaction</li>
+            <li>Custom event: book appointment, add to cart, search, register</li>
+            <li>Ghi nhận UTM parameters: source, medium, campaign, content, term</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Identity matching:</h5>
+          <ul class="styled">
+            <li>Anonymous visitor → cookie/fingerprint ID</li>
+            <li>Khi login/register → merge anonymous session vào CDP profile</li>
+            <li>Khi submit form có SĐT/email → merge vào profile</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>SDK lightweight: &lt; 15KB gzip, không ảnh hưởng page load (&lt; 50ms)</li>
+            <li>Gửi event qua API endpoint CDP (batch mỗi 5 giây hoặc khi rời trang)</li>
+            <li>Hỗ trợ SPA (Single Page Application) — track route change</li>
+            <li>Config qua dashboard: chọn event nào track, domain nào cho phép</li>
+            <li>Tôn trọng consent: nếu khách từ chối tracking → không gửi event</li>
+          </ul>
+
+          <div class="edge-cases">
+            <div class="edge-cases-title">Edge Cases</div>
+            <ul>
+              <li>Ad blocker chặn SDK → graceful fail, không lỗi JS trên trang</li>
+              <li>User xoá cookie → tạo anonymous session mới, merge khi login lại</li>
+              <li>Nhiều tab cùng lúc → dedup event, gộp thành 1 session</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- F11.2 -->
+        <div class="feature-card-dark" id="f11-2">
+          <div class="feature-card-header">
+            <span class="feature-id feature-id-dark">F11.2</span>
+            <h4 class="feature-title" style="margin:0; color:white;">Mobile App Tracking SDK</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>product manager</strong>, tôi muốn <strong>theo dõi hành vi khách trên mobile app</strong> (Ngọc Dung, Zema), để <strong>đo app engagement và tối ưu trải nghiệm</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Events cần track:</h5>
+          <ul class="styled">
+            <li><strong>Lifecycle:</strong> app install, app open, app close, app update</li>
+            <li><strong>Navigation:</strong> screen view, button tap, swipe</li>
+            <li><strong>Business:</strong> book appointment, view treatment, view promotion, purchase</li>
+            <li><strong>Engagement:</strong> push notification received/opened/dismissed, in-app message click</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>SDK cho iOS (Swift) và Android (Kotlin) — hoặc cross-platform (React Native / Flutter)</li>
+            <li>User ID gắn khi login → merge với CDP profile</li>
+            <li>Device info: OS version, app version, device model → để segment</li>
+            <li>Offline support: queue event khi mất mạng, gửi khi có mạng lại</li>
+            <li>SDK size: &lt; 500KB thêm vào app</li>
+          </ul>
+        </div>
+
+        <!-- F11.3 -->
+        <div class="feature-card-dark" id="f11-3">
+          <div class="feature-card-header">
+            <span class="feature-id feature-id-dark">F11.3</span>
+            <h4 class="feature-title" style="margin:0; color:white;">Landing Page &amp; Form Analytics</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>performance marketing</strong>, tôi muốn <strong>đo chi tiết hiệu quả từng landing page và form</strong>, để <strong>biết LP nào convert tốt, form nào bị drop</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Metrics tracking:</h5>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Event</th><th>Mô tả</th><th>Ý nghĩa</th></tr></thead>
+              <tbody>
+                <tr><td><strong>LP Page View</strong></td><td>Mở landing page + UTM source/medium/campaign/ad_id</td><td>Traffic volume &amp; source</td></tr>
+                <tr><td><strong>LP Form Focus</strong></td><td>Click vào ô đầu tiên của form</td><td>Intent rate</td></tr>
+                <tr><td><strong>LP Form Input</strong></td><td>Điền từng field (track field-by-field)</td><td>Biết bỏ ở bước nào</td></tr>
+                <tr><td><strong>LP Form Submit</strong></td><td>Gửi form thành công → tạo Lead</td><td>Conversion rate</td></tr>
+                <tr><td><strong>LP Form Abandon</strong></td><td>Đã nhập nhưng không submit (rời trang/timeout 60s)</td><td>Drop-off rate</td></tr>
+                <tr><td><strong>LP Scroll Depth</strong></td><td>25% / 50% / 75% / 100%</td><td>Content engagement</td></tr>
+                <tr><td><strong>LP Time on Page</strong></td><td>Thời gian trước khi submit hoặc rời</td><td>Quality of traffic</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Dashboard riêng cho LP performance: traffic → form focus → form input → submit (funnel)</li>
+            <li>Breakdown theo UTM source: FB Ads vs Google Ads vs TikTok → LP nào + source nào convert tốt nhất</li>
+            <li>Heatmap-lite: biết field nào hay bị bỏ trống → gợi ý rút gọn form</li>
+            <li>Auto-create Lead khi form submit + gắn attribution (UTM + ad_id)</li>
+            <li>A/B comparison: so sánh 2 LP cùng campaign</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Expanded modules — Phase 4-5 features -->
+    <section class="section-light section-anchor" id="module-expanded-phase4-5">
+      <div class="section-inner">
+
+        <!-- F6.4 -->
+        <div class="module-header">
+          <div class="module-num">M6+</div>
+          <div class="module-info">
+            <div class="module-name">Lead Management — Mở rộng</div>
+            <div class="module-desc">Multi-source capture &amp; attribution</div>
+          </div>
+        </div>
+
+        <div class="feature-card" id="f6-4">
+          <div class="feature-card-header">
+            <span class="feature-id">F6.4</span>
+            <h4 class="feature-title" style="margin:0;">Multi-source Lead Capture</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>marketing team</strong>, tôi muốn <strong>lead từ mọi nguồn (FB Ads, Google, Zalo, Landing Page, Walk-in) tự động vào CDP</strong>, để <strong>không bỏ sót lead nào và xử lý nhanh</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Nguồn lead:</h5>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Nguồn</th><th>Cách capture</th><th>Data</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Facebook Lead Ads</strong></td><td>Webhook từ FB → CDP</td><td>Tên, SĐT, email, dịch vụ quan tâm, ad_id, campaign</td></tr>
+                <tr><td><strong>Google Ads (call/form)</strong></td><td>Google Ads API conversion</td><td>Click ID, keyword, campaign, conversion type</td></tr>
+                <tr><td><strong>TikTok Lead Ads</strong></td><td>TikTok API</td><td>Tên, SĐT, form fields</td></tr>
+                <tr><td><strong>Landing Page form</strong></td><td>F11.3 tracking → auto-create lead</td><td>Form fields + UTM + scroll/time metrics</td></tr>
+                <tr><td><strong>Zalo OA</strong></td><td>Chat intent detection / form trong Zalo</td><td>SĐT, nội dung chat, dịch vụ quan tâm</td></tr>
+                <tr><td><strong>Walk-in / Gọi đến</strong></td><td>Staff nhập thủ công hoặc từ POS</td><td>SĐT, dịch vụ, chi nhánh</td></tr>
+                <tr><td><strong>Referral</strong></td><td>Khách giới thiệu qua link/code</td><td>Người giới thiệu, người được giới thiệu</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Lead từ mọi nguồn về cùng 1 pipeline, hiển thị rõ nguồn</li>
+            <li>Dedup: nếu lead đã tồn tại (trùng SĐT) → update, không tạo mới</li>
+            <li>Auto-assign theo rule: lead chi nhánh Q1 → assign telesale Q1</li>
+            <li>SLA tracking: lead phải được gọi trong vòng X phút (cấu hình được)</li>
+            <li>Lead velocity: bao nhiêu lead/ngày theo từng nguồn → dashboard real-time</li>
+          </ul>
+
+          <div class="edge-cases">
+            <div class="edge-cases-title">Edge Cases</div>
+            <ul>
+              <li>Cùng 1 người submit form trên cả FB Ads + Landing Page → merge thành 1 lead, ghi nhận cả 2 touchpoint</li>
+              <li>Lead từ ads về ngoài giờ làm việc → queue, assign sáng hôm sau</li>
+              <li>SĐT ảo / spam → detect pattern (nhiều lead cùng SĐT/IP trong thời gian ngắn) → flag review</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- F6.5 -->
+        <div class="feature-card" id="f6-5">
+          <div class="feature-card-header">
+            <span class="feature-id">F6.5</span>
+            <h4 class="feature-title" style="margin:0;">Lead Attribution &amp; UTM Tracking</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>marketing director</strong>, tôi muốn <strong>biết chính xác lead đến từ campaign nào, quảng cáo nào, keyword nào</strong>, để <strong>biết đổ tiền vào đâu hiệu quả nhất</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Attribution model:</h5>
+          <ul class="styled">
+            <li><strong>First touch:</strong> lead được gán cho touchpoint đầu tiên (vd: click FB Ads lần đầu)</li>
+            <li><strong>Last touch:</strong> lead được gán cho touchpoint cuối trước khi submit form</li>
+            <li><strong>Multi-touch:</strong> ghi nhận tất cả touchpoint trong hành trình (xem LP → click Zalo → gọi hotline → submit form)</li>
+          </ul>
+
+          <h5 class="sub-feature-title">UTM tracking:</h5>
+          <ul class="styled">
+            <li>Parse và lưu: <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, <code>utm_content</code>, <code>utm_term</code></li>
+            <li>Lưu thêm: <code>fbclid</code>, <code>gclid</code>, <code>ttclid</code> để match với ads platform</li>
+            <li>Gắn attribution vào Lead → theo suốt đến khi convert thành customer</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Mỗi lead có full attribution chain: touchpoint 1 → 2 → ... → convert</li>
+            <li>Report: CPL (Cost Per Lead) theo source/campaign/ad set/keyword</li>
+            <li>Report: Lead-to-Customer conversion rate theo source</li>
+            <li>So sánh first-touch vs last-touch attribution → insight khác nhau</li>
+            <li>Dashboard: funnel từ impression → click → LP view → form submit → lead → customer</li>
+          </ul>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- F5.4 -->
+        <div class="module-header" style="margin-top: 48px;">
+          <div class="module-num">M5+</div>
+          <div class="module-info">
+            <div class="module-name">Analytics — Mở rộng</div>
+            <div class="module-desc">Acquisition analytics &amp; omni-channel attribution</div>
+          </div>
+        </div>
+
+        <div class="feature-card" id="f5-4">
+          <div class="feature-card-header">
+            <span class="feature-id">F5.4</span>
+            <h4 class="feature-title" style="margin:0;">Acquisition &amp; Channel Analytics</h4>
+            <span class="priority-badge priority-S">Should</span>
+            <span class="phase-badge">Phase 4</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>CMO</strong>, tôi muốn <strong>dashboard đo hiệu quả thu hút khách mới theo từng kênh</strong>, để <strong>phân bổ ngân sách marketing tối ưu</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Metrics chính:</h5>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Metric</th><th>Mô tả</th><th>Breakdown</th></tr></thead>
+              <tbody>
+                <tr><td><strong>CAC</strong></td><td>Chi phí trung bình để có 1 khách mới</td><td>Theo BU, kênh, campaign</td></tr>
+                <tr><td><strong>CPL</strong></td><td>Chi phí trung bình để có 1 lead</td><td>Theo source, campaign, ad set</td></tr>
+                <tr><td><strong>ROAS</strong></td><td>Doanh thu / chi phí quảng cáo</td><td>Theo platform, campaign</td></tr>
+                <tr><td><strong>Lead-to-Customer rate</strong></td><td>% lead chuyển đổi thành khách</td><td>Theo source, BU</td></tr>
+                <tr><td><strong>Time-to-Convert</strong></td><td>Thời gian trung bình từ lead → customer</td><td>Theo source, dịch vụ</td></tr>
+                <tr><td><strong>Channel mix</strong></td><td>Tỷ lệ khách mới theo kênh</td><td>Trend theo tháng</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Dashboard tổng quan acquisition: lead volume, conversion, CAC, ROAS — filter theo BU, thời gian</li>
+            <li>So sánh kênh: FB Ads vs Google vs Zalo vs Organic vs Referral</li>
+            <li>Cohort analysis: khách acquire tháng X → retention/LTV sau 3/6/12 tháng</li>
+            <li>Budget recommendation: "Tăng 20% budget Google Ads vì ROAS cao gấp 2 FB Ads"</li>
+            <li>Export report PDF/Excel cho ban lãnh đạo</li>
+          </ul>
+        </div>
+
+        <!-- F5.5 -->
+        <div class="feature-card" id="f5-5">
+          <div class="feature-card-header">
+            <span class="feature-id">F5.5</span>
+            <h4 class="feature-title" style="margin:0;">Omni-channel Attribution</h4>
+            <span class="priority-badge priority-C">Could</span>
+            <span class="phase-badge">Phase 5</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>data analyst</strong>, tôi muốn <strong>xem toàn bộ hành trình khách hàng xuyên suốt các kênh</strong> (online → offline → online), để <strong>hiểu touchpoint nào thật sự ảnh hưởng đến quyết định mua</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Chi tiết:</h5>
+          <ul class="styled">
+            <li><strong>Journey visualization:</strong> timeline toàn bộ touchpoint: xem quảng cáo → vào LP → chat Zalo → đến spa → mua</li>
+            <li><strong>Multi-touch attribution models:</strong> Linear, Time-decay, Position-based, Data-driven (AI)</li>
+            <li><strong>Cross-channel analysis:</strong> khách tiếp xúc online trước → convert offline (và ngược lại)</li>
+            <li><strong>Assisted conversion:</strong> kênh nào "hỗ trợ" conversion dù không phải last-touch</li>
+          </ul>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Journey map visualization: Sankey diagram hoặc timeline cho top 10 common journeys</li>
+            <li>So sánh kết quả giữa các attribution model cho cùng 1 dataset</li>
+            <li>Report: "Zalo OA ít convert trực tiếp nhưng hỗ trợ 35% conversion từ kênh khác"</li>
+            <li>Segment khách theo journey pattern: "Online-first", "Offline-first", "Omni-channel"</li>
+          </ul>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- F4.5 + F4.6 -->
+        <div class="module-header" style="margin-top: 48px;">
+          <div class="module-num">M4+</div>
+          <div class="module-info">
+            <div class="module-name">Campaign — Mở rộng</div>
+            <div class="module-desc">Omni-channel orchestration &amp; event-triggered automation</div>
+          </div>
+        </div>
+
+        <div class="feature-card" id="f4-5">
+          <div class="feature-card-header">
+            <span class="feature-id">F4.5</span>
+            <h4 class="feature-title" style="margin:0;">Omni-channel Orchestration</h4>
+            <span class="priority-badge priority-C">Could</span>
+            <span class="phase-badge">Phase 5</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>marketing automation specialist</strong>, tôi muốn <strong>tạo campaign phối hợp nhiều kênh theo thứ tự thông minh</strong>, để <strong>tăng tỷ lệ tiếp cận và conversion</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Ví dụ workflow omni-channel:</h5>
+          <pre>Trigger: Khách "At Risk" (health score 🔴)
+├─ Step 1: Gửi Zalo message (ưu đãi 20%)
+│  ├─ Nếu đọc + click → chờ 3 ngày → kiểm tra có đặt hẹn không
+│  └─ Nếu không đọc trong 24h → Step 2
+├─ Step 2: Gửi SMS nhắc
+│  ├─ Nếu click link → chờ 2 ngày
+│  └─ Nếu không phản hồi → Step 3
+├─ Step 3: Gọi điện (tạo task cho telesale)
+│  └─ Agent gọi → cập nhật kết quả
+└─ End: Đánh giá conversion sau 7 ngày</pre>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Visual workflow builder: kéo thả step, điều kiện, branching</li>
+            <li>Hỗ trợ kênh: Zalo, SMS, Email, Push notification, Telesale task</li>
+            <li>Channel preference: ưu tiên gửi kênh khách hay tương tác nhất</li>
+            <li>Frequency cap: không gửi quá X message/tuần cho 1 khách (tránh spam)</li>
+            <li>A/B test trong workflow: test 2 nội dung/thời điểm khác nhau</li>
+            <li>Report: conversion rate theo từng step, drop-off rate, channel effectiveness</li>
+          </ul>
+        </div>
+
+        <div class="feature-card" id="f4-6">
+          <div class="feature-card-header">
+            <span class="feature-id">F4.6</span>
+            <h4 class="feature-title" style="margin:0;">Event-triggered Automation</h4>
+            <span class="priority-badge priority-C">Could</span>
+            <span class="phase-badge">Phase 5</span>
+          </div>
+          <blockquote class="user-story"><p>Là <strong>marketing manager</strong>, tôi muốn <strong>hệ thống tự động gửi message khi khách thực hiện (hoặc không thực hiện) hành động cụ thể</strong>, để <strong>can thiệp đúng thời điểm mà không cần chạy campaign thủ công</strong>.</p></blockquote>
+
+          <h5 class="sub-feature-title">Trigger types:</h5>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Loại trigger</th><th>Ví dụ</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Event-based</strong></td><td>Khách vừa submit form trên LP</td><td>Gửi Zalo xác nhận + assign telesale</td></tr>
+                <tr><td><strong>Inactivity-based</strong></td><td>30 ngày không đến spa</td><td>Gửi SMS ưu đãi quay lại</td></tr>
+                <tr><td><strong>Score-change</strong></td><td>Health score chuyển từ 🟢 → 🟡</td><td>Alert CS + gửi survey NPS</td></tr>
+                <tr><td><strong>Milestone</strong></td><td>Sinh nhật khách, kỷ niệm 1 năm</td><td>Gửi voucher chúc mừng</td></tr>
+                <tr><td><strong>Transaction</strong></td><td>Hoàn thành liệu trình buổi cuối</td><td>Gửi khảo sát + recommend liệu trình mới</td></tr>
+                <tr><td><strong>Tier-change</strong></td><td>Lên hạng Diamond</td><td>Gửi thông báo + welcome gift</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h5 class="sub-feature-title">Acceptance criteria:</h5>
+          <ul class="ac-list">
+            <li>Tạo trigger rule bằng UI: chọn event + condition + delay + action</li>
+            <li>Xử lý real-time: từ event xảy ra → trigger action trong &lt; 5 phút</li>
+            <li>Dedup: không trigger 2 lần cho cùng 1 event (idempotent)</li>
+            <li>Pause/resume: tạm dừng trigger mà không xoá rule</li>
+            <li>Log: hiển thị mỗi lần trigger được kích hoạt, cho ai, kết quả</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
     <!-- Section 3: NFR -->
     <section class="section-parchment section-anchor" id="sec-nfr">
       <div class="section-inner">
@@ -3011,11 +3573,7 @@
           <li><strong>Mobile:</strong> không yêu cầu native app cho user nội bộ, responsive web đủ dùng</li>
         </ul>
 
-        <h3 class="subsection-title">3.6. Ngôn ngữ</h3>
-        <ul class="styled">
-          <li><strong>Giao diện:</strong> Tiếng Việt (primary), English (secondary — cho report xuất cho đối tác)</li>
-          <li><strong>Data:</strong> hỗ trợ Unicode (tên khách tiếng Việt, emoji trong message)</li>
-        </ul>
+
       </div>
     </section>
 
@@ -3355,51 +3913,10 @@
       </div>
     </section>
 
-    <!-- Section 8: Phases dark -->
-    <section class="section-dark section-anchor" id="sec-phases">
-      <div class="section-inner">
-        <div class="section-label section-label-dark">Section 8</div>
-        <h2 class="section-title">Kế hoạch phase (đề xuất)</h2>
-        <p style="color: rgba(255,255,255,0.65);">Đề xuất từ góc nhìn BA dựa trên độ ưu tiên của khách. PO/Tech Lead có thể điều chỉnh khi đánh giá khả thi.</p>
-
-        <div class="phase-grid">
-          <div class="phase-card">
-            <div class="phase-number">01</div>
-            <div class="phase-name">Foundation — MVP</div>
-            <div class="phase-goal">Hệ thống core hoạt động — thu thập data, hợp nhất khách, scoring cơ bản, dashboard.</div>
-            <ul class="phase-features">
-              <li>F1.1</li><li>F1.2</li><li>F2.1</li><li>F2.2</li><li>F3.1</li><li>F3.3</li>
-              <li>F5.1</li><li>F6.1</li><li>F6.3</li><li>F7.1</li><li>F8.1</li>
-              <li>F10.1</li><li>F10.2</li><li>F10.3</li><li>F10.6</li><li>F10.8</li>
-            </ul>
-          </div>
-          <div class="phase-card" style="background: rgba(255,255,255,0.04);">
-            <div class="phase-number" style="color: rgba(255,255,255,0.5);">02</div>
-            <div class="phase-name">Activation</div>
-            <div class="phase-goal">Kích hoạt marketing — campaign, analytics chuyên sâu, features đặc thù ngành.</div>
-            <ul class="phase-features">
-              <li>F4.1</li><li>F4.3</li><li>F5.2</li><li>F5.3</li><li>F6.2</li>
-              <li>F9.1</li><li>F9.2</li><li>F10.4</li><li>F10.5</li>
-            </ul>
-          </div>
-          <div class="phase-card" style="background: rgba(255,255,255,0.03);">
-            <div class="phase-number" style="color: rgba(255,255,255,0.35);">03</div>
-            <div class="phase-name">Intelligence</div>
-            <div class="phase-goal">AI-powered — automation nâng cao, predictive, cross-BU optimization.</div>
-            <ul class="phase-features">
-              <li>F3.2</li><li>F4.2</li><li>F9.3</li><li>F10.7</li>
-            </ul>
-          </div>
-        </div>
-
-        <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 8px;">Timeline mong muốn cho Phase 1: <strong style="color: rgba(255,255,255,0.75);">cần confirm lại</strong></p>
-      </div>
-    </section>
-
-    <!-- Section 9: Risks light -->
+    <!-- Section 8: Risks light -->
     <section class="section-light section-anchor" id="sec-risks">
       <div class="section-inner">
-        <div class="section-label">Section 9</div>
+        <div class="section-label">Section 8</div>
         <h2 class="section-title">Rủi ro &amp; giả định</h2>
 
         <h3 class="subsection-title">9.1. Rủi ro từ góc nhìn business</h3>
@@ -3439,10 +3956,10 @@
       </div>
     </section>
 
-    <!-- Section 10: Glossary light -->
+    <!-- Section 9: Glossary light -->
     <section class="section-parchment section-anchor" id="sec-glossary">
       <div class="section-inner">
-        <div class="section-label">Section 10</div>
+        <div class="section-label">Section 9</div>
         <h2 class="section-title">Glossary</h2>
         <div class="glossary-grid">
           <div class="glossary-item"><span class="glossary-term">CDP</span><span class="glossary-def">Customer Data Platform — nền tảng hợp nhất dữ liệu khách hàng</span></div>
@@ -3472,10 +3989,10 @@
       </div>
     </section>
 
-    <!-- Section 11: Changelog dark -->
+    <!-- Section 10: Changelog dark -->
     <section class="section-dark section-anchor" id="sec-changelog">
       <div class="section-inner">
-        <div class="section-label section-label-dark">Section 11</div>
+        <div class="section-label section-label-dark">Section 10</div>
         <h2 class="section-title">Changelog</h2>
         <div class="changelog-item">
           <span class="changelog-ver" style="background: rgba(41,151,255,0.15); color: var(--primary-on-dark);">v1.0</span>
@@ -3487,6 +4004,12 @@
           <span class="changelog-ver" style="background: rgba(41,151,255,0.15); color: var(--primary-on-dark);">v1.1</span>
           <span class="changelog-date" style="color: rgba(255,255,255,0.4);">2026-06-17</span>
           <span class="changelog-note" style="color: rgba(255,255,255,0.8);">Thêm F4.4 Message Template Management + 3 màn hình (S27 Template List, S28 Template Editor, S29 Template Analytics) + 2 user flow mới (tạo template, đánh giá hiệu quả) + entity MessageTemplate. Cập nhật S8, Flow 1, F5.3 cho phù hợp.</span>
+          <span class="changelog-author" style="color: rgba(255,255,255,0.35);">IT Team</span>
+        </div>
+        <div class="changelog-item">
+          <span class="changelog-ver" style="background: rgba(41,151,255,0.15); color: var(--primary-on-dark);">v1.2</span>
+          <span class="changelog-date" style="color: rgba(255,255,255,0.4);">2026-06-19</span>
+          <span class="changelog-note" style="color: rgba(255,255,255,0.8);">Mở rộng spec thêm Phase 4–5 (13 features mới). Phase 4: F1.3–F1.5 (Ads, Social, Call Center connectors), F11.1–F11.3 (Digital Tracking module mới), F6.4–F6.5 (Multi-source Lead, Attribution), F5.4 (Acquisition Analytics). Phase 5: F1.7 (DMS), F4.5–F4.6 (Omni-channel, Event-triggered), F5.5 (Attribution). Bỏ E-commerce connectors (Shopee, Lazada, TikTok Shop) và Online-Offline Unification ra khỏi scope — chuyển out-of-scope để triển khai sau. Tổng: 11 modules, 43 features, 5 phases.</span>
           <span class="changelog-author" style="color: rgba(255,255,255,0.35);">IT Team</span>
         </div>
       </div>
