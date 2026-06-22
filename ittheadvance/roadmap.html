@@ -351,28 +351,9 @@
     z-index: 5;
   }
 
-  .phase-bar .tooltip {
+  .phase-bar .tooltip,
+  .continuous-bar .tooltip {
     display: none;
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--inverse-canvas);
-    border: 1px solid var(--ink-muted);
-    padding: 12px 16px;
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--inverse-ink);
-    white-space: pre-line;
-    min-width: 200px;
-    text-align: left;
-    z-index: 100;
-    letter-spacing: 0.32px;
-    line-height: 1.5;
-  }
-
-  .phase-bar:hover .tooltip {
-    display: block;
   }
 
   /* Status */
@@ -430,28 +411,39 @@
     z-index: 1;
   }
 
-  .continuous-bar .tooltip {
+  /* Global floating tooltip */
+  #floating-tooltip {
     display: none;
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed;
     background: var(--inverse-canvas);
-    border: 1px solid var(--ink-muted);
+    color: var(--inverse-ink);
     padding: 12px 16px;
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
     font-size: 12px;
     font-weight: 400;
-    color: var(--inverse-ink);
-    white-space: pre-line;
-    min-width: 200px;
-    text-align: left;
-    z-index: 100;
     letter-spacing: 0.32px;
-    line-height: 1.5;
+    line-height: 1.67;
+    white-space: pre-line;
+    min-width: 220px;
+    max-width: 320px;
+    text-align: left;
+    z-index: 9999;
+    pointer-events: none;
   }
 
-  .continuous-bar:hover .tooltip {
-    display: block;
+  #floating-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: var(--arrow-left, 24px);
+    border: 6px solid transparent;
+    border-top-color: var(--inverse-canvas);
+  }
+
+  #floating-tooltip[style*="--arrow: top"]::after {
+    top: -12px;
+    border-top-color: transparent;
+    border-bottom-color: var(--inverse-canvas);
   }
 
   /* Note tile */
@@ -1087,6 +1079,63 @@
 <footer>
   <strong>TheAdvance</strong> &nbsp;&middot;&nbsp; Roadmap Khoi IT &nbsp;&middot;&nbsp; Draft v1 &nbsp;&middot;&nbsp; 22/06/2026
 </footer>
+
+<!-- Floating tooltip -->
+<div id="floating-tooltip"></div>
+
+<script>
+(function() {
+  const tip = document.getElementById('floating-tooltip');
+  const bars = document.querySelectorAll('.phase-bar, .continuous-bar');
+
+  bars.forEach(function(bar) {
+    const tooltipEl = bar.querySelector('.tooltip');
+    if (!tooltipEl) return;
+
+    bar.addEventListener('mouseenter', function(e) {
+      tip.innerHTML = tooltipEl.innerHTML;
+      tip.style.display = 'block';
+      positionTip(e, bar);
+    });
+
+    bar.addEventListener('mousemove', function(e) {
+      positionTip(e, bar);
+    });
+
+    bar.addEventListener('mouseleave', function() {
+      tip.style.display = 'none';
+    });
+  });
+
+  function positionTip(e, bar) {
+    const rect = bar.getBoundingClientRect();
+    const tipRect = tip.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - tipRect.width / 2;
+    let top = rect.top - tipRect.height - 10;
+
+    // Keep within viewport horizontally
+    if (left < 8) left = 8;
+    if (left + tipRect.width > window.innerWidth - 8) {
+      left = window.innerWidth - tipRect.width - 8;
+    }
+
+    // If no room above, show below
+    if (top < 8) {
+      top = rect.bottom + 10;
+      tip.style.setProperty('--arrow', 'top');
+    } else {
+      tip.style.setProperty('--arrow', 'bottom');
+    }
+
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+
+    // Adjust arrow position
+    const arrowLeft = rect.left + rect.width / 2 - left;
+    tip.style.setProperty('--arrow-left', Math.max(12, Math.min(arrowLeft, tipRect.width - 12)) + 'px');
+  }
+})();
+</script>
 
 </body>
 </html>
