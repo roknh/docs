@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GENYSIC — Giải Pháp Công Nghệ cho Doanh Nghiệp</title>
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8c8c8c;
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --inverse-canvas: #161616;
+      --inverse-ink: #ffffff;
+      --inverse-ink-muted: #c6c6c6;
+      --hairline: #e0e0e0;
+      --blue-hover: #0050e6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .header-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+    }
+
+    .hero {
+      background: var(--inverse-canvas);
+      color: var(--on-primary);
+      padding: 80px 0;
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      color: var(--inverse-ink-muted);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 54px;
+      font-weight: 300;
+      line-height: 1.17;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--inverse-ink-muted);
+      max-width: 750px;
+    }
+    .hero-meta {
+      margin-top: 48px;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item { font-size: 14px; color: var(--inverse-ink-muted); }
+    .hero-meta-item strong { color: var(--inverse-ink); font-weight: 400; }
+
+    .section { padding: 80px 0; }
+    .section-alt { background: var(--surface-1); }
+    .section-eyebrow {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 18px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      max-width: 800px;
+      margin-bottom: 48px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+    }
+    .card-number {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .card h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .card p, .card li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .card ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+    .card ul li {
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+    .card-primary-top { border-top: 2px solid var(--primary); }
+
+    .cap-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+    }
+    .cap-card .icon-wrap {
+      width: 48px;
+      height: 48px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .cap-card .icon-wrap svg { fill: var(--on-primary); }
+    .cap-card h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .cap-card .tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 2px 8px;
+      margin-bottom: 12px;
+    }
+    .cap-card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .cap-card ul {
+      margin-top: 16px;
+      list-style: none;
+    }
+    .cap-card ul li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .cap-card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    .stat-bar {
+      display: flex;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 32px 16px;
+      border-right: 1px solid var(--hairline);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-top: 8px;
+    }
+
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .mapping-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--surface-1);
+    }
+    .mapping-table td {
+      font-size: 14px;
+      padding: 16px;
+      border-bottom: 1px solid var(--hairline);
+      vertical-align: top;
+    }
+    .mapping-table tr:hover { background: var(--surface-1); }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 10px;
+      letter-spacing: 0.32px;
+      white-space: nowrap;
+    }
+    .badge-green { background: #defbe6; color: #0e6027; }
+    .badge-blue { background: #d0e2ff; color: #002d9c; }
+    .badge-yellow { background: #fdf0cd; color: #8e6a00; }
+    .badge-purple { background: #e8daff; color: #6929c4; }
+
+    .phase { border-left: 2px solid var(--primary); padding-left: 32px; margin-bottom: 48px; position: relative; }
+    .phase::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 0;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+    }
+    .phase-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .phase h3 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .phase p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .phase ul { list-style: none; margin-top: 12px; }
+    .phase ul li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .phase ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    .cta-banner {
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 64px 0;
+    }
+    .cta-banner h2 {
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .cta-banner p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 600px;
+    }
+
+    .footer {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink-muted);
+      padding: 48px 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer p { font-size: 12px; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .section-title { font-size: 28px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .stat-bar { flex-wrap: wrap; }
+      .stat-item { flex: 1 1 50%; border-bottom: 1px solid var(--hairline); }
+      .hero-meta { flex-direction: column; gap: 12px; }
+      .container { padding: 0 16px; }
+      .hero { padding: 48px 0; }
+      .section { padding: 48px 0; }
+    }
+
+    @media print {
+      .header { position: relative; }
+      .hero { padding: 40px 0; }
+      .section { padding: 40px 0; break-inside: avoid; }
+      body { font-size: 11px; }
+      .hero h1 { font-size: 36px; }
+      .section-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <img src="images/logo-genysic.webp" alt="Genysic" style="height: 60px; width: auto;">
+      <span class="header-label">Company Profile &mdash; 2026</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow">Giới thiệu năng lực</p>
+      <h1>Genysic &mdash;<br>Giải pháp Công nghệ<br>cho Doanh nghiệp</h1>
+      <p class="hero-sub">
+        Genysic cung cấp hệ sinh thái giải pháp IT toàn diện &mdash; từ phần mềm quản trị, nền tảng dữ liệu khách hàng, hạ tầng server đến dịch vụ AI &mdash; giúp doanh nghiệp vận hành hiệu quả và tăng trưởng bền vững trong kỷ nguyên số.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><strong>Đội ngũ:</strong>&nbsp; 50+ kỹ sư & chuyên gia</div>
+        <div class="hero-meta-item"><strong>Khách hàng:</strong>&nbsp; 150+ doanh nghiệp</div>
+        <div class="hero-meta-item"><strong>Website:</strong>&nbsp; genysic.ai</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section">
+    <div class="container">
+      <div class="stat-bar">
+        <div class="stat-item">
+          <div class="stat-value">200+</div>
+          <div class="stat-label">Dự án hoàn thành</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">150+</div>
+          <div class="stat-label">Khách hàng</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">50+</div>
+          <div class="stat-label">Chuyên gia IT</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">95%</div>
+          <div class="stat-label">Tỷ lệ hài lòng</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Về Genysic</p>
+      <h2 class="section-title">Đối tác công nghệ đáng tin cậy</h2>
+      <p class="section-desc">
+        Genysic được thành lập với tầm nhìn trở thành đối tác công nghệ hàng đầu cho các doanh nghiệp tại Việt Nam. Xuất phát từ đội ngũ kỹ sư dày dạn kinh nghiệm trong ERP, Cloud Infrastructure và Data Platform, chúng tôi đã xây dựng hệ sinh thái giải pháp toàn diện phục vụ mọi nhu cầu số hoá.
+      </p>
+
+      <div class="grid-4">
+        <div class="card card-primary-top">
+          <h3>Chuyên nghiệp</h3>
+          <p>Mỗi dự án được triển khai bài bản với quy trình chuẩn, đảm bảo chất lượng và tiến độ cam kết.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Sáng tạo</h3>
+          <p>Không ngừng nghiên cứu và ứng dụng công nghệ mới nhất &mdash; AI, Cloud, GPU Computing &mdash; để tối ưu hiệu quả.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Đồng hành</h3>
+          <p>Không chỉ là nhà cung cấp mà là đối tác chiến lược, đồng hành cùng sự phát triển dài hạn của doanh nghiệp.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Hiệu quả</h3>
+          <p>Tập trung vào kết quả đo lường được &mdash; giúp doanh nghiệp tối ưu chi phí và tăng trưởng bền vững.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 Pillars -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Bốn trụ cột giải pháp</p>
+      <h2 class="section-title">Hệ sinh thái dịch vụ Genysic</h2>
+      <p class="section-desc">
+        Bốn nhóm giải pháp cốt lõi, bao phủ toàn bộ nhu cầu công nghệ của doanh nghiệp &mdash; từ quản trị nội bộ, quản lý khách hàng, hiện diện số đến hạ tầng tính toán.
+      </p>
+
+      <div class="grid-2">
+        <!-- ERP -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M28 4H4a2 2 0 00-2 2v20a2 2 0 002 2h24a2 2 0 002-2V6a2 2 0 00-2-2zm0 22H4V6h24v20zM6 12h8v2H6zm0 4h20v2H6zm0 4h20v2H6z"/></svg>
+          </div>
+          <span class="tag">Phần mềm quản trị</span>
+          <h3>Hệ thống ERP</h3>
+          <p>Giải pháp quản trị doanh nghiệp tổng thể, tích hợp mọi phòng ban trên một nền tảng duy nhất.</p>
+          <ul>
+            <li>Quản lý Nhân sự &mdash; chấm công, lương, tuyển dụng, đào tạo</li>
+            <li>Kế toán &mdash; sổ sách, thuế, công nợ, báo cáo tài chính</li>
+            <li>Bán hàng &mdash; đơn hàng, kho, vận chuyển, hoa hồng</li>
+            <li>Quản lý Xây dựng &mdash; dự toán, tiến độ, nghiệm thu</li>
+            <li>CRM nội bộ &mdash; pipeline bán hàng, chăm sóc khách hàng</li>
+          </ul>
+        </div>
+
+        <!-- CDP/CRM -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M28 10h-6V4a2 2 0 00-2-2H12a2 2 0 00-2 2v6H4a2 2 0 00-2 2v16a2 2 0 002 2h24a2 2 0 002-2V12a2 2 0 00-2-2zM12 4h8v6h-8V4zm16 24H4V12h24v16zM8 18h16v2H8zm0 4h10v2H8z"/></svg>
+          </div>
+          <span class="tag">Nền tảng dữ liệu</span>
+          <h3>CDP / CRM</h3>
+          <p>Nền tảng dữ liệu khách hàng (Customer Data Platform) và quản trị quan hệ khách hàng 360&deg;.</p>
+          <ul>
+            <li>Thu thập &amp; hợp nhất dữ liệu từ mọi touchpoint</li>
+            <li>Phân khúc khách hàng tự động bằng AI</li>
+            <li>Marketing automation &mdash; email, SMS, push notification</li>
+            <li>Phân tích hành vi, RFM, customer lifetime value</li>
+            <li>Dashboard realtime &mdash; doanh thu, conversion, retention</li>
+          </ul>
+        </div>
+
+        <!-- Website -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M26 2H6a2 2 0 00-2 2v24a2 2 0 002 2h20a2 2 0 002-2V4a2 2 0 00-2-2zm0 26H6V4h20v24zM10 10h12v2H10zm0 4h12v2H10zm0 4h8v2h-8zm0 4h12v2H10z"/></svg>
+          </div>
+          <span class="tag">Hiện diện số</span>
+          <h3>Thiết kế Website</h3>
+          <p>Website doanh nghiệp chuyên nghiệp, responsive và tối ưu hiệu năng &mdash; phục vụ kinh doanh và xây dựng thương hiệu.</p>
+          <ul>
+            <li>Website giới thiệu doanh nghiệp, landing page</li>
+            <li>Hệ thống thương mại điện tử (e-commerce)</li>
+            <li>Web application tùy chỉnh theo nghiệp vụ</li>
+            <li>SEO on-page, tối ưu tốc độ tải trang</li>
+            <li>Responsive &mdash; tương thích mọi thiết bị</li>
+          </ul>
+        </div>
+
+        <!-- Server -->
+        <div class="cap-card">
+          <div class="icon-wrap">
+            <svg width="24" height="24" viewBox="0 0 32 32"><path d="M26 2H6a2 2 0 00-2 2v24a2 2 0 002 2h20a2 2 0 002-2V4a2 2 0 00-2-2zm0 26H6V4h20v24zM10 8h12v2H10zm0 4h12v2H10zm0 4h8v2h-8z"/></svg>
+          </div>
+          <span class="tag">Hạ tầng</span>
+          <h3>Cloud Server & GPU</h3>
+          <p>Hạ tầng cloud server hiệu năng cao và GPU NVIDIA H200 cho thuê &mdash; đáp ứng mọi workload từ hosting đến AI.</p>
+          <ul>
+            <li>Cloud Server doanh nghiệp &mdash; uptime 99.9%, bảo mật đa lớp</li>
+            <li>GPU NVIDIA H200 (141 GB) &mdash; AI/ML training & inference</li>
+            <li>Colocation &mdash; đặt thiết bị riêng tại Data Center Tier III</li>
+            <li>Cho thuê linh hoạt theo giờ/tháng &mdash; OPEX thay CAPEX</li>
+            <li>Hỗ trợ migration miễn phí, quản trị 24/7</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Advanced Capabilities -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Năng lực mở rộng</p>
+      <h2 class="section-title">Giải pháp nâng cao</h2>
+      <p class="section-desc">
+        Ngoài bốn trụ cột chính, Genysic có năng lực triển khai các giải pháp công nghệ tiên tiến cho doanh nghiệp có nhu cầu chuyển đổi số sâu.
+      </p>
+
+      <div class="grid-3">
+        <div class="card card-primary-top">
+          <span class="card-number">01</span>
+          <h3>Data Platform / Data Lakehouse</h3>
+          <p>Xây dựng nền tảng dữ liệu hợp nhất cho doanh nghiệp &mdash; tập trung, chuẩn hóa và khai thác dữ liệu từ mọi nguồn.</p>
+          <ul>
+            <li>Kiến trúc modern data stack</li>
+            <li>ETL/ELT pipeline, streaming & batch</li>
+            <li>Data quality, governance, lineage</li>
+            <li>BI dashboard & self-service analytics</li>
+          </ul>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">02</span>
+          <h3>AI & Machine Learning</h3>
+          <p>Ứng dụng trí tuệ nhân tạo vào vận hành, phân tích và ra quyết định &mdash; chạy trên hạ tầng GPU sẵn có của Genysic.</p>
+          <ul>
+            <li>Predictive analytics &mdash; dự báo doanh thu, nhu cầu</li>
+            <li>Phân tích hành vi khách hàng bằng AI</li>
+            <li>LLM fine-tuning & AI chatbot doanh nghiệp</li>
+            <li>MLOps: từ training đến production</li>
+          </ul>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">03</span>
+          <h3>Bản Sao Số & Mô phỏng</h3>
+          <p>Xây dựng bản sao số của hệ thống vật lý &mdash; giám sát realtime, mô phỏng kịch bản và bảo trì dự đoán cho tài sản quy mô lớn.</p>
+          <ul>
+            <li>Nhà máy, dây chuyền sản xuất, tòa nhà, hạ tầng</li>
+            <li>Tích hợp IoT, SCADA, BMS</li>
+            <li>AI-powered: anomaly detection, forecasting</li>
+            <li>3D visualization, dashboard realtime</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Matrix -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Mapping năng lực</p>
+      <h2 class="section-title">Giải pháp theo nhu cầu doanh nghiệp</h2>
+      <p class="section-desc">
+        Bảng tổng hợp giúp đối tác nhanh chóng xác định giải pháp Genysic phù hợp với nhu cầu cụ thể.
+      </p>
+
+      <table class="mapping-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Nhu cầu doanh nghiệp</th>
+            <th style="width: 20%;">Giải pháp Genysic</th>
+            <th style="width: 15%;">Sẵn sàng</th>
+            <th style="width: 40%;">Mô tả ngắn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Quản lý nhân sự, kế toán, bán hàng</td>
+            <td><strong>ERP</strong></td>
+            <td><span class="badge badge-green">Sản phẩm sẵn có</span></td>
+            <td>Hệ thống quản trị tổng thể, tùy chỉnh theo ngành: thương mại, sản xuất, xây dựng, dịch vụ.</td>
+          </tr>
+          <tr>
+            <td>Hiểu và chăm sóc khách hàng tốt hơn</td>
+            <td><strong>CDP / CRM</strong></td>
+            <td><span class="badge badge-green">Sản phẩm sẵn có</span></td>
+            <td>Hợp nhất dữ liệu khách hàng, phân khúc tự động, marketing automation, analytics 360&deg;.</td>
+          </tr>
+          <tr>
+            <td>Hiện diện online, bán hàng trực tuyến</td>
+            <td><strong>Website</strong></td>
+            <td><span class="badge badge-green">Sản phẩm sẵn có</span></td>
+            <td>Website chuyên nghiệp, e-commerce, landing page, web app tùy chỉnh.</td>
+          </tr>
+          <tr>
+            <td>Hosting, email server, web application</td>
+            <td><strong>Cloud Server</strong></td>
+            <td><span class="badge badge-green">Hạ tầng sẵn có</span></td>
+            <td>Server đám mây hiệu năng cao, SLA 99.9%, bảo mật đa lớp, scale linh hoạt.</td>
+          </tr>
+          <tr>
+            <td>AI training, LLM, deep learning</td>
+            <td><strong>GPU H200</strong></td>
+            <td><span class="badge badge-green">Hạ tầng sẵn có</span></td>
+            <td>NVIDIA H200 141GB, NVLink/NVSwitch. Cho thuê theo giờ/tháng.</td>
+          </tr>
+          <tr>
+            <td>Đặt thiết bị tại data center</td>
+            <td><strong>Colocation</strong></td>
+            <td><span class="badge badge-green">Hạ tầng sẵn có</span></td>
+            <td>Data Center Tier III, điện + cooling + network, quản trị 24/7.</td>
+          </tr>
+          <tr>
+            <td>Hợp nhất dữ liệu phân tán, analytics</td>
+            <td><strong>Data Platform</strong></td>
+            <td><span class="badge badge-blue">Triển khai theo dự án</span></td>
+            <td>Data Lakehouse, ETL pipeline, BI dashboard. Kinh nghiệm từ 150+ dự án CDP.</td>
+          </tr>
+          <tr>
+            <td>Dự báo, tự động hóa, chatbot AI</td>
+            <td><strong>AI / ML</strong></td>
+            <td><span class="badge badge-blue">Triển khai theo dự án</span></td>
+            <td>Predictive analytics, NLP, computer vision, LLM fine-tuning trên GPU H200.</td>
+          </tr>
+          <tr>
+            <td>Giám sát tài sản, mô phỏng vận hành</td>
+            <td><strong>Bản Sao Số</strong></td>
+            <td><span class="badge badge-purple">Phát triển theo yêu cầu</span></td>
+            <td>Bản sao số cho nhà máy, dây chuyền, tòa nhà, hạ tầng. Kết hợp IoT + AI.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Industries -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Ngành nghề phục vụ</p>
+      <h2 class="section-title">Đa ngành, đa lĩnh vực</h2>
+      <p class="section-desc">
+        Genysic đã và đang phục vụ doanh nghiệp thuộc nhiều ngành nghề khác nhau, mỗi giải pháp được tùy chỉnh theo đặc thù vận hành.
+      </p>
+
+      <div class="grid-3">
+        <div class="card card-primary-top">
+          <h3>Thương mại & Bán lẻ</h3>
+          <p>ERP quản lý kho &mdash; bán hàng &mdash; công nợ. CDP hợp nhất dữ liệu khách hàng online/offline. E-commerce &amp; website bán hàng.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Sản xuất & Công nghiệp</h3>
+          <p>ERP quản lý sản xuất, nguyên vật liệu, BOM. Giám sát IoT dây chuyền. Bản sao số nhà máy. AI dự báo nhu cầu.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Xây dựng & Bất động sản</h3>
+          <p>ERP quản lý dự án xây dựng, dự toán, tiến độ. Website dự án BĐS. Quản lý tòa nhà thông minh.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Dịch vụ & Tài chính</h3>
+          <p>CRM quản lý khách hàng, pipeline bán hàng. CDP phân tích hành vi. AI chatbot hỗ trợ khách hàng 24/7.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Nhà máy & Sản xuất</h3>
+          <p>Giám sát dây chuyền sản xuất, quản lý thiết bị và nguyên vật liệu. Data Platform tích hợp IoT/SCADA. AI bảo trì dự đoán và tối ưu năng suất.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Y tế & Giáo dục</h3>
+          <p>ERP quản lý bệnh viện, trường học. Website đặt lịch, đăng ký. CDP quản lý bệnh nhân / học viên.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Hạ tầng & Công nghệ</p>
+      <h2 class="section-title">Nền tảng kỹ thuật</h2>
+      <p class="section-desc">
+        Genysic sở hữu hạ tầng vật lý và đội ngũ kỹ thuật để đảm bảo mọi giải pháp vận hành ổn định, bảo mật và có khả năng mở rộng.
+      </p>
+
+      <div class="grid-3" style="margin-bottom: 48px;">
+        <div class="card">
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Data Center</h3>
+          <ul>
+            <li>Tiêu chuẩn Tier III</li>
+            <li>SLA uptime 99.9%</li>
+            <li>Bảo mật đa lớp, DDoS protection</li>
+            <li>Backup hàng ngày, lưu trữ 7 ngày</li>
+            <li>Kết nối mạng tốc độ cao, low latency</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">GPU Cluster</h3>
+          <ul>
+            <li>NVIDIA H200 &mdash; 141 GB HBM3e</li>
+            <li>NVLink / NVSwitch interconnect</li>
+            <li>LLM training, fine-tuning, inference</li>
+            <li>Cho thuê theo giờ hoặc tháng</li>
+            <li>Hỗ trợ migration và setup miễn phí</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Đội ngũ</h3>
+          <ul>
+            <li>50+ kỹ sư, 5&ndash;15 năm kinh nghiệm</li>
+            <li>Chuyên môn: ERP, Cloud, Data, AI</li>
+            <li>Hỗ trợ kỹ thuật 24/7</li>
+            <li>Tư vấn chiến lược chuyển đổi số</li>
+            <li>Đào tạo và chuyển giao công nghệ</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Phương pháp</p>
+      <h2 class="section-title">Quy trình hợp tác</h2>
+      <p class="section-desc">
+        Genysic áp dụng quy trình chuẩn cho mọi dự án, đảm bảo minh bạch, đúng tiến độ và phù hợp với nhu cầu thực tế.
+      </p>
+
+      <div class="grid-2">
+        <div>
+          <div class="phase">
+            <div class="phase-label">Bước 1 &mdash; Tư vấn & Khảo sát</div>
+            <h3>Hiểu nhu cầu</h3>
+            <p>Gặp gỡ, lắng nghe và khảo sát hiện trạng hệ thống IT, quy trình vận hành và mục tiêu kinh doanh của doanh nghiệp.</p>
+            <ul>
+              <li>Workshop với các phòng ban liên quan</li>
+              <li>Đánh giá hiện trạng công nghệ và dữ liệu</li>
+              <li>Xác định bài toán ưu tiên và phạm vi triển khai</li>
+            </ul>
+          </div>
+
+          <div class="phase">
+            <div class="phase-label">Bước 2 &mdash; Thiết kế giải pháp</div>
+            <h3>Đề xuất & Báo giá</h3>
+            <p>Thiết kế giải pháp phù hợp, lập kế hoạch triển khai chi tiết và báo giá minh bạch.</p>
+            <ul>
+              <li>Kiến trúc hệ thống và lộ trình triển khai</li>
+              <li>Phân chia phase, milestone rõ ràng</li>
+              <li>Báo giá theo scope và timeline cụ thể</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="phase">
+            <div class="phase-label">Bước 3 &mdash; Triển khai</div>
+            <h3>Phát triển & Go-live</h3>
+            <p>Triển khai theo agile, demo thường xuyên, đảm bảo sản phẩm đúng yêu cầu trước khi go-live.</p>
+            <ul>
+              <li>Phát triển theo sprint, demo mỗi 2 tuần</li>
+              <li>UAT (User Acceptance Testing) cùng khách hàng</li>
+              <li>Migration dữ liệu và đào tạo người dùng</li>
+              <li>Go-live và hỗ trợ hypercare</li>
+            </ul>
+          </div>
+
+          <div class="phase">
+            <div class="phase-label">Bước 4 &mdash; Vận hành & Phát triển</div>
+            <h3>Hỗ trợ dài hạn</h3>
+            <p>Sau go-live, Genysic tiếp tục đồng hành: bảo trì, nâng cấp và mở rộng theo sự phát triển của doanh nghiệp.</p>
+            <ul>
+              <li>Hỗ trợ kỹ thuật 24/7</li>
+              <li>Bảo trì định kỳ và cập nhật hệ thống</li>
+              <li>Tư vấn mở rộng tính năng theo nhu cầu mới</li>
+              <li>Báo cáo hiệu quả và đề xuất tối ưu</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Sẵn sàng hợp tác?</h2>
+      <p>Liên hệ với đội ngũ Genysic để được tư vấn giải pháp phù hợp nhất với nhu cầu và ngân sách của doanh nghiệp bạn.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Genysic. Company Profile.</p>
+      <p>genysic.ai</p>
+    </div>
+  </footer>
+
+</body>
+</html>
