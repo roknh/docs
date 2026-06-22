@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tài nguyên Khối IT — TheAdvance</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f62fe;
+    --on-primary: #ffffff;
+    --ink: #161616;
+    --ink-muted: #525252;
+    --ink-subtle: #8c8c8c;
+    --canvas: #ffffff;
+    --surface-1: #f4f4f4;
+    --surface-2: #e0e0e0;
+    --inverse-canvas: #161616;
+    --inverse-ink: #ffffff;
+    --inverse-ink-muted: #c6c6c6;
+    --hairline: #e0e0e0;
+    --success: #24a148;
+    --warning: #f1c21b;
+    --error: #da1e28;
+    --phase-blue: #0f62fe;
+    --phase-teal: #009d9a;
+    --phase-purple: #8a3ffc;
+    --phase-magenta: #d02670;
+    --phase-cyan: #1192e8;
+    --phase-green: #198038;
+    --phase-warm: #8a3800;
+    --phase-gray: #6f6f6f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+  }
+
+  /* Utility bar */
+  .utility-bar {
+    background: var(--surface-1);
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 32px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.32px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  /* Top nav */
+  .top-nav {
+    background: var(--canvas);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--hairline);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .top-nav .logo {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.16px;
+  }
+
+  .top-nav .nav-links {
+    display: flex;
+    gap: 24px;
+    margin-left: 32px;
+  }
+
+  .top-nav .nav-links a {
+    font-size: 14px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.16px;
+  }
+
+  .top-nav .nav-links a:hover { color: var(--ink); }
+
+  .top-nav .nav-links a.active {
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 12px;
+    margin-bottom: -13px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 48px 32px 32px;
+    max-width: 1584px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.20;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .hero .subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.50;
+    letter-spacing: 0.16px;
+  }
+
+  /* Section */
+  .section {
+    max-width: 1584px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .section-header {
+    background: var(--surface-1);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--hairline);
+    border-top: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+
+  .section-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.16px;
+  }
+
+  /* Team cards */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .team-card {
+    background: var(--canvas);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .team-card:hover {
+    background: var(--surface-1);
+  }
+
+  .team-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .team-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--on-primary);
+    flex-shrink: 0;
+  }
+
+  .team-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.25;
+    letter-spacing: 0.16px;
+  }
+
+  .team-subtitle {
+    font-size: 12px;
+    color: var(--ink-subtle);
+    letter-spacing: 0.32px;
+    margin-top: 2px;
+  }
+
+  /* Members */
+  .member-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .member-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.32px;
+    color: var(--on-primary);
+  }
+
+  .member-tag.be { background: var(--phase-blue); }
+  .member-tag.fe { background: var(--phase-teal); }
+  .member-tag.flutter { background: var(--phase-purple); }
+  .member-tag.ba { background: var(--phase-magenta); }
+  .member-tag.ops { background: var(--phase-warm); }
+  .member-tag.ai { background: var(--phase-green); }
+  .member-tag.tl { background: var(--ink); }
+  .member-tag.sys { background: #4d5358; }
+  .member-tag.design { background: var(--phase-cyan); }
+
+  /* Project list */
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px solid var(--hairline);
+    padding-top: 12px;
+  }
+
+  .project-list-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-subtle);
+    letter-spacing: 0.32px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .project-item {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.50;
+    letter-spacing: 0.16px;
+    padding-left: 12px;
+    position: relative;
+  }
+
+  .project-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 4px;
+    height: 4px;
+    background: var(--ink-subtle);
+  }
+
+  /* Summary bar */
+  .summary {
+    display: flex;
+    gap: 1px;
+    background: var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+
+  .summary-item {
+    background: var(--canvas);
+    flex: 1;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .summary-num {
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--primary);
+    line-height: 1.20;
+  }
+
+  .summary-label {
+    font-size: 12px;
+    color: var(--ink-subtle);
+    letter-spacing: 0.32px;
+    margin-top: 4px;
+  }
+
+  /* Footer */
+  footer {
+    background: var(--inverse-canvas);
+    color: var(--inverse-ink-muted);
+    padding: 32px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.32px;
+    margin-top: 48px;
+  }
+
+  footer strong {
+    color: var(--inverse-ink);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="utility-bar">
+  Bản nháp v1 — Tài liệu nội bộ
+</div>
+
+<nav class="top-nav">
+  <div class="logo">TheAdvance</div>
+  <div class="nav-links">
+    <a href="roadmap.html">Lộ trình</a>
+    <a href="projects.html">Dự án</a>
+    <a href="resources.html" class="active">Tài nguyên</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Tài nguyên nhân sự</h1>
+  <div class="subtitle">Phân bổ nhân sự theo team — Khối IT TheAdvance</div>
+</div>
+
+<div class="section">
+
+  <!-- Summary -->
+  <div class="summary">
+    <div class="summary-item">
+      <div class="summary-num">35</div>
+      <div class="summary-label">Tổng nhân sự</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">7</div>
+      <div class="summary-label">Team Lead</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">9</div>
+      <div class="summary-label">Dev Backend</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">1</div>
+      <div class="summary-label">Dev Frontend</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">4</div>
+      <div class="summary-label">Dev Flutter</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">1</div>
+      <div class="summary-label">Dev AI</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">4</div>
+      <div class="summary-label">BA</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num">1</div>
+      <div class="summary-label">Vận hành</div>
+    </div>
+  </div>
+
+  <!-- ==================== IT PHẦN MỀM (32 người) ==================== -->
+  <div class="section-header" style="margin-top:32px;background:var(--inverse-canvas);border-color:var(--inverse-canvas)">
+    <h2 style="color:var(--inverse-ink)">IT Phần mềm — 30 nhân sự</h2>
+  </div>
+
+  <!-- DEVELOPMENT -->
+  <div class="section-header">
+    <h2>Development</h2>
+  </div>
+
+  <div class="team-grid">
+
+    <!-- Team Dev 01 -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-blue)">D1</div>
+        <div>
+          <div class="team-name">Team Dev 01</div>
+          <div class="team-subtitle">8 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag tl">1 Team Lead</span>
+        <span class="member-tag be">4 Dev BE</span>
+        <span class="member-tag fe">1 Dev FE</span>
+        <span class="member-tag flutter">2 Dev Flutter</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">ERP v2</div>
+        <div class="project-item">CRM v2</div>
+        <div class="project-item">Yeori</div>
+        <div class="project-item">App nội bộ quy trình</div>
+        <div class="project-item">Website</div>
+        <div class="project-item">Admin Chat OmniChat</div>
+        <div class="project-item">Hệ thống lead tập trung</div>
+      </div>
+    </div>
+
+    <!-- Team Dev 02 -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-teal)">D2</div>
+        <div>
+          <div class="team-name">Team Dev 02</div>
+          <div class="team-subtitle">5 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag tl">1 Team Lead</span>
+        <span class="member-tag be">2 Dev BE</span>
+        <span class="member-tag flutter">2 Dev Flutter</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">App KH Ngọc Dung</div>
+        <div class="project-item">App KH Zema</div>
+        <div class="project-item">App KH Đại Phúc</div>
+        <div class="project-item">App Chat nội bộ</div>
+        <div class="project-item">Hệ thống booking tập trung</div>
+      </div>
+    </div>
+
+    <!-- Team Dev 03 -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-cyan)">D3</div>
+        <div>
+          <div class="team-name">Team Dev 03</div>
+          <div class="team-subtitle">4 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag tl">1 Team Lead</span>
+        <span class="member-tag be">3 Dev BE</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">Vận hành và cập nhật hệ thống CRM v1</div>
+      </div>
+    </div>
+
+    <!-- Team Dev 04 -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-green)">D4</div>
+        <div>
+          <div class="team-name">Team Dev 04</div>
+          <div class="team-subtitle">1 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag ai">1 Dev AI</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">AI ứng dụng</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BUSINESS ANALYSIS -->
+  <div class="section-header">
+    <h2>Business Analysis</h2>
+  </div>
+
+  <div class="team-grid">
+
+    <!-- Team BA 01 -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-magenta)">B1</div>
+        <div>
+          <div class="team-name">Team BA 01</div>
+          <div class="team-subtitle">3 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag tl">1 Team Lead</span>
+        <span class="member-tag ba">2 BA</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">Mobile App KH</div>
+        <div class="project-item">CDP</div>
+        <div class="project-item">Admin Chat OmniChat</div>
+      </div>
+    </div>
+
+    <!-- Team BA 02 -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-purple)">B2</div>
+        <div>
+          <div class="team-name">Team BA 02</div>
+          <div class="team-subtitle">3 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag tl">1 Team Lead</span>
+        <span class="member-tag ba">2 BA</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">ERP</div>
+        <div class="project-item">CRM v2</div>
+        <div class="project-item">App nội bộ</div>
+      </div>
+    </div>
+
+    <!-- Team System -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:#4d5358">SY</div>
+        <div>
+          <div class="team-name">Team System</div>
+          <div class="team-subtitle">1 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag sys">1 System</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">Vận hành hạ tầng hệ thống</div>
+      </div>
+    </div>
+
+    <!-- Team Design -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-cyan)">DS</div>
+        <div>
+          <div class="team-name">Team Design</div>
+          <div class="team-subtitle">3 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag tl">1 Team Lead</span>
+        <span class="member-tag design">2 Designer</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">Thiết kế UI/UX các dự án</div>
+      </div>
+    </div>
+
+    <!-- Team OPS -->
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-warm)">OP</div>
+        <div>
+          <div class="team-name">Team OPS</div>
+          <div class="team-subtitle">2 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag tl">1 Team Lead</span>
+        <span class="member-tag ops">1 Vận hành</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Dự án phụ trách</div>
+        <div class="project-item">Vận hành hệ thống</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== IT PHẦN CỨNG (5 người) ==================== -->
+  <div class="section-header" style="margin-top:32px;background:var(--inverse-canvas);border-color:var(--inverse-canvas)">
+    <h2 style="color:var(--inverse-ink)">IT Phần cứng — 5 nhân sự</h2>
+  </div>
+
+  <div class="team-grid">
+
+    <div class="team-card">
+      <div class="team-header">
+        <div class="team-icon" style="background:var(--phase-gray)">HW</div>
+        <div>
+          <div class="team-name">Team IT Phần cứng</div>
+          <div class="team-subtitle">5 thành viên</div>
+        </div>
+      </div>
+      <div class="member-list">
+        <span class="member-tag" style="background:var(--phase-gray)">5 Nhân viên</span>
+      </div>
+      <div class="project-list">
+        <div class="project-list-title">Phụ trách</div>
+        <div class="project-item">Hỗ trợ kỹ thuật phần cứng</div>
+        <div class="project-item">Quản lý thiết bị & tài sản IT</div>
+        <div class="project-item">Mạng & hạ tầng vật lý</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <strong>TheAdvance</strong> &nbsp;&middot;&nbsp; Tài nguyên nhân sự Khối IT &nbsp;&middot;&nbsp; Bản nháp v1 &nbsp;&middot;&nbsp; 22/06/2026
+</footer>
+
+</body>
+</html>

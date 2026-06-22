@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dự án Khối IT — TheAdvance</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f62fe;
+    --on-primary: #ffffff;
+    --ink: #161616;
+    --ink-muted: #525252;
+    --ink-subtle: #8c8c8c;
+    --canvas: #ffffff;
+    --surface-1: #f4f4f4;
+    --surface-2: #e0e0e0;
+    --inverse-canvas: #161616;
+    --inverse-ink: #ffffff;
+    --inverse-ink-muted: #c6c6c6;
+    --hairline: #e0e0e0;
+    --success: #24a148;
+    --warning: #f1c21b;
+    --error: #da1e28;
+    --phase-blue: #0f62fe;
+    --phase-teal: #009d9a;
+    --phase-purple: #8a3ffc;
+    --phase-magenta: #d02670;
+    --phase-cyan: #1192e8;
+    --phase-green: #198038;
+    --phase-warm: #8a3800;
+    --phase-gray: #6f6f6f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+  }
+
+  /* Utility bar */
+  .utility-bar {
+    background: var(--surface-1);
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 32px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.32px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  /* Top nav */
+  .top-nav {
+    background: var(--canvas);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--hairline);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .top-nav .logo {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.16px;
+  }
+
+  .top-nav .nav-links {
+    display: flex;
+    gap: 24px;
+    margin-left: 32px;
+  }
+
+  .top-nav .nav-links a {
+    font-size: 14px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.16px;
+  }
+
+  .top-nav .nav-links a:hover { color: var(--ink); }
+
+  .top-nav .nav-links a.active {
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 12px;
+    margin-bottom: -13px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 48px 32px 32px;
+    max-width: 1584px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.20;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .hero .subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.50;
+    letter-spacing: 0.16px;
+  }
+
+  /* Section */
+  .section {
+    max-width: 1584px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .section-header {
+    background: var(--surface-1);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--hairline);
+    border-top: 1px solid var(--hairline);
+    margin-top: 32px;
+  }
+
+  .section-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.16px;
+  }
+
+  /* Project card grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .card {
+    background: var(--canvas);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card:hover {
+    background: var(--surface-1);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .card-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--on-primary);
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.25;
+    letter-spacing: 0.16px;
+  }
+
+  .card-subtitle {
+    font-size: 12px;
+    color: var(--ink-subtle);
+    letter-spacing: 0.32px;
+    margin-top: 2px;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.50;
+    letter-spacing: 0.16px;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.32px;
+    border: 1px solid var(--hairline);
+    color: var(--ink-muted);
+  }
+
+  .tag-status {
+    border: none;
+    color: var(--on-primary);
+    font-weight: 600;
+  }
+
+  .tag-active { background: var(--primary); }
+  .tag-done { background: var(--success); }
+  .tag-planned { background: var(--phase-gray); }
+
+  /* Key info */
+  .card-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 12px;
+    font-size: 12px;
+    letter-spacing: 0.32px;
+    border-top: 1px solid var(--hairline);
+    padding-top: 12px;
+  }
+
+  .card-info dt {
+    color: var(--ink-subtle);
+    font-weight: 400;
+  }
+
+  .card-info dd {
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  /* Footer */
+  footer {
+    background: var(--inverse-canvas);
+    color: var(--inverse-ink-muted);
+    padding: 32px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.32px;
+    margin-top: 48px;
+  }
+
+  footer strong {
+    color: var(--inverse-ink);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="utility-bar">
+  Bản nháp v1 — Tài liệu nội bộ
+</div>
+
+<nav class="top-nav">
+  <div class="logo">TheAdvance</div>
+  <div class="nav-links">
+    <a href="roadmap.html">Lộ trình</a>
+    <a href="projects.html" class="active">Dự án</a>
+    <a href="resources.html">Tài nguyên</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>Danh sách dự án</h1>
+  <div class="subtitle">Tổng hợp 14 dự án đang triển khai song song tại Khối IT — TheAdvance</div>
+</div>
+
+<div class="section">
+
+  <!-- ==================== NỀN TẢNG CỐT LÕI ==================== -->
+  <div class="section-header"><h2>Nền tảng cốt lõi</h2></div>
+  <div class="card-grid">
+
+    <!-- 1. ERP v2 -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-blue)">1</span>
+        <div>
+          <div class="card-title">ERP v2</div>
+          <div class="card-subtitle">Hệ thống hoạch định nguồn lực doanh nghiệp</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Xây dựng nền tảng ERP thế hệ mới, thay thế hệ thống cũ chạy trên .NET. Bao gồm 6 phân hệ chính: Nhân sự, KPI, Lương, Kế toán, Kho, Xây dựng và tích hợp POS. Triển khai theo 4 phase từ T6/2026 đến T6/2027.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang triển khai</span>
+        <span class="tag">6 phân hệ</span>
+        <span class="tag">4 phase</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Thay thế hoàn toàn hệ thống .NET cũ</dd>
+        <dt>Phân hệ</dt>
+        <dd>Nhân sự, KPI, Lương, Kế toán, Kho, Xây dựng, POS</dd>
+        <dt>Thời gian</dt>
+        <dd>T6/2026 → T6/2027</dd>
+        <dt>Liên quan</dt>
+        <dd>App Nội bộ NV (HR), Yeori (POS)</dd>
+      </dl>
+    </div>
+
+    <!-- 2. CRM v2 -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-magenta)">2</span>
+        <div>
+          <div class="card-title">CRM v2</div>
+          <div class="card-subtitle">Hệ thống quản lý quan hệ khách hàng</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Hệ thống CRM thế hệ mới. Phase 1 đã triển khai thành công. Đang thu thập yêu cầu và phát triển các tính năng mới cho Phase 2, dự kiến triển khai Q4/2026.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Phase 2 đang phát triển</span>
+        <span class="tag">Phase 1 đã xong</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Nâng cấp quản lý khách hàng, tối ưu quy trình bán hàng</dd>
+        <dt>Trạng thái</dt>
+        <dd>Phase 1 ✓ — Phase 2 đang phát triển — Phase 3 kế hoạch</dd>
+        <dt>Thời gian P2</dt>
+        <dd>T7/2026 → T12/2026</dd>
+        <dt>Liên quan</dt>
+        <dd>Chatbot truy vấn KH, OmniChat</dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <!-- ==================== HƯỚNG KHÁCH HÀNG ==================== -->
+  <div class="section-header"><h2>Hướng khách hàng</h2></div>
+  <div class="card-grid">
+
+    <!-- 3. App Khách hàng -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-warm)">3</span>
+        <div>
+          <div class="card-title">App Khách hàng</div>
+          <div class="card-subtitle">App Ngọc Dung & App Zema</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Phát triển tính năng mới và minigame theo yêu cầu kinh doanh cho hai ứng dụng khách hàng. Chạy liên tục theo chiến dịch từng quý, phục vụ các hoạt động marketing và chăm sóc khách hàng.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang triển khai</span>
+        <span class="tag">Liên tục theo quý</span>
+        <span class="tag">2 ứng dụng</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Tăng tương tác, giữ chân khách hàng qua app</dd>
+        <dt>Nền tảng</dt>
+        <dd>iOS, Android</dd>
+        <dt>Đặc thù</dt>
+        <dd>Chạy liên tục theo chiến dịch kinh doanh, không chia phase cố định</dd>
+        <dt>Liên quan</dt>
+        <dd>OmniChat, CDP</dd>
+      </dl>
+    </div>
+
+    <!-- 6. Website & Landing -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-cyan)">6</span>
+        <div>
+          <div class="card-title">Website, Minigame & Landing page</div>
+          <div class="card-subtitle">Hỗ trợ chiến dịch kinh doanh</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Thiết kế và phát triển website, minigame, landing page theo yêu cầu của bộ phận kinh doanh để chạy các chiến dịch quảng cáo, khuyến mãi và thu hút khách hàng mới.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Liên tục</span>
+        <span class="tag">Theo chiến dịch</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Hỗ trợ kinh doanh triển khai chiến dịch nhanh chóng</dd>
+        <dt>Nền tảng</dt>
+        <dd>Web</dd>
+        <dt>Đặc thù</dt>
+        <dd>Không có lộ trình cố định, phát triển theo nhu cầu chiến dịch</dd>
+        <dt>Liên quan</dt>
+        <dd>App Khách hàng, CDP</dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <!-- ==================== ỨNG DỤNG NỘI BỘ ==================== -->
+  <div class="section-header"><h2>Ứng dụng nội bộ</h2></div>
+  <div class="card-grid">
+
+    <!-- 4a. App Nội bộ NV -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-purple)">4a</span>
+        <div>
+          <div class="card-title">App Nội bộ Nhân viên</div>
+          <div class="card-subtitle">Quy trình & chức năng nhân sự</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Ứng dụng hỗ trợ nhân viên quản lý quy trình làm việc và các chức năng nhân sự. Phase 1 tập trung vào quy trình cốt lõi, Phase 2 mở rộng và tích hợp với module HR từ ERP v2.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang triển khai</span>
+        <span class="tag">2 phase</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Số hoá quy trình nội bộ, hỗ trợ nhân viên làm việc hiệu quả</dd>
+        <dt>Nền tảng</dt>
+        <dd>Mobile (iOS, Android)</dd>
+        <dt>Thời gian</dt>
+        <dd>P1: T6-T8/2026 — P2: T9-T11/2026</dd>
+        <dt>Liên quan</dt>
+        <dd>ERP v2 (module Nhân sự), Chatbot hỗ trợ NV</dd>
+      </dl>
+    </div>
+
+    <!-- 4b. App Chat Nội bộ -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:#6929c4">4b</span>
+        <div>
+          <div class="card-title">App Chat & MXH Nội bộ</div>
+          <div class="card-subtitle">Nền tảng giao tiếp nội bộ độc lập</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Xây dựng nền tảng chat và mạng xã hội nội bộ riêng, tối ưu cho giao tiếp trong tổ chức. Bắt đầu từ MVP chat cơ bản, mở rộng sang mạng xã hội nội bộ với bảng tin, bài đăng, sau đó bổ sung gọi video, gọi thoại và tích hợp bot.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang triển khai</span>
+        <span class="tag">3 phase</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Thay thế công cụ chat bên ngoài, tối ưu giao tiếp nội bộ</dd>
+        <dt>Nền tảng</dt>
+        <dd>Mobile + Web</dd>
+        <dt>Thời gian</dt>
+        <dd>MVP: T6-T7 — MXH: T8-T10 — Nâng cao: T11-T12/2026</dd>
+        <dt>Liên quan</dt>
+        <dd>App Nội bộ NV, Chatbot tư vấn KH</dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <!-- ==================== BÁN HÀNG & GIAO TIẾP ==================== -->
+  <div class="section-header"><h2>Bán hàng & Giao tiếp</h2></div>
+  <div class="card-grid">
+
+    <!-- 5. Yeori -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-green)">5</span>
+        <div>
+          <div class="card-title">Yeori POS + CRM</div>
+          <div class="card-subtitle">Hệ thống bán hàng riêng cho Yeori</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Hệ thống bán hàng tại điểm (POS) kết hợp CRM dành riêng cho thương hiệu Yeori. Đang cập nhật theo yêu cầu nghiệp vụ, dự kiến tích hợp module POS từ ERP v2 vào cuối năm 2026.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang cập nhật</span>
+        <span class="tag">POS + CRM</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Tối ưu quy trình bán hàng tại Yeori</dd>
+        <dt>Nền tảng</dt>
+        <dd>Web + Tablet POS</dd>
+        <dt>Thời gian</dt>
+        <dd>Cập nhật liên tục — Tích hợp ERP: T12/2026</dd>
+        <dt>Liên quan</dt>
+        <dd>ERP v2 (module POS)</dd>
+      </dl>
+    </div>
+
+    <!-- 7. OmniChat -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-teal)">7</span>
+        <div>
+          <div class="card-title">OmniChat</div>
+          <div class="card-subtitle">Nền tảng chat tập trung đa kênh</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Nền tảng quản lý tin nhắn tập trung từ nhiều kênh. Hiện đang xử lý chat từ App Khách hàng, đang mở rộng tích hợp Zalo OA, Facebook Messenger và Zalo Cá nhân. Giai đoạn sau bổ sung chatbot tự động và bảng phân tích.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang mở rộng</span>
+        <span class="tag">Đa kênh</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Quản lý tất cả kênh chat từ một nền tảng duy nhất</dd>
+        <dt>Kênh hiện tại</dt>
+        <dd>App KH ✓ — Zalo OA (đang triển khai)</dd>
+        <dt>Kênh sắp tới</dt>
+        <dd>Facebook Messenger (T8), Zalo Cá nhân (T10)</dd>
+        <dt>Liên quan</dt>
+        <dd>App Khách hàng, CRM v2</dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <!-- ==================== DỮ LIỆU & HẠ TẦNG ==================== -->
+  <div class="section-header"><h2>Dữ liệu & Hạ tầng</h2></div>
+  <div class="card-grid">
+
+    <!-- 8. CDP -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-cyan)">8</span>
+        <div>
+          <div class="card-title">CDP</div>
+          <div class="card-subtitle">Nền tảng dữ liệu khách hàng</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Nền tảng tổng hợp dữ liệu khách hàng từ nhiều nguồn (CRM, App, POS, Website) để phân tích hành vi, phân khúc khách hàng và dự đoán xu hướng. Hỗ trợ ra quyết định kinh doanh dựa trên dữ liệu.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang triển khai</span>
+        <span class="tag">3 phase</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Hiểu khách hàng 360°, tối ưu chiến lược kinh doanh</dd>
+        <dt>Nguồn dữ liệu</dt>
+        <dd>CRM, App KH, POS, Website, OmniChat</dd>
+        <dt>Thời gian</dt>
+        <dd>Tổng hợp: T6-T8 — Phân tích: T9-T11 — Dự đoán: T12+</dd>
+        <dt>Liên quan</dt>
+        <dd>CRM v2, App KH, Agent dự báo KH</dd>
+      </dl>
+    </div>
+
+    <!-- 9. IT Hạ tầng -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--error)">9</span>
+        <div>
+          <div class="card-title">IT Hạ tầng</div>
+          <div class="card-subtitle">Đám mây riêng — Thay thế VNGCloud</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Thiết lập hạ tầng đám mây riêng (private cloud) để dần thay thế VNGCloud. Đã có 2 máy chủ, cần thêm 1 máy chủ nữa để hoàn thiện cụm. Sau khi cài đặt xong, sẽ di chuyển dần dịch vụ và ngưng VNGCloud.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status" style="background:var(--error)">Khẩn cấp</span>
+        <span class="tag">Hạ tầng</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Chủ động hạ tầng, giảm chi phí cloud, tăng bảo mật</dd>
+        <dt>Hiện trạng</dt>
+        <dd>2/3 máy chủ đã về — Chờ máy chủ thứ 3</dd>
+        <dt>Thời gian</dt>
+        <dd>Cài đặt: T6-T7 — Di chuyển: T8-T10 — Tắt VNG: T11-T12</dd>
+        <dt>Ảnh hưởng</dt>
+        <dd>Tất cả dự án (môi trường triển khai)</dd>
+      </dl>
+    </div>
+
+    <!-- 10. OCN -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-gray)">10</span>
+        <div>
+          <div class="card-title">Vận hành OCN</div>
+          <div class="card-subtitle">Tiếp quản & lập kế hoạch tổng thể</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Tìm hiểu và tiếp quản các phân hệ phần mềm hiện có phục vụ kinh doanh OCN. Lên bức tranh tổng thể các hệ thống, đánh giá hiện trạng và xây dựng lộ trình cải tiến, nâng cấp.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang khảo sát</span>
+        <span class="tag">Tiếp quản</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Nắm toàn bộ hệ thống OCN, lên lộ trình phần mềm</dd>
+        <dt>Giai đoạn</dt>
+        <dd>Khảo sát: T6-T8 — Lập kế hoạch: T9-T10 — Triển khai: T11+</dd>
+        <dt>Đặc thù</dt>
+        <dd>Hệ thống đã có sẵn, cần đánh giá trước khi cải tiến</dd>
+        <dt>Liên quan</dt>
+        <dd>Độc lập — có thể tích hợp ERP v2 về sau</dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <!-- ==================== AI ỨNG DỤNG ==================== -->
+  <div class="section-header"><h2>AI ứng dụng</h2></div>
+  <div class="card-grid">
+
+    <!-- 11. Chatbot tư vấn KH -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-blue)">11</span>
+        <div>
+          <div class="card-title">Chatbot tư vấn khách hàng</div>
+          <div class="card-subtitle">Áp dụng cho App nội bộ</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Chatbot AI tư vấn khách hàng, hỗ trợ nhân viên trả lời câu hỏi và tư vấn dịch vụ. Đang triển khai trên App nội bộ, dự kiến hoàn thành T7/2026.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang triển khai</span>
+        <span class="tag">AI</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Tăng tốc tư vấn, giảm thời gian chờ của khách hàng</dd>
+        <dt>Nền tảng</dt>
+        <dd>App nội bộ</dd>
+        <dt>Thời gian</dt>
+        <dd>T6 → T7/2026</dd>
+        <dt>Liên quan</dt>
+        <dd>App Chat Nội bộ</dd>
+      </dl>
+    </div>
+
+    <!-- 12. Chatbot truy vấn KH -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:var(--phase-blue)">12</span>
+        <div>
+          <div class="card-title">Chatbot truy vấn thông tin KH</div>
+          <div class="card-subtitle">Áp dụng cho CRM v2</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Chatbot AI giúp nhân viên truy vấn nhanh thông tin khách hàng từ hệ thống CRM. Thay vì tra cứu thủ công, nhân viên có thể hỏi trực tiếp và nhận kết quả tức thì. Đã đưa vào sử dụng từ T6/2026.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-active">Đang áp dụng</span>
+        <span class="tag">AI</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Giảm thời gian tra cứu, tăng hiệu suất nhân viên</dd>
+        <dt>Nền tảng</dt>
+        <dd>CRM v2</dd>
+        <dt>Thời gian</dt>
+        <dd>T6/2026 (đã triển khai)</dd>
+        <dt>Liên quan</dt>
+        <dd>CRM v2, CDP</dd>
+      </dl>
+    </div>
+
+    <!-- 13. Agent dự báo KH -->
+    <div class="card">
+      <div class="card-top">
+        <span class="card-num" style="background:#002d9c">13</span>
+        <div>
+          <div class="card-title">Agent dự báo chỉ số khách hàng</div>
+          <div class="card-subtitle">Áp dụng cho CDP</div>
+        </div>
+      </div>
+      <div class="card-desc">
+        Agent AI phân tích dữ liệu khách hàng từ CDP để dự báo các chỉ số quan trọng: khả năng rời bỏ, giá trị vòng đời, xu hướng tiêu dùng. Hỗ trợ đội kinh doanh ra quyết định chủ động thay vì phản ứng.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-status tag-planned">Kế hoạch</span>
+        <span class="tag">AI</span>
+        <span class="tag">T9/2026</span>
+      </div>
+      <dl class="card-info">
+        <dt>Mục tiêu</dt>
+        <dd>Dự báo hành vi KH, hỗ trợ ra quyết định kinh doanh</dd>
+        <dt>Nền tảng</dt>
+        <dd>CDP</dd>
+        <dt>Thời gian</dt>
+        <dd>Bắt đầu T9/2026</dd>
+        <dt>Liên quan</dt>
+        <dd>CDP, CRM v2</dd>
+      </dl>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <strong>TheAdvance</strong> &nbsp;&middot;&nbsp; Danh sách dự án Khối IT &nbsp;&middot;&nbsp; Bản nháp v1 &nbsp;&middot;&nbsp; 22/06/2026
+</footer>
+
+</body>
+</html>

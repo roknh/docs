@@ -94,8 +94,5 @@ Tìm hiểu và tiếp quản các phân hệ hiện có. Lên kế hoạch bứ
 ### 12. Chatbot truy vấn thông tin khách hàng
 Hỗ trợ nhân viên truy vấn thông tin KH. Đang áp dụng cho CRM v2 từ T6/2026.
 
-### 13. Chatbot hỗ trợ nhân viên
-Kế hoạch bắt đầu T9/2026.
-
-### 14. Agent dự báo chỉ số khách hàng
+### 13. Agent dự báo chỉ số khách hàng
 Dự báo các chỉ số khách hàng, áp dụng cho CDP. Kế hoạch bắt đầu T9/2026.
