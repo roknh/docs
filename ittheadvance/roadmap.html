@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roadmap Khối IT — TheAdvance 2026-2027</title>
+<title>Lộ trình Khối IT — TheAdvance 2026-2027</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -161,6 +161,9 @@
     border-bottom: 1px solid var(--hairline);
     max-width: 100%;
     overflow-x: auto;
+    position: sticky;
+    top: 48px;
+    z-index: 40;
   }
 
   .legend-strip .legend-label {
@@ -199,12 +202,11 @@
     background: var(--error);
   }
 
-  /* Roadmap container */
+  /* Roadmap container — no overflow so sticky headers work */
   .roadmap-container {
     max-width: 1584px;
     margin: 0 auto;
     padding: 0 32px;
-    overflow-x: auto;
   }
 
   .roadmap-table {
@@ -215,6 +217,12 @@
   }
 
   /* Quarter header */
+  .quarter-header {
+    position: sticky;
+    top: 89px;
+    z-index: 30;
+  }
+
   .quarter-header th {
     padding: 12px 0;
     font-size: 12px;
@@ -234,8 +242,8 @@
   /* Month header */
   .month-header {
     position: sticky;
-    top: 48px;
-    z-index: 10;
+    top: 127px;
+    z-index: 30;
     background: var(--canvas);
   }
 
@@ -509,23 +517,23 @@
 
 <!-- Utility bar -->
 <div class="utility-bar">
-  Draft v1 — Internal use only
+  Bản nháp v1 — Tài liệu nội bộ
 </div>
 
 <!-- Top nav -->
 <nav class="top-nav">
   <div class="logo">TheAdvance</div>
   <div class="nav-links">
-    <a href="#" class="active">Roadmap</a>
-    <a href="#">Projects</a>
-    <a href="#">Resources</a>
+    <a href="#" class="active">Lộ trình</a>
+    <a href="#">Dự án</a>
+    <a href="#">Tài nguyên</a>
   </div>
 </nav>
 
 <!-- Hero -->
 <div class="hero">
-  <h1>Roadmap Khối IT</h1>
-  <div class="subtitle">Kế hoạch triển khai 10 dự án song song, từ tháng 6/2026 đến tháng 6/2027</div>
+  <h1>Lộ trình Khối IT</h1>
+  <div class="subtitle">Kế hoạch triển khai 14 dự án song song, từ tháng 6/2026 đến tháng 6/2027</div>
   <div class="meta">
     <div class="meta-item">
       <div class="dot" style="background:var(--primary)"></div>
@@ -533,36 +541,36 @@
     </div>
     <div class="meta-item">
       <div class="dot" style="background:var(--warning)"></div>
-      Status: Draft — Chờ review
+      Trạng thái: Bản nháp — Chờ review
     </div>
     <div class="meta-item">
-      10 projects &middot; 4 quarters
+      14 dự án &middot; 4 quý
     </div>
   </div>
 </div>
 
 <!-- Legend -->
 <div class="legend-strip">
-  <div class="legend-label">Legend</div>
+  <div class="legend-label">Chú thích</div>
   <div class="legend-item">
     <div class="legend-swatch" style="background:var(--success); opacity:0.45"></div>
-    Done
+    Đã xong
   </div>
   <div class="legend-item">
     <div class="legend-swatch" style="background:var(--primary)"></div>
-    In progress
+    Đang triển khai
   </div>
   <div class="legend-item">
     <div class="legend-swatch" style="background:var(--ink-subtle)"></div>
-    Planned
+    Kế hoạch
   </div>
   <div class="legend-item">
     <div class="legend-diamond" style="background:var(--error)"></div>
-    Milestone
+    Cột mốc
   </div>
   <div class="legend-item">
     <div class="legend-line"></div>
-    Today
+    Hiện tại
   </div>
 </div>
 
@@ -579,7 +587,7 @@
       <th></th>
     </tr>
     <tr class="month-header">
-      <th>Project</th>
+      <th>Dự án</th>
       <th class="current">T6</th>
       <th>T7</th>
       <th>T8</th>
@@ -598,20 +606,20 @@
   <tbody>
 
     <!-- ========== CORE PLATFORMS ========== -->
-    <tr class="section-row"><td colspan="14">Core Platforms</td></tr>
+    <tr class="section-row"><td colspan="14">Nền tảng cốt lõi</td></tr>
 
     <!-- 1. ERP v2 -->
     <tr class="project-row">
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-blue)">1</span>
-          <div><span class="project-label">ERP v2</span><br><span class="project-sub">Thay the .NET cu</span></div>
+          <div><span class="project-label">ERP v2</span><br><span class="project-sub">Thay thế .NET cũ</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-blue)">
-          Phase 1 — Nhan su, KPI, Luong
-          <div class="tooltip">Phase 1: Core HR<br>Nhan su, KPI, Luong<br>T6 → T8/2026<br>UAT & Go-live T8</div>
+          Phase 1 — Nhân sự, KPI, Lương
+          <div class="tooltip">Phase 1: Nhân sự cốt lõi<br>Nhân sự, KPI, Lương<br>T6 → T8/2026<br>Kiểm thử & Go-live T8</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -620,8 +628,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-purple)">
-          Phase 2 — Ke toan, Kho
-          <div class="tooltip">Phase 2: Finance & Inventory<br>Ke toan, Kho<br>T9 → T11/2026<br>Go-live T11</div>
+          Phase 2 — Kế toán, Kho
+          <div class="tooltip">Phase 2: Tài chính & Kho<br>Kế toán, Kho<br>T9 → T11/2026<br>Triển khai T11</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -630,8 +638,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#6929c4">
-          Phase 3 — Xay dung, POS
-          <div class="tooltip">Phase 3: Construction & POS<br>Xay dung, POS<br>T12/2026 → T2/2027<br>Go-live T2</div>
+          Phase 3 — Xây dựng, POS
+          <div class="tooltip">Phase 3: Xây dựng & POS<br>Xây dựng, POS<br>T12/2026 → T2/2027<br>Triển khai T2</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -640,8 +648,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-green)">
-          On dinh & Migrate data
-          <div class="tooltip">Phase 4: Stabilize<br>On dinh toan bo<br>Migrate data cu sang moi<br>T3 → T5/2027</div>
+          Ổn định & Di chuyển dữ liệu
+          <div class="tooltip">Phase 4: Ổn định<br>Ổn định toàn bộ<br>Di chuyển dữ liệu cũ sang mới<br>T3 → T5/2027</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -656,19 +664,19 @@
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-magenta)">2</span>
-          <div><span class="project-label">CRM v2</span><br><span class="project-sub">Phase 1 done</span></div>
+          <div><span class="project-label">CRM v2</span><br><span class="project-sub">Phase 1 đã xong</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-done" style="left:0; width:100%; background:var(--success)">
-          P1 Done
-          <div class="tooltip">Phase 1: Da trien khai</div>
+          P1 Đã xong
+          <div class="tooltip">Phase 1: Đã triển khai</div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(400% + 12px); background:var(--phase-magenta)">
-          Phase 2 — Thu thap yeu cau → Dev → UAT
-          <div class="tooltip">Phase 2<br>Thu thap & phan tich yeu cau moi<br>Dev cac tinh nang phase 2<br>T7 → T10/2026</div>
+          Phase 2 — Thu thập yêu cầu → Phát triển → Kiểm thử
+          <div class="tooltip">Phase 2<br>Thu thập & phân tích yêu cầu mới<br>Phát triển các tính năng phase 2<br>T7 → T10/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -678,15 +686,15 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#9f1853">
-          Go-live P2 & On dinh
-          <div class="tooltip">Go-live Phase 2<br>Deploy & on dinh<br>T11 → T12/2026</div>
+          Triển khai P2 & Ổn định
+          <div class="tooltip">Triển khai Phase 2<br>Đưa lên production & ổn định<br>T11 → T12/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
-          Phase 3 (ke hoach)
-          <div class="tooltip">Phase 3 (ke hoach)<br>Tinh nang nang cao<br>T1 → T3/2027</div>
+          Phase 3 (kế hoạch)
+          <div class="tooltip">Phase 3 (kế hoạch)<br>Tính năng nâng cao<br>T1 → T3/2027</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -697,44 +705,44 @@
     </tr>
 
     <!-- ========== CUSTOMER FACING ========== -->
-    <tr class="section-row"><td colspan="14">Customer Facing</td></tr>
+    <tr class="section-row"><td colspan="14">Hướng khách hàng</td></tr>
 
     <!-- 3. App Khach hang -->
     <tr class="project-row">
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-warm)">3</span>
-          <div><span class="project-label">App Khach hang</span><br><span class="project-sub">Ngoc Dung & Zema</span></div>
+          <div><span class="project-label">App Khách hàng</span><br><span class="project-sub">Ngọc Dung & Zema</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-warm)">
-          Feature & Minigame Q3
-          <div class="tooltip">Q3/2026<br>Tinh nang moi theo yeu cau KD<br>Minigame campaign he</div>
+          Tính năng & Minigame Q3
+          <div class="tooltip">Q3/2026<br>Tính năng mới theo yêu cầu KD<br>Minigame campaign hè</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#a56a00">
-          Feature & Minigame Q4
-          <div class="tooltip">Q4/2026<br>Tinh nang moi<br>Campaign cuoi nam / Tet</div>
+          Tính năng & Minigame Q4
+          <div class="tooltip">Q4/2026<br>Tính năng mới<br>Campaign cuối năm / Tết</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-warm)">
-          Feature & Minigame Q1
-          <div class="tooltip">Q1/2027<br>Campaign Tet & dau nam</div>
+          Tính năng & Minigame Q1
+          <div class="tooltip">Q1/2027<br>Campaign Tết & đầu năm</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#a56a00">
-          Feature & Minigame Q2
-          <div class="tooltip">Q2/2027<br>Tinh nang moi theo KD</div>
+          Tính năng & Minigame Q2
+          <div class="tooltip">Q2/2027<br>Tính năng mới theo KD</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -747,33 +755,33 @@
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-cyan)">6</span>
-          <div><span class="project-label">Website & Landing</span><br><span class="project-sub">Campaign support</span></div>
+          <div><span class="project-label">Website & Landing</span><br><span class="project-sub">Hỗ trợ chiến dịch</span></div>
         </div>
       </td>
       <td style="position:relative" colspan="13">
         <div class="continuous-bar">
           <div class="stripe"></div>
-          <span>Continuous — Theo yeu cau campaign kinh doanh</span>
-          <div class="tooltip">Continuous delivery<br>Website, minigame, landing page<br>Chay lien tuc theo campaign KD<br>Khong chia phase co dinh</div>
+          <span>Liên tục — Theo yêu cầu campaign kinh doanh</span>
+          <div class="tooltip">Triển khai liên tục<br>Website, minigame, landing page<br>Chạy liên tục theo campaign KD<br>Không chia phase cố định</div>
         </div>
       </td>
     </tr>
 
     <!-- ========== INTERNAL APPS ========== -->
-    <tr class="section-row"><td colspan="14">Internal Apps</td></tr>
+    <tr class="section-row"><td colspan="14">Ứng dụng nội bộ</td></tr>
 
     <!-- 4a. App noi bo nhan vien -->
     <tr class="project-row">
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-purple)">4a</span>
-          <div><span class="project-label">App Noi bo NV</span><br><span class="project-sub">Quy trinh & HR</span></div>
+          <div><span class="project-label">App Nội bộ NV</span><br><span class="project-sub">Quy trình & HR</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-purple)">
-          Phase 1 — Quy trinh cot loi
-          <div class="tooltip">Phase 1<br>App quy trinh cot loi<br>Cac chuc nang HR co ban<br>T6 → T8/2026</div>
+          Phase 1 — Quy trình cốt lõi
+          <div class="tooltip">Phase 1<br>App quy trình cốt lõi<br>Các chức năng HR cơ bản<br>T6 → T8/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -782,8 +790,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#6929c4">
-          Phase 2 — Mo rong chuc nang
-          <div class="tooltip">Phase 2<br>Tich hop ERP v2 (HR module)<br>Chuc nang nang cao<br>T9 → T11/2026</div>
+          Phase 2 — Mở rộng chức năng
+          <div class="tooltip">Phase 2<br>Tích hợp ERP v2 (HR module)<br>Chức năng nâng cao<br>T9 → T11/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -802,13 +810,13 @@
       <td>
         <div class="project-name">
           <span class="project-num" style="background:#6929c4">4b</span>
-          <div><span class="project-label">App Chat Noi bo</span><br><span class="project-sub">MXH noi bo</span></div>
+          <div><span class="project-label">App Chat Nội bộ</span><br><span class="project-sub">MXH nội bộ</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(200% + 4px); background:#6929c4">
-          MVP — Chat co ban
-          <div class="tooltip">MVP<br>Chat 1-1, group<br>Gui file, anh<br>T6 → T7/2026</div>
+          MVP — Chat cơ bản
+          <div class="tooltip">Phiên bản tối thiểu<br>Chat 1-1, nhóm<br>Gửi file, ảnh<br>T6 → T7/2026</div>
         </div>
       </td>
       <td style="position:relative">
@@ -816,8 +824,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-purple)">
-          Phase 2 — MXH noi bo
-          <div class="tooltip">Phase 2<br>Feed, post, reaction<br>Notification push<br>T8 → T10/2026</div>
+          Phase 2 — MXH nội bộ
+          <div class="tooltip">Phase 2<br>Bảng tin, bài đăng, tương tác<br>Thông báo đẩy<br>T8 → T10/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -826,8 +834,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#491d8b">
-          Phase 3 — Nang cao
-          <div class="tooltip">Phase 3<br>Video call, voice<br>Bot, tich hop workflow<br>T11 → T12/2026</div>
+          Phase 3 — Nâng cao
+          <div class="tooltip">Phase 3<br>Gọi video, gọi thoại<br>Bot, tích hợp quy trình<br>T11 → T12/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -840,36 +848,36 @@
     </tr>
 
     <!-- ========== SALES & COMMUNICATION ========== -->
-    <tr class="section-row"><td colspan="14">Sales & Communication</td></tr>
+    <tr class="section-row"><td colspan="14">Bán hàng & Giao tiếp</td></tr>
 
     <!-- 5. Yeori -->
     <tr class="project-row">
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-green)">5</span>
-          <div><span class="project-label">Yeori POS+CRM</span><br><span class="project-sub">He thong ban hang</span></div>
+          <div><span class="project-label">Yeori POS+CRM</span><br><span class="project-sub">Hệ thống bán hàng</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-green)">
-          Cap nhat nghiep vu hien tai
-          <div class="tooltip">Dang cap nhat<br>Cap nhat theo yeu cau nghiep vu<br>Bug fix & improvement<br>T6 → T8/2026</div>
+          Cập nhật nghiệp vụ hiện tại
+          <div class="tooltip">Đang cập nhật<br>Cập nhật theo yêu cầu nghiệp vụ<br>Sửa lỗi & nâng cấp<br>T6 → T8/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#044317">
-          Tinh nang moi Q4
-          <div class="tooltip">Q4/2026<br>Tinh nang moi theo KD<br>Toi uu hieu nang</div>
+          Tính năng mới Q4
+          <div class="tooltip">Q4/2026<br>Tính năng mới theo KD<br>Tối ưu hiệu năng</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:var(--phase-gray)">
-          Tich hop ERP v2
-          <div class="tooltip">Ke hoach<br>Tich hop POS module tu ERP v2<br>T12/2026 → T1/2027</div>
+          Tích hợp ERP v2
+          <div class="tooltip">Kế hoạch<br>Tích hợp POS module từ ERP v2<br>T12/2026 → T1/2027</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -885,13 +893,13 @@
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-teal)">7</span>
-          <div><span class="project-label">OmniChat</span><br><span class="project-sub">Chat tap trung</span></div>
+          <div><span class="project-label">OmniChat</span><br><span class="project-sub">Chat tập trung</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(200% + 4px); background:var(--phase-teal)">
-          Zalo OA integration
-          <div class="tooltip">Dang trien khai<br>Tich hop Zalo OA<br>T6 → T7/2026</div>
+          Tích hợp Zalo OA
+          <div class="tooltip">Đang triển khai<br>Tích hợp Zalo OA<br>T6 → T7/2026</div>
         </div>
       </td>
       <td style="position:relative">
@@ -899,8 +907,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#005d5d">
-          Facebook Messenger
-          <div class="tooltip">Facebook integration<br>Tich hop Facebook Messenger<br>T8 → T9/2026</div>
+          Tích hợp Facebook
+          <div class="tooltip">Tích hợp Facebook<br>Tích hợp Facebook Messenger<br>T8 → T9/2026</div>
         </div>
       </td>
       <td style="position:relative">
@@ -908,8 +916,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:var(--phase-teal)">
-          Zalo Ca nhan
-          <div class="tooltip">Zalo Ca nhan<br>Tich hop Zalo ca nhan<br>T10 → T11/2026</div>
+          Zalo Cá nhân
+          <div class="tooltip">Zalo Cá nhân<br>Tích hợp Zalo cá nhân<br>T10 → T11/2026</div>
         </div>
       </td>
       <td style="position:relative">
@@ -917,8 +925,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
-          Nang cao — Bot, Analytics
-          <div class="tooltip">Ke hoach<br>Chatbot auto-reply<br>Analytics dashboard<br>T12/2026 → T2/2027</div>
+          Nâng cao — Bot, Analytics
+          <div class="tooltip">Kế hoạch<br>Chatbot tự động trả lời<br>Dashboard phân tích<br>T12/2026 → T2/2027</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -930,36 +938,36 @@
     </tr>
 
     <!-- ========== DATA & INFRASTRUCTURE ========== -->
-    <tr class="section-row"><td colspan="14">Data & Infrastructure</td></tr>
+    <tr class="section-row"><td colspan="14">Dữ liệu & Hạ tầng</td></tr>
 
     <!-- 8. CDP -->
     <tr class="project-row">
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-cyan)">8</span>
-          <div><span class="project-label">CDP</span><br><span class="project-sub">Customer Data Platform</span></div>
+          <div><span class="project-label">CDP</span><br><span class="project-sub">Nền tảng dữ liệu KH</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-cyan)">
-          Tong hop & lam sach data
-          <div class="tooltip">Dang trien khai<br>Tong hop data tu nhieu nguon<br>Lam sach, chuan hoa<br>T6 → T8/2026</div>
+          Tổng hợp & làm sạch dữ liệu
+          <div class="tooltip">Đang triển khai<br>Tổng hợp dữ liệu từ nhiều nguồn<br>Làm sạch, chuẩn hoá<br>T6 → T8/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#0072c3">
-          Phan tich & Segmentation
-          <div class="tooltip">Phase 2<br>RFM analysis<br>Customer segmentation<br>Dashboard bao cao<br>T9 → T11/2026</div>
+          Phân tích & Phân khúc
+          <div class="tooltip">Phase 2<br>Phân tích RFM<br>Phân khúc khách hàng<br>Bảng điều khiển báo cáo<br>T9 → T11/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
-          Du doan & Automation
-          <div class="tooltip">Ke hoach<br>Predictive analytics<br>Marketing automation triggers<br>T12/2026 → T2/2027</div>
+          Dự đoán & Tự động hoá
+          <div class="tooltip">Kế hoạch<br>Phân tích dự đoán<br>Tự động hoá tiếp thị<br>T12/2026 → T2/2027</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -975,13 +983,13 @@
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--error)">9</span>
-          <div><span class="project-label">IT Ha tang</span><br><span class="project-sub">Private Cloud</span></div>
+          <div><span class="project-label">IT Hạ tầng</span><br><span class="project-sub">Đám mây riêng</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(200% + 4px); background:var(--error)">
-          Nhan server #3 & Setup
-          <div class="tooltip">Urgent<br>Nhan them 1 server<br>Setup cum 3 nodes<br>T6 → T7/2026</div>
+          Nhận server #3 & Cài đặt
+          <div class="tooltip">Khẩn cấp<br>Nhận thêm 1 máy chủ<br>Cài đặt cụm 3 máy<br>T6 → T7/2026</div>
         </div>
       </td>
       <td style="position:relative">
@@ -989,8 +997,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#750e13">
-          Migrate services → Private Cloud
-          <div class="tooltip">Migration<br>Migrate dan tu VNGCloud<br>Test & validate<br>T8 → T10/2026</div>
+          Di chuyển dịch vụ → Đám mây riêng
+          <div class="tooltip">Di chuyển<br>Chuyển dần từ VNGCloud<br>Kiểm thử & xác nhận<br>T8 → T10/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -999,8 +1007,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#a2191f">
-          Hoan tat migrate & Decom VNG
-          <div class="tooltip">Decommission<br>Hoan tat migrate<br>Decommission VNGCloud<br>T11 → T12/2026</div>
+          Hoàn tất di chuyển & Tắt VNG
+          <div class="tooltip">Ngưng hoạt động<br>Hoàn tất di chuyển<br>Tắt VNGCloud<br>T11 → T12/2026</div>
         </div>
       </td>
       <td style="position:relative">
@@ -1008,8 +1016,8 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:var(--phase-gray)">
-          Monitoring & HA
-          <div class="tooltip">Ke hoach<br>Setup monitoring stack<br>High availability<br>Backup strategy<br>T1 → T2/2027</div>
+          Giám sát & Khả dụng cao
+          <div class="tooltip">Kế hoạch<br>Thiết lập giám sát hệ thống<br>Khả dụng cao (HA)<br>Chiến lược sao lưu<br>T1 → T2/2027</div>
         </div>
       </td>
       <td style="position:relative"></td>
@@ -1024,21 +1032,21 @@
       <td>
         <div class="project-name">
           <span class="project-num" style="background:var(--phase-gray)">10</span>
-          <div><span class="project-label">Van hanh OCN</span><br><span class="project-sub">Tiep quan & ke hoach</span></div>
+          <div><span class="project-label">Vận hành OCN</span><br><span class="project-sub">Tiếp quản & kế hoạch</span></div>
         </div>
       </td>
       <td style="position:relative">
         <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
-          Khao sat & Tiep quan
-          <div class="tooltip">Discovery<br>Tim hieu phan he hien co<br>Tiep quan he thong<br>T6 → T8/2026</div>
+          Khảo sát & Tiếp quản
+          <div class="tooltip">Khám phá<br>Tìm hiểu phân hệ hiện có<br>Tiếp quản hệ thống<br>T6 → T8/2026</div>
         </div>
       </td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#393939">
-          Buc tranh tong the & Roadmap
-          <div class="tooltip">Planning<br>Len buc tranh tong the<br>Xac dinh roadmap phan mem OCN<br>T9 → T10/2026</div>
+          Bức tranh tổng thể & Lộ trình
+          <div class="tooltip">Lập kế hoạch<br>Lên bức tranh tổng thể<br>Xác định lộ trình phần mềm OCN<br>T9 → T10/2026</div>
         </div>
       </td>
       <td style="position:relative">
@@ -1046,10 +1054,127 @@
       </td>
       <td style="position:relative">
         <div class="phase-bar" style="left:0; width:calc(400% + 12px); background:#525252">
-          Trien khai theo roadmap OCN
-          <div class="tooltip">Ke hoach<br>Trien khai cai tien theo roadmap<br>T11/2026 → T2/2027</div>
+          Triển khai theo lộ trình OCN
+          <div class="tooltip">Kế hoạch<br>Triển khai cải tiến theo lộ trình<br>T11/2026 → T2/2027</div>
         </div>
       </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- ========== AI ỨNG DỤNG ========== -->
+    <tr class="section-row"><td colspan="14">AI ứng dụng</td></tr>
+
+    <!-- 11. Chatbot tư vấn KH -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:#0f62fe">11</span>
+          <div><span class="project-label">Chatbot tư vấn KH</span><br><span class="project-sub">App nội bộ</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(200% + 4px); background:#0f62fe">
+          Triển khai cho App nội bộ
+          <div class="tooltip">Đang triển khai<br>Chatbot tư vấn khách hàng<br>Áp dụng cho App nội bộ<br>T6 → T7/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 12. Chatbot truy vấn thông tin KH -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:#0f62fe">12</span>
+          <div><span class="project-label">Chatbot truy vấn KH</span><br><span class="project-sub">CRM v2</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(100%); background:#0f62fe">
+          Đang áp dụng cho CRM v2
+          <div class="tooltip">Đang áp dụng<br>Chatbot truy vấn thông tin khách hàng<br>Hỗ trợ nhân viên trên CRM v2<br>T6/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 13. Chatbot hỗ trợ nhân viên -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:#0043ce">13</span>
+          <div><span class="project-label">Chatbot hỗ trợ NV</span><br><span class="project-sub">Nội bộ</span></div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#0043ce">
+          Phát triển & đưa vào sử dụng
+          <div class="tooltip">Kế hoạch<br>Chatbot hỗ trợ nhân viên<br>Bắt đầu T9/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 14. Agent dự báo CDP -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:#002d9c">14</span>
+          <div><span class="project-label">Agent dự báo KH</span><br><span class="project-sub">CDP</span></div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#002d9c">
+          Phát triển & tích hợp vào CDP
+          <div class="tooltip">Kế hoạch<br>Agent dự báo các chỉ số khách hàng<br>Áp dụng cho CDP<br>Bắt đầu T9/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
       <td style="position:relative"></td>
@@ -1065,19 +1190,19 @@
 
 <!-- Notes -->
 <div class="note-tile">
-  <h3>Notes</h3>
+  <h3>Ghi chú</h3>
   <ul>
-    <li>Draft v1 — Timeline va phase la uoc luong, can review & chinh sua cung team</li>
-    <li><span class="tag-done">Done</span> = da deploy production &nbsp;&middot;&nbsp; <span class="tag-active">In progress</span> = dang dev/UAT &nbsp;&middot;&nbsp; <span class="tag-plan">Planned</span> = chua bat dau</li>
-    <li>Du an <strong>#3 App KH</strong> va <strong>#6 Website/Landing</strong> chay continuous theo campaign</li>
-    <li>Milestone marks go-live hoac deliverable quan trong</li>
-    <li>Dependencies chinh: ERP v2 ↔ App Noi bo NV (HR), ERP v2 ↔ Yeori (POS), IT Ha tang ↔ tat ca du an</li>
+    <li>Bản nháp v1 — Thời gian và giai đoạn là ước lượng, cần xem xét & chỉnh sửa cùng đội ngũ</li>
+    <li><span class="tag-done">Đã xong</span> = đã triển khai chính thức &nbsp;&middot;&nbsp; <span class="tag-active">Đang triển khai</span> = đang phát triển/kiểm thử &nbsp;&middot;&nbsp; <span class="tag-plan">Kế hoạch</span> = chưa bắt đầu</li>
+    <li>Dự án <strong>#3 App KH</strong> và <strong>#6 Website/Landing</strong> chạy liên tục theo chiến dịch</li>
+    <li>Cột mốc đánh dấu thời điểm đưa lên chính thức hoặc sản phẩm bàn giao quan trọng</li>
+    <li>Phụ thuộc chính: ERP v2 ↔ App Nội bộ NV (Nhân sự), ERP v2 ↔ Yeori (POS), IT Hạ tầng ↔ tất cả dự án</li>
   </ul>
 </div>
 
 <!-- Footer -->
 <footer>
-  <strong>TheAdvance</strong> &nbsp;&middot;&nbsp; Roadmap Khoi IT &nbsp;&middot;&nbsp; Draft v1 &nbsp;&middot;&nbsp; 22/06/2026
+  <strong>TheAdvance</strong> &nbsp;&middot;&nbsp; Lộ trình Khối IT &nbsp;&middot;&nbsp; Bản nháp v1 &nbsp;&middot;&nbsp; 22/06/2026
 </footer>
 
 <!-- Floating tooltip -->
