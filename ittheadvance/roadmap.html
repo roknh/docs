@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap Khối IT — TheAdvance 2026-2027</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* IBM Carbon — Colors */
+    --primary: #0f62fe;
+    --primary-hover: #0050e6;
+    --on-primary: #ffffff;
+    --ink: #161616;
+    --ink-muted: #525252;
+    --ink-subtle: #8c8c8c;
+    --canvas: #ffffff;
+    --surface-1: #f4f4f4;
+    --surface-2: #e0e0e0;
+    --inverse-canvas: #161616;
+    --inverse-ink: #ffffff;
+    --inverse-ink-muted: #c6c6c6;
+    --hairline: #e0e0e0;
+    --success: #24a148;
+    --warning: #f1c21b;
+    --error: #da1e28;
+
+    /* Phase palette — muted, enterprise-grade */
+    --phase-blue: #0f62fe;
+    --phase-teal: #009d9a;
+    --phase-purple: #8a3ffc;
+    --phase-magenta: #d02670;
+    --phase-cyan: #1192e8;
+    --phase-green: #198038;
+    --phase-warm: #8a3800;
+    --phase-gray: #6f6f6f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--canvas);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.29;
+    letter-spacing: 0.16px;
+  }
+
+  /* Utility bar */
+  .utility-bar {
+    background: var(--surface-1);
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 32px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.32px;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  /* Top nav */
+  .top-nav {
+    background: var(--canvas);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--hairline);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .top-nav .logo {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.16px;
+  }
+
+  .top-nav .nav-links {
+    display: flex;
+    gap: 24px;
+    margin-left: 32px;
+  }
+
+  .top-nav .nav-links a {
+    font-size: 14px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    letter-spacing: 0.16px;
+  }
+
+  .top-nav .nav-links a:hover {
+    color: var(--ink);
+  }
+
+  .top-nav .nav-links a.active {
+    color: var(--ink);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 12px;
+    margin-bottom: -13px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 48px 32px 32px;
+    max-width: 1584px;
+    margin: 0 auto;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.20;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .hero .subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.50;
+    letter-spacing: 0.16px;
+  }
+
+  .hero .meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  .hero .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ink-subtle);
+    letter-spacing: 0.32px;
+  }
+
+  .hero .meta-item .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Legend */
+  .legend-strip {
+    background: var(--surface-1);
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .legend-strip .legend-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    letter-spacing: 0.32px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .legend-strip .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.32px;
+    white-space: nowrap;
+  }
+
+  .legend-strip .legend-swatch {
+    width: 16px;
+    height: 8px;
+  }
+
+  .legend-strip .legend-diamond {
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+  }
+
+  .legend-strip .legend-line {
+    width: 2px;
+    height: 14px;
+    background: var(--error);
+  }
+
+  /* Roadmap container */
+  .roadmap-container {
+    max-width: 1584px;
+    margin: 0 auto;
+    padding: 0 32px;
+    overflow-x: auto;
+  }
+
+  .roadmap-table {
+    width: 100%;
+    min-width: 1200px;
+    border-collapse: collapse;
+    margin-top: 0;
+  }
+
+  /* Quarter header */
+  .quarter-header th {
+    padding: 12px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-align: center;
+    border-bottom: 1px solid var(--hairline);
+    letter-spacing: 0.32px;
+    background: var(--canvas);
+  }
+
+  .quarter-header th:first-child {
+    text-align: left;
+    padding-left: 0;
+  }
+
+  /* Month header */
+  .month-header {
+    position: sticky;
+    top: 48px;
+    z-index: 10;
+    background: var(--canvas);
+  }
+
+  .month-header th {
+    padding: 10px 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ink-subtle);
+    letter-spacing: 0.32px;
+    border-bottom: 2px solid var(--hairline);
+    text-align: center;
+    background: var(--canvas);
+  }
+
+  .month-header th:first-child {
+    text-align: left;
+    width: 200px;
+    min-width: 200px;
+    font-weight: 600;
+    color: var(--ink-muted);
+  }
+
+  .month-header th.current {
+    color: var(--primary);
+    font-weight: 600;
+    border-bottom-color: var(--primary);
+  }
+
+  /* Section divider */
+  .section-row td {
+    padding: 10px 0;
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--hairline);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.16px;
+  }
+
+  /* Project rows */
+  .project-row td {
+    padding: 6px 4px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--hairline);
+    position: relative;
+    height: 52px;
+  }
+
+  .project-row td:first-child {
+    padding-left: 0;
+  }
+
+  .project-row:hover td {
+    background: var(--surface-1);
+  }
+
+  .project-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+  }
+
+  .project-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--on-primary);
+    flex-shrink: 0;
+  }
+
+  .project-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.16px;
+  }
+
+  .project-sub {
+    font-size: 12px;
+    color: var(--ink-subtle);
+    font-weight: 400;
+    letter-spacing: 0.32px;
+  }
+
+  /* Phase bars — flat, square, Carbon-style */
+  .phase-bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--on-primary);
+    white-space: nowrap;
+    padding: 0 10px;
+    cursor: default;
+    transition: opacity 0.15s;
+    z-index: 2;
+    min-width: 20px;
+    letter-spacing: 0.16px;
+  }
+
+  .phase-bar:hover {
+    opacity: 0.88;
+    z-index: 5;
+  }
+
+  .phase-bar .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--inverse-canvas);
+    border: 1px solid var(--ink-muted);
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--inverse-ink);
+    white-space: pre-line;
+    min-width: 200px;
+    text-align: left;
+    z-index: 100;
+    letter-spacing: 0.32px;
+    line-height: 1.5;
+  }
+
+  .phase-bar:hover .tooltip {
+    display: block;
+  }
+
+  /* Status */
+  .status-done { opacity: 0.45; }
+  .status-active { outline: 2px solid var(--primary); outline-offset: 1px; }
+
+  /* Milestone */
+  .milestone {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    z-index: 3;
+  }
+
+  /* Continuous bar */
+  .continuous-bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 26px;
+    left: 0;
+    width: 100%;
+    background: var(--surface-1);
+    border: 1px solid var(--hairline);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink-muted);
+    letter-spacing: 0.16px;
+    cursor: default;
+    z-index: 2;
+  }
+
+  .continuous-bar .stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 8px,
+      rgba(15, 98, 254, 0.06) 8px,
+      rgba(15, 98, 254, 0.06) 16px
+    );
+  }
+
+  .continuous-bar span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .continuous-bar .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--inverse-canvas);
+    border: 1px solid var(--ink-muted);
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--inverse-ink);
+    white-space: pre-line;
+    min-width: 200px;
+    text-align: left;
+    z-index: 100;
+    letter-spacing: 0.32px;
+    line-height: 1.5;
+  }
+
+  .continuous-bar:hover .tooltip {
+    display: block;
+  }
+
+  /* Note tile */
+  .note-tile {
+    max-width: 800px;
+    margin: 32px auto;
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    padding: 24px;
+  }
+
+  .note-tile h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: 0.16px;
+  }
+
+  .note-tile ul {
+    padding-left: 20px;
+    list-style: none;
+  }
+
+  .note-tile li {
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.50;
+    letter-spacing: 0.16px;
+    position: relative;
+  }
+
+  .note-tile li::before {
+    content: "—";
+    position: absolute;
+    left: -20px;
+    color: var(--ink-subtle);
+  }
+
+  .tag-done { color: var(--success); font-weight: 600; }
+  .tag-active { color: var(--primary); font-weight: 600; }
+  .tag-plan { color: var(--ink-subtle); font-weight: 600; }
+
+  /* Footer */
+  footer {
+    background: var(--inverse-canvas);
+    color: var(--inverse-ink-muted);
+    padding: 32px;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.32px;
+    margin-top: 48px;
+  }
+
+  footer strong {
+    color: var(--inverse-ink);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<!-- Utility bar -->
+<div class="utility-bar">
+  Draft v1 — Internal use only
+</div>
+
+<!-- Top nav -->
+<nav class="top-nav">
+  <div class="logo">TheAdvance</div>
+  <div class="nav-links">
+    <a href="#" class="active">Roadmap</a>
+    <a href="#">Projects</a>
+    <a href="#">Resources</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Roadmap Khối IT</h1>
+  <div class="subtitle">Kế hoạch triển khai 10 dự án song song, từ tháng 6/2026 đến tháng 6/2027</div>
+  <div class="meta">
+    <div class="meta-item">
+      <div class="dot" style="background:var(--primary)"></div>
+      Cập nhật 22/06/2026
+    </div>
+    <div class="meta-item">
+      <div class="dot" style="background:var(--warning)"></div>
+      Status: Draft — Chờ review
+    </div>
+    <div class="meta-item">
+      10 projects &middot; 4 quarters
+    </div>
+  </div>
+</div>
+
+<!-- Legend -->
+<div class="legend-strip">
+  <div class="legend-label">Legend</div>
+  <div class="legend-item">
+    <div class="legend-swatch" style="background:var(--success); opacity:0.45"></div>
+    Done
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch" style="background:var(--primary)"></div>
+    In progress
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch" style="background:var(--ink-subtle)"></div>
+    Planned
+  </div>
+  <div class="legend-item">
+    <div class="legend-diamond" style="background:var(--error)"></div>
+    Milestone
+  </div>
+  <div class="legend-item">
+    <div class="legend-line"></div>
+    Today
+  </div>
+</div>
+
+<!-- Roadmap -->
+<div class="roadmap-container">
+<table class="roadmap-table">
+  <thead>
+    <tr class="quarter-header">
+      <th></th>
+      <th colspan="3">Q3 2026</th>
+      <th colspan="3">Q4 2026</th>
+      <th colspan="3">Q1 2027</th>
+      <th colspan="3">Q2 2027</th>
+      <th></th>
+    </tr>
+    <tr class="month-header">
+      <th>Project</th>
+      <th class="current">T6</th>
+      <th>T7</th>
+      <th>T8</th>
+      <th>T9</th>
+      <th>T10</th>
+      <th>T11</th>
+      <th>T12</th>
+      <th>T1</th>
+      <th>T2</th>
+      <th>T3</th>
+      <th>T4</th>
+      <th>T5</th>
+      <th>T6</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- ========== CORE PLATFORMS ========== -->
+    <tr class="section-row"><td colspan="14">Core Platforms</td></tr>
+
+    <!-- 1. ERP v2 -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-blue)">1</span>
+          <div><span class="project-label">ERP v2</span><br><span class="project-sub">Thay the .NET cu</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-blue)">
+          Phase 1 — Nhan su, KPI, Luong
+          <div class="tooltip">Phase 1: Core HR<br>Nhan su, KPI, Luong<br>T6 → T8/2026<br>UAT & Go-live T8</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-purple)">
+          Phase 2 — Ke toan, Kho
+          <div class="tooltip">Phase 2: Finance & Inventory<br>Ke toan, Kho<br>T9 → T11/2026<br>Go-live T11</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#6929c4">
+          Phase 3 — Xay dung, POS
+          <div class="tooltip">Phase 3: Construction & POS<br>Xay dung, POS<br>T12/2026 → T2/2027<br>Go-live T2</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-green)">
+          On dinh & Migrate data
+          <div class="tooltip">Phase 4: Stabilize<br>On dinh toan bo<br>Migrate data cu sang moi<br>T3 → T5/2027</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="left:4px; background:var(--success)"></div>
+      </td>
+    </tr>
+
+    <!-- 2. CRM v2 -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-magenta)">2</span>
+          <div><span class="project-label">CRM v2</span><br><span class="project-sub">Phase 1 done</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-done" style="left:0; width:100%; background:var(--success)">
+          P1 Done
+          <div class="tooltip">Phase 1: Da trien khai</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(400% + 12px); background:var(--phase-magenta)">
+          Phase 2 — Thu thap yeu cau → Dev → UAT
+          <div class="tooltip">Phase 2<br>Thu thap & phan tich yeu cau moi<br>Dev cac tinh nang phase 2<br>T7 → T10/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#9f1853">
+          Go-live P2 & On dinh
+          <div class="tooltip">Go-live Phase 2<br>Deploy & on dinh<br>T11 → T12/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
+          Phase 3 (ke hoach)
+          <div class="tooltip">Phase 3 (ke hoach)<br>Tinh nang nang cao<br>T1 → T3/2027</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- ========== CUSTOMER FACING ========== -->
+    <tr class="section-row"><td colspan="14">Customer Facing</td></tr>
+
+    <!-- 3. App Khach hang -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-warm)">3</span>
+          <div><span class="project-label">App Khach hang</span><br><span class="project-sub">Ngoc Dung & Zema</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-warm)">
+          Feature & Minigame Q3
+          <div class="tooltip">Q3/2026<br>Tinh nang moi theo yeu cau KD<br>Minigame campaign he</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#a56a00">
+          Feature & Minigame Q4
+          <div class="tooltip">Q4/2026<br>Tinh nang moi<br>Campaign cuoi nam / Tet</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-warm)">
+          Feature & Minigame Q1
+          <div class="tooltip">Q1/2027<br>Campaign Tet & dau nam</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#a56a00">
+          Feature & Minigame Q2
+          <div class="tooltip">Q2/2027<br>Tinh nang moi theo KD</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 6. Website / Landing -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-cyan)">6</span>
+          <div><span class="project-label">Website & Landing</span><br><span class="project-sub">Campaign support</span></div>
+        </div>
+      </td>
+      <td style="position:relative" colspan="13">
+        <div class="continuous-bar">
+          <div class="stripe"></div>
+          <span>Continuous — Theo yeu cau campaign kinh doanh</span>
+          <div class="tooltip">Continuous delivery<br>Website, minigame, landing page<br>Chay lien tuc theo campaign KD<br>Khong chia phase co dinh</div>
+        </div>
+      </td>
+    </tr>
+
+    <!-- ========== INTERNAL APPS ========== -->
+    <tr class="section-row"><td colspan="14">Internal Apps</td></tr>
+
+    <!-- 4a. App noi bo nhan vien -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-purple)">4a</span>
+          <div><span class="project-label">App Noi bo NV</span><br><span class="project-sub">Quy trinh & HR</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-purple)">
+          Phase 1 — Quy trinh cot loi
+          <div class="tooltip">Phase 1<br>App quy trinh cot loi<br>Cac chuc nang HR co ban<br>T6 → T8/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#6929c4">
+          Phase 2 — Mo rong chuc nang
+          <div class="tooltip">Phase 2<br>Tich hop ERP v2 (HR module)<br>Chuc nang nang cao<br>T9 → T11/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 4b. App chat noi bo -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:#6929c4">4b</span>
+          <div><span class="project-label">App Chat Noi bo</span><br><span class="project-sub">MXH noi bo</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(200% + 4px); background:#6929c4">
+          MVP — Chat co ban
+          <div class="tooltip">MVP<br>Chat 1-1, group<br>Gui file, anh<br>T6 → T7/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-purple)">
+          Phase 2 — MXH noi bo
+          <div class="tooltip">Phase 2<br>Feed, post, reaction<br>Notification push<br>T8 → T10/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#491d8b">
+          Phase 3 — Nang cao
+          <div class="tooltip">Phase 3<br>Video call, voice<br>Bot, tich hop workflow<br>T11 → T12/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- ========== SALES & COMMUNICATION ========== -->
+    <tr class="section-row"><td colspan="14">Sales & Communication</td></tr>
+
+    <!-- 5. Yeori -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-green)">5</span>
+          <div><span class="project-label">Yeori POS+CRM</span><br><span class="project-sub">He thong ban hang</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-green)">
+          Cap nhat nghiep vu hien tai
+          <div class="tooltip">Dang cap nhat<br>Cap nhat theo yeu cau nghiep vu<br>Bug fix & improvement<br>T6 → T8/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#044317">
+          Tinh nang moi Q4
+          <div class="tooltip">Q4/2026<br>Tinh nang moi theo KD<br>Toi uu hieu nang</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:var(--phase-gray)">
+          Tich hop ERP v2
+          <div class="tooltip">Ke hoach<br>Tich hop POS module tu ERP v2<br>T12/2026 → T1/2027</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 7. OmniChat -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-teal)">7</span>
+          <div><span class="project-label">OmniChat</span><br><span class="project-sub">Chat tap trung</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(200% + 4px); background:var(--phase-teal)">
+          Zalo OA integration
+          <div class="tooltip">Dang trien khai<br>Tich hop Zalo OA<br>T6 → T7/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#005d5d">
+          Facebook Messenger
+          <div class="tooltip">Facebook integration<br>Tich hop Facebook Messenger<br>T8 → T9/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:var(--phase-teal)">
+          Zalo Ca nhan
+          <div class="tooltip">Zalo Ca nhan<br>Tich hop Zalo ca nhan<br>T10 → T11/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
+          Nang cao — Bot, Analytics
+          <div class="tooltip">Ke hoach<br>Chatbot auto-reply<br>Analytics dashboard<br>T12/2026 → T2/2027</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- ========== DATA & INFRASTRUCTURE ========== -->
+    <tr class="section-row"><td colspan="14">Data & Infrastructure</td></tr>
+
+    <!-- 8. CDP -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-cyan)">8</span>
+          <div><span class="project-label">CDP</span><br><span class="project-sub">Customer Data Platform</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-cyan)">
+          Tong hop & lam sach data
+          <div class="tooltip">Dang trien khai<br>Tong hop data tu nhieu nguon<br>Lam sach, chuan hoa<br>T6 → T8/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#0072c3">
+          Phan tich & Segmentation
+          <div class="tooltip">Phase 2<br>RFM analysis<br>Customer segmentation<br>Dashboard bao cao<br>T9 → T11/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
+          Du doan & Automation
+          <div class="tooltip">Ke hoach<br>Predictive analytics<br>Marketing automation triggers<br>T12/2026 → T2/2027</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 9. IT Ha tang -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--error)">9</span>
+          <div><span class="project-label">IT Ha tang</span><br><span class="project-sub">Private Cloud</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(200% + 4px); background:var(--error)">
+          Nhan server #3 & Setup
+          <div class="tooltip">Urgent<br>Nhan them 1 server<br>Setup cum 3 nodes<br>T6 → T7/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--success)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(300% + 8px); background:#750e13">
+          Migrate services → Private Cloud
+          <div class="tooltip">Migration<br>Migrate dan tu VNGCloud<br>Test & validate<br>T8 → T10/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#a2191f">
+          Hoan tat migrate & Decom VNG
+          <div class="tooltip">Decommission<br>Hoan tat migrate<br>Decommission VNGCloud<br>T11 → T12/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--success)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:var(--phase-gray)">
+          Monitoring & HA
+          <div class="tooltip">Ke hoach<br>Setup monitoring stack<br>High availability<br>Backup strategy<br>T1 → T2/2027</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+    <!-- 10. OCN -->
+    <tr class="project-row">
+      <td>
+        <div class="project-name">
+          <span class="project-num" style="background:var(--phase-gray)">10</span>
+          <div><span class="project-label">Van hanh OCN</span><br><span class="project-sub">Tiep quan & ke hoach</span></div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar status-active" style="left:0; width:calc(300% + 8px); background:var(--phase-gray)">
+          Khao sat & Tiep quan
+          <div class="tooltip">Discovery<br>Tim hieu phan he hien co<br>Tiep quan he thong<br>T6 → T8/2026</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(200% + 4px); background:#393939">
+          Buc tranh tong the & Roadmap
+          <div class="tooltip">Planning<br>Len buc tranh tong the<br>Xac dinh roadmap phan mem OCN<br>T9 → T10/2026</div>
+        </div>
+      </td>
+      <td style="position:relative">
+        <div class="milestone" style="right:4px; background:var(--error)"></div>
+      </td>
+      <td style="position:relative">
+        <div class="phase-bar" style="left:0; width:calc(400% + 12px); background:#525252">
+          Trien khai theo roadmap OCN
+          <div class="tooltip">Ke hoach<br>Trien khai cai tien theo roadmap<br>T11/2026 → T2/2027</div>
+        </div>
+      </td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+      <td style="position:relative"></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<!-- Notes -->
+<div class="note-tile">
+  <h3>Notes</h3>
+  <ul>
+    <li>Draft v1 — Timeline va phase la uoc luong, can review & chinh sua cung team</li>
+    <li><span class="tag-done">Done</span> = da deploy production &nbsp;&middot;&nbsp; <span class="tag-active">In progress</span> = dang dev/UAT &nbsp;&middot;&nbsp; <span class="tag-plan">Planned</span> = chua bat dau</li>
+    <li>Du an <strong>#3 App KH</strong> va <strong>#6 Website/Landing</strong> chay continuous theo campaign</li>
+    <li>Milestone marks go-live hoac deliverable quan trong</li>
+    <li>Dependencies chinh: ERP v2 ↔ App Noi bo NV (HR), ERP v2 ↔ Yeori (POS), IT Ha tang ↔ tat ca du an</li>
+  </ul>
+</div>
+
+<!-- Footer -->
+<footer>
+  <strong>TheAdvance</strong> &nbsp;&middot;&nbsp; Roadmap Khoi IT &nbsp;&middot;&nbsp; Draft v1 &nbsp;&middot;&nbsp; 22/06/2026
+</footer>
+
+</body>
+</html>
