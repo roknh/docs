@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Twin cho EVN — Tổng hợp Nghiên cứu</title>
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8c8c8c;
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --inverse-canvas: #161616;
+      --inverse-ink: #ffffff;
+      --inverse-ink-muted: #c6c6c6;
+      --hairline: #e0e0e0;
+      --blue-hover: #0050e6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .header-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--inverse-canvas);
+      color: var(--on-primary);
+      padding: 80px 0;
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      color: var(--inverse-ink-muted);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 54px;
+      font-weight: 300;
+      line-height: 1.17;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--inverse-ink-muted);
+      max-width: 750px;
+    }
+    .hero-meta {
+      margin-top: 48px;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item { font-size: 14px; color: var(--inverse-ink-muted); }
+    .hero-meta-item strong { color: var(--inverse-ink); font-weight: 400; }
+
+    /* Section */
+    .section { padding: 80px 0; }
+    .section-alt { background: var(--surface-1); }
+    .section-dark { background: var(--inverse-canvas); color: var(--inverse-ink); }
+    .section-eyebrow {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+    .section-eyebrow-light { color: var(--inverse-ink-muted); }
+    .section-title {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 18px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      max-width: 800px;
+      margin-bottom: 48px;
+    }
+    .section-desc-light { color: var(--inverse-ink-muted); }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+    /* Cards */
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+    }
+    .card-number {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .card h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .card-primary-top {
+      border-top: 2px solid var(--primary);
+    }
+
+    /* Cap card */
+    .cap-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+    }
+    .cap-card h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .cap-card .tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 2px 8px;
+      margin-bottom: 12px;
+    }
+    .cap-card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .cap-card ul {
+      margin-top: 16px;
+      list-style: none;
+    }
+    .cap-card ul li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .cap-card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    /* Table */
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .mapping-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--surface-1);
+    }
+    .mapping-table td {
+      font-size: 14px;
+      padding: 16px;
+      border-bottom: 1px solid var(--hairline);
+      vertical-align: top;
+    }
+    .mapping-table tr:hover { background: var(--surface-1); }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 10px;
+      letter-spacing: 0.32px;
+      white-space: nowrap;
+    }
+    .badge-green { background: #defbe6; color: #0e6027; }
+    .badge-blue { background: #d0e2ff; color: #002d9c; }
+    .badge-yellow { background: #fdf0cd; color: #8e6a00; }
+    .badge-purple { background: #e8daff; color: #6929c4; }
+
+    /* Stats */
+    .stat-bar {
+      display: flex;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 32px 16px;
+      border-right: 1px solid var(--hairline);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-top: 8px;
+    }
+
+    /* Phase timeline */
+    .phase { border-left: 2px solid var(--primary); padding-left: 32px; margin-bottom: 48px; position: relative; }
+    .phase::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 0;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+    }
+    .phase-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .phase h3 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .phase p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .phase ul { list-style: none; margin-top: 12px; }
+    .phase ul li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .phase ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    /* Arch diagram */
+    .arch-box {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arch-box-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border: 1px solid var(--primary);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .arch-box-dark {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink);
+      border: 1px solid #393939;
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arch-connector {
+      text-align: center;
+      padding: 8px 0;
+      color: var(--ink-subtle);
+      font-size: 20px;
+    }
+    .arch-row {
+      display: grid;
+      gap: 4px;
+    }
+    .arch-row-2 { grid-template-columns: repeat(2, 1fr); }
+    .arch-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .arch-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .arch-row-5 { grid-template-columns: repeat(5, 1fr); }
+
+    /* CTA */
+    .cta-banner {
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 64px 0;
+    }
+    .cta-banner h2 {
+      font-size: 32px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .cta-banner p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 600px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink-muted);
+      padding: 48px 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer p { font-size: 12px; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .section-title { font-size: 28px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .stat-bar { flex-wrap: wrap; }
+      .stat-item { flex: 1 1 50%; border-bottom: 1px solid var(--hairline); }
+      .hero-meta { flex-direction: column; gap: 12px; }
+      .container { padding: 0 16px; }
+      .hero { padding: 48px 0; }
+      .section { padding: 48px 0; }
+      .arch-row-4, .arch-row-5 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media print {
+      .header { position: relative; }
+      .hero { padding: 40px 0; }
+      .section { padding: 40px 0; break-inside: avoid; }
+      body { font-size: 11px; }
+      .hero h1 { font-size: 36px; }
+      .section-title { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <img src="images/logo-genysic.webp" alt="Genysic" style="height: 60px; width: auto;">
+      <span class="header-label">Research &mdash; Digital Twin cho EVN</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow">Nghiên cứu & Tổng hợp</p>
+      <h1>Digital Twin cho EVN<br>Tổng hợp Nghiên cứu</h1>
+      <p class="hero-sub">
+        Phân tích toàn diện thị trường, nền tảng công nghệ, case studies thực tế và đề xuất lộ trình triển khai Digital Twin cho Tập đoàn Điện lực Việt Nam (EVN).
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><strong>Đối tượng:</strong>&nbsp; Tập đoàn Điện lực Việt Nam (EVN)</div>
+        <div class="hero-meta-item"><strong>Ngày:</strong>&nbsp; 21/06/2026</div>
+        <div class="hero-meta-item"><strong>Loại tài liệu:</strong>&nbsp; Nghiên cứu nội bộ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Market Stats -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Tổng quan thị trường</p>
+      <h2 class="section-title">Electrical Digital Twin toàn cầu</h2>
+      <p class="section-desc">
+        Thị trường Digital Twin cho ngành điện đang tăng trưởng mạnh mẽ, được thúc đẩy bởi nhu cầu hiện đại hóa lưới điện và tích hợp năng lượng tái tạo.
+      </p>
+
+      <div class="stat-bar">
+        <div class="stat-item">
+          <div class="stat-value">$1.17B</div>
+          <div class="stat-label">Quy mô thị trường 2024</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$2.36B</div>
+          <div class="stat-label">Dự báo 2030</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">12.4%</div>
+          <div class="stat-label">CAGR 2024–2030</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">22%</div>
+          <div class="stat-label">ROI trung bình hàng năm</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">19%</div>
+          <div class="stat-label">Giảm chi phí trung bình</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Platforms -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Nền tảng thương mại</p>
+      <h2 class="section-title">6 nền tảng Digital Twin hàng đầu</h2>
+      <p class="section-desc">
+        Các vendor hàng đầu thế giới về Digital Twin cho ngành điện lực, được đánh giá theo mức độ phù hợp với EVN.
+      </p>
+
+      <table class="mapping-table">
+        <thead>
+          <tr>
+            <th style="width: 5%">#</th>
+            <th style="width: 18%">Nền tảng</th>
+            <th style="width: 10%">Thị phần</th>
+            <th style="width: 12%">Phù hợp EVN</th>
+            <th style="width: 55%">Thế mạnh & Sản phẩm chính</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01</td>
+            <td><strong>GE Vernova</strong><br>GridOS Platform</td>
+            <td>12.8%</td>
+            <td><span class="badge badge-green">Rất cao</span></td>
+            <td>
+              Môi trường Digital Twin thống nhất cho lưới điện, tích hợp ADMS, AEMS, DERMS. R&D 680 triệu USD/năm. Bao phủ từ phát điện đến phân phối, hỗ trợ tích hợp năng lượng tái tạo phân tán (DER).
+            </td>
+          </tr>
+          <tr>
+            <td>02</td>
+            <td><strong>Siemens AG</strong><br>Xcelerator + Simcenter</td>
+            <td>10.4%</td>
+            <td><span class="badge badge-green">Cao</span></td>
+            <td>
+              Mô phỏng vật lý từ cấp linh kiện đến cấp lưới quốc gia. Mạnh nhất cho truyền tải điện. Thâu tóm Altair Engineering (10 tỷ USD, 03/2025) bổ sung HPC simulation. Giảm 40–60% chi phí bảo trì tại chỗ qua chẩn đoán từ xa.
+            </td>
+          </tr>
+          <tr>
+            <td>03</td>
+            <td><strong>ETAP</strong><br>Electrical Digital Twin</td>
+            <td>&mdash;</td>
+            <td><span class="badge badge-green">Rất cao</span></td>
+            <td>
+              Nền tảng duy nhất tập trung 100% hệ thống điện. Load flow, short circuit, arc flash, protection coordination, AFAS (Automated Fault Analysis), eOTS (Operator Training Simulator). Tích hợp AI/GPT 2024.
+            </td>
+          </tr>
+          <tr>
+            <td>04</td>
+            <td><strong>Bentley Systems</strong><br>iTwin Platform</td>
+            <td>&mdash;</td>
+            <td><span class="badge badge-green">Cao</span></td>
+            <td>
+              OpenUtilities Digital Twin Services — hợp nhất GIS, 3D model, performance data. Tower Digital Twins dùng UAV + ML. AssetWise 4D (không gian + thời gian). Đặc biệt phù hợp quản lý cột điện, trạm biến áp truyền tải.
+            </td>
+          </tr>
+          <tr>
+            <td>05</td>
+            <td><strong>ABB Ltd.</strong><br>ABB Ability</td>
+            <td>9.1%</td>
+            <td><span class="badge badge-green">Cao</span></td>
+            <td>
+              Cloud-based digital twin cho lưới điện thông minh. Nền tảng tích hợp sâu trong thiết bị đóng cắt, máy biến áp, tự động hóa lưới. ABB có nhiều thiết bị đang vận hành trong hệ thống điện Việt Nam.
+            </td>
+          </tr>
+          <tr>
+            <td>06</td>
+            <td><strong>Schneider / AVEVA</strong><br>One Digital Grid</td>
+            <td>&mdash;</td>
+            <td><span class="badge badge-blue">Trung bình–Cao</span></td>
+            <td>
+              Schneider mua lại AVEVA (9.5 tỷ USD). Tích hợp NVIDIA Omniverse DSX Blueprint. Schneider One Digital Grid Platform: ADMS, edge automation, phân tích thời gian thực. EcoStruxure Machine Expert Twin với VR/AR.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Cloud & Open-source -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Cloud & Open-source</p>
+      <h2 class="section-title">Nền tảng Cloud & Công cụ mã nguồn mở</h2>
+      <p class="section-desc">
+        Các nền tảng đám mây và open-source hỗ trợ xây dựng Digital Twin, phù hợp cho từng giai đoạn triển khai.
+      </p>
+
+      <div class="grid-2">
+        <!-- Cloud -->
+        <div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.32px; color: var(--ink-muted);">CLOUD PLATFORMS</h3>
+          <div class="cap-card" style="margin-bottom: 16px;">
+            <span class="tag">Microsoft</span>
+            <h3>Azure Digital Twins</h3>
+            <p>PaaS mô hình hóa quan hệ giữa tài sản qua IoT thời gian thực. Tích hợp HoloLens, Synapse, Power BI.</p>
+            <ul>
+              <li>Case: Adger Energi (Na Uy) — quản lý lưới phân tán, tránh nâng cấp tốn kém</li>
+              <li>Phù hợp nếu EVN dùng hệ sinh thái Microsoft/Azure</li>
+            </ul>
+          </div>
+          <div class="cap-card" style="margin-bottom: 16px;">
+            <span class="tag">Amazon</span>
+            <h3>AWS IoT TwinMaker</h3>
+            <p>Tích hợp IoT, time-series, S3, Kinesis, SageMaker. Hình ảnh hóa 3D thời gian thực.</p>
+            <ul>
+              <li>Mạnh cho asset-heavy industries</li>
+              <li>Phụ thuộc vào chiến lược cloud của EVN</li>
+            </ul>
+          </div>
+          <div class="cap-card">
+            <span class="tag">NVIDIA</span>
+            <h3>Omniverse</h3>
+            <p>Mô phỏng vật lý GPU-accelerated, photorealistic. Tích hợp AVEVA PDMS/E3D.</p>
+            <ul>
+              <li>Phù hợp cho thiết kế nhà máy điện, robotics simulation</li>
+              <li>Genysic có thể leverage GPU H200 sẵn có</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Open-source -->
+        <div>
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.32px; color: var(--ink-muted);">OPEN-SOURCE TOOLS</h3>
+          <table class="mapping-table">
+            <thead>
+              <tr>
+                <th>Công cụ</th>
+                <th>Vai trò</th>
+                <th>Phù hợp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Eclipse Ditto</strong></td>
+                <td>IoT middleware / DT framework, MQTT 5</td>
+                <td><span class="badge badge-blue">PoC</span></td>
+              </tr>
+              <tr>
+                <td><strong>GridLAB-D</strong></td>
+                <td>Mô phỏng phân phối điện (DOE/PNNL)</td>
+                <td><span class="badge badge-blue">PoC</span></td>
+              </tr>
+              <tr>
+                <td><strong>OpenModelica</strong></td>
+                <td>Mô hình hóa linh kiện & điều khiển</td>
+                <td><span class="badge badge-blue">R&D</span></td>
+              </tr>
+              <tr>
+                <td><strong>Mosaik</strong></td>
+                <td>Co-simulation orchestrator</td>
+                <td><span class="badge badge-blue">R&D</span></td>
+              </tr>
+              <tr>
+                <td><strong>pandapower</strong></td>
+                <td>Python steady-state simulation</td>
+                <td><span class="badge badge-blue">R&D</span></td>
+              </tr>
+              <tr>
+                <td><strong>HELICS</strong></td>
+                <td>Co-simulation quy mô lớn</td>
+                <td><span class="badge badge-blue">R&D</span></td>
+              </tr>
+              <tr>
+                <td><strong>OpenDSS</strong></td>
+                <td>Phân phối điện (EPRI)</td>
+                <td><span class="badge badge-blue">PoC</span></td>
+              </tr>
+              <tr>
+                <td><strong>PyPSA</strong></td>
+                <td>Tối ưu hệ thống năng lượng</td>
+                <td><span class="badge badge-blue">R&D</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size: 13px; color: var(--ink-subtle); margin-top: 16px;">
+            * Phù hợp cho nghiên cứu và PoC. Cần kết hợp với nền tảng thương mại cho production quy mô quốc gia.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Kiến trúc kỹ thuật</p>
+      <h2 class="section-title">Kiến trúc 5 lớp điển hình</h2>
+      <p class="section-desc">
+        Kiến trúc tiêu chuẩn cho Power Grid Digital Twin, áp dụng cho hệ thống điện quy mô EVN.
+      </p>
+
+      <div style="max-width: 900px; margin: 0 auto;">
+        <!-- Layer 1 -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Layer 1 — Data Acquisition</div>
+          <div class="arch-row arch-row-4">
+            <div class="arch-box">PMU<br><span style="font-size: 11px; color: var(--ink-subtle);">30–60 mẫu/giây, GPS-synchronized</span></div>
+            <div class="arch-box">SCADA / RTU<br><span style="font-size: 11px; color: var(--ink-subtle);">Refresh 2–6 giây, IEC 60870-5-104</span></div>
+            <div class="arch-box">IoT Sensors<br><span style="font-size: 11px; color: var(--ink-subtle);">DGA, nhiệt độ, rung động, PD</span></div>
+            <div class="arch-box">Smart Meters (AMI)<br><span style="font-size: 11px; color: var(--ink-subtle);">15 phút, customer-level</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 2 -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Layer 2 — Data Integration</div>
+          <div class="arch-row arch-row-5">
+            <div class="arch-box-primary">GIS<br><span style="font-size: 11px; opacity: 0.8;">Spatial data</span></div>
+            <div class="arch-box-primary">ERP / CMMS<br><span style="font-size: 11px; opacity: 0.8;">Tài sản, bảo trì</span></div>
+            <div class="arch-box-primary">Historian<br><span style="font-size: 11px; opacity: 0.8;">Time-series</span></div>
+            <div class="arch-box-primary">Market Data<br><span style="font-size: 11px; opacity: 0.8;">Giá điện, demand</span></div>
+            <div class="arch-box-primary">IEC CIM<br><span style="font-size: 11px; opacity: 0.8;">Unified data model</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 3 -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Layer 3 — Digital Twin Engine</div>
+          <div class="arch-row arch-row-4">
+            <div class="arch-box-dark">Real-time Simulation<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">ADMS / EMS / DERMS</span></div>
+            <div class="arch-box-dark">Network Model<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">CIM, state estimation</span></div>
+            <div class="arch-box-dark">Protection Model<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">Relay coordination</span></div>
+            <div class="arch-box-dark">Scenario Testing<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">N-1, N-2 contingency</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 4 -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Layer 4 — AI & Analytics</div>
+          <div class="arch-row arch-row-5">
+            <div class="arch-box">Predictive Maint.<br><span style="font-size: 11px; color: var(--ink-subtle);">LSTM, XGBoost</span></div>
+            <div class="arch-box">Fault Detection<br><span style="font-size: 11px; color: var(--ink-subtle);">CNN, ensemble</span></div>
+            <div class="arch-box">Load Forecast<br><span style="font-size: 11px; color: var(--ink-subtle);">Transformer, GNN</span></div>
+            <div class="arch-box">OPF / DER<br><span style="font-size: 11px; color: var(--ink-subtle);">Deep RL, PINN</span></div>
+            <div class="arch-box">Vegetation AI<br><span style="font-size: 11px; color: var(--ink-subtle);">LiDAR, CV</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- Layer 5 -->
+        <div>
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Layer 5 — Visualization & Decision Support</div>
+          <div class="arch-row arch-row-4">
+            <div class="arch-box-primary">SCADA HMI<br><span style="font-size: 11px; opacity: 0.8;">Real-time operations</span></div>
+            <div class="arch-box-primary">GIS Dashboard<br><span style="font-size: 11px; opacity: 0.8;">Spatial view</span></div>
+            <div class="arch-box-primary">3D / AR / VR<br><span style="font-size: 11px; opacity: 0.8;">Immersive visualization</span></div>
+            <div class="arch-box-primary">LLM Chat Interface<br><span style="font-size: 11px; opacity: 0.8;">Natural language queries</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Case Studies -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Thực tế triển khai</p>
+      <h2 class="section-title">Case studies từ các Utility toàn cầu</h2>
+      <p class="section-desc">
+        Các tập đoàn điện lực lớn đã triển khai Digital Twin thành công với kết quả ấn tượng.
+      </p>
+
+      <table class="mapping-table">
+        <thead>
+          <tr>
+            <th style="width: 18%">Đơn vị</th>
+            <th style="width: 10%">Quốc gia</th>
+            <th style="width: 30%">Ứng dụng Digital Twin</th>
+            <th style="width: 30%">Kết quả</th>
+            <th style="width: 12%">Nền tảng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Singapore Power</strong></td>
+            <td>Singapore</td>
+            <td>Digital twin toàn bộ lưới điện quốc đảo</td>
+            <td>Giám sát real-time, dự báo sự cố, tối ưu phản ứng khẩn cấp</td>
+            <td><span class="badge badge-purple">Custom</span></td>
+          </tr>
+          <tr>
+            <td><strong>Exo</strong></td>
+            <td>Canada</td>
+            <td>Digital twin cột điện truyền tải</td>
+            <td>Tiết kiệm <strong>80 triệu USD</strong> — phục hồi thay vì thay thế cột điện</td>
+            <td><span class="badge badge-blue">Bentley</span></td>
+          </tr>
+          <tr>
+            <td><strong>Essential Energy</strong></td>
+            <td>Australia</td>
+            <td>Drone + DT trạm biến áp</td>
+            <td>Giảm <strong>50% chi phí</strong>, giảm phát thải carbon</td>
+            <td><span class="badge badge-blue">Bentley</span></td>
+          </tr>
+          <tr>
+            <td><strong>PLN Indonesia</strong></td>
+            <td>Indonesia</td>
+            <td>SCADA/ADMS/AMI quy mô lớn (I-ENET, World Bank 500M USD)</td>
+            <td>Hiện đại hóa lưới điện — case study gần nhất với EVN</td>
+            <td><span class="badge badge-green">ABB + DNV</span></td>
+          </tr>
+          <tr>
+            <td><strong>Enel SP</strong></td>
+            <td>Brazil</td>
+            <td>Network Digital Twin cho đô thị mật độ cao</td>
+            <td>Số hóa toàn bộ hạ tầng phân phối tại S&atilde;o Paulo</td>
+            <td><span class="badge badge-purple">Custom</span></td>
+          </tr>
+          <tr>
+            <td><strong>Adger Energi</strong></td>
+            <td>Na Uy</td>
+            <td>Azure Digital Twins cho lưới phân tán</td>
+            <td>Tránh đầu tư nâng cấp tốn kém nhờ tối ưu DER</td>
+            <td><span class="badge badge-yellow">Azure</span></td>
+          </tr>
+          <tr>
+            <td><strong>ADNOC</strong></td>
+            <td>UAE</td>
+            <td>ETAP eOTS — đào tạo vận hành, SCADA/HMI mô phỏng</td>
+            <td>Nâng cao năng lực vận hành, quản lý sự cố phức tạp</td>
+            <td><span class="badge badge-green">ETAP</span></td>
+          </tr>
+          <tr>
+            <td><strong>POWERCHINA Hubei</strong></td>
+            <td>Trung Quốc</td>
+            <td>Trạm biến áp 3D, cập nhật theo tiến độ</td>
+            <td>Giảm 90% tranh chấp thiết kế, tiết kiệm 3M CNY, rút ngắn 30 ngày</td>
+            <td><span class="badge badge-blue">Bentley</span></td>
+          </tr>
+          <tr>
+            <td><strong>Duke Energy</strong></td>
+            <td>Mỹ</td>
+            <td>Predictive maintenance, mô phỏng kịch bản</td>
+            <td>Giảm downtime, tích hợp NLTT hiệu quả hơn</td>
+            <td><span class="badge badge-green">GE</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ROI Stats -->
+      <div style="margin-top: 48px;">
+        <p style="font-size: 13px; color: var(--ink-subtle); margin-bottom: 16px;">Khảo sát 660 tổ chức, 11 ngành công nghiệp:</p>
+        <div class="stat-bar">
+          <div class="stat-item">
+            <div class="stat-value">19%</div>
+            <div class="stat-label">Giảm chi phí trung bình</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">22%</div>
+            <div class="stat-label">ROI hàng năm</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">78%</div>
+            <div class="stat-label">Tổ chức giảm phát thải</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~15%</div>
+            <div class="stat-label">Giảm carbon trung bình</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVN Mapping -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Đề xuất cho EVN</p>
+      <h2 class="section-title">Mapping platform theo đơn vị EVN</h2>
+      <p class="section-desc">
+        Gợi ý nền tảng Digital Twin phù hợp cho từng đơn vị thành viên của Tập đoàn Điện lực Việt Nam.
+      </p>
+
+      <table class="mapping-table">
+        <thead>
+          <tr>
+            <th style="width: 15%">Cấp độ</th>
+            <th style="width: 25%">Đơn vị EVN</th>
+            <th style="width: 30%">Platform đề xuất</th>
+            <th style="width: 30%">Lý do</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Truyền tải quốc gia</strong></td>
+            <td>EVNNPT</td>
+            <td>GE Vernova GridOS hoặc Siemens Xcelerator + Bentley iTwin</td>
+            <td>Quản lý lưới 500kV/220kV, cột điện, trạm biến áp truyền tải</td>
+          </tr>
+          <tr>
+            <td><strong>Phân phối</strong></td>
+            <td>EVNNPC / EVNSPC / EVNCPC / EVNHANOI / EVNHCMC</td>
+            <td>ETAP + Schneider One Digital Grid</td>
+            <td>Bảo vệ rơle, ADMS, quản lý sự cố phân phối</td>
+          </tr>
+          <tr>
+            <td><strong>Nhà máy điện</strong></td>
+            <td>EVNGENCO 1 / 2 / 3</td>
+            <td>Siemens Simcenter hoặc ETAP eOTS</td>
+            <td>Mô phỏng nhà máy, đào tạo vận hành</td>
+          </tr>
+          <tr>
+            <td><strong>Cloud chung</strong></td>
+            <td>Toàn EVN</td>
+            <td>Azure Digital Twins hoặc GE GridOS Cloud</td>
+            <td>Nền tảng đám mây thống nhất</td>
+          </tr>
+          <tr>
+            <td><strong>Pilot / R&D</strong></td>
+            <td>EVNIT / Trường đào tạo</td>
+            <td>Eclipse Ditto + GridLAB-D + pandapower</td>
+            <td>Nghiên cứu, PoC, chi phí thấp</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Southeast Asia Context -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Bối cảnh khu vực</p>
+      <h2 class="section-title">Đông Nam Á & Cơ hội cho EVN</h2>
+      <p class="section-desc">
+        EVN đang ở thời điểm thuận lợi để đầu tư Digital Twin, cùng xu hướng chuyển đổi số trong khu vực.
+      </p>
+
+      <div class="grid-3">
+        <div class="card card-primary-top">
+          <span class="card-number">Indonesia — PLN</span>
+          <h3>Case study gần nhất</h3>
+          <p>Triển khai SCADA/ADMS/AMI quy mô lớn. Dự án I-ENET (World Bank, 500 triệu USD, 2025–2032). Hợp tác ABB và DNV — quy mô và giai đoạn chuyển đổi tương đồng với EVN.</p>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">Thái Lan — EGAT</span>
+          <h3>Lộ trình số hóa</h3>
+          <p>Xây dựng lộ trình số hóa lưới điện, tích hợp năng lượng tái tạo quy mô lớn. Đầu tư vào smart grid và IoT infrastructure.</p>
+        </div>
+        <div class="card card-primary-top">
+          <span class="card-number">Việt Nam — EVN</span>
+          <h3>Thời điểm vàng</h3>
+          <p>Cải cách thị trường điện (DPPA, Luật Điện lực 2025). Mục tiêu net-zero 2050 theo PDP8. Nhu cầu tích hợp NLTT tăng mạnh — Digital Twin là công cụ then chốt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Genysic Positioning -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Vai trò Genysic</p>
+      <h2 class="section-title">Genysic — System Integrator cho Digital Twin EVN</h2>
+      <p class="section-desc">
+        Genysic định vị là đối tác tích hợp hệ thống, kết hợp năng lực sẵn có với nền tảng Digital Twin chuyên ngành.
+      </p>
+
+      <div style="max-width: 900px; margin: 0 auto;">
+        <div class="arch-row arch-row-3" style="margin-bottom: 4px;">
+          <div class="arch-box-primary">GPU H200 Cluster (sẵn có)<br><span style="font-size: 11px; opacity: 0.8;">Chạy simulation engine & AI training</span></div>
+          <div class="arch-box-primary">Data Lakehouse (sẵn có)<br><span style="font-size: 11px; opacity: 0.8;">Data integration layer</span></div>
+          <div class="arch-box-primary">Cloud & Colocation (sẵn có)<br><span style="font-size: 11px; opacity: 0.8;">Hạ tầng hosting DC Tier III</span></div>
+        </div>
+        <div class="arch-connector">+</div>
+        <div class="arch-row arch-row-3" style="margin-bottom: 4px;">
+          <div class="arch-box-dark">ETAP / GridLAB-D<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">Digital Twin Engine (tích hợp)</span></div>
+          <div class="arch-box-dark">AI Models on GPU<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">Analytics layer (phát triển)</span></div>
+          <div class="arch-box-dark">Custom Visualization<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">Dashboard / 3D (phát triển)</span></div>
+        </div>
+        <div class="arch-connector">&#9660;</div>
+        <div class="arch-row" style="grid-template-columns: 1fr;">
+          <div class="arch-box" style="background: var(--primary); color: var(--on-primary); border-color: var(--primary); font-weight: 600; padding: 24px;">
+            Giải pháp Digital Twin toàn diện cho EVN<br>
+            <span style="font-size: 12px; font-weight: 400; opacity: 0.8;">Một đối tác &mdash; Một trách nhiệm &mdash; Từ hạ tầng đến ứng dụng</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Xu hướng -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Xu hướng 2024–2025</p>
+      <h2 class="section-title">Xu hướng công nghệ mới</h2>
+
+      <div class="grid-3">
+        <div class="card card-primary-top">
+          <h3>Kiến trúc phân cấp</h3>
+          <p>Hierarchical DT — Microgrid DT tự trị ở cấp thấp, phối hợp lên cấp quốc gia. Dự án TwinEU (01/2024) liên kết các twin địa phương thành mạng lưới Pan-European.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>Hybrid Edge-Cloud</h3>
+          <p>Kết hợp xử lý biên (edge) và đám mây (cloud) để tối ưu độ trễ tại chỗ và khả năng mở rộng quy mô lớn. Phù hợp cho bảo mật OT/IT.</p>
+        </div>
+        <div class="card card-primary-top">
+          <h3>LLM & AI Agents</h3>
+          <p>Tích hợp LLM (GPT-4, Claude) vào SCADA/EMS — điều độ viên hỏi bằng ngôn ngữ tự nhiên, AI chạy phân tích và đề xuất hành động.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Bước tiếp theo</h2>
+      <p>Bắt đầu từ use case cụ thể — phân tích sự cố trạm biến áp, dự báo tải, hoặc đào tạo vận hành — thay vì triển khai toàn diện ngay. Quick-win tạo momentum cho toàn bộ chương trình.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Genysic. Tài liệu nghiên cứu nội bộ.</p>
+      <p>genysic.ai</p>
+    </div>
+  </footer>
+
+</body>
+</html>

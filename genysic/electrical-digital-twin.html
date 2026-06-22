@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electrical Digital Twin — Nghiên cứu Chuyên sâu</title>
+  <link rel="icon" href="images/icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8c8c8c;
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --inverse-canvas: #161616;
+      --inverse-ink: #ffffff;
+      --inverse-ink-muted: #c6c6c6;
+      --hairline: #e0e0e0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .header-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+    }
+
+    .hero {
+      background: var(--inverse-canvas);
+      color: var(--on-primary);
+      padding: 80px 0;
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      color: var(--inverse-ink-muted);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 54px;
+      font-weight: 300;
+      line-height: 1.17;
+      letter-spacing: -0.4px;
+      margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--inverse-ink-muted);
+      max-width: 750px;
+    }
+    .hero-meta {
+      margin-top: 48px;
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item { font-size: 14px; color: var(--inverse-ink-muted); }
+    .hero-meta-item strong { color: var(--inverse-ink); font-weight: 400; }
+
+    .section { padding: 80px 0; }
+    .section-alt { background: var(--surface-1); }
+    .section-eyebrow {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 18px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      max-width: 800px;
+      margin-bottom: 48px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+    }
+    .card-number {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .card h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .card p, .card li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .card ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+    .card ul li {
+      padding: 4px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 8px;
+      height: 2px;
+      background: var(--primary);
+    }
+    .card-primary-top { border-top: 2px solid var(--primary); }
+
+    .mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .mapping-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--ink);
+      background: var(--surface-1);
+    }
+    .mapping-table td {
+      font-size: 14px;
+      padding: 16px;
+      border-bottom: 1px solid var(--hairline);
+      vertical-align: top;
+    }
+    .mapping-table tr:hover { background: var(--surface-1); }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 10px;
+      letter-spacing: 0.32px;
+      white-space: nowrap;
+    }
+    .badge-green { background: #defbe6; color: #0e6027; }
+    .badge-blue { background: #d0e2ff; color: #002d9c; }
+    .badge-yellow { background: #fdf0cd; color: #8e6a00; }
+    .badge-purple { background: #e8daff; color: #6929c4; }
+    .badge-red { background: #fff1f1; color: #da1e28; }
+    .badge-teal { background: #d9fbfb; color: #005d5d; }
+
+    .stat-bar {
+      display: flex;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 32px 16px;
+      border-right: 1px solid var(--hairline);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-value {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--primary);
+    }
+    .stat-label {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-top: 8px;
+    }
+
+    /* Module card */
+    .module-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-top: 2px solid var(--primary);
+      padding: 24px;
+    }
+    .module-card .module-id {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .module-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .module-card p {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+    .module-card .io-tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.32px;
+      padding: 1px 6px;
+      margin-top: 12px;
+      margin-right: 4px;
+    }
+
+    /* AI use case */
+    .ai-case {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .ai-case-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .ai-case-number {
+      background: var(--primary);
+      color: var(--on-primary);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 300;
+      flex-shrink: 0;
+    }
+    .ai-case-header h3 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .ai-case-header p {
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+    .ai-case .sub-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
+      margin-top: 24px;
+      text-transform: uppercase;
+    }
+    .ai-case .sub-title:first-of-type { margin-top: 0; }
+
+    /* Arch */
+    .arch-box {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arch-box-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border: 1px solid var(--primary);
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .arch-box-dark {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink);
+      border: 1px solid #393939;
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .arch-connector {
+      text-align: center;
+      padding: 8px 0;
+      color: var(--ink-subtle);
+      font-size: 20px;
+    }
+    .arch-row { display: grid; gap: 4px; }
+    .arch-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .arch-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .arch-row-5 { grid-template-columns: repeat(5, 1fr); }
+
+    /* Pipeline */
+    .pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .pipeline-step {
+      background: var(--surface-1);
+      border: 1px solid var(--hairline);
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--ink-muted);
+      position: relative;
+    }
+    .pipeline-arrow {
+      color: var(--primary);
+      font-size: 16px;
+      padding: 0 4px;
+    }
+
+    .footer {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink-muted);
+      padding: 48px 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer p { font-size: 12px; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 32px; }
+      .section-title { font-size: 28px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .stat-bar { flex-wrap: wrap; }
+      .stat-item { flex: 1 1 50%; border-bottom: 1px solid var(--hairline); }
+      .hero-meta { flex-direction: column; gap: 12px; }
+      .container { padding: 0 16px; }
+      .hero { padding: 48px 0; }
+      .section { padding: 48px 0; }
+      .ai-case-header { flex-direction: column; gap: 12px; }
+      .pipeline { flex-direction: column; align-items: stretch; }
+      .pipeline-arrow { transform: rotate(90deg); text-align: center; }
+      .arch-row-4, .arch-row-5 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media print {
+      .header { position: relative; }
+      .hero { padding: 40px 0; }
+      .section { padding: 40px 0; break-inside: avoid; }
+      body { font-size: 11px; }
+      .hero h1 { font-size: 36px; }
+      .section-title { font-size: 24px; }
+      .ai-case { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <img src="images/logo-genysic.webp" alt="Genysic" style="height: 60px; width: auto;">
+      <span class="header-label">Deep Research &mdash; Electrical Digital Twin</span>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="hero-eyebrow">Nghiên cứu Chuyên sâu</p>
+      <h1>Hệ thống<br>Electrical Digital Twin</h1>
+      <p class="hero-sub">
+        Phân tích chi tiết 16 module cốt lõi và 10 ứng dụng AI cụ thể trong hệ thống Digital Twin cho ngành điện lực &mdash; từ mô hình hóa thiết bị đến trí tuệ nhân tạo vận hành.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><strong>Modules:</strong>&nbsp; 16 thành phần cốt lõi</div>
+        <div class="hero-meta-item"><strong>AI Use Cases:</strong>&nbsp; 10 ứng dụng chi tiết</div>
+        <div class="hero-meta-item"><strong>Ngày:</strong>&nbsp; 21/06/2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Hiệu quả đã chứng minh</p>
+      <h2 class="section-title">AI-powered Digital Twin &mdash; Kết quả thực tế</h2>
+      <div class="stat-bar" style="margin-top: 32px;">
+        <div class="stat-item">
+          <div class="stat-value">98.3%</div>
+          <div class="stat-label">Accuracy phát hiện lỗi thiết bị</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">35%</div>
+          <div class="stat-label">Giảm unplanned downtime</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">99.96%</div>
+          <div class="stat-label">Accuracy phân loại sự cố</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">1.5%</div>
+          <div class="stat-label">MAPE dự báo phụ tải</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 1: 16 Modules -->
+
+  <!-- Group A: Foundation -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Phần 1 &mdash; Nhóm A</p>
+      <h2 class="section-title">Mô hình hóa (Foundation)</h2>
+      <p class="section-desc">4 module nền tảng tạo "hạt nhân" của Digital Twin &mdash; mọi module phân tích cấp cao đều phụ thuộc vào chất lượng của lớp này.</p>
+
+      <div class="grid-2">
+        <div class="module-card">
+          <div class="module-id">Module 01</div>
+          <h4>Asset Digital Twin</h4>
+          <p>Bản sao kỹ thuật số từng thiết bị: máy biến áp, đường dây, relay, CB, tụ bù, kháng điện, cáp ngầm. Lưu nameplate data, lịch sử vận hành, lịch sử bảo trì, trạng thái sức khỏe real-time.</p>
+          <span class="io-tag badge badge-blue">Input: IoT sensors, CMMS, IEC 61850</span>
+          <span class="io-tag badge badge-green">Output: Health Index (0–100), RUL</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 02</div>
+          <h4>Network Model</h4>
+          <p>Đồ thị topo lưới điện — node = bus, edge = đường dây/MBA. Cập nhật động theo thao tác đóng/cắt. Tuân chuẩn IEC CIM (61970/61968).</p>
+          <span class="io-tag badge badge-blue">Input: GIS, SCADA, CIM</span>
+          <span class="io-tag badge badge-green">Output: Real-time topology, restoration paths</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 03</div>
+          <h4>GIS Integration</h4>
+          <p>Dữ liệu địa lý mọi tài sản trên bản đồ. Xác định vị trí sự cố, điều phối đội sửa chữa, phân tích không gian cho đầu tư. Được gọi là "true utility DT secret weapon".</p>
+          <span class="io-tag badge badge-blue">Input: GPS, địa hình, ranh giới</span>
+          <span class="io-tag badge badge-green">Output: GIS map, crew dispatch, spatial analysis</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 04</div>
+          <h4>Data Historian</h4>
+          <p>"Bộ nhớ" của Digital Twin — lưu trữ time-series tần suất cao từ mọi sensor, SCADA. Cung cấp dữ liệu lịch sử cho mọi mô hình AI.</p>
+          <span class="io-tag badge badge-blue">Input: Telemetry toàn hệ thống</span>
+          <span class="io-tag badge badge-green">Output: Historical queries, ML training data</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Group B: Engineering Analysis -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Phần 1 &mdash; Nhóm B</p>
+      <h2 class="section-title">Phân tích kỹ thuật (Engineering Analysis)</h2>
+      <p class="section-desc">5 module phân tích cốt lõi của hệ thống điện &mdash; từ ước lượng trạng thái đến ổn định quá độ.</p>
+
+      <div class="grid-3">
+        <div class="module-card">
+          <div class="module-id">Module 05</div>
+          <h4>State Estimation</h4>
+          <p>Tổng hợp phép đo (SCADA 4–10s, PMU 30–60Hz) → bức tranh nhất quán, lọc bad data. WLS cổ điển đang được tăng cường bằng Kalman Filter và Physics-Informed GNN.</p>
+          <span class="io-tag badge badge-green">Output: State vector, bad data flags</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 06</div>
+          <h4>Power Flow Analysis</h4>
+          <p>Tính V, I, P, Q tại mọi bus/nhánh. Chạy liên tục 5–15 phút hoặc theo sự kiện. Phát hiện voltage violation, thermal violation.</p>
+          <span class="io-tag badge badge-green">Output: Bus voltages, tổn thất, violations</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 07</div>
+          <h4>Short Circuit Analysis</h4>
+          <p>Dòng ngắn mạch tại mọi điểm: 3 pha, 1 pha chạm đất, 2 pha. Cơ sở thiết kế hệ thống bảo vệ.</p>
+          <span class="io-tag badge badge-green">Output: Fault current (kA), Thevenin impedance</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 08</div>
+          <h4>Protection Coordination</h4>
+          <p>Phối hợp relay — đảm bảo selectivity (relay gần sự cố tác động trước). Cho phép mô phỏng trước khi thay đổi thực tế.</p>
+          <span class="io-tag badge badge-green">Output: TCC diagrams, coordination violations</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 09</div>
+          <h4>Transient Stability</h4>
+          <p>Mô phỏng phản ứng hệ thống sau sự cố lớn (0–30s). Quan trọng khi tích hợp NLTT. Chạy N-1, N-2 contingency online.</p>
+          <span class="io-tag badge badge-green">Output: Rotor angle, CCT, security margin</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Group C: Operations -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Phần 1 &mdash; Nhóm C</p>
+      <h2 class="section-title">Quản lý vận hành (Operations)</h2>
+      <p class="section-desc">4 module phục vụ vận hành hàng ngày &mdash; từ tích hợp SCADA đến quản lý tài sản.</p>
+
+      <div class="grid-2">
+        <div class="module-card">
+          <div class="module-id">Module 10</div>
+          <h4>SCADA/EMS Integration</h4>
+          <p>Giao diện kết nối DT với SCADA/EMS thực tế. Giao thức: DNP3, Modbus TCP, IEC 60870-5-104, IEC 61850-8-1 (MMS). Siemens + Fingrid (Phần Lan) đã triển khai "single source of truth".</p>
+          <span class="io-tag badge badge-blue">Input: Real-time telemetry</span>
+          <span class="io-tag badge badge-green">Output: DT sync, decision support</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 11</div>
+          <h4>Load Forecasting</h4>
+          <p>Dự báo phụ tải: very short-term (1 phút–1h), short-term (1h–7 ngày), medium-term (1 tháng–1 năm), long-term (5–20 năm).</p>
+          <span class="io-tag badge badge-blue">Input: Tải lịch sử, thời tiết, calendar</span>
+          <span class="io-tag badge badge-green">Output: Load curve, confidence interval</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 12</div>
+          <h4>Outage Management (OMS)</h4>
+          <p>Phát hiện → định vị → khôi phục cấp điện. Tích hợp AMI smart meter outage notification, GIS crew dispatch.</p>
+          <span class="io-tag badge badge-blue">Input: Alarms, AMI, customer calls</span>
+          <span class="io-tag badge badge-green">Output: Switching orders, ETR</span>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 13</div>
+          <h4>Asset Performance Mgmt (APM)</h4>
+          <p>Quản lý vòng đời tài sản. Tối ưu chiến lược bảo trì (run-to-failure, preventive, predictive). KPI: SAIDI, SAIFI, CAIDI.</p>
+          <span class="io-tag badge badge-blue">Input: Health Index, CMMS, chi phí</span>
+          <span class="io-tag badge badge-green">Output: Risk matrix, maintenance schedule</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Group D: Interface & Training -->
+  <section class="section">
+    <div class="container">
+      <p class="section-eyebrow">Phần 1 &mdash; Nhóm D</p>
+      <h2 class="section-title">Giao diện & Đào tạo (Interface)</h2>
+      <p class="section-desc">3 module giao tiếp giữa con người và hệ thống Digital Twin.</p>
+
+      <div class="grid-3">
+        <div class="module-card">
+          <div class="module-id">Module 14</div>
+          <h4>Condition Monitoring</h4>
+          <p>Giám sát liên tục: DGA, nhiệt độ, PD, tan delta, vibration. Phát hiện sớm dấu hiệu xuống cấp trước khi hỏng hóc.</p>
+          <table class="mapping-table" style="margin-top: 16px;">
+            <thead><tr><th>Thiết bị</th><th>Thông số</th></tr></thead>
+            <tbody>
+              <tr><td style="padding: 8px 16px;">MBA lực</td><td style="padding: 8px 16px;">DGA, nhiệt độ dầu/cuộn dây, tan delta, PD</td></tr>
+              <tr><td style="padding: 8px 16px;">Máy cắt</td><td style="padding: 8px 16px;">Thời gian thao tác, nhiệt độ tiếp điểm</td></tr>
+              <tr><td style="padding: 8px 16px;">Cáp ngầm</td><td style="padding: 8px 16px;">PD, nhiệt độ vỏ, tan delta</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 15</div>
+          <h4>3D Visualization / AR/VR</h4>
+          <p>Mô hình 3D trạm biến áp, nhà máy. "Đi bộ ảo", tag thông tin. BIM + Matterport + Unity/Unreal Engine.</p>
+          <p style="margin-top: 12px;"><strong>Case:</strong> Bentley — TBA ngầm 220kV: giảm 90% tranh chấp thiết kế, tiết kiệm 3M CNY, rút ngắn 30 ngày.</p>
+        </div>
+        <div class="module-card">
+          <div class="module-id">Module 16</div>
+          <h4>Operator Training Simulator</h4>
+          <p>Sandbox đào tạo điều độ viên xử lý sự cố phức tạp. Snapshot DT + fault injection. HMI giống hệ thống thật.</p>
+          <p style="margin-top: 12px;"><strong>Case:</strong> ADNOC — ETAP eOTS đào tạo vận hành hệ thống điện phức tạp, SCADA/HMI mô phỏng toàn diện.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <section style="background: var(--primary); padding: 48px 0; color: var(--on-primary);">
+    <div class="container">
+      <h2 style="font-size: 32px; font-weight: 300;">Ph&acirc;̀n 2 &mdash; Ứng dụng AI</h2>
+      <p style="font-size: 18px; opacity: 0.85; margin-top: 8px;">10 use cases cụ thể với model, accuracy, input/output và case studies thực tế</p>
+    </div>
+  </section>
+
+  <!-- AI Use Case 1: Predictive Maintenance -->
+  <section class="section">
+    <div class="container">
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">01</div>
+          <div>
+            <h3>Predictive Maintenance</h3>
+            <p>Bảo trì dự báo &mdash; Phát hiện và dự báo hỏng hóc thiết bị trước khi xảy ra. Trọng tâm: máy biến áp lực (Power Transformer).</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Input Data</div>
+        <div class="grid-3" style="gap: 12px;">
+          <div style="background: var(--surface-1); padding: 16px; font-size: 13px;">
+            <strong>DGA (Dissolved Gas)</strong><br>
+            H&#8322;, CH&#8324;, C&#8322;H&#8322;, C&#8322;H&#8324;, C&#8322;H&#8326;, CO, CO&#8322;<br>
+            <span style="color: var(--ink-subtle);">Đo online hoặc định kỳ hàng tháng</span>
+          </div>
+          <div style="background: var(--surface-1); padding: 16px; font-size: 13px;">
+            <strong>Nhiệt độ & Tải</strong><br>
+            Cuộn dây, dầu, môi trường (°C). Dòng tải lịch sử.<br>
+            <span style="color: var(--ink-subtle);">Continuous IoT sensors</span>
+          </div>
+          <div style="background: var(--surface-1); padding: 16px; font-size: 13px;">
+            <strong>Cách điện</strong><br>
+            2-FAL (lão hóa giấy), Partial Discharge (pC), Tan Delta<br>
+            <span style="color: var(--ink-subtle);">Định kỳ hoặc online monitoring</span>
+          </div>
+        </div>
+
+        <div class="sub-title">Models & Accuracy</div>
+        <table class="mapping-table">
+          <thead>
+            <tr><th>Model</th><th>Input chính</th><th>Accuracy / KPI</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Multitask LSTM-GRU</strong> (DT)</td><td>Chuỗi thời gian đa thông số</td><td><span class="badge badge-green">R²=0.985, MSE=2.543</span></td></tr>
+            <tr><td><strong>CNN-LSTM (DMSA)</strong></td><td>Multimodal data fusion</td><td><span class="badge badge-green">Acc=99.17%, F1=0.97</span></td></tr>
+            <tr><td><strong>XGBoost</strong></td><td>DGA + oil quality + 2-FAL</td><td><span class="badge badge-green">94.8%</span></td></tr>
+            <tr><td><strong>LightGBM</strong></td><td>DGA + oil quality</td><td><span class="badge badge-green">~100% (147 mẫu)</span></td></tr>
+            <tr><td><strong>LSTM đơn thuần</strong></td><td>Temperature + load history</td><td><span class="badge badge-green">94.7%, dự báo 14 ngày</span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="sub-title">Output &mdash; Health Index Mapping</div>
+        <div class="grid-3" style="gap: 12px;">
+          <div style="background: #defbe6; padding: 16px; font-size: 14px; text-align: center;">
+            <strong>THI &gt; 70</strong><br>No action needed
+          </div>
+          <div style="background: #fdf0cd; padding: 16px; font-size: 14px; text-align: center;">
+            <strong>THI 50–70</strong><br>Schedule diagnostic testing
+          </div>
+          <div style="background: #fff1f1; padding: 16px; font-size: 14px; text-align: center;">
+            <strong>THI &lt; 30</strong><br>Immediate replacement
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Use Case 2: Load Forecasting -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">02</div>
+          <div>
+            <h3>Load Forecasting</h3>
+            <p>Dự báo phụ tải &mdash; Dự báo chính xác nhu cầu điện năng phục vụ huy động tổ máy, mua bán điện, và lập kế hoạch vận hành.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Phân loại theo thời gian</div>
+        <table class="mapping-table">
+          <thead>
+            <tr><th>Loại</th><th>Thời gian</th><th>Mục đích</th><th>Model tốt nhất</th><th>MAPE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Very Short-Term</td><td>1 phút – 1 giờ</td><td>AGC, real-time balancing</td><td><strong>LSTM-RNN</strong></td><td><span class="badge badge-green">~1.5%</span></td></tr>
+            <tr><td>Short-Term (STLF)</td><td>1 giờ – 7 ngày</td><td>Unit commitment, dispatch</td><td><strong>TCN-LSTM-LightGBM</strong></td><td><span class="badge badge-green">1.5–3%</span></td></tr>
+            <tr><td>Medium-Term</td><td>1 tháng – 1 năm</td><td>Fuel, maintenance planning</td><td><strong>xLSTM / Transformer</strong></td><td><span class="badge badge-green">1.77%</span></td></tr>
+            <tr><td>Multi-area</td><td>Spatial</td><td>Cross-region coordination</td><td><strong>Spatiotemporal GNN</strong></td><td><span class="badge badge-blue">SOTA 2024</span></td></tr>
+          </tbody>
+        </table>
+
+        <div class="sub-title">Input Features (STLF)</div>
+        <div class="grid-4" style="gap: 12px;">
+          <div style="background: var(--surface-1); padding: 12px; font-size: 13px; text-align: center;">Tải lịch sử<br><span style="color: var(--ink-subtle);">1–3 năm, 15 phút</span></div>
+          <div style="background: var(--surface-1); padding: 12px; font-size: 13px; text-align: center;">Thời tiết<br><span style="color: var(--ink-subtle);">Nhiệt độ, gió, bức xạ</span></div>
+          <div style="background: var(--surface-1); padding: 12px; font-size: 13px; text-align: center;">Calendar<br><span style="color: var(--ink-subtle);">Giờ, ngày lễ, mùa</span></div>
+          <div style="background: var(--surface-1); padding: 12px; font-size: 13px; text-align: center;">AMI Data<br><span style="color: var(--ink-subtle);">Customer-level</span></div>
+        </div>
+
+        <p style="font-size: 13px; color: var(--ink-subtle); margin-top: 16px;"><strong>Xu hướng 2025:</strong> Probabilistic forecasting (khoảng tin cậy) thay thế point forecasting. LLMs như zero-shot forecasters.</p>
+      </div>
+
+      <!-- AI Use Case 3: Anomaly Detection -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">03</div>
+          <div>
+            <h3>Anomaly Detection</h3>
+            <p>Phát hiện bất thường &mdash; Grid-level (FDIA, PMU bad data) và Customer-level (gian lận điện, non-technical losses).</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Phương pháp Unsupervised Learning</div>
+        <table class="mapping-table">
+          <thead>
+            <tr><th>Method</th><th>Cơ chế</th><th>Ưu điểm</th><th>Use case</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Autoencoder</strong></td><td>Reconstruct normal → anomaly = high error</td><td>Tốt nhất cho zero-day attacks</td><td>Theft, FDIA</td></tr>
+            <tr><td><strong>Isolation Forest</strong></td><td>Outlier cách gốc cây gần hơn</td><td>Nhanh, scalable, interpretable</td><td>Consumption outlier</td></tr>
+            <tr><td><strong>LSTM-Autoencoder</strong></td><td>LSTM encode temporal patterns</td><td>Xử lý time-series tốt</td><td>Smart meter anomaly</td></tr>
+            <tr><td><strong>Transformer BiGAN</strong></td><td>Học distribution PMU data</td><td>Spatiotemporal</td><td>Wide-area monitoring</td></tr>
+          </tbody>
+        </table>
+
+        <p style="font-size: 13px; color: var(--ink-subtle); margin-top: 16px;"><strong>Federated Learning:</strong> Mỗi utility train local model, aggregate global — giải quyết privacy. Autoencoder > Isolation Forest > OCSVM cho zero-day attacks.</p>
+      </div>
+
+      <!-- AI Use Case 4: Fault Detection -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">04</div>
+          <div>
+            <h3>Fault Detection & Classification</h3>
+            <p>Phát hiện và phân loại sự cố &mdash; Nhận dạng tự động loại sự cố và định vị trên đường dây truyền tải/phân phối.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Pipeline xử lý</div>
+        <div class="pipeline">
+          <div class="pipeline-step">Waveform V, I (20kHz–1MHz)</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">Wavelet Transform</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">Scalogram Image 2D</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">CNN Classification</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">Fault Type + Location</div>
+        </div>
+
+        <div class="sub-title">Models & Accuracy</div>
+        <table class="mapping-table">
+          <thead>
+            <tr><th>Model</th><th>Accuracy</th><th>Đặc điểm</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>RF-LSTM + Tuned KNN</strong> (ensemble)</td><td><span class="badge badge-green">99.96%</span></td><td>Multi-label, state-of-the-art</td></tr>
+            <tr><td><strong>2D-CNN trên scalogram</strong></td><td><span class="badge badge-green">&gt;95%</span></td><td>Kết hợp thời gian + tần số</td></tr>
+            <tr><td><strong>DT + DNN</strong> (synthetic data)</td><td><span class="badge badge-blue">-12.14% detection time</span></td><td>DT tạo training data cho sự cố hiếm</td></tr>
+          </tbody>
+        </table>
+
+        <p style="font-size: 13px; color: var(--ink-subtle); margin-top: 16px;"><strong>Điểm hay:</strong> Digital Twin mô phỏng hàng nghìn kịch bản fault → synthetic training data → giải quyết class imbalance.</p>
+      </div>
+
+      <!-- AI Use Case 5: OPF -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">05</div>
+          <div>
+            <h3>Optimal Power Flow</h3>
+            <p>Tối ưu phân bổ công suất &mdash; Tìm lịch huy động tổ máy tối thiểu chi phí, thỏa mãn ràng buộc kỹ thuật.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Các cách tiếp cận AI</div>
+        <div class="grid-3" style="gap: 16px;">
+          <div class="card card-primary-top">
+            <h3 style="font-size: 16px;">Deep RL + Constraint-aware Reward</h3>
+            <p>Agent quan sát trạng thái lưới → điều chỉnh dispatch → reward (giảm chi phí + phạt vi phạm).</p>
+            <p style="margin-top: 12px;"><span class="badge badge-green">Tiết kiệm 7.5% chi phí</span></p>
+            <p style="font-size: 12px; color: var(--ink-subtle);">45,200 vs 48,900 USD/ngày so với Newton-Raphson</p>
+          </div>
+          <div class="card card-primary-top">
+            <h3 style="font-size: 16px;">Multi-Agent DRL + GNN</h3>
+            <p>Mỗi agent quản lý 1 zone lưới. GNN encode grid topology và spatiotemporal features.</p>
+            <p style="margin-top: 12px;"><span class="badge badge-blue">High renewable penetration</span></p>
+            <p style="font-size: 12px; color: var(--ink-subtle);">Hiệu quả cho lưới phức tạp nhiều DER</p>
+          </div>
+          <div class="card card-primary-top">
+            <h3 style="font-size: 16px;">Physics-Informed NN (PINN)</h3>
+            <p>NN học ánh xạ (load, forecast) → optimal dispatch. Kirchhoff's laws nhúng vào loss function.</p>
+            <p style="margin-top: 12px;"><span class="badge badge-purple">Inference: milliseconds</span></p>
+            <p style="font-size: 12px; color: var(--ink-subtle);">Thay vì minutes với phương pháp truyền thống</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Use Case 6: Vegetation -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">06</div>
+          <div>
+            <h3>Vegetation Management</h3>
+            <p>Quản lý thực vật ven đường dây &mdash; Cây cối gây &gt;25% tổng số sự cố mất điện do truyền tải toàn cầu.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">AI Pipeline</div>
+        <div class="pipeline">
+          <div class="pipeline-step">Drone (LiDAR + RGB + Thermal)</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">PointNet++ Segmentation</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">Clearance Measurement</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">Growth Prediction</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">Risk Score → Work Order</div>
+        </div>
+
+        <div class="sub-title">KPI thực tế</div>
+        <div class="stat-bar" style="margin-top: 0;">
+          <div class="stat-item">
+            <div class="stat-value" style="font-size: 32px;">14–21</div>
+            <div class="stat-label">Ngày phát hiện sớm hơn</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="font-size: 32px;">10x</div>
+            <div class="stat-label">Diện tích bao phủ/ngày</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="font-size: 32px;">60%</div>
+            <div class="stat-label">Giảm sự cố do cây</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="font-size: 32px;">40%</div>
+            <div class="stat-label">Giảm kiểm tra thực địa</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Use Case 7: DER -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">07</div>
+          <div>
+            <h3>DER Integration</h3>
+            <p>Tích hợp nguồn phân tán &mdash; Dự báo và điều phối solar, wind, battery storage khi tỷ lệ NLTT tăng cao.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Bài toán & Model</div>
+        <table class="mapping-table">
+          <thead>
+            <tr><th>Bài toán</th><th>Model</th><th>Accuracy</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Solar Forecasting</strong> (24h ahead)</td><td>DT + Transformer</td><td><span class="badge badge-green">R²=0.99, MAPE 2–5%</span></td></tr>
+            <tr><td><strong>Wind Forecasting</strong></td><td>CNN-LSTM</td><td><span class="badge badge-green">MAPE 5–10%</span></td></tr>
+            <tr><td><strong>Battery Dispatch</strong> (peak shaving)</td><td>Reinforcement Learning</td><td><span class="badge badge-blue">Optimal scheduling</span></td></tr>
+            <tr><td><strong>Voltage Regulation</strong> (smart inverter)</td><td>Deep RL</td><td><span class="badge badge-blue">Autonomous VVO</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- AI Use Case 8: Customer Analytics -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">08</div>
+          <div>
+            <h3>Customer Analytics</h3>
+            <p>Phân tích khách hàng &mdash; Phát hiện gian lận điện (2–10% doanh thu), phân nhóm tiêu thụ, Demand Response.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Ứng dụng</div>
+        <table class="mapping-table">
+          <thead>
+            <tr><th>Bài toán</th><th>Method</th><th>Kết quả</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Gian lận điện</strong> (zero-day)</td><td>Autoencoder + Federated Learning</td><td>Best cho attack mới, bảo mật data</td></tr>
+            <tr><td><strong>Phân nhóm khách hàng</strong></td><td>LSTM Autoencoder → Clustering</td><td>Chương trình giá điện tối ưu</td></tr>
+            <tr><td><strong>Demand Response targeting</strong></td><td>RF / XGBoost classification</td><td>Xác định khách hàng DR-ready</td></tr>
+            <tr><td><strong>Bill prediction</strong></td><td>LSTM</td><td>Cảnh báo hóa đơn cao bất thường</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- AI Use Case 9: NLP / LLM -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">09</div>
+          <div>
+            <h3>Natural Language Interface</h3>
+            <p>Giao diện ngôn ngữ tự nhiên &mdash; Điều độ viên hỏi bằng tiếng Việt, AI chạy phân tích và đề xuất hành động.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">Ví dụ thực tế</div>
+        <div style="background: var(--inverse-canvas); color: var(--inverse-ink); padding: 24px; font-family: monospace; font-size: 14px; line-height: 1.8; margin-bottom: 16px;">
+          <span style="color: var(--inverse-ink-muted);">Operator:</span> "Nếu mất MBA T1 trạm Thủ Đức thì vùng nào mất điện?"<br>
+          <span style="color: var(--primary);">&nbsp;&nbsp;&darr; LLM phân tích → gọi Digital Twin API</span><br>
+          <span style="color: var(--primary);">&nbsp;&nbsp;&darr; DT chạy N-1 contingency analysis</span><br>
+          <span style="color: var(--primary);">&nbsp;&nbsp;&darr; LLM tổng hợp kết quả</span><br>
+          <span style="color: var(--inverse-ink-muted);">AI:</span> "Mất MBA T1 ảnh hưởng 12 phát tuyến, ~45,000 khách hàng.<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Đề xuất: chuyển tải sang T2 qua MC 471, khôi phục 85% trong 15 phút."
+        </div>
+
+        <div class="sub-title">Sản phẩm & Benchmark</div>
+        <div class="grid-3" style="gap: 12px;">
+          <div style="background: var(--surface-1); padding: 16px; font-size: 13px;">
+            <strong>ChatGrid</strong><br>IEEE PES 2024<br><span style="color: var(--ink-subtle);">GPT-powered grid operator co-pilot</span>
+          </div>
+          <div style="background: var(--surface-1); padding: 16px; font-size: 13px;">
+            <strong>Grid-Mind</strong><br>LLM-Orchestrated Agent<br><span style="color: var(--ink-subtle);">Tích hợp EMS/SCADA</span>
+          </div>
+          <div style="background: var(--surface-1); padding: 16px; font-size: 13px;">
+            <strong>Accuracy</strong><br><span class="badge badge-green">88%</span><br><span style="color: var(--ink-subtle);">Parameter retrieval, multi-turn</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Use Case 10: Drone Vision -->
+      <div class="ai-case">
+        <div class="ai-case-header">
+          <div class="ai-case-number">10</div>
+          <div>
+            <h3>Drone Image & Video Analytics</h3>
+            <p>Phân tích ảnh drone &mdash; Kiểm tra trực quan thiết bị: sứ nứt, kẹp ăn mòn, hotspot, dây chùng.</p>
+          </div>
+        </div>
+
+        <div class="sub-title">AI Pipeline</div>
+        <div class="pipeline">
+          <div class="pipeline-step">Drone (RGB + Thermal + LiDAR)</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">YOLOv8 Object Detection</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">ViT Defect Classification</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">Thermal Anomaly</div>
+          <span class="pipeline-arrow">&rarr;</span>
+          <div class="pipeline-step">GPS Work Order → OMS</div>
+        </div>
+
+        <div class="sub-title">Models & KPI</div>
+        <div class="grid-2" style="gap: 16px;">
+          <table class="mapping-table">
+            <thead><tr><th>Model</th><th>Task</th><th>Accuracy</th></tr></thead>
+            <tbody>
+              <tr><td><strong>YOLOv8/v9</strong></td><td>Tower components detection</td><td><span class="badge badge-green">mAP 90–95%</span></td></tr>
+              <tr><td><strong>Vision Transformer</strong></td><td>Defect classification</td><td><span class="badge badge-green">92–97%</span></td></tr>
+              <tr><td><strong>ResNet/EfficientNet</strong></td><td>Insulator damage</td><td><span class="badge badge-green">&gt;95%</span></td></tr>
+            </tbody>
+          </table>
+          <div>
+            <div class="stat-bar" style="border: 1px solid var(--hairline);">
+              <div class="stat-item" style="border-bottom: none;">
+                <div class="stat-value" style="font-size: 28px;">10x</div>
+                <div class="stat-label">Nhanh hơn trực thăng</div>
+              </div>
+              <div class="stat-item" style="border-bottom: none;">
+                <div class="stat-value" style="font-size: 28px;">14–21</div>
+                <div class="stat-label">Ngày phát hiện sớm</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture Summary -->
+  <section class="section section-alt">
+    <div class="container">
+      <p class="section-eyebrow">Kiến trúc tổng hợp</p>
+      <h2 class="section-title">16 Modules + 10 AI Use Cases</h2>
+      <p class="section-desc">Sơ đồ kiến trúc tích hợp toàn bộ thành phần của hệ thống Electrical Digital Twin.</p>
+
+      <div style="max-width: 950px; margin: 0 auto;">
+        <!-- Physical Grid -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Physical Grid</div>
+          <div class="arch-row arch-row-4">
+            <div class="arch-box">IoT Sensors<br><span style="font-size: 11px; color: var(--ink-subtle);">DGA, nhiệt độ, PD, vibration</span></div>
+            <div class="arch-box">SCADA / RTU / IED<br><span style="font-size: 11px; color: var(--ink-subtle);">IEC 61850, DNP3</span></div>
+            <div class="arch-box">PMU<br><span style="font-size: 11px; color: var(--ink-subtle);">30–60Hz, GPS-sync</span></div>
+            <div class="arch-box">AMI / Drones<br><span style="font-size: 11px; color: var(--ink-subtle);">Smart meters, UAV imagery</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- DT Platform -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Digital Twin Platform (16 Modules)</div>
+          <div class="arch-row arch-row-4" style="margin-bottom: 4px;">
+            <div class="arch-box-dark">Asset DT<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M01</span></div>
+            <div class="arch-box-dark">Network Model<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M02</span></div>
+            <div class="arch-box-dark">GIS<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M03</span></div>
+            <div class="arch-box-dark">Historian<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M04</span></div>
+          </div>
+          <div class="arch-row arch-row-5" style="margin-bottom: 4px;">
+            <div class="arch-box-dark">State Est.<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M05</span></div>
+            <div class="arch-box-dark">Power Flow<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M06</span></div>
+            <div class="arch-box-dark">Short Circuit<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M07</span></div>
+            <div class="arch-box-dark">Protection<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M08</span></div>
+            <div class="arch-box-dark">Stability<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M09</span></div>
+          </div>
+          <div class="arch-row arch-row-4">
+            <div class="arch-box-dark">SCADA/EMS<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M10</span></div>
+            <div class="arch-box-dark">Load Forecast<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M11</span></div>
+            <div class="arch-box-dark">OMS<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M12</span></div>
+            <div class="arch-box-dark">APM<br><span style="font-size: 11px; color: var(--inverse-ink-muted);">M13</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- AI Layer -->
+        <div style="margin-bottom: 4px;">
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">AI / Analytics Layer (10 Use Cases)</div>
+          <div class="arch-row arch-row-5" style="margin-bottom: 4px;">
+            <div class="arch-box-primary">Predictive<br>Maint.<br><span style="font-size: 11px; opacity: 0.8;">AI-01</span></div>
+            <div class="arch-box-primary">Load<br>Forecast<br><span style="font-size: 11px; opacity: 0.8;">AI-02</span></div>
+            <div class="arch-box-primary">Anomaly<br>Detection<br><span style="font-size: 11px; opacity: 0.8;">AI-03</span></div>
+            <div class="arch-box-primary">Fault<br>Detection<br><span style="font-size: 11px; opacity: 0.8;">AI-04</span></div>
+            <div class="arch-box-primary">Optimal<br>Power Flow<br><span style="font-size: 11px; opacity: 0.8;">AI-05</span></div>
+          </div>
+          <div class="arch-row arch-row-5">
+            <div class="arch-box-primary">Vegetation<br>Mgmt<br><span style="font-size: 11px; opacity: 0.8;">AI-06</span></div>
+            <div class="arch-box-primary">DER<br>Integration<br><span style="font-size: 11px; opacity: 0.8;">AI-07</span></div>
+            <div class="arch-box-primary">Customer<br>Analytics<br><span style="font-size: 11px; opacity: 0.8;">AI-08</span></div>
+            <div class="arch-box-primary">LLM<br>Interface<br><span style="font-size: 11px; opacity: 0.8;">AI-09</span></div>
+            <div class="arch-box-primary">Drone<br>Vision<br><span style="font-size: 11px; opacity: 0.8;">AI-10</span></div>
+          </div>
+        </div>
+
+        <div class="arch-connector">&#9660;</div>
+
+        <!-- UI Layer -->
+        <div>
+          <div style="font-size: 11px; color: var(--ink-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">User Interface (M14–M16)</div>
+          <div class="arch-row arch-row-4">
+            <div class="arch-box">Condition Monitoring<br><span style="font-size: 11px; color: var(--ink-subtle);">M14 — Trending, alerts</span></div>
+            <div class="arch-box">3D / AR / VR<br><span style="font-size: 11px; color: var(--ink-subtle);">M15 — Immersive viz</span></div>
+            <div class="arch-box">OTS Training<br><span style="font-size: 11px; color: var(--ink-subtle);">M16 — Sandbox</span></div>
+            <div class="arch-box">BI & Reporting<br><span style="font-size: 11px; color: var(--ink-subtle);">Dashboard, KPI</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>&copy; 2026 Genysic. Tài liệu nghiên cứu nội bộ.</p>
+      <p>genysic.ai</p>
+    </div>
+  </footer>
+
+</body>
+</html>
