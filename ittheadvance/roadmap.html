@@ -511,6 +511,32 @@
     color: var(--inverse-ink);
     font-weight: 600;
   }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .hero { padding: 32px 16px 24px; }
+    .hero h1 { font-size: 28px; }
+    .hero .subtitle { font-size: 14px; }
+    .hero .meta { flex-wrap: wrap; gap: 8px; }
+    .top-nav { padding: 0 16px; }
+    .utility-bar { padding: 0 16px; }
+    footer { padding: 24px 16px; }
+
+    .roadmap-container {
+      padding: 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .legend-strip {
+      padding: 8px 16px;
+    }
+
+    .note-tile {
+      margin: 24px 16px 0;
+      padding: 16px;
+    }
+  }
 </style>
 </head>
 <body>
