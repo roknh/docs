@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JD — Backend Developer · CDP TheAdvance</title>
+<style>
+  :root {
+    --primary: #0f62fe;
+    --primary-light: #d0e2ff;
+    --ink: #161616;
+    --ink-muted: #525252;
+    --ink-light: #8d8d8d;
+    --canvas: #ffffff;
+    --canvas-alt: #f4f4f4;
+    --border: #e0e0e0;
+    --success: #198038;
+    --success-bg: #defbe6;
+    --warning: #f1c21b;
+    --warning-bg: #fff8e1;
+    --font: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--canvas);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .header {
+    background: var(--ink);
+    color: white;
+    padding: 48px 32px;
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 0;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .header-subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 24px;
+  }
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    font-size: 14px;
+  }
+  .header-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .header-meta-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .header-meta-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+  }
+
+  /* Main content */
+  .main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+    display: inline-block;
+  }
+  .section-intro {
+    font-size: 16px;
+    color: var(--ink-muted);
+    margin-bottom: 20px;
+    line-height: 1.7;
+  }
+
+  /* Info cards */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .info-card {
+    background: var(--canvas-alt);
+    border-left: 3px solid var(--primary);
+    padding: 16px 20px;
+  }
+  .info-card-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-light);
+    margin-bottom: 4px;
+  }
+  .info-card-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Lists */
+  ul.styled {
+    list-style: none;
+    padding: 0;
+  }
+  ul.styled li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.6;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink);
+  }
+  ul.styled li:last-child { border-bottom: none; }
+  ul.styled li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+  }
+
+  /* Highlight list */
+  ul.highlight {
+    list-style: none;
+    padding: 0;
+  }
+  ul.highlight li {
+    padding: 8px 0 8px 24px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  ul.highlight li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* Tags */
+  .tag-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 0;
+  }
+  .tag-outline {
+    display: inline-block;
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+    font-size: 13px;
+    font-weight: 400;
+    padding: 4px 12px;
+    border-radius: 0;
+  }
+
+  /* Requirements table */
+  .req-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .req-table th {
+    background: var(--canvas-alt);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-light);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .req-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink);
+    vertical-align: top;
+  }
+  .req-table tr:last-child td { border-bottom: none; }
+
+  /* Benefit cards */
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .benefit-card {
+    background: var(--canvas-alt);
+    padding: 20px;
+  }
+  .benefit-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+  .benefit-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .benefit-desc {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  /* Highlight box */
+  .highlight-box {
+    background: #EDF5FF;
+    border-left: 3px solid var(--primary);
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .highlight-box p {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .highlight-box strong {
+    color: var(--primary);
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--ink);
+    color: white;
+    padding: 48px 32px;
+    text-align: center;
+  }
+  .cta-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .cta-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .cta-subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .cta-email {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 32px;
+    text-decoration: none;
+  }
+  .cta-email:hover {
+    background: #0353e9;
+  }
+
+  /* Footer */
+  .footer {
+    background: var(--canvas-alt);
+    padding: 24px 32px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-light);
+    border-top: 1px solid var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header { padding: 32px 20px; }
+    .header h1 { font-size: 28px; }
+    .header-meta { gap: 20px; }
+    .main { padding: 32px 20px; }
+    .info-grid { grid-template-columns: 1fr; }
+    .benefit-grid { grid-template-columns: 1fr 1fr; }
+    .cta-section { padding: 32px 20px; }
+    .footer { padding: 24px 20px; }
+  }
+
+  @media print {
+    .cta-section { background: #f4f4f4 !important; color: #161616 !important; }
+    .header { background: #f4f4f4 !important; color: #161616 !important; }
+    .header-subtitle, .header-meta-label { color: #8d8d8d !important; }
+    .header-meta-value { color: #161616 !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <span class="header-badge">Tuyển dụng</span>
+    <h1>Backend Developer</h1>
+    <p class="header-subtitle">Dự án CDP — Customer Data Platform · Tập đoàn TheAdvance</p>
+    <div class="header-meta">
+      <div class="header-meta-item">
+        <span class="header-meta-label">Số lượng</span>
+        <span class="header-meta-value">03 người</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="header-meta-label">Hình thức</span>
+        <span class="header-meta-value">Full-time · Onsite</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="header-meta-label">Kinh nghiệm</span>
+        <span class="header-meta-value">2–5 năm</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="header-meta-label">Cập nhật</span>
+        <span class="header-meta-value">2026-06-23</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- About -->
+  <div class="section">
+    <h2 class="section-title">Về dự án</h2>
+    <p class="section-intro">
+      CDP (Customer Data Platform) là nền tảng dữ liệu khách hàng thống nhất, phục vụ toàn bộ tập đoàn TheAdvance gồm nhiều Business Unit với các ngành nghề khác nhau.
+    </p>
+    <p class="section-intro">
+      Hệ thống giải quyết bài toán <strong>dữ liệu khách hàng phân tán</strong> ở nhiều nguồn, nhiều BU — tạo ra hồ sơ khách hàng thống nhất (Customer 360) xuyên suốt tập đoàn, phục vụ phân tích, cá nhân hoá, marketing automation và ra quyết định kinh doanh.
+    </p>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-label">Quy mô</div>
+        <div class="info-card-value">10 modules · 30 features</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Triển khai</div>
+        <div class="info-card-value">3 phases</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Event processing</div>
+        <div class="info-card-value">10,000 events/giây</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Responsibilities -->
+  <div class="section">
+    <h2 class="section-title">Vai trò & trách nhiệm</h2>
+    <p class="section-intro">Bạn sẽ tham gia phát triển backend cho nền tảng CDP từ giai đoạn đầu, làm việc trực tiếp với các module quan trọng nhất của hệ thống:</p>
+    <ul class="styled">
+      <li><strong>Data Integration & Pipeline</strong> — Xây dựng connectors kết nối 12+ nguồn dữ liệu (POS, CRM, ERP, Zalo OA, Facebook Ads, Google Ads, tổng đài, e-commerce...). Thiết kế pipeline ETL xử lý real-time & batch</li>
+      <li><strong>Identity Resolution Engine</strong> — Phát triển logic matching/merging để hợp nhất danh tính khách hàng từ nhiều nguồn, xuyên các BU (exact match, fuzzy match, confidence scoring)</li>
+      <li><strong>Customer Scoring Engine</strong> — Xây dựng hệ thống chấm điểm đa chiều: Unified Score (0-1000), Monetary, Engagement (time-decay), Loyalty, Social, Health Score. Tính toán batch hàng ngày + real-time update</li>
+      <li><strong>Segmentation Engine</strong> — Phát triển rule-based segmentation (AND/OR conditions, nested rules), RFM analysis, dynamic segment tự cập nhật</li>
+      <li><strong>API Development</strong> — Thiết kế RESTful API cho Customer 360 Profile, Dashboard, Lead Management, Campaign Management. Response time &lt; 500ms (95%)</li>
+      <li><strong>Multi-tenant Access Control</strong> — Implement RBAC + row-level security theo cấu trúc Holding → BU → Chi nhánh → Nhân viên. 8 role types</li>
+      <li><strong>Campaign & Automation Backend</strong> — Phát triển workflow engine cho marketing automation, channel integration (Zalo, SMS, Email, Push), template rendering với short-code</li>
+    </ul>
+  </div>
+
+  <!-- Tech stack -->
+  <div class="section">
+    <h2 class="section-title">Yêu cầu kỹ thuật</h2>
+
+    <h3 style="font-size:16px; font-weight:600; margin: 24px 0 12px; color: var(--ink);">Bắt buộc</h3>
+    <table class="req-table">
+      <thead>
+        <tr><th style="width:30%">Kỹ năng</th><th>Chi tiết</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Backend language</strong></td>
+          <td>Thành thạo ít nhất 1 trong: <strong>Node.js (TypeScript)</strong>, <strong>Go</strong>, <strong>Python</strong>, hoặc <strong>Java/Kotlin</strong>. Ưu tiên ứng viên có kinh nghiệm Node.js hoặc Go</td>
+        </tr>
+        <tr>
+          <td><strong>Database</strong></td>
+          <td>Kinh nghiệm làm việc với <strong>PostgreSQL</strong> hoặc MSSQL. Hiểu về indexing, query optimization, migration</td>
+        </tr>
+        <tr>
+          <td><strong>API Design</strong></td>
+          <td>Thiết kế RESTful API chuẩn. Hiểu về authentication (JWT/OAuth), rate limiting, pagination, versioning</td>
+        </tr>
+        <tr>
+          <td><strong>Message Queue</strong></td>
+          <td>Kinh nghiệm với <strong>RabbitMQ</strong>, <strong>Kafka</strong>, hoặc <strong>Redis Streams</strong>. Hiểu event-driven architecture</td>
+        </tr>
+        <tr>
+          <td><strong>Caching</strong></td>
+          <td>Kinh nghiệm <strong>Redis</strong> cho caching, session, queue</td>
+        </tr>
+        <tr>
+          <td><strong>Git & CI/CD</strong></td>
+          <td>Quen với Git flow, code review, CI/CD pipeline cơ bản</td>
+        </tr>
+        <tr>
+          <td><strong>Kinh nghiệm</strong></td>
+          <td><strong>2-5 năm</strong> phát triển backend. Đã từng làm việc với hệ thống có lượng data lớn hoặc multi-tenant</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:16px; font-weight:600; margin: 24px 0 12px; color: var(--ink);">Ưu tiên</h3>
+    <table class="req-table">
+      <thead>
+        <tr><th style="width:30%">Kỹ năng</th><th>Chi tiết</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Data Pipeline</strong></td>
+          <td>Kinh nghiệm xây dựng ETL/ELT pipeline, data transformation, CDC (Change Data Capture)</td>
+        </tr>
+        <tr>
+          <td><strong>ClickHouse / TimescaleDB</strong></td>
+          <td>Kinh nghiệm với columnar database hoặc time-series database cho event analytics</td>
+        </tr>
+        <tr>
+          <td><strong>Elasticsearch</strong></td>
+          <td>Full-text search, aggregation cho customer search & analytics</td>
+        </tr>
+        <tr>
+          <td><strong>Docker & Kubernetes</strong></td>
+          <td>Containerization, orchestration, microservices deployment</td>
+        </tr>
+        <tr>
+          <td><strong>Third-party API</strong></td>
+          <td>Tích hợp Zalo OA, Facebook Marketing API, Google Ads API, SMS gateway</td>
+        </tr>
+        <tr>
+          <td><strong>Domain knowledge</strong></td>
+          <td>Hiểu biết về CRM, CDP, marketing automation, hoặc data platform</td>
+        </tr>
+        <tr>
+          <td><strong>AI/ML cơ bản</strong></td>
+          <td>Clustering, scoring models, churn prediction — không yêu cầu chuyên sâu nhưng sẵn sàng học</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:16px; font-weight:600; margin: 24px 0 12px; color: var(--ink);">Tech stack dự kiến</h3>
+    <div class="tag-group">
+      <span class="tag">Node.js / Go</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Redis</span>
+      <span class="tag">Kafka / RabbitMQ</span>
+      <span class="tag">ClickHouse</span>
+      <span class="tag">Elasticsearch</span>
+      <span class="tag">Docker</span>
+      <span class="tag">Kubernetes</span>
+      <span class="tag-outline">Zalo OA API</span>
+      <span class="tag-outline">Facebook API</span>
+      <span class="tag-outline">Google Ads API</span>
+      <span class="tag-outline">SendGrid / SES</span>
+    </div>
+    <p style="font-size:13px; color: var(--ink-light); margin-top: 8px; font-style: italic;">* Tech stack cụ thể sẽ được quyết định bởi Tech Lead khi khởi động dự án.</p>
+  </div>
+
+  <!-- Soft skills -->
+  <div class="section">
+    <h2 class="section-title">Yêu cầu chung</h2>
+    <ul class="styled">
+      <li><strong>Tư duy hệ thống</strong> — Khả năng thiết kế module với ý thức về toàn bộ hệ thống, hiểu data flow end-to-end</li>
+      <li><strong>Chủ động & tự học</strong> — CDP là domain mới, cần khả năng tự research và đề xuất giải pháp</li>
+      <li><strong>Code quality</strong> — Viết code sạch, có test, dễ maintain. Quan tâm đến performance và security</li>
+      <li><strong>Team player</strong> — Làm việc phối hợp với Frontend, BA, DevOps. Tham gia code review, chia sẻ kiến thức</li>
+      <li><strong>Communication</strong> — Trình bày technical decision rõ ràng, document API/architecture</li>
+    </ul>
+  </div>
+
+  <!-- What you'll learn -->
+  <div class="section">
+    <h2 class="section-title">Bạn sẽ được gì</h2>
+
+    <div class="highlight-box">
+      <p>Đây là dự án <strong>xây dựng từ đầu</strong> (greenfield) — bạn có cơ hội tham gia thiết kế kiến trúc, lựa chọn giải pháp kỹ thuật, và xây dựng nền tảng phục vụ hàng triệu khách hàng của tập đoàn.</p>
+    </div>
+
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">&#9889;</div>
+        <div class="benefit-title">Dự án quy mô lớn</div>
+        <div class="benefit-desc">Hệ thống xử lý triệu profiles, 10,000 events/s, multi-tenant đa BU</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">&#128640;</div>
+        <div class="benefit-title">Domain hấp dẫn</div>
+        <div class="benefit-desc">CDP, data pipeline, scoring engine, marketing automation — domain đang phát triển mạnh</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">&#129302;</div>
+        <div class="benefit-title">AI & Data</div>
+        <div class="benefit-desc">Cơ hội tiếp cận AI/ML ứng dụng: predictive scoring, clustering, recommendation</div>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">&#127891;</div>
+        <div class="benefit-title">Growth</div>
+        <div class="benefit-desc">Tham gia từ Phase 1, đóng góp vào kiến trúc hệ thống, phát triển cùng dự án</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Benefits -->
+  <div class="section">
+    <h2 class="section-title">Quyền lợi</h2>
+    <ul class="highlight">
+      <li>Mức lương cạnh tranh, review định kỳ theo năng lực</li>
+      <li>Thưởng dự án, thưởng hiệu suất</li>
+      <li>Bảo hiểm đầy đủ theo quy định + bảo hiểm sức khoẻ mở rộng</li>
+      <li>12 ngày phép/năm + nghỉ lễ theo quy định</li>
+      <li>Ưu đãi dịch vụ tại các thương hiệu trong hệ thống tập đoàn cho nhân viên</li>
+      <li>Môi trường làm việc hiện đại, team trẻ, văn hoá chia sẻ kiến thức</li>
+      <li>Laptop & thiết bị làm việc được trang bị đầy đủ</li>
+      <li>Team building, du lịch hàng năm</li>
+    </ul>
+  </div>
+
+</div>
+
+
+<!-- Footer -->
+<div class="footer">
+  <p>Tập đoàn TheAdvance · Khối IT · Tuyển dụng nội bộ · 2026</p>
+</div>
+
+</body>
+</html>
