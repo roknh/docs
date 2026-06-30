@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CDP Research — TheAdvance vs Thị trường Việt Nam</title>
+<style>
+  :root {
+    --primary: #0066cc;
+    --primary-focus: #0071e3;
+    --primary-on-dark: #2997ff;
+    --ink: #1d1d1f;
+    --ink-80: #333333;
+    --ink-48: #7a7a7a;
+    --canvas: #ffffff;
+    --canvas-alt: #f5f5f7;
+    --surface-black: #000000;
+    --surface-dark-1: #161617;
+    --surface-dark-2: #1c1c1e;
+    --surface-dark-3: #222224;
+    --hairline: #e0e0e0;
+    --on-dark: #ffffff;
+    --green: #30d158;
+    --green-bg: rgba(48,209,88,0.1);
+    --orange: #ff9f0a;
+    --orange-bg: rgba(255,159,10,0.1);
+    --red: #ff453a;
+    --red-bg: rgba(255,69,58,0.1);
+    --blue-bg: rgba(0,102,204,0.06);
+
+    --font-d: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-t: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --sp-xs: 8px; --sp-sm: 12px; --sp-md: 17px; --sp-lg: 24px; --sp-xl: 32px; --sp-xxl: 48px; --sp-section: 80px;
+    --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-pill: 9999px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 17px; }
+  body {
+    font-family: var(--font-t);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+    background: var(--canvas);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Nav ── */
+  .global-nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 44px;
+    background: var(--surface-black); z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 22px;
+  }
+  .global-nav-brand { font-family: var(--font-d); font-size: 17px; font-weight: 600; color: var(--on-dark); text-decoration: none; }
+  .global-nav-brand span { color: var(--primary-on-dark); }
+  .global-nav-right { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+  .sub-nav {
+    position: fixed; top: 44px; left: 0; right: 0; height: 52px;
+    background: rgba(245,245,247,0.88); backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.08); z-index: 999;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 22px;
+  }
+  .sub-nav-title { font-family: var(--font-d); font-size: 21px; font-weight: 600; }
+  .sub-nav-meta { font-size: 14px; color: var(--ink-48); }
+
+  /* ── Layout ── */
+  .doc-shell { display: flex; margin-top: 96px; min-height: calc(100vh - 96px); }
+
+  /* ── Sidebar ── */
+  .toc-sidebar {
+    width: 260px; flex-shrink: 0; position: sticky; top: 96px; height: calc(100vh - 96px);
+    overflow-y: auto; background: var(--canvas-alt); border-right: 1px solid var(--hairline); padding: 32px 0;
+  }
+  .toc-sidebar::-webkit-scrollbar { width: 4px; }
+  .toc-sidebar::-webkit-scrollbar-thumb { background: var(--hairline); border-radius: 2px; }
+  .toc-header {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-48); padding: 0 20px 12px;
+  }
+  .toc-list { list-style: none; }
+  .toc-list a {
+    display: block; font-size: 13px; color: var(--ink-80); text-decoration: none;
+    padding: 6px 20px; border-left: 2px solid transparent; transition: all 0.15s; line-height: 1.4;
+  }
+  .toc-list a:hover, .toc-list a.active { color: var(--primary); border-left-color: var(--primary); }
+  .toc-list a.active { font-weight: 600; }
+  .toc-list .toc-sub a { padding-left: 32px; font-size: 12px; color: var(--ink-48); }
+  .toc-divider { height: 1px; background: var(--hairline); margin: 12px 20px; }
+
+  /* ── Main ── */
+  .doc-main { flex: 1; min-width: 0; overflow-x: hidden; }
+
+  /* ── Sections ── */
+  .section-hero { background: var(--surface-black); color: var(--on-dark); padding: var(--sp-section) 64px; text-align: center; }
+  .section-light { background: var(--canvas); color: var(--ink); padding: var(--sp-section) 64px; }
+  .section-alt { background: var(--canvas-alt); color: var(--ink); padding: var(--sp-section) 64px; }
+  .section-dark { background: var(--surface-dark-1); color: var(--on-dark); padding: var(--sp-section) 64px; }
+  .section-dark-2 { background: var(--surface-dark-2); color: var(--on-dark); padding: var(--sp-section) 64px; }
+  .section-dark-3 { background: var(--surface-dark-3); color: var(--on-dark); padding: var(--sp-section) 64px; }
+  .section-inner { max-width: 980px; margin: 0 auto; }
+  .section-inner-wide { max-width: 1120px; margin: 0 auto; }
+
+  /* ── Hero ── */
+  .hero-eyebrow { font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-on-dark); margin-bottom: var(--sp-lg); }
+  .hero-title { font-family: var(--font-d); font-size: 56px; font-weight: 600; line-height: 1.07; color: var(--on-dark); margin-bottom: var(--sp-lg); max-width: 800px; margin-left: auto; margin-right: auto; }
+  .hero-subtitle { font-family: var(--font-d); font-size: 28px; font-weight: 400; line-height: 1.14; color: #cccccc; max-width: 640px; margin: 0 auto var(--sp-xxl); }
+  .hero-meta { display: flex; align-items: center; justify-content: center; gap: var(--sp-xl); flex-wrap: wrap; }
+  .hero-meta-item { text-align: center; }
+  .hero-meta-label { font-size: 12px; color: rgba(255,255,255,0.5); display: block; margin-bottom: 4px; }
+  .hero-meta-value { font-size: 17px; font-weight: 600; color: var(--on-dark); }
+  .hero-meta-sep { width: 1px; height: 32px; background: rgba(255,255,255,0.15); }
+
+  /* ── Typography ── */
+  .section-label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); margin-bottom: var(--sp-sm); }
+  .section-label-dark { color: var(--primary-on-dark); }
+  h2.section-title { font-family: var(--font-d); font-size: 40px; font-weight: 600; line-height: 1.1; margin-bottom: var(--sp-lg); }
+  h3.subsection-title { font-family: var(--font-d); font-size: 28px; font-weight: 600; line-height: 1.14; margin-top: var(--sp-xxl); margin-bottom: var(--sp-lg); }
+  h4.block-title { font-family: var(--font-d); font-size: 21px; font-weight: 600; line-height: 1.2; margin-top: 36px; margin-bottom: var(--sp-md); }
+  p { font-size: 17px; line-height: 1.47; margin-bottom: var(--sp-md); }
+  strong { font-weight: 600; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .section-dark a, .section-dark-2 a, .section-dark-3 a { color: var(--primary-on-dark); }
+  .section-rule { border: none; border-top: 1px solid var(--hairline); margin: var(--sp-xxl) 0; }
+  .section-rule-dark { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: var(--sp-xxl) 0; }
+
+  ul.styled { list-style: none; margin: var(--sp-md) 0; }
+  ul.styled li { position: relative; padding-left: 20px; padding-bottom: 6px; font-size: 17px; line-height: 1.47; }
+  ul.styled li::before { content: ''; position: absolute; left: 0; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: var(--primary); }
+  .section-dark ul.styled li::before,
+  .section-dark-2 ul.styled li::before,
+  .section-dark-3 ul.styled li::before { background: var(--primary-on-dark); }
+
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin: var(--sp-md) 0 var(--sp-lg); border-radius: var(--r-md); border: 1px solid var(--hairline); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5; }
+  thead { background: var(--canvas-alt); }
+  th { font-weight: 600; text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--hairline); white-space: nowrap; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: var(--blue-bg); }
+
+  .dark-table .table-wrap { border-color: rgba(255,255,255,0.1); }
+  .dark-table thead { background: rgba(255,255,255,0.05); }
+  .dark-table th { color: rgba(255,255,255,0.7); border-bottom-color: rgba(255,255,255,0.1); }
+  .dark-table td { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.06); }
+  .dark-table tr:hover { background: rgba(41,151,255,0.06); }
+  .dark-table tr:last-child td { border-bottom: none; }
+
+  /* ── Cards ── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--sp-lg); margin: var(--sp-lg) 0; }
+  .info-card {
+    background: var(--canvas); border: 1px solid var(--hairline); border-radius: var(--r-lg);
+    padding: var(--sp-xl); transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .info-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+  .info-card-dark {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--r-lg); padding: var(--sp-xl); transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .info-card-dark:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .card-icon { font-size: 32px; margin-bottom: var(--sp-sm); }
+  .card-title { font-family: var(--font-d); font-size: 21px; font-weight: 600; margin-bottom: var(--sp-xs); }
+  .card-subtitle { font-size: 14px; color: var(--ink-48); margin-bottom: var(--sp-sm); }
+  .card-subtitle-dark { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: var(--sp-sm); }
+
+  /* ── Badges ── */
+  .badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); }
+  .badge-green { background: var(--green-bg); color: #1a8a2e; }
+  .badge-orange { background: var(--orange-bg); color: #c97a00; }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-blue { background: rgba(0,102,204,0.12); color: var(--primary); }
+  .badge-gray { background: rgba(122,122,122,0.12); color: var(--ink-48); }
+
+  /* ── Feature check ── */
+  .check { color: var(--green); font-weight: 600; }
+  .cross { color: var(--red); }
+  .partial { color: var(--orange); }
+  .unknown { color: var(--ink-48); font-style: italic; font-size: 13px; }
+
+  /* ── Verdict card ── */
+  .verdict-card {
+    border-radius: var(--r-lg); padding: var(--sp-xl); margin: var(--sp-lg) 0;
+  }
+  .verdict-green { background: var(--green-bg); border: 1px solid rgba(48,209,88,0.3); }
+  .verdict-orange { background: var(--orange-bg); border: 1px solid rgba(255,159,10,0.3); }
+  .verdict-blue { background: rgba(0,102,204,0.06); border: 1px solid rgba(0,102,204,0.2); }
+
+  /* ── Progress bar ── */
+  .progress-bar-wrap { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+  .progress-label { font-size: 13px; font-weight: 600; width: 100px; text-align: right; flex-shrink: 0; }
+  .progress-track { flex: 1; height: 8px; background: rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .progress-value { font-size: 13px; font-weight: 600; width: 40px; flex-shrink: 0; }
+  .dark-progress .progress-track { background: rgba(255,255,255,0.1); }
+
+  /* ── Score circle ── */
+  .score-row { display: flex; gap: var(--sp-lg); flex-wrap: wrap; margin: var(--sp-lg) 0; justify-content: center; }
+  .score-item { text-align: center; }
+  .score-circle {
+    width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-d); font-size: 24px; font-weight: 600; margin: 0 auto var(--sp-xs);
+  }
+  .score-label { font-size: 12px; color: var(--ink-48); }
+
+  /* ── Callout ── */
+  .callout {
+    border-left: 3px solid var(--primary); padding: var(--sp-md) var(--sp-lg);
+    margin: var(--sp-lg) 0; background: rgba(0,102,204,0.04); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  }
+  .callout p { margin: 0; }
+  .callout-dark {
+    border-left-color: var(--primary-on-dark); background: rgba(41,151,255,0.08);
+  }
+  .callout-dark p { color: rgba(255,255,255,0.85); }
+
+  /* ── Footer ── */
+  .doc-footer { background: var(--surface-black); color: rgba(255,255,255,0.5); padding: var(--sp-xxl) 64px; text-align: center; font-size: 13px; }
+  .doc-footer a { color: var(--primary-on-dark); }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .toc-sidebar { display: none; }
+    .section-hero, .section-light, .section-alt, .section-dark, .section-dark-2, .section-dark-3, .doc-footer { padding-left: 24px; padding-right: 24px; }
+    h2.section-title { font-size: 28px; }
+    h3.subsection-title { font-size: 22px; }
+    .hero-title { font-size: 36px; }
+    .hero-subtitle { font-size: 21px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .hero-title { font-size: 28px; }
+    .hero-subtitle { font-size: 17px; }
+    table { font-size: 12px; }
+    th, td { padding: 8px 10px; }
+  }
+
+  @media print {
+    .global-nav, .sub-nav, .toc-sidebar { display: none; }
+    .doc-shell { margin-top: 0; }
+    .section-hero, .section-light, .section-alt, .section-dark, .section-dark-2, .section-dark-3 { padding: 24px; }
+    .section-dark, .section-dark-2, .section-dark-3 { background: #fff !important; color: #1d1d1f !important; }
+    .section-dark *, .section-dark-2 *, .section-dark-3 * { color: #1d1d1f !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Global Nav -->
+<nav class="global-nav">
+  <a class="global-nav-brand" href="#">The<span>Advance</span></a>
+  <span class="global-nav-right">CDP Research Report</span>
+</nav>
+
+<!-- Sub Nav -->
+<div class="sub-nav">
+  <span class="sub-nav-title">CDP Market Research</span>
+  <span class="sub-nav-meta">Ngày 29/06/2026 &middot; v1.0</span>
+</div>
+
+<!-- Layout -->
+<div class="doc-shell">
+
+  <!-- Sidebar TOC -->
+  <aside class="toc-sidebar">
+    <div class="toc-header">Mục lục</div>
+    <ul class="toc-list">
+      <li><a href="#sec-exec">Executive Summary</a></li>
+      <li class="toc-divider"></li>
+      <li><a href="#sec-part1">Phần 1: CDP Việt Nam</a></li>
+      <li class="toc-sub"><a href="#sec-overview-3">Tổng quan 3 nền tảng</a></li>
+      <li class="toc-sub"><a href="#sec-features-3">Tính năng chính</a></li>
+      <li class="toc-sub"><a href="#sec-strengths-3">Điểm mạnh &amp; yếu</a></li>
+      <li class="toc-sub"><a href="#sec-fit-3">Nên chọn gì?</a></li>
+      <li class="toc-divider"></li>
+      <li><a href="#sec-part2">Phần 2: TheAdvance vs Thị trường</a></li>
+      <li class="toc-sub"><a href="#sec-arch">Kiến trúc &amp; định hướng</a></li>
+      <li class="toc-sub"><a href="#sec-module-compare">So sánh theo module</a></li>
+      <li class="toc-sub"><a href="#sec-unique">Tính năng độc quyền</a></li>
+      <li class="toc-divider"></li>
+      <li><a href="#sec-part3">Phần 3: Khai thác khách cũ</a></li>
+      <li class="toc-sub"><a href="#sec-retention-features">Tính năng retention</a></li>
+      <li class="toc-sub"><a href="#sec-ratio">Tỷ trọng khách cũ vs mới</a></li>
+      <li class="toc-sub"><a href="#sec-differentiators">5 lợi thế độc quyền</a></li>
+      <li class="toc-divider"></li>
+      <li><a href="#sec-conclusion">Kết luận</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="doc-main">
+
+    <!-- Hero -->
+    <section class="section-hero">
+      <div class="hero-eyebrow">Market Research &amp; Gap Analysis</div>
+      <h1 class="hero-title">CDP TheAdvance vs. Thị trường Việt Nam</h1>
+      <p class="hero-subtitle">So sánh 3 nền tảng CDP hàng đầu (Admicro, PangoCDP, Antsomi) với spec CDP TheAdvance &mdash; tập trung khai thác khách hàng cũ</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Nền tảng khảo sát</span>
+          <span class="hero-meta-value">3 CDP</span>
+        </div>
+        <div class="hero-meta-sep"></div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Tiêu chí so sánh</span>
+          <span class="hero-meta-value">10 modules</span>
+        </div>
+        <div class="hero-meta-sep"></div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Tính năng TheAdvance</span>
+          <span class="hero-meta-value">30 features</span>
+        </div>
+        <div class="hero-meta-sep"></div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Ngày</span>
+          <span class="hero-meta-value">29/06/2026</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="section-light" id="sec-exec">
+      <div class="section-inner">
+        <div class="section-label">Executive Summary</div>
+        <h2 class="section-title">Tóm tắt đánh giá</h2>
+
+        <div class="card-grid">
+          <div class="info-card">
+            <div class="card-icon">&#x1F50D;</div>
+            <div class="card-title">3 CDP được khảo sát</div>
+            <p style="font-size:15px; color:var(--ink-80);">Admicro CDP (VCCorp), PangoCDP (ByteTech), Antsomi CDP 365 &mdash; ba nền tảng CDP tiêu biểu tại Việt Nam, mỗi nền tảng có thế mạnh riêng biệt.</p>
+          </div>
+          <div class="info-card">
+            <div class="card-icon">&#x1F3AF;</div>
+            <div class="card-title">TheAdvance khác biệt</div>
+            <p style="font-size:15px; color:var(--ink-80);">Spec CDP TheAdvance sở hữu 5 tính năng không CDP nào trên thị trường có sẵn: Scoring 8 chiều, Cross-BU intelligence, RFM đa BU, Quản lý liệu trình, Quản lý đại lý.</p>
+          </div>
+          <div class="info-card">
+            <div class="card-icon">&#x1F4C8;</div>
+            <div class="card-title">~70% hướng khách cũ</div>
+            <p style="font-size:15px; color:var(--ink-80);">TheAdvance tập trung ~70% tính năng vào khai thác khách hàng cũ (retention, upsell, cross-sell, churn prevention), cao hơn nhiều so với các CDP thị trường (20-50%).</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p><strong>Kết luận chính:</strong> Không CDP nào trên thị trường Việt Nam đáp ứng được yêu cầu đặc thù của tập đoàn TheAdvance (multi-BU, ngành thẩm mỹ + phân phối, hệ thống scoring đa chiều). Việc tự build CDP là lựa chọn phù hợp &mdash; với điều kiện có team kỹ thuật đủ mạnh để duy trì và phát triển.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PART 1: 3 CDP Viet Nam -->
+    <!-- ============================================ -->
+    <section class="section-dark" id="sec-part1">
+      <div class="section-inner-wide">
+        <div class="section-label section-label-dark">Phần 1</div>
+        <h2 class="section-title">Toàn cảnh CDP Việt Nam</h2>
+        <p style="color:rgba(255,255,255,0.65);">Đánh giá 3 nền tảng CDP tiêu biểu đang hoạt động tại thị trường Việt Nam.</p>
+
+        <!-- Overview Cards -->
+        <div id="sec-overview-3">
+          <h3 class="subsection-title">Tổng quan 3 nền tảng</h3>
+          <div class="card-grid">
+            <div class="info-card-dark">
+              <div class="card-title" style="color:white;">Admicro CDP</div>
+              <div class="card-subtitle-dark">VCCorp &middot; Việt Nam (Hà Nội)</div>
+              <ul class="styled" style="font-size:15px;">
+                <li>Thuộc tập đoàn VCCorp, ra đời từ 2013</li>
+                <li>Data pool khổng lồ: 50M+ users, 200+ websites</li>
+                <li>Hợp tác Treasure Data (Nhật Bản)</li>
+                <li>Thế mạnh: advertising &amp; 1st-party data báo chí</li>
+                <li>Mô hình: nội bộ + B2B</li>
+              </ul>
+            </div>
+            <div class="info-card-dark">
+              <div class="card-title" style="color:white;">PangoCDP</div>
+              <div class="card-subtitle-dark">ByteTech JSC &middot; thành lập 2016</div>
+              <ul class="styled" style="font-size:15px;">
+                <li>SaaS CDP &mdash; AI-powered</li>
+                <li>Tích hợp sâu Super App (Zalo)</li>
+                <li>Đội ngũ 20+ năm kinh nghiệm FMCG/Retail</li>
+                <li>Đối tác thương mại: VietGuys</li>
+                <li>Khách hàng: Nutifood, CellphoneS, Heineken, Abbott...</li>
+              </ul>
+            </div>
+            <div class="info-card-dark">
+              <div class="card-title" style="color:white;">Antsomi CDP 365</div>
+              <div class="card-subtitle-dark">Antelligence Technologies &middot; Singapore</div>
+              <ul class="styled" style="font-size:15px;">
+                <li>Delivery CDP &mdash; chứng nhận CDP Institute</li>
+                <li>Forrester công nhận, VECOM Best CDP 2021</li>
+                <li>105B+ event logs/tháng, 350% tăng conversion</li>
+                <li>6 kênh omnichannel đầy đủ</li>
+                <li>Khách hàng: ASUS, PNJ, Hasaki, VTV Go...</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature Comparison -->
+        <div id="sec-features-3">
+          <h3 class="subsection-title">So sánh tính năng chính</h3>
+          <div class="dark-table">
+            <div class="table-wrap" style="border-color: rgba(255,255,255,0.1);">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tính năng</th>
+                    <th>Admicro CDP</th>
+                    <th>PangoCDP</th>
+                    <th>Antsomi CDP 365</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Thu thập &amp; hợp nhất dữ liệu</strong></td>
+                    <td><span class="check">&#10003;</span> 200+ website, 50M+ users</td>
+                    <td><span class="check">&#10003;</span> Online + Offline</td>
+                    <td><span class="check">&#10003;</span> Multi-source</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Customer 360 Profile</strong></td>
+                    <td><span class="check">&#10003;</span></td>
+                    <td><span class="check">&#10003;</span> Định danh xuyên hệ thống</td>
+                    <td><span class="check">&#10003;</span> Single customer view</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Phân khúc khách hàng</strong></td>
+                    <td><span class="check">&#10003;</span> Kết hợp AI</td>
+                    <td><span class="check">&#10003;</span> Segment Builder, real-time</td>
+                    <td><span class="check">&#10003;</span> AI-powered</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Marketing Automation</strong></td>
+                    <td><span class="check">&#10003;</span> Chiến dịch đa nền tảng</td>
+                    <td><span class="check">&#10003;</span> Tự động hóa campaign</td>
+                    <td><span class="check">&#10003;</span> Marketing Hub đầy đủ</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Cá nhân hóa</strong></td>
+                    <td><span class="check">&#10003;</span></td>
+                    <td><span class="check">&#10003;</span> Thông điệp theo nhóm KH</td>
+                    <td><span class="check">&#10003;</span> Personalized content</td>
+                  </tr>
+                  <tr>
+                    <td><strong>AI/ML</strong></td>
+                    <td><span class="check">&#10003;</span> Qua Treasure Data</td>
+                    <td><span class="check">&#10003;</span> AI-driven</td>
+                    <td><span class="check">&#10003;</span> "AI đầu tiên ở SEA"</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Omnichannel Delivery</strong></td>
+                    <td><span class="cross">&#10007;</span> Chủ yếu digital ads</td>
+                    <td><span class="check">&#10003;</span> Qua Super App (Zalo)</td>
+                    <td><span class="check">&#10003;</span> 6 kênh: Mobile, Web, Email, Ads, In-Store, Chat</td>
+                  </tr>
+                  <tr>
+                    <td><strong>API Hub</strong></td>
+                    <td><span class="unknown">Không rõ</span></td>
+                    <td><span class="check">&#10003;</span> Tương thích 100%</td>
+                    <td><span class="check">&#10003;</span> API Hub riêng</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Chứng nhận quốc tế</strong></td>
+                    <td><span class="cross">&#10007;</span></td>
+                    <td><span class="cross">&#10007;</span></td>
+                    <td><span class="check">&#10003;</span> CDP Institute, Forrester, VECOM</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pricing</strong></td>
+                    <td colspan="3" style="text-align:center; color:rgba(255,255,255,0.5);">Cả 3 đều không công khai bảng giá &mdash; cần liên hệ trực tiếp</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strengths & Weaknesses -->
+        <div id="sec-strengths-3">
+          <h3 class="subsection-title">Điểm mạnh &amp; điểm yếu</h3>
+
+          <h4 class="block-title" style="color:white;">Admicro CDP (VCCorp)</h4>
+          <div class="dark-table">
+            <div class="table-wrap" style="border-color:rgba(255,255,255,0.1);">
+              <table>
+                <thead><tr><th style="width:50%;">Điểm mạnh</th><th style="width:50%;">Điểm yếu</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="check">&#10003;</span> Data pool khổng lồ (50M+ users, 90% Internet VN)</td><td><span class="cross">&#10007;</span> Thiên về advertising, ít activation đa kênh</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Hạ tầng Big Data &amp; Cloud tự xây</td><td><span class="cross">&#10007;</span> Ít thông tin công khai về sản phẩm CDP</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Hợp tác Treasure Data (enterprise-grade)</td><td><span class="cross">&#10007;</span> Chưa có chứng nhận quốc tế CDP</td></tr>
+                  <tr><td><span class="check">&#10003;</span> 1st-party data từ hệ sinh thái báo chí</td><td><span class="cross">&#10007;</span> Chưa rõ khả năng tích hợp offline data</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h4 class="block-title" style="color:white;">PangoCDP (ByteTech)</h4>
+          <div class="dark-table">
+            <div class="table-wrap" style="border-color:rgba(255,255,255,0.1);">
+              <table>
+                <thead><tr><th style="width:50%;">Điểm mạnh</th><th style="width:50%;">Điểm yếu</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="check">&#10003;</span> Tích hợp sâu Super App (Zalo) &mdash; phù hợp VN</td><td><span class="cross">&#10007;</span> Quy mô nhỏ, ít chứng nhận quốc tế</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Mạnh FMCG &amp; Retail (20 năm kinh nghiệm)</td><td><span class="cross">&#10007;</span> Ít thông tin về Big Data processing</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Real-time segmentation tự động</td><td><span class="cross">&#10007;</span> Thiếu kênh delivery đa dạng (so với Antsomi)</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Tương thích 100% hệ thống khác</td><td><span class="cross">&#10007;</span> Pricing không công khai</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h4 class="block-title" style="color:white;">Antsomi CDP 365</h4>
+          <div class="dark-table">
+            <div class="table-wrap" style="border-color:rgba(255,255,255,0.1);">
+              <table>
+                <thead><tr><th style="width:50%;">Điểm mạnh</th><th style="width:50%;">Điểm yếu</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="check">&#10003;</span> Delivery CDP đầy đủ (CDP Institute certified)</td><td><span class="cross">&#10007;</span> Trụ sở Singapore &mdash; support VN có thể chậm</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Omnichannel mạnh nhất (6 kênh)</td><td><span class="cross">&#10007;</span> Pricing có thể cao hơn</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Quy mô xử lý lớn (105B+ events/tháng)</td><td><span class="cross">&#10007;</span> Ít tích hợp Super App bản địa (Zalo)</td></tr>
+                  <tr><td><span class="check">&#10003;</span> Forrester &amp; CDP Institute công nhận</td><td><span class="cross">&#10007;</span> Ít focus vào SME</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendation -->
+        <div id="sec-fit-3">
+          <h3 class="subsection-title">Nên chọn nền tảng nào?</h3>
+          <div class="dark-table">
+            <div class="table-wrap" style="border-color:rgba(255,255,255,0.1);">
+              <table>
+                <thead><tr><th>Nhu cầu</th><th>Nền tảng phù hợp</th></tr></thead>
+                <tbody>
+                  <tr><td>Doanh nghiệp <strong>Media/Publishing</strong> cần khai thác 1st-party data quảng cáo</td><td><span class="badge badge-blue">Admicro CDP</span></td></tr>
+                  <tr><td>Doanh nghiệp <strong>FMCG/Retail VN</strong> cần tích hợp Zalo, activation nhanh</td><td><span class="badge badge-green">PangoCDP</span></td></tr>
+                  <tr><td>Doanh nghiệp <strong>lớn, đa kênh</strong>, cần omnichannel đầy đủ + chứng nhận quốc tế</td><td><span class="badge badge-orange">Antsomi CDP 365</span></td></tr>
+                  <tr><td>Cần <strong>AI-driven marketing</strong> với scale lớn</td><td><span class="badge badge-orange">Antsomi CDP 365</span></td></tr>
+                  <tr><td>Startup/SME Việt Nam muốn bắt đầu với CDP</td><td><span class="badge badge-green">PangoCDP</span> (SaaS, dễ triển khai)</td></tr>
+                  <tr><td><strong>Tập đoàn multi-BU</strong>, ngành đặc thù, khai thác khách cũ</td><td><span class="badge badge-red">Không CDP nào &mdash; cần build custom</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PART 2: TheAdvance vs Market -->
+    <!-- ============================================ -->
+    <section class="section-alt" id="sec-part2">
+      <div class="section-inner-wide">
+        <div class="section-label">Phần 2</div>
+        <h2 class="section-title">CDP TheAdvance vs. Thị trường</h2>
+        <p>So sánh chi tiết spec CDP TheAdvance (10 modules, 30 features) với 3 nền tảng CDP trên thị trường.</p>
+
+        <!-- Architecture -->
+        <div id="sec-arch">
+          <h3 class="subsection-title">Kiến trúc &amp; định hướng</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Tiêu chí</th><th>CDP TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi 365</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Loại hình</strong></td>
+                  <td><span class="badge badge-blue">Self-built, in-house</span></td>
+                  <td>Nội bộ + B2B</td>
+                  <td>SaaS</td>
+                  <td>SaaS</td>
+                </tr>
+                <tr>
+                  <td><strong>Mục đích chính</strong></td>
+                  <td>Hợp nhất data 3 BU, khai thác khách cũ, cross-sell</td>
+                  <td>Data quảng cáo &amp; audience targeting</td>
+                  <td>Unify data + marketing activation</td>
+                  <td>Full delivery CDP</td>
+                </tr>
+                <tr>
+                  <td><strong>Multi-tenant</strong></td>
+                  <td><span class="check">&#10003;</span> 4 cấp: Holding &rarr; BU &rarr; CN &rarr; NV</td>
+                  <td><span class="cross">&#10007;</span> Đơn tenant</td>
+                  <td><span class="partial">~</span> Multi-org, không multi-BU sâu</td>
+                  <td><span class="partial">~</span> Không thiết kế cho multi-BU</td>
+                </tr>
+                <tr>
+                  <td><strong>Ngành đặc thù</strong></td>
+                  <td><span class="check">&#10003;</span> Thẩm mỹ (liệu trình) + Phân phối (đại lý)</td>
+                  <td>Media/Advertising</td>
+                  <td>Generic</td>
+                  <td>Retail, E-com, Media</td>
+                </tr>
+                <tr>
+                  <td><strong>Quy mô</strong></td>
+                  <td>10 modules, 30 features, 3 phases</td>
+                  <td>Không rõ</td>
+                  <td>4 modules chính</td>
+                  <td>4 trụ cột</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Module Comparison -->
+        <div id="sec-module-compare">
+          <h3 class="subsection-title">So sánh chi tiết theo module</h3>
+
+          <!-- M1 -->
+          <h4 class="block-title">M1: Data Integration</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Khả năng</th><th>TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Số connectors được định nghĩa</strong></td><td><span class="check">&#10003;</span> 12 loại cụ thể</td><td>Web tracking (200+ sites)</td><td>API đa dạng</td><td>Shopify, LINE, API Hub</td></tr>
+                <tr><td><strong>Offline data</strong> (POS, walk-in)</td><td><span class="check">&#10003;</span> Real-time</td><td><span class="cross">&#10007;</span></td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span> In-Store</td></tr>
+                <tr><td><strong>E-commerce marketplace</strong></td><td><span class="check">&#10003;</span> Shopee, Lazada, TikTok Shop</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="check">&#10003;</span> Shopify</td></tr>
+                <tr><td><strong>ERP/Kế toán</strong></td><td><span class="check">&#10003;</span> Ocany</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="cross">&#10007;</span></td></tr>
+                <tr><td><strong>Call center</strong></td><td><span class="check">&#10003;</span> Tổng đài + recording</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="cross">&#10007;</span></td></tr>
+                <tr><td><strong>Pipeline monitoring</strong></td><td><span class="check">&#10003;</span> Dead letter queue, retry, rollback</td><td><span class="unknown">Không rõ</span></td><td><span class="check">&#10003;</span> Pango Console</td><td><span class="unknown">Không rõ</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- M2 -->
+          <h4 class="block-title">M2: Identity &amp; Profile</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Khả năng</th><th>TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Identity resolution</strong></td><td><span class="check">&#10003;</span> 5 rule matching</td><td><span class="check">&#10003;</span> Cơ bản</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>Cross-BU merge</strong></td><td><span class="check">&#10003;</span> Profile tập đoàn + profile riêng BU</td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td></tr>
+                <tr><td><strong>Customer 360</strong></td><td><span class="check">&#10003;</span> Scoring, timeline, liệu trình, cross-BU, predictive</td><td><span class="check">&#10003;</span> Cơ bản</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>Confidence scoring</strong> (merge)</td><td><span class="check">&#10003;</span> 3 mức (&gt;95%, 70-95%, &lt;70%)</td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Manual merge/unmerge</strong></td><td><span class="check">&#10003;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- M3 -->
+          <h4 class="block-title">M3: Segmentation</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Khả năng</th><th>TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Rule-based</strong></td><td><span class="check">&#10003;</span> 11 nhóm điều kiện, segment lồng, dynamic</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>RFM Analysis</strong></td><td><span class="check">&#10003;</span> 11 segment, cấu hình riêng/BU, ma trận drill-down</td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>AI Segmentation</strong></td><td><span class="check">&#10003;</span> Phase 3 (clustering, lookalike)</td><td><span class="check">&#10003;</span> Treasure Data</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>Segment theo BU/chi nhánh</strong></td><td><span class="check">&#10003;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td><td><span class="cross">&#10007;</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- M4 -->
+          <h4 class="block-title">M4: Campaign &amp; Activation</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Khả năng</th><th>TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Campaign management</strong></td><td><span class="check">&#10003;</span> Cá nhân hóa, approval, ước tính chi phí</td><td><span class="check">&#10003;</span> Ads</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>Marketing Automation</strong></td><td><span class="check">&#10003;</span> Workflow builder, ví dụ cụ thể cho spa + đại lý</td><td><span class="cross">&#10007;</span></td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>Kênh gửi</strong></td><td><span class="check">&#10003;</span> 8 kênh (Zalo, SMS, Email, FB/GG Ads, Push, In-app, Internal task)</td><td>Display Ads</td><td>Zalo (Super App)</td><td>6 kênh</td></tr>
+                <tr><td><strong>Template management</strong></td><td><span class="check">&#10003;</span> Short-code, versioning, A/B, thống kê hiệu quả</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Fallback channel</strong></td><td><span class="check">&#10003;</span> Zalo fail &rarr; SMS</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- M5 -->
+          <h4 class="block-title">M5: Analytics &amp; Reporting</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Khả năng</th><th>TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Pre-built dashboards</strong></td><td><span class="check">&#10003;</span> 8 loại (tập đoàn, BU, CN, marketing, telesale, health, scoring, distribution)</td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>Customer Analytics</strong></td><td><span class="check">&#10003;</span> 7 loại (cohort, journey, LTV, churn, basket, attribution, NPS)</td><td><span class="check">&#10003;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="check">&#10003;</span></td></tr>
+                <tr><td><strong>Phân quyền report theo cấp</strong></td><td><span class="check">&#10003;</span> Holding &rarr; BU &rarr; CN</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- M6 -->
+          <h4 class="block-title">M6: Lead Management</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Khả năng</th><th>TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Lead capture đa kênh</strong></td><td><span class="check">&#10003;</span> 7 nguồn (FB, Google, Web, Zalo, Walk-in, Referral, Hotline)</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Lead scoring</strong></td><td><span class="check">&#10003;</span> 5 tiêu chí, time-decay, Hot/Warm/Cold</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Lead pipeline</strong></td><td><span class="check">&#10003;</span> Kanban, pipeline riêng/BU</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="cross">&#10007;</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- M10 -->
+          <h4 class="block-title">M10: Customer Scoring Engine</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Khả năng</th><th>TheAdvance</th><th>Admicro</th><th>PangoCDP</th><th>Antsomi</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Unified Score</strong></td><td><span class="check">&#10003;</span> 0-1000, 4 thành phần, 5 tier</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Monetary Score</strong></td><td><span class="check">&#10003;</span> Cấu hình riêng/BU</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Engagement Score</strong></td><td><span class="check">&#10003;</span> 13 hành vi, time-decay formula</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Loyalty Score</strong></td><td><span class="check">&#10003;</span> 5 yếu tố</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Social Score</strong></td><td><span class="check">&#10003;</span> KOL/KOC/Advocate/Passive</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Health Score</strong></td><td><span class="check">&#10003;</span> Churn risk indicator</td><td><span class="cross">&#10007;</span></td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td></tr>
+                <tr><td><strong>Predictive Scores</strong></td><td><span class="check">&#10003;</span> Phase 3 (Churn, Upsell, Cross-BU)</td><td><span class="unknown">Không rõ</span></td><td><span class="unknown">Không rõ</span></td><td><span class="check">&#10003;</span> AI recommendations</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Unique Features -->
+        <div id="sec-unique">
+          <h3 class="subsection-title">Tính năng độc quyền &mdash; không CDP nào có sẵn</h3>
+
+          <div class="card-grid">
+            <div class="info-card" style="border-left: 3px solid var(--primary);">
+              <div class="card-title">M9: Quản lý liệu trình</div>
+              <p style="font-size:15px;">Progress bar "Buổi 5/10", nhắc lịch tự động, alert khi khách > 14 ngày chưa book buổi tiếp, trigger automation khi hoàn thành liệu trình.</p>
+              <span class="badge badge-blue">Đặc thù thẩm mỹ</span>
+            </div>
+            <div class="info-card" style="border-left: 3px solid var(--primary);">
+              <div class="card-title">M9: Quản lý đại lý</div>
+              <p style="font-size:15px;">Dealer health score (Healthy/Warning/Critical), map view phân bổ, ranking đại lý theo doanh số, alert khi chuyển trạng thái.</p>
+              <span class="badge badge-blue">Đặc thù phân phối</span>
+            </div>
+            <div class="info-card" style="border-left: 3px solid var(--primary);">
+              <div class="card-title">M9: Cross-BU Recommendation</div>
+              <p style="font-size:15px;">Khách spa &rarr; recommend mỹ phẩm Ocany. Khách Ocany skincare &rarr; recommend dịch vụ chăm sóc da. Category mapping + collaborative filtering.</p>
+              <span class="badge badge-blue">Đặc thù tập đoàn</span>
+            </div>
+            <div class="info-card" style="border-left: 3px solid var(--green);">
+              <div class="card-title">M10: Scoring 8 chiều</div>
+              <p style="font-size:15px;">Unified (0-1000), Monetary, Engagement, Loyalty, Social, Health, Predictive (Churn/Upsell/Cross-BU), Score Config &amp; Governance. Cấu hình riêng theo BU.</p>
+              <span class="badge badge-green">Độc nhất thị trường</span>
+            </div>
+            <div class="info-card" style="border-left: 3px solid var(--green);">
+              <div class="card-title">M2: Cross-BU Identity Resolution</div>
+              <p style="font-size:15px;">SĐT trùng giữa Ngọc Dung và Ocany &rarr; merge thành 1 profile tập đoàn. Giữ nguyên profile riêng ở mỗi BU. Cấp holding thấy toàn bộ.</p>
+              <span class="badge badge-green">Độc nhất thị trường</span>
+            </div>
+            <div class="info-card" style="border-left: 3px solid var(--green);">
+              <div class="card-title">M3: RFM cấu hình đa BU</div>
+              <p style="font-size:15px;">Spa: tính theo lần đến. B2C: tính theo đơn. B2B: tính theo quý. Mỗi BU có công thức RFM riêng thay vì dùng chung 1 công thức.</p>
+              <span class="badge badge-green">Độc nhất thị trường</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- PART 3: Customer Retention Focus -->
+    <!-- ============================================ -->
+    <section class="section-dark-2" id="sec-part3">
+      <div class="section-inner-wide">
+        <div class="section-label section-label-dark">Phần 3</div>
+        <h2 class="section-title">Trọng tâm: Khai thác khách hàng cũ</h2>
+        <p style="color:rgba(255,255,255,0.65);">Phân tích cách spec CDP TheAdvance tập trung vào retention, upsell, cross-sell và churn prevention &mdash; so với định hướng của các CDP thị trường.</p>
+
+        <!-- Retention Features -->
+        <div id="sec-retention-features">
+          <h3 class="subsection-title">Tính năng trực tiếp phục vụ khai thác khách cũ</h3>
+          <div class="dark-table">
+            <div class="table-wrap" style="border-color:rgba(255,255,255,0.1);">
+              <table>
+                <thead>
+                  <tr><th>Tính năng</th><th>Mục đích khai thác khách cũ</th><th>Phase</th><th>Mức độ quan trọng</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>RFM Analysis</strong> (F3.3)</td><td>Phát hiện Champions/Loyal để giữ, At Risk/Hibernating để win-back</td><td>Phase 1</td><td><span class="badge badge-red" style="background:rgba(255,69,58,0.15);">Critical</span></td></tr>
+                  <tr><td><strong>Unified Customer Score</strong> (F10.1)</td><td>Phân hạng Diamond&rarr;Bronze, chính sách chăm sóc theo tier</td><td>Phase 1</td><td><span class="badge badge-red" style="background:rgba(255,69,58,0.15);">Critical</span></td></tr>
+                  <tr><td><strong>Health Score</strong> (F10.6)</td><td>Phát hiện sớm khách sắp churn</td><td>Phase 1</td><td><span class="badge badge-red" style="background:rgba(255,69,58,0.15);">Critical</span></td></tr>
+                  <tr><td><strong>Engagement Score</strong> (F10.3)</td><td>Đo mức tương tác &rarr; alert khi khách giảm engagement</td><td>Phase 1</td><td><span class="badge badge-red" style="background:rgba(255,69,58,0.15);">Critical</span></td></tr>
+                  <tr><td><strong>Loyalty Score</strong> (F10.4)</td><td>Đo trung thành &rarr; reward cho khách gắn bó</td><td>Phase 2</td><td><span class="badge badge-orange">High</span></td></tr>
+                  <tr><td><strong>Cohort Retention</strong> (F5.2)</td><td>Đo tỷ lệ quay lại theo nhóm thời gian</td><td>Phase 2</td><td><span class="badge badge-orange">High</span></td></tr>
+                  <tr><td><strong>Churn Analysis</strong> (F5.2)</td><td>Danh sách khách có xác suất churn > X%</td><td>Phase 2</td><td><span class="badge badge-orange">High</span></td></tr>
+                  <tr><td><strong>Basket Analysis</strong> (F5.2)</td><td>Cross-sell: "mua A thường cùng mua B"</td><td>Phase 2</td><td><span class="badge badge-orange">High</span></td></tr>
+                  <tr><td><strong>LTV Prediction</strong> (F5.2)</td><td>Dự đoán giá trị khách 6-12 tháng tới</td><td>Phase 2</td><td><span class="badge badge-orange">High</span></td></tr>
+                  <tr><td><strong>Quản lý liệu trình</strong> (F9.1)</td><td>Nhắc khách quay lại hoàn thành liệu trình</td><td>Phase 2</td><td><span class="badge badge-orange">High</span></td></tr>
+                  <tr><td><strong>Cross-BU Recommendation</strong> (F9.3)</td><td>Cross-sell giữa BU (spa &rarr; mỹ phẩm)</td><td>Phase 3</td><td><span class="badge badge-blue">Strategic</span></td></tr>
+                  <tr><td><strong>Predictive Scores</strong> (F10.7)</td><td>Churn propensity, Upsell propensity, Cross-BU propensity</td><td>Phase 3</td><td><span class="badge badge-blue">Strategic</span></td></tr>
+                  <tr><td><strong>Marketing Automation</strong> (F4.2)</td><td>Workflow chăm sóc sau liệu trình, win-back, nurture</td><td>Phase 3</td><td><span class="badge badge-blue">Strategic</span></td></tr>
+                  <tr><td><strong>Lookalike Audience</strong> (F3.2)</td><td>Tìm khách tiềm năng giống VIP nhưng chưa convert</td><td>Phase 3</td><td><span class="badge badge-blue">Strategic</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <hr class="section-rule-dark">
+
+        <!-- Ratio -->
+        <div id="sec-ratio">
+          <h3 class="subsection-title">Tỷ trọng: Khách cũ vs. Khách mới</h3>
+          <p style="color:rgba(255,255,255,0.65); margin-bottom: var(--sp-lg);">Tỷ lệ tính năng hướng vào khai thác khách cũ (retention, upsell, cross-sell, churn prevention) vs thu khách mới (acquisition, lead gen, ads targeting).</p>
+
+          <div style="max-width: 600px; margin: 0 auto;">
+            <!-- TheAdvance -->
+            <div class="dark-progress" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-weight:600; color:white;">CDP TheAdvance</span>
+                <span style="color: var(--primary-on-dark); font-weight: 600;">~70% khách cũ</span>
+              </div>
+              <div style="display:flex; height: 12px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.1);">
+                <div style="width: 70%; background: var(--primary-on-dark); border-radius: 6px 0 0 6px;"></div>
+                <div style="width: 30%; background: rgba(255,255,255,0.2);"></div>
+              </div>
+              <div style="display:flex; justify-content: space-between; margin-top: 4px; font-size: 12px; color: rgba(255,255,255,0.5);">
+                <span>Retention / Upsell / Cross-sell</span>
+                <span>Acquisition</span>
+              </div>
+            </div>
+
+            <!-- Antsomi -->
+            <div class="dark-progress" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-weight:600; color:white;">Antsomi CDP 365</span>
+                <span style="color: var(--orange); font-weight: 600;">~50% khách cũ</span>
+              </div>
+              <div style="display:flex; height: 12px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.1);">
+                <div style="width: 50%; background: var(--orange); border-radius: 6px 0 0 6px;"></div>
+                <div style="width: 50%; background: rgba(255,255,255,0.2);"></div>
+              </div>
+            </div>
+
+            <!-- PangoCDP -->
+            <div class="dark-progress" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-weight:600; color:white;">PangoCDP</span>
+                <span style="color: var(--orange); font-weight: 600;">~40% khách cũ</span>
+              </div>
+              <div style="display:flex; height: 12px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.1);">
+                <div style="width: 40%; background: var(--orange); border-radius: 6px 0 0 6px;"></div>
+                <div style="width: 60%; background: rgba(255,255,255,0.2);"></div>
+              </div>
+            </div>
+
+            <!-- Admicro -->
+            <div class="dark-progress" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-weight:600; color:white;">Admicro CDP</span>
+                <span style="color: var(--red); font-weight: 600;">~20% khách cũ</span>
+              </div>
+              <div style="display:flex; height: 12px; border-radius: 6px; overflow: hidden; background: rgba(255,255,255,0.1);">
+                <div style="width: 20%; background: var(--red); border-radius: 6px 0 0 6px;"></div>
+                <div style="width: 80%; background: rgba(255,255,255,0.2);"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout callout-dark" style="margin-top: var(--sp-xl);">
+            <p><strong>Nhận xét:</strong> TheAdvance tập trung ~70% tính năng vào khai thác khách cũ &mdash; gấp 1.4x Antsomi, 1.75x PangoCDP, và 3.5x Admicro. Đây là sự lựa chọn có chủ đích: ngành thẩm mỹ có LTV rất cao (1 khách có thể chi 100-500 triệu trong vòng đời), nên việc giữ khách và upsell có ROI cao hơn nhiều so với việc tìm khách mới.</p>
+          </div>
+        </div>
+
+        <hr class="section-rule-dark">
+
+        <!-- 5 Differentiators -->
+        <div id="sec-differentiators">
+          <h3 class="subsection-title">5 lợi thế độc quyền cho khai thác khách cũ</h3>
+
+          <div style="margin: var(--sp-xl) 0;">
+            <!-- 1 -->
+            <div class="info-card-dark" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; align-items:center; gap: 16px; margin-bottom: 12px;">
+                <span style="font-size: 32px; font-weight: 700; color: var(--primary-on-dark); font-family: var(--font-d);">01</span>
+                <div>
+                  <div class="card-title" style="color:white; margin-bottom: 0;">Scoring engine 8 chiều</div>
+                  <div class="card-subtitle-dark">Không CDP nào có &mdash; cho phép biết CHÍNH XÁC khách nào đang đầu tư, khách nào nên buông</div>
+                </div>
+              </div>
+              <p style="color:rgba(255,255,255,0.75); font-size: 15px;">Hệ thống điểm: Unified (0-1000) = Monetary (30%) + Engagement (30%) + Loyalty (20%) + Social (20%). Phân hạng tự động: Diamond &rarr; Platinum &rarr; Gold &rarr; Silver &rarr; Bronze. Thêm Health Score (churn risk), Predictive Scores (upsell/cross-BU propensity). Tất cả cấu hình riêng theo BU.</p>
+            </div>
+
+            <!-- 2 -->
+            <div class="info-card-dark" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; align-items:center; gap: 16px; margin-bottom: 12px;">
+                <span style="font-size: 32px; font-weight: 700; color: var(--primary-on-dark); font-family: var(--font-d);">02</span>
+                <div>
+                  <div class="card-title" style="color:white; margin-bottom: 0;">RFM cấu hình riêng theo BU</div>
+                  <div class="card-subtitle-dark">Spa (tính theo lần đến) khác hoàn toàn B2C (theo đơn) khác B2B (theo quý)</div>
+                </div>
+              </div>
+              <p style="color:rgba(255,255,255,0.75); font-size: 15px;">11 segment chuẩn (Champions, Loyal, At Risk, Lost...) với action cụ thể cho từng nhóm. Ma trận RFM trực quan, drill-down vào từng ô &rarr; xem danh sách &rarr; tạo segment &rarr; chạy campaign. Các CDP thị trường dùng 1 công thức RFM chung cho mọi ngành.</p>
+            </div>
+
+            <!-- 3 -->
+            <div class="info-card-dark" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; align-items:center; gap: 16px; margin-bottom: 12px;">
+                <span style="font-size: 32px; font-weight: 700; color: var(--primary-on-dark); font-family: var(--font-d);">03</span>
+                <div>
+                  <div class="card-title" style="color:white; margin-bottom: 0;">Cross-BU intelligence</div>
+                  <div class="card-subtitle-dark">Khách làm spa &rarr; recommend mỹ phẩm Ocany &mdash; không CDP nào có</div>
+                </div>
+              </div>
+              <p style="color:rgba(255,255,255,0.75); font-size: 15px;">Category mapping + collaborative filtering: khách ND/Zema làm dịch vụ da mặt &rarr; recommend Ocany skincare. Khách Ocany mua nhiều skincare &rarr; recommend dịch vụ chăm sóc da ND/Zema. Tracking cross-BU conversion để đo lường hiệu quả. Chỉ recommend khi khách consent nhận cross-BU marketing.</p>
+            </div>
+
+            <!-- 4 -->
+            <div class="info-card-dark" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; align-items:center; gap: 16px; margin-bottom: 12px;">
+                <span style="font-size: 32px; font-weight: 700; color: var(--primary-on-dark); font-family: var(--font-d);">04</span>
+                <div>
+                  <div class="card-title" style="color:white; margin-bottom: 0;">Workflow automation ngành thẩm mỹ</div>
+                  <div class="card-subtitle-dark">Sau liệu trình &rarr; khảo sát &rarr; referral &rarr; win-back &mdash; rất cụ thể, không generic</div>
+                </div>
+              </div>
+              <p style="color:rgba(255,255,255,0.75); font-size: 15px;">Ví dụ: Hoàn thành buổi cuối liệu trình &rarr; Zalo cảm ơn &rarr; +1 ngày khảo sát &rarr; +7 ngày (hài lòng ≥ 4/5: ưu đãi giới thiệu bạn, không: CS gọi thăm) &rarr; +30 ngày đề xuất liệu trình tiếp &rarr; +60 ngày win-back. Workflow tương tự cho nurture đại lý Ocany.</p>
+            </div>
+
+            <!-- 5 -->
+            <div class="info-card-dark" style="margin-bottom: var(--sp-lg);">
+              <div style="display:flex; align-items:center; gap: 16px; margin-bottom: 12px;">
+                <span style="font-size: 32px; font-weight: 700; color: var(--primary-on-dark); font-family: var(--font-d);">05</span>
+                <div>
+                  <div class="card-title" style="color:white; margin-bottom: 0;">Tier-based action triggers</div>
+                  <div class="card-subtitle-dark">Upgrade tier &rarr; chúc mừng, downgrade &rarr; ưu đãi giữ hạng &mdash; tự động hóa hoàn toàn</div>
+                </div>
+              </div>
+              <p style="color:rgba(255,255,255,0.75); font-size: 15px;">Khi score thay đổi, hệ thống tự động: upgrade Diamond &rarr; Zalo chúc mừng + event VIP. Downgrade từ Gold xuống Silver &rarr; gửi ưu đãi giữ hạng. Engagement drop > 50% &rarr; trigger re-engagement automation. API trả score cho POS/CRM/app để nhân viên thấy ngay khi khách đến.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- Conclusion -->
+    <!-- ============================================ -->
+    <section class="section-light" id="sec-conclusion">
+      <div class="section-inner">
+        <div class="section-label">Kết luận</div>
+        <h2 class="section-title">Đánh giá tổng thể</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th style="width:25%;"></th><th style="width:37.5%;">CDP TheAdvance (Spec)</th><th style="width:37.5%;">CDP thị trường (Admicro, Pango, Antsomi)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ưu thế</strong></td>
+                <td>Customized 100% cho business, scoring sâu, cross-BU, ngành đặc thù, focus retention</td>
+                <td>Triển khai nhanh, có sẵn, support vendor, đã proven</td>
+              </tr>
+              <tr>
+                <td><strong>Rủi ro</strong></td>
+                <td>Tốn thời gian + nhân lực build, cần team maintain</td>
+                <td>Không fit 100%, thiếu tính năng đặc thù, phụ thuộc vendor</td>
+              </tr>
+              <tr>
+                <td><strong>Phù hợp khi</strong></td>
+                <td>Business phức tạp (multi-BU), ngành đặc thù, data là core asset</td>
+                <td>Business đơn giản, cần CDP nhanh, không có dev team</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="verdict-card verdict-green" style="margin-top: var(--sp-xl);">
+          <h4 class="block-title" style="margin-top:0; color: #1a8a2e;">Kết luận</h4>
+          <p style="font-size: 17px; line-height: 1.6;">
+            Spec CDP TheAdvance đã <strong>đúng hướng tập trung khai thác khách cũ</strong> với hệ thống scoring đa chiều + RFM đa BU + churn detection + cross-sell + automation workflow cụ thể cho ngành thẩm mỹ và phân phối.
+          </p>
+          <p style="font-size: 17px; line-height: 1.6; margin-bottom: 0;">
+            Đây là thế mạnh mà <strong>không CDP nào trên thị trường Việt Nam đáp ứng được out-of-the-box</strong>. Việc tự build là lựa chọn chiến lược đúng đắn cho một tập đoàn multi-BU với ngành đặc thù và cơ sở khách hàng lớn cần khai thác.
+          </p>
+        </div>
+
+        <hr class="section-rule">
+
+        <!-- Sources -->
+        <h3 class="subsection-title" style="margin-top: var(--sp-xl);">Nguồn tham khảo</h3>
+        <ul class="styled" style="font-size: 15px;">
+          <li><a href="https://cdp.vccorp.vn/" target="_blank">Admicro CDP</a> &mdash; cdp.vccorp.vn</li>
+          <li><a href="https://cafef.vn/vccorp-bat-tay-treasure-data-giai-bai-toan-ve-du-lieu-cho-doanh-nghiep-viet-188231212202655472.chn" target="_blank">VCCorp bắt tay Treasure Data</a> &mdash; CafeF</li>
+          <li><a href="https://pangocdp.com/" target="_blank">PangoCDP</a> &mdash; pangocdp.com</li>
+          <li><a href="https://www.vietguys.biz/vi/service/pango/pangocdp" target="_blank">PangoCDP | VietGuys</a></li>
+          <li><a href="https://help.pangocdp.com/pango-overview" target="_blank">Pango Overview | Help Center</a></li>
+          <li><a href="https://www.antsomi.com/" target="_blank">Antsomi CDP 365</a> &mdash; antsomi.com</li>
+          <li><a href="https://bytetech.io/" target="_blank">ByteTech JSC</a></li>
+          <li><a href="https://cnv.vn/don-vi-cung-cap-cdp/" target="_blank">TOP 6 CDP tại Việt Nam 2026</a> &mdash; CNV</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+      <p>CDP Market Research Report &middot; TheAdvance Group &middot; 29/06/2026</p>
+      <p style="margin-top: 8px;">Tài liệu nội bộ &mdash; Không phân phối ra ngoài</p>
+    </footer>
+
+  </main>
+</div>
+
+<!-- TOC Active State -->
+<script>
+(function(){
+  const links = document.querySelectorAll('.toc-list a[href^="#"]');
+  const sections = [];
+  links.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ el, a });
+  });
+  function onScroll() {
+    let current = sections[0];
+    for (const s of sections) {
+      if (s.el.getBoundingClientRect().top <= 140) current = s;
+    }
+    links.forEach(a => a.classList.remove('active'));
+    if (current) current.a.classList.add('active');
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
