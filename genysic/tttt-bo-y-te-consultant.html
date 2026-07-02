@@ -771,7 +771,7 @@
           <div class="stat-label">Memory Bandwidth</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value">30tr</div>
+          <div class="stat-value">50tr</div>
           <div class="stat-label">VND/tháng — gói trọn bộ</div>
         </div>
         <div class="stat-card">
@@ -918,8 +918,8 @@
         <div class="badge">Khuyến nghị</div>
         <h4>Genysic H200 All-in-One</h4>
         <div class="compare-subtitle">GPU H200 + trọn gói managed services</div>
-        <div class="compare-price">30tr</div>
-        <div class="compare-price-unit">VND / tháng — trọn gói</div>
+        <div class="compare-price">50tr</div>
+        <div class="compare-price-unit">VND / tháng — trọn gói managed</div>
         <ul>
           <li>1x NVIDIA H200 141GB HBM3e</li>
           <li>32 vCPU, 128 GB RAM, 1 TB NVMe</li>
@@ -938,7 +938,7 @@
       <div class="compare-card">
         <h4>API AI thương mại</h4>
         <div class="compare-subtitle">OpenAI, Anthropic, Google</div>
-        <div class="compare-price">5-30tr</div>
+        <div class="compare-price">20-40tr</div>
         <div class="compare-price-unit">VND / tháng (tùy volume)</div>
         <ul>
           <li>Triển khai nhanh</li>
@@ -1154,8 +1154,21 @@
     <div class="section-number">07</div>
     <h2>Ước tính chi phí</h2>
 
+    <h3>Tham chiếu giá thị trường (vast.ai — H200 NVL, 07/2026)</h3>
+    <table>
+      <thead>
+        <tr><th>Mức</th><th>$/giờ</th><th>$/tháng (730h)</th><th>VND/tháng</th><th>Ghi chú</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Thấp</strong></td><td>$2.94</td><td>$2,145</td><td>~55 triệu</td><td>Bare GPU, không managed</td></tr>
+        <tr><td><strong>Trung bình</strong></td><td>$3.69</td><td>$2,694</td><td>~69 triệu</td><td>Bare GPU, không managed</td></tr>
+        <tr><td><strong>Cao</strong></td><td>$5.19</td><td>$3,787</td><td>~97 triệu</td><td>Bare GPU, không managed</td></tr>
+      </tbody>
+    </table>
+
     <div class="tabs" role="tablist">
-      <button class="tab active" onclick="switchTab(event, 'tab-pilot')" role="tab">Thí điểm (50–100 CCU)</button>
+      <button class="tab active" onclick="switchTab(event, 'tab-pilot')" role="tab">H200 All-in-One</button>
+      <button class="tab" onclick="switchTab(event, 'tab-saving')" role="tab">Phương án tiết kiệm</button>
       <button class="tab" onclick="switchTab(event, 'tab-scale')" role="tab">Mở rộng (500+ CCU)</button>
     </div>
 
@@ -1167,8 +1180,8 @@
         <tbody>
           <tr>
             <td><strong style="color: var(--primary);">Gói Genysic H200 All-in-One</strong></td>
-            <td><strong style="color: var(--primary);">30.000.000</strong></td>
-            <td><strong style="color: var(--primary);">360.000.000</strong></td>
+            <td><strong style="color: var(--primary);">50.000.000</strong></td>
+            <td><strong style="color: var(--primary);">600.000.000</strong></td>
             <td>Trọn gói</td>
           </tr>
           <tr><td>├─ GPU Server (1x H200 141GB)</td><td colspan="2">32 vCPU, 128 GB RAM, 1 TB NVMe</td><td>Bao gồm</td></tr>
@@ -1182,8 +1195,40 @@
         </tbody>
       </table>
       <div class="callout">
-        <h4>30 triệu/tháng = 360 triệu/năm — Một hóa đơn, không chi phí ẩn</h4>
-        <p>Phù hợp ngân sách ~350 triệu/năm trong đề cương. Chênh lệch nhỏ, bù lại bằng việc toàn bộ bảo mật, monitoring, bandwidth đã bao gồm.</p>
+        <h4>50 triệu/tháng = 600 triệu/năm — Thấp hơn giá thị trường quốc tế</h4>
+        <p>Bare GPU trên vast.ai = 55–97 triệu/tháng (không managed). Genysic trọn gói (GPU + server + bảo mật + monitoring + bandwidth) = <strong>50 triệu/tháng</strong>. Ngân sách đề cương 350 triệu/năm cần được điều chỉnh — xem tab "Phương án tiết kiệm" nếu cần giữ ngân sách gốc.</p>
+      </div>
+    </div>
+
+    <div id="tab-saving" class="tab-content">
+      <table>
+        <thead>
+          <tr><th>Phương án</th><th>Mô tả</th><th>Chi phí/tháng</th><th>Chi phí/năm</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A. H200 theo giờ</strong></td>
+            <td>Bật GPU khi cần (8–12h/ngày), queue AI requests ngoài giờ</td>
+            <td>25–30 triệu</td>
+            <td>300–360 triệu</td>
+          </tr>
+          <tr>
+            <td><strong>B. GPU nhỏ hơn</strong></td>
+            <td>L40S hoặc A100 thay H200, chạy model 7–13B parameters</td>
+            <td>15–20 triệu</td>
+            <td>180–240 triệu</td>
+          </tr>
+          <tr>
+            <td><strong>C. Hybrid</strong></td>
+            <td>GPU H200 theo giờ (AI) + server dedicated (app/DB) 24/7</td>
+            <td>28–32 triệu</td>
+            <td>336–384 triệu</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <h4>Khuyến nghị: Phương án C — Hybrid</h4>
+        <p>App/DB server chạy 24/7, GPU H200 bật theo giờ khi có user tương tác AI. Phù hợp ngân sách ~350 triệu/năm mà vẫn có sức mạnh H200 khi cần.</p>
       </div>
     </div>
 
@@ -1193,7 +1238,7 @@
           <tr><th>Hạng mục</th><th>Chi phí/tháng</th><th>Chi phí/năm</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>GPU (2x H200 hoặc cụm H200)</strong></td><td>55.000.000</td><td>660.000.000</td></tr>
+          <tr><td><strong>GPU (2x H200 hoặc cụm H200)</strong></td><td>95.000.000</td><td>1.140.000.000</td></tr>
           <tr><td>App Server cluster (2 nodes)</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
           <tr><td>DB Server (primary + replica)</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
           <tr><td>Vector DB dedicated (Qdrant)</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
@@ -1201,8 +1246,8 @@
           <tr><td>Toàn bộ managed services</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
           <tr>
             <td><strong style="color: var(--ink);">Tổng</strong></td>
-            <td><strong style="color: var(--primary);">~55.000.000</strong></td>
-            <td><strong style="color: var(--primary);">~660.000.000</strong></td>
+            <td><strong style="color: var(--primary);">~95.000.000</strong></td>
+            <td><strong style="color: var(--primary);">~1.140.000.000</strong></td>
           </tr>
         </tbody>
       </table>
@@ -1406,8 +1451,10 @@
   <script>
     // Tab switching
     function switchTab(e, tabId) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      const tabGroup = e.target.closest('.tabs');
+      const section = tabGroup.parentElement;
+      tabGroup.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      section.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       e.target.classList.add('active');
       document.getElementById(tabId).classList.add('active');
     }
