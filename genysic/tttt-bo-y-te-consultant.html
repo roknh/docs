@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Genysic — Tài liệu tham vấn hạ tầng công nghệ</title>
+  <link rel="icon" type="image/png" href="genysic-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,13 +75,15 @@
       z-index: 100;
     }
     .top-nav .logo {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--ink);
       margin-right: 48px;
       text-decoration: none;
+      display: flex;
+      align-items: center;
     }
-    .top-nav .logo span { color: var(--primary); }
+    .top-nav .logo img {
+      height: 28px;
+      width: auto;
+    }
     .top-nav nav a {
       color: var(--ink-muted);
       text-decoration: none;
@@ -565,12 +568,13 @@
       gap: 48px;
     }
     .footer .footer-brand {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--inverse-ink);
       margin-bottom: 12px;
     }
-    .footer .footer-brand span { color: var(--primary); }
+    .footer .footer-brand img {
+      height: 28px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
     .footer p {
       font-size: 14px;
       line-height: 1.29;
@@ -716,7 +720,7 @@
 
   <!-- Top Nav -->
   <header class="top-nav">
-    <a class="logo" href="#">Geny<span>sic</span></a>
+    <a class="logo" href="#"><img src="genysic-logo.webp" alt="Genysic"></a>
     <nav>
       <a href="#overview" class="active">Tổng quan</a>
       <a href="#infra">Hạ tầng</a>
@@ -1371,7 +1375,7 @@
   <footer class="footer">
     <div class="footer-inner">
       <div>
-        <div class="footer-brand">Geny<span>sic</span></div>
+        <div class="footer-brand"><img src="genysic-logo.webp" alt="Genysic"></div>
         <p>Data Center & GPU H200 cho doanh nghiệp. Trọn gói server, bảo mật, monitoring, bandwidth. Tài liệu tham vấn sơ bộ — chi phí chính thức sau khi làm rõ Mục 10.</p>
       </div>
       <div class="footer-col">
