@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genysic — Tài liệu tham vấn hạ tầng công nghệ</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #0f62fe;
+      --on-primary: #ffffff;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8c8c8c;
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --inverse-canvas: #161616;
+      --inverse-surface-1: #262626;
+      --inverse-ink: #ffffff;
+      --inverse-ink-muted: #c6c6c6;
+      --hairline: #e0e0e0;
+      --hairline-strong: #161616;
+      --blue-60: #0043ce;
+      --blue-hover: #0050e6;
+      --semantic-success: #24a148;
+      --semantic-warning: #f1c21b;
+      --semantic-error: #da1e28;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.50;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    /* ── Utility Bar ── */
+    .utility-bar {
+      background: var(--surface-1);
+      color: var(--ink-muted);
+      font-size: 12px;
+      line-height: 1.33;
+      letter-spacing: 0.32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+    }
+    .utility-bar span { margin-right: 24px; }
+
+    /* ── Top Nav ── */
+    .top-nav {
+      background: var(--canvas);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.29;
+      letter-spacing: 0.16px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      border-bottom: 1px solid var(--hairline);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .top-nav .logo {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-right: 48px;
+      text-decoration: none;
+    }
+    .top-nav .logo span { color: var(--primary); }
+    .top-nav nav a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      margin-right: 24px;
+      padding: 14px 0;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .top-nav nav a:hover,
+    .top-nav nav a.active {
+      color: var(--ink);
+      border-bottom-color: var(--primary);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 96px 32px 64px;
+      max-width: 1584px;
+      margin: 0 auto;
+    }
+    .hero .eyebrow {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.29;
+      letter-spacing: 0.16px;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 60px;
+      font-weight: 300;
+      line-height: 1.17;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+      max-width: 900px;
+      margin-bottom: 24px;
+    }
+    .hero .lead {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.40;
+      color: var(--ink-muted);
+      max-width: 700px;
+      margin-bottom: 32px;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item .label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--ink-subtle);
+      margin-bottom: 4px;
+    }
+    .hero-meta-item .value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* ── Section ── */
+    .section { padding: 96px 32px; max-width: 1584px; margin: 0 auto; }
+    .section-alt { background: var(--surface-1); }
+    .section-alt .section { padding: 96px 32px; max-width: 1584px; margin: 0 auto; }
+
+    .section-number {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--primary);
+      letter-spacing: 0.16px;
+      margin-bottom: 8px;
+    }
+    .section h2 {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.20;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .section h3 {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      color: var(--ink);
+      margin-bottom: 16px;
+      margin-top: 48px;
+    }
+    .section h3:first-of-type { margin-top: 32px; }
+    .section p {
+      color: var(--ink-muted);
+      max-width: 800px;
+      margin-bottom: 16px;
+    }
+    .section p strong { color: var(--ink); font-weight: 600; }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+      line-height: 1.29;
+      letter-spacing: 0.16px;
+    }
+    thead th {
+      text-align: left;
+      font-weight: 600;
+      color: var(--ink);
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--hairline-strong);
+      background: transparent;
+    }
+    tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hairline);
+      color: var(--ink-muted);
+      vertical-align: top;
+    }
+    tbody tr:hover { background: var(--surface-1); }
+    tbody td:first-child { color: var(--ink); font-weight: 400; }
+    tbody td strong { color: var(--ink); font-weight: 600; }
+
+    /* ── Cards ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin: 32px 0;
+    }
+    .card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-elevated { background: var(--surface-1); border-color: transparent; }
+    .card .card-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--ink-subtle);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .card .card-title {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .card .card-body {
+      font-size: 14px;
+      line-height: 1.29;
+      color: var(--ink-muted);
+      flex-grow: 1;
+    }
+    .card .card-footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--hairline);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* ── Stat cards ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin: 32px 0;
+    }
+    .stat-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 24px;
+    }
+    .stat-card .stat-value {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.20;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .stat-card .stat-label {
+      font-size: 14px;
+      color: var(--ink-muted);
+      letter-spacing: 0.16px;
+    }
+
+    /* ── Architecture diagram ── */
+    .arch-diagram {
+      background: var(--surface-1);
+      padding: 48px;
+      margin: 32px 0;
+      text-align: center;
+    }
+    .arch-row {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 2px;
+    }
+    .arch-box {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      min-width: 160px;
+      text-align: center;
+    }
+    .arch-box-primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+    .arch-box-dark {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink);
+      border-color: var(--inverse-canvas);
+    }
+    .arch-connector {
+      width: 2px;
+      height: 24px;
+      background: var(--hairline);
+      margin: 0 auto;
+    }
+    .arch-connector-h {
+      height: 2px;
+      background: var(--hairline);
+      flex-grow: 1;
+      align-self: center;
+    }
+
+    /* ── Comparison cards ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin: 32px 0;
+    }
+    .compare-card {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      padding: 32px;
+      position: relative;
+    }
+    .compare-card.recommended {
+      border: 2px solid var(--primary);
+    }
+    .compare-card .badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--primary);
+      color: var(--on-primary);
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      padding: 4px 12px;
+      font-weight: 600;
+    }
+    .compare-card h4 {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.40;
+      margin-bottom: 8px;
+    }
+    .compare-card .compare-subtitle {
+      font-size: 12px;
+      color: var(--ink-subtle);
+      letter-spacing: 0.32px;
+      margin-bottom: 24px;
+    }
+    .compare-card .compare-price {
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .compare-card .compare-price-unit {
+      font-size: 12px;
+      color: var(--ink-subtle);
+      margin-bottom: 24px;
+    }
+    .compare-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .compare-card li {
+      font-size: 14px;
+      line-height: 1.29;
+      color: var(--ink-muted);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--hairline);
+      padding-left: 20px;
+      position: relative;
+    }
+    .compare-card li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 8px;
+      height: 8px;
+      border-radius: 0;
+      background: var(--primary);
+    }
+    .compare-card li.con::before {
+      background: var(--semantic-error);
+    }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 64px 32px;
+    }
+    .cta-banner .cta-inner {
+      max-width: 1584px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .cta-banner h2 {
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--on-primary);
+    }
+    .cta-banner p {
+      font-size: 16px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 8px;
+      max-width: 600px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.29;
+      letter-spacing: 0.16px;
+      padding: 12px 16px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-primary { background: var(--primary); color: var(--on-primary); }
+    .btn-primary:hover { background: var(--blue-hover); }
+    .btn-secondary { background: var(--ink); color: var(--inverse-ink); }
+    .btn-tertiary { background: var(--canvas); color: var(--primary); border: 1px solid var(--primary); }
+    .btn-ghost { background: transparent; color: var(--primary); }
+    .btn-ghost-white { background: transparent; color: var(--on-primary); border: 1px solid var(--on-primary); }
+    .btn-ghost-white:hover { background: rgba(255,255,255,0.1); }
+    .btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ── Chevron icon ── */
+    .chevron::after {
+      content: ' \2192';
+    }
+
+    /* ── Timeline ── */
+    .timeline {
+      margin: 32px 0;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--hairline);
+    }
+    .timeline-item {
+      padding-left: 48px;
+      padding-bottom: 48px;
+      position: relative;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: 8px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+    }
+    .timeline-item .timeline-label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .timeline-item h4 {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.40;
+      margin-bottom: 12px;
+    }
+    .timeline-item ul {
+      list-style: none;
+      padding: 0;
+    }
+    .timeline-item li {
+      font-size: 14px;
+      line-height: 1.29;
+      color: var(--ink-muted);
+      padding: 6px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+    .timeline-item li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 6px;
+      height: 1px;
+      background: var(--ink-subtle);
+    }
+
+    /* ── Risk table ── */
+    .risk-high { color: var(--semantic-error); font-weight: 600; }
+    .risk-medium { color: var(--semantic-warning); font-weight: 600; }
+    .risk-low { color: var(--semantic-success); font-weight: 600; }
+
+    /* ── Questions ── */
+    .question-list {
+      margin: 32px 0;
+      counter-reset: question;
+    }
+    .question-item {
+      border-bottom: 1px solid var(--hairline);
+      padding: 24px 0;
+      display: flex;
+      gap: 24px;
+    }
+    .question-item .q-number {
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--primary);
+      min-width: 48px;
+    }
+    .question-item .q-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .question-item .q-detail {
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--inverse-canvas);
+      color: var(--inverse-ink-muted);
+      padding: 64px 32px;
+    }
+    .footer-inner {
+      max-width: 1584px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 48px;
+    }
+    .footer .footer-brand {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--inverse-ink);
+      margin-bottom: 12px;
+    }
+    .footer .footer-brand span { color: var(--primary); }
+    .footer p {
+      font-size: 14px;
+      line-height: 1.29;
+      color: var(--inverse-ink-muted);
+      max-width: 400px;
+    }
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--inverse-ink);
+      margin-bottom: 16px;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: var(--inverse-ink-muted);
+      text-decoration: none;
+      padding: 4px 0;
+    }
+    .footer-col a:hover { color: var(--inverse-ink); }
+    .footer-bottom {
+      max-width: 1584px;
+      margin: 0 auto;
+      padding-top: 32px;
+      margin-top: 48px;
+      border-top: 1px solid var(--inverse-surface-1);
+      font-size: 12px;
+      color: var(--inverse-ink-muted);
+      letter-spacing: 0.32px;
+    }
+
+    /* ── Recommendation callout ── */
+    .callout {
+      border-left: 4px solid var(--primary);
+      padding: 24px 32px;
+      background: var(--surface-1);
+      margin: 32px 0;
+    }
+    .callout h4 {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .callout p {
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    /* ── Numbered list ── */
+    .numbered-reasons {
+      margin: 24px 0;
+      counter-reset: reason;
+    }
+    .reason-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .reason-item .reason-num {
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--primary);
+      min-width: 32px;
+    }
+    .reason-item .reason-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .reason-item .reason-body {
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 32px;
+      margin-top: 32px;
+    }
+    .tab {
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: 'IBM Plex Sans', sans-serif;
+      letter-spacing: 0.16px;
+    }
+    .tab.active {
+      color: var(--ink);
+      font-weight: 600;
+      border-bottom-color: var(--primary);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1056px) {
+      .card-grid, .compare-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero h1 { font-size: 42px; }
+    }
+    @media (max-width: 672px) {
+      .card-grid, .compare-grid, .stat-grid { grid-template-columns: 1fr; }
+      .hero { padding: 48px 16px 32px; }
+      .hero h1 { font-size: 32px; font-weight: 300; }
+      .section, .section-alt .section { padding: 48px 16px; }
+      .section h2 { font-size: 32px; }
+      .top-nav nav { display: none; }
+      .utility-bar { display: none; }
+      .cta-banner .cta-inner { flex-direction: column; }
+      .footer-inner { flex-direction: column; }
+      .hero-meta { gap: 24px; }
+      .arch-row { flex-direction: column; align-items: center; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      .top-nav, .utility-bar { position: static; }
+      .section, .section-alt .section { padding: 32px 0; }
+      .hero { padding: 32px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Utility Bar -->
+  <div class="utility-bar">
+    <span>Genysic Data Center & GPU H200</span>
+    <span>Tài liệu tham vấn v1.0</span>
+    <span>Ngày: 02/07/2026</span>
+  </div>
+
+  <!-- Top Nav -->
+  <header class="top-nav">
+    <a class="logo" href="#">Geny<span>sic</span></a>
+    <nav>
+      <a href="#overview" class="active">Tổng quan</a>
+      <a href="#infra">Hạ tầng</a>
+      <a href="#gpu">GPU & AI</a>
+      <a href="#security">Bảo mật</a>
+      <a href="#benchmark">Kiểm thử</a>
+      <a href="#ops">Vận hành</a>
+      <a href="#cost">Chi phí</a>
+      <a href="#roadmap">Lộ trình</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="overview">
+    <div class="eyebrow">Tài liệu tham vấn hạ tầng công nghệ</div>
+    <h1>Nền tảng số tích hợp AI hỗ trợ ôn thi năng lực hành nghề bác sĩ</h1>
+    <p class="lead">Đề xuất giải pháp trọn gói GPU NVIDIA H200 tại Genysic Data Center cho dự án xây dựng nền tảng ôn thi Y học dự phòng, phối hợp với Trung tâm Thông tin Y tế Quốc gia, Bộ Y tế.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="label">Thời gian dự án</div>
+        <div class="value">24 tháng</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="label">Dự kiến</div>
+        <div class="value">01/2027 – 12/2028</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="label">Quy mô thí điểm</div>
+        <div class="value">50–100 CCU</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="label">Ngân sách hạ tầng/năm</div>
+        <div class="value">~350 triệu VND</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="section-alt">
+    <div class="section" style="padding-top: 48px; padding-bottom: 48px;">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-value">H200</div>
+          <div class="stat-label">NVIDIA GPU — 141 GB HBM3e</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">4.8 TB/s</div>
+          <div class="stat-label">Memory Bandwidth</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">30tr</div>
+          <div class="stat-label">VND/tháng — gói trọn bộ</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">All-in</div>
+          <div class="stat-label">Server, bảo mật, monitoring, bandwidth</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1: Genysic + Workload -->
+  <div class="section" id="workload">
+    <div class="section-number">01</div>
+    <h2>Năng lực Genysic & Workload</h2>
+    <p>Genysic cung cấp <strong>hệ sinh thái hạ tầng toàn diện</strong> — Data Center, GPU H200, quản lý server, bảo mật, băng thông — tất cả tích hợp sẵn. Khách hàng chỉ cần focus phát triển ứng dụng.</p>
+
+    <div class="card-grid" style="margin-bottom: 48px;">
+      <div class="card card-elevated">
+        <div class="card-label">Genysic</div>
+        <div class="card-title">Data Center</div>
+        <div class="card-body">Trung tâm dữ liệu đạt chuẩn tại Việt Nam. Đảm bảo data residency cho dữ liệu y tế nhạy cảm.</div>
+        <div class="card-footer">Tại Việt Nam</div>
+      </div>
+      <div class="card card-elevated">
+        <div class="card-label">Genysic</div>
+        <div class="card-title">Managed Platform</div>
+        <div class="card-body">Nền tảng quản lý server, monitoring, backup, security — provisioning tự động, dashboard real-time.</div>
+        <div class="card-footer">Tích hợp sẵn</div>
+      </div>
+      <div class="card card-elevated">
+        <div class="card-label">Genysic</div>
+        <div class="card-title">Network & Security</div>
+        <div class="card-body">Firewall, WAF, DDoS, VPN, SSL, audit log, băng thông dedicated — toàn bộ có sẵn.</div>
+        <div class="card-footer">Tích hợp sẵn</div>
+      </div>
+    </div>
+
+    <h3>3 nhóm workload</h3>
+    <p>Workload AI inference mang tính <strong>burst</strong>. Với <strong>H200 141GB VRAM</strong>, Genysic đảm bảo đủ năng lực chạy model 70B+ trên single GPU.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-label">Workload A</div>
+        <div class="card-title">Web / API</div>
+        <div class="card-body">Quản lý user, học liệu, thi thử, dashboard. Tính chất CPU-bound, I/O-bound.</div>
+        <div class="card-footer">8 vCPU, 32 GB RAM</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Workload B</div>
+        <div class="card-title">Database</div>
+        <div class="card-body">RDBMS + Vector DB (RAG/GraphRAG). Tính chất Memory-intensive, I/O-bound.</div>
+        <div class="card-footer">Bao gồm trong gói</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Workload C</div>
+        <div class="card-title">AI Inference</div>
+        <div class="card-body">LLM inference cho ôn luyện, sinh câu hỏi, phân tích. GPU-bound, burst workload.</div>
+        <div class="card-footer">1x NVIDIA H200 141GB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Architecture -->
+  <div class="section-alt" id="infra">
+    <div class="section">
+      <div class="section-number">02</div>
+      <h2>Kiến trúc hạ tầng đề xuất</h2>
+      <p>Kiến trúc phân tầng, containerized, sẵn sàng scale horizontal khi mở rộng quy mô.</p>
+
+      <div class="arch-diagram">
+        <div class="arch-row">
+          <div class="arch-box" style="min-width: 360px;">Load Balancer (Nginx / HAProxy)</div>
+        </div>
+        <div class="arch-connector"></div>
+        <div class="arch-row" style="gap: 2px;">
+          <div class="arch-box">App Server (Primary)</div>
+          <div class="arch-box" style="opacity: 0.6;">App Server (Standby)</div>
+        </div>
+        <div class="arch-connector"></div>
+        <div class="arch-row" style="gap: 2px;">
+          <div class="arch-box">PostgreSQL</div>
+          <div class="arch-box">Vector DB (pgvector / Qdrant)</div>
+          <div class="arch-box">Object Storage (MinIO)</div>
+        </div>
+        <div class="arch-connector"></div>
+        <div class="arch-row">
+          <div class="arch-box arch-box-primary">NVIDIA H200 141GB — AI Inference</div>
+        </div>
+      </div>
+
+      <h3>Chi tiết cấu hình</h3>
+      <table>
+        <thead>
+          <tr><th>Thành phần</th><th>Thí điểm (50-100 CCU)</th><th>Mở rộng (500+ CCU)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>App Server</strong></td><td>8 vCPU, 16 GB RAM, 100 GB SSD</td><td>16–32 vCPU, 32–64 GB (2 nodes)</td></tr>
+          <tr><td><strong>PostgreSQL</strong></td><td>4 vCPU, 16 GB RAM, 200 GB NVMe</td><td>8–16 vCPU, 32–64 GB, WAL streaming</td></tr>
+          <tr><td><strong>Vector DB</strong></td><td>pgvector (tích hợp PostgreSQL)</td><td>Qdrant: 8 vCPU, 32 GB RAM</td></tr>
+          <tr><td><strong>Object Storage</strong></td><td>500 GB (MinIO)</td><td>2–5 TB (MinIO cluster)</td></tr>
+          <tr><td><strong>GPU Server</strong></td><td>1x H200 141GB, 32 vCPU, 128 GB RAM</td><td>2x H200 (cụm H200)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 3: GPU H200 -->
+  <div class="section" id="gpu">
+    <div class="section-number">03</div>
+    <h2>NVIDIA H200 — AI Inference</h2>
+    <p>Genysic cung cấp <strong>NVIDIA H200</strong> — GPU thế hệ mới nhất dòng Hopper, thiết kế đặc biệt cho AI inference. Với <strong>141 GB HBM3e</strong>, 1 GPU H200 thay thế 2–3 GPU A100.</p>
+
+    <h3>Thông số H200 vs A100</h3>
+    <table>
+      <thead>
+        <tr><th>Thông số</th><th>NVIDIA H200</th><th>A100 (tham khảo)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>VRAM</strong></td><td><strong style="color: var(--primary);">141 GB HBM3e</strong></td><td>40/80 GB HBM2e</td></tr>
+        <tr><td><strong>Bandwidth</strong></td><td><strong style="color: var(--primary);">4.8 TB/s</strong></td><td>2.0 TB/s</td></tr>
+        <tr><td><strong>FP8 Performance</strong></td><td><strong style="color: var(--primary);">1.979 PFLOPS</strong></td><td>Không hỗ trợ</td></tr>
+        <tr><td><strong>FP16 Performance</strong></td><td><strong style="color: var(--primary);">989 TFLOPS</strong></td><td>312 TFLOPS</td></tr>
+        <tr><td><strong>Kiến trúc</strong></td><td>Hopper (nâng cấp)</td><td>Ampere</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Workload AI trên H200</h3>
+    <table>
+      <thead>
+        <tr><th>Tác vụ AI</th><th>Tần suất</th><th>Hiệu năng trên H200</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>RAG retrieval + generation</strong></td><td>Cao</td><td>Model 70B, latency &lt; 2s</td></tr>
+        <tr><td><strong>Phân tích lỗi sai</strong></td><td>Trung bình</td><td>Batch processing song song nhiều user</td></tr>
+        <tr><td><strong>Sinh câu hỏi dự thảo</strong></td><td>Thấp (batch)</td><td>Long-context generation mượt mà</td></tr>
+        <tr><td><strong>Embedding generation</strong></td><td>Thấp (batch)</td><td>Hàng nghìn documents/phút</td></tr>
+        <tr><td><strong>GraphRAG indexing</strong></td><td>Rất thấp</td><td>141GB VRAM load graph lớn</td></tr>
+      </tbody>
+    </table>
+
+    <h3>So sánh phương án</h3>
+    <div class="compare-grid" style="grid-template-columns: 2fr 1fr;">
+      <div class="compare-card recommended">
+        <div class="badge">Khuyến nghị</div>
+        <h4>Genysic H200 All-in-One</h4>
+        <div class="compare-subtitle">GPU H200 + trọn gói managed services</div>
+        <div class="compare-price">30tr</div>
+        <div class="compare-price-unit">VND / tháng — trọn gói</div>
+        <ul>
+          <li>1x NVIDIA H200 141GB HBM3e</li>
+          <li>32 vCPU, 128 GB RAM, 1 TB NVMe</li>
+          <li>Chạy model 70B+ trên single GPU</li>
+          <li>Inference nhanh gấp 2x so với A100</li>
+          <li>Data tại Genysic Data Center Việt Nam</li>
+          <li>Server management tích hợp sẵn</li>
+          <li>Monitoring & alerting tích hợp sẵn</li>
+          <li>Bảo mật toàn diện tích hợp sẵn</li>
+          <li>Bandwidth dedicated tích hợp sẵn</li>
+          <li>Backup & DR tích hợp sẵn</li>
+          <li>App + DB Server bao gồm</li>
+          <li>Object Storage 500GB bao gồm</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h4>API AI thương mại</h4>
+        <div class="compare-subtitle">OpenAI, Anthropic, Google</div>
+        <div class="compare-price">5-30tr</div>
+        <div class="compare-price-unit">VND / tháng (tùy volume)</div>
+        <ul>
+          <li>Triển khai nhanh</li>
+          <li>Model chất lượng cao</li>
+          <li class="con">Data ra ngoài Việt Nam</li>
+          <li class="con">Chi phí khó dự đoán</li>
+          <li class="con">Phụ thuộc bên thứ 3</li>
+          <li class="con">Rủi ro pháp lý y tế</li>
+          <li class="con">Không kiểm soát model</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>Khuyến nghị: H200 Dedicated + API bổ trợ khi cần</h4>
+      <p>H200 tại Genysic Data Center làm nền tảng chính. API thương mại chỉ bổ trợ cho tác vụ không nhạy cảm khi cần burst capacity. Một gói, một hóa đơn, không chi phí ẩn.</p>
+    </div>
+
+    <div class="numbered-reasons">
+      <div class="reason-item">
+        <div class="reason-num">01</div>
+        <div>
+          <div class="reason-title">Data residency & bảo mật y tế</div>
+          <div class="reason-body">Toàn bộ xử lý AI diễn ra tại Genysic Data Center Việt Nam. Dữ liệu không rời khỏi lãnh thổ — phù hợp Nghị định 13/2023/NĐ-CP.</div>
+        </div>
+      </div>
+      <div class="reason-item">
+        <div class="reason-num">02</div>
+        <div>
+          <div class="reason-title">Một GPU, toàn bộ năng lực</div>
+          <div class="reason-body">H200 với 141GB VRAM chạy model 70B+ (Llama 3.1, Qwen 2.5 72B, Mistral Large) trên single GPU — không cần multi-GPU phức tạp.</div>
+        </div>
+      </div>
+      <div class="reason-item">
+        <div class="reason-num">03</div>
+        <div>
+          <div class="reason-title">Trọn gói Genysic</div>
+          <div class="reason-body">Server, bảo mật, monitoring, bandwidth, backup — tất cả tích hợp sẵn. Bên đặt hàng chỉ cần focus phát triển ứng dụng.</div>
+        </div>
+      </div>
+      <div class="reason-item">
+        <div class="reason-num">04</div>
+        <div>
+          <div class="reason-title">Model-agnostic & Guardrails</div>
+          <div class="reason-body">Tự do chạy bất kỳ model mã nguồn mở nào. Kiểm soát toàn bộ pipeline inference — dễ triển khai human-in-the-loop và guardrails.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Security -->
+  <div class="section-alt" id="security">
+    <div class="section">
+      <div class="section-number">04</div>
+      <h2>Bảo mật — Genysic Security Platform</h2>
+      <p>Toàn bộ giải pháp bảo mật đã <strong>tích hợp sẵn</strong> trong hạ tầng Genysic — không phát sinh chi phí riêng. Ba lớp: Network, Data, và AI Security.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Genysic — Lớp 1</div>
+          <div class="card-title">Network Security</div>
+          <div class="card-body">
+            <strong>Firewall:</strong> Genysic multi-layer<br>
+            <strong>WAF:</strong> Genysic WAF<br>
+            <strong>SSL/TLS:</strong> Managed SSL, TLS 1.2+<br>
+            <strong>VPN:</strong> Genysic VPN<br>
+            <strong>DDoS:</strong> Genysic Protection L3/4/7
+          </div>
+          <div class="card-footer">Tích hợp sẵn</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Genysic — Lớp 2</div>
+          <div class="card-title">Data Security</div>
+          <div class="card-body">
+            <strong>At-rest:</strong> Disk encryption + TDE<br>
+            <strong>In-transit:</strong> TLS 1.2+<br>
+            <strong>Phân quyền:</strong> RBAC<br>
+            <strong>Audit log:</strong> Mọi thao tác admin<br>
+            <strong>Tuân thủ:</strong> NĐ 13/2023/NĐ-CP
+          </div>
+          <div class="card-footer">Tích hợp sẵn</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Lớp 3</div>
+          <div class="card-title">AI Security</div>
+          <div class="card-body">
+            <strong>Prompt injection:</strong> Input sanitization<br>
+            <strong>Output filtering:</strong> Scope học liệu<br>
+            <strong>Source tracing:</strong> Trích dẫn nguồn<br>
+            <strong>Versioning:</strong> Rollback model<br>
+            <strong>Kill switch:</strong> Tạm dừng khi anomaly
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Benchmark -->
+  <div class="section" id="benchmark">
+    <div class="section-number">05</div>
+    <h2>Tiêu chí kiểm thử tải</h2>
+
+    <h3>Benchmark mục tiêu</h3>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Thí điểm (50-100 CCU)</th><th>Mở rộng (500+ CCU)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>API response time (P95)</strong></td><td>&lt; 500ms</td><td>&lt; 500ms</td></tr>
+        <tr><td><strong>AI inference latency (P95)</strong></td><td>&lt; 5s (RAG query)</td><td>&lt; 5s</td></tr>
+        <tr><td><strong>Thi thử: nộp bài + chấm</strong></td><td>&lt; 3s</td><td>&lt; 3s</td></tr>
+        <tr><td><strong>Page load (FCP)</strong></td><td>&lt; 2s</td><td>&lt; 2s</td></tr>
+        <tr><td><strong>Concurrent users</strong></td><td>100</td><td>500</td></tr>
+        <tr><td><strong>Throughput</strong></td><td>200 req/s</td><td>1000 req/s</td></tr>
+        <tr><td><strong>Error rate</strong></td><td>&lt; 0.1%</td><td>&lt; 0.1%</td></tr>
+        <tr><td><strong>Uptime</strong></td><td>99.5%</td><td>99.9%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Kịch bản kiểm thử</h3>
+    <div class="card-grid" style="grid-template-columns: repeat(5, 1fr);">
+      <div class="card">
+        <div class="card-label">Bước 1</div>
+        <div class="card-title" style="font-size: 20px;">Baseline</div>
+        <div class="card-body">10 CCU, tất cả tác vụ, đo latency baseline</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Bước 2</div>
+        <div class="card-title" style="font-size: 20px;">Normal</div>
+        <div class="card-body">50 CCU, hỗn hợp (70% học, 20% thi, 10% AI)</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Bước 3</div>
+        <div class="card-title" style="font-size: 20px;">Peak</div>
+        <div class="card-body">100 CCU, tập trung thi thử + AI interaction</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Bước 4</div>
+        <div class="card-title" style="font-size: 20px;">Stress</div>
+        <div class="card-body">Tăng dần 200 CCU, tìm điểm gãy hệ thống</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Bước 5</div>
+        <div class="card-title" style="font-size: 20px;">Endurance</div>
+        <div class="card-body">50 CCU liên tục 4h, kiểm tra memory leak</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: Ops -->
+  <div class="section-alt" id="ops">
+    <div class="section">
+      <div class="section-number">06</div>
+      <h2>Giám sát & Vận hành</h2>
+      <p>Toàn bộ monitoring và quản trị đã <strong>bao gồm trong gói thuê H200</strong> — không phát sinh chi phí riêng.</p>
+
+      <h3>Genysic Monitoring Platform (tích hợp sẵn)</h3>
+      <table>
+        <thead>
+          <tr><th>Thành phần</th><th>Công cụ</th><th>Metric</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Infrastructure</strong></td><td>Genysic Monitoring</td><td>CPU, RAM, disk, network</td></tr>
+          <tr><td><strong>Application</strong></td><td>Genysic Log Platform</td><td>Error rate, response time</td></tr>
+          <tr><td><strong>Database</strong></td><td>pg_stat + exporter</td><td>Query time, connections</td></tr>
+          <tr><td><strong>GPU H200</strong></td><td>NVIDIA DCGM Exporter</td><td>GPU util%, VRAM 141GB, temp</td></tr>
+          <tr><td><strong>Uptime</strong></td><td>Genysic Uptime Monitor</td><td>HTTP health, SSL expiry</td></tr>
+          <tr><td><strong>Alerting</strong></td><td>Genysic Alerting</td><td>Telegram / Email alerts</td></tr>
+        </tbody>
+      </table>
+
+      <h3>SLA vận hành</h3>
+      <table>
+        <thead>
+          <tr><th>Hạng mục</th><th>SLA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Incident response (critical)</strong></td><td>&lt; 30 phút</td></tr>
+          <tr><td><strong>Incident response (normal)</strong></td><td>&lt; 4 giờ</td></tr>
+          <tr><td><strong>Planned maintenance</strong></td><td>Chủ nhật 2:00–6:00 AM</td></tr>
+          <tr><td><strong>Backup verification</strong></td><td>Hàng tuần (restore test)</td></tr>
+          <tr><td><strong>Security patching</strong></td><td>Trong 72 giờ (critical CVE)</td></tr>
+          <tr><td><strong>Báo cáo vận hành</strong></td><td>Hàng tháng</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Dịch vụ bao gồm trong gói H200</h3>
+      <div class="card-grid">
+        <div class="card card-elevated">
+          <div class="card-label">Bao gồm</div>
+          <div class="card-title">Server Management</div>
+          <div class="card-body">Provisioning, OS, GPU driver, security patching — tất cả do Genysic quản trị.</div>
+          <div class="card-footer">Tích hợp sẵn</div>
+        </div>
+        <div class="card card-elevated">
+          <div class="card-label">Bao gồm</div>
+          <div class="card-title">Monitoring & Backup</div>
+          <div class="card-body">Dashboard real-time, alerting, daily backup, restore test hàng tuần.</div>
+          <div class="card-footer">Tích hợp sẵn</div>
+        </div>
+        <div class="card card-elevated">
+          <div class="card-label">Bao gồm</div>
+          <div class="card-title">Security & Network</div>
+          <div class="card-body">Firewall, WAF, DDoS, VPN, SSL, audit log, bandwidth dedicated.</div>
+          <div class="card-footer">Tích hợp sẵn</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: Cost -->
+  <div class="section" id="cost">
+    <div class="section-number">07</div>
+    <h2>Ước tính chi phí</h2>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" onclick="switchTab(event, 'tab-pilot')" role="tab">Thí điểm (50–100 CCU)</button>
+      <button class="tab" onclick="switchTab(event, 'tab-scale')" role="tab">Mở rộng (500+ CCU)</button>
+    </div>
+
+    <div id="tab-pilot" class="tab-content active">
+      <table>
+        <thead>
+          <tr><th>Hạng mục</th><th>Chi phí/tháng</th><th>Chi phí/năm</th><th>Ghi chú</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color: var(--primary);">Gói Genysic H200 All-in-One</strong></td>
+            <td><strong style="color: var(--primary);">30.000.000</strong></td>
+            <td><strong style="color: var(--primary);">360.000.000</strong></td>
+            <td>Trọn gói</td>
+          </tr>
+          <tr><td>├─ GPU Server (1x H200 141GB)</td><td colspan="2">32 vCPU, 128 GB RAM, 1 TB NVMe</td><td>Bao gồm</td></tr>
+          <tr><td>├─ App + DB Server</td><td colspan="2">8 vCPU, 32 GB RAM, 500 GB NVMe</td><td>Bao gồm</td></tr>
+          <tr><td>├─ Object Storage 500GB</td><td colspan="2">S3-compatible</td><td>Bao gồm</td></tr>
+          <tr><td>├─ Backup daily</td><td colspan="2">Auto snapshot + restore test</td><td>Bao gồm</td></tr>
+          <tr><td>├─ Bảo mật toàn diện</td><td colspan="2">Firewall, WAF, DDoS, VPN, SSL</td><td>Bao gồm</td></tr>
+          <tr><td>├─ Monitoring & Alerting</td><td colspan="2">Dashboard, GPU/CPU/RAM, alerts</td><td>Bao gồm</td></tr>
+          <tr><td>├─ Bandwidth dedicated</td><td colspan="2">High-speed, redundant</td><td>Bao gồm</td></tr>
+          <tr><td>└─ Quản trị vận hành</td><td colspan="2">24/7 support, monthly report</td><td>Bao gồm</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <h4>30 triệu/tháng = 360 triệu/năm — Một hóa đơn, không chi phí ẩn</h4>
+        <p>Phù hợp ngân sách ~350 triệu/năm trong đề cương. Chênh lệch nhỏ, bù lại bằng việc toàn bộ bảo mật, monitoring, bandwidth đã bao gồm.</p>
+      </div>
+    </div>
+
+    <div id="tab-scale" class="tab-content">
+      <table>
+        <thead>
+          <tr><th>Hạng mục</th><th>Chi phí/tháng</th><th>Chi phí/năm</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>GPU (2x H200 hoặc cụm H200)</strong></td><td>55.000.000</td><td>660.000.000</td></tr>
+          <tr><td>App Server cluster (2 nodes)</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
+          <tr><td>DB Server (primary + replica)</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
+          <tr><td>Vector DB dedicated (Qdrant)</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
+          <tr><td>Object Storage 2TB</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
+          <tr><td>Toàn bộ managed services</td><td colspan="2" style="text-align: center;">Bao gồm</td></tr>
+          <tr>
+            <td><strong style="color: var(--ink);">Tổng</strong></td>
+            <td><strong style="color: var(--primary);">~55.000.000</strong></td>
+            <td><strong style="color: var(--primary);">~660.000.000</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 8: Roadmap -->
+  <div class="section-alt" id="roadmap">
+    <div class="section">
+      <div class="section-number">08</div>
+      <h2>Lộ trình triển khai</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">Phase 0</div>
+          <h4>Chuẩn bị (Tháng 1–2, trước khi dự án bắt đầu)</h4>
+          <ul>
+            <li>Xác nhận cấu hình và ký hợp đồng thuê hạ tầng</li>
+            <li>Provision server, cài đặt OS, network, firewall</li>
+            <li>Setup monitoring stack, backup policy</li>
+            <li>Bàn giao môi trường cho đội dev</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">Phase 1</div>
+          <h4>Thí điểm (01–12/2027)</h4>
+          <ul>
+            <li>Vận hành hạ tầng theo cấu hình thí điểm</li>
+            <li>Hỗ trợ đội dev deploy ứng dụng</li>
+            <li>Kiểm thử tải lần 1 (baseline + normal load)</li>
+            <li>Kiểm thử bảo mật cơ bản</li>
+            <li>Báo cáo vận hành hàng tháng</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">Phase 2</div>
+          <h4>Đánh giá & Mở rộng (01–12/2028)</h4>
+          <ul>
+            <li>Đánh giá hiệu năng sau 12 tháng</li>
+            <li>Đề xuất nâng cấp nếu cần (thêm GPU, tách vector DB)</li>
+            <li>Kiểm thử tải lần 2 (stress test, endurance)</li>
+            <li>Kiểm thử bảo mật nâng cao</li>
+            <li>Bàn giao tài liệu vận hành cho đơn vị tiếp nhận</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 9: Risks -->
+  <div class="section" id="risks">
+    <div class="section-number">09</div>
+    <h2>Rủi ro & Khuyến nghị</h2>
+
+    <table>
+      <thead>
+        <tr><th>Rủi ro</th><th>Mức độ</th><th>Khuyến nghị</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Model mã nguồn mở không đủ chất lượng y khoa</strong></td>
+          <td><span class="risk-high">Cao</span></td>
+          <td>H200 141GB đủ chạy model 70B+ chất lượng cao; fallback API nếu cần</td>
+        </tr>
+        <tr>
+          <td><strong>Data privacy — dữ liệu y tế rò rỉ</strong></td>
+          <td><span class="risk-low">Thấp</span></td>
+          <td>Data tại Genysic Data Center VN, bảo mật toàn diện tích hợp sẵn</td>
+        </tr>
+        <tr>
+          <td><strong>Workload AI vượt dự kiến</strong></td>
+          <td><span class="risk-low">Thấp</span></td>
+          <td>H200 141GB xử lý đồng thời tốt, async queue + caching bổ trợ</td>
+        </tr>
+        <tr>
+          <td><strong>GPU downtime ảnh hưởng AI feature</strong></td>
+          <td><span class="risk-medium">Trung bình</span></td>
+          <td>Genysic SLA &lt; 30 phút response, graceful degradation ở app layer</td>
+        </tr>
+        <tr>
+          <td><strong>Ngân sách tăng khi mở rộng</strong></td>
+          <td><span class="risk-low">Thấp</span></td>
+          <td>Gói trọn bộ, scale bằng thêm H200 node</td>
+        </tr>
+        <tr>
+          <td><strong>Vendor lock-in</strong></td>
+          <td><span class="risk-low">Thấp</span></td>
+          <td>Công nghệ mở (Docker, PostgreSQL), H200 chạy mọi model chuẩn</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section 10: Questions -->
+  <div class="section-alt" id="questions">
+    <div class="section">
+      <div class="section-number">10</div>
+      <h2>Câu hỏi cần làm rõ</h2>
+      <p>Các câu hỏi sau cần được bên đặt hàng trả lời để hoàn thiện cấu hình và báo giá chính thức.</p>
+
+      <div class="question-list">
+        <div class="question-item">
+          <div class="q-number">01</div>
+          <div>
+            <div class="q-title">Model AI cụ thể</div>
+            <div class="q-detail">Đội dev đã chọn model nào cho RAG? (Llama, Qwen, Mistral?) — ảnh hưởng VRAM cần thiết.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-number">02</div>
+          <div>
+            <div class="q-title">Kích thước corpus</div>
+            <div class="q-detail">Tổng dung lượng học liệu số ước tính bao nhiêu? (số documents, số trang) — ảnh hưởng vector DB sizing.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-number">03</div>
+          <div>
+            <div class="q-title">Tần suất AI interaction</div>
+            <div class="q-detail">Trung bình mỗi user tương tác AI bao nhiêu lần/phiên? — ảnh hưởng GPU utilization.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-number">04</div>
+          <div>
+            <div class="q-title">Data residency bắt buộc?</div>
+            <div class="q-detail">Có yêu cầu pháp lý dữ liệu phải lưu trữ tại Việt Nam không? — quyết định loại bỏ option API nước ngoài.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-number">05</div>
+          <div>
+            <div class="q-title">SLA mong muốn</div>
+            <div class="q-detail">Uptime 99.5% (~44h downtime/năm) hay 99.9% (~9h/năm)? — ảnh hưởng cấu hình HA.</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-number">06</div>
+          <div>
+            <div class="q-title">Đội vận hành</div>
+            <div class="q-detail">Bên đặt hàng có đội DevOps riêng hay cần Genysic quản trị toàn diện?</div>
+          </div>
+        </div>
+        <div class="question-item">
+          <div class="q-number">07</div>
+          <div>
+            <div class="q-title">Timeline provision</div>
+            <div class="q-detail">Khi nào cần hạ tầng sẵn sàng cho đội dev bắt đầu? (trước 01/2027 bao lâu?)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Banner -->
+  <div class="cta-banner">
+    <div class="cta-inner">
+      <div>
+        <h2>Sẵn sàng triển khai hạ tầng</h2>
+        <p>Liên hệ Genysic để hoàn thiện cấu hình và báo giá chính thức cho dự án.</p>
+      </div>
+      <a href="#" class="btn btn-ghost-white">Liên hệ tư vấn<span class="chevron"></span></a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Geny<span>sic</span></div>
+        <p>Data Center & GPU H200 cho doanh nghiệp. Trọn gói server, bảo mật, monitoring, bandwidth. Tài liệu tham vấn sơ bộ — chi phí chính thức sau khi làm rõ Mục 10.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Dịch vụ</h4>
+        <a href="#">GPU H200 Dedicated</a>
+        <a href="#">Managed Server</a>
+        <a href="#">Object Storage</a>
+        <a href="#">Security Platform</a>
+      </div>
+      <div class="footer-col">
+        <h4>Tài liệu</h4>
+        <a href="#">Tham vấn hạ tầng</a>
+        <a href="#">Báo giá</a>
+        <a href="#">SLA</a>
+      </div>
+      <div class="footer-col">
+        <h4>Liên hệ</h4>
+        <a href="#">Tư vấn GPU H200</a>
+        <a href="#">Hỗ trợ kỹ thuật</a>
+        <a href="#">Data Center</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      Genysic &copy; 2026. Tài liệu tham vấn v1.0 — Ngày 02/07/2026.
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching
+    function switchTab(e, tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('.top-nav nav a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelectorAll('.top-nav nav a').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+          }
+        }
+      });
+    });
+
+    // Update active nav on scroll
+    window.addEventListener('scroll', function() {
+      const sections = ['overview','infra','gpu','security','benchmark','ops','cost','roadmap'];
+      let current = '';
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 100) current = id;
+      });
+      if (current) {
+        document.querySelectorAll('.top-nav nav a').forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
