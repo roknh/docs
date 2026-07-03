@@ -1,0 +1,4756 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catcuri LMS — Specification v4.3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f62fe;
+      --primary-light: #e8f0fe;
+      --ink: #161616;
+      --ink-muted: #525252;
+      --ink-subtle: #8d8d8d;
+      --canvas: #ffffff;
+      --surface-1: #f4f4f4;
+      --surface-2: #e0e0e0;
+      --hairline: #e0e0e0;
+      --success: #198038;
+      --warning: #f1c21b;
+      --error: #da1e28;
+      --max-width: 960px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+      background: var(--surface-1);
+    }
+
+    /* Cover page */
+    .cover {
+      background: linear-gradient(135deg, #0f62fe 0%, #0043ce 100%);
+      color: #fff;
+      padding: 80px 40px;
+      text-align: center;
+      margin-bottom: 0;
+    }
+    .cover h1 { font-size: 42px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+    .cover .subtitle { font-size: 18px; opacity: 0.85; margin-bottom: 32px; }
+    .cover .meta {
+      display: inline-flex; gap: 32px; font-size: 14px; opacity: 0.75;
+      border-top: 1px solid rgba(255,255,255,0.25); padding-top: 24px;
+    }
+    .cover .meta span { display: flex; flex-direction: column; gap: 4px; }
+    .cover .meta .label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; }
+    .cover .status { display: inline-block; background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; font-size: 13px; margin-top: 24px; }
+
+    /* Layout */
+    .layout {
+      display: flex;
+      max-width: 1280px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* Sidebar TOC */
+    .sidebar {
+      width: 280px;
+      background: var(--canvas);
+      border-right: 1px solid var(--hairline);
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .sidebar-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--ink-subtle);
+      padding: 0 20px;
+      margin-bottom: 12px;
+    }
+    .sidebar a {
+      display: block;
+      padding: 6px 20px;
+      font-size: 13px;
+      color: var(--ink-muted);
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: all 0.15s;
+    }
+    .sidebar a:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+      border-left-color: var(--primary);
+    }
+    .sidebar a.h3 { padding-left: 36px; font-size: 12px; }
+    .sidebar .toc-divider { height: 1px; background: var(--hairline); margin: 12px 20px; }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      background: var(--canvas);
+      min-width: 0;
+    }
+    .content {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 48px 48px 80px;
+    }
+
+    /* Typography */
+    h1 { font-size: 32px; font-weight: 700; margin: 48px 0 16px; color: var(--ink); letter-spacing: -0.3px; }
+    h2 {
+      font-size: 24px; font-weight: 600; margin: 56px 0 20px;
+      padding-bottom: 12px; border-bottom: 2px solid var(--primary);
+      color: var(--ink);
+    }
+    h3 { font-size: 18px; font-weight: 600; margin: 36px 0 12px; color: var(--ink); }
+    h4 { font-size: 16px; font-weight: 600; margin: 28px 0 10px; color: var(--ink-muted); }
+    h5 { font-size: 14px; font-weight: 600; margin: 20px 0 8px; color: var(--ink-muted); }
+
+    h1:first-child { display: none; } /* Hide duplicate title */
+
+    p { margin: 0 0 12px; }
+
+    strong { font-weight: 600; }
+
+    a { color: var(--primary); }
+
+    blockquote {
+      border-left: 4px solid var(--primary);
+      background: var(--primary-light);
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-style: italic;
+      color: var(--ink-muted);
+    }
+    blockquote p { margin: 0; }
+
+    hr {
+      border: none;
+      height: 1px;
+      background: var(--hairline);
+      margin: 40px 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 13px;
+    }
+    thead { background: var(--surface-1); }
+    th {
+      text-align: left;
+      font-weight: 600;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--hairline);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--ink-muted);
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--hairline);
+      vertical-align: top;
+    }
+    tr:hover td { background: #fafafa; }
+
+    /* Code */
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      background: var(--surface-1);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #c9283e;
+    }
+    pre {
+      background: #161616;
+      color: #f4f4f4;
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 16px 0 24px;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: 12px;
+    }
+
+    /* Lists */
+    ul, ol { margin: 8px 0 16px; padding-left: 24px; }
+    li { margin: 4px 0; }
+    li > ul, li > ol { margin: 4px 0 4px; }
+
+    /* Checklist */
+    li:has(> input[type="checkbox"]) { list-style: none; margin-left: -24px; }
+    input[type="checkbox"] { margin-right: 8px; accent-color: var(--primary); }
+
+    /* Strikethrough */
+    del { color: var(--ink-subtle); }
+
+    /* Print */
+    @media print {
+      .sidebar { display: none; }
+      .cover { padding: 40px; }
+      .content { padding: 24px; }
+      body { background: white; font-size: 12px; }
+      h2 { page-break-before: always; }
+      table { font-size: 11px; }
+      pre { white-space: pre-wrap; }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content { padding: 24px 16px; }
+      .cover { padding: 40px 20px; }
+      .cover h1 { font-size: 28px; }
+      .cover .meta { flex-direction: column; gap: 12px; }
+      table { font-size: 12px; }
+    }
+
+    /* Floating TOC toggle for mobile */
+    .toc-toggle {
+      display: none;
+      position: fixed; bottom: 20px; right: 20px;
+      width: 48px; height: 48px;
+      background: var(--primary); color: #fff; border: none;
+      border-radius: 50%; font-size: 20px; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 100;
+    }
+    @media (max-width: 768px) { .toc-toggle { display: block; } }
+
+    /* Back to top */
+    .back-top {
+      position: fixed; bottom: 20px; left: 20px;
+      background: var(--surface-2); border: none; padding: 8px 12px;
+      font-size: 13px; cursor: pointer; color: var(--ink-muted);
+      border-radius: 4px; opacity: 0; transition: opacity 0.3s;
+    }
+    .back-top.visible { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <h1>Catcuri LMS</h1>
+  <div class="subtitle">Specification Document</div>
+  <div class="meta">
+    <span><span class="label">Version</span> 4.3</span>
+    <span><span class="label">Ngày</span> 03/07/2026</span>
+    <span><span class="label">BA</span> AI Agent</span>
+  </div>
+  <div class="status">🟡 Chờ khách hàng xác nhận</div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar TOC -->
+  <aside class="sidebar" id="toc">
+    <div class="sidebar-title">Mục lục</div>
+    <a href="#1-tổng-quan">1. Tổng quan</a>
+    <a href="#2-yêu-cầu-chức-năng" class="h3">2. Yêu cầu chức năng</a>
+    <a href="#3-yêu-cầu-phi-chức-năng" class="h3">3. Yêu cầu phi chức năng</a>
+    <a href="#4-giao-diện--ux" class="h3">4. Giao diện & UX</a>
+    <a href="#5-dữ-liệu" class="h3">5. Dữ liệu</a>
+    <a href="#6-tích-hợp" class="h3">6. Tích hợp</a>
+    <a href="#7-platform" class="h3">7. Platform</a>
+    <a href="#8-multi-tenant--data-isolation" class="h3">8. Multi-tenant</a>
+    <a href="#9-api-design" class="h3">9. API Design</a>
+    <div class="toc-divider"></div>
+    <a href="#22-danh-sách-tính-năng">Danh sách tính năng</a>
+    <a href="#f1--đăng-nhập--đổi-mật-khẩu" class="h3">F1 — Đăng nhập</a>
+    <a href="#f2--đăng-ký-tài-khoản-otp-email" class="h3">F2 — Đăng ký</a>
+    <a href="#f3--quản-lý-khoá-học" class="h3">F3 — Khoá học</a>
+    <a href="#f4--thư-viện-bài-giảng-curriculum-library" class="h3">F4 — Bài giảng</a>
+    <a href="#f5--học-khoá-học" class="h3">F5 — Học khoá học</a>
+    <a href="#f6--thư-viện-bài-kiểm-tra-test-library" class="h3">F6 — Bài kiểm tra</a>
+    <a href="#f7--kỳ-thi-độc-lập" class="h3">F7 — Kỳ thi</a>
+    <a href="#f8--quản-lý-câu-hỏi" class="h3">F8 — Câu hỏi</a>
+    <a href="#f9--quản-lý-bộ-kỹ-năng--topic--tags" class="h3">F9 — Topic & Tags</a>
+    <a href="#f10--quản-lý-người-dùng" class="h3">F10 — Users</a>
+    <a href="#f11--quản-lý-tenant" class="h3">F11 — Tenant</a>
+    <a href="#f17--chứng-chỉ-hoàn-thành-cơ-bản--phase-2" class="h3">F17 — Chứng chỉ</a>
+    <a href="#f19--🤖-ai--sinh-câu-hỏi--tóm-tắt-nội-dung" class="h3">F19–F24 — AI</a>
+    <a href="#f25--tenant-tự-chủ-nội-dung--chia-sẻ-nội-dung-hệ-thống" class="h3">F25 — Shared Content</a>
+    <a href="#f26--chứng-chỉ-nâng-cao-phase-3" class="h3">F26 — Chứng chỉ v2</a>
+    <a href="#f27--huy-hiệu--thành-tích-phase-3" class="h3">F27 — Huy hiệu</a>
+    <a href="#f28--gamification-điểm-level--leaderboard-phase-4" class="h3">F28 — Gamification</a>
+    <div class="toc-divider"></div>
+    <a href="#10-changelog">10. Changelog</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <div class="content">
+<h1>Catcuri LMS — Specification</h1>
+<p><strong>Version:</strong> 4.0
+<strong>Ngày:</strong> 2026-07-02
+<strong>BA:</strong> AI Agent (Claude)
+<strong>Status:</strong> 🟡 Chờ khách confirm</p>
+<hr>
+<h2>1. Tổng quan</h2>
+<h3>1.1. Mục đích</h3>
+<p>Catcuri là <strong>nền tảng Learning Management System (LMS) dạng SaaS</strong> dành cho doanh nghiệp. Mỗi tổ chức (tenant/công ty) đăng ký sử dụng nền tảng và <strong>tự chủ toàn bộ</strong> nội dung đào tạo: tạo bài giảng, bài kiểm tra, câu hỏi, topic, khoá học, kỳ thi riêng — chỉ dành cho nhân viên của mình. Dữ liệu giữa các tenant <strong>hoàn toàn độc lập</strong>.</p>
+<p><strong>Super Admin</strong> (quản trị nền tảng) có thể tạo nội dung ở <strong>cấp hệ thống</strong> và chia sẻ cho một hoặc nhiều tenant — ví dụ: khoá học miễn phí, nội dung đào tạo chuẩn ngành. Tenant nhận nội dung được chia sẻ dưới dạng <strong>read-only</strong>, có thể <strong>clone</strong> về để tuỳ chỉnh thành bản riêng.</p>
+<p>Hệ thống dùng <strong>1 giao diện Admin Dashboard chung</strong> — menu hiển thị theo role và quyền hạn. Người dùng đăng nhập bằng email/mật khẩu, chọn tenant context để truy cập.</p>
+<h3>1.2. Đối tượng người dùng</h3>
+<table>
+<thead>
+<tr>
+<th>Vai trò</th>
+<th>Mô tả</th>
+<th>Scope</th>
+<th>Tech-savvy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Admin</strong> (Super Admin)</td>
+<td>Quản trị viên <strong>nền tảng</strong>, quản lý nội dung hệ thống, tenant, users, system config</td>
+<td>Toàn hệ thống</td>
+<td>Cao</td>
+</tr>
+<tr>
+<td><strong>Super-moderator</strong></td>
+<td>Quản lý <strong>chính</strong> của tenant, được tạo tự động khi tenant được duyệt. Toàn quyền quản lý nội dung, đào tạo, nhân sự trong tenant</td>
+<td>Tenant của mình</td>
+<td>Trung bình</td>
+</tr>
+<tr>
+<td><strong>Moderator</strong></td>
+<td>Quản lý <strong>phụ</strong> của tenant, quyền tương tự super-moderator</td>
+<td>Tenant của mình</td>
+<td>Trung bình</td>
+</tr>
+<tr>
+<td><strong>User</strong></td>
+<td>Người học — nhân viên thuộc tenant</td>
+<td>Tenant được gán</td>
+<td>Cơ bản</td>
+</tr>
+</tbody></table>
+<h3>1.3. Mục tiêu kinh doanh</h3>
+<ul>
+<li>Cung cấp <strong>nền tảng SaaS</strong> đào tạo trực tuyến cho nhiều doanh nghiệp</li>
+<li>Mỗi doanh nghiệp (tenant) <strong>tự chủ toàn bộ</strong> nội dung và chương trình đào tạo</li>
+<li>Super admin cung cấp nội dung chuẩn / khoá học miễn phí dùng chung cho các tenant</li>
+<li>Quản lý năng lực nhân sự thông qua bài kiểm tra và kỳ thi</li>
+<li>Cấp chứng chỉ hoàn thành khoá học tự động</li>
+<li>Theo dõi tiến độ học tập</li>
+</ul>
+<h3>1.4. Phạm vi</h3>
+<p><strong>In-scope:</strong></p>
+<ul>
+<li>Thư viện nội dung: Bài giảng (chương + bài học), Bài kiểm tra, Câu hỏi</li>
+<li>Quản lý khoá học (gán bài giảng + gán học viên + theo dõi tiến độ)</li>
+<li>Quản lý kỳ thi độc lập</li>
+<li>Hệ thống tenant (đăng ký, phê duyệt, phân quyền)</li>
+<li>Thông báo và email</li>
+<li>Import/Export Excel</li>
+<li>Chứng chỉ PDF tự động</li>
+<li>AI: sinh câu hỏi, tóm tắt nội dung, AI Tutor, auto-tagging, semantic search, báo cáo thông minh</li>
+</ul>
+<p><strong>Out-of-scope (hiện tại):</strong></p>
+<ul>
+<li>Mobile app</li>
+<li>Workshop/Webinar</li>
+<li><del>Gamification/Point system</del> → Đưa vào Phase 4 (F28)</li>
+<li>Đơn hàng và thanh toán (hệ thống nội bộ, không bán khoá học)</li>
+<li>Khuyến mãi và voucher</li>
+<li>Điểm danh QR</li>
+<li>Google OAuth login</li>
+<li>Banner quảng cáo</li>
+<li>Câu hỏi tương tác trong video</li>
+</ul>
+<hr>
+<h2>2. Yêu cầu chức năng</h2>
+<h3>2.1. User roles &amp; Permissions</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Quyền hạn chính</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Admin</td>
+<td>Quản lý toàn bộ nền tảng: tạo nội dung hệ thống, chia sẻ cho tenant, quản lý tenants, users, system config. Xem được nội dung của tất cả tenant.</td>
+<td>Toàn hệ thống</td>
+</tr>
+<tr>
+<td>Super-moderator</td>
+<td>Toàn quyền quản lý <strong>trong tenant</strong>: tạo/sửa/xoá bài giảng, bài kiểm tra, câu hỏi, topic, khoá học, kỳ thi. Quản lý nhân viên, phòng ban, chức danh.</td>
+<td>Tenant của mình</td>
+</tr>
+<tr>
+<td>Moderator</td>
+<td>Tương tự super-moderator (quyền phụ trong tenant)</td>
+<td>Tenant của mình</td>
+</tr>
+<tr>
+<td>User</td>
+<td>Xem/học khoá học, làm bài thi, quản lý profile, xem thông báo</td>
+<td>Tenant được gán</td>
+</tr>
+</tbody></table>
+<p><strong>Giao diện Admin Dashboard chung:</strong></p>
+<ul>
+<li>Admin, Super-moderator, Moderator đều dùng <strong>cùng 1 giao diện</strong> Admin Dashboard (<code>/dashboard</code>)</li>
+<li>Menu sidebar hiển thị/ẩn theo role và quyền CASL</li>
+<li>Dữ liệu tự động filter theo tenant context (tenant admin chỉ thấy data của tenant mình)</li>
+<li>Admin thấy toàn bộ menu + thêm: Quản lý Tenants, Users, Roles &amp; Rules, Thông báo hệ thống</li>
+</ul>
+<p><strong>Menu sidebar theo role:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Menu</th>
+<th>Admin</th>
+<th>Tenant Admin (Super-mod / Mod)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dashboard (Tổng quan)</td>
+<td>✅ Thống kê toàn hệ thống</td>
+<td>✅ Thống kê trong tenant</td>
+</tr>
+<tr>
+<td>Thư viện: Bài giảng, Bài kiểm tra, Câu hỏi, Topics</td>
+<td>✅ Nội dung hệ thống</td>
+<td>✅ Nội dung tenant (riêng + shared)</td>
+</tr>
+<tr>
+<td>Đào tạo: Khoá học, Kỳ thi</td>
+<td>✅ Toàn hệ thống</td>
+<td>✅ Trong tenant</td>
+</tr>
+<tr>
+<td>AI: Course Builder</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Quản lý: Tenants</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Quản lý: Users</td>
+<td>✅ Toàn hệ thống</td>
+<td>❌ (dùng Nhân viên)</td>
+</tr>
+<tr>
+<td>Quản lý: Nhân viên, Phòng ban, Chức danh</td>
+<td>❌ (dùng Tenant portal)</td>
+<td>✅ Trong tenant</td>
+</tr>
+<tr>
+<td>Báo cáo: Tiến độ học viên</td>
+<td>✅ Toàn hệ thống</td>
+<td>✅ Trong tenant</td>
+</tr>
+<tr>
+<td>Hệ thống: Thông báo, Roles &amp; Rules</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<p>Hệ thống phân quyền dựa trên <strong>CASL</strong> (Attribute-based access control):</p>
+<ul>
+<li>Mỗi role gắn với danh sách rule names</li>
+<li>Mỗi rule gồm: <code>actions</code> (manage/read/create/update/delete/import/export) + <code>subject</code> (collection name) + <code>conditions</code> (tuỳ chọn, hỗ trợ <code>${owner}</code> và <code>${tenant}</code> substitution)</li>
+<li>CASL conditions tự động thêm <code>tenant_id = currentTenantId</code> cho tenant admin → đảm bảo data isolation</li>
+</ul>
+<h3>2.2. Danh sách tính năng</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Feature</th>
+<th>Priority</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F1</td>
+<td>Đăng nhập / Đổi mật khẩu (email + password)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F2</td>
+<td>Đăng ký tài khoản (OTP email)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F3</td>
+<td>Quản lý khoá học (enrollment, gán học viên, tiến độ)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F4</td>
+<td>Thư viện Bài giảng (Curriculum Library)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F5</td>
+<td>Học khoá học (video player, tài liệu, ghi chú)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F6</td>
+<td>Thư viện Bài kiểm tra (Test Library)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F7</td>
+<td>Kỳ thi độc lập</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F8</td>
+<td>Quản lý câu hỏi (ngân hàng câu hỏi)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F9</td>
+<td>Quản lý bộ kỹ năng / Topic</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F10</td>
+<td>Quản lý người dùng</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F11</td>
+<td>Quản lý Tenant</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F12</td>
+<td>Mapping nhân viên — Tenant</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F13</td>
+<td>Phân quyền truy cập khoá học / kỳ thi</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F14</td>
+<td>Dashboard tiến độ học tập (học viên)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F15</td>
+<td>Quản lý tiến độ học viên (quản lý)</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F16</td>
+<td>Import/Export Excel</td>
+<td>S</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F17</td>
+<td>Chứng chỉ hoàn thành</td>
+<td>S</td>
+<td>2</td>
+</tr>
+<tr>
+<td>F18</td>
+<td>Thông báo</td>
+<td>S</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F19</td>
+<td>🤖 AI — Sinh câu hỏi &amp; tóm tắt nội dung</td>
+<td>S</td>
+<td>2</td>
+</tr>
+<tr>
+<td>F20</td>
+<td>🤖 AI — Trợ lý học tập (AI Tutor)</td>
+<td>S</td>
+<td>2</td>
+</tr>
+<tr>
+<td>F21</td>
+<td>🤖 AI — Auto-tagging &amp; tìm kiếm ngữ nghĩa</td>
+<td>S</td>
+<td>2</td>
+</tr>
+<tr>
+<td>F22</td>
+<td>🤖 AI — Báo cáo thông minh &amp; cảnh báo</td>
+<td>C</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F23</td>
+<td>🤖 AI — Kiểm tra thích ứng &amp; phân tích chất lượng</td>
+<td>C</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F24</td>
+<td>🤖 AI Course Builder — Tạo bài giảng từ mô tả</td>
+<td>S</td>
+<td>2</td>
+</tr>
+<tr>
+<td>F25</td>
+<td>Tenant tự chủ nội dung &amp; Chia sẻ nội dung hệ thống</td>
+<td>M</td>
+<td>1</td>
+</tr>
+<tr>
+<td>F26</td>
+<td>Chứng chỉ nâng cao (template, serial, verify, expiry)</td>
+<td>C</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F27</td>
+<td>Huy hiệu &amp; Thành tích (Badge &amp; Achievement)</td>
+<td>C</td>
+<td>3</td>
+</tr>
+<tr>
+<td>F28</td>
+<td>Gamification (điểm, level, leaderboard, streak)</td>
+<td>W</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<h3>2.3. Chi tiết từng tính năng</h3>
+<hr>
+<h4>F1 — Đăng nhập / Đổi mật khẩu</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người dùng</strong>, tôi muốn <strong>đăng nhập bằng email và mật khẩu</strong>, để <strong>truy cập hệ thống đào tạo</strong>.</p>
+</blockquote>
+<p><strong>Luồng xử lý:</strong></p>
+<ol>
+<li>User nhập <code>email</code> + <code>password</code></li>
+<li>Tìm user theo <code>email</code></li>
+<li>Không tìm thấy → trả lỗi <code>USER_NOT_FOUND</code></li>
+<li>Xác thực password → so sánh</li>
+<li>Kiểm tra status = ACTIVE, deleted_at = null</li>
+<li>Tạo session/token, trả về: token, role_name, rules, user info</li>
+<li>Sau khi đăng nhập, user thấy danh sách tenant mà mình thuộc về (xem F12)</li>
+</ol>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Login bằng email + password, trả token</li>
+<li><input disabled="" type="checkbox"> Password sai → báo lỗi <code>INVALID_PASSWORD</code></li>
+<li><input disabled="" type="checkbox"> User không tồn tại → báo lỗi <code>USER_NOT_FOUND</code></li>
+<li><input disabled="" type="checkbox"> User INACTIVE → báo lỗi <code>INACTIVE_USER</code></li>
+<li><input disabled="" type="checkbox"> Lần đăng nhập đầu tiên (is_changed_password = false) → bắt buộc đổi mật khẩu</li>
+<li><input disabled="" type="checkbox"> Đổi mật khẩu: nhập mật khẩu cũ + mới, password mới ≠ cũ</li>
+<li><input disabled="" type="checkbox"> Quên mật khẩu: nhập email → nhận OTP → đặt mật khẩu mới</li>
+<li><input disabled="" type="checkbox"> Admin có thể reset password user</li>
+<li><input disabled="" type="checkbox"> Logout: huỷ session/token</li>
+</ul>
+<hr>
+<h4>F2 — Đăng ký tài khoản (OTP email)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người dùng mới</strong>, tôi muốn <strong>đăng ký bằng email với xác thực OTP</strong>, để <strong>tạo tài khoản học tập</strong>.</p>
+</blockquote>
+<p><strong>Luồng:</strong></p>
+<ol>
+<li>Nhập email → gửi OTP (6 chữ số, TTL 5 phút) qua email</li>
+<li>Nhập OTP xác thực</li>
+<li>Hoàn tất đăng ký: email + password → tạo user với role <code>user</code></li>
+<li>Auto login, trả JWT token</li>
+</ol>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Email trùng → báo lỗi <code>DATA_EXIST</code></li>
+<li><input disabled="" type="checkbox"> OTP hết hạn → báo lỗi <code>OTP_EXPIRED</code></li>
+<li><input disabled="" type="checkbox"> OTP sai → báo lỗi <code>OTP_CODE_NOT_EXACTLY</code></li>
+<li><input disabled="" type="checkbox"> Hỗ trợ resend OTP</li>
+</ul>
+<hr>
+<h4>F3 — Quản lý khoá học</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/tenant admin</strong>, tôi muốn <strong>tạo khoá học, gán bài giảng và chỉ định học viên</strong>, để <strong>tổ chức đào tạo có thời hạn và theo dõi tiến độ</strong>.</p>
+</blockquote>
+<p><strong>Khái niệm:</strong>
+Khoá học là <strong>đơn vị tổ chức đào tạo</strong> — không chứa nội dung trực tiếp. Nội dung lấy từ Thư viện Bài giảng (F4). Khoá học quản lý: ai học, học khi nào, tiến độ ra sao.</p>
+<pre><code>Khoá học = Bài giảng (từ thư viện) + Học viên + Thời gian + Tiến độ
+</code></pre>
+<p><strong>Tenant scoping (F25):</strong></p>
+<ul>
+<li><code>tenant_id = null</code> → khoá học hệ thống (admin tạo, có thể chia sẻ cho nhiều tenant)</li>
+<li><code>tenant_id = X</code> → khoá học riêng của tenant X (tenant admin tạo, chỉ nhân viên tenant X thấy)</li>
+<li>Tenant admin tạo khoá học → <code>tenant_id</code> tự động gán theo tenant hiện tại</li>
+<li>Tenant admin chỉ chọn được bài giảng <strong>thuộc tenant mình</strong> hoặc <strong>được admin chia sẻ</strong></li>
+</ul>
+<p><strong>Thông tin khoá học:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>String</td>
+<td>Có</td>
+<td>Tên khoá học</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>Không</td>
+<td>Mô tả chi tiết</td>
+</tr>
+<tr>
+<td>avatar</td>
+<td>String</td>
+<td>Không</td>
+<td>Ảnh đại diện (upload)</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Enum</td>
+<td>Có</td>
+<td><code>COURSE</code> (khoá học) / <code>COMPETENCY</code> (từ điển năng lực)</td>
+</tr>
+<tr>
+<td>curriculum</td>
+<td>ObjectId</td>
+<td>Có</td>
+<td>Bài giảng từ thư viện (1 khoá = 1 bài giảng)</td>
+</tr>
+<tr>
+<td>topic</td>
+<td>ObjectId</td>
+<td>Có</td>
+<td>Thuộc bộ kỹ năng nào</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Không</td>
+<td>null = hệ thống, có giá trị = tenant cụ thể</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>Date</td>
+<td>Có</td>
+<td>Ngày bắt đầu khoá học</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>Date</td>
+<td>Có</td>
+<td>Ngày kết thúc khoá học</td>
+</tr>
+<tr>
+<td>is_certification</td>
+<td>Boolean</td>
+<td>Không</td>
+<td>Có cấp chứng chỉ không</td>
+</tr>
+<tr>
+<td>template</td>
+<td>String</td>
+<td>Không</td>
+<td>Template chứng chỉ</td>
+</tr>
+</tbody></table>
+<p><strong>Gán học viên:</strong></p>
+<ul>
+<li><strong>Admin (khoá hệ thống):</strong> gán trực tiếp user hoặc theo bộ lọc tenant + phòng ban + chức danh (cross-tenant)</li>
+<li><strong>Tenant admin (khoá tenant):</strong> gán nhân viên trong tenant mình, lọc theo phòng ban + chức danh</li>
+<li>Khi gán → hệ thống gửi thông báo cho học viên rằng khoá học đã được kích hoạt</li>
+<li>Học viên chỉ thấy khoá học mình được gán (không tự đăng ký)</li>
+</ul>
+<p><strong>Trạng thái khoá học:</strong></p>
+<ul>
+<li><code>DRAFT</code> (mặc định khi tạo) → chưa có học viên</li>
+<li><code>ACTIVE</code> → đã publish, học viên được gán có thể học</li>
+<li><code>INACTIVE</code> → tạm dừng, học viên không truy cập được</li>
+<li><code>COMPLETED</code> → đã hết hạn end_date</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> CRUD khoá học (tạo, xem, sửa, xoá)</li>
+<li><input disabled="" type="checkbox"> Chọn 1 bài giảng từ thư viện khi tạo/sửa khoá</li>
+<li><input disabled="" type="checkbox"> Bắt buộc nhập start_date và end_date</li>
+<li><input disabled="" type="checkbox"> Gán học viên: chọn user cụ thể hoặc theo bộ lọc (tenant/phòng ban/chức danh)</li>
+<li><input disabled="" type="checkbox"> Gửi thông báo cho học viên khi được gán vào khoá</li>
+<li><input disabled="" type="checkbox"> Publish / Unpublish khoá học</li>
+<li><input disabled="" type="checkbox"> Xem danh sách học viên + tiến độ + điểm kiểm tra</li>
+<li><input disabled="" type="checkbox"> Export kết quả học viên ra Excel</li>
+<li><input disabled="" type="checkbox"> Upload ảnh đại diện</li>
+<li><input disabled="" type="checkbox"> Tự động tính <code>total_resources</code> và <code>total_videos_time</code> từ bài giảng</li>
+</ul>
+<hr>
+<h4>F4 — Thư viện Bài giảng (Curriculum Library)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/tenant admin</strong>, tôi muốn <strong>tạo bài giảng trong thư viện nội dung</strong>, để <strong>tái sử dụng cho nhiều khoá học khác nhau</strong>.</p>
+</blockquote>
+<p><strong>Khái niệm:</strong>
+Bài giảng là <strong>gói nội dung học tập</strong> độc lập, được quản lý trong thư viện. Một bài giảng có thể được gán cho nhiều khoá học. Khi sửa bài giảng, tất cả khoá học đang dùng đều cập nhật ngay (live update).</p>
+<p><strong>Tenant scoping (F25):</strong></p>
+<ul>
+<li><code>tenant_id = null</code> → bài giảng hệ thống (admin tạo)</li>
+<li><code>tenant_id = X</code> → bài giảng riêng của tenant X</li>
+<li>Tenant admin chỉ thấy: bài giảng <strong>của tenant mình</strong> + bài giảng <strong>được admin chia sẻ</strong> (read-only, có thể clone)</li>
+<li>Admin thấy tất cả bài giảng hệ thống + có thể xem bài giảng của từng tenant</li>
+</ul>
+<p><strong>Cấu trúc:</strong></p>
+<pre><code>Thư viện Bài giảng (trong context tenant X)
+├── [Tenant] Bài giảng &quot;Kỹ năng giao tiếp&quot;      ← tenant X tự tạo
+│   ├── Chương 1: Giao tiếp cơ bản
+│   │   ├── Bài 1.1: Video giới thiệu (Video)
+│   │   └── → Bài kiểm tra (từ Thư viện Test tenant X)
+│   └── ...
+├── [Shared] Bài giảng &quot;An toàn lao động&quot;         ← admin chia sẻ (read-only)
+│   └── ... (không sửa được, có thể clone)
+├── [Cloned] Bài giảng &quot;An toàn lao động (tuỳ chỉnh)&quot; ← clone từ shared
+│   └── ... (sửa thoải mái)
+</code></pre>
+<p><strong>Thông tin Bài giảng:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>String</td>
+<td>Có</td>
+<td>Tên bài giảng</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>Không</td>
+<td>Mô tả nội dung</td>
+</tr>
+<tr>
+<td>topic</td>
+<td>ObjectId</td>
+<td>Có</td>
+<td>Phân loại theo bộ kỹ năng (Topic)</td>
+</tr>
+<tr>
+<td>tags</td>
+<td>[String]</td>
+<td>Không</td>
+<td>Tags tự do để phân loại, tìm kiếm (VD: &quot;onboarding&quot;, &quot;bắt buộc&quot;, &quot;2026&quot;)</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Không</td>
+<td>null = hệ thống, có giá trị = tenant cụ thể</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Enum</td>
+<td>Có</td>
+<td><code>DRAFT</code> / <code>PUBLISHED</code></td>
+</tr>
+<tr>
+<td>cloned_from</td>
+<td>ObjectId</td>
+<td>Không</td>
+<td>ID bài giảng gốc nếu được clone (traceability)</td>
+</tr>
+</tbody></table>
+<p><strong>Chapter (Chương):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>String</td>
+<td>Tên chương</td>
+</tr>
+<tr>
+<td>order</td>
+<td>Number</td>
+<td>Thứ tự sắp xếp</td>
+</tr>
+</tbody></table>
+<p><strong>Lesson (Bài học):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>String</td>
+<td>Tên bài học</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Enum</td>
+<td><code>VIDEO</code> / <code>DOCUMENT</code> / <code>LESSON</code></td>
+</tr>
+<tr>
+<td>video</td>
+<td>String</td>
+<td>URL video (upload hoặc YouTube)</td>
+</tr>
+<tr>
+<td>video_resource</td>
+<td>Enum</td>
+<td><code>UPLOAD</code> / <code>YOUTUBE</code></td>
+</tr>
+<tr>
+<td>video_time</td>
+<td>Number</td>
+<td>Thời lượng (giây)</td>
+</tr>
+<tr>
+<td>document</td>
+<td>String</td>
+<td>URL tài liệu</td>
+</tr>
+<tr>
+<td>attachments</td>
+<td>[String]</td>
+<td>Tài liệu đính kèm</td>
+</tr>
+<tr>
+<td>content</td>
+<td>String</td>
+<td>Nội dung HTML</td>
+</tr>
+<tr>
+<td>completed</td>
+<td>Enum</td>
+<td><code>AUTO</code> / <code>MANUAL</code> — cách đánh dấu hoàn thành</td>
+</tr>
+<tr>
+<td>is_allow_download</td>
+<td>Boolean</td>
+<td>Cho phép tải tài liệu</td>
+</tr>
+<tr>
+<td>order</td>
+<td>Number</td>
+<td>Thứ tự trong chương</td>
+</tr>
+</tbody></table>
+<p><strong>Gán Bài kiểm tra vào chương:</strong></p>
+<ul>
+<li>Mỗi chương có thể gán 1 hoặc nhiều bài kiểm tra từ Thư viện Bài kiểm tra (F6)</li>
+<li>Bài kiểm tra được chọn từ thư viện, không tạo trực tiếp trong bài giảng</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> CRUD bài giảng trong thư viện</li>
+<li><input disabled="" type="checkbox"> Phân loại theo topic + gắn tags</li>
+<li><input disabled="" type="checkbox"> Tìm kiếm / lọc theo tên, topic, tags</li>
+<li><input disabled="" type="checkbox"> CRUD chương trong bài giảng</li>
+<li><input disabled="" type="checkbox"> Thêm/sửa/xoá bài học (lesson) trong chương</li>
+<li><input disabled="" type="checkbox"> Gán bài kiểm tra từ Thư viện Test vào chương</li>
+<li><input disabled="" type="checkbox"> Drag-and-drop sắp xếp thứ tự chương và bài học</li>
+<li><input disabled="" type="checkbox"> Upload video / tài liệu cho lesson</li>
+<li><input disabled="" type="checkbox"> Hỗ trợ video YouTube (nhúng)</li>
+<li><input disabled="" type="checkbox"> Publish / Unpublish bài giảng</li>
+<li><input disabled="" type="checkbox"> Hiển thị danh sách khoá học đang sử dụng bài giảng này</li>
+<li><input disabled="" type="checkbox"> Sửa bài giảng → tất cả khoá học đang dùng cập nhật tức thì (live update)</li>
+<li><input disabled="" type="checkbox"> Bài giảng đang được khoá học sử dụng → cảnh báo trước khi xoá</li>
+</ul>
+<hr>
+<h4>F5 — Học khoá học</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người học</strong>, tôi muốn <strong>xem video bài giảng, đọc tài liệu và ghi chú</strong>, để <strong>hoàn thành khoá học</strong>.</p>
+</blockquote>
+<p><strong>Luồng truy cập:</strong></p>
+<ul>
+<li>Học viên được admin gán vào khoá → nhận thông báo → truy cập khoá học</li>
+<li>Nội dung bài giảng lấy từ Thư viện Bài giảng (F4) đã gán cho khoá</li>
+<li>Bài kiểm tra lấy từ Thư viện Bài kiểm tra (F6) đã gán trong bài giảng</li>
+</ul>
+<p><strong>Màn hình học:</strong></p>
+<ul>
+<li><strong>Sidebar trái</strong>: danh sách chương → bài học + bài kiểm tra với icon trạng thái</li>
+<li><strong>Nội dung chính</strong>: video player hoặc PDF viewer hoặc nội dung HTML</li>
+<li><strong>Tab ghi chú</strong>: tạo/sửa/xoá ghi chú cá nhân cho từng bài học</li>
+<li><strong>Tài liệu đính kèm</strong>: download dropdown</li>
+</ul>
+<p><strong>Tiến độ học tập:</strong></p>
+<ul>
+<li>Mỗi resource theo dõi <code>is_completed</code>, <code>completed_at</code></li>
+<li><code>progress_rate</code> = số resource hoàn thành / tổng resources × 100%</li>
+<li>Hoàn thành tất cả → hiển thị màn hình <code>CourseFinal</code></li>
+<li>Nếu khoá học có chứng chỉ → tự động gửi email với PDF chứng chỉ</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Chỉ học viên được gán mới truy cập được khoá học</li>
+<li><input disabled="" type="checkbox"> Chỉ truy cập được trong khoảng start_date → end_date</li>
+<li><input disabled="" type="checkbox"> Xem video với player hỗ trợ seek, pause, fullscreen</li>
+<li><input disabled="" type="checkbox"> Xem tài liệu PDF inline</li>
+<li><input disabled="" type="checkbox"> Ghi chú: CRUD per lesson per user</li>
+<li><input disabled="" type="checkbox"> Tải tài liệu đính kèm</li>
+<li><input disabled="" type="checkbox"> Đánh dấu bài học hoàn thành (auto hoặc manual tuỳ config)</li>
+<li><input disabled="" type="checkbox"> Theo dõi progress_rate realtime</li>
+<li><input disabled="" type="checkbox"> Tự động navigate đến resource đang dở</li>
+<li><input disabled="" type="checkbox"> Hoàn thành khoá → hiển thị màn hình chúc mừng</li>
+<li><input disabled="" type="checkbox"> Gửi chứng chỉ qua email khi hoàn thành (nếu có template)</li>
+</ul>
+<hr>
+<h4>F6 — Thư viện Bài kiểm tra (Test Library)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/tenant admin</strong>, tôi muốn <strong>tạo bài kiểm tra trong thư viện</strong>, để <strong>tái sử dụng trong nhiều bài giảng và kỳ thi</strong>.</p>
+</blockquote>
+<p><strong>Khái niệm:</strong>
+Bài kiểm tra là entity độc lập, quản lý trong thư viện. Có thể được gán vào chương của bài giảng (F4) hoặc vào kỳ thi (F7). Khi sửa bài kiểm tra → tất cả nơi đang dùng cập nhật tức thì.</p>
+<p><strong>Tenant scoping (F25):</strong> Tương tự F4 — <code>tenant_id</code> nullable, tenant admin chỉ thấy data của tenant mình + shared (read-only, cloneable).</p>
+<p><strong>Thông tin Bài kiểm tra:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>String</td>
+<td>Tên bài kiểm tra</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>Mô tả</td>
+</tr>
+<tr>
+<td>topic</td>
+<td>ObjectId</td>
+<td>Phân loại theo bộ kỹ năng (Topic)</td>
+</tr>
+<tr>
+<td>tags</td>
+<td>[String]</td>
+<td>Tags tự do để phân loại, tìm kiếm</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>null = hệ thống, có giá trị = tenant cụ thể</td>
+</tr>
+<tr>
+<td>test_time</td>
+<td>Number</td>
+<td>Thời gian làm bài (phút)</td>
+</tr>
+<tr>
+<td>completion_rate</td>
+<td>Number</td>
+<td>Ngưỡng đạt (%) — mặc định 100%</td>
+</tr>
+<tr>
+<td>num_of_retake</td>
+<td>Number</td>
+<td>Số lần làm lại</td>
+</tr>
+<tr>
+<td>num_of_random_question</td>
+<td>Number</td>
+<td>Số câu hỏi ngẫu nhiên (lấy từ pool)</td>
+</tr>
+<tr>
+<td>questions</td>
+<td>[ObjectId]</td>
+<td>Danh sách câu hỏi (từ ngân hàng F8)</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Enum</td>
+<td><code>DRAFT</code> / <code>PUBLISHED</code></td>
+</tr>
+<tr>
+<td>cloned_from</td>
+<td>ObjectId</td>
+<td>ID gốc nếu được clone</td>
+</tr>
+</tbody></table>
+<p><strong>Luồng làm bài (phía học viên):</strong></p>
+<ol>
+<li>Click vào test trong sidebar bài giảng → hiển thị thông tin: thời gian, số câu, ngưỡng đạt</li>
+<li>Bấm &quot;Bắt đầu&quot; → hệ thống tạo <code>UserTest</code>, random câu hỏi (nếu có config), bắt đầu đếm ngược</li>
+<li>Trả lời từng câu (MC: radio, MR: checkbox)</li>
+<li>Submit → tính điểm theo rule hoàn thành</li>
+<li>Hiển thị kết quả: đạt/không đạt, số câu đúng, tỷ lệ</li>
+<li>Nếu không đạt và còn lượt → cho phép &quot;Làm lại&quot;</li>
+</ol>
+<p><strong>Rule hoàn thành (mặc định):</strong></p>
+<ul>
+<li>Mặc định <code>completion_rate = 100%</code> (đúng hết mới đạt)</li>
+<li>Có thể cấu hình theo từng bài kiểm tra (VD: 80% = đạt)</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> CRUD bài kiểm tra trong thư viện</li>
+<li><input disabled="" type="checkbox"> Phân loại theo topic + gắn tags</li>
+<li><input disabled="" type="checkbox"> Tìm kiếm / lọc theo tên, topic, tags</li>
+<li><input disabled="" type="checkbox"> Gán câu hỏi từ ngân hàng câu hỏi (F8)</li>
+<li><input disabled="" type="checkbox"> Import câu hỏi từ Excel</li>
+<li><input disabled="" type="checkbox"> Cấu hình: thời gian, ngưỡng đạt, số lần làm lại, random câu hỏi</li>
+<li><input disabled="" type="checkbox"> Publish / Unpublish bài kiểm tra</li>
+<li><input disabled="" type="checkbox"> Hiển thị danh sách bài giảng / kỳ thi đang sử dụng</li>
+<li><input disabled="" type="checkbox"> Sửa bài kiểm tra → cập nhật tức thì (live update)</li>
+<li><input disabled="" type="checkbox"> Cảnh báo trước khi xoá nếu đang được sử dụng</li>
+<li><input disabled="" type="checkbox"> Đếm ngược thời gian (tự động submit khi hết giờ)</li>
+<li><input disabled="" type="checkbox"> Hỗ trợ câu hỏi MC (chọn 1) và MR (chọn nhiều)</li>
+<li><input disabled="" type="checkbox"> Giới hạn số lần làm lại (<code>num_of_retake</code>)</li>
+<li><input disabled="" type="checkbox"> Lưu kết quả cao nhất (<code>highest_user_test</code>)</li>
+<li><input disabled="" type="checkbox"> Resume bài kiểm tra đang dở (nếu chưa submit)</li>
+</ul>
+<hr>
+<h4>F7 — Kỳ thi độc lập</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/tenant admin</strong>, tôi muốn <strong>tổ chức kỳ thi với nhiều người tham gia</strong>, để <strong>đánh giá năng lực nhân viên hàng loạt</strong>.</p>
+</blockquote>
+<p><strong>Tenant scoping (F25):</strong> Tương tự F3 — <code>tenant_id</code> nullable. Tenant admin có toàn quyền tổ chức kỳ thi cho nhân viên trong tenant.</p>
+<p><strong>Khác biệt so với Test trong bài giảng:</strong></p>
+<ul>
+<li>Kỳ thi có <code>start_date</code> / <code>end_date</code> riêng</li>
+<li>Kỳ thi chọn bài kiểm tra từ Thư viện Bài kiểm tra (F6) — của tenant mình hoặc shared</li>
+<li>Có publish/unpublish riêng biệt</li>
+<li><strong>Admin:</strong> assign user cross-tenant hoặc theo bộ lọc (tenant + department + job title)</li>
+<li><strong>Tenant admin:</strong> assign nhân viên trong tenant mình, lọc theo phòng ban + chức danh</li>
+<li>Kết quả export riêng</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> CRUD kỳ thi</li>
+<li><input disabled="" type="checkbox"> Publish/Unpublish</li>
+<li><input disabled="" type="checkbox"> Assign/Unassign users</li>
+<li><input disabled="" type="checkbox"> Phân quyền truy cập: ALL_USER / SPECIFY_USER / FILTER_USER</li>
+<li><input disabled="" type="checkbox"> User tham gia thi trong khoảng start_date → end_date</li>
+<li><input disabled="" type="checkbox"> Xem kết quả + export Excel</li>
+<li><input disabled="" type="checkbox"> Tenant admin: toàn quyền kỳ thi trong tenant (tạo, chọn test, gán người thi, xem kết quả)</li>
+</ul>
+<hr>
+<h4>F8 — Quản lý câu hỏi</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/tenant admin</strong>, tôi muốn <strong>quản lý ngân hàng câu hỏi</strong>, để <strong>tái sử dụng trong nhiều bài kiểm tra</strong>.</p>
+</blockquote>
+<p><strong>Tenant scoping (F25):</strong> Mỗi tenant có ngân hàng câu hỏi <strong>riêng biệt</strong> (<code>tenant_id</code>). Tenant admin không thấy câu hỏi của tenant khác. Câu hỏi hệ thống (<code>tenant_id = null</code>) có thể được chia sẻ và clone.</p>
+<p><strong>Loại câu hỏi:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Mô tả</th>
+<th>Trạng thái</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MC</td>
+<td>Trắc nghiệm chọn 1 đáp án</td>
+<td>Đang dùng</td>
+</tr>
+<tr>
+<td>MR</td>
+<td>Trắc nghiệm chọn nhiều đáp án</td>
+<td>Đang dùng</td>
+</tr>
+<tr>
+<td>FIB</td>
+<td>Điền vào chỗ trống</td>
+<td>Model có, UI chưa</td>
+</tr>
+<tr>
+<td>MD</td>
+<td>Nối/kéo thả</td>
+<td>Model có, UI chưa</td>
+</tr>
+<tr>
+<td>SA</td>
+<td>Trả lời ngắn</td>
+<td>Model có, UI chưa</td>
+</tr>
+</tbody></table>
+<p><strong>Cấu trúc câu hỏi:</strong></p>
+<ul>
+<li><code>content</code>: nội dung câu hỏi</li>
+<li><code>answers</code>: mảng <code>{ label, value }</code> — các đáp án</li>
+<li><code>correct_answers</code>: mảng label của đáp án đúng</li>
+<li><code>topic</code>: phân loại theo bộ kỹ năng (Topic)</li>
+<li><code>tags</code>: tags tự do để phân loại, tìm kiếm</li>
+<li><code>difficulty_level</code>: độ khó — <code>EASY</code> / <code>MEDIUM</code> / <code>HARD</code> (dùng cho AI adaptive testing F23)</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> CRUD câu hỏi</li>
+<li><input disabled="" type="checkbox"> Phân loại theo topic + gắn tags</li>
+<li><input disabled="" type="checkbox"> Tìm kiếm / lọc theo tên, topic, tags</li>
+<li><input disabled="" type="checkbox"> Import câu hỏi từ Excel (sheet <code>QUESTIONS</code>, đánh dấu đáp án đúng bằng <code>***</code>)</li>
+<li><input disabled="" type="checkbox"> Upload hình ảnh cho câu hỏi</li>
+<li><input disabled="" type="checkbox"> Xoá hàng loạt (bulk delete)</li>
+</ul>
+<hr>
+<h4>F9 — Quản lý bộ kỹ năng / Topic + Tags</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/tenant admin</strong>, tôi muốn <strong>tổ chức nội dung theo bộ kỹ năng (topic) và tags</strong>, để <strong>phân loại và tìm kiếm bài giảng, bài kiểm tra, câu hỏi dễ dàng</strong>.</p>
+</blockquote>
+<p><strong>Topic</strong> — phân loại chính, cấu trúc cây:</p>
+<ul>
+<li>Dùng cho: Bài giảng, Bài kiểm tra, Câu hỏi, Khoá học, Kỳ thi</li>
+<li>Mỗi entity thuộc <strong>1 topic</strong> (bắt buộc)</li>
+<li>VD: Kỹ năng mềm &gt; Giao tiếp, An toàn &gt; PCCC</li>
+</ul>
+<p><strong>Tenant scoping (F25):</strong> Mỗi tenant có <strong>cây topic hoàn toàn độc lập</strong> (<code>tenant_id</code>). Admin có cây topic riêng ở cấp hệ thống (<code>tenant_id = null</code>). Khi chia sẻ nội dung, topic gốc đi kèm nhưng tenant có thể gán lại topic của mình khi clone.</p>
+<p><strong>Tags</strong> — phân loại phụ, tự do:</p>
+<ul>
+<li>Dùng cho: Bài giảng, Bài kiểm tra, Câu hỏi</li>
+<li>Mỗi entity có thể gắn <strong>nhiều tags</strong> (không bắt buộc)</li>
+<li>Mỗi tenant quản lý tags riêng (<code>tenant_id</code>), ngoài tags hệ thống</li>
+<li>Tags do admin/tenant admin tạo tự do, gợi ý autocomplete từ tags đã có trong scope</li>
+<li>VD: &quot;onboarding&quot;, &quot;bắt buộc&quot;, &quot;Q2-2026&quot;, &quot;phòng-kỹ-thuật&quot;</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> CRUD topic (tên, mô tả, hình ảnh)</li>
+<li><input disabled="" type="checkbox"> Topic có cấu trúc cây (parent/child)</li>
+<li><input disabled="" type="checkbox"> Drag-and-drop sắp xếp thứ tự</li>
+<li><input disabled="" type="checkbox"> Topic type: COURSE / COMPETENCY / EXAM</li>
+<li><input disabled="" type="checkbox"> Import/Export Excel</li>
+<li><input disabled="" type="checkbox"> Quản lý tags: tạo, sửa, xoá, merge tags trùng</li>
+<li><input disabled="" type="checkbox"> Autocomplete tags khi gắn (gợi ý từ tags đã có trong scope tenant)</li>
+<li><input disabled="" type="checkbox"> Xem danh sách nội dung theo tag</li>
+<li><input disabled="" type="checkbox"> Mỗi tenant có cây topic và tags hoàn toàn độc lập</li>
+</ul>
+<hr>
+<h4>F10 — Quản lý người dùng</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin</strong>, tôi muốn <strong>quản lý danh sách người dùng</strong>, để <strong>kiểm soát quyền truy cập hệ thống</strong>.</p>
+</blockquote>
+<p><strong>Thông tin user:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>username</td>
+<td>Tên đăng nhập</td>
+</tr>
+<tr>
+<td>code</td>
+<td>Mã nhân viên</td>
+</tr>
+<tr>
+<td>fullname</td>
+<td>Họ tên</td>
+</tr>
+<tr>
+<td>email</td>
+<td>Email (unique)</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>Số điện thoại</td>
+</tr>
+<tr>
+<td>avatar</td>
+<td>Ảnh đại diện</td>
+</tr>
+<tr>
+<td>role</td>
+<td>Vai trò (admin/moderator/user)</td>
+</tr>
+<tr>
+<td>department</td>
+<td>Phòng ban</td>
+</tr>
+<tr>
+<td>job_title</td>
+<td>Chức vụ</td>
+</tr>
+<tr>
+<td>enterprise</td>
+<td>Doanh nghiệp (nếu có)</td>
+</tr>
+<tr>
+<td>status</td>
+<td>ACTIVE / INACTIVE</td>
+</tr>
+</tbody></table>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> CRUD user</li>
+<li><input disabled="" type="checkbox"> Import user từ Excel (sheet <code>USERS</code>)</li>
+<li><input disabled="" type="checkbox"> Export danh sách user</li>
+<li><input disabled="" type="checkbox"> Reset password về mặc định</li>
+<li><input disabled="" type="checkbox"> Gán role cho user</li>
+<li><input disabled="" type="checkbox"> Soft delete (deleted_at)</li>
+</ul>
+<hr>
+<h4>F11 — Quản lý Tenant</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin</strong>, tôi muốn <strong>quản lý các tenant (tổ chức) trên nền tảng</strong>, để <strong>mỗi tổ chức có không gian đào tạo riêng biệt</strong>.</p>
+</blockquote>
+<p><strong>Vòng đời tenant:</strong></p>
+<pre><code>Đăng ký (PENDING) → Admin duyệt (ACTIVE) → Hoạt động
+                   → Admin từ chối (REJECT)
+ACTIVE → Admin vô hiệu (INACTIVE) → tất cả user tenant bị hạ role về &quot;user&quot;
+</code></pre>
+<p><strong>Khi duyệt tenant:</strong></p>
+<ul>
+<li>Tự động tạo user <code>super-moderator</code> cho tenant</li>
+<li>Gửi email thông báo</li>
+<li>Tenant admin truy cập Admin Dashboard → tự động filter theo tenant context</li>
+</ul>
+<p><strong>Quản lý nhân sự tenant (trong Admin Dashboard):</strong>
+Tenant admin (super-mod/moderator) quản lý trong cùng giao diện Dashboard, nhóm menu &quot;Quản lý&quot;:</p>
+<ul>
+<li>Quản lý nhân viên (CRUD, import/export, mời qua email)</li>
+<li>Quản lý phòng ban (cây phân cấp, drag-drop)</li>
+<li>Quản lý chức danh (cây phân cấp, drag-drop)</li>
+</ul>
+<p><strong>Quản lý nội dung &amp; đào tạo tenant:</strong>
+Tenant admin sử dụng cùng giao diện Dashboard để tạo nội dung riêng:</p>
+<ul>
+<li>Thư viện: Bài giảng, Bài kiểm tra, Câu hỏi, Topics (tất cả scoped theo tenant)</li>
+<li>Đào tạo: Khoá học, Kỳ thi (gán nhân viên trong tenant)</li>
+<li>AI: Course Builder (nội dung tạo thuộc tenant)</li>
+<li>Nội dung admin chia sẻ hiển thị dạng read-only, có thể clone</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Đăng ký tenant (form public, không cần login)</li>
+<li><input disabled="" type="checkbox"> Admin: duyệt / từ chối / kích hoạt / vô hiệu tenant</li>
+<li><input disabled="" type="checkbox"> Auto tạo super-moderator khi duyệt</li>
+<li><input disabled="" type="checkbox"> Tenant admin dùng Admin Dashboard với menu/data filter theo tenant</li>
+<li><input disabled="" type="checkbox"> CRUD phòng ban, chức danh, nhân viên trong Dashboard</li>
+<li><input disabled="" type="checkbox"> Import/Export Excel cho phòng ban, chức danh, nhân viên</li>
+<li><input disabled="" type="checkbox"> Tenant admin tự tạo/quản lý toàn bộ nội dung trong tenant</li>
+<li><input disabled="" type="checkbox"> Mời nhân viên qua email (invitation link)</li>
+</ul>
+<hr>
+<h4>F12 — Mapping nhân viên — Tenant</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người dùng</strong>, sau khi đăng nhập tôi muốn <strong>thấy mình thuộc tenant nào</strong>, để <strong>truy cập khoá học và nội dung đào tạo của tổ chức mình</strong>.</p>
+</blockquote>
+<p><strong>Luồng:</strong></p>
+<ol>
+<li>User đăng nhập bằng email/password</li>
+<li>Hệ thống hiển thị danh sách tenant mà user thuộc về</li>
+<li>User chọn tenant → chuyển vào context của tenant đó</li>
+<li>Nội dung (khoá học, kỳ thi...) lọc theo tenant đang chọn</li>
+</ol>
+<p><strong>Quản lý mapping (phía admin/super-moderator):</strong></p>
+<ul>
+<li>Super-moderator thêm/xoá nhân viên vào tenant</li>
+<li>Mời nhân viên qua email → user nhận invitation → tự động mapping vào tenant</li>
+<li>1 user có thể thuộc nhiều tenant</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Sau login, hiển thị danh sách tenant user thuộc về</li>
+<li><input disabled="" type="checkbox"> Chọn tenant → chuyển context, lọc nội dung theo tenant</li>
+<li><input disabled="" type="checkbox"> Super-moderator: thêm/xoá nhân viên vào tenant</li>
+<li><input disabled="" type="checkbox"> Mời nhân viên qua email invitation</li>
+<li><input disabled="" type="checkbox"> 1 user có thể thuộc nhiều tenant</li>
+<li><input disabled="" type="checkbox"> User không thuộc tenant nào → chỉ thấy khoá học public (nếu có)</li>
+</ul>
+<hr>
+<h4>F13 — Gán học viên vào khoá học / kỳ thi</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/tenant admin</strong>, tôi muốn <strong>chỉ định học viên cho khoá học/kỳ thi</strong>, để <strong>kiểm soát ai được truy cập nội dung đào tạo</strong>.</p>
+</blockquote>
+<p><strong>2 cách gán:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cách gán</th>
+<th>Admin</th>
+<th>Tenant Admin</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SPECIFY_USER</td>
+<td>Chọn user bất kỳ (cross-tenant)</td>
+<td>Chọn nhân viên trong tenant</td>
+</tr>
+<tr>
+<td>FILTER_USER</td>
+<td>Lọc theo tenant + phòng ban + chức danh</td>
+<td>Lọc theo phòng ban + chức danh (trong tenant)</td>
+</tr>
+</tbody></table>
+<p><strong>Lưu ý:</strong> Khoá học không có chế độ &quot;public&quot; — học viên phải được gán mới thấy và truy cập.</p>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Gán học viên cụ thể cho khoá học / kỳ thi</li>
+<li><input disabled="" type="checkbox"> Admin: gán theo bộ lọc tenant + phòng ban + chức danh (cross-tenant)</li>
+<li><input disabled="" type="checkbox"> Tenant admin: gán theo phòng ban + chức danh (trong tenant)</li>
+<li><input disabled="" type="checkbox"> Gửi thông báo cho học viên khi được gán</li>
+<li><input disabled="" type="checkbox"> User không được gán → không thấy khoá học/kỳ thi</li>
+<li><input disabled="" type="checkbox"> Gỡ học viên khỏi khoá học (giữ lại dữ liệu tiến độ)</li>
+</ul>
+<hr>
+<h4>F14 — Dashboard tiến độ học tập &amp; Khoá học của tôi (học viên)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người học</strong>, tôi muốn <strong>xem tổng quan tiến độ học tập và quản lý các khoá học của mình</strong>, để <strong>biết mình đã hoàn thành bao nhiêu, đang học gì, và cần học thêm gì</strong>.</p>
+</blockquote>
+<p><strong>14.1. Khoá học của tôi (S11):</strong></p>
+<p>Danh sách tất cả khoá học mà học viên đã được gán, phân loại theo trạng thái:</p>
+<table>
+<thead>
+<tr>
+<th>Trạng thái</th>
+<th>Điều kiện</th>
+<th>Hiển thị</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Chưa bắt đầu</td>
+<td><code>progress_rate = 0%</code>, trong thời hạn</td>
+<td>Badge neutral, nút &quot;Bắt đầu&quot;</td>
+</tr>
+<tr>
+<td>Đang học</td>
+<td><code>0% &lt; progress_rate &lt; 100%</code>, trong thời hạn</td>
+<td>Progress bar %, nút &quot;Tiếp tục&quot;</td>
+</tr>
+<tr>
+<td>Hoàn thành</td>
+<td><code>progress_rate = 100%</code></td>
+<td>Badge success, ngày hoàn thành, link tải chứng chỉ (nếu có)</td>
+</tr>
+<tr>
+<td>Hết hạn</td>
+<td>Chưa hoàn thành + <code>end_date &lt; now</code></td>
+<td>Badge error, progress bar (frozen)</td>
+</tr>
+</tbody></table>
+<p>Tabs lọc: <strong>Tất cả</strong> | <strong>Đang học</strong> (gộp Chưa bắt đầu + Đang học) | <strong>Hoàn thành</strong> | <strong>Hết hạn</strong></p>
+<p>Mỗi card khoá học hiển thị:</p>
+<ul>
+<li>Tên khoá học, topic badge</li>
+<li>Progress bar + % hoàn thành</li>
+<li>Thời hạn (start_date → end_date), cảnh báo nếu sắp hết hạn (≤ 7 ngày)</li>
+<li>Số bài đã hoàn thành / tổng bài</li>
+<li>Nút hành động: Bắt đầu / Tiếp tục / Xem lại</li>
+<li>Khoá hoàn thành: ngày hoàn thành + nút tải chứng chỉ PDF</li>
+</ul>
+<p><strong>14.2. Trang chủ — khám phá khoá học &amp; tiến độ cá nhân (S10):</strong></p>
+<p>Trang chủ kết hợp khám phá khoá học public (catalog) và tiến độ cá nhân, gồm 7 block:</p>
+<ol>
+<li><strong>Hero Banner:</strong> Greeting &quot;Xin chào, [tên]!&quot; + search bar nổi bật + stat nhanh (Đang học | Hoàn thành | Chứng chỉ), background gradient primary</li>
+<li><strong>Tiếp tục học:</strong> Top 3 khoá đang học, horizontal compact cards (thumbnail + progress bar + nút tiếp tục), cảnh báo HSD cho khoá sắp hết hạn</li>
+<li><strong>Khoá học được giao:</strong> Danh sách khoá bắt buộc / được admin giao với deadline, border warning cho khoá gấp, nút Tiếp tục / Bắt đầu</li>
+<li><strong>Khám phá theo chủ đề:</strong> Grid 4 cột topic categories (icon + tên + số khoá), link đến courses.html?topic=X</li>
+<li><strong>Khoá học nổi bật:</strong> 4 khoá phổ biến nhất dạng card (thumbnail, topic badge, số bài, thời lượng, số học viên)</li>
+<li><strong>Khoá học mới:</strong> 4 khoá mới thêm gần đây dạng card, label &quot;Mới&quot;</li>
+<li><strong>Thành tích:</strong> 2 cột — chứng chỉ gần đây (top 3, ngày, nút tải) + tổng quan học tập (4 metrics: khoá tham gia, hoàn thành, chứng chỉ, tổng giờ học)</li>
+</ol>
+<blockquote>
+<p><strong>Lưu ý:</strong> Không có trang dashboard riêng (<del>S21</del>). Trang chủ (S10) = trang chính kết hợp catalog + dashboard.</p>
+</blockquote>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> S11: Hiển thị danh sách khoá học đã được gán (không phải catalog public)</li>
+<li><input disabled="" type="checkbox"> S11: Tabs lọc theo trạng thái: Tất cả / Đang học / Hoàn thành / Hết hạn</li>
+<li><input disabled="" type="checkbox"> S11: Mỗi card hiện progress bar %, số bài hoàn thành / tổng, deadline</li>
+<li><input disabled="" type="checkbox"> S11: Khoá hoàn thành hiện ngày hoàn thành + link tải chứng chỉ (nếu có)</li>
+<li><input disabled="" type="checkbox"> S11: Khoá sắp hết hạn (≤ 7 ngày) hiện badge cảnh báo</li>
+<li><input disabled="" type="checkbox"> S11: Tìm kiếm theo tên khoá học + lọc theo topic</li>
+<li><input disabled="" type="checkbox"> S10: Hero banner — greeting + search bar + stat nhanh (đang học, hoàn thành, chứng chỉ)</li>
+<li><input disabled="" type="checkbox"> S10: Section tiếp tục học (top 3 khoá đang học, progress bar, cảnh báo HSD)</li>
+<li><input disabled="" type="checkbox"> S10: Section khoá học được giao (bắt buộc, deadline, nút tiếp tục/bắt đầu)</li>
+<li><input disabled="" type="checkbox"> S10: Section khám phá theo chủ đề (grid 4 cột topic categories)</li>
+<li><input disabled="" type="checkbox"> S10: Section khoá học nổi bật (4 cards, thumbnail, topic, số bài, số HV)</li>
+<li><input disabled="" type="checkbox"> S10: Section khoá học mới (4 cards mới nhất, label &quot;Mới&quot;)</li>
+<li><input disabled="" type="checkbox"> S10: Section thành tích (chứng chỉ gần đây + tổng quan học tập 4 metrics)</li>
+<li><input disabled="" type="checkbox"> Quick link: tiếp tục học bài đang dở</li>
+</ul>
+<p><strong>14.3. Profile học viên (S22):</strong></p>
+<p>Trang profile học viên gồm header (avatar lớn, tên, chức danh, phòng ban — tenant) và 2 tabs:</p>
+<p><strong>Tab 1 — Góc học tập</strong> (mặc định):</p>
+<ul>
+<li>4 stat cards: Khoá hoàn thành (số), Tổng giờ học (giờ), Chứng chỉ (số), Tỷ lệ hoàn thành (%)</li>
+<li>2-column grid:<ul>
+<li>Cột trái: Chứng chỉ đã đạt (danh sách: tên khoá + ngày cấp + nút Tải PDF)</li>
+<li>Cột phải: Huy hiệu (grid 4×2, earned state + locked state với opacity + icon khoá)</li>
+</ul>
+</li>
+<li>Lịch sử kỳ thi: bảng (tên kỳ thi, ngày thi, điểm, kết quả Đạt/Không đạt)</li>
+<li>Khoá học đã hoàn thành: bảng (tên khoá, topic badge, ngày hoàn thành, link chứng chỉ)</li>
+</ul>
+<p><strong>Tab 2 — Thông tin cá nhân:</strong></p>
+<ul>
+<li>Form 2 cột: Họ tên, Email, Số điện thoại, Phòng ban, Chức danh, Mã nhân viên</li>
+<li>Section đổi mật khẩu: Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới</li>
+</ul>
+<p><strong>Acceptance criteria (S22):</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Header: avatar-xl + tên + chức danh + tên tenant</li>
+<li><input disabled="" type="checkbox"> Tab &quot;Góc học tập&quot;: 4 stat cards (khoá hoàn thành, giờ học, chứng chỉ, tỷ lệ %)</li>
+<li><input disabled="" type="checkbox"> Danh sách chứng chỉ đã đạt + nút Tải PDF</li>
+<li><input disabled="" type="checkbox"> Grid huy hiệu: earned vs locked state (opacity + icon khoá)</li>
+<li><input disabled="" type="checkbox"> Bảng lịch sử kỳ thi (tên, ngày, điểm, badge kết quả)</li>
+<li><input disabled="" type="checkbox"> Bảng khoá học đã hoàn thành (tên, topic, ngày, chứng chỉ)</li>
+<li><input disabled="" type="checkbox"> Tab &quot;Thông tin cá nhân&quot;: form chỉnh sửa thông tin + section đổi mật khẩu</li>
+<li><input disabled="" type="checkbox"> Responsive: 2 cột → 1 cột trên mobile</li>
+</ul>
+<hr>
+<h4>F15 — Quản lý tiến độ học viên (quản lý)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/super-moderator</strong>, tôi muốn <strong>theo dõi tiến độ học tập của nhân viên</strong>, để <strong>đánh giá hiệu quả đào tạo và đôn đốc kịp thời</strong>.</p>
+</blockquote>
+<p><strong>Nội dung:</strong></p>
+<ul>
+<li>Bảng tổng hợp tiến độ theo khoá học: số học viên đăng ký / đang học / hoàn thành / chưa bắt đầu</li>
+<li>Chi tiết per học viên: progress %, điểm test, ngày hoàn thành</li>
+<li>Lọc theo: tenant, phòng ban, chức danh, khoá học, khoảng thời gian</li>
+<li>Báo cáo tổng hợp: tỷ lệ hoàn thành theo phòng ban, theo khoá</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Bảng tổng hợp tiến độ khoá học (số liệu đăng ký/hoàn thành/chưa bắt đầu)</li>
+<li><input disabled="" type="checkbox"> Chi tiết tiến độ từng học viên trong khoá (progress, điểm test, ngày)</li>
+<li><input disabled="" type="checkbox"> Filter theo tenant / phòng ban / chức danh / khoá học / thời gian</li>
+<li><input disabled="" type="checkbox"> Báo cáo tỷ lệ hoàn thành theo phòng ban</li>
+<li><input disabled="" type="checkbox"> Highlight học viên chưa bắt đầu hoặc tiến độ thấp</li>
+<li><input disabled="" type="checkbox"> Export báo cáo tiến độ ra Excel</li>
+</ul>
+<hr>
+<h4>F16 — Import/Export Excel</h4>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Import: tải template Excel → điền dữ liệu → upload</li>
+<li><input disabled="" type="checkbox"> Export: tải file Excel từ dữ liệu hệ thống</li>
+<li><input disabled="" type="checkbox"> Áp dụng cho: Users, Questions, Lessons, Tests, Departments, Job Titles, Courses</li>
+<li><input disabled="" type="checkbox"> Sheet names chuẩn: <code>QUESTIONS</code>, <code>USERS</code></li>
+<li><input disabled="" type="checkbox"> Đánh dấu đáp án đúng bằng <code>***</code> trong import câu hỏi</li>
+</ul>
+<hr>
+<h4>F17 — Chứng chỉ hoàn thành (cơ bản — Phase 2)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người học</strong>, tôi muốn <strong>nhận chứng chỉ khi hoàn thành khoá học</strong>, để <strong>chứng minh năng lực</strong>.</p>
+</blockquote>
+<p><strong>Luồng:</strong></p>
+<ol>
+<li>Admin upload template chứng chỉ cho khoá học (bật <code>is_certification = true</code>)</li>
+<li>User hoàn thành tất cả resources → <code>is_completed = true</code></li>
+<li>Hệ thống tự động generate PDF chứng chỉ</li>
+<li>Gửi email kèm file đính kèm PDF</li>
+</ol>
+<p><strong>Điều kiện cấp chứng chỉ:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Điều kiện</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hoàn thành 100% bài học</td>
+<td>Tất cả lessons trong curriculum phải <code>is_completed = true</code></td>
+</tr>
+<tr>
+<td>Đạt tất cả bài kiểm tra</td>
+<td>Mỗi test trong khoá phải có ≥ 1 lần đạt (<code>is_passed = true</code>)</td>
+</tr>
+<tr>
+<td>Khoá học có bật chứng chỉ</td>
+<td><code>course.is_certification = true</code> và có template</td>
+</tr>
+</tbody></table>
+<p><strong>Merge fields cơ bản trong template PDF:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Giá trị</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>{student_name}</code></td>
+<td>Họ tên học viên</td>
+</tr>
+<tr>
+<td><code>{course_name}</code></td>
+<td>Tên khoá học</td>
+</tr>
+<tr>
+<td><code>{completion_date}</code></td>
+<td>Ngày hoàn thành (dd/MM/yyyy)</td>
+</tr>
+<tr>
+<td><code>{tenant_name}</code></td>
+<td>Tên tổ chức</td>
+</tr>
+</tbody></table>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Upload template chứng chỉ (per course)</li>
+<li><input disabled="" type="checkbox"> Tự động generate PDF khi hoàn thành 100% + đạt tất cả test</li>
+<li><input disabled="" type="checkbox"> Gửi email kèm PDF chứng chỉ</li>
+<li><input disabled="" type="checkbox"> Đánh dấu <code>is_given_certificate = true</code> trên CourseUser</li>
+<li><input disabled="" type="checkbox"> Học viên tải lại PDF từ profile / course-complete / courses list</li>
+</ul>
+<hr>
+<h4>F18 — Thông báo</h4>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Tạo thông báo cho user (title, message, link)</li>
+<li><input disabled="" type="checkbox"> Danh sách thông báo với trạng thái: <code>WAITING</code> / <code>SEEN</code></li>
+<li><input disabled="" type="checkbox"> Đánh dấu đã đọc</li>
+<li><input disabled="" type="checkbox"> Push notification qua Firebase (nếu có device token)</li>
+<li><input disabled="" type="checkbox"> Deep link cho mobile app</li>
+</ul>
+<hr>
+<h4>F19 — 🤖 AI — Sinh câu hỏi &amp; tóm tắt nội dung</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/moderator</strong>, tôi muốn <strong>AI hỗ trợ tạo câu hỏi và tóm tắt nội dung bài giảng</strong>, để <strong>tiết kiệm thời gian xây dựng thư viện nội dung</strong>.</p>
+</blockquote>
+<p><strong>19.1. Sinh câu hỏi từ nội dung bài giảng (F8 + F4):</strong></p>
+<pre><code>Admin chọn bài học (video/doc/HTML) hoặc cả bài giảng
+  → Nhấn &quot;AI sinh câu hỏi&quot;
+  → Cấu hình: số lượng, độ khó (dễ/trung bình/khó), loại (MC/MR)
+  → AI phân tích nội dung → sinh câu hỏi + đáp án + đáp án đúng
+  → Admin review từng câu: chấp nhận / sửa / bỏ
+  → Lưu vào ngân hàng câu hỏi (F8), tự gắn topic + tags từ bài giảng nguồn
+</code></pre>
+<p><strong>Yêu cầu chất lượng câu hỏi AI:</strong></p>
+<ul>
+<li>Câu hỏi phải bám sát nội dung bài học, không bịa thông tin ngoài</li>
+<li>Đáp án nhiễu (distractor) phải hợp lý — sai nhưng có vẻ đúng, tránh đáp án vô nghĩa</li>
+<li>Không sinh câu hỏi trùng hoặc quá giống nhau</li>
+<li>Mỗi câu phải có đúng 1 đáp án đúng (MC) hoặc ≥2 đáp án đúng (MR)</li>
+</ul>
+<p><strong>19.2. Tạo transcript từ video (F4):</strong></p>
+<pre><code>Admin upload video bài giảng
+  → AI tự động tạo transcript (speech-to-text)
+  → Transcript có thể dùng làm nội dung bài học dạng text
+  → Là nguồn dữ liệu để AI sinh câu hỏi, tóm tắt
+</code></pre>
+<p><strong>19.3. Tóm tắt nội dung bài giảng (F4):</strong></p>
+<pre><code>Admin chọn bài giảng có nhiều chương / bài
+  → Nhấn &quot;AI tóm tắt&quot;
+  → AI sinh:
+    - Mô tả tổng quan bài giảng (dùng làm description)
+    - Key points cho từng chương
+    - Gợi ý chia chương (nếu tài liệu chưa chia)
+  → Admin review + chỉnh sửa → lưu
+</code></pre>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Nút &quot;AI sinh câu hỏi&quot; trong màn chi tiết bài giảng (S54) và ngân hàng câu hỏi (S45)</li>
+<li><input disabled="" type="checkbox"> Cấu hình: chọn nguồn nội dung, số lượng câu, độ khó, loại câu hỏi</li>
+<li><input disabled="" type="checkbox"> AI sinh câu hỏi + 4 đáp án + đánh dấu đáp án đúng</li>
+<li><input disabled="" type="checkbox"> Giao diện review: xem từng câu, sửa inline, chấp nhận / bỏ / sinh lại</li>
+<li><input disabled="" type="checkbox"> Tự động gắn topic + tags từ bài giảng nguồn</li>
+<li><input disabled="" type="checkbox"> Tự động tạo transcript khi upload video</li>
+<li><input disabled="" type="checkbox"> Nút &quot;AI tóm tắt&quot; cho bài giảng → sinh mô tả + key points</li>
+<li><input disabled="" type="checkbox"> AI chỉ sử dụng nội dung bài học làm nguồn, không bịa thêm</li>
+</ul>
+<hr>
+<h4>F20 — 🤖 AI — Trợ lý học tập (AI Tutor)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người học</strong>, tôi muốn <strong>hỏi AI về nội dung bài đang học</strong>, để <strong>hiểu sâu hơn mà không cần chờ giảng viên trả lời</strong>.</p>
+</blockquote>
+<p><strong>Mô tả:</strong>
+Chatbot AI tích hợp trong màn hình học (S13), trả lời câu hỏi của học viên dựa trên nội dung bài giảng hiện tại. AI được giới hạn chỉ trả lời trong phạm vi nội dung khoá học (grounded), không bịa thông tin ngoài.</p>
+<p><strong>Flow:</strong></p>
+<pre><code>Học viên đang xem bài &quot;Kỹ thuật thuyết trình&quot;
+  → Nhấn icon chat (góc phải dưới)
+  → Mở panel chat
+  → Hỏi: &quot;3 nguyên tắc quan trọng nhất là gì?&quot;
+  → AI trả lời dựa trên nội dung bài học
+  → Có thể gợi ý: &quot;Xem thêm ở Chương 2, Bài 2.1&quot;
+  → Lịch sử chat lưu theo khoá học + user
+</code></pre>
+<p><strong>Phạm vi trả lời:</strong></p>
+<ul>
+<li>AI chỉ trả lời dựa trên nội dung bài giảng đã gán cho khoá học</li>
+<li>Nếu câu hỏi ngoài phạm vi → trả lời: &quot;Câu hỏi này nằm ngoài nội dung khoá học&quot;</li>
+<li>Có thể tham chiếu đến bài học / chương cụ thể trong bài giảng</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Chat panel trong màn hình học (S13) — thu gọn / mở rộng</li>
+<li><input disabled="" type="checkbox"> AI trả lời dựa trên nội dung bài giảng hiện tại (grounded)</li>
+<li><input disabled="" type="checkbox"> Từ chối trả lời câu hỏi ngoài phạm vi nội dung</li>
+<li><input disabled="" type="checkbox"> Gợi ý tham chiếu đến bài học / chương liên quan</li>
+<li><input disabled="" type="checkbox"> Lưu lịch sử chat per user per khoá học</li>
+<li><input disabled="" type="checkbox"> Admin có thể bật/tắt AI Tutor cho từng bài giảng</li>
+<li><input disabled="" type="checkbox"> Giới hạn số lượt hỏi / ngày (cấu hình được) để kiểm soát chi phí</li>
+</ul>
+<hr>
+<h4>F21 — 🤖 AI — Auto-tagging &amp; tìm kiếm ngữ nghĩa</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin</strong>, tôi muốn <strong>AI tự gợi ý phân loại nội dung và tìm kiếm theo ý nghĩa</strong>, để <strong>quản lý thư viện hiệu quả khi số lượng nội dung lớn</strong>.</p>
+</blockquote>
+<p><strong>21.1. Auto-tagging (F9 + F4 + F6 + F8):</strong></p>
+<pre><code>Admin tạo / sửa bài giảng, bài kiểm tra, câu hỏi
+  → AI phân tích nội dung
+  → Gợi ý: Topic = &quot;An toàn &gt; PCCC&quot;, Tags = [&quot;nhà máy&quot;, &quot;bắt buộc&quot;]
+  → Admin confirm / sửa / bỏ
+</code></pre>
+<ul>
+<li>Gợi ý topic từ cây topic hiện có (không tạo topic mới)</li>
+<li>Gợi ý tags từ tags đã tồn tại + đề xuất tags mới nếu phù hợp</li>
+<li>Phát hiện nội dung <strong>trùng lặp / tương tự</strong> đã có trong thư viện → cảnh báo</li>
+</ul>
+<p><strong>21.2. Tìm kiếm ngữ nghĩa (Semantic Search):</strong></p>
+<pre><code>Admin / Học viên tìm &quot;kỹ năng nói chuyện&quot;
+  → Kết quả: bài giảng &quot;Giao tiếp hiệu quả&quot;, câu hỏi về &quot;thuyết trình&quot;...
+  (match theo ý nghĩa, không chỉ keyword)
+</code></pre>
+<ul>
+<li>Áp dụng cho: Bài giảng, Bài kiểm tra, Câu hỏi</li>
+<li>Tìm cross-entity: 1 query → kết quả từ nhiều loại nội dung</li>
+<li>Hỗ trợ tìm kiếm tiếng Việt không dấu</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> AI gợi ý topic + tags khi tạo / sửa bài giảng, bài kiểm tra, câu hỏi</li>
+<li><input disabled="" type="checkbox"> Gợi ý hiển thị inline, admin 1-click confirm hoặc sửa</li>
+<li><input disabled="" type="checkbox"> Phát hiện nội dung trùng lặp / tương tự trong thư viện</li>
+<li><input disabled="" type="checkbox"> Thanh tìm kiếm hỗ trợ semantic search (tìm theo ý nghĩa)</li>
+<li><input disabled="" type="checkbox"> Kết quả tìm kiếm cross-entity (bài giảng + test + câu hỏi)</li>
+<li><input disabled="" type="checkbox"> Hỗ trợ tiếng Việt không dấu</li>
+</ul>
+<hr>
+<h4>F22 — 🤖 AI — Báo cáo thông minh &amp; cảnh báo</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/super-moderator</strong>, tôi muốn <strong>AI phân tích dữ liệu tiến độ và đưa ra cảnh báo</strong>, để <strong>can thiệp kịp thời khi có vấn đề</strong>.</p>
+</blockquote>
+<p><strong>22.1. Cảnh báo học viên có nguy cơ (F15):</strong></p>
+<p>AI phân tích pattern và cảnh báo tự động:</p>
+<ul>
+<li>Học viên <strong>chưa bắt đầu</strong> nhưng khoá sắp hết hạn (&lt; 7 ngày)</li>
+<li>Học viên <strong>tiến độ thấp</strong> so với trung bình nhóm</li>
+<li>Học viên <strong>không login</strong> quá X ngày kể từ khi được gán khoá</li>
+<li>Nhóm / phòng ban có tỷ lệ hoàn thành <strong>bất thường thấp</strong></li>
+</ul>
+<p><strong>22.2. Tóm tắt báo cáo bằng ngôn ngữ tự nhiên (F15):</strong></p>
+<pre><code>Admin mở báo cáo tiến độ
+  → Ngoài bảng số liệu, AI sinh đoạn tóm tắt:
+    &quot;Khoá An toàn lao động: 85% hoàn thành (128/150 người).
+     Phòng Kỹ thuật chỉ đạt 60% — thấp hơn trung bình 25%.
+     15 nhân viên chưa bắt đầu, khoá hết hạn trong 5 ngày.
+     Đề xuất: gửi nhắc nhở cho 15 người này.&quot;
+  → Nút &quot;Gửi nhắc nhở&quot; → tạo thông báo cho danh sách đề xuất
+</code></pre>
+<p><strong>22.3. Gợi ý hành động:</strong></p>
+<ul>
+<li>Gợi ý gửi nhắc nhở cho học viên chậm tiến độ</li>
+<li>Gợi ý gia hạn khoá học nếu nhiều người chưa hoàn thành</li>
+<li>Gợi ý nội dung cần cải thiện dựa trên kết quả kiểm tra</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Dashboard admin hiển thị cảnh báo AI (card hoặc notification)</li>
+<li><input disabled="" type="checkbox"> Cảnh báo: học viên nguy cơ bỏ dở, phòng ban tiến độ thấp, khoá sắp hết hạn</li>
+<li><input disabled="" type="checkbox"> Tóm tắt báo cáo bằng ngôn ngữ tự nhiên trong trang tiến độ (S49)</li>
+<li><input disabled="" type="checkbox"> Gợi ý hành động kèm nút thực hiện (gửi nhắc, gia hạn)</li>
+<li><input disabled="" type="checkbox"> Admin có thể bật/tắt cảnh báo AI</li>
+</ul>
+<hr>
+<h4>F23 — 🤖 AI — Kiểm tra thích ứng &amp; phân tích chất lượng</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin</strong>, tôi muốn <strong>AI phân tích chất lượng câu hỏi và hỗ trợ kiểm tra thông minh</strong>, để <strong>đánh giá năng lực học viên chính xác hơn</strong>.</p>
+</blockquote>
+<p><strong>23.1. Phân tích chất lượng câu hỏi (F8 + F6):</strong></p>
+<p>Sau khi có đủ dữ liệu làm bài (&gt;50 lượt), AI phân tích:</p>
+<ul>
+<li>Câu hỏi <strong>quá dễ</strong> (&gt;95% đúng) → gợi ý tăng độ khó hoặc loại bỏ</li>
+<li>Câu hỏi <strong>quá khó</strong> (&lt;10% đúng) → gợi ý xem lại đề hoặc đáp án</li>
+<li>Đáp án nhiễu <strong>không hiệu quả</strong> (không ai chọn) → gợi ý thay thế</li>
+<li>Câu hỏi có <strong>tỷ lệ bỏ qua cao</strong> → có thể đề bài không rõ ràng</li>
+</ul>
+<p><strong>23.2. Kiểm tra thích ứng — Adaptive Testing (F6):</strong></p>
+<p>Thay vì random câu hỏi, AI chọn câu theo trình độ:</p>
+<pre><code>Câu 1: trung bình → đúng
+Câu 2: khó → sai
+Câu 3: trung bình → đúng
+Câu 4: trung bình-khó → ...
+</code></pre>
+<ul>
+<li>Đánh giá chính xác hơn với ít câu hỏi hơn</li>
+<li>Yêu cầu: mỗi câu hỏi phải có metadata <code>difficulty_level</code></li>
+<li>Admin chọn chế độ: Random (mặc định) hoặc Adaptive</li>
+</ul>
+<p><strong>23.3. Phát hiện bất thường (F6/F7):</strong></p>
+<ul>
+<li>Thời gian trả lời <strong>bất thường nhanh</strong> (&lt; 3 giây / câu)</li>
+<li>Nhiều học viên có <strong>câu trả lời giống nhau</strong> theo cùng pattern</li>
+<li>Đánh dấu kết quả nghi ngờ → admin review</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Báo cáo chất lượng câu hỏi trong màn ngân hàng câu hỏi (S45)</li>
+<li><input disabled="" type="checkbox"> Gợi ý cải thiện câu hỏi kém chất lượng</li>
+<li><input disabled="" type="checkbox"> Chế độ Adaptive Testing (bật/tắt per bài kiểm tra)</li>
+<li><input disabled="" type="checkbox"> Thêm <code>difficulty_level</code> cho câu hỏi (dễ / trung bình / khó)</li>
+<li><input disabled="" type="checkbox"> Phát hiện và đánh dấu kết quả bất thường</li>
+<li><input disabled="" type="checkbox"> Admin review danh sách kết quả nghi ngờ</li>
+</ul>
+<hr>
+<h4>F24 — 🤖 AI Course Builder — Tạo bài giảng từ mô tả</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin/moderator</strong>, tôi muốn <strong>mô tả nhu cầu đào tạo bằng ngôn ngữ tự nhiên và AI tự động tạo bài giảng hoàn chỉnh</strong>, để <strong>xây dựng nội dung đào tạo nhanh chóng mà không cần soạn từ đầu</strong>.</p>
+</blockquote>
+<p><strong>Khái niệm:</strong>
+AI Course Builder nhận đầu vào là mô tả yêu cầu đào tạo (text + tài liệu tuỳ chọn), sau đó sinh ra đề xuất bài giảng hoàn chỉnh gồm: cấu trúc chương, bài học, nội dung, bài kiểm tra, câu hỏi, topic, tags. Admin review, chỉnh sửa, rồi xác nhận → hệ thống tạo tất cả vào thư viện.</p>
+<p><strong>24.1. Input — Mô tả yêu cầu:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Bắt buộc</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mô tả yêu cầu</td>
+<td>Có</td>
+<td>Text mô tả nhu cầu đào tạo bằng ngôn ngữ tự nhiên</td>
+</tr>
+<tr>
+<td>Tài liệu tham khảo</td>
+<td>Không</td>
+<td>Upload file (PDF, DOCX, XLSX, TXT) — AI dùng làm nguồn nội dung</td>
+</tr>
+<tr>
+<td>Đối tượng học viên</td>
+<td>Không</td>
+<td>Mô tả ai sẽ học (VD: &quot;nhân viên tư vấn, chưa có kinh nghiệm&quot;)</td>
+</tr>
+<tr>
+<td>Thời lượng mong muốn</td>
+<td>Không</td>
+<td>VD: &quot;khoảng 2 giờ&quot;, &quot;3-4 chương&quot;</td>
+</tr>
+<tr>
+<td>Ghi chú thêm</td>
+<td>Không</td>
+<td>Yêu cầu đặc biệt (VD: &quot;tập trung Zalo và Facebook&quot;)</td>
+</tr>
+</tbody></table>
+<p><strong>Ví dụ input:</strong></p>
+<pre><code>Mô tả: &quot;Đào tạo nhân viên tư vấn online cho khách hàng mua mỹ phẩm&quot;
+Đối tượng: &quot;Nhân viên mới, chưa có kinh nghiệm tư vấn&quot;
+Thời lượng: &quot;Khoảng 2 giờ&quot;
+Tài liệu: quy-trinh-tu-van.pdf, danh-sach-san-pham.xlsx
+Ghi chú: &quot;Tập trung kênh Zalo và Facebook Messenger&quot;
+</code></pre>
+<p><strong>24.2. Output — Đề xuất bài giảng:</strong></p>
+<p>AI sinh ra đề xuất đầy đủ hiển thị trên giao diện review:</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│  🤖 AI COURSE BUILDER                                       │
+│                                                             │
+│  Tên bài giảng: Kỹ năng tư vấn online — Ngành mỹ phẩm    │
+│  Topic: Kỹ năng mềm &gt; Tư vấn bán hàng                    │
+│  Tags: tư-vấn-online, mỹ-phẩm, CSKH                      │
+│  Ước tính: 4 chương · 12 bài · 25 câu hỏi · ~2h          │
+│                                                             │
+│  ┌─ Chương 1: Tổng quan tư vấn online ──────────────────┐ │
+│  │  📄 Bài 1.1: Vai trò của tư vấn viên online          │ │
+│  │     Outline: • Tư vấn viên làm gì • KPI chính ...    │ │
+│  │  📄 Bài 1.2: Các kênh tư vấn (Zalo, FB Messenger)   │ │
+│  │  📄 Bài 1.3: Quy trình tiếp nhận khách hàng          │ │
+│  │  📝 Kiểm tra: 5 câu MC · 10 phút · 100% đạt         │ │
+│  │     Q1: Nhiệm vụ chính của tư vấn viên online? ...   │ │
+│  └───────────────────────────────────────────────────────┘ │
+│                                                             │
+│  ┌─ Chương 2: Kỹ năng giao tiếp qua chat ──────────────┐ │
+│  │  📄 Bài 2.1: Nguyên tắc viết tin nhắn chuyên nghiệp │ │
+│  │  📄 Bài 2.2: Xử lý phản hồi tiêu cực                │ │
+│  │  📄 Bài 2.3: Upsell &amp; cross-sell qua chat            │ │
+│  │  📄 Bài 2.4: Template tin nhắn mẫu                   │ │
+│  │  📝 Kiểm tra: 5 câu MC · 10 phút · 100% đạt         │ │
+│  └───────────────────────────────────────────────────────┘ │
+│  ... (chương 3, 4)                                         │
+│                                                             │
+│  [✏️ Chỉnh sửa đề xuất]  [🔄 Sinh lại]  [✅ Tạo bài giảng]│
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>24.3. Chỉnh sửa đề xuất trước khi tạo:</strong></p>
+<p>Admin có thể chỉnh sửa mọi thứ trước khi xác nhận:</p>
+<table>
+<thead>
+<tr>
+<th>Thao tác</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sửa tên bài giảng / chương / bài</td>
+<td>Inline edit</td>
+</tr>
+<tr>
+<td>Thêm / xoá / sắp xếp chương</td>
+<td>Drag-drop, nút thêm/xoá</td>
+</tr>
+<tr>
+<td>Thêm / xoá / sắp xếp bài học</td>
+<td>Drag-drop trong chương</td>
+</tr>
+<tr>
+<td>Sửa outline bài học</td>
+<td>Expand → edit key points</td>
+</tr>
+<tr>
+<td>Sửa / xoá câu hỏi</td>
+<td>Inline edit từng câu, sửa đáp án</td>
+</tr>
+<tr>
+<td>Thêm câu hỏi</td>
+<td>Thêm thủ công hoặc yêu cầu AI sinh thêm</td>
+</tr>
+<tr>
+<td>Đổi topic / tags</td>
+<td>Chọn lại từ danh sách</td>
+</tr>
+<tr>
+<td>Sửa cấu hình test</td>
+<td>Số câu, thời gian, ngưỡng đạt</td>
+</tr>
+<tr>
+<td>Yêu cầu AI sinh lại 1 phần</td>
+<td>&quot;Sinh lại chương 3&quot;, &quot;Thêm 5 câu hỏi chương 2&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>24.4. Khi nhấn &quot;Tạo bài giảng&quot; — hệ thống tự động:</strong></p>
+<pre><code>1. Tạo Topic mới (nếu gợi ý topic chưa tồn tại) → F9
+2. Tạo Tags mới (nếu có)                         → F9
+3. Tạo Câu hỏi vào ngân hàng                     → F8
+4. Tạo Bài kiểm tra vào thư viện                 → F6
+5. Tạo Bài giảng + Chương + Bài học              → F4
+6. Gán bài kiểm tra vào chương                   → F4
+7. Gắn topic + tags cho tất cả entity            → F9
+8. Sinh nội dung HTML cho bài học (nếu có)        → F4
+</code></pre>
+<p>Tất cả được tạo ở trạng thái <code>DRAFT</code> → Admin review từng phần → Publish.</p>
+<p><strong>24.5. Nội dung AI có thể sinh cho bài học:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Loại nội dung</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Outline / Key points</td>
+<td>Các điểm chính cần cover trong bài</td>
+</tr>
+<tr>
+<td>Nội dung HTML</td>
+<td>Bài giảng dạng text đầy đủ (cho bài type <code>LESSON</code>)</td>
+</tr>
+<tr>
+<td>Script video</td>
+<td>Kịch bản gợi ý để admin quay video theo</td>
+</tr>
+<tr>
+<td>Tài liệu tham khảo</td>
+<td>Gợi ý nguồn tham khảo liên quan</td>
+</tr>
+</tbody></table>
+<p><strong>24.6. Sinh lại từng phần:</strong></p>
+<p>Admin có thể yêu cầu AI sinh lại một phần cụ thể mà không ảnh hưởng phần đã chỉnh sửa:</p>
+<ul>
+<li>&quot;Sinh lại chương 3&quot; — chỉ sinh lại chương 3, giữ nguyên chương 1, 2, 4</li>
+<li>&quot;Thêm 1 chương về xử lý khiếu nại&quot; — AI thêm chương mới</li>
+<li>&quot;Sinh thêm 10 câu hỏi cho chương 2&quot; — bổ sung câu hỏi</li>
+<li>&quot;Viết nội dung chi tiết cho bài 1.1&quot; — AI sinh HTML content</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Màn hình AI Course Builder (S57) — form nhập mô tả + upload tài liệu</li>
+<li><input disabled="" type="checkbox"> AI sinh đề xuất bài giảng đầy đủ: chương, bài, câu hỏi, test, topic, tags</li>
+<li><input disabled="" type="checkbox"> Giao diện review đề xuất: xem toàn bộ cấu trúc trước khi tạo</li>
+<li><input disabled="" type="checkbox"> Inline edit: sửa tên, outline, câu hỏi, đáp án trực tiếp trên đề xuất</li>
+<li><input disabled="" type="checkbox"> Drag-drop sắp xếp chương và bài trong đề xuất</li>
+<li><input disabled="" type="checkbox"> Thêm / xoá chương, bài, câu hỏi trong đề xuất</li>
+<li><input disabled="" type="checkbox"> Sinh lại từng phần: chương cụ thể, câu hỏi cụ thể, nội dung cụ thể</li>
+<li><input disabled="" type="checkbox"> Nút &quot;Sinh lại toàn bộ&quot; — tạo đề xuất mới từ đầu</li>
+<li><input disabled="" type="checkbox"> Nút &quot;Tạo bài giảng&quot; — tạo tất cả entity vào hệ thống (DRAFT)</li>
+<li><input disabled="" type="checkbox"> Tự động tạo: Topic, Tags, Câu hỏi, Bài kiểm tra, Bài giảng, Chương, Bài học</li>
+<li><input disabled="" type="checkbox"> AI sử dụng tài liệu upload làm nguồn nội dung (grounded)</li>
+<li><input disabled="" type="checkbox"> AI sinh nội dung HTML cho bài học dạng text (tuỳ chọn)</li>
+<li><input disabled="" type="checkbox"> AI sinh script video gợi ý cho bài học dạng video (tuỳ chọn)</li>
+<li><input disabled="" type="checkbox"> Hỗ trợ tiếng Việt đầy đủ</li>
+<li><input disabled="" type="checkbox"> Giới hạn kích thước tài liệu upload (cấu hình được)</li>
+</ul>
+<hr>
+<h4>F25 — Tenant tự chủ nội dung &amp; Chia sẻ nội dung hệ thống</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>tenant admin</strong>, tôi muốn <strong>tự tạo và quản lý toàn bộ nội dung đào tạo riêng cho tổ chức mình</strong>, để <strong>không phụ thuộc vào admin hệ thống</strong>.</p>
+<p>Là một <strong>admin hệ thống</strong>, tôi muốn <strong>chia sẻ nội dung chuẩn cho các tenant</strong>, để <strong>cung cấp khoá học miễn phí / nội dung dùng chung</strong>.</p>
+</blockquote>
+<p><strong>25.1. Mô hình sở hữu nội dung (Content Ownership):</strong></p>
+<p>Tất cả entity nội dung đều có <code>tenant_id</code> (nullable):</p>
+<table>
+<thead>
+<tr>
+<th>tenant_id</th>
+<th>Nghĩa</th>
+<th>Ai quản lý</th>
+<th>Ai thấy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>null</code></td>
+<td>Nội dung <strong>cấp hệ thống</strong></td>
+<td>Admin (Super Admin)</td>
+<td>Admin + tenant được chia sẻ</td>
+</tr>
+<tr>
+<td><code>&lt;tenant_id&gt;</code></td>
+<td>Nội dung <strong>riêng của tenant</strong></td>
+<td>Tenant admin (Super-mod / Mod)</td>
+<td>Chỉ tenant đó + Admin (read)</td>
+</tr>
+</tbody></table>
+<p>Entity áp dụng: <strong>Curriculum, Chapter, Lesson, Test, Question, Topic, Tag, Course, Exam</strong></p>
+<p><strong>25.2. Chia sẻ nội dung hệ thống → Tenant (Admin only):</strong></p>
+<pre><code>Admin tạo nội dung hệ thống (tenant_id = null)
+  → Vào &quot;Chia sẻ&quot; → chọn tenant nhận (multi-select) hoặc &quot;Tất cả tenant&quot;
+  → Tenant thấy nội dung trong thư viện, đánh dấu [Shared]
+  → Nội dung shared = READ-ONLY (không sửa, không xoá)
+  → Tenant có thể &quot;Clone&quot; → tạo bản sao riêng (tenant_id = tenant đó)
+</code></pre>
+<p><strong>Entity chia sẻ:</strong> <code>SharedContent</code></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>content_type</td>
+<td>Enum</td>
+<td><code>CURRICULUM</code> / <code>TEST</code> / <code>QUESTION</code> / <code>COURSE</code> / <code>EXAM</code></td>
+</tr>
+<tr>
+<td>content_id</td>
+<td>ObjectId</td>
+<td>ID entity được chia sẻ</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Tenant nhận (null = tất cả tenant)</td>
+</tr>
+<tr>
+<td>shared_by</td>
+<td>ObjectId</td>
+<td>Admin đã chia sẻ</td>
+</tr>
+<tr>
+<td>shared_at</td>
+<td>Date</td>
+<td>Ngày chia sẻ</td>
+</tr>
+</tbody></table>
+<p><strong>25.3. Clone nội dung shared về tenant:</strong></p>
+<pre><code>Tenant admin thấy nội dung [Shared] trong thư viện
+  → Nhấn &quot;Clone&quot; / &quot;Tạo bản sao&quot;
+  → Hệ thống deep-copy toàn bộ entity + relations:
+    - Curriculum → copy chapters, lessons, gán test
+    - Test → copy, gán câu hỏi (reference hoặc clone)
+    - Question → copy nội dung + đáp án
+  → Bản sao có tenant_id = tenant hiện tại, cloned_from = ID gốc
+  → Tenant admin có toàn quyền sửa bản sao
+</code></pre>
+<p><strong>Deep clone cho Curriculum:</strong></p>
+<ul>
+<li>Clone curriculum → tạo curriculum mới (tenant_id = current tenant)</li>
+<li>Clone tất cả chapters → gán vào curriculum mới</li>
+<li>Clone tất cả lessons → gán vào chapters mới</li>
+<li>Tests trong chapters: giữ reference nếu test cũng được shared, hoặc clone test</li>
+<li>Topic: gán về topic của tenant (cần tenant admin chọn lại topic)</li>
+</ul>
+<p><strong>25.4. Hiển thị trong thư viện (Tenant view):</strong></p>
+<p>Khi tenant admin vào Thư viện Bài giảng, họ thấy:</p>
+<ul>
+<li><strong>Tab/Filter &quot;Của tôi&quot;:</strong> nội dung tenant tự tạo + bản clone</li>
+<li><strong>Tab/Filter &quot;Được chia sẻ&quot;:</strong> nội dung admin chia sẻ (read-only, có nút Clone)</li>
+<li>Badge phân biệt: <code>[Tenant]</code> / <code>[Shared]</code> / <code>[Cloned]</code></li>
+</ul>
+<p><strong>25.5. Admin xem nội dung tenant:</strong></p>
+<p>Admin (Super Admin) có thể:</p>
+<ul>
+<li>Xem danh sách tất cả tenant + nội dung của từng tenant (dropdown chọn tenant)</li>
+<li>Nội dung tenant = <strong>read-only</strong> từ góc nhìn admin (không sửa/xoá)</li>
+<li>Mục đích: giám sát chất lượng, hỗ trợ tenant</li>
+</ul>
+<p><strong>25.6. Giao diện Admin Dashboard chung:</strong></p>
+<p>Một Dashboard, phân quyền menu:</p>
+<ul>
+<li><strong>Admin login:</strong> sidebar đầy đủ (Thư viện + Đào tạo + AI + Quản lý Tenant/Users + Báo cáo + Hệ thống)</li>
+<li><strong>Tenant admin login:</strong> sidebar chỉ hiện menu được phép (Thư viện + Đào tạo + AI + Quản lý nhân sự + Báo cáo)</li>
+<li>Header hiển thị tenant context: <code>[Tên Tenant]</code> — giúp phân biệt đang làm việc ở scope nào</li>
+<li>Admin có thêm dropdown &quot;Xem tenant&quot; để xem nội dung của tenant cụ thể</li>
+</ul>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Tất cả entity nội dung có <code>tenant_id</code> (nullable) để phân tách dữ liệu</li>
+<li><input disabled="" type="checkbox"> Tenant admin CRUD toàn bộ nội dung trong scope tenant mình</li>
+<li><input disabled="" type="checkbox"> Data isolation: tenant A không thấy/truy cập data tenant B</li>
+<li><input disabled="" type="checkbox"> Admin tạo nội dung hệ thống (<code>tenant_id = null</code>)</li>
+<li><input disabled="" type="checkbox"> Admin chia sẻ nội dung cho 1 hoặc nhiều tenant (hoặc tất cả)</li>
+<li><input disabled="" type="checkbox"> Nội dung shared hiển thị read-only ở phía tenant, đánh dấu [Shared]</li>
+<li><input disabled="" type="checkbox"> Clone nội dung shared → tạo bản sao thuộc tenant, có toàn quyền sửa</li>
+<li><input disabled="" type="checkbox"> Deep clone Curriculum: copy curriculum + chapters + lessons + tests + questions</li>
+<li><input disabled="" type="checkbox"> Clone giữ <code>cloned_from</code> để traceability</li>
+<li><input disabled="" type="checkbox"> Admin Dashboard: menu sidebar filter theo role (admin vs tenant admin)</li>
+<li><input disabled="" type="checkbox"> Header hiển thị tenant context</li>
+<li><input disabled="" type="checkbox"> Admin có thể xem (read-only) nội dung của từng tenant</li>
+<li><input disabled="" type="checkbox"> CASL conditions auto-inject <code>tenant_id</code> cho tenant admin</li>
+</ul>
+<hr>
+<h4>F26 — Chứng chỉ nâng cao (Phase 3)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>admin</strong>, tôi muốn <strong>quản lý chứng chỉ chuyên nghiệp</strong> với mã số, thời hạn, xác thực công khai, để <strong>chứng chỉ có giá trị thực tế và chống giả mạo</strong>.</p>
+</blockquote>
+<p><strong>26.1. Template chứng chỉ nâng cao:</strong></p>
+<p>Admin thiết kế template với nhiều tuỳ chỉnh hơn Phase 2:</p>
+<table>
+<thead>
+<tr>
+<th>Merge field bổ sung</th>
+<th>Giá trị</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>{certificate_id}</code></td>
+<td>Mã chứng chỉ duy nhất (format: <code>CERT-{tenant_code}-{YYMMDD}-{seq}</code>)</td>
+</tr>
+<tr>
+<td><code>{qr_code}</code></td>
+<td>QR code chứa link xác thực công khai</td>
+</tr>
+<tr>
+<td><code>{expiry_date}</code></td>
+<td>Ngày hết hạn (nếu có)</td>
+</tr>
+<tr>
+<td><code>{score}</code></td>
+<td>Điểm trung bình các bài kiểm tra</td>
+</tr>
+<tr>
+<td><code>{total_hours}</code></td>
+<td>Tổng giờ học thực tế</td>
+</tr>
+<tr>
+<td><code>{instructor_name}</code></td>
+<td>Người phụ trách khoá học</td>
+</tr>
+<tr>
+<td><code>{department}</code></td>
+<td>Phòng ban học viên</td>
+</tr>
+<tr>
+<td><code>{job_title}</code></td>
+<td>Chức danh học viên</td>
+</tr>
+</tbody></table>
+<p><strong>26.2. Thời hạn chứng chỉ (Certificate Expiry):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Cấu hình</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Không hết hạn</td>
+<td>Mặc định — chứng chỉ vĩnh viễn</td>
+</tr>
+<tr>
+<td>Có thời hạn</td>
+<td>Admin set <code>validity_months</code> trên Course (vd: 12 tháng)</td>
+</tr>
+<tr>
+<td>Sắp hết hạn</td>
+<td>Gửi thông báo trước 30 ngày</td>
+</tr>
+<tr>
+<td>Đã hết hạn</td>
+<td>Trạng thái <code>EXPIRED</code>, badge đỏ trên profile</td>
+</tr>
+<tr>
+<td>Gia hạn</td>
+<td>Học viên hoàn thành lại khoá → cấp chứng chỉ mới, reset thời hạn</td>
+</tr>
+</tbody></table>
+<p><strong>26.3. Xác thực chứng chỉ công khai (Public Verify):</strong></p>
+<pre><code>URL: /verify/{certificate_id}
+- Trang public (không cần đăng nhập)
+- Hiển thị: tên học viên, khoá học, ngày cấp, trạng thái (Valid / Expired / Revoked)
+- QR code trên chứng chỉ PDF trỏ về URL này
+</code></pre>
+<p><strong>26.4. Thu hồi chứng chỉ (Revoke):</strong></p>
+<p>Admin / Tenant admin có quyền thu hồi chứng chỉ đã cấp:</p>
+<ul>
+<li>Trạng thái chuyển sang <code>REVOKED</code></li>
+<li>Trang verify hiển thị &quot;Chứng chỉ đã bị thu hồi&quot;</li>
+<li>Gửi thông báo cho học viên</li>
+<li>Lý do thu hồi được lưu log</li>
+</ul>
+<p><strong>26.5. Chứng chỉ kỳ thi:</strong></p>
+<p>Ngoài chứng chỉ khoá học, kỳ thi (Exam) cũng có thể cấp chứng chỉ:</p>
+<table>
+<thead>
+<tr>
+<th>Điều kiện</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Đạt kỳ thi</td>
+<td>Điểm ≥ <code>passing_score</code></td>
+</tr>
+<tr>
+<td>Kỳ thi có bật chứng chỉ</td>
+<td><code>exam.is_certification = true</code></td>
+</tr>
+<tr>
+<td>Template riêng</td>
+<td>Mỗi kỳ thi có template chứng chỉ riêng</td>
+</tr>
+</tbody></table>
+<p><strong>Entity: Certificate</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>certificate_id</td>
+<td>String</td>
+<td>Mã duy nhất <code>CERT-{tenant}-{date}-{seq}</code></td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>ObjectId</td>
+<td>Học viên</td>
+</tr>
+<tr>
+<td>source_type</td>
+<td>Enum</td>
+<td><code>COURSE</code> / <code>EXAM</code></td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>ObjectId</td>
+<td>ID khoá học hoặc kỳ thi</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Tenant</td>
+</tr>
+<tr>
+<td>issued_at</td>
+<td>Date</td>
+<td>Ngày cấp</td>
+</tr>
+<tr>
+<td>expires_at</td>
+<td>Date</td>
+<td>Ngày hết hạn (null = vĩnh viễn)</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Enum</td>
+<td><code>ACTIVE</code> / <code>EXPIRED</code> / <code>REVOKED</code></td>
+</tr>
+<tr>
+<td>revoked_at</td>
+<td>Date</td>
+<td>Ngày thu hồi</td>
+</tr>
+<tr>
+<td>revoked_reason</td>
+<td>String</td>
+<td>Lý do thu hồi</td>
+</tr>
+<tr>
+<td>score</td>
+<td>Number</td>
+<td>Điểm (nếu có)</td>
+</tr>
+<tr>
+<td>total_hours</td>
+<td>Number</td>
+<td>Tổng giờ học</td>
+</tr>
+<tr>
+<td>pdf_url</td>
+<td>String</td>
+<td>Link file PDF đã generate</td>
+</tr>
+<tr>
+<td>template_id</td>
+<td>ObjectId</td>
+<td>Template đã dùng</td>
+</tr>
+</tbody></table>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Mã chứng chỉ unique (CERT-XXX-YYMMDD-NNN)</li>
+<li><input disabled="" type="checkbox"> QR code trên PDF trỏ về trang verify</li>
+<li><input disabled="" type="checkbox"> Trang <code>/verify/{id}</code> public, hiển thị trạng thái Valid/Expired/Revoked</li>
+<li><input disabled="" type="checkbox"> Cấu hình thời hạn chứng chỉ per course/exam (validity_months)</li>
+<li><input disabled="" type="checkbox"> Thông báo trước 30 ngày khi sắp hết hạn</li>
+<li><input disabled="" type="checkbox"> Auto chuyển trạng thái EXPIRED khi quá hạn</li>
+<li><input disabled="" type="checkbox"> Gia hạn: hoàn thành lại khoá → cấp mới, reset thời hạn</li>
+<li><input disabled="" type="checkbox"> Thu hồi chứng chỉ (admin) + ghi lý do + thông báo học viên</li>
+<li><input disabled="" type="checkbox"> Chứng chỉ kỳ thi: cấp khi đạt exam có <code>is_certification = true</code></li>
+<li><input disabled="" type="checkbox"> Merge fields mở rộng: certificate_id, qr_code, expiry_date, score, total_hours</li>
+<li><input disabled="" type="checkbox"> Danh sách chứng chỉ đã cấp trên admin (filter theo tenant, khoá, trạng thái)</li>
+</ul>
+<hr>
+<h4>F27 — Huy hiệu &amp; Thành tích (Phase 3)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người học</strong>, tôi muốn <strong>nhận huy hiệu khi đạt các cột mốc học tập</strong>, để <strong>có động lực học tập và thể hiện thành tích</strong>.</p>
+<p>Là một <strong>admin</strong>, tôi muốn <strong>định nghĩa các loại huy hiệu và điều kiện nhận</strong>, để <strong>khuyến khích hành vi học tập mong muốn</strong>.</p>
+</blockquote>
+<p><strong>27.1. Loại huy hiệu (Badge Types):</strong></p>
+<p>Hệ thống có 2 loại huy hiệu:</p>
+<table>
+<thead>
+<tr>
+<th>Loại</th>
+<th>Mô tả</th>
+<th>Ví dụ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>System badge</strong></td>
+<td>Hệ thống định nghĩa sẵn, trigger tự động</td>
+<td>Hoàn thành khoá đầu tiên, Streak 7 ngày</td>
+</tr>
+<tr>
+<td><strong>Custom badge</strong></td>
+<td>Admin/Tenant admin tự tạo, gán thủ công hoặc tự động</td>
+<td>Nhân viên xuất sắc Q1, Top performer</td>
+</tr>
+</tbody></table>
+<p><strong>27.2. Danh sách huy hiệu hệ thống mặc định:</strong></p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Huy hiệu</th>
+<th>Icon</th>
+<th>Trigger</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B1</td>
+<td>Khởi đầu</td>
+<td>🌱</td>
+<td>Hoàn thành khoá học đầu tiên</td>
+<td>Chào mừng bước chân đầu tiên</td>
+</tr>
+<tr>
+<td>B2</td>
+<td>Chăm chỉ</td>
+<td>📚</td>
+<td>Hoàn thành 5 khoá học</td>
+<td>Nỗ lực không ngừng</td>
+</tr>
+<tr>
+<td>B3</td>
+<td>Học giả</td>
+<td>🎓</td>
+<td>Hoàn thành 10 khoá học</td>
+<td>Chinh phục tri thức</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>Bậc thầy</td>
+<td>👑</td>
+<td>Hoàn thành 20 khoá học</td>
+<td>Đỉnh cao học tập</td>
+</tr>
+<tr>
+<td>B5</td>
+<td>Xuất sắc</td>
+<td>⭐</td>
+<td>Đạt 100% điểm trong 1 bài kiểm tra</td>
+<td>Không sai một câu</td>
+</tr>
+<tr>
+<td>B6</td>
+<td>Hoàn hảo</td>
+<td>💎</td>
+<td>Đạt 100% điểm trong 5 bài kiểm tra</td>
+<td>Sự hoàn hảo nhất quán</td>
+</tr>
+<tr>
+<td>B7</td>
+<td>Kiên trì</td>
+<td>🔥</td>
+<td>Học liên tục 7 ngày (streak)</td>
+<td>Không ngày nào bỏ lỡ</td>
+</tr>
+<tr>
+<td>B8</td>
+<td>Bền bỉ</td>
+<td>💪</td>
+<td>Học liên tục 30 ngày (streak)</td>
+<td>Kỷ luật tạo nên thành công</td>
+</tr>
+<tr>
+<td>B9</td>
+<td>Nhanh nhẹn</td>
+<td>⚡</td>
+<td>Hoàn thành khoá trước deadline ≥ 7 ngày</td>
+<td>Luôn đi trước thời hạn</td>
+</tr>
+<tr>
+<td>B10</td>
+<td>Thử thách</td>
+<td>🏆</td>
+<td>Đạt 3 kỳ thi</td>
+<td>Chinh phục kỳ thi</td>
+</tr>
+<tr>
+<td>B11</td>
+<td>Tiên phong</td>
+<td>🚀</td>
+<td>Là người đầu tiên hoàn thành 1 khoá mới</td>
+<td>Người dẫn đầu</td>
+</tr>
+<tr>
+<td>B12</td>
+<td>Đa năng</td>
+<td>🌟</td>
+<td>Hoàn thành khoá ở ≥ 3 topic khác nhau</td>
+<td>Kiến thức đa dạng</td>
+</tr>
+</tbody></table>
+<p><strong>27.3. Cơ chế trigger huy hiệu:</strong></p>
+<pre><code>Event xảy ra (hoàn thành khoá, nộp bài, đăng nhập hàng ngày...)
+  → Badge Engine kiểm tra tất cả badge rules của user
+  → Nếu thoả điều kiện + chưa nhận badge này
+    → Tạo UserBadge record
+    → Gửi thông báo (in-app + email optional)
+    → Hiển thị popup chúc mừng (client-side)
+  → Nếu đã nhận rồi → bỏ qua
+</code></pre>
+<p><strong>Timing kiểm tra badge:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Badges cần check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>course.completed</code></td>
+<td>B1, B2, B3, B4, B9, B11, B12</td>
+</tr>
+<tr>
+<td><code>test.submitted</code> (score = 100%)</td>
+<td>B5, B6</td>
+</tr>
+<tr>
+<td><code>exam.passed</code></td>
+<td>B10</td>
+</tr>
+<tr>
+<td><code>user.daily_login</code> / <code>lesson.completed</code></td>
+<td>B7, B8 (streak)</td>
+</tr>
+</tbody></table>
+<p><strong>27.4. Streak — cách tính:</strong></p>
+<ul>
+<li>Mỗi ngày user hoàn thành ≥ 1 lesson hoặc ≥ 1 test → ngày đó tính là &quot;ngày học&quot;</li>
+<li>Streak = số ngày học liên tục (không đứt quãng)</li>
+<li>Reset về 0 nếu bỏ 1 ngày (tính theo timezone tenant)</li>
+<li>Lưu <code>current_streak</code> và <code>longest_streak</code> trên UserTenant</li>
+</ul>
+<p><strong>27.5. Huy hiệu tuỳ chỉnh (Custom Badge):</strong></p>
+<p>Admin / Tenant admin có thể tạo huy hiệu riêng:</p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tên huy hiệu</td>
+<td>Tên hiển thị</td>
+</tr>
+<tr>
+<td>Icon</td>
+<td>Upload ảnh hoặc chọn emoji</td>
+</tr>
+<tr>
+<td>Mô tả</td>
+<td>Giải thích ý nghĩa</td>
+</tr>
+<tr>
+<td>Trigger</td>
+<td><code>MANUAL</code> (admin gán tay) hoặc <code>AUTO</code> (theo rule)</td>
+</tr>
+<tr>
+<td>Rule (nếu auto)</td>
+<td>Điều kiện: hoàn thành khoá cụ thể, đạt điểm X trong kỳ thi Y...</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td><code>SYSTEM</code> (tất cả tenant) hoặc <code>TENANT</code> (chỉ tenant tạo)</td>
+</tr>
+</tbody></table>
+<p><strong>27.6. Hiển thị:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Hiển thị</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile (S22) — Góc học tập</td>
+<td>Grid huy hiệu: earned (full color) vs locked (grey + khoá icon + tooltip điều kiện)</td>
+</tr>
+<tr>
+<td>Trang chủ (S10) — Thành tích</td>
+<td>Top 3 huy hiệu mới nhận</td>
+</tr>
+<tr>
+<td>Popup chúc mừng</td>
+<td>Khi vừa nhận badge → toast/modal animation</td>
+</tr>
+<tr>
+<td>Admin — Báo cáo</td>
+<td>Thống kê badge đã cấp, top users</td>
+</tr>
+</tbody></table>
+<p><strong>Entity: Badge</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>code</td>
+<td>String</td>
+<td>Mã badge (B1, B2... hoặc custom)</td>
+</tr>
+<tr>
+<td>name</td>
+<td>String</td>
+<td>Tên huy hiệu</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>Mô tả / ý nghĩa</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>String</td>
+<td>Emoji hoặc URL ảnh</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Enum</td>
+<td><code>SYSTEM</code> / <code>CUSTOM</code></td>
+</tr>
+<tr>
+<td>trigger_type</td>
+<td>Enum</td>
+<td><code>AUTO</code> / <code>MANUAL</code></td>
+</tr>
+<tr>
+<td>trigger_rule</td>
+<td>Object</td>
+<td>Điều kiện trigger (event, threshold, course_id...)</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>null = system, ObjectId = tenant-specific</td>
+</tr>
+<tr>
+<td>is_active</td>
+<td>Boolean</td>
+<td>Bật/tắt badge</td>
+</tr>
+</tbody></table>
+<p><strong>Entity: UserBadge</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user_id</td>
+<td>ObjectId</td>
+<td>Học viên</td>
+</tr>
+<tr>
+<td>badge_id</td>
+<td>ObjectId</td>
+<td>Badge đã nhận</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Tenant context</td>
+</tr>
+<tr>
+<td>earned_at</td>
+<td>Date</td>
+<td>Ngày nhận</td>
+</tr>
+<tr>
+<td>source_type</td>
+<td>Enum</td>
+<td><code>COURSE</code> / <code>EXAM</code> / <code>TEST</code> / <code>STREAK</code> / <code>MANUAL</code></td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>ObjectId</td>
+<td>ID khoá/kỳ thi trigger (null nếu manual)</td>
+</tr>
+<tr>
+<td>awarded_by</td>
+<td>ObjectId</td>
+<td>Admin gán (nếu manual)</td>
+</tr>
+</tbody></table>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 12 huy hiệu hệ thống mặc định (B1–B12) với trigger tự động</li>
+<li><input disabled="" type="checkbox"> Badge Engine: check điều kiện khi event xảy ra (course.completed, test.submitted, exam.passed)</li>
+<li><input disabled="" type="checkbox"> Streak tracking: current_streak, longest_streak, reset khi bỏ 1 ngày</li>
+<li><input disabled="" type="checkbox"> Gửi thông báo in-app khi nhận huy hiệu mới</li>
+<li><input disabled="" type="checkbox"> Profile S22: grid huy hiệu earned (color) vs locked (grey + điều kiện)</li>
+<li><input disabled="" type="checkbox"> Trang chủ S10: hiển thị huy hiệu mới nhận</li>
+<li><input disabled="" type="checkbox"> Custom badge: admin/tenant admin tạo huy hiệu riêng (manual hoặc auto rule)</li>
+<li><input disabled="" type="checkbox"> Custom badge tenant: scope trong tenant, không ảnh hưởng tenant khác</li>
+<li><input disabled="" type="checkbox"> Admin gán huy hiệu thủ công cho user</li>
+<li><input disabled="" type="checkbox"> Không cấp trùng: 1 user chỉ nhận 1 badge cùng loại (trong cùng tenant)</li>
+</ul>
+<hr>
+<h4>F28 — Gamification: Điểm, Level &amp; Leaderboard (Phase 4)</h4>
+<p><strong>User story:</strong></p>
+<blockquote>
+<p>Là một <strong>người học</strong>, tôi muốn <strong>tích luỹ điểm kinh nghiệm và thăng hạng khi học tập</strong>, để <strong>có động lực cạnh tranh lành mạnh và duy trì thói quen học</strong>.</p>
+<p>Là một <strong>tenant admin</strong>, tôi muốn <strong>cấu hình hệ thống gamification phù hợp với văn hoá tổ chức</strong>, để <strong>tăng tỷ lệ hoàn thành khoá học</strong>.</p>
+</blockquote>
+<p><strong>28.1. Hệ thống điểm (XP — Experience Points):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Hành động</th>
+<th>Điểm mặc định</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hoàn thành 1 lesson</td>
+<td>+10 XP</td>
+<td>Mỗi lesson chỉ tính 1 lần</td>
+</tr>
+<tr>
+<td>Hoàn thành 1 chapter</td>
+<td>+25 XP</td>
+<td>Bonus khi xong cả chương</td>
+</tr>
+<tr>
+<td>Hoàn thành 1 khoá học</td>
+<td>+100 XP</td>
+<td>Bonus lớn</td>
+</tr>
+<tr>
+<td>Đạt bài kiểm tra (lần đầu)</td>
+<td>+50 XP</td>
+<td>Chỉ lần đầu đạt</td>
+</tr>
+<tr>
+<td>Đạt 100% bài kiểm tra</td>
+<td>+30 XP</td>
+<td>Bonus thêm cho perfect score</td>
+</tr>
+<tr>
+<td>Đạt kỳ thi</td>
+<td>+200 XP</td>
+<td>Kỳ thi có giá trị cao hơn</td>
+</tr>
+<tr>
+<td>Streak 7 ngày</td>
+<td>+50 XP</td>
+<td>Bonus streak tuần</td>
+</tr>
+<tr>
+<td>Streak 30 ngày</td>
+<td>+200 XP</td>
+<td>Bonus streak tháng</td>
+</tr>
+<tr>
+<td>Nhận huy hiệu</td>
+<td>+20 XP</td>
+<td>Mỗi badge mới</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Tenant admin có thể tuỳ chỉnh điểm cho từng hành động. Giá trị trên là mặc định hệ thống.</p>
+</blockquote>
+<p><strong>28.2. Level (Cấp độ):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Tên</th>
+<th>XP cần</th>
+<th>XP tích luỹ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Tân binh</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Học viên</td>
+<td>200</td>
+<td>200</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sinh viên</td>
+<td>350</td>
+<td>550</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Cử nhân</td>
+<td>500</td>
+<td>1,050</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Thạc sĩ</td>
+<td>700</td>
+<td>1,750</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Tiến sĩ</td>
+<td>1,000</td>
+<td>2,750</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Giáo sư</td>
+<td>1,500</td>
+<td>4,250</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Viện sĩ</td>
+<td>2,000</td>
+<td>6,250</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Bậc thầy</td>
+<td>3,000</td>
+<td>9,250</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Huyền thoại</td>
+<td>5,000</td>
+<td>14,250</td>
+</tr>
+</tbody></table>
+<ul>
+<li>XP tăng dần theo cấp số nhân (khó hơn khi level cao)</li>
+<li>Level chỉ tăng, không giảm (XP tích luỹ vĩnh viễn)</li>
+<li>Tenant admin có thể tuỳ chỉnh bảng level (tên, số XP)</li>
+<li>Lên level → thông báo + animation chúc mừng</li>
+</ul>
+<p><strong>28.3. Leaderboard (Bảng xếp hạng):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Loại</th>
+<th>Scope</th>
+<th>Reset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tuần</td>
+<td>Tenant</td>
+<td>Mỗi thứ Hai 00:00</td>
+</tr>
+<tr>
+<td>Tháng</td>
+<td>Tenant</td>
+<td>Ngày 1 hàng tháng</td>
+</tr>
+<tr>
+<td>Tổng</td>
+<td>Tenant</td>
+<td>Không reset</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Xếp hạng theo XP kiếm được trong khoảng thời gian (tuần/tháng) hoặc tổng tích luỹ</li>
+<li>Top 10 hiển thị trên trang chủ (S10)</li>
+<li>Filter theo phòng ban (leaderboard nội bộ phòng)</li>
+<li>Tenant admin có thể bật/tắt leaderboard</li>
+</ul>
+<p><strong>28.4. Cấu hình Gamification per Tenant:</strong></p>
+<p>Tenant admin có thể tuỳ chỉnh:</p>
+<table>
+<thead>
+<tr>
+<th>Cấu hình</th>
+<th>Mặc định</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bật/tắt gamification</td>
+<td>Tắt</td>
+<td>Tenant tự quyết có dùng hay không</td>
+</tr>
+<tr>
+<td>Bật/tắt leaderboard</td>
+<td>Tắt</td>
+<td>Có thể bật XP/level nhưng tắt leaderboard</td>
+</tr>
+<tr>
+<td>Bật/tắt streak</td>
+<td>Bật</td>
+<td>Streak tracking</td>
+</tr>
+<tr>
+<td>XP per action</td>
+<td>Bảng mặc định</td>
+<td>Tuỳ chỉnh điểm cho từng hành động</td>
+</tr>
+<tr>
+<td>Level table</td>
+<td>Bảng mặc định</td>
+<td>Tuỳ chỉnh tên level và XP cần</td>
+</tr>
+<tr>
+<td>Leaderboard visibility</td>
+<td>Tất cả</td>
+<td>Tất cả / Chỉ top 10 / Chỉ admin</td>
+</tr>
+</tbody></table>
+<p><strong>28.5. Hiển thị Gamification:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Nội dung</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Trang chủ (S10)</td>
+<td>XP bar (current/next level), level badge, leaderboard tuần (top 5)</td>
+</tr>
+<tr>
+<td>Profile (S22)</td>
+<td>Tổng XP, level hiện tại, progress bar to next level, lịch sử XP</td>
+</tr>
+<tr>
+<td>Header (client)</td>
+<td>Level badge nhỏ cạnh avatar</td>
+</tr>
+<tr>
+<td>After action</td>
+<td>Toast &quot;+10 XP&quot; khi hoàn thành lesson/test</td>
+</tr>
+<tr>
+<td>Level up</td>
+<td>Modal chúc mừng lên level mới</td>
+</tr>
+</tbody></table>
+<p><strong>Entity: UserXP</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user_id</td>
+<td>ObjectId</td>
+<td>Học viên</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Tenant</td>
+</tr>
+<tr>
+<td>total_xp</td>
+<td>Number</td>
+<td>Tổng XP tích luỹ</td>
+</tr>
+<tr>
+<td>current_level</td>
+<td>Number</td>
+<td>Level hiện tại</td>
+</tr>
+<tr>
+<td>current_streak</td>
+<td>Number</td>
+<td>Streak hiện tại (ngày)</td>
+</tr>
+<tr>
+<td>longest_streak</td>
+<td>Number</td>
+<td>Streak dài nhất</td>
+</tr>
+<tr>
+<td>last_active_date</td>
+<td>Date</td>
+<td>Ngày học gần nhất (tính streak)</td>
+</tr>
+</tbody></table>
+<p><strong>Entity: XPTransaction</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user_id</td>
+<td>ObjectId</td>
+<td>Học viên</td>
+</tr>
+<tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Tenant</td>
+</tr>
+<tr>
+<td>xp_amount</td>
+<td>Number</td>
+<td>Số XP (+/-)</td>
+</tr>
+<tr>
+<td>action</td>
+<td>Enum</td>
+<td><code>LESSON_COMPLETE</code> / <code>COURSE_COMPLETE</code> / <code>TEST_PASS</code> / <code>EXAM_PASS</code> / <code>STREAK</code> / <code>BADGE</code> / <code>ADMIN_ADJUST</code></td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>ObjectId</td>
+<td>ID lesson/course/test/exam trigger</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>Date</td>
+<td>Timestamp</td>
+</tr>
+</tbody></table>
+<p><strong>Entity: GamificationConfig</strong></p>
+<table>
+<thead>
+<tr>
+<th>Trường</th>
+<th>Kiểu</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tenant_id</td>
+<td>ObjectId</td>
+<td>Tenant</td>
+</tr>
+<tr>
+<td>is_enabled</td>
+<td>Boolean</td>
+<td>Bật/tắt gamification</td>
+</tr>
+<tr>
+<td>leaderboard_enabled</td>
+<td>Boolean</td>
+<td>Bật/tắt leaderboard</td>
+</tr>
+<tr>
+<td>streak_enabled</td>
+<td>Boolean</td>
+<td>Bật/tắt streak</td>
+</tr>
+<tr>
+<td>xp_rules</td>
+<td>Object</td>
+<td>Map action → XP amount</td>
+</tr>
+<tr>
+<td>level_table</td>
+<td>Array</td>
+<td>[{level, name, xp_required}]</td>
+</tr>
+<tr>
+<td>leaderboard_visibility</td>
+<td>Enum</td>
+<td><code>ALL</code> / <code>TOP10</code> / <code>ADMIN_ONLY</code></td>
+</tr>
+</tbody></table>
+<p><strong>Acceptance criteria:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> Tính XP khi hoàn thành lesson, chapter, course, test, exam, streak, badge</li>
+<li><input disabled="" type="checkbox"> Mỗi action chỉ tính XP 1 lần (idempotent)</li>
+<li><input disabled="" type="checkbox"> Level tự động tăng khi đủ XP, thông báo + animation</li>
+<li><input disabled="" type="checkbox"> Leaderboard tuần/tháng/tổng, scope per tenant</li>
+<li><input disabled="" type="checkbox"> Leaderboard filter theo phòng ban</li>
+<li><input disabled="" type="checkbox"> Tenant admin bật/tắt toàn bộ gamification</li>
+<li><input disabled="" type="checkbox"> Tenant admin tuỳ chỉnh XP rules và level table</li>
+<li><input disabled="" type="checkbox"> XP transaction log (audit trail)</li>
+<li><input disabled="" type="checkbox"> Hiển thị XP bar + level trên profile và trang chủ</li>
+<li><input disabled="" type="checkbox"> Toast &quot;+X XP&quot; sau mỗi hành động tính điểm</li>
+<li><input disabled="" type="checkbox"> Gamification tắt mặc định — tenant tự bật khi muốn</li>
+</ul>
+<hr>
+<hr>
+<h2>3. Yêu cầu phi chức năng</h2>
+<h3>3.1. Performance</h3>
+<ul>
+<li>Response time API: &lt; 500ms cho 95% request</li>
+<li>Rate limit: 1500 requests / 5 phút / IP</li>
+<li>Request body limit: 50MB</li>
+<li>Pagination mặc định: 10 items/page, tối đa 100</li>
+</ul>
+<h3>3.2. Security</h3>
+<ul>
+<li>Auth: token-based (JWT hoặc tương đương)</li>
+<li>Password: hash an toàn (bcrypt, argon2, hoặc tương đương)</li>
+<li>CORS: chỉ cho phép domain hợp lệ</li>
+<li>Soft delete: không xoá vĩnh viễn dữ liệu</li>
+<li>Attribute-based access control per role (CASL hoặc tương đương)</li>
+</ul>
+<h3>3.3. Compatibility</h3>
+<ul>
+<li>Web: responsive, SPA</li>
+<li>Browser: Chrome, Safari, Firefox (modern versions)</li>
+<li>Mobile: deep link support (chưa có app trong scope)</li>
+</ul>
+<h3>3.4. Availability</h3>
+<ul>
+<li>Logging: structured logging với daily rotation</li>
+<li>Alert: gửi thông báo lỗi qua kênh chat (optional)</li>
+</ul>
+<h3>3.5. Ngôn ngữ</h3>
+<ul>
+<li>Giao diện: Tiếng Việt (primary), English (partial)</li>
+<li>i18n: hỗ trợ đa ngôn ngữ với locale files</li>
+</ul>
+<hr>
+<h2>4. Giao diện &amp; UX</h2>
+<blockquote>
+<p><strong>Design System:</strong> IBM Carbon Design System — tham chiếu <code>DESIGN.md</code> cho tokens, colors, typography, components.</p>
+</blockquote>
+<h3>4.1. Screen / Page list</h3>
+<h4>Auth &amp; Onboarding</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tên màn</th>
+<th>Path</th>
+<th>Layout</th>
+<th>Roles</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S1</td>
+<td>Đăng nhập</td>
+<td><code>/login</code></td>
+<td>Default</td>
+<td>Public</td>
+<td>Form email + password, link quên mật khẩu, link đăng ký</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Đăng ký tài khoản</td>
+<td><code>/register</code></td>
+<td>Default</td>
+<td>Public</td>
+<td>Form email → gửi OTP → nhập OTP → tạo password</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Quên mật khẩu</td>
+<td><code>/forgot-password</code></td>
+<td>Default</td>
+<td>Public</td>
+<td>Nhập email → OTP → đặt password mới</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>Đổi mật khẩu lần đầu</td>
+<td><code>/change-password</code></td>
+<td>Default</td>
+<td>All</td>
+<td>Bắt buộc khi <code>is_changed_password = false</code></td>
+</tr>
+<tr>
+<td>S5</td>
+<td>Chọn Tenant</td>
+<td><code>/select-tenant</code></td>
+<td>Default</td>
+<td>User+</td>
+<td>Danh sách tenant user thuộc về → chọn để vào context</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Nhận lời mời Tenant</td>
+<td><code>/invitation/:token</code></td>
+<td>Default</td>
+<td>Public</td>
+<td>Xác nhận tham gia tenant từ email invitation</td>
+</tr>
+</tbody></table>
+<h4>Client (Học viên)</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tên màn</th>
+<th>Path</th>
+<th>Layout</th>
+<th>Roles</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S10</td>
+<td>Trang chủ</td>
+<td><code>/</code></td>
+<td>Client</td>
+<td>User</td>
+<td>Hero banner (greeting + search + stats) + tiếp tục học + khoá được giao + khám phá chủ đề + khoá nổi bật + khoá mới + thành tích</td>
+</tr>
+<tr>
+<td>S11</td>
+<td>Khoá học của tôi</td>
+<td><code>/courses</code></td>
+<td>Client</td>
+<td>User</td>
+<td>Tabs (Tất cả/Đang học/Hoàn thành), progress bar, trạng thái, deadline, chứng chỉ</td>
+</tr>
+<tr>
+<td>S12</td>
+<td>Chi tiết khoá học</td>
+<td><code>/courses/:id</code></td>
+<td>Client</td>
+<td>User</td>
+<td>Thông tin khoá, danh sách chapter + progress, nút Bắt đầu/Tiếp tục học</td>
+</tr>
+<tr>
+<td>S13</td>
+<td>Học khoá học</td>
+<td><code>/courses/:id/learn</code></td>
+<td>Learning</td>
+<td>User</td>
+<td>Video/doc + sidebar chapter + ghi chú + 🤖 AI Tutor chat</td>
+</tr>
+<tr>
+<td>S14</td>
+<td>Làm bài kiểm tra</td>
+<td><code>/courses/:id/quiz/:testId</code></td>
+<td>Quiz</td>
+<td>User</td>
+<td>Đếm ngược + câu hỏi + submit</td>
+</tr>
+<tr>
+<td>S15</td>
+<td>Kết quả bài kiểm tra</td>
+<td><code>/courses/:id/quiz/:testId/result</code></td>
+<td>Quiz</td>
+<td>User</td>
+<td>Đạt/không đạt, số câu đúng, nút Làm lại</td>
+</tr>
+<tr>
+<td>S16</td>
+<td>Hoàn thành khoá học</td>
+<td><code>/courses/:id/complete</code></td>
+<td>Client</td>
+<td>User</td>
+<td>Màn chúc mừng + chứng chỉ (nếu có)</td>
+</tr>
+<tr>
+<td>S17</td>
+<td>Danh sách kỳ thi</td>
+<td><code>/exams</code></td>
+<td>Client</td>
+<td>User</td>
+<td>Grid kỳ thi đang mở</td>
+</tr>
+<tr>
+<td>S18</td>
+<td>Chi tiết kỳ thi</td>
+<td><code>/exams/:id</code></td>
+<td>Client</td>
+<td>User</td>
+<td>Thông tin kỳ thi, thời gian, nút Bắt đầu</td>
+</tr>
+<tr>
+<td>S19</td>
+<td>Làm bài thi</td>
+<td><code>/exams/:id/quiz</code></td>
+<td>Quiz</td>
+<td>User</td>
+<td>Tương tự S14</td>
+</tr>
+<tr>
+<td>S20</td>
+<td>Kết quả kỳ thi</td>
+<td><code>/exams/:id/result</code></td>
+<td>Quiz</td>
+<td>User</td>
+<td>Tương tự S15</td>
+</tr>
+<tr>
+<td><del>S21</del></td>
+<td><del>Dashboard tiến độ</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Gộp vào S10 Trang chủ (v3.5)</td>
+</tr>
+<tr>
+<td>S22</td>
+<td>Profile</td>
+<td><code>/user/profile</code></td>
+<td>Client</td>
+<td>User</td>
+<td>2 tabs: Góc học tập (stats, chứng chỉ, huy hiệu, lịch sử thi, khoá hoàn thành) + Thông tin cá nhân (form sửa, đổi mật khẩu)</td>
+</tr>
+<tr>
+<td><del>S23</del></td>
+<td><del>Đổi mật khẩu</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Gộp vào S22 Profile tab &quot;Thông tin cá nhân&quot; (v4.2)</td>
+</tr>
+<tr>
+<td>S24</td>
+<td>Thông báo</td>
+<td><code>/user/notifications</code></td>
+<td>Client</td>
+<td>User</td>
+<td>Danh sách thông báo, đánh dấu đã đọc</td>
+</tr>
+</tbody></table>
+<h4>Tenant Portal</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tên màn</th>
+<th>Path</th>
+<th>Layout</th>
+<th>Roles</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S30</td>
+<td>Đăng ký Tenant</td>
+<td><code>/tenant/register</code></td>
+<td>Default</td>
+<td>Public</td>
+<td>Form đăng ký tổ chức mới</td>
+</tr>
+<tr>
+<td><del>S31</del></td>
+<td><del>Tenant - Tổng quan</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Gộp vào Dashboard (S40) với tenant context (v4.0)</td>
+</tr>
+<tr>
+<td><del>S32</del></td>
+<td><del>Tenant - Phòng ban</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Chuyển vào Dashboard: <code>/dashboard/departments</code> (v4.0)</td>
+</tr>
+<tr>
+<td><del>S33</del></td>
+<td><del>Tenant - Chức danh</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Chuyển vào Dashboard: <code>/dashboard/job-titles</code> (v4.0)</td>
+</tr>
+<tr>
+<td><del>S34</del></td>
+<td><del>Tenant - Nhân viên</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Chuyển vào Dashboard: <code>/dashboard/employees</code> (v4.0)</td>
+</tr>
+<tr>
+<td><del>S35</del></td>
+<td><del>Tenant - Khoá học</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Gộp vào S42 với tenant filter (v4.0)</td>
+</tr>
+<tr>
+<td><del>S36</del></td>
+<td><del>Tenant - Tiến độ</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Gộp vào S49 với tenant filter (v4.0)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>v4.0:</strong> Tenant Portal (S31–S36) đã được gộp vào Admin Dashboard. Tenant admin dùng cùng giao diện Dashboard với menu/data filter theo tenant. Chỉ giữ S30 (Đăng ký Tenant) là trang public riêng.</p>
+</blockquote>
+<h4>Admin Dashboard (chung cho Admin + Tenant Admin)</h4>
+<blockquote>
+<p><strong>v4.0:</strong> Dashboard dùng chung cho cả Admin (Super Admin) và Tenant Admin (Super-mod / Mod). Menu sidebar hiển thị theo role. Data filter theo tenant context.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tên màn</th>
+<th>Path</th>
+<th>Layout</th>
+<th>Roles</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S40</td>
+<td>Tổng quan</td>
+<td><code>/dashboard</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Admin: thống kê toàn hệ thống. Tenant admin: thống kê trong tenant</td>
+</tr>
+<tr>
+<td>S41</td>
+<td>Users</td>
+<td><code>/dashboard/users</code></td>
+<td>Dashboard</td>
+<td>Admin</td>
+<td>Bảng users toàn hệ thống, CRUD, import/export, reset pass</td>
+</tr>
+<tr>
+<td>S42</td>
+<td>Khoá học</td>
+<td><code>/dashboard/courses</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Admin: toàn bộ. Tenant admin: khoá học tenant (tự tạo + shared)</td>
+</tr>
+<tr>
+<td>S43</td>
+<td>Chi tiết khoá</td>
+<td><code>/dashboard/courses/:id</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Tabs: Thông tin, Học viên, Tiến độ</td>
+</tr>
+<tr>
+<td>S44</td>
+<td>Topics</td>
+<td><code>/dashboard/topics</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Cây topic, drag-drop, CRUD (mỗi tenant cây riêng)</td>
+</tr>
+<tr>
+<td>S45</td>
+<td>Câu hỏi</td>
+<td><code>/dashboard/questions</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Ngân hàng câu hỏi (mỗi tenant riêng)</td>
+</tr>
+<tr>
+<td>S46</td>
+<td>Kỳ thi</td>
+<td><code>/dashboard/exams</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Bảng kỳ thi, CRUD</td>
+</tr>
+<tr>
+<td>S47</td>
+<td>Chi tiết kỳ thi</td>
+<td><code>/dashboard/exams/:id</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Tabs: Thông tin, Câu hỏi, Kết quả, Phân quyền</td>
+</tr>
+<tr>
+<td>S48</td>
+<td>Tenants</td>
+<td><code>/dashboard/tenants</code></td>
+<td>Dashboard</td>
+<td>Admin</td>
+<td>Bảng tenant, duyệt/từ chối/kích hoạt</td>
+</tr>
+<tr>
+<td>S49</td>
+<td>Tiến độ học viên</td>
+<td><code>/dashboard/learning-progress</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Báo cáo tiến độ (Admin: toàn hệ thống, Tenant admin: trong tenant)</td>
+</tr>
+<tr>
+<td>S51</td>
+<td>Thông báo</td>
+<td><code>/dashboard/notifications</code></td>
+<td>Dashboard</td>
+<td>Admin</td>
+<td>Tạo/quản lý thông báo gửi cho user</td>
+</tr>
+<tr>
+<td>S52</td>
+<td>Roles &amp; Rules</td>
+<td><code>/dashboard/roles</code></td>
+<td>Dashboard</td>
+<td>Admin</td>
+<td>Quản lý vai trò và phân quyền CASL</td>
+</tr>
+<tr>
+<td>S53</td>
+<td>Bài giảng</td>
+<td><code>/dashboard/curricula</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Thư viện bài giảng (tenant: &quot;Của tôi&quot; + &quot;Shared&quot;, có nút Clone)</td>
+</tr>
+<tr>
+<td>S54</td>
+<td>Chi tiết bài giảng</td>
+<td><code>/dashboard/curricula/:id</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Tabs: Thông tin, Nội dung, Khoá học đang dùng. Shared = read-only</td>
+</tr>
+<tr>
+<td>S55</td>
+<td>Bài kiểm tra</td>
+<td><code>/dashboard/tests</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Thư viện bài kiểm tra (tenant: &quot;Của tôi&quot; + &quot;Shared&quot;, có nút Clone)</td>
+</tr>
+<tr>
+<td>S56</td>
+<td>Chi tiết bài kiểm tra</td>
+<td><code>/dashboard/tests/:id</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Thông tin, câu hỏi, nơi đang sử dụng. Shared = read-only</td>
+</tr>
+<tr>
+<td>S57</td>
+<td>AI Course Builder</td>
+<td><code>/dashboard/ai/course-builder</code></td>
+<td>Dashboard</td>
+<td>Admin, Mod</td>
+<td>Nhập mô tả → AI sinh đề xuất → review → tạo (F24). Nội dung thuộc tenant context</td>
+</tr>
+<tr>
+<td>S58</td>
+<td>Nhân viên</td>
+<td><code>/dashboard/employees</code></td>
+<td>Dashboard</td>
+<td>Mod</td>
+<td>Bảng nhân viên trong tenant, CRUD, import/export, mời qua email (ex-S34)</td>
+</tr>
+<tr>
+<td>S59</td>
+<td>Phòng ban</td>
+<td><code>/dashboard/departments</code></td>
+<td>Dashboard</td>
+<td>Mod</td>
+<td>Cây phòng ban trong tenant, drag-drop, CRUD (ex-S32)</td>
+</tr>
+<tr>
+<td>S60</td>
+<td>Chức danh</td>
+<td><code>/dashboard/job-titles</code></td>
+<td>Dashboard</td>
+<td>Mod</td>
+<td>Cây chức danh trong tenant, drag-drop, CRUD (ex-S33)</td>
+</tr>
+</tbody></table>
+<p><strong>Lưu ý AI:</strong> Các tính năng AI (F19–F23) không tạo màn hình riêng mà tích hợp vào màn hình hiện có. F24 có màn hình riêng (S57):</p>
+<ul>
+<li>S54 (Chi tiết bài giảng): nút &quot;🤖 AI sinh câu hỏi&quot;, &quot;🤖 AI tóm tắt&quot;, auto-tagging</li>
+<li>S45 (Câu hỏi): nút &quot;🤖 AI sinh câu hỏi&quot;, báo cáo chất lượng câu hỏi</li>
+<li>S13 (Học khoá học): panel 🤖 AI Tutor chat</li>
+<li>S49 (Tiến độ học viên): tóm tắt AI, cảnh báo, gợi ý hành động</li>
+<li>S40 (Dashboard): card cảnh báo AI</li>
+<li>S53, S55 (Bài giảng, Bài kiểm tra): thanh tìm kiếm semantic, auto-tag gợi ý</li>
+</ul>
+<h4>Error Pages</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tên màn</th>
+<th>Path</th>
+<th>Layout</th>
+<th>Roles</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S90</td>
+<td>403 Forbidden</td>
+<td><code>/403</code></td>
+<td>Default</td>
+<td>—</td>
+</tr>
+<tr>
+<td>S91</td>
+<td>404 Not Found</td>
+<td><code>/404</code></td>
+<td>Default</td>
+<td>—</td>
+</tr>
+<tr>
+<td>S92</td>
+<td>500 Server Error</td>
+<td><code>/500</code></td>
+<td>Default</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>4.2. Layouts</h3>
+<blockquote>
+<p>Tất cả layout tuân theo IBM Carbon Design System: <code>IBM Plex Sans</code>, flat geometry (<code>rounded: 0px</code>), 1px hairline borders, <code>{colors.primary}</code> #0f62fe làm accent duy nhất.</p>
+</blockquote>
+<h4>Layout: Default</h4>
+<p>Dùng cho: Login, Register, Forgot Password, Đổi pass lần đầu, Chọn Tenant, Error pages.</p>
+<pre><code>┌─────────────────────────────────────────────┐
+│                                             │
+│              Logo Catcuri (center)           │
+│                                             │
+│         ┌───────────────────────┐           │
+│         │   Form card (480px)   │           │
+│         │   surface-1 bg        │           │
+│         │   1px hairline border │           │
+│         │                       │           │
+│         │   [Input fields]      │           │
+│         │   [Primary button]    │           │
+│         │   [Links]             │           │
+│         └───────────────────────┘           │
+│                                             │
+│              Footer text (caption)          │
+└─────────────────────────────────────────────┘
+</code></pre>
+<ul>
+<li>Background: <code>{colors.canvas}</code> #ffffff</li>
+<li>Form card: <code>{colors.surface-1}</code> #f4f4f4, max-width 480px, centered</li>
+<li>Inputs: Carbon text-input (bottom-rule focus)</li>
+<li>Button: <code>button-primary</code> full-width trong card</li>
+</ul>
+<h4>Layout: Client</h4>
+<p>Dùng cho: Trang chủ, danh sách khoá học, chi tiết khoá, profile, dashboard học viên, thông báo.</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│ [Logo]  Trang chủ  Khoá học  Kỳ thi  │ Tenant [🔔] [Avatar▾] │  ← Header 48px
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│                     router-view                             │
+│                   (max-width: 1312px, centered)             │
+│                                                             │
+├─────────────────────────────────────────────────────────────┤
+│ [Logo]   Về chúng tôi | Liên hệ | Điều khoản    © 2026    │  ← Footer
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Header (top-nav):</strong></p>
+<ul>
+<li>Height: 48px, sticky top, <code>{colors.canvas}</code> bg, 1px bottom hairline</li>
+<li>Trái: Logo tenant (hoặc Catcuri nếu chưa chọn tenant) + nav links</li>
+<li>Nav links: Trang chủ, Khoá học, Kỳ thi — <code>{typography.body-sm}</code>, hover underline <code>{colors.primary}</code></li>
+<li>Phải: Tenant label (tên tenant, không phải dropdown — học viên thuộc 1 tenant), Notification bell (badge đỏ nếu có mới), Avatar dropdown (Hồ sơ, Khoá học của tôi, Đăng xuất)</li>
+<li>Responsive &lt; 672px: nav links collapse vào hamburger menu</li>
+</ul>
+<p><strong>Footer:</strong></p>
+<ul>
+<li><code>{colors.inverse-canvas}</code> #161616 bg, <code>{colors.inverse-ink-muted}</code> text</li>
+<li>3 cột: Về Catcuri, Liên kết, Liên hệ</li>
+<li>Copyright bottom</li>
+</ul>
+<h4>Layout: Learning</h4>
+<p>Dùng cho: Màn hình học khoá học (S13). Full-width, không header/footer chuẩn.</p>
+<pre><code>┌──────────────────────────────────────────────────────────────────┐
+│ [← Quay lại]  Tên khoá học                    [Progress 45%]   │  ← Mini header 48px
+├──────────────┬───────────────────────────────────────────────────┤
+│              │                                                   │
+│  Chapter 1   │              Video Player                         │
+│  ✅ Bài 1.1  │              (hoặc PDF / HTML content)            │
+│  ▶ Bài 1.2   │                                                   │
+│  ○ Test 1    │───────────────────────────────────────────────────│
+│              │  [Tab: Ghi chú]  [Tab: Tài liệu]  [Tab: Q&amp;A]    │
+│  Chapter 2   │                                                   │
+│  ○ Bài 2.1   │  Nội dung tab...                                 │
+│  ○ Bài 2.2   │                                                   │
+│              │                                        ┌────────┐│
+├──────────────┴────────────────────────────────────────│🤖 Chat ││
+│              [◀ Bài trước]        [Bài tiếp ▶]       └────────┘│  ← AI Tutor (F20)
+└──────────────────────────────────────────────────────────────────┘
+</code></pre>
+<ul>
+<li>Sidebar trái: 280px, <code>{colors.surface-1}</code> bg, danh sách chapter → resources</li>
+<li>Icon trạng thái: ✅ hoàn thành (<code>{colors.semantic-success}</code>), ▶ đang học (<code>{colors.primary}</code>), ○ chưa học (<code>{colors.ink-subtle}</code>)</li>
+<li>Content area: video player hoặc document viewer</li>
+<li>Tabs bên dưới content: Ghi chú, Tài liệu đính kèm</li>
+<li>🤖 AI Tutor: floating button góc phải dưới → mở chat panel (F20)</li>
+<li>Responsive &lt; 672px: sidebar ẩn, hiện nút hamburger để mở overlay</li>
+</ul>
+<h4>Layout: Quiz</h4>
+<p>Dùng cho: Làm bài kiểm tra, làm bài thi, xem kết quả.</p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│  Tên bài kiểm tra              ⏱ 04:32 còn lại   [Nộp bài] │  ← Header 48px
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│    Câu 3 / 5                                                │
+│                                                             │
+│    Nội dung câu hỏi ở đây?                                 │
+│                                                             │
+│    ○ Đáp án A                                               │
+│    ● Đáp án B  ← selected (radio/checkbox)                  │
+│    ○ Đáp án C                                               │
+│    ○ Đáp án D                                               │
+│                                                             │
+│    [◀ Câu trước]    ● ● ● ○ ○    [Câu tiếp ▶]             │
+│                     (progress dots)                         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<ul>
+<li>Centered layout, max-width 720px</li>
+<li>Header: tên test, đồng hồ đếm ngược (<code>{colors.semantic-warning}</code> khi &lt; 1 phút), nút Nộp bài</li>
+<li>Progress dots: hiển thị trạng thái từng câu (đã trả lời / chưa)</li>
+<li>MC: radio buttons, MR: checkboxes — Carbon style</li>
+<li>Màn kết quả: thay content bằng card kết quả (đạt/không đạt, điểm, nút Làm lại)</li>
+</ul>
+<h4>Layout: Dashboard (Admin + Tenant Admin)</h4>
+<p>Dùng cho: Tất cả màn hình quản trị (S40–S60). <strong>Chung cho cả Admin và Tenant Admin</strong> — menu hiển thị theo role.</p>
+<pre><code>┌──────────────┬──────────────────────────────────────────────────┐
+│              │  [Breadcrumb]  [Tenant: Công ty ABC ▾] [Avatar▾] │  ← Header 48px
+│   CATCURI    ├──────────────────────────────────────────────────┤
+│              │                                                  │
+│  ┌────────┐  │  Page title          [+ Tạo mới] [Import] [Export]
+│  │📊 Tổng │  │                                                  │
+│  │  quan   │  │  ┌──────────────────────────────────────────┐   │
+│  ├────────┤  │  │  Data Table (Carbon)                      │   │
+│  │📖 Bài  │  │  │  Sortable columns, pagination, actions    │   │
+│  │ giảng   │  │  │  [Của tôi] [Shared] ← tabs (tenant view) │   │
+│  │📋 Bài  │  │  └──────────────────────────────────────────┘   │
+│  │ kiểm tra│  │                                                  │
+│  │❓ Câu   │  │                                                  │
+│  │  hỏi    │  │                                                  │
+│  │🏷 Topics│  │                                                  │
+│  ├────────┤  │                                                  │
+│  │📚 Khoá │  │                                                  │
+│  │  học    │  │                                                  │
+│  │📝 Kỳ   │  │                                                  │
+│  │  thi    │  │                                                  │
+│  ├────────┤  │                                                  │
+│  │🤖 AI   │  │                                                  │
+│  ├────────┤  │                                                  │
+│  │👥 Nhân │  │  ← Tenant admin only                             │
+│  │  viên   │  │                                                  │
+│  │🏛 Phòng│  │                                                  │
+│  │  ban    │  │                                                  │
+│  │💼 Chức │  │                                                  │
+│  │  danh   │  │                                                  │
+│  ├────────┤  │                                                  │
+│  │📈 Tiến │  │                                                  │
+│  │  độ     │  │                                                  │
+│  ├────────┤  │                                                  │
+│  │🏢Tenants│  │  ← Admin only                                   │
+│  │👤 Users│  │                                                  │
+│  │🔔Thông │  │                                                  │
+│  │  báo    │  │                                                  │
+│  │🔐 Roles│  │                                                  │
+│  └────────┘  │                                                  │
+└──────────────┴──────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Sidebar (256px):</strong></p>
+<ul>
+<li><code>{colors.inverse-canvas}</code> #161616 bg (dark sidebar)</li>
+<li>Logo top, <code>{colors.inverse-ink}</code> text</li>
+<li>Menu groups — hiển thị theo role:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Menu items</th>
+<th>Admin</th>
+<th>Tenant Admin</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tổng quan</td>
+<td>Dashboard</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Thư viện</td>
+<td>Bài giảng, Bài kiểm tra, Câu hỏi, Topics</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Đào tạo</td>
+<td>Khoá học, Kỳ thi</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>🤖 AI</td>
+<td>Course Builder</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Quản lý nhân sự</td>
+<td>Nhân viên, Phòng ban, Chức danh</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Quản lý hệ thống</td>
+<td>Tenants, Users</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Báo cáo</td>
+<td>Tiến độ học viên</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Hệ thống</td>
+<td>Thông báo, Roles &amp; Rules</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Active item: <code>{colors.primary}</code> left border 3px + <code>{colors.inverse-surface-1}</code> bg</li>
+<li>Collapsible: 256px → 48px (icon only) via toggle button</li>
+<li>Responsive &lt; 1056px: sidebar overlay dạng drawer</li>
+</ul>
+<p><strong>Header:</strong></p>
+<ul>
+<li><code>{colors.canvas}</code> bg, 48px height, 1px bottom hairline</li>
+<li>Trái: Breadcrumb (Home / Section / Page) — <code>flex: 1</code> chiếm hết space</li>
+<li>Phải: Avatar dropdown chứa: Tenant list (chọn context) + Đăng xuất</li>
+<li>Avatar dropdown: label &quot;Tenant&quot; + danh sách tenant (active bold) + &quot;Hệ thống (Super Admin)&quot; + divider + Đăng xuất</li>
+</ul>
+<p><strong>Content area:</strong></p>
+<ul>
+<li>Padding: <code>{spacing.xl}</code> 32px</li>
+<li>Page title: <code>{typography.headline}</code> 32px</li>
+<li>Action buttons: góc phải ngang page title</li>
+<li>Tables: Carbon DataTable — sortable, pagination, row actions</li>
+<li>Forms: Carbon form layout — label top, input full-width, 2-column grid desktop</li>
+<li><strong>Tenant view</strong>: tabs &quot;Của tôi&quot; / &quot;Được chia sẻ&quot; trong thư viện; nút &quot;Clone&quot; trên shared items</li>
+</ul>
+<h4><del>Layout: Tenant Portal</del> (deprecated v4.0)</h4>
+<blockquote>
+<p>Đã gộp vào Layout Dashboard. Tenant admin dùng cùng Dashboard layout với menu filter theo role. Không còn layout Tenant riêng.</p>
+</blockquote>
+<hr>
+<h3>4.3. Chi tiết màn hình chính</h3>
+<h4>S5 — Chọn Tenant</h4>
+<p>Sau login, nếu user thuộc nhiều tenant:</p>
+<pre><code>┌─────────────────────────────────────────┐
+│         Chọn tổ chức của bạn            │  ← headline
+│                                         │
+│  ┌─────────────────────────────────┐    │
+│  │ 🏢  Ngọc Dũng Group            │    │  ← tenant card (clickable)
+│  │     128 nhân viên · 12 khoá học │    │
+│  └─────────────────────────────────┘    │
+│                                         │
+│  ┌─────────────────────────────────┐    │
+│  │ 🏢  Zema Academy               │    │  ← tenant card
+│  │     64 nhân viên · 8 khoá học   │    │
+│  └─────────────────────────────────┘    │
+│                                         │
+│  Nếu chỉ có 1 tenant → auto redirect   │
+└─────────────────────────────────────────┘
+</code></pre>
+<h4>S10 — Trang chủ (Catalog + Dashboard)</h4>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│ Header (Client)                                         │
+├─────────────────────────────────────────────────────────┤
+│ ┌─────────────────────────────────────────────────────┐ │
+│ │  Xin chào, Ngọc Trân!                    (gradient)│ │  ← Hero banner
+│ │  Khám phá khoá học mới và phát triển kỹ năng       │ │
+│ │  🔍 Tìm khoá học, chủ đề, kỹ năng...    [Tìm kiếm]│ │  ← search bar
+│ │     3 Đang học    7 Hoàn thành    5 Chứng chỉ      │ │  ← stat nhanh
+│ └─────────────────────────────────────────────────────┘ │
+│                                                         │
+│  Tiếp tục học                          [Xem tất cả →]  │
+│  ┌────────────────┐ ┌────────────────┐ ┌──────────────┐│  ← 3 horizontal cards
+│  │🎓 Giao tiếp    │ │⚠️ An toàn     │ │📊 Excel      ││
+│  │   ████░ 45%    │ │   ██████░ 70% │ │   ██░ 20%    ││
+│  │   Bài 3/8      │ │   ⚠HSD:15/07 │ │   Bài 3/15   ││
+│  └────────────────┘ └────────────────┘ └──────────────┘│
+│                                                         │
+│  Khoá học được giao                    2 khoá cần xong  │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │ ⚠️ An toàn lao động  70%  HSD:15/07   [Tiếp]  │    │  ← warning border
+│  │ 📋 Quy trình Q3     Chưa bắt đầu     [Bắt đầu]│    │
+│  └─────────────────────────────────────────────────┘    │
+│                                                         │
+│  Khám phá theo chủ đề                                   │
+│  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐      │  ← 4×2 grid
+│  │💬 Kỹ năng│ │🛡️ An toàn│ │💻 Tin học│ │👔 Lãnh đạo│    │
+│  │ 12 khoá │ │  8 khoá │ │  6 khoá │ │  5 khoá │      │
+│  ├─────────┤ ├─────────┤ ├─────────┤ ├─────────┤      │
+│  │🛒 Bán   │ │🎯 Dịch vụ│ │📊 Quản lý│ │🧠 Tư duy │    │
+│  │  9 khoá │ │  4 khoá │ │  3 khoá │ │  4 khoá │      │
+│  └─────────┘ └─────────┘ └─────────┘ └─────────┘      │
+│                                                         │
+│  Khoá học nổi bật                      [Xem tất cả →]  │
+│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐                   │  ← 4 course cards
+│  │ img  │ │ img  │ │ img  │ │ img  │                   │
+│  │ name │ │ name │ │ name │ │ name │                   │
+│  │8bài  │ │10bài │ │15bài │ │6bài  │                   │
+│  │324 HV│ │280 HV│ │215 HV│ │198 HV│                   │
+│  └──────┘ └──────┘ └──────┘ └──────┘                   │
+│                                                         │
+│  Khoá học mới                          [Xem tất cả →]  │
+│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐                   │  ← 4 course cards
+│  │ Mới  │ │ Mới  │ │ Mới  │ │ Mới  │                   │
+│  └──────┘ └──────┘ └──────┘ └──────┘                   │
+│                                                         │
+│  Thành tích gần đây                                     │  ← 2 columns
+│  ┌──────────────────────┐  ┌──────────────────────┐     │
+│  │ Chứng chỉ đã nhận    │  │ Tổng quan học tập    │     │
+│  │ 📜 PCCC       28/06  │  │  10 khoá tham gia   │     │
+│  │ 📜 Giao tiếp  15/06  │  │   7 hoàn thành      │     │
+│  │ 📜 Quản lý TG 20/05  │  │   5 chứng chỉ       │     │
+│  └──────────────────────┘  │  24h tổng giờ học    │     │
+│                             └──────────────────────┘     │
+├─────────────────────────────────────────────────────────┤
+│ Footer                                                  │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<blockquote>
+<p><del>S21 Dashboard tiến độ</del> — đã gộp vào S10 Trang chủ (v3.5). S10 đổi sang catalog + dashboard (v4.1).</p>
+</blockquote>
+<h4>S11 — Khoá học của tôi</h4>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│ Header (Client)                                         │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  Khoá học của tôi                                       │  ← headline
+│                                                         │
+│  [Tất cả(10)] [Đang học(3)] [Hoàn thành(7)] [Hết hạn]  │  ← tabs + count
+│  ──────────────────────────────────────────────────────  │
+│                                                         │
+│  🔍 Tìm kiếm...                    [Lọc theo topic ▾]  │  ← search + filter
+│                                                         │
+│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐                   │
+│  │ img  │ │ img  │ │ img  │ │ img  │                   │  ← 4-column grid
+│  │ topic│ │ topic│ │ topic│ │ topic│                   │
+│  │ name │ │ name │ │ name │ │ name │                   │
+│  │██░45%│ │████✓ │ │█░10% │ │██░30%│                   │  ← progress bar
+│  │Bài3/8│ │Done  │ │Bài2/15│ │Bài6/12│                  │
+│  │HSD:  │ │01/06 │ │⚠️7day│ │31/08 │                   │  ← deadline
+│  │[Tiếp]│ │[Cert]│ │[Tiếp]│ │[Tiếp]│                   │  ← action
+│  └──────┘ └──────┘ └──────┘ └──────┘                   │
+│                                                         │
+├─────────────────────────────────────────────────────────┤
+│ Footer                                                  │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<ul>
+<li>Tab &quot;Đang học&quot;: gộp Chưa bắt đầu (0%) + Đang học (1–99%)</li>
+<li>Tab &quot;Hoàn thành&quot;: 100%, hiện ngày hoàn thành + nút tải chứng chỉ</li>
+<li>Tab &quot;Hết hạn&quot;: end_date &lt; today, progress frozen</li>
+<li>Badge cảnh báo ⚠️ nếu deadline ≤ 7 ngày</li>
+</ul>
+<h4><del>S21 — Dashboard tiến độ (Học viên)</del></h4>
+<blockquote>
+<p>Đã gộp vào S10 Trang chủ từ v3.5. File <code>client/dashboard.html</code> không còn sử dụng.</p>
+</blockquote>
+<h4>S40 — Admin Dashboard (Tổng quan)</h4>
+<pre><code>┌──────────────┬──────────────────────────────────────────────────┐
+│  Sidebar     │  Dashboard                                       │
+│              │                                                  │
+│              │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐   │
+│              │  │ Users  │ │ Courses│ │ Exams  │ │Tenants │   │  ← stat tiles
+│              │  │  1,234 │ │    45  │ │   12   │ │    8   │   │
+│              │  └────────┘ └────────┘ └────────┘ └────────┘   │
+│              │                                                  │
+│              │  Tiến độ tổng hợp                               │
+│              │  ┌──────────────────────────────────────────┐   │
+│              │  │  [Bar chart: hoàn thành theo tháng]      │   │
+│              │  └──────────────────────────────────────────┘   │
+│              │                                                  │
+│              │  Khoá học mới đăng ký gần đây                   │
+│              │  ┌──────────────────────────────────────────┐   │
+│              │  │  DataTable (5 rows latest)               │   │
+│              │  └──────────────────────────────────────────┘   │
+│              │                                                  │
+└──────────────┴──────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h3>4.4. User flow chính</h3>
+<p><strong>Flow 1: Đăng nhập → Chọn tenant → Học khoá học</strong></p>
+<pre><code>S1 Login → [S4 Đổi pass lần đầu] → S5 Chọn tenant → 
+S10 Trang chủ → S11 Khoá học của tôi → S12 Chi tiết khoá → 
+S13 Học (video/doc) → S14 Làm test → S15 Kết quả → S16 Hoàn thành
+</code></pre>
+<p><strong>Flow 2a: Admin/Tenant admin tạo nội dung thủ công → tạo khoá học</strong></p>
+<pre><code>S1 Login → [S5 Chọn tenant] → S40 Dashboard →
+  Bước 1: Tạo nội dung (trong scope tenant hoặc hệ thống)
+    S45 Câu hỏi → Import/tạo câu hỏi →
+    S55 Bài kiểm tra → Tạo test, gán câu hỏi →
+    S53 Bài giảng → Tạo bài giảng →
+    S54 Chi tiết bài giảng → Thêm chương, bài học, gán test → Publish
+  Bước 2: Tạo khoá học
+    S42 Khoá học → Tạo mới →
+    S43 Chi tiết → Chọn bài giảng (riêng + shared), set thời gian, gán học viên → Publish
+</code></pre>
+<p><strong>Flow 2b: Admin/Tenant admin dùng AI Course Builder → tạo khoá học</strong></p>
+<pre><code>S1 Login → [S5 Chọn tenant] → S40 Dashboard →
+  Bước 1: AI sinh nội dung
+    S57 AI Course Builder → Nhập mô tả + upload tài liệu →
+    AI sinh đề xuất (chương, bài, câu hỏi, test, topic, tags) →
+    Review + chỉnh sửa đề xuất →
+    Nhấn &quot;Tạo bài giảng&quot; → tạo tất cả entity trong scope tenant (DRAFT)
+  Bước 2: Review &amp; publish
+    S54 Chi tiết bài giảng → Review nội dung AI tạo → Publish
+    S55 Bài kiểm tra → Review câu hỏi AI tạo
+  Bước 3: Tạo khoá học
+    S42 Khoá học → Tạo mới →
+    S43 Chi tiết → Chọn bài giảng, set thời gian, gán học viên → Publish
+</code></pre>
+<p><strong>Flow 2c: Tenant admin clone nội dung shared → tuỳ chỉnh</strong></p>
+<pre><code>Tenant admin → S53 Bài giảng → Tab &quot;Được chia sẻ&quot; →
+  Xem bài giảng shared (read-only) → Nhấn &quot;Clone&quot; →
+  Hệ thống deep-copy curriculum + chapters + lessons + tests →
+  Bản sao xuất hiện trong Tab &quot;Của tôi&quot; (DRAFT) →
+  S54 Chi tiết → Chỉnh sửa nội dung → Publish →
+  S42 Tạo khoá học từ bản clone
+</code></pre>
+<p><strong>Flow 3: Tenant đăng ký → Setup tổ chức → Tạo nội dung</strong></p>
+<pre><code>S30 Đăng ký tenant → Admin duyệt (S48) →
+Super-mod login (S1) → S5 Chọn tenant → S40 Dashboard →
+  Bước 1: Setup tổ chức
+    S59 Tạo phòng ban → S60 Tạo chức danh → S58 Import nhân viên
+  Bước 2: Tạo nội dung đào tạo riêng
+    S44 Tạo topic riêng → S45 Tạo câu hỏi → S55 Tạo bài kiểm tra →
+    S53 Tạo bài giảng → S42 Tạo khoá học → Gán nhân viên
+</code></pre>
+<p><strong>Flow 4: Mời nhân viên vào tenant</strong></p>
+<pre><code>Tenant admin (S58) → Mời qua email → Nhân viên nhận email →
+S6 Nhận lời mời → [S2 Đăng ký nếu chưa có account] → Auto mapping tenant
+</code></pre>
+<p><strong>Flow 5: Admin chia sẻ nội dung cho tenant</strong></p>
+<pre><code>S1 Login (Admin) → S40 Dashboard →
+S53 Bài giảng (hệ thống) → Chọn bài giảng → Nhấn &quot;Chia sẻ&quot; →
+Chọn tenant (multi-select) hoặc &quot;Tất cả tenant&quot; → Confirm →
+Tenant nhận → thấy bài giảng [Shared] trong thư viện
+</code></pre>
+<h3>4.5. Design reference</h3>
+<ul>
+<li><strong>Design System:</strong> IBM Carbon Design System — xem <code>DESIGN.md</code></li>
+<li><strong>Font:</strong> IBM Plex Sans (Google Fonts, free)</li>
+<li><strong>Primary color:</strong> <code>#0f62fe</code> (IBM Blue) — accent duy nhất</li>
+<li><strong>Border radius:</strong> <code>0px</code> everywhere (flat geometry)</li>
+<li><strong>Elevation:</strong> hairline borders (1px <code>#e0e0e0</code>), không drop shadow</li>
+<li><strong>Dark surfaces:</strong> chỉ sidebar admin/tenant + footer</li>
+</ul>
+<hr>
+<h2>5. Dữ liệu</h2>
+<h3>5.1. Entity chính</h3>
+<table>
+<thead>
+<tr>
+<th>Entity</th>
+<th>Mô tả</th>
+<th>Quan hệ chính</th>
+<th>tenant_id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>User</td>
+<td>Người dùng</td>
+<td>→ role, department, job_title</td>
+<td>—</td>
+</tr>
+<tr>
+<td>UserTenant</td>
+<td>Mapping user ↔ tenant</td>
+<td>→ user, tenant</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Role</td>
+<td>Vai trò</td>
+<td>→ rules (array of names)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Rule</td>
+<td>Quyền hạn</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Curriculum</td>
+<td>Bài giảng (thư viện nội dung)</td>
+<td>→ topic, → chapters[], cloned_from</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>Chapter</td>
+<td>Chương (thuộc bài giảng)</td>
+<td>→ curriculum, → lessons[], → tests[]</td>
+<td>(inherit)</td>
+</tr>
+<tr>
+<td>Lesson</td>
+<td>Bài học (thuộc chương)</td>
+<td>→ chapter</td>
+<td>(inherit)</td>
+</tr>
+<tr>
+<td>Test</td>
+<td>Bài kiểm tra (thư viện)</td>
+<td>→ topic, → questions[], cloned_from</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>Question</td>
+<td>Câu hỏi</td>
+<td>→ topic</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>Course</td>
+<td>Khoá học (enrollment)</td>
+<td>→ curriculum, → topic, start_date, end_date</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>CourseUser</td>
+<td>Học viên đăng ký khoá</td>
+<td>→ user, course, progress</td>
+<td>—</td>
+</tr>
+<tr>
+<td>UserTest</td>
+<td>Lần làm test</td>
+<td>→ user, course/exam, test</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exam</td>
+<td>Kỳ thi</td>
+<td>→ topic, → test</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>Topic</td>
+<td>Bộ kỹ năng</td>
+<td>→ parent (self-ref)</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>Tag</td>
+<td>Nhãn phân loại tự do</td>
+<td>Dùng cho Curriculum, Test, Question</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>SharedContent</td>
+<td>Nội dung admin chia sẻ cho tenant</td>
+<td>→ content_type, content_id, tenant_id</td>
+<td>—</td>
+</tr>
+<tr>
+<td>AIChat</td>
+<td>Lịch sử chat AI Tutor</td>
+<td>→ user, course</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Transcript</td>
+<td>Transcript video (AI sinh)</td>
+<td>→ lesson</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Tenant</td>
+<td>Tổ chức / doanh nghiệp</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><del>TenantCourse</del></td>
+<td><del>Khoá học gán cho tenant</del></td>
+<td>—</td>
+<td>Thay bằng SharedContent (v4.0)</td>
+</tr>
+<tr>
+<td>Department</td>
+<td>Phòng ban</td>
+<td>→ parent, tenant</td>
+<td>✅ required</td>
+</tr>
+<tr>
+<td>JobTitle</td>
+<td>Chức danh</td>
+<td>→ parent, tenant</td>
+<td>✅ required</td>
+</tr>
+<tr>
+<td>Notification</td>
+<td>Thông báo</td>
+<td>→ user</td>
+<td>—</td>
+</tr>
+<tr>
+<td>UserDevice</td>
+<td>Thiết bị push notification</td>
+<td>→ user</td>
+<td>—</td>
+</tr>
+<tr>
+<td>SystemConfig</td>
+<td>Cấu hình hệ thống</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Certificate</td>
+<td>Chứng chỉ đã cấp</td>
+<td>→ user, course/exam, tenant</td>
+<td>✅ required</td>
+</tr>
+<tr>
+<td>Badge</td>
+<td>Định nghĩa huy hiệu</td>
+<td>trigger_rule</td>
+<td>✅ nullable</td>
+</tr>
+<tr>
+<td>UserBadge</td>
+<td>Huy hiệu đã nhận</td>
+<td>→ user, badge, tenant</td>
+<td>✅ required</td>
+</tr>
+<tr>
+<td>UserXP</td>
+<td>Điểm &amp; level học viên</td>
+<td>→ user, tenant</td>
+<td>✅ required</td>
+</tr>
+<tr>
+<td>XPTransaction</td>
+<td>Lịch sử tích điểm</td>
+<td>→ user, tenant</td>
+<td>✅ required</td>
+</tr>
+<tr>
+<td>GamificationConfig</td>
+<td>Cấu hình gamification tenant</td>
+<td>→ tenant</td>
+<td>✅ required</td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>Log hệ thống</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p><strong>Quy tắc <code>tenant_id</code>:</strong></p>
+<ul>
+<li><code>null</code> = nội dung cấp hệ thống (admin tạo, có thể share)</li>
+<li><code>&lt;ObjectId&gt;</code> = nội dung riêng của tenant (tenant admin tạo hoặc clone)</li>
+<li><code>(inherit)</code> = Chapter, Lesson thừa kế <code>tenant_id</code> từ Curriculum cha</li>
+<li>CASL auto-inject <code>tenant_id = currentTenantId</code> vào mọi query của tenant admin</li>
+</ul>
+<h3>5.2. Soft delete pattern</h3>
+<p>Tất cả entity chính đều có <code>deleted_at: Date</code>. Khi xoá:</p>
+<ul>
+<li>Set <code>deleted_at = new Date()</code></li>
+<li>Mọi query đều filter <code>deleted_at: null</code></li>
+<li>Dữ liệu không bị mất vĩnh viễn</li>
+</ul>
+<hr>
+<h2>6. Tích hợp</h2>
+<h3>6.1. Third-party services</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Mục đích</th>
+<th>Bắt buộc?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Database</td>
+<td>Lưu trữ dữ liệu chính</td>
+<td>Có</td>
+</tr>
+<tr>
+<td>Cache (Redis hoặc tương đương)</td>
+<td>Session, OTP, access token</td>
+<td>Có</td>
+</tr>
+<tr>
+<td>SMTP / Email service</td>
+<td>Gửi email (OTP, chứng chỉ, invite)</td>
+<td>Có</td>
+</tr>
+<tr>
+<td>Push notification service</td>
+<td>Push notification mobile</td>
+<td>Không</td>
+</tr>
+<tr>
+<td>Chat bot (Telegram/Slack...)</td>
+<td>Alert lỗi hệ thống</td>
+<td>Không</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Platform</h2>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Cần?</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Backend API</td>
+<td>✅</td>
+<td>Tech stack do Tech Lead quyết định</td>
+</tr>
+<tr>
+<td>Web</td>
+<td>✅</td>
+<td>Tech stack do Tech Lead quyết định</td>
+</tr>
+<tr>
+<td>Mobile iOS</td>
+<td>❌</td>
+<td>Chưa trong scope</td>
+</tr>
+<tr>
+<td>Mobile Android</td>
+<td>❌</td>
+<td>Chưa trong scope</td>
+</tr>
+<tr>
+<td>Admin panel</td>
+<td>✅</td>
+<td>Tích hợp trong web (<code>/dashboard</code>) — dùng chung cho Admin + Tenant Admin</td>
+</tr>
+<tr>
+<td><del>Tenant portal</del></td>
+<td>—</td>
+<td>Gộp vào Admin panel (v4.0), chỉ còn S30 đăng ký tenant</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Lưu ý:</strong> Đây là platform cần có, <strong>không phải tech stack</strong>.
+Quyết định tech stack cụ thể là của <strong>Tech Lead</strong>.</p>
+</blockquote>
+<hr>
+<h2>8. Multi-tenant &amp; Data Isolation</h2>
+<p>Catcuri là <strong>nền tảng SaaS</strong> — nhiều tổ chức (tenant/công ty) dùng <strong>chung 1 instance</strong> (shared database, shared codebase), nhưng dữ liệu <strong>hoàn toàn độc lập</strong> giữa các tenant.</p>
+<p><strong>Mô hình SaaS Platform:</strong></p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    CATCURI PLATFORM                          │
+│                   (Super Admin scope)                        │
+│                                                             │
+│  Nội dung hệ thống (tenant_id = null)                      │
+│  ├── Khoá học miễn phí / chuẩn ngành                       │
+│  ├── Bài giảng dùng chung                                  │
+│  └── Ngân hàng câu hỏi chuẩn                              │
+│           │                                                 │
+│           │ share (read-only, cloneable)                    │
+│           ▼                                                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │  Tenant A    │  │  Tenant B    │  │  Tenant C    │     │
+│  │  (Công ty X) │  │  (Công ty Y) │  │  (Công ty Z) │     │
+│  │              │  │              │  │              │     │
+│  │ ✅ Topic riêng│  │ ✅ Topic riêng│  │ ✅ Topic riêng│     │
+│  │ ✅ Câu hỏi   │  │ ✅ Câu hỏi   │  │ ✅ Câu hỏi   │     │
+│  │ ✅ Bài giảng  │  │ ✅ Bài giảng  │  │ ✅ Bài giảng  │     │
+│  │ ✅ Bài kiểm tra│ │ ✅ Bài kiểm tra│ │ ✅ Bài kiểm tra│    │
+│  │ ✅ Khoá học   │  │ ✅ Khoá học   │  │ ✅ Khoá học   │     │
+│  │ ✅ Kỳ thi     │  │ ✅ Kỳ thi     │  │ ✅ Kỳ thi     │     │
+│  │ + Shared items│  │ + Shared items│  │ + Shared items│     │
+│  └──────────────┘  └──────────────┘  └──────────────┘     │
+│         ╳ không thấy nhau                                   │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Quy tắc data isolation:</strong></p>
+<ul>
+<li>1 user đăng nhập bằng email/password → thấy danh sách tenant mình thuộc về → chọn tenant context</li>
+<li>Tenant admin chỉ thấy data có <code>tenant_id = currentTenantId</code> + shared content</li>
+<li>Tenant A <strong>không thể</strong> thấy hoặc truy cập data của Tenant B (enforced ở API layer)</li>
+<li>Admin hệ thống thấy data tất cả tenant (read-only) + data hệ thống (full CRUD)</li>
+<li>Mỗi tenant có thể có branding riêng (logo, primary color) — cấu hình trong DB</li>
+</ul>
+<p><strong>Chia sẻ nội dung (chi tiết xem F25):</strong></p>
+<ul>
+<li>Chỉ <strong>Admin</strong> mới có quyền chia sẻ nội dung cross-tenant</li>
+<li>Nội dung shared = read-only ở phía tenant, có thể clone để tạo bản sao riêng</li>
+<li>Entity <code>SharedContent</code> quản lý mapping: content_id → tenant_id</li>
+</ul>
+<hr>
+<h2>9. API Overview</h2>
+<h3>9.1. Response format chuẩn</h3>
+<p>API trả response thống nhất với cấu trúc:</p>
+<ul>
+<li><strong>Success:</strong> status code, message, data</li>
+<li><strong>Error:</strong> error code, message mô tả lỗi, sys_message (machine-readable)</li>
+</ul>
+<blockquote>
+<p>Chi tiết format do Tech Lead quyết định khi thiết kế API.</p>
+</blockquote>
+<h3>9.2. Endpoint summary (gợi ý)</h3>
+<table>
+<thead>
+<tr>
+<th>Nhóm</th>
+<th>Prefix (gợi ý)</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Auth</td>
+<td><code>/auth/*</code></td>
+<td>Đăng nhập, đăng ký, OTP, quên mật khẩu</td>
+</tr>
+<tr>
+<td>Users</td>
+<td><code>/users</code></td>
+<td>CRUD user, profile, import/export</td>
+</tr>
+<tr>
+<td>Curricula</td>
+<td><code>/curricula</code></td>
+<td>Thư viện bài giảng: CRUD, chapters, lessons</td>
+</tr>
+<tr>
+<td>Tests</td>
+<td><code>/tests</code></td>
+<td>Thư viện bài kiểm tra: CRUD, gán câu hỏi</td>
+</tr>
+<tr>
+<td>Courses</td>
+<td><code>/courses</code></td>
+<td>Khoá học: CRUD, gán bài giảng, gán học viên</td>
+</tr>
+<tr>
+<td>Questions</td>
+<td><code>/questions</code></td>
+<td>CRUD câu hỏi, import</td>
+</tr>
+<tr>
+<td>Exams</td>
+<td><code>/exams</code></td>
+<td>CRUD kỳ thi, assign users</td>
+</tr>
+<tr>
+<td>Learning</td>
+<td><code>/users/:id/courses/*</code></td>
+<td>Enroll, học, ghi chú, làm test</td>
+</tr>
+<tr>
+<td>Exam Taking</td>
+<td><code>/users/:id/exams/*</code></td>
+<td>Tham gia thi, làm bài</td>
+</tr>
+<tr>
+<td>Home</td>
+<td><code>/home</code></td>
+<td>Trang chủ (public)</td>
+</tr>
+<tr>
+<td>Tenants</td>
+<td><code>/tenants</code></td>
+<td>CRUD tenant, phê duyệt</td>
+</tr>
+<tr>
+<td>Tenant Mgmt</td>
+<td><code>/tenants/:id/*</code></td>
+<td>Users, departments, job titles, courses</td>
+</tr>
+<tr>
+<td>Topics</td>
+<td><code>/topics</code></td>
+<td>Bộ kỹ năng</td>
+</tr>
+<tr>
+<td>Notifications</td>
+<td><code>/notifications</code></td>
+<td>Thông báo</td>
+</tr>
+<tr>
+<td>Roles/Rules</td>
+<td><code>/roles</code>, <code>/rules</code></td>
+<td>Quản lý phân quyền</td>
+</tr>
+<tr>
+<td>Master data</td>
+<td><code>/departments</code>, <code>/job-titles</code>, etc.</td>
+<td>Dữ liệu danh mục</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/generate-questions</code></td>
+<td>Sinh câu hỏi từ nội dung</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/summarize</code></td>
+<td>Tóm tắt bài giảng</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/transcript</code></td>
+<td>Tạo transcript từ video</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/suggest-tags</code></td>
+<td>Gợi ý topic + tags</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/chat</code></td>
+<td>AI Tutor chat</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/search</code></td>
+<td>Tìm kiếm ngữ nghĩa</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/report</code></td>
+<td>Báo cáo thông minh</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/quality</code></td>
+<td>Phân tích chất lượng câu hỏi</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/course-builder</code></td>
+<td>Sinh đề xuất bài giảng từ mô tả</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/course-builder/regenerate</code></td>
+<td>Sinh lại từng phần đề xuất</td>
+</tr>
+<tr>
+<td>AI</td>
+<td><code>/ai/course-builder/create</code></td>
+<td>Xác nhận tạo bài giảng từ đề xuất</td>
+</tr>
+<tr>
+<td>Sharing</td>
+<td><code>/shared-content</code></td>
+<td>CRUD chia sẻ nội dung cho tenant (Admin only)</td>
+</tr>
+<tr>
+<td>Cloning</td>
+<td><code>/clone/:contentType/:id</code></td>
+<td>Clone nội dung shared về tenant (Tenant admin)</td>
+</tr>
+<tr>
+<td>Employees</td>
+<td><code>/dashboard/employees</code></td>
+<td>CRUD nhân viên trong tenant (Tenant admin)</td>
+</tr>
+<tr>
+<td>Departments</td>
+<td><code>/dashboard/departments</code></td>
+<td>CRUD phòng ban trong tenant (Tenant admin)</td>
+</tr>
+<tr>
+<td>Job Titles</td>
+<td><code>/dashboard/job-titles</code></td>
+<td>CRUD chức danh trong tenant (Tenant admin)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>10. Changelog</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Ngày</th>
+<th>Thay đổi</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2026-07-02</td>
+<td>Reverse-engineer spec từ source code (backend + web)</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>2026-07-02</td>
+<td>Cập nhật: bỏ thanh toán/voucher, login email/password, Enterprise→Tenant, thêm mapping user-tenant, bỏ tech stack cụ thể</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>2.1</td>
+<td>2026-07-02</td>
+<td>Thêm F14 Dashboard tiến độ (học viên), F15 Quản lý tiến độ (quản lý), cập nhật F6 rule test 5/5, ghi nhận cấu hình tính điểm phase 2</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>2026-07-02</td>
+<td>Bỏ Điểm danh QR và Google OAuth login → chuyển out-of-scope</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td>2026-07-02</td>
+<td>Bổ sung đầy đủ screens (S1–S92), chi tiết 6 layouts (Default, Client, Learning, Quiz, Dashboard, Tenant), wireframe ASCII, sidebar menu, IBM Carbon Design System reference</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td>2026-07-02</td>
+<td>Bỏ Banner quảng cáo và Câu hỏi tương tác trong video → out-of-scope</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2026-07-02</td>
+<td><strong>Tách 2 tầng: Thư viện nội dung + Khoá học.</strong> F3 rewrite: khoá học = enrollment (gán bài giảng + học viên + thời hạn). F4 rewrite: Thư viện Bài giảng (Curriculum Library). F6 rewrite: Thư viện Bài kiểm tra (Test Library). F13 update: gán học viên thay vì phân quyền truy cập. Thêm 4 màn hình mới (S53–S56). Cập nhật sidebar: nhóm Thư viện + Đào tạo.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>3.1</td>
+<td>2026-07-02</td>
+<td>Thêm <strong>tags</strong> (nhãn phân loại tự do) cho Bài giảng, Bài kiểm tra, Câu hỏi. Cập nhật F9 bổ sung quản lý tags. Thêm entity Tag. Filter/search theo topic + tags ở tất cả màn thư viện.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>2026-07-02</td>
+<td><strong>Thêm 5 tính năng AI (F19–F23).</strong> F19: sinh câu hỏi + transcript video + tóm tắt nội dung. F20: AI Tutor chatbot trong màn học. F21: auto-tagging + semantic search. F22: báo cáo thông minh + cảnh báo. F23: adaptive testing + phân tích chất lượng câu hỏi. Thêm difficulty_level cho câu hỏi. Thêm AI API endpoints.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>2026-07-02</td>
+<td><strong>Thêm F24 — AI Course Builder.</strong> Từ mô tả yêu cầu đào tạo + tài liệu → AI sinh đề xuất bài giảng hoàn chỉnh (chương, bài, câu hỏi, test, topic, tags). Admin review, chỉnh sửa inline, sinh lại từng phần → xác nhận tạo tất cả entity vào hệ thống. Thêm màn S57, sidebar menu nhóm AI, 3 API endpoints, user flow 2b.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>2026-07-02</td>
+<td><strong>Cập nhật F14 — &quot;Khoá học của tôi&quot; + Dashboard.</strong> S11 đổi từ catalog public → danh sách khoá học đã gán, thêm tabs (Tất cả/Đang học/Hoàn thành/Hết hạn), progress bar, deadline, chứng chỉ. S21 dashboard bổ sung section sắp hết hạn + khoá đã hoàn thành gần đây. S12 sửa: bỏ &quot;nút Enroll&quot; (user không tự đăng ký), đổi thành Bắt đầu/Tiếp tục học.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>2026-07-02</td>
+<td><strong>Gộp S21 Dashboard vào S10 Trang chủ.</strong> S10 đổi từ catalog → dashboard cá nhân (greeting, stat cards, sắp hết hạn, đang học, hoàn thành, kiểm tra). S21 deprecated. Bỏ link Dashboard khỏi navigation.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>4.1</td>
+<td>2026-07-03</td>
+<td><strong>Redesign S10 Trang chủ — từ dashboard cá nhân sang catalog + dashboard.</strong> Thêm 7 blocks: Hero banner (greeting + search + stats), Tiếp tục học (3 horizontal cards), Khoá học được giao (mandatory + deadline), Khám phá theo chủ đề (8 topic categories grid), Khoá học nổi bật (4 popular cards), Khoá học mới (4 recent cards), Thành tích (chứng chỉ + tổng quan metrics). Bỏ section bài kiểm tra gần đây (chuyển sang courses.html). Cập nhật wireframe S10.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>4.0</td>
+<td>2026-07-02</td>
+<td><strong>Chuyển sang mô hình SaaS Platform — Tenant tự chủ nội dung.</strong> Thêm F25 (Content Ownership, Sharing, Cloning). Tất cả entity nội dung thêm <code>tenant_id</code> (nullable). Mỗi tenant có cây topic, ngân hàng câu hỏi, thư viện bài giảng/kiểm tra, khoá học, kỳ thi riêng. Super Admin chia sẻ nội dung hệ thống cho tenant (read-only, cloneable). Gộp Tenant Portal (S31–S36) vào Admin Dashboard — 1 giao diện chung, menu filter theo role. Thêm S58–S60 (Nhân viên, Phòng ban, Chức danh trong Dashboard). Entity mới: SharedContent. Bỏ TenantCourse (thay bằng SharedContent). Cập nhật F3, F4, F6, F7, F8, F9, F11, F13 thêm tenant scoping. Thêm user flow 2c (clone shared), flow 5 (admin share).</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>4.2</td>
+<td>2026-07-03</td>
+<td><strong>Thêm F26–F28 (Phase 3–4).</strong> F26: Chứng chỉ nâng cao (serial, QR verify, expiry, revoke, chứng chỉ kỳ thi). F27: Huy hiệu &amp; Thành tích (12 system badges, trigger engine, streak, custom badge). F28: Gamification (XP, 10 levels, leaderboard tuần/tháng, cấu hình per tenant). Mở rộng F17 (merge fields, điều kiện cấp). Chuyển Gamification từ out-of-scope → Phase 4. Entity mới: Certificate, Badge, UserBadge, UserXP, XPTransaction, GamificationConfig.</td>
+<td>AI Agent</td>
+</tr>
+<tr>
+<td>4.3</td>
+<td>2026-07-03</td>
+<td><strong>Cập nhật UI header &amp; navigation.</strong> S23 deprecated (gộp vào S22 Profile). Admin header: tenant selector gộp vào avatar dropdown (Tenant list + Đăng xuất), bỏ Hồ sơ/Cài đặt. Client header: avatar dropdown mới (Hồ sơ, Khoá học của tôi, Đăng xuất), tenant label thay dropdown. Thêm ảnh Unsplash cho hero banner S10 + course thumbnails S10/S11. S57 AI Course Builder bỏ max-width:800px. Fix JS conflict (inline onclick vs app.js).</td>
+<td>AI Agent</td>
+</tr>
+</tbody></table>
+
+    </div>
+  </div>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0})">↑ Lên đầu</button>
+
+<script>
+  // Back to top visibility
+  window.addEventListener('scroll', () => {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // Add IDs to headings for TOC links
+  document.querySelectorAll('h2, h3, h4').forEach(h => {
+    if (!h.id) {
+      h.id = h.textContent.toLowerCase()
+        .replace(/[^\w\sàáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵđ-]/g, '')
+        .replace(/\s+/g, '-');
+    }
+  });
+</script>
+</body>
+</html>
