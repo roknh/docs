@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Tổng quan — Ocany LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="layout-dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+      <nav class="sidebar-nav">
+        <a href="overview.html" class="sidebar-item active">
+          <span class="item-icon">📊</span> Tổng quan
+        </a>
+        <a href="employees.html" class="sidebar-item">
+          <span class="item-icon">👥</span> Nhân viên
+        </a>
+        <a href="departments.html" class="sidebar-item">
+          <span class="item-icon">🏛</span> Phòng ban
+        </a>
+        <a href="job-titles.html" class="sidebar-item">
+          <span class="item-icon">💼</span> Chức danh
+        </a>
+        <a href="courses.html" class="sidebar-item">
+          <span class="item-icon">📚</span> Khoá học
+        </a>
+        <a href="progress.html" class="sidebar-item">
+          <span class="item-icon">📈</span> Tiến độ
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="dashboard-main">
+      <header class="dashboard-header">
+        <span class="body-emphasis">Ocany</span>
+        <div class="dropdown" id="userDropdown">
+          <button class="dropdown-trigger" onclick="toggleDropdown('userDropdown')">
+            <div class="avatar avatar-sm">NT</div>
+            <span>NT ▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Hồ sơ tổ chức</a>
+            <a href="#" class="dropdown-item">Cài đặt</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item text-error">Đăng xuất</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="page-header">
+          <h1>Tổng quan</h1>
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="grid grid-4 mb-xl">
+          <div class="stat-card">
+            <div class="stat-value">128</div>
+            <div class="stat-label">Nhân viên</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">12</div>
+            <div class="stat-label">Khoá học</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">76%</div>
+            <div class="stat-label">Hoàn thành</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">8</div>
+            <div class="stat-label">Phòng ban</div>
+          </div>
+        </div>
+
+        <!-- Course Progress Section -->
+        <div class="card">
+          <div style="padding-bottom: var(--sp-md); margin-bottom: var(--sp-md); border-bottom: 1px solid var(--hairline);">
+            <h2 style="font-size: 20px; font-weight: 400;">Tiến độ khoá học</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tên khoá học</th>
+                <th>Học viên tham gia</th>
+                <th>Tỷ lệ hoàn thành</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="body-emphasis">An toàn lao động cơ bản</td>
+                <td>98</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 120px;">
+                      <div class="progress-bar success" style="width: 92%;"></div>
+                    </div>
+                    <span class="caption text-muted">92%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-success">Đang diễn ra</span></td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Kỹ năng giao tiếp nội bộ</td>
+                <td>75</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 120px;">
+                      <div class="progress-bar" style="width: 68%;"></div>
+                    </div>
+                    <span class="caption text-muted">68%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-primary">Đang diễn ra</span></td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Quản lý thời gian hiệu quả</td>
+                <td>60</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 120px;">
+                      <div class="progress-bar success" style="width: 100%;"></div>
+                    </div>
+                    <span class="caption text-muted">100%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-success">Hoàn thành</span></td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Nghiệp vụ bán hàng nâng cao</td>
+                <td>45</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 120px;">
+                      <div class="progress-bar" style="width: 41%;"></div>
+                    </div>
+                    <span class="caption text-muted">41%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-warning">Chậm tiến độ</span></td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Excel cơ bản cho văn phòng</td>
+                <td>112</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 120px;">
+                      <div class="progress-bar" style="width: 55%;"></div>
+                    </div>
+                    <span class="caption text-muted">55%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-primary">Đang diễn ra</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+      }
+    });
+  </script>
+</body>
+</html>

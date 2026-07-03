@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Khoá học của tôi — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+<div class="layout-client">
+
+  <!-- Client Header -->
+  <header class="client-header">
+    <div class="header-left">
+      <a href="home.html" class="header-logo"><img src="../images/logo.png" alt="Catcuri"></a>
+      <nav class="header-nav">
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html" class="active">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span style="font-size:13px; color:var(--ink-muted);">Ocany</span>
+      <div class="notif-bell">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6zm0 16a2 2 0 0 0 2-2H8a2 2 0 0 0 2 2z" fill="#525252"/>
+        </svg>
+        <span class="notif-count">3</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">NT</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+          <a href="courses.html" class="dropdown-item">Khoá học của tôi</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Client Content -->
+  <main class="client-content">
+
+    <!-- Page header -->
+    <div class="page-header">
+      <h1 class="headline">Khoá học của tôi</h1>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs mb-lg">
+      <button class="tab active" onclick="switchCourseTab(event, 'all')">Tất cả <span class="badge badge-neutral" style="margin-left: 6px;">10</span></button>
+      <button class="tab" onclick="switchCourseTab(event, 'active')">Đang học <span class="badge badge-primary" style="margin-left: 6px;">3</span></button>
+      <button class="tab" onclick="switchCourseTab(event, 'completed')">Hoàn thành <span class="badge badge-success" style="margin-left: 6px;">5</span></button>
+      <button class="tab" onclick="switchCourseTab(event, 'expired')">Hết hạn <span class="badge badge-error" style="margin-left: 6px;">2</span></button>
+    </div>
+
+    <!-- Search & Filter row -->
+    <div class="flex flex-center gap-md mb-xl" style="flex-wrap: wrap;">
+      <div class="search-box" style="flex: 1; min-width: 240px; max-width: 480px;">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="5" stroke="#525252" stroke-width="1.5"/>
+          <path d="M11 11l3 3" stroke="#525252" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="text" placeholder="Tìm kiếm khoá học..." />
+      </div>
+      <div class="form-group" style="margin: 0; min-width: 200px;">
+        <select class="form-select">
+          <option value="">Tất cả chủ đề</option>
+          <option>Kỹ năng mềm</option>
+          <option>An toàn</option>
+          <option>Tin học</option>
+          <option>Lãnh đạo</option>
+          <option>Dịch vụ</option>
+          <option>Tư duy</option>
+          <option>Bán hàng</option>
+          <option>Tổng hợp</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Course grid -->
+    <div class="grid grid-4" id="course-grid">
+
+      <!-- 1. Kỹ năng giao tiếp — active, 45% -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="active" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-communication.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Kỹ năng mềm</span>
+          <div class="body-emphasis">Kỹ năng giao tiếp</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar" style="width: 45%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>45%</span>
+              <span>Bài 3/8</span>
+            </div>
+          </div>
+          <div class="caption text-muted">HSD: 31/08/2026</div>
+          <div><span class="badge badge-primary">Tiếp tục</span></div>
+        </div>
+      </a>
+
+      <!-- 2. An toàn lao động — active, 70%, deadline warning -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="active" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-safety.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">An toàn</span>
+          <div class="body-emphasis">An toàn lao động</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar" style="width: 70%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>70%</span>
+              <span>Bài 7/10</span>
+            </div>
+          </div>
+          <div class="caption text-error" style="font-weight:500;">HSD: 15/07/2026</div>
+          <div><span class="badge badge-primary">Tiếp tục</span></div>
+        </div>
+      </a>
+
+      <!-- 3. Excel nâng cao — active, 20% -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="active" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-excel.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Tin học</span>
+          <div class="body-emphasis">Excel nâng cao</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar" style="width: 20%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>20%</span>
+              <span>Bài 3/15</span>
+            </div>
+          </div>
+          <div class="caption text-muted">HSD: 30/09/2026</div>
+          <div><span class="badge badge-primary">Tiếp tục</span></div>
+        </div>
+      </a>
+
+      <!-- 4. PCCC cơ bản — completed, 100%, has cert -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="completed" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-safety.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">An toàn</span>
+          <div class="body-emphasis">PCCC cơ bản</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar success" style="width: 100%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>100%</span>
+              <span>Hoàn thành</span>
+            </div>
+          </div>
+          <div class="caption text-muted">Hoàn thành 28/06/2026</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-success">Xem lại</span>
+            <span class="caption">📜 <span style="color: var(--primary); text-decoration: underline;">Chứng chỉ</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 5. Giao tiếp khách hàng — completed, 100%, has cert -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="completed" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-customer.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Dịch vụ</span>
+          <div class="body-emphasis">Giao tiếp khách hàng</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar success" style="width: 100%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>100%</span>
+              <span>Hoàn thành</span>
+            </div>
+          </div>
+          <div class="caption text-muted">Hoàn thành 15/06/2026</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-success">Xem lại</span>
+            <span class="caption">📜 <span style="color: var(--primary); text-decoration: underline;">Chứng chỉ</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 6. Onboarding Q1 — completed, 100%, no cert -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="completed" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-onboarding.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Tổng hợp</span>
+          <div class="body-emphasis">Onboarding Q1</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar success" style="width: 100%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>100%</span>
+              <span>Hoàn thành</span>
+            </div>
+          </div>
+          <div class="caption text-muted">Hoàn thành 01/04/2026</div>
+          <div><span class="badge badge-success">Xem lại</span></div>
+        </div>
+      </a>
+
+      <!-- 7. Quản lý thời gian — completed, 100%, has cert -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="completed" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-time.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Kỹ năng mềm</span>
+          <div class="body-emphasis">Quản lý thời gian</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar success" style="width: 100%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>100%</span>
+              <span>Hoàn thành</span>
+            </div>
+          </div>
+          <div class="caption text-muted">Hoàn thành 20/05/2026</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="badge badge-success">Xem lại</span>
+            <span class="caption">📜 <span style="color: var(--primary); text-decoration: underline;">Chứng chỉ</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 8. Tư duy phản biện — completed, 100%, no cert -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="completed" style="padding: 0; text-decoration: none; color: inherit;">
+        <div style="height: 140px; background: url('../images/course-thinking.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Tư duy</span>
+          <div class="body-emphasis">Tư duy phản biện</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar success" style="width: 100%;"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>100%</span>
+              <span>Hoàn thành</span>
+            </div>
+          </div>
+          <div class="caption text-muted">Hoàn thành 10/03/2026</div>
+          <div><span class="badge badge-success">Xem lại</span></div>
+        </div>
+      </a>
+
+      <!-- 9. Nghiệp vụ bán hàng Q1 — expired, 40% -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="expired" style="padding: 0; text-decoration: none; color: inherit; opacity: 0.7;">
+        <div style="height: 140px; background: url('../images/course-sales.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Bán hàng</span>
+          <div class="body-emphasis">Nghiệp vụ bán hàng Q1</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar" style="width: 40%; background: var(--error);"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>40%</span>
+              <span>Bài 4/10</span>
+            </div>
+          </div>
+          <div class="caption text-error" style="font-weight:500;">Hết hạn 30/06/2026</div>
+          <div><span class="badge badge-error">Hết hạn</span></div>
+        </div>
+      </a>
+
+      <!-- 10. Kỹ năng lãnh đạo cũ — expired, 0% -->
+      <a href="course-detail.html" class="card card-hover course-card" data-status="expired" style="padding: 0; text-decoration: none; color: inherit; opacity: 0.7;">
+        <div style="height: 140px; background: url('../images/course-leadership.jpg') center/cover no-repeat;"></div>
+        <div style="padding: var(--sp-md); display:flex; flex-direction:column; gap:8px;">
+          <span class="badge badge-neutral" style="align-self:flex-start;">Lãnh đạo</span>
+          <div class="body-emphasis">Kỹ năng lãnh đạo cũ</div>
+          <div>
+            <div class="progress" style="margin-bottom: 4px;">
+              <div class="progress-bar" style="width: 0%; background: var(--error);"></div>
+            </div>
+            <div class="caption text-muted" style="display: flex; justify-content: space-between;">
+              <span>0%</span>
+              <span>Bài 0/12</span>
+            </div>
+          </div>
+          <div class="caption text-error" style="font-weight:500;">Hết hạn 15/05/2026</div>
+          <div><span class="badge badge-error">Hết hạn</span></div>
+        </div>
+      </a>
+
+    </div>
+
+  </main>
+
+  <!-- Client Footer -->
+  <footer class="client-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Catcuri</h4>
+        <p style="font-size: 14px; color: var(--inverse-ink-muted); margin-top: var(--sp-xs);">Nền tảng đào tạo trực tuyến dành cho doanh nghiệp.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ</h4>
+        <a href="#">Trung tâm trợ giúp</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Catcuri. Bảo lưu mọi quyền.
+    </div>
+  </footer>
+
+</div>
+<script src="../js/app.js"></script>
+<script>
+  function switchCourseTab(event, tabName) {
+    // Update active tab
+    document.querySelectorAll('.tabs .tab').forEach(function(tab) {
+      tab.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+
+    // Show/hide cards based on data-status
+    document.querySelectorAll('.course-card').forEach(function(card) {
+      var status = card.getAttribute('data-status');
+      if (tabName === 'all') {
+        card.style.display = '';
+      } else if (tabName === 'active' && status === 'active') {
+        card.style.display = '';
+      } else if (tabName === 'completed' && status === 'completed') {
+        card.style.display = '';
+      } else if (tabName === 'expired' && status === 'expired') {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>

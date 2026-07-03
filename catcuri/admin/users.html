@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Người dùng — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item active">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">Users</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1>Người dùng</h1>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm">Export</button>
+          <button class="btn btn-tertiary btn-sm">Import</button>
+          <button class="btn btn-primary btn-sm">+ Thêm user</button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-center gap-md mb-lg">
+        <div class="search-box" style="flex:1;max-width:400px;">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Tìm theo tên, email...">
+        </div>
+        <select class="form-select" style="width:180px;">
+          <option value="">Tất cả role</option>
+          <option>Admin</option>
+          <option>Super-moderator</option>
+          <option>Moderator</option>
+          <option>User</option>
+        </select>
+        <select class="form-select" style="width:180px;">
+          <option value="">Tất cả tenant</option>
+          <option>ABC Corporation</option>
+          <option>XYZ Holdings</option>
+          <option>DEF Group</option>
+        </select>
+        <select class="form-select" style="width:160px;">
+          <option value="">Tất cả trạng thái</option>
+          <option>Hoạt động</option>
+          <option>Bị khoá</option>
+        </select>
+      </div>
+
+      <!-- Table -->
+      <div class="card" style="padding:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox"></th>
+              <th>Họ tên</th>
+              <th>Email</th>
+              <th>Mã NV</th>
+              <th>Role</th>
+              <th>Tenant</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm">NT</span>
+                  <div>
+                    <div class="body-sm">Nguyễn Thị Thu</div>
+                    <div class="caption text-muted">ID: USR-001</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-muted">thu.nguyen@abc.com</td>
+              <td>NV-1001</td>
+              <td><span class="badge badge-neutral">User</span></td>
+              <td>ABC Corporation</td>
+              <td><span class="badge badge-success"><span class="badge-dot" style="background:var(--success);"></span>Hoạt động</span></td>
+              <td>
+                <div class="actions">
+                  <a href="user-detail.html" class="btn btn-ghost btn-sm">Chi tiết</a>
+                  <button class="btn btn-ghost btn-sm text-error">Khoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#24a148;">TM</span>
+                  <div>
+                    <div class="body-sm">Trần Minh Hiếu</div>
+                    <div class="caption text-muted">ID: USR-002</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-muted">hieu.tran@xyz.com</td>
+              <td>NV-2003</td>
+              <td><span class="badge badge-primary">Moderator</span></td>
+              <td>XYZ Holdings</td>
+              <td><span class="badge badge-success"><span class="badge-dot" style="background:var(--success);"></span>Hoạt động</span></td>
+              <td>
+                <div class="actions">
+                  <a href="user-detail.html" class="btn btn-ghost btn-sm">Chi tiết</a>
+                  <button class="btn btn-ghost btn-sm text-error">Khoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#8a3ffc;">LH</span>
+                  <div>
+                    <div class="body-sm">Lê Hoàng Nam</div>
+                    <div class="caption text-muted">ID: USR-003</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-muted">nam.le@abc.com</td>
+              <td>NV-1015</td>
+              <td><span class="badge badge-neutral">User</span></td>
+              <td>ABC Corporation</td>
+              <td><span class="badge badge-success"><span class="badge-dot" style="background:var(--success);"></span>Hoạt động</span></td>
+              <td>
+                <div class="actions">
+                  <a href="user-detail.html" class="btn btn-ghost btn-sm">Chi tiết</a>
+                  <button class="btn btn-ghost btn-sm text-error">Khoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#f1c21b;color:#161616;">PL</span>
+                  <div>
+                    <div class="body-sm">Phạm Lan Anh</div>
+                    <div class="caption text-muted">ID: USR-004</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-muted">lanh.pham@def.com</td>
+              <td>NV-3001</td>
+              <td><span class="badge badge-warning">Super-mod</span></td>
+              <td>DEF Group</td>
+              <td><span class="badge badge-error"><span class="badge-dot" style="background:var(--error);"></span>Bị khoá</span></td>
+              <td>
+                <div class="actions">
+                  <a href="user-detail.html" class="btn btn-ghost btn-sm">Chi tiết</a>
+                  <button class="btn btn-ghost btn-sm text-success">Mở khoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#da1e28;">VD</span>
+                  <div>
+                    <div class="body-sm">Vũ Đức Thành</div>
+                    <div class="caption text-muted">ID: USR-005</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-muted">thanh.vu@xyz.com</td>
+              <td>NV-2018</td>
+              <td><span class="badge badge-neutral">User</span></td>
+              <td>XYZ Holdings</td>
+              <td><span class="badge badge-success"><span class="badge-dot" style="background:var(--success);"></span>Hoạt động</span></td>
+              <td>
+                <div class="actions">
+                  <a href="user-detail.html" class="btn btn-ghost btn-sm">Chi tiết</a>
+                  <button class="btn btn-ghost btn-sm text-error">Khoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#0072c3;">BT</span>
+                  <div>
+                    <div class="body-sm">Bùi Thị Hà</div>
+                    <div class="caption text-muted">ID: USR-006</div>
+                  </div>
+                </div>
+              </td>
+              <td class="text-muted">ha.bui@ghi.com</td>
+              <td class="text-subtle">—</td>
+              <td><span class="badge badge-primary">Moderator</span></td>
+              <td>GHI Vietnam</td>
+              <td><span class="badge badge-success"><span class="badge-dot" style="background:var(--success);"></span>Hoạt động</span></td>
+              <td>
+                <div class="actions">
+                  <a href="user-detail.html" class="btn btn-ghost btn-sm">Chi tiết</a>
+                  <button class="btn btn-ghost btn-sm text-error">Khoá</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <span>Hiển thị 1–6 / 248 người dùng</span>
+          <div class="pagination-pages">
+            <button>‹</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>…</button>
+            <button>42</button>
+            <button>›</button>
+          </div>
+          <div class="flex flex-center gap-sm">
+            <span class="caption text-muted">Số hàng/trang:</span>
+            <select class="form-select" style="width:80px;padding:6px 28px 6px 8px;">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

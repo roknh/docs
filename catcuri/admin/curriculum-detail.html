@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Chi tiết bài giảng — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 4px;
+      width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .modal-header h3 { margin: 0; font-size: 16px; font-weight: 600; }
+    .modal-body { padding: 24px; }
+    .modal-footer {
+      display: flex; justify-content: flex-end; gap: 8px;
+      padding: 16px 24px;
+      border-top: 1px solid var(--hairline);
+    }
+    .content-type-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      margin-bottom: 20px;
+    }
+    .content-type-card {
+      border: 2px solid var(--hairline);
+      border-radius: 4px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .content-type-card:hover { border-color: var(--primary); }
+    .content-type-card.selected { border-color: var(--primary); background: rgba(15,98,254,0.04); }
+    .content-type-card .type-icon { font-size: 28px; margin-bottom: 8px; }
+    .content-type-card .type-name { font-size: 13px; font-weight: 600; }
+    .content-type-card .type-desc { font-size: 11px; color: var(--text-subtle); margin-top: 4px; }
+    .upload-zone {
+      border: 2px dashed var(--hairline);
+      border-radius: 4px;
+      padding: 32px;
+      text-align: center;
+      color: var(--text-subtle);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .upload-zone:hover { border-color: var(--primary); }
+    .form-section { display: none; }
+    .form-section.active { display: block; }
+  </style>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item active">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <a href="curricula.html">Bài giảng</a>
+        <span class="separator">/</span>
+        <span class="current">Kỹ năng giao tiếp</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <div>
+          <h1>Kỹ năng giao tiếp</h1>
+          <div class="flex flex-center gap-sm mt-xs">
+            <span class="badge badge-success">Published</span>
+            <span class="caption text-muted">ID: CUR-001 · Tạo ngày 01/03/2026</span>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm">Xem trước</button>
+          <button class="btn btn-danger btn-sm">Xoá</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs mb-lg">
+        <button class="tab active" onclick="switchTab(event,'thongtin')">Thông tin</button>
+        <button class="tab" onclick="switchTab(event,'noidung')">Nội dung</button>
+        <button class="tab" onclick="switchTab(event,'khoahoc')">Khoá học đang dùng</button>
+      </div>
+
+      <!-- Tab: Thông tin -->
+      <div id="tab-thongtin">
+        <div class="grid grid-2" style="gap:var(--sp-xl);align-items:start;">
+          <!-- Form -->
+          <div class="card">
+            <h3 class="subhead mb-lg">Thông tin bài giảng</h3>
+
+            <div class="form-group">
+              <label class="form-label">Tên bài giảng *</label>
+              <input type="text" class="form-input" value="Kỹ năng giao tiếp">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Mô tả</label>
+              <textarea class="form-textarea" rows="4">Bài giảng trang bị cho học viên các kỹ năng giao tiếp hiệu quả trong môi trường công việc, từ giao tiếp bằng lời nói đến văn bản và thuyết trình.</textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Topic *</label>
+              <select class="form-select">
+                <option selected>Kỹ năng mềm</option>
+                <option>Kỹ năng chuyên môn</option>
+                <option>An toàn</option>
+                <option>Quản lý</option>
+                <option>Tư vấn bán hàng</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <div style="display:flex;flex-wrap:wrap;gap:var(--sp-xs);align-items:center;padding:var(--sp-sm);border:1px solid var(--hairline);border-radius:4px;background:var(--canvas);">
+                <span class="badge badge-neutral" style="font-size:11px;padding:2px 8px;display:inline-flex;align-items:center;gap:4px;">
+                  onboarding <span style="cursor:pointer;opacity:0.6;">×</span>
+                </span>
+                <input type="text" placeholder="Thêm tag..." style="border:none;outline:none;font-size:13px;min-width:100px;background:transparent;">
+              </div>
+              <p class="form-helper">Nhấn Enter để thêm tag mới</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Trạng thái</label>
+              <select class="form-select">
+                <option selected>Published</option>
+                <option>Draft</option>
+              </select>
+            </div>
+
+            <div class="flex gap-sm">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+              <button class="btn btn-ghost">Huỷ</button>
+            </div>
+          </div>
+
+          <!-- Side Info -->
+          <div style="display:flex;flex-direction:column;gap:var(--sp-lg);">
+            <!-- Stats Card -->
+            <div class="card">
+              <h4 class="body-emphasis mb-md">Thống kê</h4>
+              <div style="display:flex;flex-direction:column;gap:var(--sp-sm);">
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Số chương</span>
+                  <span class="body-emphasis">3</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Số bài học</span>
+                  <span class="body-emphasis">12</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Số bài kiểm tra</span>
+                  <span class="body-emphasis">3</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Tổng thời lượng video</span>
+                  <span class="body-emphasis">2h 15m</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Khoá học đang dùng</span>
+                  <span class="body-emphasis">2</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Tools Card -->
+            <div class="card">
+              <h4 class="body-emphasis mb-md">AI Tools</h4>
+              <div style="display:flex;flex-direction:column;gap:var(--sp-sm);">
+                <button class="btn btn-tertiary w-full">🤖 AI sinh câu hỏi</button>
+                <button class="btn btn-tertiary w-full">🤖 AI tóm tắt nội dung</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Nội dung -->
+      <div id="tab-noidung" style="display:none;">
+        <div class="card" style="padding:0;">
+
+          <!-- Chapter 1 -->
+          <div style="border-bottom:1px solid var(--hairline);">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg);background:var(--surface-1);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span style="color:var(--text-subtle);cursor:grab;font-size:16px;letter-spacing:-2px;">⋮⋮</span>
+                <span class="body-emphasis">Chương 1: Giao tiếp cơ bản</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-xs);">
+                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEditChapter(0)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error" onclick="event.stopPropagation()">Xoá</button>
+                <button class="btn btn-ghost btn-sm">▾ Thu gọn</button>
+              </div>
+            </div>
+
+            <!-- Lesson 1.1 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📹</span>
+                <span class="body-sm">Bài 1.1: Video giới thiệu</span>
+                <span class="caption text-muted">15:30</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(0)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Lesson 1.2 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📄</span>
+                <span class="body-sm">Bài 1.2: Tài liệu tham khảo</span>
+                <span class="caption text-muted">PDF</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(1)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Test 1 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);background:var(--surface-1);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📝</span>
+                <span class="body-sm">Test: Kiểm tra giao tiếp cơ bản</span>
+                <span class="caption text-muted">5 câu · 10 phút</span>
+                <span class="badge badge-neutral" style="font-size:11px;">từ thư viện bài kiểm tra</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(2)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Add lesson link -->
+            <div style="padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;">
+              <a href="#" class="body-sm" style="color:var(--primary);" onclick="event.preventDefault();openAddLesson()">+ Thêm bài học</a>
+            </div>
+          </div>
+
+          <!-- Chapter 2 -->
+          <div style="border-bottom:1px solid var(--hairline);">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg);background:var(--surface-1);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span style="color:var(--text-subtle);cursor:grab;font-size:16px;letter-spacing:-2px;">⋮⋮</span>
+                <span class="body-emphasis">Chương 2: Giao tiếp nâng cao</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-xs);">
+                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEditChapter(1)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error" onclick="event.stopPropagation()">Xoá</button>
+                <button class="btn btn-ghost btn-sm">▾ Thu gọn</button>
+              </div>
+            </div>
+
+            <!-- Lesson 2.1 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📹</span>
+                <span class="body-sm">Bài 2.1: Kỹ thuật thuyết trình</span>
+                <span class="caption text-muted">22:00</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(3)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Lesson 2.2 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📹</span>
+                <span class="body-sm">Bài 2.2: Xử lý xung đột</span>
+                <span class="caption text-muted">18:45</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(4)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Test 2 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);background:var(--surface-1);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📝</span>
+                <span class="body-sm">Test: Kiểm tra thuyết trình</span>
+                <span class="caption text-muted">5 câu · 10 phút</span>
+                <span class="badge badge-neutral" style="font-size:11px;">từ thư viện bài kiểm tra</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(5)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Add lesson link -->
+            <div style="padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;">
+              <a href="#" class="body-sm" style="color:var(--primary);" onclick="event.preventDefault();openAddLesson()">+ Thêm bài học</a>
+            </div>
+          </div>
+
+          <!-- Chapter 3 -->
+          <div style="border-bottom:1px solid var(--hairline);">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-md) var(--sp-lg);background:var(--surface-1);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span style="color:var(--text-subtle);cursor:grab;font-size:16px;letter-spacing:-2px;">⋮⋮</span>
+                <span class="body-emphasis">Chương 3: Ứng dụng thực tế</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-xs);">
+                <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEditChapter(2)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error" onclick="event.stopPropagation()">Xoá</button>
+                <button class="btn btn-ghost btn-sm">▾ Thu gọn</button>
+              </div>
+            </div>
+
+            <!-- Lesson 3.1 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📹</span>
+                <span class="body-sm">Bài 3.1: Case study</span>
+                <span class="caption text-muted">25:00</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(6)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Lesson 3.2 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📄</span>
+                <span class="body-sm">Bài 3.2: Bài tập thực hành</span>
+                <span class="caption text-muted">Document</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(7)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Test 3 -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;border-bottom:1px solid var(--hairline);background:var(--surface-1);">
+              <div style="display:flex;align-items:center;gap:var(--sp-md);">
+                <span>📝</span>
+                <span class="body-sm">Test: Kiểm tra tổng hợp</span>
+                <span class="caption text-muted">10 câu · 15 phút</span>
+                <span class="badge badge-neutral" style="font-size:11px;">từ thư viện bài kiểm tra</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                <span class="badge badge-success" style="font-size:11px;">✅ Published</span>
+                <button class="btn btn-ghost btn-sm" onclick="openEditLesson(8)">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+
+            <!-- Add lesson link -->
+            <div style="padding:var(--sp-sm) var(--sp-lg) var(--sp-sm) 56px;">
+              <a href="#" class="body-sm" style="color:var(--primary);" onclick="event.preventDefault();openAddLesson()">+ Thêm bài học</a>
+            </div>
+          </div>
+
+          <!-- Add chapter -->
+          <div style="padding:var(--sp-md) var(--sp-lg);">
+            <button class="btn btn-tertiary btn-sm" onclick="openAddChapter()">+ Thêm chương</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Khoá học đang dùng -->
+      <div id="tab-khoahoc" style="display:none;">
+        <div class="card" style="padding:0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tên khoá học</th>
+                <th>Thời gian</th>
+                <th>Học viên</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="body-emphasis">Đào tạo nhân viên mới Q2</div>
+                </td>
+                <td class="text-muted">01/07 – 31/07/2026</td>
+                <td>50 người</td>
+                <td><span class="badge badge-success">Active</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="body-emphasis">Kỹ năng mềm cơ bản</div>
+                </td>
+                <td class="text-muted">15/06 – 30/06/2026</td>
+                <td>120 người</td>
+                <td><span class="badge badge-neutral">Completed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Thêm bài học -->
+<div class="modal-overlay" id="addLessonModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Thêm bài học</h3>
+      <button class="btn btn-ghost btn-sm" onclick="closeAddLesson()" style="font-size:18px;padding:4px 8px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Step 1: Chọn loại nội dung -->
+      <label class="form-label" style="margin-bottom:12px;">Loại nội dung *</label>
+      <div class="content-type-grid">
+        <div class="content-type-card selected" onclick="selectContentType('video', this)">
+          <div class="type-icon">📹</div>
+          <div class="type-name">Video</div>
+          <div class="type-desc">Upload hoặc nhập URL video</div>
+        </div>
+        <div class="content-type-card" onclick="selectContentType('document', this)">
+          <div class="type-icon">📄</div>
+          <div class="type-name">Tài liệu</div>
+          <div class="type-desc">PDF, Word, PowerPoint</div>
+        </div>
+        <div class="content-type-card" onclick="selectContentType('test', this)">
+          <div class="type-icon">📝</div>
+          <div class="type-name">Bài kiểm tra</div>
+          <div class="type-desc">Chọn từ thư viện</div>
+        </div>
+      </div>
+
+      <!-- Common fields -->
+      <div class="form-group">
+        <label class="form-label">Tên bài học *</label>
+        <input type="text" class="form-input" placeholder="VD: Bài 1.3: Kỹ năng lắng nghe">
+      </div>
+
+      <!-- Video fields -->
+      <div class="form-section active" id="section-video">
+        <div class="form-group">
+          <label class="form-label">Nguồn video *</label>
+          <select class="form-select" onchange="toggleVideoSource(this.value)">
+            <option value="upload">Upload file</option>
+            <option value="url">Nhập URL (YouTube, Vimeo...)</option>
+          </select>
+        </div>
+        <div id="video-upload" class="form-group">
+          <div class="upload-zone">
+            <div style="font-size:32px;margin-bottom:8px;">☁️</div>
+            <div class="body-sm">Kéo thả file video vào đây</div>
+            <div class="caption text-muted" style="margin-top:4px;">MP4, WebM · Tối đa 500MB</div>
+            <button class="btn btn-tertiary btn-sm" style="margin-top:12px;">Chọn file</button>
+          </div>
+        </div>
+        <div id="video-url" class="form-group" style="display:none;">
+          <label class="form-label">URL video</label>
+          <input type="text" class="form-input" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Thời lượng</label>
+          <div class="flex gap-sm">
+            <input type="number" class="form-input" placeholder="Phút" style="width:100px;" min="0">
+            <span class="body-sm" style="align-self:center;">:</span>
+            <input type="number" class="form-input" placeholder="Giây" style="width:100px;" min="0" max="59">
+          </div>
+        </div>
+      </div>
+
+      <!-- Document fields -->
+      <div class="form-section" id="section-document">
+        <div class="form-group">
+          <div class="upload-zone">
+            <div style="font-size:32px;margin-bottom:8px;">📎</div>
+            <div class="body-sm">Kéo thả file tài liệu vào đây</div>
+            <div class="caption text-muted" style="margin-top:4px;">PDF, DOCX, PPTX, XLSX · Tối đa 50MB</div>
+            <button class="btn btn-tertiary btn-sm" style="margin-top:12px;">Chọn file</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test fields -->
+      <div class="form-section" id="section-test">
+        <div class="form-group">
+          <label class="form-label">Chọn bài kiểm tra từ thư viện *</label>
+          <select class="form-select">
+            <option value="">— Chọn bài kiểm tra —</option>
+            <option>Kiểm tra giao tiếp cơ bản (5 câu · 10 phút)</option>
+            <option>Kiểm tra thuyết trình (5 câu · 10 phút)</option>
+            <option>Kiểm tra tổng hợp (10 câu · 15 phút)</option>
+            <option>An toàn lao động cơ bản (8 câu · 12 phút)</option>
+            <option>Nghiệp vụ bán hàng (10 câu · 20 phút)</option>
+          </select>
+          <p class="form-helper">Bài kiểm tra được quản lý trong <a href="tests.html">Thư viện bài kiểm tra</a></p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Thời gian làm bài (ghi đè)</label>
+          <div class="flex gap-sm flex-center">
+            <input type="number" class="form-input" placeholder="Phút" style="width:100px;" min="1">
+            <span class="caption text-muted">phút · Để trống = dùng thời gian mặc định</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common: Mô tả -->
+      <div class="form-group" id="desc-field">
+        <label class="form-label">Mô tả (tuỳ chọn)</label>
+        <textarea class="form-textarea" rows="2" placeholder="Mô tả ngắn về nội dung bài học..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Trạng thái</label>
+        <select class="form-select" style="width:160px;">
+          <option>Draft</option>
+          <option>Published</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeAddLesson()">Huỷ</button>
+      <button class="btn btn-primary">Thêm bài học</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Thêm/Sửa chương -->
+<div class="modal-overlay" id="addChapterModal">
+  <div class="modal" style="width:480px;">
+    <div class="modal-header">
+      <h3 id="chapterModalTitle">Thêm chương mới</h3>
+      <button class="btn btn-ghost btn-sm" onclick="closeAddChapter()" style="font-size:18px;padding:4px 8px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Tên chương *</label>
+        <input type="text" class="form-input" id="chapterName" placeholder="VD: Chương 4: Giao tiếp phi ngôn ngữ">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mô tả (tuỳ chọn)</label>
+        <textarea class="form-textarea" rows="2" id="chapterDesc" placeholder="Mô tả ngắn về nội dung chương..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeAddChapter()">Huỷ</button>
+      <button class="btn btn-primary" id="chapterModalBtn">Thêm chương</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Sửa bài học -->
+<div class="modal-overlay" id="editLessonModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Sửa bài học</h3>
+      <button class="btn btn-ghost btn-sm" onclick="closeEditLesson()" style="font-size:18px;padding:4px 8px;">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="form-label" style="margin-bottom:12px;">Loại nội dung</label>
+      <div class="content-type-grid">
+        <div class="content-type-card" id="edit-type-video" onclick="selectEditType('video', this)">
+          <div class="type-icon">📹</div>
+          <div class="type-name">Video</div>
+        </div>
+        <div class="content-type-card" id="edit-type-document" onclick="selectEditType('document', this)">
+          <div class="type-icon">📄</div>
+          <div class="type-name">Tài liệu</div>
+        </div>
+        <div class="content-type-card" id="edit-type-test" onclick="selectEditType('test', this)">
+          <div class="type-icon">📝</div>
+          <div class="type-name">Bài kiểm tra</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tên bài học *</label>
+        <input type="text" class="form-input" id="editLessonName">
+      </div>
+
+      <!-- Video fields -->
+      <div class="form-section" id="edit-section-video">
+        <div class="form-group">
+          <label class="form-label">Nguồn video</label>
+          <select class="form-select" onchange="toggleEditVideoSource(this.value)">
+            <option value="upload">Upload file</option>
+            <option value="url">Nhập URL (YouTube, Vimeo...)</option>
+          </select>
+        </div>
+        <div id="edit-video-upload" class="form-group">
+          <div class="upload-zone">
+            <div style="font-size:32px;margin-bottom:8px;">☁️</div>
+            <div class="body-sm" id="editVideoFileName">Kéo thả file video vào đây</div>
+            <div class="caption text-muted" style="margin-top:4px;">MP4, WebM · Tối đa 500MB</div>
+            <button class="btn btn-tertiary btn-sm" style="margin-top:12px;">Chọn file</button>
+          </div>
+        </div>
+        <div id="edit-video-url" class="form-group" style="display:none;">
+          <label class="form-label">URL video</label>
+          <input type="text" class="form-input" id="editVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Thời lượng</label>
+          <div class="flex gap-sm">
+            <input type="number" class="form-input" id="editDurationMin" placeholder="Phút" style="width:100px;" min="0">
+            <span class="body-sm" style="align-self:center;">:</span>
+            <input type="number" class="form-input" id="editDurationSec" placeholder="Giây" style="width:100px;" min="0" max="59">
+          </div>
+        </div>
+      </div>
+
+      <!-- Document fields -->
+      <div class="form-section" id="edit-section-document">
+        <div class="form-group">
+          <div class="upload-zone">
+            <div style="font-size:32px;margin-bottom:8px;">📎</div>
+            <div class="body-sm" id="editDocFileName">Kéo thả file tài liệu vào đây</div>
+            <div class="caption text-muted" style="margin-top:4px;">PDF, DOCX, PPTX, XLSX · Tối đa 50MB</div>
+            <button class="btn btn-tertiary btn-sm" style="margin-top:12px;">Chọn file</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test fields -->
+      <div class="form-section" id="edit-section-test">
+        <div class="form-group">
+          <label class="form-label">Chọn bài kiểm tra từ thư viện *</label>
+          <select class="form-select" id="editTestSelect">
+            <option value="">— Chọn bài kiểm tra —</option>
+            <option>Kiểm tra giao tiếp cơ bản (5 câu · 10 phút)</option>
+            <option>Kiểm tra thuyết trình (5 câu · 10 phút)</option>
+            <option>Kiểm tra tổng hợp (10 câu · 15 phút)</option>
+            <option>An toàn lao động cơ bản (8 câu · 12 phút)</option>
+            <option>Nghiệp vụ bán hàng (10 câu · 20 phút)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Mô tả (tuỳ chọn)</label>
+        <textarea class="form-textarea" rows="2" id="editLessonDesc"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Trạng thái</label>
+        <select class="form-select" style="width:160px;" id="editLessonStatus">
+          <option>Draft</option>
+          <option>Published</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeEditLesson()">Huỷ</button>
+      <button class="btn btn-primary">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+function switchTab(e, name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  ['thongtin','noidung','khoahoc'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
+  });
+}
+
+// Add Lesson Modal
+function openAddLesson() {
+  document.getElementById('addLessonModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAddLesson() {
+  document.getElementById('addLessonModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function selectContentType(type, el) {
+  document.querySelectorAll('.content-type-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + type).classList.add('active');
+}
+function toggleVideoSource(value) {
+  document.getElementById('video-upload').style.display = value === 'upload' ? '' : 'none';
+  document.getElementById('video-url').style.display = value === 'url' ? '' : 'none';
+}
+
+// Add/Edit Chapter Modal
+var chapters = [
+  { name: 'Chương 1: Giao tiếp cơ bản', desc: 'Các kỹ năng giao tiếp nền tảng trong công việc' },
+  { name: 'Chương 2: Giao tiếp nâng cao', desc: 'Thuyết trình, xử lý xung đột và đàm phán' },
+  { name: 'Chương 3: Ứng dụng thực tế', desc: 'Case study và bài tập thực hành' }
+];
+function openAddChapter() {
+  document.getElementById('chapterModalTitle').textContent = 'Thêm chương mới';
+  document.getElementById('chapterModalBtn').textContent = 'Thêm chương';
+  document.getElementById('chapterName').value = '';
+  document.getElementById('chapterDesc').value = '';
+  document.getElementById('addChapterModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function openEditChapter(idx) {
+  var ch = chapters[idx];
+  document.getElementById('chapterModalTitle').textContent = 'Sửa chương';
+  document.getElementById('chapterModalBtn').textContent = 'Lưu thay đổi';
+  document.getElementById('chapterName').value = ch.name;
+  document.getElementById('chapterDesc').value = ch.desc;
+  document.getElementById('addChapterModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAddChapter() {
+  document.getElementById('addChapterModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Edit Lesson Modal
+var lessons = [
+  { name: 'Bài 1.1: Video giới thiệu', type: 'video', duration: '15:30', status: 'Published', desc: '' },
+  { name: 'Bài 1.2: Tài liệu tham khảo', type: 'document', status: 'Published', desc: '', file: 'tai-lieu-tham-khao.pdf' },
+  { name: 'Test: Kiểm tra giao tiếp cơ bản', type: 'test', status: 'Published', desc: '', test: 'Kiểm tra giao tiếp cơ bản (5 câu · 10 phút)' },
+  { name: 'Bài 2.1: Kỹ thuật thuyết trình', type: 'video', duration: '22:00', status: 'Published', desc: '' },
+  { name: 'Bài 2.2: Xử lý xung đột', type: 'video', duration: '18:45', status: 'Published', desc: '' },
+  { name: 'Test: Kiểm tra thuyết trình', type: 'test', status: 'Published', desc: '', test: 'Kiểm tra thuyết trình (5 câu · 10 phút)' },
+  { name: 'Bài 3.1: Case study', type: 'video', duration: '25:00', status: 'Published', desc: '' },
+  { name: 'Bài 3.2: Bài tập thực hành', type: 'document', status: 'Published', desc: '', file: 'bai-tap-thuc-hanh.docx' },
+  { name: 'Test: Kiểm tra tổng hợp', type: 'test', status: 'Published', desc: '', test: 'Kiểm tra tổng hợp (10 câu · 15 phút)' }
+];
+function openEditLesson(idx) {
+  var lesson = lessons[idx];
+  document.getElementById('editLessonName').value = lesson.name;
+  document.getElementById('editLessonDesc').value = lesson.desc || '';
+  document.getElementById('editLessonStatus').value = lesson.status;
+  // Select type
+  document.querySelectorAll('#editLessonModal .content-type-card').forEach(function(c) { c.classList.remove('selected'); });
+  document.getElementById('edit-type-' + lesson.type).classList.add('selected');
+  document.querySelectorAll('#editLessonModal .form-section').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('edit-section-' + lesson.type).classList.add('active');
+  // Fill type-specific fields
+  if (lesson.type === 'video' && lesson.duration) {
+    var parts = lesson.duration.split(':');
+    document.getElementById('editDurationMin').value = parseInt(parts[0]);
+    document.getElementById('editDurationSec').value = parseInt(parts[1]);
+  }
+  if (lesson.type === 'document' && lesson.file) {
+    document.getElementById('editDocFileName').textContent = '📎 ' + lesson.file;
+  }
+  if (lesson.type === 'test' && lesson.test) {
+    var sel = document.getElementById('editTestSelect');
+    for (var i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].text === lesson.test) { sel.selectedIndex = i; break; }
+    }
+  }
+  document.getElementById('editLessonModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeEditLesson() {
+  document.getElementById('editLessonModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function selectEditType(type, el) {
+  document.querySelectorAll('#editLessonModal .content-type-card').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.querySelectorAll('#editLessonModal .form-section').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('edit-section-' + type).classList.add('active');
+}
+function toggleEditVideoSource(value) {
+  document.getElementById('edit-video-upload').style.display = value === 'upload' ? '' : 'none';
+  document.getElementById('edit-video-url').style.display = value === 'url' ? '' : 'none';
+}
+
+// Close modals on backdrop click
+['addLessonModal','addChapterModal','editLessonModal'].forEach(function(id) {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+});
+</script>
+</body>
+</html>

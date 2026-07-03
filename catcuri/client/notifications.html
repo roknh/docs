@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Thông báo — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+<div class="layout-client">
+
+  <!-- Client Header -->
+  <header class="client-header">
+    <div class="header-left">
+      <a href="home.html" class="header-logo"><img src="../images/logo.png" alt="Catcuri"></a>
+      <nav class="header-nav">
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span style="font-size:13px; color:var(--ink-muted);">Ocany</span>
+      <div class="notif-bell">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6zm0 16a2 2 0 0 0 2-2H8a2 2 0 0 0 2 2z" fill="#525252"/>
+        </svg>
+        <span class="notif-count">3</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">NT</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+          <a href="courses.html" class="dropdown-item">Khoá học của tôi</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Client Content -->
+  <main class="client-content">
+
+    <div class="page-header">
+      <h1 class="headline">Thông báo</h1>
+      <button class="btn btn-ghost btn-sm">Đánh dấu tất cả đã đọc</button>
+    </div>
+
+    <div style="max-width: 720px; display: flex; flex-direction: column; gap: var(--sp-xs);">
+
+      <!-- Unread notification 1 -->
+      <div class="card" style="padding: 0; border-left: 3px solid var(--primary);">
+        <div style="padding: var(--sp-md) var(--sp-lg);">
+          <div class="flex flex-center flex-between mb-xs">
+            <div class="body-emphasis">Kỳ thi mới được mở</div>
+            <span class="caption text-muted">2 giờ trước</span>
+          </div>
+          <div class="body-sm text-muted">Kỳ thi đánh giá năng lực Q2/2026 đã được mở. Thời hạn nộp bài: 15/07/2026.</div>
+        </div>
+      </div>
+
+      <!-- Unread notification 2 -->
+      <div class="card" style="padding: 0; border-left: 3px solid var(--primary);">
+        <div style="padding: var(--sp-md) var(--sp-lg);">
+          <div class="flex flex-center flex-between mb-xs">
+            <div class="body-emphasis">Nhắc nhở học tập</div>
+            <span class="caption text-muted">5 giờ trước</span>
+          </div>
+          <div class="body-sm text-muted">Bạn chưa hoàn thành bài học "Bài 3: Ngôn ngữ cơ thể" trong khoá Kỹ năng giao tiếp. Hãy tiếp tục học nhé!</div>
+        </div>
+      </div>
+
+      <!-- Unread notification 3 -->
+      <div class="card" style="padding: 0; border-left: 3px solid var(--primary);">
+        <div style="padding: var(--sp-md) var(--sp-lg);">
+          <div class="flex flex-center flex-between mb-xs">
+            <div class="body-emphasis">Khoá học mới được giao</div>
+            <span class="caption text-muted">1 ngày trước</span>
+          </div>
+          <div class="body-sm text-muted">Quản lý vừa giao khoá học "Quản lý dự án" cho bạn. Hạn hoàn thành: 31/07/2026.</div>
+        </div>
+      </div>
+
+      <!-- Read notification 4 -->
+      <div class="card" style="padding: 0; background: var(--surface-1);">
+        <div style="padding: var(--sp-md) var(--sp-lg);">
+          <div class="flex flex-center flex-between mb-xs">
+            <div class="body-sm" style="font-weight: 600; color: var(--ink-muted);">Chứng chỉ được cấp</div>
+            <span class="caption text-muted">3 ngày trước</span>
+          </div>
+          <div class="body-sm text-muted">Chúc mừng! Chứng chỉ hoàn thành khoá học "An toàn lao động" đã được gửi vào email của bạn.</div>
+        </div>
+      </div>
+
+      <!-- Read notification 5 -->
+      <div class="card" style="padding: 0; background: var(--surface-1);">
+        <div style="padding: var(--sp-md) var(--sp-lg);">
+          <div class="flex flex-center flex-between mb-xs">
+            <div class="body-sm" style="font-weight: 600; color: var(--ink-muted);">Kết quả kiểm tra</div>
+            <span class="caption text-muted">5 ngày trước</span>
+          </div>
+          <div class="body-sm text-muted">Bạn đã hoàn thành bài kiểm tra "KT Chương 2 — An toàn lao động" với kết quả 4/5 câu đúng.</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Client Footer -->
+  <footer class="client-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Catcuri</h4>
+        <p style="font-size: 14px; color: var(--inverse-ink-muted); margin-top: var(--sp-xs);">Nền tảng đào tạo trực tuyến dành cho doanh nghiệp.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ</h4>
+        <a href="#">Trung tâm trợ giúp</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Catcuri. Bảo lưu mọi quyền.
+    </div>
+  </footer>
+
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

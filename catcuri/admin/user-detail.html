@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Chi tiết người dùng — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item active">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <a href="users.html">Users</a>
+        <span class="separator">/</span>
+        <span class="current">Nguyễn Thị Thu</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <div>
+          <div class="flex flex-center gap-md">
+            <span class="avatar" style="width:48px;height:48px;font-size:18px;">NT</span>
+            <div>
+              <h1>Nguyễn Thị Thu</h1>
+              <div class="flex flex-center gap-sm mt-xs">
+                <span class="badge badge-neutral">User</span>
+                <span class="badge badge-success"><span class="badge-dot" style="background:var(--success);"></span>Hoạt động</span>
+                <span class="caption text-muted">ID: USR-001 · Tạo ngày 15/01/2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm">Reset mật khẩu</button>
+          <button class="btn btn-danger btn-sm">Khoá tài khoản</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs mb-lg">
+        <button class="tab active" onclick="switchTab(event,'thongtin')">Thông tin</button>
+        <button class="tab" onclick="switchTab(event,'tenant')">Tenant & Mã NV</button>
+        <button class="tab" onclick="switchTab(event,'hoatdong')">Hoạt động</button>
+      </div>
+
+      <!-- Tab: Thông tin -->
+      <div id="tab-thongtin">
+        <div class="grid grid-2" style="gap:var(--sp-xl);align-items:start;">
+          <!-- Form -->
+          <div class="card">
+            <h3 class="subhead mb-lg">Thông tin cá nhân</h3>
+
+            <div class="form-group">
+              <label class="form-label">Họ tên *</label>
+              <input type="text" class="form-input" value="Nguyễn Thị Thu">
+            </div>
+
+            <div class="grid grid-2 gap-md">
+              <div class="form-group">
+                <label class="form-label">Email *</label>
+                <input type="email" class="form-input" value="thu.nguyen@abc.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input type="tel" class="form-input" value="0901 234 567">
+              </div>
+            </div>
+
+            <div class="grid grid-2 gap-md">
+              <div class="form-group">
+                <label class="form-label">Role *</label>
+                <select class="form-select">
+                  <option>User</option>
+                  <option>Moderator</option>
+                  <option>Super-moderator</option>
+                  <option>Admin</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Trạng thái</label>
+                <select class="form-select">
+                  <option selected>Hoạt động</option>
+                  <option>Bị khoá</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex gap-sm mt-md">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+              <button class="btn btn-ghost">Huỷ</button>
+            </div>
+          </div>
+
+          <!-- Side Info -->
+          <div style="display:flex;flex-direction:column;gap:var(--sp-lg);">
+            <div class="card">
+              <h4 class="body-emphasis mb-md">Thống kê học tập</h4>
+              <div style="display:flex;flex-direction:column;gap:var(--sp-sm);">
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Khoá học đã đăng ký</span>
+                  <span class="body-emphasis">5</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Khoá học hoàn thành</span>
+                  <span class="body-emphasis text-success">3</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Kỳ thi đã tham gia</span>
+                  <span class="body-emphasis">4</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Kỳ thi đạt</span>
+                  <span class="body-emphasis text-success">3</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="body-sm text-muted">Chứng chỉ</span>
+                  <span class="body-emphasis">2</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h4 class="body-emphasis mb-md">Thông tin tài khoản</h4>
+              <div style="display:flex;flex-direction:column;gap:var(--sp-xs);">
+                <div class="flex flex-between">
+                  <span class="caption text-muted">Ngày tạo</span>
+                  <span class="caption">15/01/2026</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="caption text-muted">Đăng nhập lần cuối</span>
+                  <span class="caption">01/07/2026 08:30</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="caption text-muted">IP gần nhất</span>
+                  <span class="caption">192.168.1.45</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Tenant & Mã NV -->
+      <div id="tab-tenant" style="display:none;">
+        <div class="card mb-lg">
+          <div class="flex flex-center flex-between mb-lg">
+            <h3 class="subhead">Tenant đã gán</h3>
+            <button class="btn btn-primary btn-sm" onclick="document.getElementById('assignModal').style.display='flex'">+ Gán tenant</button>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tenant</th>
+                <th>Mã nhân viên</th>
+                <th>Phòng ban</th>
+                <th>Chức danh</th>
+                <th>Ngày gán</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="flex flex-center gap-sm">
+                    <span class="avatar avatar-sm" style="background:var(--primary);">AB</span>
+                    <div>
+                      <div class="body-sm">ABC Corporation</div>
+                      <div class="caption text-muted">Tenant ID: TNT-001</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="body-emphasis">NV-1001</span></td>
+                <td>Phòng Nhân sự</td>
+                <td>Nhân viên</td>
+                <td class="text-muted">15/01/2026</td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm">Sửa</button>
+                    <button class="btn btn-ghost btn-sm text-error">Gỡ</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="flex flex-center gap-sm">
+                    <span class="avatar avatar-sm" style="background:#24a148;">XY</span>
+                    <div>
+                      <div class="body-sm">XYZ Holdings</div>
+                      <div class="caption text-muted">Tenant ID: TNT-002</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="body-emphasis">NV-5012</span></td>
+                <td>Phòng Kỹ thuật</td>
+                <td>Kỹ sư</td>
+                <td class="text-muted">20/03/2026</td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm">Sửa</button>
+                    <button class="btn btn-ghost btn-sm text-error">Gỡ</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h4 class="body-emphasis mb-sm">Lưu ý</h4>
+          <ul style="padding-left:var(--sp-lg);font-size:14px;color:var(--ink-muted);line-height:2;">
+            <li>Mỗi user có thể thuộc nhiều tenant cùng lúc.</li>
+            <li>Mã nhân viên (Mã NV) là duy nhất trong phạm vi mỗi tenant.</li>
+            <li>Khi gỡ tenant, user sẽ không còn truy cập được nội dung của tenant đó.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tab: Hoạt động (hidden) -->
+      <div id="tab-hoatdong" style="display:none;">
+        <div class="card">
+          <h3 class="subhead mb-lg">Lịch sử hoạt động</h3>
+          <div style="display:flex;flex-direction:column;gap:var(--sp-md);">
+            <div class="flex gap-md" style="padding-bottom:var(--sp-md);border-bottom:1px solid var(--hairline);">
+              <span class="caption text-muted" style="min-width:140px;">01/07/2026 08:30</span>
+              <span class="body-sm">Đăng nhập hệ thống</span>
+            </div>
+            <div class="flex gap-md" style="padding-bottom:var(--sp-md);border-bottom:1px solid var(--hairline);">
+              <span class="caption text-muted" style="min-width:140px;">30/06/2026 14:15</span>
+              <span class="body-sm">Hoàn thành khoá học "Kỹ năng giao tiếp"</span>
+            </div>
+            <div class="flex gap-md" style="padding-bottom:var(--sp-md);border-bottom:1px solid var(--hairline);">
+              <span class="caption text-muted" style="min-width:140px;">28/06/2026 10:00</span>
+              <span class="body-sm">Thi kỳ thi "Đánh giá năng lực Q2/2026" — Lần 2 — 28/30 điểm</span>
+            </div>
+            <div class="flex gap-md" style="padding-bottom:var(--sp-md);border-bottom:1px solid var(--hairline);">
+              <span class="caption text-muted" style="min-width:140px;">25/06/2026 09:00</span>
+              <span class="body-sm">Thi kỳ thi "Đánh giá năng lực Q2/2026" — Lần 1 — 24/30 điểm</span>
+            </div>
+            <div class="flex gap-md">
+              <span class="caption text-muted" style="min-width:140px;">15/01/2026 10:00</span>
+              <span class="body-sm">Tạo tài khoản bởi Admin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Gán tenant -->
+<div class="modal-overlay" id="assignModal" style="display:none;">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h3>Gán tenant cho người dùng</h3>
+      <button class="modal-close" onclick="document.getElementById('assignModal').style.display='none'">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Chọn tenant *</label>
+        <select class="form-select">
+          <option value="">— Chọn tenant —</option>
+          <option>DEF Group</option>
+          <option>GHI Vietnam</option>
+          <option>KLM Enterprise</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mã nhân viên *</label>
+        <input type="text" class="form-input" placeholder="VD: NV-3001">
+        <p class="form-helper">Mã nhân viên do tenant cung cấp, duy nhất trong mỗi tenant</p>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phòng ban</label>
+        <select class="form-select">
+          <option value="">— Chọn phòng ban —</option>
+          <option>Phòng Nhân sự</option>
+          <option>Phòng Kỹ thuật</option>
+          <option>Phòng Kinh doanh</option>
+          <option>Phòng Tài chính</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chức danh</label>
+        <select class="form-select">
+          <option value="">— Chọn chức danh —</option>
+          <option>Nhân viên</option>
+          <option>Trưởng nhóm</option>
+          <option>Trưởng phòng</option>
+          <option>Giám đốc</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="document.getElementById('assignModal').style.display='none'">Huỷ</button>
+      <button class="btn btn-primary" onclick="document.getElementById('assignModal').style.display='none'">Gán tenant</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+function switchTab(e, name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  ['thongtin','tenant','hoatdong'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Trang chủ — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .hero {
+      background: linear-gradient(135deg, rgba(15,98,254,0.85) 0%, rgba(0,67,206,0.9) 100%), url('../images/hero-banner.jpg') center/cover no-repeat;
+      color: #fff;
+      padding: 48px 40px;
+      margin: -24px -24px 32px -24px;
+    }
+    .hero h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; color: #fff; }
+    .hero p { font-size: 15px; opacity: 0.85; margin-bottom: 24px; }
+    .hero-search {
+      display: flex;
+      max-width: 560px;
+      background: #fff;
+      border-radius: 0;
+      overflow: hidden;
+    }
+    .hero-search input {
+      flex: 1;
+      border: none;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #161616;
+      outline: none;
+    }
+    .hero-search button {
+      background: #161616;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 24px;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .value { font-size: 28px; font-weight: 600; }
+    .hero-stat .label { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .section-header h2 { font-size: 18px; font-weight: 600; margin: 0; }
+    .section-header a { font-size: 13px; color: var(--primary); text-decoration: none; }
+    .section-header a:hover { opacity: 0.8; }
+
+    .continue-card {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+    }
+    .continue-card:hover { border-color: var(--primary); text-decoration: none; }
+    .continue-card .thumb {
+      width: 80px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .continue-card .info { flex: 1; min-width: 0; }
+    .continue-card .info .title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+
+    .topic-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .topic-card:hover { border-color: var(--primary); background: var(--surface-1); text-decoration: none; }
+    .topic-card .icon { font-size: 28px; flex-shrink: 0; }
+    .topic-card .name { font-size: 14px; font-weight: 500; }
+    .topic-card .count { font-size: 12px; color: var(--ink-subtle); }
+
+    .course-card-sm {
+      display: block;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+      overflow: hidden;
+    }
+    .course-card-sm:hover { border-color: var(--primary); text-decoration: none; }
+    .course-card-sm .thumb {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+    .course-card-sm .body {
+      padding: 12px 16px 16px;
+    }
+    .course-card-sm .body .title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .course-card-sm .meta {
+      font-size: 12px;
+      color: var(--ink-subtle);
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .assign-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .assign-row:last-child { border-bottom: none; }
+    .assign-row .info { flex: 1; min-width: 0; }
+    .assign-row .info .title { font-size: 14px; font-weight: 500; }
+    .assign-row .info .sub { font-size: 12px; color: var(--ink-subtle); margin-top: 2px; }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .cert-item:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+<div class="layout-client">
+
+  <!-- Client Header -->
+  <header class="client-header">
+    <div class="header-left">
+      <a href="home.html" class="header-logo"><img src="../images/logo.png" alt="Catcuri"></a>
+      <nav class="header-nav">
+        <a href="home.html" class="active">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span style="font-size:13px; color:var(--ink-muted);">Ocany</span>
+      <div class="notif-bell">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6zm0 16a2 2 0 0 0 2-2H8a2 2 0 0 0 2 2z" fill="#525252"/>
+        </svg>
+        <span class="notif-count">3</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">NT</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+          <a href="courses.html" class="dropdown-item">Khoá học của tôi</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Client Content -->
+  <main class="client-content">
+
+    <!-- 1. Hero Banner -->
+    <div class="hero">
+      <h1>Xin chào, Ngọc Trân!</h1>
+      <p>Khám phá khoá học mới và phát triển kỹ năng nghề nghiệp</p>
+      <div class="hero-search">
+        <input type="text" placeholder="Tìm khoá học, chủ đề, kỹ năng..." />
+        <button>Tìm kiếm</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="value">3</div>
+          <div class="label">Đang học</div>
+        </div>
+        <div class="hero-stat">
+          <div class="value">7</div>
+          <div class="label">Hoàn thành</div>
+        </div>
+        <div class="hero-stat">
+          <div class="value">5</div>
+          <div class="label">Chứng chỉ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Tiếp tục học -->
+    <section class="mb-xl">
+      <div class="section-header">
+        <h2>Tiếp tục học</h2>
+        <a href="courses.html">Xem tất cả &rarr;</a>
+      </div>
+      <div class="grid grid-3">
+        <a href="learning.html" class="continue-card">
+          <div class="thumb" style="background:url('../images/course-communication.jpg') center/cover;"></div>
+          <div class="info">
+            <div class="title">Kỹ năng giao tiếp</div>
+            <div class="progress" style="margin-bottom:4px;">
+              <div class="progress-bar" style="width:45%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span class="caption text-muted">45%</span>
+              <span class="caption text-muted">Bài 3/8</span>
+            </div>
+          </div>
+        </a>
+        <a href="learning.html" class="continue-card" style="border-color:var(--warning);">
+          <div class="thumb" style="background:url('../images/course-safety.jpg') center/cover;"></div>
+          <div class="info">
+            <div class="title">An toàn lao động</div>
+            <div class="progress" style="margin-bottom:4px;">
+              <div class="progress-bar" style="width:70%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span class="caption text-muted">70%</span>
+              <span class="caption text-error" style="font-weight:500;">HSD: 15/07</span>
+            </div>
+          </div>
+        </a>
+        <a href="learning.html" class="continue-card">
+          <div class="thumb" style="background:url('../images/course-excel.jpg') center/cover;"></div>
+          <div class="info">
+            <div class="title">Excel nâng cao</div>
+            <div class="progress" style="margin-bottom:4px;">
+              <div class="progress-bar" style="width:20%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span class="caption text-muted">20%</span>
+              <span class="caption text-muted">Bài 3/15</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. Khoá học được giao -->
+    <section class="mb-xl">
+      <div class="section-header">
+        <h2>Khoá học được giao</h2>
+        <span class="caption text-muted">2 khoá cần hoàn thành</span>
+      </div>
+      <div class="card" style="padding:0;">
+        <div class="assign-row" style="border-left:3px solid var(--warning);">
+          <span style="font-size:24px;">⚠️</span>
+          <div class="info">
+            <div class="title">An toàn lao động</div>
+            <div class="sub">Bắt buộc &middot; Bài 7/10 &middot; 70%</div>
+          </div>
+          <span class="badge badge-error" style="font-size:11px; white-space:nowrap;">HSD: 15/07/2026</span>
+          <a href="learning.html" class="btn btn-primary btn-sm">Tiếp tục</a>
+        </div>
+        <div class="assign-row">
+          <span style="font-size:24px;">📋</span>
+          <div class="info">
+            <div class="title">Quy trình nội bộ Q3</div>
+            <div class="sub">Bắt buộc &middot; Chưa bắt đầu</div>
+          </div>
+          <span class="badge badge-neutral" style="font-size:11px; white-space:nowrap;">HSD: 30/09/2026</span>
+          <a href="course-detail.html" class="btn btn-tertiary btn-sm">Bắt đầu</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Khám phá theo chủ đề -->
+    <section class="mb-xl">
+      <div class="section-header">
+        <h2>Khám phá theo chủ đề</h2>
+      </div>
+      <div class="grid grid-4">
+        <a href="courses.html" class="topic-card">
+          <span class="icon">💬</span>
+          <div>
+            <div class="name">Kỹ năng mềm</div>
+            <div class="count">12 khoá học</div>
+          </div>
+        </a>
+        <a href="courses.html" class="topic-card">
+          <span class="icon">🛡️</span>
+          <div>
+            <div class="name">An toàn lao động</div>
+            <div class="count">8 khoá học</div>
+          </div>
+        </a>
+        <a href="courses.html" class="topic-card">
+          <span class="icon">💻</span>
+          <div>
+            <div class="name">Tin học văn phòng</div>
+            <div class="count">6 khoá học</div>
+          </div>
+        </a>
+        <a href="courses.html" class="topic-card">
+          <span class="icon">👔</span>
+          <div>
+            <div class="name">Lãnh đạo</div>
+            <div class="count">5 khoá học</div>
+          </div>
+        </a>
+        <a href="courses.html" class="topic-card">
+          <span class="icon">🛒</span>
+          <div>
+            <div class="name">Bán hàng</div>
+            <div class="count">9 khoá học</div>
+          </div>
+        </a>
+        <a href="courses.html" class="topic-card">
+          <span class="icon">🎯</span>
+          <div>
+            <div class="name">Dịch vụ khách hàng</div>
+            <div class="count">4 khoá học</div>
+          </div>
+        </a>
+        <a href="courses.html" class="topic-card">
+          <span class="icon">📊</span>
+          <div>
+            <div class="name">Quản lý dự án</div>
+            <div class="count">3 khoá học</div>
+          </div>
+        </a>
+        <a href="courses.html" class="topic-card">
+          <span class="icon">🧠</span>
+          <div>
+            <div class="name">Tư duy & Sáng tạo</div>
+            <div class="count">4 khoá học</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. Khoá học nổi bật -->
+    <section class="mb-xl">
+      <div class="section-header">
+        <h2>Khoá học nổi bật</h2>
+        <a href="courses.html">Xem tất cả &rarr;</a>
+      </div>
+      <div class="grid grid-4">
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-communication.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">Kỹ năng giao tiếp chuyên nghiệp</div>
+            <span class="badge badge-neutral" style="font-size:11px;">Kỹ năng mềm</span>
+            <div class="meta">
+              <span>8 bài</span>
+              <span>2h 30p</span>
+              <span>324 HV</span>
+            </div>
+          </div>
+        </a>
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-safety.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">PCCC cơ bản & An toàn cháy nổ</div>
+            <span class="badge badge-neutral" style="font-size:11px;">An toàn</span>
+            <div class="meta">
+              <span>10 bài</span>
+              <span>3h 00p</span>
+              <span>280 HV</span>
+            </div>
+          </div>
+        </a>
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-excel.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">Excel nâng cao cho dân văn phòng</div>
+            <span class="badge badge-neutral" style="font-size:11px;">Tin học</span>
+            <div class="meta">
+              <span>15 bài</span>
+              <span>5h 00p</span>
+              <span>215 HV</span>
+            </div>
+          </div>
+        </a>
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-customer.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">Nghệ thuật chăm sóc khách hàng</div>
+            <span class="badge badge-neutral" style="font-size:11px;">Dịch vụ</span>
+            <div class="meta">
+              <span>6 bài</span>
+              <span>1h 45p</span>
+              <span>198 HV</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 6. Khoá học mới -->
+    <section class="mb-xl">
+      <div class="section-header">
+        <h2>Khoá học mới</h2>
+        <a href="courses.html">Xem tất cả &rarr;</a>
+      </div>
+      <div class="grid grid-4">
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-process.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">Quy trình nội bộ Q3/2026</div>
+            <span class="badge badge-neutral" style="font-size:11px;">Tổng hợp</span>
+            <div class="meta">
+              <span>5 bài</span>
+              <span>1h 30p</span>
+              <span style="color:var(--success);">Mới</span>
+            </div>
+          </div>
+        </a>
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-thinking.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">Tư duy phản biện trong công việc</div>
+            <span class="badge badge-neutral" style="font-size:11px;">Tư duy</span>
+            <div class="meta">
+              <span>8 bài</span>
+              <span>2h 15p</span>
+              <span style="color:var(--success);">Mới</span>
+            </div>
+          </div>
+        </a>
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-time.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">Quản lý thời gian hiệu quả</div>
+            <span class="badge badge-neutral" style="font-size:11px;">Kỹ năng mềm</span>
+            <div class="meta">
+              <span>6 bài</span>
+              <span>2h 00p</span>
+              <span style="color:var(--success);">Mới</span>
+            </div>
+          </div>
+        </a>
+        <a href="course-detail.html" class="course-card-sm">
+          <div class="thumb" style="background:url('../images/course-sales.jpg') center/cover;"></div>
+          <div class="body">
+            <div class="title">Nghiệp vụ bán hàng nâng cao</div>
+            <span class="badge badge-neutral" style="font-size:11px;">Bán hàng</span>
+            <div class="meta">
+              <span>10 bài</span>
+              <span>3h 30p</span>
+              <span style="color:var(--success);">Mới</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 7. Thành tích -->
+    <section class="mb-xl">
+      <div class="section-header">
+        <h2>Thành tích gần đây</h2>
+        <a href="profile.html">Xem tất cả &rarr;</a>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 class="body-emphasis mb-md" style="font-size:14px;">Chứng chỉ đã nhận</h3>
+          <div class="cert-item">
+            <span style="font-size:24px;">📜</span>
+            <div style="flex:1;">
+              <div class="body-sm" style="font-weight:500;">PCCC cơ bản</div>
+              <div class="caption text-muted">28/06/2026</div>
+            </div>
+            <span class="caption text-primary" style="cursor:pointer;">Tải xuống</span>
+          </div>
+          <div class="cert-item">
+            <span style="font-size:24px;">📜</span>
+            <div style="flex:1;">
+              <div class="body-sm" style="font-weight:500;">Giao tiếp khách hàng</div>
+              <div class="caption text-muted">15/06/2026</div>
+            </div>
+            <span class="caption text-primary" style="cursor:pointer;">Tải xuống</span>
+          </div>
+          <div class="cert-item">
+            <span style="font-size:24px;">📜</span>
+            <div style="flex:1;">
+              <div class="body-sm" style="font-weight:500;">Quản lý thời gian</div>
+              <div class="caption text-muted">20/05/2026</div>
+            </div>
+            <span class="caption text-primary" style="cursor:pointer;">Tải xuống</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="body-emphasis mb-md" style="font-size:14px;">Tổng quan học tập</h3>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; text-align:center; padding:8px 0;">
+            <div>
+              <div style="font-size:32px; font-weight:600; color:var(--primary);">10</div>
+              <div class="caption text-muted">Khoá đã tham gia</div>
+            </div>
+            <div>
+              <div style="font-size:32px; font-weight:600; color:var(--success);">7</div>
+              <div class="caption text-muted">Khoá hoàn thành</div>
+            </div>
+            <div>
+              <div style="font-size:32px; font-weight:600; color:var(--primary);">5</div>
+              <div class="caption text-muted">Chứng chỉ</div>
+            </div>
+            <div>
+              <div style="font-size:32px; font-weight:600;">24h</div>
+              <div class="caption text-muted">Tổng giờ học</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Client Footer -->
+  <footer class="client-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Catcuri</h4>
+        <p style="font-size: 14px; color: var(--inverse-ink-muted); margin-top: var(--sp-xs);">Nền tảng đào tạo trực tuyến dành cho doanh nghiệp.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ</h4>
+        <a href="#">Trung tâm trợ giúp</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Catcuri. Bảo lưu mọi quyền.
+    </div>
+  </footer>
+
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Hoàn thành khoá học — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+<div class="layout-client">
+
+  <!-- Client Header -->
+  <header class="client-header">
+    <div class="header-left">
+      <a href="home.html" class="header-logo"><img src="../images/logo.png" alt="Catcuri"></a>
+      <nav class="header-nav">
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span style="font-size:13px; color:var(--ink-muted);">Ocany</span>
+      <div class="notif-bell">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6zm0 16a2 2 0 0 0 2-2H8a2 2 0 0 0 2 2z" fill="#525252"/>
+        </svg>
+        <span class="notif-count">3</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">NT</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+          <a href="courses.html" class="dropdown-item">Khoá học của tôi</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Client Content -->
+  <main class="client-content">
+    <div style="text-align: center; padding: var(--sp-section) var(--sp-xl);">
+
+      <div style="font-size: 96px; margin-bottom: var(--sp-lg);">🎓</div>
+
+      <h1 class="display-md mb-md">Chúc mừng bạn đã hoàn thành khoá học!</h1>
+
+      <p class="subhead text-muted mb-xs">Kỹ năng giao tiếp chuyên nghiệp</p>
+
+      <div style="margin: var(--sp-xl) auto; padding: var(--sp-lg); background: var(--surface-1); border: 1px solid var(--hairline); max-width: 480px;">
+        <div class="flex flex-center gap-sm" style="justify-content: center; color: var(--success);">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10l5 5 7-8" stroke="#24a148" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="body-emphasis" style="color: var(--success);">Chứng chỉ đã được gửi qua email</span>
+        </div>
+        <p class="caption text-muted mt-xs">Kiểm tra hộp thư của bạn tại ngoctran@company.com</p>
+      </div>
+
+      <div class="flex flex-center gap-md" style="justify-content: center; flex-wrap: wrap; margin-top: var(--sp-lg);">
+        <button class="btn btn-tertiary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2v9m-4-4l4 4 4-4" stroke="#0f62fe" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 13h12" stroke="#0f62fe" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Tải chứng chỉ
+        </button>
+        <a href="home.html" class="btn btn-primary">Về trang chủ</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Client Footer -->
+  <footer class="client-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Catcuri</h4>
+        <p style="font-size: 14px; color: var(--inverse-ink-muted); margin-top: var(--sp-xs);">Nền tảng đào tạo trực tuyến dành cho doanh nghiệp.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ</h4>
+        <a href="#">Trung tâm trợ giúp</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Catcuri. Bảo lưu mọi quyền.
+    </div>
+  </footer>
+
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

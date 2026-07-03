@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Chi tiết khoá học — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+<div class="layout-client">
+
+  <!-- Client Header -->
+  <header class="client-header">
+    <div class="header-left">
+      <a href="home.html" class="header-logo"><img src="../images/logo.png" alt="Catcuri"></a>
+      <nav class="header-nav">
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html" class="active">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span style="font-size:13px; color:var(--ink-muted);">Ocany</span>
+      <div class="notif-bell">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6zm0 16a2 2 0 0 0 2-2H8a2 2 0 0 0 2 2z" fill="#525252"/>
+        </svg>
+        <span class="notif-count">3</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">NT</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+          <a href="courses.html" class="dropdown-item">Khoá học của tôi</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Client Content -->
+  <main class="client-content">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb mb-lg">
+      <a href="courses.html">Khoá học</a>
+      <span class="separator">/</span>
+      <span class="current">Kỹ năng giao tiếp chuyên nghiệp</span>
+    </div>
+
+    <!-- Course hero -->
+    <div class="grid grid-2 gap-xl mb-xxl" style="align-items: start;">
+      <div>
+        <div style="height: 280px; background: #dde1ff; display:flex; align-items:center; justify-content:center; font-size: 80px; border: 1px solid var(--hairline);">🎓</div>
+      </div>
+      <div>
+        <span class="badge badge-primary mb-md" style="display: inline-flex;">Kỹ năng mềm</span>
+        <h1 class="headline mb-md">Kỹ năng giao tiếp chuyên nghiệp</h1>
+        <p class="body text-muted mb-lg">Khoá học giúp bạn nắm vững các kỹ thuật giao tiếp hiệu quả trong môi trường công sở. Từ kỹ năng lắng nghe tích cực, trình bày rõ ràng, cho đến xử lý tình huống khó khăn trong giao tiếp hàng ngày.</p>
+
+        <!-- Info row -->
+        <div class="flex flex-center gap-lg mb-lg" style="flex-wrap: wrap; color: var(--ink-muted); font-size: 14px;">
+          <div class="flex flex-center gap-xs">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="2" y="3" width="12" height="10" rx="1" stroke="#525252" stroke-width="1.2"/>
+              <path d="M6 7l2 1.5L10 7" stroke="#525252" stroke-width="1.2"/>
+            </svg>
+            <span>12 bài học</span>
+          </div>
+          <div class="flex flex-center gap-xs">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zm0 2v4l3 1.5" stroke="#525252" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span>2h 30p</span>
+          </div>
+          <div class="flex flex-center gap-xs">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 13l4-4m0 0l2-5 2 5-4-4zm5 0l4 4" stroke="#525252" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>3 kiểm tra</span>
+          </div>
+        </div>
+
+        <a href="learning.html" class="btn btn-primary btn-lg">Tham gia khoá học</a>
+      </div>
+    </div>
+
+    <!-- Course content -->
+    <section>
+      <h2 class="subhead mb-lg">Nội dung khoá học</h2>
+
+      <!-- Chapter 1 -->
+      <div class="card mb-md" style="padding: 0;">
+        <div class="flex flex-center flex-between" style="padding: var(--sp-md) var(--sp-lg); cursor: pointer; border-bottom: 1px solid var(--hairline);">
+          <div class="flex flex-center gap-sm">
+            <span style="color: var(--ink-muted); font-size: 12px;">▼</span>
+            <span class="body-emphasis">Chương 1: Nền tảng giao tiếp</span>
+          </div>
+          <span class="caption text-muted">4 bài · 1 kiểm tra</span>
+        </div>
+        <div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--success);">▶</span>
+            <a href="learning.html" style="font-size: 14px; color: var(--ink);">Bài 1: Khái niệm giao tiếp hiệu quả</a>
+            <span class="caption text-muted" style="margin-left: auto;">12 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--ink-muted);">▶</span>
+            <a href="learning.html" style="font-size: 14px; color: var(--ink);">Bài 2: Kỹ năng lắng nghe tích cực</a>
+            <span class="caption text-muted" style="margin-left: auto;">15 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--ink-muted);">▶</span>
+            <a href="learning.html" style="font-size: 14px; color: var(--ink);">Bài 3: Ngôn ngữ cơ thể</a>
+            <span class="caption text-muted" style="margin-left: auto;">10 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--ink-muted);">▶</span>
+            <a href="learning.html" style="font-size: 14px; color: var(--ink);">Bài 4: Giao tiếp phi ngôn ngữ</a>
+            <span class="caption text-muted" style="margin-left: auto;">11 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl);">
+            <span style="color: var(--ink-muted);">📝</span>
+            <a href="quiz.html" style="font-size: 14px; color: var(--primary);">Kiểm tra Chương 1</a>
+            <span class="caption text-muted" style="margin-left: auto;">5 câu</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 2 -->
+      <div class="card mb-md" style="padding: 0;">
+        <div class="flex flex-center flex-between" style="padding: var(--sp-md) var(--sp-lg); cursor: pointer; border-bottom: 1px solid var(--hairline);">
+          <div class="flex flex-center gap-sm">
+            <span style="color: var(--ink-muted); font-size: 12px;">▼</span>
+            <span class="body-emphasis">Chương 2: Giao tiếp trong công việc</span>
+          </div>
+          <span class="caption text-muted">4 bài · 1 kiểm tra</span>
+        </div>
+        <div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--ink-muted);">▶</span>
+            <span style="font-size: 14px; color: var(--ink);">Bài 5: Họp hiệu quả</span>
+            <span class="caption text-muted" style="margin-left: auto;">14 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--ink-muted);">▶</span>
+            <span style="font-size: 14px; color: var(--ink);">Bài 6: Viết email chuyên nghiệp</span>
+            <span class="caption text-muted" style="margin-left: auto;">18 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--ink-muted);">▶</span>
+            <span style="font-size: 14px; color: var(--ink);">Bài 7: Trình bày và thuyết trình</span>
+            <span class="caption text-muted" style="margin-left: auto;">20 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl); border-bottom: 1px solid var(--hairline);">
+            <span style="color: var(--ink-muted);">▶</span>
+            <span style="font-size: 14px; color: var(--ink);">Bài 8: Phản hồi và tiếp nhận phản hồi</span>
+            <span class="caption text-muted" style="margin-left: auto;">13 phút</span>
+          </div>
+          <div class="flex flex-center gap-sm" style="padding: var(--sp-sm) var(--sp-xl);">
+            <span style="color: var(--ink-muted);">📝</span>
+            <span style="font-size: 14px; color: var(--ink-muted);">Kiểm tra Chương 2</span>
+            <span class="caption text-muted" style="margin-left: auto;">5 câu</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 3 -->
+      <div class="card" style="padding: 0;">
+        <div class="flex flex-center flex-between" style="padding: var(--sp-md) var(--sp-lg); cursor: pointer;">
+          <div class="flex flex-center gap-sm">
+            <span style="color: var(--ink-muted); font-size: 12px;">▶</span>
+            <span class="body-emphasis">Chương 3: Xử lý tình huống khó</span>
+          </div>
+          <span class="caption text-muted">4 bài · 1 kiểm tra</span>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Client Footer -->
+  <footer class="client-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Catcuri</h4>
+        <p style="font-size: 14px; color: var(--inverse-ink-muted); margin-top: var(--sp-xs);">Nền tảng đào tạo trực tuyến dành cho doanh nghiệp.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ</h4>
+        <a href="#">Trung tâm trợ giúp</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Catcuri. Bảo lưu mọi quyền.
+    </div>
+  </footer>
+
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

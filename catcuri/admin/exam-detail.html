@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Chi tiết kỳ thi — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item active">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <a href="exams.html">Kỳ thi</a>
+        <span class="separator">/</span>
+        <span class="current">Kiểm tra An toàn lao động Q2/2026</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <div>
+          <h1>Kiểm tra An toàn lao động Q2/2026</h1>
+          <div class="flex flex-center gap-sm mt-xs">
+            <span class="badge badge-success">Published</span>
+            <span class="badge badge-neutral">ALL</span>
+            <span class="caption text-muted">ID: EXM-001</span>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm">Xem kết quả</button>
+          <button class="btn btn-danger btn-sm">Xoá kỳ thi</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs mb-lg">
+        <button class="tab active" onclick="switchTab(event,'thongtin')">Thông tin</button>
+        <button class="tab" onclick="switchTab(event,'cauhoi')">Câu hỏi</button>
+        <button class="tab" onclick="switchTab(event,'ketqua')">Kết quả</button>
+        <button class="tab" onclick="switchTab(event,'phanquyen')">Phân quyền</button>
+      </div>
+
+      <!-- Tab: Thông tin -->
+      <div id="tab-thongtin">
+        <div class="grid grid-2" style="align-items:start;">
+          <!-- Form -->
+          <div class="card">
+            <h3 class="subhead mb-lg">Thông tin kỳ thi</h3>
+
+            <div class="form-group">
+              <label class="form-label">Tên kỳ thi *</label>
+              <input type="text" class="form-input" value="Kiểm tra An toàn lao động Q2/2026">
+            </div>
+
+            <div class="grid grid-2" style="gap:var(--sp-md);">
+              <div class="form-group">
+                <label class="form-label">Thời gian bắt đầu *</label>
+                <input type="datetime-local" class="form-input" value="2026-07-01T08:00">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Thời gian kết thúc *</label>
+                <input type="datetime-local" class="form-input" value="2026-07-31T17:00">
+              </div>
+            </div>
+
+            <div class="grid grid-2" style="gap:var(--sp-md);">
+              <div class="form-group">
+                <label class="form-label">Thời gian làm bài (phút) *</label>
+                <input type="number" class="form-input" value="45" min="1" max="300">
+                <p class="form-helper">Tối đa 300 phút</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Số câu hỏi random *</label>
+                <input type="number" class="form-input" value="30" min="1">
+                <p class="form-helper">Rút ngẫu nhiên từ ngân hàng</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Ngưỡng đạt (%) *</label>
+              <input type="number" class="form-input" value="70" min="0" max="100">
+              <p class="form-helper">Học viên cần đạt tối thiểu 70% để vượt qua kỳ thi</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Số lần làm lại tối đa</label>
+              <input type="number" class="form-input" value="3" min="1">
+              <p class="form-helper">0 = không giới hạn</p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Tuỳ chọn</label>
+              <label class="form-check">
+                <input type="checkbox" checked> Xáo trộn câu hỏi
+              </label>
+              <label class="form-check">
+                <input type="checkbox" checked> Xáo trộn đáp án
+              </label>
+              <label class="form-check">
+                <input type="checkbox"> Hiển thị đáp án sau khi nộp bài
+              </label>
+              <label class="form-check">
+                <input type="checkbox" checked> Gửi thông báo kết quả qua email
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Trạng thái</label>
+              <div style="display:flex;align-items:center;gap:var(--sp-lg);padding:var(--sp-md);background:var(--surface-1);border:1px solid var(--hairline);">
+                <div style="flex:1;">
+                  <div class="body-emphasis">Published</div>
+                  <div class="caption text-muted">Học viên có thể tham gia kỳ thi</div>
+                </div>
+                <button class="btn btn-tertiary btn-sm" onclick="toggleStatus(this)">Chuyển sang Draft</button>
+              </div>
+            </div>
+
+            <div class="flex gap-sm">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+              <button class="btn btn-ghost">Huỷ</button>
+            </div>
+          </div>
+
+          <!-- Side Info -->
+          <div style="display:flex;flex-direction:column;gap:var(--sp-lg);">
+            <div class="card">
+              <h4 class="body-emphasis mb-md">Thống kê kỳ thi</h4>
+              <div style="display:flex;flex-direction:column;gap:var(--sp-sm);">
+                <div class="flex flex-between">
+                  <span class="text-muted">Học viên đã tham gia</span>
+                  <span class="body-emphasis">186</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="text-muted">Đang làm bài</span>
+                  <span class="body-emphasis text-primary">12</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="text-muted">Tỉ lệ đạt</span>
+                  <span class="body-emphasis text-success">82%</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="text-muted">Điểm trung bình</span>
+                  <span class="body-emphasis">76.4%</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="text-muted">Điểm cao nhất</span>
+                  <span class="body-emphasis">97%</span>
+                </div>
+                <div class="flex flex-between">
+                  <span class="text-muted">Điểm thấp nhất</span>
+                  <span class="body-emphasis">43%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h4 class="body-emphasis mb-md">Phân bố điểm</h4>
+              <div style="display:flex;flex-direction:column;gap:var(--sp-xs);">
+                <div>
+                  <div class="flex flex-between mb-xs">
+                    <span class="caption">90–100%</span>
+                    <span class="caption text-muted">28 HV</span>
+                  </div>
+                  <div class="progress"><div class="progress-bar success" style="width:28%;"></div></div>
+                </div>
+                <div>
+                  <div class="flex flex-between mb-xs">
+                    <span class="caption">70–89%</span>
+                    <span class="caption text-muted">95 HV</span>
+                  </div>
+                  <div class="progress"><div class="progress-bar" style="width:72%;"></div></div>
+                </div>
+                <div>
+                  <div class="flex flex-between mb-xs">
+                    <span class="caption">50–69%</span>
+                    <span class="caption text-muted">41 HV</span>
+                  </div>
+                  <div class="progress"><div class="progress-bar" style="width:40%;background:var(--warning);"></div></div>
+                </div>
+                <div>
+                  <div class="flex flex-between mb-xs">
+                    <span class="caption">0–49%</span>
+                    <span class="caption text-muted">22 HV</span>
+                  </div>
+                  <div class="progress"><div class="progress-bar" style="width:22%;background:var(--error);"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Câu hỏi (hidden) -->
+      <div id="tab-cauhoi" style="display:none;">
+        <div class="card">
+          <p class="text-muted text-center" style="padding:var(--sp-xxl) 0;">Quản lý danh sách câu hỏi trong kỳ thi.</p>
+        </div>
+      </div>
+
+      <!-- Tab: Kết quả (hidden) -->
+      <div id="tab-ketqua" style="display:none;">
+        <div class="card">
+          <p class="text-muted text-center" style="padding:var(--sp-xxl) 0;">Xem kết quả chi tiết từng học viên.</p>
+        </div>
+      </div>
+
+      <!-- Tab: Phân quyền (hidden) -->
+      <div id="tab-phanquyen" style="display:none;">
+        <div class="card">
+          <p class="text-muted text-center" style="padding:var(--sp-xxl) 0;">Phân quyền kỳ thi theo tenant / nhóm người dùng.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+function switchTab(e, name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  ['thongtin','cauhoi','ketqua','phanquyen'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
+  });
+}
+function toggleStatus(btn) {
+  const label = btn.previousElementSibling.querySelector('.body-emphasis');
+  const sub = btn.previousElementSibling.querySelector('.caption');
+  if (label.textContent === 'Published') {
+    label.textContent = 'Draft';
+    sub.textContent = 'Kỳ thi chưa được công bố';
+    btn.textContent = 'Chuyển sang Published';
+  } else {
+    label.textContent = 'Published';
+    sub.textContent = 'Học viên có thể tham gia kỳ thi';
+    btn.textContent = 'Chuyển sang Draft';
+  }
+}
+</script>
+</body>
+</html>

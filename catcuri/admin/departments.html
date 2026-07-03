@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Phòng ban — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .tree-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+      padding: var(--sp-sm) var(--sp-md);
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      position: relative;
+    }
+    .tree-item:hover { background: var(--surface-1); }
+    .tree-item:hover .tree-actions { opacity: 1; }
+    .tree-toggle { color: var(--ink-muted); width: 16px; font-size: 12px; }
+    .tree-label { flex: 1; font-size: 14px; }
+    .tree-actions {
+      display: flex;
+      gap: var(--sp-xxs);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .tree-actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      font-size: 14px;
+      color: var(--ink-muted);
+      border-radius: 2px;
+    }
+    .tree-actions button:hover { background: var(--surface-2); color: var(--ink); }
+    .tree-children { padding-left: var(--sp-xl); }
+    .tree-root { font-weight: 600; color: var(--ink); }
+    .tree-meta { font-size: 12px; color: var(--ink-subtle); margin-left: var(--sp-xs); }
+  </style>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item active">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">Phòng ban</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1>Phòng ban</h1>
+        <div class="page-actions">
+          <button class="btn btn-primary btn-sm">+ Thêm phòng ban</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <!-- Root: Công ty -->
+        <div class="tree-item tree-root">
+          <span class="tree-toggle">▼</span>
+          <span>🏢</span>
+          <span class="tree-label">Công ty</span>
+          <span class="tree-meta">128 nhân viên</span>
+          <div class="tree-actions">
+            <button title="Chỉnh sửa">✏️</button>
+            <button title="Xoá">🗑️</button>
+          </div>
+        </div>
+
+        <div class="tree-children">
+          <!-- Khối Kinh doanh -->
+          <div class="tree-item">
+            <span class="tree-toggle">▼</span>
+            <span>📁</span>
+            <span class="tree-label" style="font-weight:600;">Khối Kinh doanh</span>
+            <span class="tree-meta">52 nhân viên</span>
+            <div class="tree-actions">
+              <button title="Chỉnh sửa">✏️</button>
+              <button title="Xoá">🗑️</button>
+            </div>
+          </div>
+          <div class="tree-children">
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;">▷</span>
+              <span>📂</span>
+              <span class="tree-label">Phòng Bán hàng</span>
+              <span class="tree-meta">30 nhân viên</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;">▷</span>
+              <span>📂</span>
+              <span class="tree-label">Phòng Marketing</span>
+              <span class="tree-meta">22 nhân viên</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Khối Vận hành -->
+          <div class="tree-item">
+            <span class="tree-toggle">▼</span>
+            <span>📁</span>
+            <span class="tree-label" style="font-weight:600;">Khối Vận hành</span>
+            <span class="tree-meta">76 nhân viên</span>
+            <div class="tree-actions">
+              <button title="Chỉnh sửa">✏️</button>
+              <button title="Xoá">🗑️</button>
+            </div>
+          </div>
+          <div class="tree-children">
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;">▷</span>
+              <span>📂</span>
+              <span class="tree-label">Phòng Nhân sự</span>
+              <span class="tree-meta">18 nhân viên</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;">▷</span>
+              <span>📂</span>
+              <span class="tree-label">Phòng Kế toán</span>
+              <span class="tree-meta">58 nhân viên</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

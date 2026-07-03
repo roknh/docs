@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+  <title>Catcuri LMS — Screen Map</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .screen-map { max-width: 1312px; margin: 0 auto; padding: 48px 24px; }
+    .screen-group { margin-bottom: 48px; }
+    .screen-group h2 { font-size: 24px; font-weight: 400; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); }
+    .screen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .screen-link { display: block; padding: 16px; border: 1px solid var(--hairline); text-decoration: none; color: var(--ink); transition: border-color 0.15s; }
+    .screen-link:hover { border-color: var(--primary); background: var(--surface-1); text-decoration: none; }
+    .screen-link .screen-id { font-size: 12px; color: var(--ink-subtle); letter-spacing: 0.32px; margin-bottom: 4px; }
+    .screen-link .screen-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .screen-link .screen-path { font-size: 12px; color: var(--ink-muted); font-family: monospace; }
+    .screen-link .screen-layout { display: inline-block; margin-top: 8px; padding: 2px 8px; font-size: 11px; background: var(--surface-1); color: var(--ink-muted); }
+  </style>
+</head>
+<body>
+  <div class="screen-map">
+    <div style="margin-bottom: 48px;">
+      <h1 class="display-md"><img src="images/logo.png" alt="Catcuri" style="height:48px"> LMS</h1>
+      <p class="body-lg text-muted mt-sm">Screen Map — IBM Carbon Design System</p>
+      <p class="body-sm text-subtle mt-xs">Spec v4.0 &middot; 25 features &middot; 49 screens</p>
+    </div>
+
+    <div class="screen-group">
+      <h2>Auth & Onboarding</h2>
+      <div class="screen-grid">
+        <a href="auth/login.html" class="screen-link">
+          <div class="screen-id">S1</div>
+          <div class="screen-name">Dang nhap</div>
+          <div class="screen-path">/login</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <a href="auth/register.html" class="screen-link">
+          <div class="screen-id">S2</div>
+          <div class="screen-name">Dang ky tai khoan</div>
+          <div class="screen-path">/register</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <a href="auth/forgot-password.html" class="screen-link">
+          <div class="screen-id">S3</div>
+          <div class="screen-name">Quen mat khau</div>
+          <div class="screen-path">/forgot-password</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <a href="auth/change-password.html" class="screen-link">
+          <div class="screen-id">S4</div>
+          <div class="screen-name">Doi mat khau lan dau</div>
+          <div class="screen-path">/change-password</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <a href="auth/select-tenant.html" class="screen-link">
+          <div class="screen-id">S5</div>
+          <div class="screen-name">Chon Tenant</div>
+          <div class="screen-path">/select-tenant</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <a href="auth/invitation.html" class="screen-link">
+          <div class="screen-id">S6</div>
+          <div class="screen-name">Nhan loi moi Tenant</div>
+          <div class="screen-path">/invitation/:token</div>
+          <span class="screen-layout">Default</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="screen-group">
+      <h2>Client (Hoc vien)</h2>
+      <div class="screen-grid">
+        <a href="client/home.html" class="screen-link">
+          <div class="screen-id">S10</div>
+          <div class="screen-name">Trang chu</div>
+          <div class="screen-path">/</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/courses.html" class="screen-link">
+          <div class="screen-id">S11</div>
+          <div class="screen-name">Danh sach khoa hoc</div>
+          <div class="screen-path">/courses</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/course-detail.html" class="screen-link">
+          <div class="screen-id">S12</div>
+          <div class="screen-name">Chi tiet khoa hoc</div>
+          <div class="screen-path">/courses/:id</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/learning.html" class="screen-link">
+          <div class="screen-id">S13</div>
+          <div class="screen-name">Hoc khoa hoc</div>
+          <div class="screen-path">/courses/:id/learn</div>
+          <span class="screen-layout">Learning</span>
+        </a>
+        <a href="client/quiz.html" class="screen-link">
+          <div class="screen-id">S14</div>
+          <div class="screen-name">Lam bai kiem tra</div>
+          <div class="screen-path">/courses/:id/quiz/:testId</div>
+          <span class="screen-layout">Quiz</span>
+        </a>
+        <a href="client/quiz-result.html" class="screen-link">
+          <div class="screen-id">S15</div>
+          <div class="screen-name">Ket qua bai kiem tra</div>
+          <div class="screen-path">/courses/:id/quiz/:testId/result</div>
+          <span class="screen-layout">Quiz</span>
+        </a>
+        <a href="client/course-complete.html" class="screen-link">
+          <div class="screen-id">S16</div>
+          <div class="screen-name">Hoan thanh khoa hoc</div>
+          <div class="screen-path">/courses/:id/complete</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/exams.html" class="screen-link">
+          <div class="screen-id">S17</div>
+          <div class="screen-name">Danh sach ky thi</div>
+          <div class="screen-path">/exams</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/exam-detail.html" class="screen-link">
+          <div class="screen-id">S18</div>
+          <div class="screen-name">Chi tiet ky thi</div>
+          <div class="screen-path">/exams/:id</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/exam-quiz.html" class="screen-link">
+          <div class="screen-id">S19</div>
+          <div class="screen-name">Lam bai thi</div>
+          <div class="screen-path">/exams/:id/take</div>
+          <span class="screen-layout">Quiz</span>
+        </a>
+        <a href="client/exam-result.html" class="screen-link">
+          <div class="screen-id">S20</div>
+          <div class="screen-name">Ket qua ky thi</div>
+          <div class="screen-path">/exams/:id/result</div>
+          <span class="screen-layout">Quiz</span>
+        </a>
+        <span class="screen-link" style="opacity: 0.4; pointer-events: none;">
+          <div class="screen-id">S21 (deprecated)</div>
+          <div class="screen-name" style="text-decoration: line-through;">Dashboard tien do</div>
+          <div class="screen-path">Gop vao S10 (v3.5)</div>
+          <span class="screen-layout">—</span>
+        </span>
+        <a href="client/profile.html" class="screen-link">
+          <div class="screen-id">S22</div>
+          <div class="screen-name">Profile</div>
+          <div class="screen-path">/user/profile</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/change-password.html" class="screen-link">
+          <div class="screen-id">S23</div>
+          <div class="screen-name">Doi mat khau</div>
+          <div class="screen-path">/user/change-password</div>
+          <span class="screen-layout">Client</span>
+        </a>
+        <a href="client/notifications.html" class="screen-link">
+          <div class="screen-id">S24</div>
+          <div class="screen-name">Thong bao</div>
+          <div class="screen-path">/user/notifications</div>
+          <span class="screen-layout">Client</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="screen-group">
+      <h2>Tenant Portal <span style="font-size:14px;color:var(--ink-subtle);font-weight:400;">(deprecated v4.0 — merged into Admin Dashboard)</span></h2>
+      <div class="screen-grid">
+        <a href="tenant/register.html" class="screen-link">
+          <div class="screen-id">S30</div>
+          <div class="screen-name">Dang ky Tenant</div>
+          <div class="screen-path">/tenant/register</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <span class="screen-link" style="opacity: 0.4; pointer-events: none;">
+          <div class="screen-id">S31 (deprecated)</div>
+          <div class="screen-name" style="text-decoration: line-through;">Tenant - Tong quan</div>
+          <div class="screen-path">Gop vao S40 (v4.0)</div>
+          <span class="screen-layout">—</span>
+        </span>
+        <span class="screen-link" style="opacity: 0.4; pointer-events: none;">
+          <div class="screen-id">S32 (deprecated)</div>
+          <div class="screen-name" style="text-decoration: line-through;">Tenant - Phong ban</div>
+          <div class="screen-path">Gop vao S59 (v4.0)</div>
+          <span class="screen-layout">—</span>
+        </span>
+        <span class="screen-link" style="opacity: 0.4; pointer-events: none;">
+          <div class="screen-id">S33 (deprecated)</div>
+          <div class="screen-name" style="text-decoration: line-through;">Tenant - Chuc danh</div>
+          <div class="screen-path">Gop vao S60 (v4.0)</div>
+          <span class="screen-layout">—</span>
+        </span>
+        <span class="screen-link" style="opacity: 0.4; pointer-events: none;">
+          <div class="screen-id">S34 (deprecated)</div>
+          <div class="screen-name" style="text-decoration: line-through;">Tenant - Nhan vien</div>
+          <div class="screen-path">Gop vao S58 (v4.0)</div>
+          <span class="screen-layout">—</span>
+        </span>
+        <span class="screen-link" style="opacity: 0.4; pointer-events: none;">
+          <div class="screen-id">S35 (deprecated)</div>
+          <div class="screen-name" style="text-decoration: line-through;">Tenant - Khoa hoc</div>
+          <div class="screen-path">Gop vao S42 (v4.0)</div>
+          <span class="screen-layout">—</span>
+        </span>
+        <span class="screen-link" style="opacity: 0.4; pointer-events: none;">
+          <div class="screen-id">S36 (deprecated)</div>
+          <div class="screen-name" style="text-decoration: line-through;">Tenant - Tien do</div>
+          <div class="screen-path">Gop vao S49 (v4.0)</div>
+          <span class="screen-layout">—</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="screen-group">
+      <h2>Admin Dashboard</h2>
+      <div class="screen-grid">
+        <a href="admin/overview.html" class="screen-link">
+          <div class="screen-id">S40</div>
+          <div class="screen-name">Admin - Tong quan</div>
+          <div class="screen-path">/dashboard</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/users.html" class="screen-link">
+          <div class="screen-id">S41</div>
+          <div class="screen-name">Admin - Users</div>
+          <div class="screen-path">/dashboard/users</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/user-detail.html" class="screen-link">
+          <div class="screen-id">S41a</div>
+          <div class="screen-name">Admin - Chi tiet user</div>
+          <div class="screen-path">/dashboard/users/:id</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/courses.html" class="screen-link">
+          <div class="screen-id">S42</div>
+          <div class="screen-name">Admin - Khoa hoc</div>
+          <div class="screen-path">/dashboard/courses</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/course-detail.html" class="screen-link">
+          <div class="screen-id">S43</div>
+          <div class="screen-name">Admin - Chi tiet khoa</div>
+          <div class="screen-path">/dashboard/courses/:id</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/topics.html" class="screen-link">
+          <div class="screen-id">S44</div>
+          <div class="screen-name">Admin - Topics</div>
+          <div class="screen-path">/dashboard/topics</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/questions.html" class="screen-link">
+          <div class="screen-id">S45</div>
+          <div class="screen-name">Admin - Cau hoi</div>
+          <div class="screen-path">/dashboard/questions</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/question-detail.html" class="screen-link">
+          <div class="screen-id">S45a</div>
+          <div class="screen-name">Admin - Chi tiet cau hoi</div>
+          <div class="screen-path">/dashboard/questions/:id</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/exams.html" class="screen-link">
+          <div class="screen-id">S46</div>
+          <div class="screen-name">Admin - Ky thi</div>
+          <div class="screen-path">/dashboard/exams</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/exam-detail.html" class="screen-link">
+          <div class="screen-id">S47</div>
+          <div class="screen-name">Admin - Chi tiet ky thi</div>
+          <div class="screen-path">/dashboard/exams/:id</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/tenants.html" class="screen-link">
+          <div class="screen-id">S48</div>
+          <div class="screen-name">Admin - Tenants</div>
+          <div class="screen-path">/dashboard/tenants</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/learning-progress.html" class="screen-link">
+          <div class="screen-id">S49</div>
+          <div class="screen-name">Admin - Tien do hoc vien</div>
+          <div class="screen-path">/dashboard/learning-progress</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/notifications.html" class="screen-link">
+          <div class="screen-id">S50</div>
+          <div class="screen-name">Admin - Thong bao</div>
+          <div class="screen-path">/dashboard/notifications</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/roles.html" class="screen-link">
+          <div class="screen-id">S52</div>
+          <div class="screen-name">Admin - Roles & Rules</div>
+          <div class="screen-path">/dashboard/roles</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/curricula.html" class="screen-link">
+          <div class="screen-id">S53</div>
+          <div class="screen-name">Admin - Bai giang</div>
+          <div class="screen-path">/dashboard/curricula</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/curriculum-detail.html" class="screen-link">
+          <div class="screen-id">S54</div>
+          <div class="screen-name">Admin - Chi tiet bai giang</div>
+          <div class="screen-path">/dashboard/curricula/:id</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/tests.html" class="screen-link">
+          <div class="screen-id">S55</div>
+          <div class="screen-name">Admin - Bai kiem tra</div>
+          <div class="screen-path">/dashboard/tests</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/test-detail.html" class="screen-link">
+          <div class="screen-id">S56</div>
+          <div class="screen-name">Admin - Chi tiet bai kiem tra</div>
+          <div class="screen-path">/dashboard/tests/:id</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/ai-course-builder.html" class="screen-link">
+          <div class="screen-id">S57</div>
+          <div class="screen-name">Admin - AI Course Builder</div>
+          <div class="screen-path">/dashboard/ai/course-builder</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/employees.html" class="screen-link">
+          <div class="screen-id">S58</div>
+          <div class="screen-name">Admin - Nhan vien</div>
+          <div class="screen-path">/dashboard/employees</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/departments.html" class="screen-link">
+          <div class="screen-id">S59</div>
+          <div class="screen-name">Admin - Phong ban</div>
+          <div class="screen-path">/dashboard/departments</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+        <a href="admin/job-titles.html" class="screen-link">
+          <div class="screen-id">S60</div>
+          <div class="screen-name">Admin - Chuc danh</div>
+          <div class="screen-path">/dashboard/job-titles</div>
+          <span class="screen-layout">Dashboard</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="screen-group">
+      <h2>Error Pages</h2>
+      <div class="screen-grid">
+        <a href="error/403.html" class="screen-link">
+          <div class="screen-id">S90</div>
+          <div class="screen-name">403 Forbidden</div>
+          <div class="screen-path">/403</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <a href="error/404.html" class="screen-link">
+          <div class="screen-id">S91</div>
+          <div class="screen-name">404 Not Found</div>
+          <div class="screen-path">/404</div>
+          <span class="screen-layout">Default</span>
+        </a>
+        <a href="error/500.html" class="screen-link">
+          <div class="screen-id">S92</div>
+          <div class="screen-name">500 Server Error</div>
+          <div class="screen-path">/500</div>
+          <span class="screen-layout">Default</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

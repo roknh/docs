@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Tiến độ học viên — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item active">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">Tiến độ học viên</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1>Tiến độ học viên</h1>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm">📤 Export Excel</button>
+        </div>
+      </div>
+
+      <!-- AI Summary -->
+      <div class="card" style="margin-bottom:24px; border-left:3px solid #8a3ffc;">
+        <h3 class="body-sm" style="color:#8a3ffc; margin-bottom:12px;">🤖 Phân tích AI</h3>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+          <div style="padding:12px; background:var(--surface-1);">
+            <div class="caption text-muted">Nguy cơ trễ hạn</div>
+            <div class="display-sm" style="color:var(--error);">12</div>
+            <div class="caption text-subtle">học viên cần can thiệp</div>
+          </div>
+          <div style="padding:12px; background:var(--surface-1);">
+            <div class="caption text-muted">Bài kiểm tra khó</div>
+            <div class="display-sm" style="color:var(--warning);">3</div>
+            <div class="caption text-subtle">tỷ lệ đạt &lt; 40%</div>
+          </div>
+          <div style="padding:12px; background:var(--surface-1);">
+            <div class="caption text-muted">Xu hướng tích cực</div>
+            <div class="display-sm" style="color:var(--success);">+15%</div>
+            <div class="caption text-subtle">hoàn thành so tháng trước</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Row -->
+      <div class="card mb-lg" style="padding:var(--sp-md);">
+        <div class="flex flex-center gap-md" style="flex-wrap:wrap;">
+          <select class="form-select" style="width:200px;">
+            <option value="">Tất cả Tenant</option>
+            <option>ABC Corporation</option>
+            <option>XYZ Holdings</option>
+            <option>DEF Group</option>
+            <option>GHI Vietnam</option>
+          </select>
+          <select class="form-select" style="width:220px;">
+            <option value="">Tất cả Khoá học</option>
+            <option>Kỹ năng giao tiếp</option>
+            <option>An toàn lao động cơ bản</option>
+            <option>Nghiệp vụ bán hàng</option>
+            <option>Lãnh đạo và tư duy chiến lược</option>
+            <option>Quản lý thời gian</option>
+          </select>
+          <select class="form-select" style="width:180px;">
+            <option value="">Tất cả Phòng ban</option>
+            <option>Kinh doanh</option>
+            <option>Nhân sự</option>
+            <option>Kỹ thuật</option>
+            <option>Marketing</option>
+            <option>Vận hành</option>
+          </select>
+          <select class="form-select" style="width:160px;">
+            <option value="">Tất cả tiến độ</option>
+            <option>Đã hoàn thành</option>
+            <option>Đang học</option>
+            <option>Chưa bắt đầu</option>
+          </select>
+          <button class="btn btn-primary btn-sm">Lọc</button>
+          <button class="btn btn-ghost btn-sm">Xoá bộ lọc</button>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="grid grid-4 mb-lg">
+        <div class="stat-card">
+          <div class="stat-label">Tổng học viên</div>
+          <div class="stat-value">1,234</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Đã hoàn thành</div>
+          <div class="stat-value" style="color:var(--success);">842</div>
+          <div class="caption text-success">68.2%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Đang học</div>
+          <div class="stat-value" style="color:var(--primary);">289</div>
+          <div class="caption text-primary">23.4%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Chưa bắt đầu</div>
+          <div class="stat-value" style="color:var(--ink-muted);">103</div>
+          <div class="caption text-muted">8.4%</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card" style="padding:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Họ tên</th>
+              <th>Tenant</th>
+              <th>Phòng ban</th>
+              <th>Khoá học</th>
+              <th style="min-width:140px;">Tiến độ</th>
+              <th>Điểm test</th>
+              <th>Ngày hoàn thành</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm">NT</span>
+                  <span>Nguyễn Thị Thu</span>
+                </div>
+              </td>
+              <td class="text-muted">ABC Corp</td>
+              <td class="text-muted">Kinh doanh</td>
+              <td>Kỹ năng giao tiếp</td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <div class="progress" style="flex:1;">
+                    <div class="progress-bar success" style="width:100%;"></div>
+                  </div>
+                  <span class="caption">100%</span>
+                </div>
+              </td>
+              <td><span class="text-success body-emphasis">92%</span></td>
+              <td class="text-muted">25/06/2026</td>
+              <td><button class="btn btn-ghost btn-sm">Chi tiết</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#24a148;">TM</span>
+                  <span>Trần Minh Hiếu</span>
+                </div>
+              </td>
+              <td class="text-muted">XYZ Holdings</td>
+              <td class="text-muted">Vận hành</td>
+              <td>An toàn lao động</td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <div class="progress" style="flex:1;">
+                    <div class="progress-bar" style="width:75%;"></div>
+                  </div>
+                  <span class="caption">75%</span>
+                </div>
+              </td>
+              <td><span class="text-muted">—</span></td>
+              <td class="text-muted">—</td>
+              <td><button class="btn btn-ghost btn-sm">Chi tiết</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#8a3ffc;">LH</span>
+                  <span>Lê Hoàng Nam</span>
+                </div>
+              </td>
+              <td class="text-muted">ABC Corp</td>
+              <td class="text-muted">Marketing</td>
+              <td>Nghiệp vụ bán hàng</td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <div class="progress" style="flex:1;">
+                    <div class="progress-bar success" style="width:100%;"></div>
+                  </div>
+                  <span class="caption">100%</span>
+                </div>
+              </td>
+              <td><span class="text-success body-emphasis">85%</span></td>
+              <td class="text-muted">20/06/2026</td>
+              <td><button class="btn btn-ghost btn-sm">Chi tiết</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#f1c21b;color:#161616;">PL</span>
+                  <span>Phạm Lan Anh</span>
+                </div>
+              </td>
+              <td class="text-muted">DEF Group</td>
+              <td class="text-muted">Nhân sự</td>
+              <td>Lãnh đạo và tư duy chiến lược</td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <div class="progress" style="flex:1;">
+                    <div class="progress-bar" style="width:40%;background:var(--warning);"></div>
+                  </div>
+                  <span class="caption">40%</span>
+                </div>
+              </td>
+              <td><span class="text-muted">—</span></td>
+              <td class="text-muted">—</td>
+              <td><button class="btn btn-ghost btn-sm">Chi tiết</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#da1e28;">VD</span>
+                  <span>Vũ Đức Thành</span>
+                </div>
+              </td>
+              <td class="text-muted">XYZ Holdings</td>
+              <td class="text-muted">Kỹ thuật</td>
+              <td>Kỹ năng giao tiếp</td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <div class="progress" style="flex:1;">
+                    <div class="progress-bar success" style="width:100%;"></div>
+                  </div>
+                  <span class="caption">100%</span>
+                </div>
+              </td>
+              <td><span class="text-success body-emphasis">78%</span></td>
+              <td class="text-muted">18/06/2026</td>
+              <td><button class="btn btn-ghost btn-sm">Chi tiết</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <span class="avatar avatar-sm" style="background:#0072c3;">BT</span>
+                  <span>Bùi Thị Hà</span>
+                </div>
+              </td>
+              <td class="text-muted">GHI Vietnam</td>
+              <td class="text-muted">Kinh doanh</td>
+              <td>Quản lý thời gian</td>
+              <td>
+                <div class="flex flex-center gap-sm">
+                  <div class="progress" style="flex:1;">
+                    <div class="progress-bar" style="width:10%;background:var(--surface-2);"></div>
+                  </div>
+                  <span class="caption text-muted">0%</span>
+                </div>
+              </td>
+              <td><span class="text-muted">—</span></td>
+              <td class="text-muted">—</td>
+              <td><button class="btn btn-ghost btn-sm">Chi tiết</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <span>Hiển thị 1–6 / 1,234 học viên</span>
+          <div class="pagination-pages">
+            <button>‹</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>…</button>
+            <button>124</button>
+            <button>›</button>
+          </div>
+          <div class="flex flex-center gap-sm">
+            <span class="caption text-muted">Số hàng/trang:</span>
+            <select class="form-select" style="width:80px;padding:6px 28px 6px 8px;">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

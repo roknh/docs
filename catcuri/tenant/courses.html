@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Khoá học — Ocany LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="layout-dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+      <nav class="sidebar-nav">
+        <a href="overview.html" class="sidebar-item">
+          <span class="item-icon">📊</span> Tổng quan
+        </a>
+        <a href="employees.html" class="sidebar-item">
+          <span class="item-icon">👥</span> Nhân viên
+        </a>
+        <a href="departments.html" class="sidebar-item">
+          <span class="item-icon">🏛</span> Phòng ban
+        </a>
+        <a href="job-titles.html" class="sidebar-item">
+          <span class="item-icon">💼</span> Chức danh
+        </a>
+        <a href="courses.html" class="sidebar-item active">
+          <span class="item-icon">📚</span> Khoá học
+        </a>
+        <a href="progress.html" class="sidebar-item">
+          <span class="item-icon">📈</span> Tiến độ
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="dashboard-main">
+      <header class="dashboard-header">
+        <span class="body-emphasis">Ocany</span>
+        <div class="dropdown" id="userDropdown">
+          <button class="dropdown-trigger" onclick="toggleDropdown('userDropdown')">
+            <div class="avatar avatar-sm">NT</div>
+            <span>NT ▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Hồ sơ tổ chức</a>
+            <a href="#" class="dropdown-item">Cài đặt</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item text-error">Đăng xuất</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="page-header">
+          <h1>Khoá học</h1>
+          <div class="page-actions">
+            <span class="caption text-muted" style="line-height: 40px; padding-right: var(--sp-sm);">Khoá học được admin phân công</span>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div style="margin-bottom: var(--sp-md);">
+          <div class="search-box" style="max-width: 360px;">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Tìm kiếm khoá học..." />
+          </div>
+        </div>
+
+        <div class="card" style="padding: 0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tên khoá học</th>
+                <th>Học viên (đã/tổng)</th>
+                <th>Tiến độ</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="body-emphasis">An toàn lao động cơ bản</div>
+                  <div class="caption text-muted">Cập nhật: 15/05/2026</div>
+                </td>
+                <td>
+                  <span class="body-emphasis">98</span><span class="text-muted">/100</span>
+                </td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 140px;">
+                      <div class="progress-bar success" style="width: 92%;"></div>
+                    </div>
+                    <span class="caption text-muted">92%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-success">Đang diễn ra</span></td>
+                <td>
+                  <a href="#" class="btn btn-ghost btn-sm">Xem chi tiết</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="body-emphasis">Kỹ năng giao tiếp nội bộ</div>
+                  <div class="caption text-muted">Cập nhật: 01/06/2026</div>
+                </td>
+                <td>
+                  <span class="body-emphasis">75</span><span class="text-muted">/80</span>
+                </td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 140px;">
+                      <div class="progress-bar" style="width: 68%;"></div>
+                    </div>
+                    <span class="caption text-muted">68%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-primary">Đang diễn ra</span></td>
+                <td>
+                  <a href="#" class="btn btn-ghost btn-sm">Xem chi tiết</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="body-emphasis">Quản lý thời gian hiệu quả</div>
+                  <div class="caption text-muted">Cập nhật: 10/04/2026</div>
+                </td>
+                <td>
+                  <span class="body-emphasis">60</span><span class="text-muted">/60</span>
+                </td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 140px;">
+                      <div class="progress-bar success" style="width: 100%;"></div>
+                    </div>
+                    <span class="caption text-muted">100%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-success">Hoàn thành</span></td>
+                <td>
+                  <a href="#" class="btn btn-ghost btn-sm">Xem chi tiết</a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="body-emphasis">Nghiệp vụ bán hàng nâng cao</div>
+                  <div class="caption text-muted">Cập nhật: 20/06/2026</div>
+                </td>
+                <td>
+                  <span class="body-emphasis">45</span><span class="text-muted">/120</span>
+                </td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 140px;">
+                      <div class="progress-bar" style="width: 38%; background: var(--warning);"></div>
+                    </div>
+                    <span class="caption text-muted">38%</span>
+                  </div>
+                </td>
+                <td><span class="badge badge-warning">Chậm tiến độ</span></td>
+                <td>
+                  <a href="#" class="btn btn-ghost btn-sm">Xem chi tiết</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <span>Hiển thị 1–4 trong 12 khoá học</span>
+            <div class="pagination-pages">
+              <button>‹</button>
+              <button class="active">1</button>
+              <button>2</button>
+              <button>3</button>
+              <button>›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+      }
+    });
+  </script>
+</body>
+</html>

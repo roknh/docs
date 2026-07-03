@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Hồ sơ — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .profile-header .avatar-xl {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .profile-header .info .name {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .profile-header .info .role {
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+    .profile-header .info .org {
+      font-size: 13px;
+      color: var(--ink-subtle);
+      margin-top: 2px;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .badge-item {
+      text-align: center;
+      padding: 16px 8px;
+      border: 1px solid var(--hairline);
+      background: var(--canvas);
+    }
+    .badge-item .icon { font-size: 32px; margin-bottom: 6px; }
+    .badge-item .label { font-size: 12px; font-weight: 500; color: var(--ink); }
+    .badge-item .sub { font-size: 11px; color: var(--ink-subtle); margin-top: 2px; }
+    .badge-item.locked { opacity: 0.35; }
+
+    .cert-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .cert-row:last-child { border-bottom: none; }
+    .cert-row .cert-icon { font-size: 24px; flex-shrink: 0; }
+    .cert-row .cert-info { flex: 1; }
+    .cert-row .cert-info .cert-name { font-size: 14px; font-weight: 500; }
+    .cert-row .cert-info .cert-date { font-size: 12px; color: var(--ink-subtle); margin-top: 1px; }
+  </style>
+</head>
+<body>
+<div class="layout-client">
+
+  <!-- Client Header -->
+  <header class="client-header">
+    <div class="header-left">
+      <a href="home.html" class="header-logo"><img src="../images/logo.png" alt="Catcuri"></a>
+      <nav class="header-nav">
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span style="font-size:13px; color:var(--ink-muted);">Ocany</span>
+      <div class="notif-bell">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6zm0 16a2 2 0 0 0 2-2H8a2 2 0 0 0 2 2z" fill="#525252"/>
+        </svg>
+        <span class="notif-count">3</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">NT</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+          <a href="courses.html" class="dropdown-item">Khoá học của tôi</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Client Content -->
+  <main class="client-content">
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="avatar-xl">NT</div>
+      <div class="info">
+        <div class="name">Ngọc Trân</div>
+        <div class="role">Nhân viên Kinh doanh</div>
+        <div class="org">Phòng Kinh doanh &middot; Ocany</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs mb-lg">
+      <button class="tab active" onclick="switchTab(this, 'tab-learning')">Góc học tập</button>
+      <button class="tab" onclick="switchTab(this, 'tab-personal')">Thông tin cá nhân</button>
+    </div>
+
+    <!-- Tab: Góc học tập -->
+    <div id="tab-learning" class="tab-panel">
+
+      <!-- Stat cards -->
+      <div class="grid grid-4 mb-xl">
+        <div class="stat-card">
+          <div class="stat-value" style="color:var(--success);">7</div>
+          <div class="stat-label">Khoá hoàn thành</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">24h</div>
+          <div class="stat-label">Tổng giờ học</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color:var(--primary);">5</div>
+          <div class="stat-label">Chứng chỉ</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">70%</div>
+          <div class="stat-label">Tỷ lệ hoàn thành</div>
+        </div>
+      </div>
+
+      <div class="grid grid-2 gap-xl mb-xl" style="align-items:start;">
+
+        <!-- Chứng chỉ -->
+        <div class="card">
+          <h3 class="subhead mb-md">Chứng chỉ & Bằng cấp</h3>
+          <div class="cert-row">
+            <span class="cert-icon">📜</span>
+            <div class="cert-info">
+              <div class="cert-name">PCCC cơ bản</div>
+              <div class="cert-date">Cấp ngày 28/06/2026</div>
+            </div>
+            <a href="#" class="btn btn-ghost btn-sm">Tải PDF</a>
+          </div>
+          <div class="cert-row">
+            <span class="cert-icon">📜</span>
+            <div class="cert-info">
+              <div class="cert-name">Giao tiếp khách hàng</div>
+              <div class="cert-date">Cấp ngày 15/06/2026</div>
+            </div>
+            <a href="#" class="btn btn-ghost btn-sm">Tải PDF</a>
+          </div>
+          <div class="cert-row">
+            <span class="cert-icon">📜</span>
+            <div class="cert-info">
+              <div class="cert-name">Quản lý thời gian</div>
+              <div class="cert-date">Cấp ngày 20/05/2026</div>
+            </div>
+            <a href="#" class="btn btn-ghost btn-sm">Tải PDF</a>
+          </div>
+          <div class="cert-row">
+            <span class="cert-icon">📜</span>
+            <div class="cert-info">
+              <div class="cert-name">Onboarding Q1/2026</div>
+              <div class="cert-date">Cấp ngày 01/04/2026</div>
+            </div>
+            <a href="#" class="btn btn-ghost btn-sm">Tải PDF</a>
+          </div>
+          <div class="cert-row">
+            <span class="cert-icon">📜</span>
+            <div class="cert-info">
+              <div class="cert-name">Tư duy phản biện</div>
+              <div class="cert-date">Cấp ngày 10/03/2026</div>
+            </div>
+            <a href="#" class="btn btn-ghost btn-sm">Tải PDF</a>
+          </div>
+        </div>
+
+        <!-- Huy hiệu -->
+        <div class="card">
+          <h3 class="subhead mb-md">Huy hiệu</h3>
+          <div class="badge-grid">
+            <div class="badge-item">
+              <div class="icon">🏆</div>
+              <div class="label">Khởi đầu</div>
+              <div class="sub">Hoàn thành khoá đầu tiên</div>
+            </div>
+            <div class="badge-item">
+              <div class="icon">🔥</div>
+              <div class="label">Chăm chỉ</div>
+              <div class="sub">Học 7 ngày liên tiếp</div>
+            </div>
+            <div class="badge-item">
+              <div class="icon">💯</div>
+              <div class="label">Xuất sắc</div>
+              <div class="sub">Đạt 100% bài kiểm tra</div>
+            </div>
+            <div class="badge-item">
+              <div class="icon">⭐</div>
+              <div class="label">5 khoá học</div>
+              <div class="sub">Hoàn thành 5 khoá</div>
+            </div>
+            <div class="badge-item">
+              <div class="icon">🛡️</div>
+              <div class="label">An toàn</div>
+              <div class="sub">Hoàn thành PCCC</div>
+            </div>
+            <div class="badge-item">
+              <div class="icon">📚</div>
+              <div class="label">Bookworm</div>
+              <div class="sub">Học 20 giờ</div>
+            </div>
+            <div class="badge-item locked">
+              <div class="icon">🎯</div>
+              <div class="label">10 khoá học</div>
+              <div class="sub">Còn 3 khoá nữa</div>
+            </div>
+            <div class="badge-item locked">
+              <div class="icon">👑</div>
+              <div class="label">Top Learner</div>
+              <div class="sub">Chưa đạt</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lịch sử kỳ thi -->
+      <div class="card mb-xl" style="padding:0;">
+        <div style="padding:16px 20px; border-bottom:1px solid var(--hairline);">
+          <h3 class="subhead" style="margin:0;">Lịch sử kỳ thi</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Kỳ thi</th>
+              <th>Ngày thi</th>
+              <th style="text-align:center;">Điểm</th>
+              <th style="text-align:center;">Kết quả</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">An toàn lao động Q2/2026</td>
+              <td class="caption text-muted">01/07/2026</td>
+              <td style="text-align:center;" class="body-sm">85/100</td>
+              <td style="text-align:center;"><span class="badge badge-success">Đạt</span></td>
+            </tr>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">Kỹ năng mềm tổng hợp</td>
+              <td class="caption text-muted">15/06/2026</td>
+              <td style="text-align:center;" class="body-sm">92/100</td>
+              <td style="text-align:center;"><span class="badge badge-success">Đạt</span></td>
+            </tr>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">Nghiệp vụ bán hàng Q1</td>
+              <td class="caption text-muted">20/03/2026</td>
+              <td style="text-align:center;" class="body-sm">45/100</td>
+              <td style="text-align:center;"><span class="badge badge-error">Không đạt</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Khoá học đã hoàn thành -->
+      <div class="card" style="padding:0;">
+        <div style="padding:16px 20px; border-bottom:1px solid var(--hairline);">
+          <h3 class="subhead" style="margin:0;">Khoá học đã hoàn thành</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Khoá học</th>
+              <th>Chủ đề</th>
+              <th>Ngày hoàn thành</th>
+              <th style="text-align:center;">Chứng chỉ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">PCCC cơ bản</td>
+              <td><span class="badge badge-neutral" style="font-size:11px;">An toàn</span></td>
+              <td class="caption text-muted">28/06/2026</td>
+              <td style="text-align:center;"><a href="#" class="caption text-primary">Tải PDF</a></td>
+            </tr>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">Giao tiếp khách hàng</td>
+              <td><span class="badge badge-neutral" style="font-size:11px;">Dịch vụ</span></td>
+              <td class="caption text-muted">15/06/2026</td>
+              <td style="text-align:center;"><a href="#" class="caption text-primary">Tải PDF</a></td>
+            </tr>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">Quản lý thời gian</td>
+              <td><span class="badge badge-neutral" style="font-size:11px;">Kỹ năng mềm</span></td>
+              <td class="caption text-muted">20/05/2026</td>
+              <td style="text-align:center;"><a href="#" class="caption text-primary">Tải PDF</a></td>
+            </tr>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">Onboarding Q1</td>
+              <td><span class="badge badge-neutral" style="font-size:11px;">Tổng hợp</span></td>
+              <td class="caption text-muted">01/04/2026</td>
+              <td style="text-align:center;"><span class="caption text-muted">—</span></td>
+            </tr>
+            <tr>
+              <td class="body-sm" style="font-weight:500;">Tư duy phản biện</td>
+              <td><span class="badge badge-neutral" style="font-size:11px;">Tư duy</span></td>
+              <td class="caption text-muted">10/03/2026</td>
+              <td style="text-align:center;"><a href="#" class="caption text-primary">Tải PDF</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Tab: Thông tin cá nhân -->
+    <div id="tab-personal" class="tab-panel" style="display:none;">
+
+      <div style="display:grid; grid-template-columns:280px 1fr; gap:var(--sp-lg); align-items:start;">
+
+        <!-- Avatar section -->
+        <div class="card" style="text-align: center;">
+          <div class="avatar avatar-lg" style="margin: 0 auto var(--sp-md);">NT</div>
+          <div class="body-emphasis mb-xs">Ngọc Trân</div>
+          <div class="caption text-muted mb-md">Nhân viên Kinh doanh</div>
+          <button class="btn btn-tertiary btn-sm" style="width:100%;">Đổi ảnh đại diện</button>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:flex; flex-direction:column; gap:var(--sp-lg);">
+
+          <!-- Form section -->
+          <div class="card">
+            <h2 class="subhead mb-lg">Thông tin cá nhân</h2>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 var(--sp-lg);">
+              <div class="form-group">
+                <label class="form-label">Họ tên</label>
+                <input type="text" class="form-input" value="Ngọc Trân" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Số điện thoại</label>
+                <input type="tel" class="form-input" value="0901 234 567" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" value="ngoctran@company.com" readonly style="color: var(--ink-muted); cursor: not-allowed;" />
+              <div class="form-helper">Email không thể thay đổi.</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 var(--sp-lg);">
+              <div class="form-group">
+                <label class="form-label">Phòng ban</label>
+                <input type="text" class="form-input" value="Kinh doanh" readonly style="color: var(--ink-muted); cursor: not-allowed;" />
+                <div class="form-helper">Liên hệ HR để thay đổi.</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Chức danh</label>
+                <input type="text" class="form-input" value="Nhân viên Kinh doanh" readonly style="color: var(--ink-muted); cursor: not-allowed;" />
+                <div class="form-helper">Liên hệ HR để thay đổi.</div>
+              </div>
+            </div>
+
+            <div class="flex flex-end">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+          </div>
+
+          <!-- Password section -->
+          <div class="card">
+            <h2 class="subhead mb-lg">Đổi mật khẩu</h2>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0 var(--sp-lg);">
+              <div class="form-group" style="grid-column:1/-1;">
+                <label class="form-label">Mật khẩu hiện tại</label>
+                <input type="password" class="form-input" placeholder="••••••••" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mật khẩu mới</label>
+                <input type="password" class="form-input" placeholder="••••••••" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Xác nhận mật khẩu mới</label>
+                <input type="password" class="form-input" placeholder="••••••••" />
+              </div>
+            </div>
+            <div class="flex flex-end">
+              <button class="btn btn-primary">Đổi mật khẩu</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Client Footer -->
+  <footer class="client-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Catcuri</h4>
+        <p style="font-size: 14px; color: var(--inverse-ink-muted); margin-top: var(--sp-xs);">Nền tảng đào tạo trực tuyến dành cho doanh nghiệp.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ</h4>
+        <a href="#">Trung tâm trợ giúp</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Catcuri. Bảo lưu mọi quyền.
+    </div>
+  </footer>
+
+</div>
+<script src="../js/app.js"></script>
+<script>
+function switchTab(btn, panelId) {
+  btn.closest('.tabs').querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.style.display = 'none'; });
+  document.getElementById(panelId).style.display = '';
+}
+</script>
+</body>
+</html>

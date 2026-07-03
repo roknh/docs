@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Chi tiết câu hỏi — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .answer-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 1px solid var(--hairline);
+      margin-bottom: 8px;
+      transition: border-color 0.15s;
+    }
+    .answer-option:hover { border-color: var(--primary); }
+    .answer-option.correct { border-color: var(--success); background: rgba(36,161,72,0.05); }
+    .answer-option .answer-label {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 13px;
+      flex-shrink: 0;
+      background: var(--surface-1); color: var(--ink-subtle);
+    }
+    .answer-option.correct .answer-label {
+      background: var(--success); color: #fff;
+    }
+    .answer-option .answer-actions {
+      margin-left: auto;
+      display: flex; gap: 4px; align-items: center;
+    }
+  </style>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item active">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <a href="questions.html">Ngân hàng câu hỏi</a>
+        <span class="separator">/</span>
+        <span class="current">Q-001</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <div>
+          <h1>Chi tiết câu hỏi</h1>
+          <div class="flex flex-center gap-sm mt-xs">
+            <span class="badge badge-primary">MC</span>
+            <span class="badge badge-neutral">Dễ</span>
+            <span class="caption text-muted">ID: Q-001 · Tạo ngày 15/02/2026</span>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm">Nhân bản</button>
+          <button class="btn btn-danger btn-sm">Xoá câu hỏi</button>
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="gap:var(--sp-xl);align-items:start;">
+        <!-- Main Form -->
+        <div style="display:flex;flex-direction:column;gap:var(--sp-lg);">
+          <!-- Question Content -->
+          <div class="card">
+            <h3 class="subhead mb-lg">Nội dung câu hỏi</h3>
+
+            <div class="form-group">
+              <label class="form-label">Câu hỏi *</label>
+              <textarea class="form-textarea" rows="3">Khi gặp mâu thuẫn với đồng nghiệp, bước đầu tiên bạn nên làm là gì?</textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Giải thích đáp án</label>
+              <textarea class="form-textarea" rows="3">Lắng nghe là bước đầu tiên quan trọng nhất trong giải quyết mâu thuẫn. Khi bạn thực sự lắng nghe, đối phương cảm thấy được tôn trọng và sẵn sàng hợp tác hơn để tìm ra giải pháp.</textarea>
+              <p class="form-helper">Hiển thị cho học viên sau khi nộp bài (nếu bật)</p>
+            </div>
+
+            <div class="grid grid-2" style="gap:var(--sp-md);">
+              <div class="form-group">
+                <label class="form-label">Loại câu hỏi *</label>
+                <select class="form-select">
+                  <option selected>MC — Một đáp án đúng</option>
+                  <option>MR — Nhiều đáp án đúng</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Độ khó *</label>
+                <select class="form-select">
+                  <option selected>Dễ</option>
+                  <option>Trung bình</option>
+                  <option>Khó</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Answers -->
+          <div class="card">
+            <div class="flex flex-between mb-lg">
+              <h3 class="subhead">Đáp án</h3>
+              <button class="btn btn-tertiary btn-sm">+ Thêm đáp án</button>
+            </div>
+
+            <div class="answer-option">
+              <div class="answer-label">A</div>
+              <div style="flex:1;">
+                <input type="text" class="form-input" value="Phản bác ngay lập tức" style="margin-bottom:0;">
+              </div>
+              <div class="answer-actions">
+                <label class="form-check" style="margin:0;" title="Đáp án đúng">
+                  <input type="radio" name="correct" >
+                </label>
+                <button class="btn btn-ghost btn-sm text-error">✕</button>
+              </div>
+            </div>
+
+            <div class="answer-option correct">
+              <div class="answer-label">B</div>
+              <div style="flex:1;">
+                <input type="text" class="form-input" value="Lắng nghe đối phương" style="margin-bottom:0;">
+              </div>
+              <div class="answer-actions">
+                <label class="form-check" style="margin:0;" title="Đáp án đúng">
+                  <input type="radio" name="correct" checked>
+                </label>
+                <button class="btn btn-ghost btn-sm text-error">✕</button>
+              </div>
+            </div>
+
+            <div class="answer-option">
+              <div class="answer-label">C</div>
+              <div style="flex:1;">
+                <input type="text" class="form-input" value="Báo cáo quản lý ngay" style="margin-bottom:0;">
+              </div>
+              <div class="answer-actions">
+                <label class="form-check" style="margin:0;" title="Đáp án đúng">
+                  <input type="radio" name="correct">
+                </label>
+                <button class="btn btn-ghost btn-sm text-error">✕</button>
+              </div>
+            </div>
+
+            <div class="answer-option">
+              <div class="answer-label">D</div>
+              <div style="flex:1;">
+                <input type="text" class="form-input" value="Tránh né, không nói chuyện" style="margin-bottom:0;">
+              </div>
+              <div class="answer-actions">
+                <label class="form-check" style="margin:0;" title="Đáp án đúng">
+                  <input type="radio" name="correct">
+                </label>
+                <button class="btn btn-ghost btn-sm text-error">✕</button>
+              </div>
+            </div>
+
+            <p class="caption text-muted mt-sm">🟢 = đáp án đúng · Chọn radio để đánh dấu đáp án đúng</p>
+          </div>
+
+          <!-- Save -->
+          <div class="flex gap-sm">
+            <button class="btn btn-primary">Lưu thay đổi</button>
+            <button class="btn btn-ghost">Huỷ</button>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div style="display:flex;flex-direction:column;gap:var(--sp-lg);">
+          <!-- Classification -->
+          <div class="card">
+            <h4 class="body-emphasis mb-md">Phân loại</h4>
+
+            <div class="form-group">
+              <label class="form-label">Topic *</label>
+              <select class="form-select">
+                <option>Kỹ năng mềm</option>
+                <option selected>Giao tiếp</option>
+                <option>Lãnh đạo</option>
+                <option>Quản lý thời gian</option>
+                <option>An toàn lao động</option>
+                <option>Nghiệp vụ bán hàng</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <div class="flex gap-xs" style="flex-wrap:wrap;margin-bottom:8px;">
+                <span class="badge badge-neutral" style="cursor:pointer;">ky-nang-mem ✕</span>
+                <span class="badge badge-neutral" style="cursor:pointer;">giao-tiep ✕</span>
+              </div>
+              <div class="flex gap-sm">
+                <input type="text" class="form-input" placeholder="Thêm tag..." style="flex:1;margin-bottom:0;">
+                <button class="btn btn-tertiary btn-sm">Thêm</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Usage Stats -->
+          <div class="card">
+            <h4 class="body-emphasis mb-md">Thống kê sử dụng</h4>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-sm);">
+              <div class="flex flex-between">
+                <span class="text-muted">Bài kiểm tra sử dụng</span>
+                <span class="body-emphasis">3</span>
+              </div>
+              <div class="flex flex-between">
+                <span class="text-muted">Kỳ thi sử dụng</span>
+                <span class="body-emphasis">1</span>
+              </div>
+              <div class="flex flex-between">
+                <span class="text-muted">Lượt trả lời</span>
+                <span class="body-emphasis">486</span>
+              </div>
+              <div class="flex flex-between">
+                <span class="text-muted">Tỉ lệ trả lời đúng</span>
+                <span class="body-emphasis text-success">72%</span>
+              </div>
+              <div class="flex flex-between">
+                <span class="text-muted">Độ phân biệt</span>
+                <span class="body-emphasis">0.45</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Answer Distribution -->
+          <div class="card">
+            <h4 class="body-emphasis mb-md">Phân bố đáp án</h4>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-xs);">
+              <div>
+                <div class="flex flex-between mb-xs">
+                  <span class="caption">A. Phản bác ngay</span>
+                  <span class="caption text-muted">8%</span>
+                </div>
+                <div class="progress"><div class="progress-bar" style="width:8%;background:var(--error);"></div></div>
+              </div>
+              <div>
+                <div class="flex flex-between mb-xs">
+                  <span class="caption text-success body-emphasis">B. Lắng nghe ✓</span>
+                  <span class="caption text-success">72%</span>
+                </div>
+                <div class="progress"><div class="progress-bar success" style="width:72%;"></div></div>
+              </div>
+              <div>
+                <div class="flex flex-between mb-xs">
+                  <span class="caption">C. Báo cáo quản lý</span>
+                  <span class="caption text-muted">15%</span>
+                </div>
+                <div class="progress"><div class="progress-bar" style="width:15%;background:var(--warning);"></div></div>
+              </div>
+              <div>
+                <div class="flex flex-between mb-xs">
+                  <span class="caption">D. Tránh né</span>
+                  <span class="caption text-muted">5%</span>
+                </div>
+                <div class="progress"><div class="progress-bar" style="width:5%;background:var(--surface-2);"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- History -->
+          <div class="card">
+            <h4 class="body-emphasis mb-md">Lịch sử</h4>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-xs);">
+              <div class="caption text-muted">15/02/2026 — Admin tạo câu hỏi</div>
+              <div class="caption text-muted">20/03/2026 — Thêm vào bài kiểm tra "Giao tiếp cơ bản"</div>
+              <div class="caption text-muted">01/05/2026 — Sửa đáp án D</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>

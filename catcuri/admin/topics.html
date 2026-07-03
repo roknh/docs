@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Topics — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item active">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">Topics</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1>Topics & Tags</h1>
+        <div class="page-actions">
+          <button class="btn btn-primary btn-sm">+ Thêm topic</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs mb-lg">
+        <button class="tab active" onclick="switchTopicTab(event,'topics')">Topics</button>
+        <button class="tab" onclick="switchTopicTab(event,'tags')">Tags</button>
+      </div>
+
+      <!-- Tab: Tags (hidden by default) -->
+      <div id="tab-tags" style="display:none;">
+        <div class="page-header" style="margin-bottom:16px;">
+          <div></div>
+          <div class="page-actions">
+            <button class="btn btn-primary btn-sm">+ Thêm tag</button>
+          </div>
+        </div>
+        <div class="card" style="padding:0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Tên tag</th>
+                <th>Slug</th>
+                <th>Bài giảng</th>
+                <th>Bài kiểm tra</th>
+                <th>Câu hỏi</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><span class="badge badge-neutral">an-toan-lao-dong</span></td>
+                <td class="text-muted">an-toan-lao-dong</td>
+                <td>4</td>
+                <td>3</td>
+                <td>45</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><span class="badge badge-neutral">phong-chay</span></td>
+                <td class="text-muted">phong-chay</td>
+                <td>2</td>
+                <td>2</td>
+                <td>28</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><span class="badge badge-neutral">nghiep-vu-ban-hang</span></td>
+                <td class="text-muted">nghiep-vu-ban-hang</td>
+                <td>3</td>
+                <td>2</td>
+                <td>36</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><span class="badge badge-neutral">ky-nang-mem</span></td>
+                <td class="text-muted">ky-nang-mem</td>
+                <td>5</td>
+                <td>3</td>
+                <td>52</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><span class="badge badge-neutral">onboarding</span></td>
+                <td class="text-muted">onboarding</td>
+                <td>2</td>
+                <td>1</td>
+                <td>15</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><span class="badge badge-neutral">compliance</span></td>
+                <td class="text-muted">compliance</td>
+                <td>3</td>
+                <td>4</td>
+                <td>38</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><span class="badge badge-neutral">leadership</span></td>
+                <td class="text-muted">leadership</td>
+                <td>2</td>
+                <td>1</td>
+                <td>22</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><span class="badge badge-neutral">excel</span></td>
+                <td class="text-muted">excel</td>
+                <td>1</td>
+                <td>1</td>
+                <td>18</td>
+                <td><div class="actions"><button class="btn btn-ghost btn-sm">Sửa</button><button class="btn btn-ghost btn-sm text-error">Xoá</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Topics -->
+      <div id="tab-topics">
+      <div class="grid grid-2" style="align-items:start;">
+        <!-- Tree View -->
+        <div class="card" style="padding:0;">
+          <div style="padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" placeholder="Tìm topic...">
+            </div>
+          </div>
+
+          <!-- Root: Kỹ năng mềm -->
+          <div class="tree-item" onclick="toggleTree('tree-mem')" style="background:var(--surface-1);">
+            <span class="tree-toggle" id="toggle-tree-mem">▼</span>
+            <span style="flex:1;font-weight:600;">📁 Kỹ năng mềm</span>
+            <span class="badge badge-primary">COURSE</span>
+            <div class="actions" style="margin-left:var(--sp-xs);" onclick="event.stopPropagation()">
+              <button class="btn btn-ghost btn-sm">Sửa</button>
+              <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+            </div>
+          </div>
+          <div id="tree-mem" class="tree-children">
+            <div class="tree-item" style="padding-left:20px;">
+              <span class="tree-toggle" style="width:16px;"></span>
+              <span>💬</span>
+              <span style="flex:1;">Giao tiếp</span>
+              <span class="caption text-muted">3 khoá</span>
+              <div class="actions" style="margin-left:var(--sp-xs);" onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+            <div class="tree-item" style="padding-left:20px;">
+              <span class="tree-toggle" style="width:16px;"></span>
+              <span>👑</span>
+              <span style="flex:1;">Lãnh đạo</span>
+              <span class="caption text-muted">2 khoá</span>
+              <div class="actions" style="margin-left:var(--sp-xs);" onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+            <div class="tree-item" style="padding-left:20px;">
+              <span class="tree-toggle" style="width:16px;"></span>
+              <span>⏰</span>
+              <span style="flex:1;">Quản lý thời gian</span>
+              <span class="caption text-muted">1 khoá</span>
+              <div class="actions" style="margin-left:var(--sp-xs);" onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Root: Kỹ năng chuyên môn -->
+          <div class="tree-item" onclick="toggleTree('tree-cm')" style="background:var(--surface-1);">
+            <span class="tree-toggle" id="toggle-tree-cm">▼</span>
+            <span style="flex:1;font-weight:600;">📁 Kỹ năng chuyên môn</span>
+            <span class="badge badge-warning">COMPETENCY</span>
+            <div class="actions" style="margin-left:var(--sp-xs);" onclick="event.stopPropagation()">
+              <button class="btn btn-ghost btn-sm">Sửa</button>
+              <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+            </div>
+          </div>
+          <div id="tree-cm" class="tree-children">
+            <div class="tree-item" style="padding-left:20px;">
+              <span class="tree-toggle" style="width:16px;"></span>
+              <span>⚠️</span>
+              <span style="flex:1;">An toàn lao động</span>
+              <span class="caption text-muted">4 khoá</span>
+              <div class="actions" style="margin-left:var(--sp-xs);" onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+            <div class="tree-item" style="padding-left:20px;">
+              <span class="tree-toggle" style="width:16px;"></span>
+              <span>🛍</span>
+              <span style="flex:1;">Nghiệp vụ bán hàng</span>
+              <span class="caption text-muted">3 khoá</span>
+              <div class="actions" style="margin-left:var(--sp-xs);" onclick="event.stopPropagation()">
+                <button class="btn btn-ghost btn-sm">Sửa</button>
+                <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Panel -->
+        <div style="display:flex;flex-direction:column;gap:var(--sp-lg);">
+          <div class="card">
+            <h3 class="subhead mb-lg">Thêm / chỉnh sửa topic</h3>
+            <div class="form-group">
+              <label class="form-label">Tên topic *</label>
+              <input type="text" class="form-input" placeholder="Ví dụ: Kỹ năng mềm">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Topic cha</label>
+              <select class="form-select">
+                <option value="">— Topic gốc (không có cha) —</option>
+                <option>Kỹ năng mềm</option>
+                <option>Kỹ năng chuyên môn</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Loại *</label>
+              <div class="flex gap-xl" style="margin-top:var(--sp-xs);">
+                <label class="form-check">
+                  <input type="radio" name="topicType" checked> COURSE
+                </label>
+                <label class="form-check">
+                  <input type="radio" name="topicType"> COMPETENCY
+                </label>
+                <label class="form-check">
+                  <input type="radio" name="topicType"> EXAM
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mô tả</label>
+              <textarea class="form-textarea" rows="3" placeholder="Mô tả ngắn về chủ đề này..."></textarea>
+            </div>
+            <div class="flex gap-sm">
+              <button class="btn btn-primary">Lưu topic</button>
+              <button class="btn btn-ghost">Huỷ</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4 class="body-emphasis mb-md">Thống kê</h4>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-sm);">
+              <div class="flex flex-between">
+                <span class="text-muted">Tổng số topics</span>
+                <span class="body-emphasis">7</span>
+              </div>
+              <div class="flex flex-between">
+                <span class="text-muted">Loại COURSE</span>
+                <span class="body-emphasis">4</span>
+              </div>
+              <div class="flex flex-between">
+                <span class="text-muted">Loại COMPETENCY</span>
+                <span class="body-emphasis">3</span>
+              </div>
+              <div class="flex flex-between">
+                <span class="text-muted">Tổng khoá học</span>
+                <span class="body-emphasis">45</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div><!-- close tab-topics -->
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+function switchTopicTab(e, name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById('tab-topics').style.display = name === 'topics' ? '' : 'none';
+  document.getElementById('tab-tags').style.display = name === 'tags' ? '' : 'none';
+}
+function toggleTree(id) {
+  const el = document.getElementById(id);
+  const toggleId = 'toggle-' + id;
+  const toggle = document.getElementById(toggleId);
+  if (el.style.display === 'none') {
+    el.style.display = '';
+    toggle.textContent = '▼';
+  } else {
+    el.style.display = 'none';
+    toggle.textContent = '▶';
+  }
+}
+</script>
+</body>
+</html>

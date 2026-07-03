@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>AI Course Builder — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item active">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">AI Course Builder</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <div>
+          <h1>🤖 AI Course Builder</h1>
+          <p class="caption text-muted" style="margin-top:var(--sp-xs);">Mô tả yêu cầu đào tạo → AI tự động tạo bài giảng hoàn chỉnh</p>
+        </div>
+      </div>
+
+      <!-- Step 1: Input form -->
+      <div>
+        <div class="card">
+          <h3 class="subhead mb-lg">Mô tả yêu cầu đào tạo</h3>
+
+          <div class="form-group">
+            <label class="form-label">Mô tả yêu cầu đào tạo *</label>
+            <textarea class="form-textarea" rows="4" placeholder="VD: Đào tạo nhân viên tư vấn online cho khách hàng mua mỹ phẩm...">Đào tạo nhân viên tư vấn online cho khách hàng mua mỹ phẩm, tập trung kỹ năng giao tiếp qua Zalo và Facebook Messenger, bao gồm cả kiến thức sản phẩm cơ bản.</textarea>
+          </div>
+
+          <div class="grid grid-2" style="gap:var(--sp-lg);">
+            <div class="form-group">
+              <label class="form-label">Đối tượng học viên</label>
+              <input type="text" class="form-input" value="Nhân viên mới, chưa có kinh nghiệm" placeholder="VD: Nhân viên mới, chưa có kinh nghiệm">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Thời lượng mong muốn</label>
+              <input type="text" class="form-input" value="Khoảng 2 giờ, 3-4 chương" placeholder="VD: Khoảng 2 giờ, 3-4 chương">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Ghi chú thêm</label>
+            <textarea class="form-textarea" rows="2" placeholder="VD: Tập trung kênh Zalo và Facebook">Tập trung kênh Zalo và Facebook. Cần nhiều tình huống thực tế và ví dụ về mỹ phẩm dưỡng da.</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tài liệu tham khảo (tuỳ chọn)</label>
+            <div style="border:2px dashed var(--hairline);border-radius:var(--radius-md);padding:var(--sp-xl);text-align:center;background:var(--surface-1);cursor:pointer;" onclick="document.getElementById('fileInput').click()">
+              <div style="font-size:28px;margin-bottom:var(--sp-xs);">📎</div>
+              <div class="body-sm">Kéo thả file hoặc nhấn để chọn</div>
+              <div class="caption text-muted" style="margin-top:var(--sp-xs);">PDF, DOCX, XLSX, TXT · Tối đa 20MB</div>
+              <input type="file" id="fileInput" style="display:none;" multiple>
+            </div>
+            <!-- Uploaded files -->
+            <div style="margin-top:var(--sp-sm);display:flex;flex-direction:column;gap:var(--sp-xs);">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-md);background:var(--surface-1);border:1px solid var(--hairline);border-radius:var(--radius-sm);">
+                <div class="flex flex-center gap-sm">
+                  <span>📄</span>
+                  <span class="body-sm">quy-trinh-tu-van.pdf</span>
+                  <span class="caption text-muted">(2.1 MB)</span>
+                </div>
+                <button class="btn btn-ghost btn-sm" style="color:var(--text-subtle);padding:2px 6px;">✕</button>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--sp-sm) var(--sp-md);background:var(--surface-1);border:1px solid var(--hairline);border-radius:var(--radius-sm);">
+                <div class="flex flex-center gap-sm">
+                  <span>📄</span>
+                  <span class="body-sm">danh-sach-san-pham.xlsx</span>
+                  <span class="caption text-muted">(580 KB)</span>
+                </div>
+                <button class="btn btn-ghost btn-sm" style="color:var(--text-subtle);padding:2px 6px;">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;padding:var(--sp-md);font-size:1rem;">
+            🤖 Tạo đề xuất bài giảng
+          </button>
+        </div>
+
+        <!-- Step 2: AI Generated Preview -->
+        <div class="card" style="margin-top:var(--sp-xl);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-lg);">
+            <h3 class="subhead">Đề xuất bài giảng</h3>
+            <span class="badge badge-primary">AI Generated</span>
+          </div>
+
+          <!-- Metadata row -->
+          <div class="grid grid-2" style="gap:var(--sp-lg);margin-bottom:var(--sp-md);">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Tên bài giảng</label>
+              <input type="text" class="form-input" value="Kỹ năng tư vấn online — Ngành mỹ phẩm">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">Topic</label>
+              <select class="form-select">
+                <option selected>Tư vấn bán hàng</option>
+                <option>Kỹ năng mềm</option>
+                <option>Giao tiếp</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tags</label>
+            <div class="flex flex-center gap-xs" style="flex-wrap:wrap;">
+              <span class="badge badge-neutral" style="font-size:11px;padding:1px 6px;">tư-vấn-online</span>
+              <span class="badge badge-neutral" style="font-size:11px;padding:1px 6px;">mỹ-phẩm</span>
+              <span class="badge badge-neutral" style="font-size:11px;padding:1px 6px;">CSKH</span>
+            </div>
+          </div>
+          <div class="caption text-muted mb-lg" style="padding:var(--sp-sm) var(--sp-md);background:var(--surface-1);border-radius:var(--radius-sm);border:1px solid var(--hairline);">
+            📊 4 chương · 12 bài học · 25 câu hỏi · ~2 giờ
+          </div>
+
+          <!-- Chapters -->
+          <div style="display:flex;flex-direction:column;gap:var(--sp-md);">
+
+            <!-- Chapter 1 -->
+            <div style="border:1px solid var(--hairline);border-radius:var(--radius-md);overflow:hidden;">
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm) var(--sp-md);background:var(--surface-1);border-bottom:1px solid var(--hairline);">
+                <span style="color:var(--text-subtle);cursor:grab;font-size:16px;line-height:1;">⋮⋮</span>
+                <span class="body-emphasis" style="flex:1;">Chương 1 — Tổng quan tư vấn online</span>
+                <button class="btn btn-ghost btn-sm" style="padding:2px 6px;" onclick="toggleChapter('ch1')">▾</button>
+              </div>
+              <div id="ch1" style="padding:var(--sp-sm) 0;">
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 1.1: Vai trò của tư vấn viên online</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 1.2: Các kênh tư vấn (Zalo, FB Messenger)</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 1.3: Quy trình tiếp nhận khách hàng</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);">
+                  <span style="color:var(--text-subtle);">📝</span>
+                  <span class="body-sm text-muted">Kiểm tra: 5 câu MC · 10 phút</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chapter 2 -->
+            <div style="border:1px solid var(--hairline);border-radius:var(--radius-md);overflow:hidden;">
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm) var(--sp-md);background:var(--surface-1);border-bottom:1px solid var(--hairline);">
+                <span style="color:var(--text-subtle);cursor:grab;font-size:16px;line-height:1;">⋮⋮</span>
+                <span class="body-emphasis" style="flex:1;">Chương 2 — Kỹ năng giao tiếp qua chat</span>
+                <button class="btn btn-ghost btn-sm" style="padding:2px 6px;" onclick="toggleChapter('ch2')">▾</button>
+              </div>
+              <div id="ch2" style="padding:var(--sp-sm) 0;">
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 2.1: Nguyên tắc viết tin nhắn chuyên nghiệp</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 2.2: Xử lý phản hồi tiêu cực</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 2.3: Upsell &amp; cross-sell qua chat</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 2.4: Template tin nhắn mẫu</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);">
+                  <span style="color:var(--text-subtle);">📝</span>
+                  <span class="body-sm text-muted">Kiểm tra: 5 câu MC · 10 phút</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chapter 3 -->
+            <div style="border:1px solid var(--hairline);border-radius:var(--radius-md);overflow:hidden;">
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm) var(--sp-md);background:var(--surface-1);border-bottom:1px solid var(--hairline);">
+                <span style="color:var(--text-subtle);cursor:grab;font-size:16px;line-height:1;">⋮⋮</span>
+                <span class="body-emphasis" style="flex:1;">Chương 3 — Kiến thức sản phẩm mỹ phẩm</span>
+                <button class="btn btn-ghost btn-sm" style="padding:2px 6px;" onclick="toggleChapter('ch3')">▾</button>
+              </div>
+              <div id="ch3" style="padding:var(--sp-sm) 0;">
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 3.1: Phân loại da &amp; sản phẩm phù hợp</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 3.2: Thành phần mỹ phẩm cần biết</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 3.3: FAQ khách hàng thường hỏi</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);">
+                  <span style="color:var(--text-subtle);">📝</span>
+                  <span class="body-sm text-muted">Kiểm tra: 5 câu MC · 10 phút</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chapter 4 -->
+            <div style="border:1px solid var(--hairline);border-radius:var(--radius-md);overflow:hidden;">
+              <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-sm) var(--sp-md);background:var(--surface-1);border-bottom:1px solid var(--hairline);">
+                <span style="color:var(--text-subtle);cursor:grab;font-size:16px;line-height:1;">⋮⋮</span>
+                <span class="body-emphasis" style="flex:1;">Chương 4 — Tình huống thực tế</span>
+                <button class="btn btn-ghost btn-sm" style="padding:2px 6px;" onclick="toggleChapter('ch4')">▾</button>
+              </div>
+              <div id="ch4" style="padding:var(--sp-sm) 0;">
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 4.1: Case study — tư vấn thành công</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);border-bottom:1px solid var(--hairline);">
+                  <span style="color:var(--text-subtle);">📄</span>
+                  <span class="body-sm">Bài 4.2: Case study — xử lý khiếu nại</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-xs) var(--sp-lg);">
+                  <span style="color:var(--text-subtle);">📝</span>
+                  <span class="body-sm text-muted">Kiểm tra tổng hợp: 10 câu MC/MR · 20 phút</span>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /chapters -->
+
+          <!-- Footer actions -->
+          <div style="display:flex;gap:var(--sp-sm);margin-top:var(--sp-xl);padding-top:var(--sp-lg);border-top:1px solid var(--hairline);">
+            <button class="btn btn-ghost btn-sm">🔄 Sinh lại toàn bộ</button>
+            <button class="btn btn-tertiary btn-sm">✏️ Chỉnh sửa chi tiết</button>
+            <button class="btn btn-primary btn-sm" style="margin-left:auto;">✅ Tạo bài giảng</button>
+          </div>
+        </div>
+      </div><!-- /centered wrapper -->
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+function toggleChapter(id) {
+  var el = document.getElementById(id);
+  el.style.display = el.style.display === 'none' ? '' : 'none';
+}
+</script>
+</body>
+</html>

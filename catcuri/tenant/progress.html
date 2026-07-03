@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Tiến độ học viên — Ocany LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .row-zero-progress {
+      background: #fff8f8 !important;
+    }
+    .row-zero-progress:hover {
+      background: #ffefef !important;
+    }
+    .row-zero-progress td {
+      color: var(--ink);
+    }
+    .row-zero-progress .zero-flag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--error);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout-dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+      <nav class="sidebar-nav">
+        <a href="overview.html" class="sidebar-item">
+          <span class="item-icon">📊</span> Tổng quan
+        </a>
+        <a href="employees.html" class="sidebar-item">
+          <span class="item-icon">👥</span> Nhân viên
+        </a>
+        <a href="departments.html" class="sidebar-item">
+          <span class="item-icon">🏛</span> Phòng ban
+        </a>
+        <a href="job-titles.html" class="sidebar-item">
+          <span class="item-icon">💼</span> Chức danh
+        </a>
+        <a href="courses.html" class="sidebar-item">
+          <span class="item-icon">📚</span> Khoá học
+        </a>
+        <a href="progress.html" class="sidebar-item active">
+          <span class="item-icon">📈</span> Tiến độ
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="dashboard-main">
+      <header class="dashboard-header">
+        <span class="body-emphasis">Ocany</span>
+        <div class="dropdown" id="userDropdown">
+          <button class="dropdown-trigger" onclick="toggleDropdown('userDropdown')">
+            <div class="avatar avatar-sm">NT</div>
+            <span>NT ▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Hồ sơ tổ chức</a>
+            <a href="#" class="dropdown-item">Cài đặt</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item text-error">Đăng xuất</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="page-header">
+          <h1>Tiến độ học viên</h1>
+          <div class="page-actions">
+            <button class="btn btn-tertiary">⬇ Xuất báo cáo</button>
+          </div>
+        </div>
+
+        <!-- Filters -->
+        <div style="display: flex; gap: var(--sp-sm); align-items: flex-end; margin-bottom: var(--sp-lg); padding: var(--sp-md); background: var(--surface-1); border: 1px solid var(--hairline);">
+          <div style="flex: 1;">
+            <label class="form-label">Khoá học</label>
+            <select class="form-select">
+              <option>Tất cả khoá học</option>
+              <option>An toàn lao động cơ bản</option>
+              <option>Kỹ năng giao tiếp nội bộ</option>
+              <option>Quản lý thời gian hiệu quả</option>
+              <option>Nghiệp vụ bán hàng nâng cao</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label class="form-label">Phòng ban</label>
+            <select class="form-select">
+              <option>Tất cả phòng ban</option>
+              <option>Phòng Bán hàng</option>
+              <option>Phòng Marketing</option>
+              <option>Phòng Nhân sự</option>
+              <option>Phòng Kế toán</option>
+            </select>
+          </div>
+          <div>
+            <button class="btn btn-primary">Lọc</button>
+          </div>
+        </div>
+
+        <!-- Note for zero-progress rows -->
+        <div style="display: flex; align-items: center; gap: var(--sp-xs); margin-bottom: var(--sp-sm); font-size: 12px; color: var(--ink-muted);">
+          <div style="width: 12px; height: 12px; background: #fff1f1; border: 1px solid #ffd7d9;"></div>
+          <span>Học viên chưa bắt đầu học (0%)</span>
+        </div>
+
+        <div class="card" style="padding: 0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Họ tên</th>
+                <th>Phòng ban</th>
+                <th>Khoá học</th>
+                <th>Tiến độ</th>
+                <th>Điểm test</th>
+                <th>Ngày hoàn thành</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Row 1: completed -->
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm">NV</div>
+                    <span class="body-emphasis">Nguyễn Văn An</span>
+                  </div>
+                </td>
+                <td>Phòng Bán hàng</td>
+                <td>An toàn lao động cơ bản</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 100px;">
+                      <div class="progress-bar success" style="width: 100%;"></div>
+                    </div>
+                    <span class="caption text-success">100%</span>
+                  </div>
+                </td>
+                <td><span class="text-success body-emphasis">92/100</span></td>
+                <td class="text-muted">14/06/2026</td>
+              </tr>
+
+              <!-- Row 2: in progress -->
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: var(--success);">TL</div>
+                    <span class="body-emphasis">Trần Thị Lan</span>
+                  </div>
+                </td>
+                <td>Phòng Marketing</td>
+                <td>Kỹ năng giao tiếp nội bộ</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 100px;">
+                      <div class="progress-bar" style="width: 75%;"></div>
+                    </div>
+                    <span class="caption text-muted">75%</span>
+                  </div>
+                </td>
+                <td><span class="text-muted">—</span></td>
+                <td><span class="text-muted">Chưa hoàn thành</span></td>
+              </tr>
+
+              <!-- Row 3: zero progress (highlighted) -->
+              <tr class="row-zero-progress">
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: var(--ink-muted);">PH</div>
+                    <span class="body-emphasis">Phạm Minh Hùng</span>
+                  </div>
+                </td>
+                <td>Phòng Kế toán</td>
+                <td>Nghiệp vụ bán hàng nâng cao</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 100px;">
+                      <div class="progress-bar" style="width: 0%; background: var(--error);"></div>
+                    </div>
+                    <span class="zero-flag">⚠ 0%</span>
+                  </div>
+                </td>
+                <td><span class="text-muted">—</span></td>
+                <td><span class="text-muted">Chưa bắt đầu</span></td>
+              </tr>
+
+              <!-- Row 4: completed -->
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: #6929c4;">LT</div>
+                    <span class="body-emphasis">Lê Thị Thu Hương</span>
+                  </div>
+                </td>
+                <td>Phòng Nhân sự</td>
+                <td>Quản lý thời gian hiệu quả</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 100px;">
+                      <div class="progress-bar success" style="width: 100%;"></div>
+                    </div>
+                    <span class="caption text-success">100%</span>
+                  </div>
+                </td>
+                <td><span class="text-success body-emphasis">87/100</span></td>
+                <td class="text-muted">22/05/2026</td>
+              </tr>
+
+              <!-- Row 5: in progress -->
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: #005d5d;">VD</div>
+                    <span class="body-emphasis">Vũ Quốc Dũng</span>
+                  </div>
+                </td>
+                <td>Phòng Bán hàng</td>
+                <td>Nghiệp vụ bán hàng nâng cao</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 100px;">
+                      <div class="progress-bar" style="width: 48%;"></div>
+                    </div>
+                    <span class="caption text-muted">48%</span>
+                  </div>
+                </td>
+                <td><span class="text-muted">—</span></td>
+                <td><span class="text-muted">Chưa hoàn thành</span></td>
+              </tr>
+
+              <!-- Row 6: zero progress (highlighted) -->
+              <tr class="row-zero-progress">
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: #9f1853;">HN</div>
+                    <span class="body-emphasis">Hoàng Thị Nam</span>
+                  </div>
+                </td>
+                <td>Phòng Marketing</td>
+                <td>An toàn lao động cơ bản</td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="progress" style="width: 100px;">
+                      <div class="progress-bar" style="width: 0%; background: var(--error);"></div>
+                    </div>
+                    <span class="zero-flag">⚠ 0%</span>
+                  </div>
+                </td>
+                <td><span class="text-muted">—</span></td>
+                <td><span class="text-muted">Chưa bắt đầu</span></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <span>Hiển thị 1–6 trong 246 bản ghi</span>
+            <div class="pagination-pages">
+              <button>‹</button>
+              <button class="active">1</button>
+              <button>2</button>
+              <button>3</button>
+              <button>...</button>
+              <button>41</button>
+              <button>›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+      }
+    });
+  </script>
+</body>
+</html>

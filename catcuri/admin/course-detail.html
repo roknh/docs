@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Chi tiết khoá học — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item active">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <a href="courses.html">Khoá học</a>
+        <span class="separator">/</span>
+        <span class="current">Kỹ năng giao tiếp</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <div>
+          <h1>Onboarding Q3/2026 — An toàn lao động</h1>
+          <div class="flex flex-center gap-sm mt-xs">
+            <span class="badge badge-success">Đang diễn ra</span>
+            <span class="caption text-muted">ID: CRS-001 · Tạo ngày 01/06/2026</span>
+          </div>
+        </div>
+        <div class="page-actions">
+          <button class="btn btn-danger btn-sm">Xoá khoá học</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs mb-lg">
+        <button class="tab active" onclick="switchTab(event,'thongtin')">Thông tin</button>
+        <button class="tab" onclick="switchTab(event,'hocvien')">Học viên</button>
+        <button class="tab" onclick="switchTab(event,'tiendo')">Tiến độ</button>
+      </div>
+
+      <!-- Tab: Thông tin -->
+      <div id="tab-thongtin">
+        <div class="card">
+          <h3 class="subhead mb-lg">Thông tin khoá học</h3>
+
+          <div class="form-group">
+            <label class="form-label">Tên khoá học *</label>
+            <input type="text" class="form-input" value="Onboarding Q3/2026 — An toàn lao động">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Bài giảng *</label>
+            <select class="form-select">
+              <option selected>An toàn lao động cơ bản</option>
+              <option>Kỹ năng giao tiếp</option>
+              <option>Nghiệp vụ bán hàng</option>
+              <option>Lãnh đạo và tư duy chiến lược</option>
+              <option>An toàn PCCC cơ bản</option>
+            </select>
+            <p class="form-helper" style="margin-top:var(--sp-xs);">
+              <span style="font-size:13px;">📖 An toàn lao động cơ bản — 5 chương, 18 bài</span>
+            </p>
+          </div>
+
+          <div class="grid grid-2" style="gap:var(--sp-md);">
+            <div class="form-group">
+              <label class="form-label">Ngày bắt đầu *</label>
+              <input type="date" class="form-input" value="2026-07-01">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Ngày kết thúc *</label>
+              <input type="date" class="form-input" value="2026-08-31">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Mô tả</label>
+            <textarea class="form-textarea" rows="4">Khoá học dành cho toàn bộ nhân viên mới gia nhập Q3/2026. Hoàn thành khoá học là điều kiện bắt buộc trước khi tiếp nhận công việc tại xưởng sản xuất.</textarea>
+          </div>
+
+          <div class="flex gap-sm">
+            <button class="btn btn-primary">Lưu thay đổi</button>
+            <button class="btn btn-ghost">Huỷ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Học viên (hidden) -->
+      <div id="tab-hocvien" style="display:none;">
+        <div class="card" style="padding:0;">
+          <div style="padding:var(--sp-md) var(--sp-lg);border-bottom:1px solid var(--hairline);display:flex;justify-content:flex-end;">
+            <button class="btn btn-primary btn-sm">+ Gán học viên</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox"></th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Tenant</th>
+                <th>Ngày gán</th>
+                <th>Tiến độ</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="body-emphasis">Nguyễn Văn An</td>
+                <td class="text-muted">an.nv@congty.vn</td>
+                <td>Nhà máy Bình Dương</td>
+                <td class="text-muted">01/07/2026</td>
+                <td><span class="badge badge-success">75%</span></td>
+                <td><button class="btn btn-ghost btn-sm text-error">Gỡ</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="body-emphasis">Trần Thị Bích</td>
+                <td class="text-muted">bich.tt@congty.vn</td>
+                <td>Nhà máy Bình Dương</td>
+                <td class="text-muted">01/07/2026</td>
+                <td><span class="badge badge-success">100%</span></td>
+                <td><button class="btn btn-ghost btn-sm text-error">Gỡ</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="body-emphasis">Lê Hoàng Dũng</td>
+                <td class="text-muted">dung.lh@congty.vn</td>
+                <td>Văn phòng HCM</td>
+                <td class="text-muted">03/07/2026</td>
+                <td><span class="badge badge-warning">30%</span></td>
+                <td><button class="btn btn-ghost btn-sm text-error">Gỡ</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="body-emphasis">Phạm Minh Châu</td>
+                <td class="text-muted">chau.pm@congty.vn</td>
+                <td>Nhà máy Bình Dương</td>
+                <td class="text-muted">03/07/2026</td>
+                <td><span class="badge badge-neutral">0%</span></td>
+                <td><button class="btn btn-ghost btn-sm text-error">Gỡ</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox"></td>
+                <td class="body-emphasis">Vũ Thị Hoa</td>
+                <td class="text-muted">hoa.vt@congty.vn</td>
+                <td>Văn phòng HCM</td>
+                <td class="text-muted">05/07/2026</td>
+                <td><span class="badge badge-success">50%</span></td>
+                <td><button class="btn btn-ghost btn-sm text-error">Gỡ</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Tiến độ (hidden) -->
+      <div id="tab-tiendo" style="display:none;">
+        <!-- Summary stats -->
+        <div class="grid grid-4 mb-lg" style="gap:var(--sp-md);">
+          <div class="card" style="text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:var(--text-primary);">45</div>
+            <div class="caption text-muted mt-xs">Tổng học viên</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:var(--color-success);">12</div>
+            <div class="caption text-muted mt-xs">Hoàn thành</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:var(--color-warning);">28</div>
+            <div class="caption text-muted mt-xs">Đang học</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div style="font-size:28px;font-weight:700;color:var(--text-muted);">5</div>
+            <div class="caption text-muted mt-xs">Chưa bắt đầu</div>
+          </div>
+        </div>
+
+        <!-- Progress table -->
+        <div class="card" style="padding:0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Họ tên</th>
+                <th>Tiến độ</th>
+                <th>Bài kiểm tra</th>
+                <th>Trạng thái</th>
+                <th>Lần cuối truy cập</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="body-emphasis">Trần Thị Bích</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                    <div style="flex:1;height:6px;background:var(--surface-2);border-radius:3px;">
+                      <div style="width:100%;height:100%;background:var(--color-success);border-radius:3px;"></div>
+                    </div>
+                    <span class="caption">100%</span>
+                  </div>
+                </td>
+                <td><span class="body-sm text-success">92/100</span></td>
+                <td><span class="badge badge-success">Hoàn thành</span></td>
+                <td class="text-muted">05/07/2026</td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Nguyễn Văn An</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                    <div style="flex:1;height:6px;background:var(--surface-2);border-radius:3px;">
+                      <div style="width:75%;height:100%;background:var(--color-success);border-radius:3px;"></div>
+                    </div>
+                    <span class="caption">75%</span>
+                  </div>
+                </td>
+                <td><span class="body-sm text-muted">Chưa thi</span></td>
+                <td><span class="badge badge-warning">Đang học</span></td>
+                <td class="text-muted">07/07/2026</td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Vũ Thị Hoa</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                    <div style="flex:1;height:6px;background:var(--surface-2);border-radius:3px;">
+                      <div style="width:50%;height:100%;background:var(--color-warning);border-radius:3px;"></div>
+                    </div>
+                    <span class="caption">50%</span>
+                  </div>
+                </td>
+                <td><span class="body-sm text-muted">Chưa thi</span></td>
+                <td><span class="badge badge-warning">Đang học</span></td>
+                <td class="text-muted">06/07/2026</td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Lê Hoàng Dũng</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                    <div style="flex:1;height:6px;background:var(--surface-2);border-radius:3px;">
+                      <div style="width:30%;height:100%;background:var(--color-warning);border-radius:3px;"></div>
+                    </div>
+                    <span class="caption">30%</span>
+                  </div>
+                </td>
+                <td><span class="body-sm text-muted">Chưa thi</span></td>
+                <td><span class="badge badge-warning">Đang học</span></td>
+                <td class="text-muted">04/07/2026</td>
+              </tr>
+              <tr>
+                <td class="body-emphasis">Phạm Minh Châu</td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                    <div style="flex:1;height:6px;background:var(--surface-2);border-radius:3px;">
+                      <div style="width:0%;height:100%;background:var(--color-success);border-radius:3px;"></div>
+                    </div>
+                    <span class="caption">0%</span>
+                  </div>
+                </td>
+                <td><span class="body-sm text-muted">Chưa thi</span></td>
+                <td><span class="badge badge-neutral">Chưa bắt đầu</span></td>
+                <td class="text-muted">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+function switchTab(e, name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  e.target.classList.add('active');
+  ['thongtin','hocvien','tiendo'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

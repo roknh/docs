@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Roles &amp; Rules — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    .role-card {
+      padding: var(--sp-md);
+      border: 1px solid var(--hairline);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      display: flex;
+      align-items: center;
+      gap: var(--sp-md);
+      margin-bottom: var(--sp-xs);
+    }
+    .role-card:hover { background: var(--surface-1); }
+    .role-card.selected { border-left: 3px solid var(--primary); background: var(--surface-1); }
+    .role-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item active">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">Roles &amp; Rules</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1>Roles &amp; Rules</h1>
+        <div class="page-actions">
+          <button class="btn btn-tertiary btn-sm">+ Thêm rule</button>
+          <button class="btn btn-primary btn-sm">+ Thêm role</button>
+        </div>
+      </div>
+
+      <div class="grid grid-2" style="align-items:start;">
+
+        <!-- LEFT: Roles -->
+        <div>
+          <div class="flex flex-between mb-md flex-center">
+            <h3 class="subhead">Roles</h3>
+            <span class="caption text-muted">4 roles</span>
+          </div>
+
+          <div class="role-card selected" onclick="selectRole(this,'admin')">
+            <div class="role-icon" style="background:#e8f0fe;">🔐</div>
+            <div style="flex:1;">
+              <div class="body-emphasis">Admin</div>
+              <div class="caption text-muted">Quản trị toàn hệ thống</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="body-emphasis text-primary">18</div>
+              <div class="caption text-muted">rules</div>
+            </div>
+          </div>
+
+          <div class="role-card" onclick="selectRole(this,'supermod')">
+            <div class="role-icon" style="background:#defbe6;">👑</div>
+            <div style="flex:1;">
+              <div class="body-emphasis">Super-moderator</div>
+              <div class="caption text-muted">Quản lý nội dung toàn tenant</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="body-emphasis" style="color:var(--success);">12</div>
+              <div class="caption text-muted">rules</div>
+            </div>
+          </div>
+
+          <div class="role-card" onclick="selectRole(this,'mod')">
+            <div class="role-icon" style="background:#fdf0cc;">🛡</div>
+            <div style="flex:1;">
+              <div class="body-emphasis">Moderator</div>
+              <div class="caption text-muted">Quản lý phòng ban</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="body-emphasis" style="color:#8e6a00;">8</div>
+              <div class="caption text-muted">rules</div>
+            </div>
+          </div>
+
+          <div class="role-card" onclick="selectRole(this,'user')">
+            <div class="role-icon" style="background:var(--surface-1);">👤</div>
+            <div style="flex:1;">
+              <div class="body-emphasis">User</div>
+              <div class="caption text-muted">Học viên thông thường</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="body-emphasis text-muted">4</div>
+              <div class="caption text-muted">rules</div>
+            </div>
+          </div>
+
+          <div class="card mt-lg" style="padding:var(--sp-md);">
+            <h4 class="body-emphasis mb-sm">Phân bổ người dùng</h4>
+            <div style="display:flex;flex-direction:column;gap:var(--sp-xs);">
+              <div class="flex flex-between">
+                <span class="body-sm">Admin</span>
+                <div class="flex flex-center gap-sm" style="flex:1;max-width:200px;margin-left:var(--sp-md);">
+                  <div class="progress" style="flex:1;"><div class="progress-bar" style="width:5%;background:var(--primary);"></div></div>
+                  <span class="caption text-muted">3 users</span>
+                </div>
+              </div>
+              <div class="flex flex-between">
+                <span class="body-sm">Super-mod</span>
+                <div class="flex flex-center gap-sm" style="flex:1;max-width:200px;margin-left:var(--sp-md);">
+                  <div class="progress" style="flex:1;"><div class="progress-bar" style="width:10%;background:var(--success);"></div></div>
+                  <span class="caption text-muted">8 users</span>
+                </div>
+              </div>
+              <div class="flex flex-between">
+                <span class="body-sm">Moderator</span>
+                <div class="flex flex-center gap-sm" style="flex:1;max-width:200px;margin-left:var(--sp-md);">
+                  <div class="progress" style="flex:1;"><div class="progress-bar" style="width:18%;background:var(--warning);"></div></div>
+                  <span class="caption text-muted">24 users</span>
+                </div>
+              </div>
+              <div class="flex flex-between">
+                <span class="body-sm">User</span>
+                <div class="flex flex-center gap-sm" style="flex:1;max-width:200px;margin-left:var(--sp-md);">
+                  <div class="progress" style="flex:1;"><div class="progress-bar" style="width:90%;"></div></div>
+                  <span class="caption text-muted">1,199 users</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Rules Detail -->
+        <div>
+          <div class="flex flex-between mb-md flex-center">
+            <h3 class="subhead">Rules chi tiết — <span id="selectedRoleName">Admin</span></h3>
+            <button class="btn btn-ghost btn-sm">+ Thêm rule</button>
+          </div>
+
+          <div class="card" style="padding:0;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rule name</th>
+                  <th>Actions</th>
+                  <th>Subject</th>
+                  <th>Conditions</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="rulesTableBody">
+                <tr>
+                  <td><span class="body-emphasis">manage_all</span></td>
+                  <td>
+                    <div class="flex gap-xs" style="flex-wrap:wrap;">
+                      <span class="badge badge-primary">manage</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-neutral">all</span></td>
+                  <td><span class="caption text-muted">—</span></td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn btn-ghost btn-sm">Sửa</button>
+                      <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="body-emphasis">read_users</span></td>
+                  <td>
+                    <div class="flex gap-xs" style="flex-wrap:wrap;">
+                      <span class="badge badge-neutral">read</span>
+                      <span class="badge badge-neutral">create</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-neutral">User</span></td>
+                  <td><span class="caption text-muted">tenantId = own</span></td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn btn-ghost btn-sm">Sửa</button>
+                      <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="body-emphasis">manage_courses</span></td>
+                  <td>
+                    <div class="flex gap-xs" style="flex-wrap:wrap;">
+                      <span class="badge badge-primary">manage</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-neutral">Course</span></td>
+                  <td><span class="caption text-muted">—</span></td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn btn-ghost btn-sm">Sửa</button>
+                      <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="body-emphasis">manage_exams</span></td>
+                  <td>
+                    <div class="flex gap-xs" style="flex-wrap:wrap;">
+                      <span class="badge badge-primary">manage</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-neutral">Exam</span></td>
+                  <td><span class="caption text-muted">—</span></td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn btn-ghost btn-sm">Sửa</button>
+                      <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="body-emphasis">approve_tenants</span></td>
+                  <td>
+                    <div class="flex gap-xs" style="flex-wrap:wrap;">
+                      <span class="badge badge-warning">update</span>
+                      <span class="badge badge-neutral">read</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-neutral">Tenant</span></td>
+                  <td><span class="caption text-muted">status in [PENDING]</span></td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn btn-ghost btn-sm">Sửa</button>
+                      <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="body-emphasis">view_reports</span></td>
+                  <td>
+                    <div class="flex gap-xs" style="flex-wrap:wrap;">
+                      <span class="badge badge-neutral">read</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-neutral">Report</span></td>
+                  <td><span class="caption text-muted">—</span></td>
+                  <td>
+                    <div class="actions">
+                      <button class="btn btn-ghost btn-sm">Sửa</button>
+                      <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add Rule Form -->
+          <div class="card mt-lg">
+            <h4 class="body-emphasis mb-md">Thêm rule mới</h4>
+            <div class="grid grid-2" style="gap:var(--sp-md);">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Rule name *</label>
+                <input type="text" class="form-input" placeholder="vd: read_courses">
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Subject *</label>
+                <select class="form-select">
+                  <option value="">Chọn subject</option>
+                  <option>all</option>
+                  <option>User</option>
+                  <option>Course</option>
+                  <option>Exam</option>
+                  <option>Tenant</option>
+                  <option>Report</option>
+                  <option>Question</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group mt-md">
+              <label class="form-label">Actions *</label>
+              <div class="flex gap-lg">
+                <label class="form-check"><input type="checkbox"> manage</label>
+                <label class="form-check"><input type="checkbox" checked> read</label>
+                <label class="form-check"><input type="checkbox"> create</label>
+                <label class="form-check"><input type="checkbox"> update</label>
+                <label class="form-check"><input type="checkbox"> delete</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Conditions (JSON)</label>
+              <input type="text" class="form-input" placeholder='vd: {"tenantId": "$user.tenantId"}'>
+              <p class="form-helper">Để trống nếu không có điều kiện</p>
+            </div>
+            <div class="flex gap-sm">
+              <button class="btn btn-primary btn-sm">Thêm rule</button>
+              <button class="btn btn-ghost btn-sm">Huỷ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+
+const roleRules = {
+  admin: [
+    { name:'manage_all', actions:['manage'], subject:'all', conditions:'—' },
+    { name:'read_users', actions:['read','create'], subject:'User', conditions:'tenantId = own' },
+    { name:'manage_courses', actions:['manage'], subject:'Course', conditions:'—' },
+    { name:'manage_exams', actions:['manage'], subject:'Exam', conditions:'—' },
+    { name:'approve_tenants', actions:['update','read'], subject:'Tenant', conditions:'status in [PENDING]' },
+    { name:'view_reports', actions:['read'], subject:'Report', conditions:'—' },
+  ],
+  supermod: [
+    { name:'read_users', actions:['read','create','update'], subject:'User', conditions:'tenantId = own' },
+    { name:'manage_courses', actions:['read','create','update'], subject:'Course', conditions:'tenantId = own' },
+    { name:'manage_exams', actions:['read','create','update'], subject:'Exam', conditions:'tenantId = own' },
+    { name:'read_questions', actions:['read','create'], subject:'Question', conditions:'—' },
+    { name:'view_progress', actions:['read'], subject:'Report', conditions:'tenantId = own' },
+  ],
+  mod: [
+    { name:'read_users', actions:['read'], subject:'User', conditions:'dept = own' },
+    { name:'read_courses', actions:['read'], subject:'Course', conditions:'—' },
+    { name:'read_exams', actions:['read'], subject:'Exam', conditions:'tenantId = own' },
+    { name:'view_progress', actions:['read'], subject:'Report', conditions:'dept = own' },
+  ],
+  user: [
+    { name:'read_own_courses', actions:['read'], subject:'Course', conditions:'enrolled = true' },
+    { name:'take_exam', actions:['create','read'], subject:'ExamAttempt', conditions:'userId = own' },
+    { name:'view_own_progress', actions:['read'], subject:'Report', conditions:'userId = own' },
+    { name:'update_profile', actions:['update'], subject:'User', conditions:'id = own' },
+  ]
+};
+
+function selectRole(el, roleKey) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  const names = { admin:'Admin', supermod:'Super-moderator', mod:'Moderator', user:'User' };
+  document.getElementById('selectedRoleName').textContent = names[roleKey];
+
+  const tbody = document.getElementById('rulesTableBody');
+  const rules = roleRules[roleKey] || [];
+  const actionColors = { manage:'badge-primary', read:'badge-neutral', create:'badge-success', update:'badge-warning', delete:'badge-error' };
+
+  tbody.innerHTML = rules.map(r => `
+    <tr>
+      <td><span class="body-emphasis">${r.name}</span></td>
+      <td><div class="flex gap-xs" style="flex-wrap:wrap;">${r.actions.map(a => `<span class="badge ${actionColors[a] || 'badge-neutral'}">${a}</span>`).join('')}</div></td>
+      <td><span class="badge badge-neutral">${r.subject}</span></td>
+      <td><span class="caption text-muted">${r.conditions}</span></td>
+      <td>
+        <div class="actions">
+          <button class="btn btn-ghost btn-sm">Sửa</button>
+          <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+</script>
+</body>
+</html>

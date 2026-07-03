@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Đăng ký tổ chức — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="layout-default">
+    <div class="auth-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+
+    <div class="auth-card">
+      <h2>Đăng ký tổ chức</h2>
+
+      <form>
+        <div class="form-group">
+          <label class="form-label" for="org-name">Tên tổ chức</label>
+          <input id="org-name" type="text" class="form-input" placeholder="Nhập tên tổ chức của bạn" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email liên hệ</label>
+          <input id="email" type="email" class="form-input" placeholder="email@tochuc.vn" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="phone">Số điện thoại</label>
+          <input id="phone" type="tel" class="form-input" placeholder="0909 000 000" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="address">Địa chỉ</label>
+          <input id="address" type="text" class="form-input" placeholder="Số nhà, đường, quận/huyện, tỉnh/thành phố" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="description">Mô tả ngắn</label>
+          <textarea id="description" class="form-textarea" placeholder="Giới thiệu ngắn về tổ chức của bạn (lĩnh vực hoạt động, quy mô nhân sự...)"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Gửi đăng ký</button>
+      </form>
+
+      <div class="auth-footer">
+        <div style="margin-top: var(--sp-md); padding: var(--sp-sm) var(--sp-md); background: var(--surface-1); border-left: 3px solid var(--info); font-size: 13px; color: var(--ink-muted); text-align: left;">
+          ℹ️ Yêu cầu sẽ được admin xét duyệt trong vòng 1–2 ngày làm việc. Chúng tôi sẽ liên hệ qua email sau khi phê duyệt.
+        </div>
+        <p style="margin-top: var(--sp-md);">Đã có tài khoản? <a href="../auth/login.html">Đăng nhập</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+</body>
+</html>

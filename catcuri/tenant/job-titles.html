@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Chức danh — Ocany LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <style>
+    .tree-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-xs);
+      padding: var(--sp-sm) var(--sp-md);
+      border-bottom: 1px solid var(--hairline);
+      cursor: pointer;
+      position: relative;
+    }
+    .tree-item:hover { background: var(--surface-1); }
+    .tree-item:hover .tree-actions { opacity: 1; }
+    .tree-toggle { color: var(--ink-muted); width: 16px; font-size: 12px; }
+    .tree-label { flex: 1; font-size: 14px; }
+    .tree-actions {
+      display: flex;
+      gap: var(--sp-xxs);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .tree-actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 6px;
+      font-size: 14px;
+      color: var(--ink-muted);
+      border-radius: 2px;
+    }
+    .tree-actions button:hover { background: var(--surface-2); color: var(--ink); }
+    .tree-children { padding-left: var(--sp-xl); }
+    .tree-group { font-weight: 600; }
+    .tree-meta { font-size: 12px; color: var(--ink-subtle); margin-left: var(--sp-xs); }
+  </style>
+</head>
+<body>
+  <div class="layout-dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+      <nav class="sidebar-nav">
+        <a href="overview.html" class="sidebar-item">
+          <span class="item-icon">📊</span> Tổng quan
+        </a>
+        <a href="employees.html" class="sidebar-item">
+          <span class="item-icon">👥</span> Nhân viên
+        </a>
+        <a href="departments.html" class="sidebar-item">
+          <span class="item-icon">🏛</span> Phòng ban
+        </a>
+        <a href="job-titles.html" class="sidebar-item active">
+          <span class="item-icon">💼</span> Chức danh
+        </a>
+        <a href="courses.html" class="sidebar-item">
+          <span class="item-icon">📚</span> Khoá học
+        </a>
+        <a href="progress.html" class="sidebar-item">
+          <span class="item-icon">📈</span> Tiến độ
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="dashboard-main">
+      <header class="dashboard-header">
+        <span class="body-emphasis">Ocany</span>
+        <div class="dropdown" id="userDropdown">
+          <button class="dropdown-trigger" onclick="toggleDropdown('userDropdown')">
+            <div class="avatar avatar-sm">NT</div>
+            <span>NT ▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Hồ sơ tổ chức</a>
+            <a href="#" class="dropdown-item">Cài đặt</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item text-error">Đăng xuất</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="page-header">
+          <h1>Chức danh</h1>
+          <div class="page-actions">
+            <button class="btn btn-primary">+ Thêm chức danh</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <!-- Ban Giám đốc -->
+          <div class="tree-item">
+            <span class="tree-toggle">▼</span>
+            <span>⭐</span>
+            <span class="tree-label tree-group">Ban Giám đốc</span>
+            <span class="tree-meta">2 chức danh</span>
+            <div class="tree-actions">
+              <button title="Chỉnh sửa">✏️</button>
+              <button title="Xoá">🗑️</button>
+            </div>
+          </div>
+          <div class="tree-children">
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;"></span>
+              <span>👔</span>
+              <span class="tree-label">Giám đốc</span>
+              <span class="tree-meta">1 người</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;"></span>
+              <span>👔</span>
+              <span class="tree-label">Phó Giám đốc</span>
+              <span class="tree-meta">2 người</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quản lý -->
+          <div class="tree-item">
+            <span class="tree-toggle">▼</span>
+            <span>🏅</span>
+            <span class="tree-label tree-group">Quản lý</span>
+            <span class="tree-meta">2 chức danh</span>
+            <div class="tree-actions">
+              <button title="Chỉnh sửa">✏️</button>
+              <button title="Xoá">🗑️</button>
+            </div>
+          </div>
+          <div class="tree-children">
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;"></span>
+              <span>👤</span>
+              <span class="tree-label">Trưởng phòng</span>
+              <span class="tree-meta">8 người</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;"></span>
+              <span>👤</span>
+              <span class="tree-label">Phó phòng</span>
+              <span class="tree-meta">8 người</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nhân viên -->
+          <div class="tree-item">
+            <span class="tree-toggle">▼</span>
+            <span>👥</span>
+            <span class="tree-label tree-group">Nhân viên</span>
+            <span class="tree-meta">2 chức danh</span>
+            <div class="tree-actions">
+              <button title="Chỉnh sửa">✏️</button>
+              <button title="Xoá">🗑️</button>
+            </div>
+          </div>
+          <div class="tree-children">
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;"></span>
+              <span>👤</span>
+              <span class="tree-label">Chuyên viên</span>
+              <span class="tree-meta">42 người</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+            <div class="tree-item">
+              <span class="tree-toggle" style="visibility:hidden;"></span>
+              <span>👤</span>
+              <span class="tree-label">Nhân viên</span>
+              <span class="tree-meta">67 người</span>
+              <div class="tree-actions">
+                <button title="Chỉnh sửa">✏️</button>
+                <button title="Xoá">🗑️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+      }
+    });
+  </script>
+</body>
+</html>

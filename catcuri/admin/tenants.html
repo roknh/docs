@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Quản lý Tenant — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item active">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">Tenants</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1>Quản lý Tenant</h1>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm">Export</button>
+          <button class="btn btn-primary btn-sm">+ Thêm tenant</button>
+        </div>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="grid grid-4 mb-lg">
+        <div class="card-elevated" style="padding:var(--sp-md);">
+          <div class="caption text-muted">Tổng</div>
+          <div style="font-size:24px;font-weight:300;">8</div>
+        </div>
+        <div class="card-elevated" style="padding:var(--sp-md);border-left:3px solid var(--success);">
+          <div class="caption text-muted">Active</div>
+          <div style="font-size:24px;font-weight:300;color:var(--success);">5</div>
+        </div>
+        <div class="card-elevated" style="padding:var(--sp-md);border-left:3px solid var(--warning);">
+          <div class="caption text-muted">Pending</div>
+          <div style="font-size:24px;font-weight:300;color:#8e6a00;">1</div>
+        </div>
+        <div class="card-elevated" style="padding:var(--sp-md);border-left:3px solid var(--error);">
+          <div class="caption text-muted">Rejected / Inactive</div>
+          <div style="font-size:24px;font-weight:300;color:var(--error);">2</div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-center gap-md mb-lg">
+        <div class="search-box" style="flex:1;max-width:400px;">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Tìm theo tên tổ chức, email...">
+        </div>
+        <select class="form-select" style="width:180px;">
+          <option value="">Tất cả trạng thái</option>
+          <option>PENDING</option>
+          <option>ACTIVE</option>
+          <option>INACTIVE</option>
+          <option>REJECT</option>
+        </select>
+      </div>
+
+      <!-- Table -->
+      <div class="card" style="padding:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tên tổ chức</th>
+              <th>Email liên hệ</th>
+              <th>Số nhân viên</th>
+              <th>Trạng thái</th>
+              <th>Ngày đăng ký</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- PENDING row -->
+            <tr style="background:#fdf0cc22;">
+              <td>
+                <div class="body-emphasis">GHI Vietnam Co., Ltd</div>
+                <div class="caption text-muted">Mã: TN-005</div>
+              </td>
+              <td class="text-muted">contact@ghivietnam.com</td>
+              <td>85</td>
+              <td><span class="badge badge-warning">PENDING</span></td>
+              <td class="text-muted">29/06/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-primary btn-sm" onclick="approveAction(this,'ACTIVE')">Duyệt</button>
+                  <button class="btn btn-danger btn-sm" onclick="approveAction(this,'REJECT')">Từ chối</button>
+                  <button class="btn btn-ghost btn-sm">Xem</button>
+                </div>
+              </td>
+            </tr>
+            <!-- ACTIVE rows -->
+            <tr>
+              <td>
+                <div class="body-emphasis">ABC Corporation</div>
+                <div class="caption text-muted">Mã: TN-001</div>
+              </td>
+              <td class="text-muted">admin@abccorp.com</td>
+              <td>320</td>
+              <td><span class="badge badge-success">ACTIVE</span></td>
+              <td class="text-muted">10/01/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Xem</button>
+                  <button class="btn btn-ghost btn-sm">Sửa</button>
+                  <button class="btn btn-ghost btn-sm text-error">Khoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="body-emphasis">XYZ Holdings Group</div>
+                <div class="caption text-muted">Mã: TN-002</div>
+              </td>
+              <td class="text-muted">hr@xyzholdings.vn</td>
+              <td>450</td>
+              <td><span class="badge badge-success">ACTIVE</span></td>
+              <td class="text-muted">15/01/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Xem</button>
+                  <button class="btn btn-ghost btn-sm">Sửa</button>
+                  <button class="btn btn-ghost btn-sm text-error">Khoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="body-emphasis">DEF Group Vietnam</div>
+                <div class="caption text-muted">Mã: TN-003</div>
+              </td>
+              <td class="text-muted">learning@defgroup.com</td>
+              <td>180</td>
+              <td><span class="badge badge-neutral">INACTIVE</span></td>
+              <td class="text-muted">20/02/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Xem</button>
+                  <button class="btn btn-ghost btn-sm text-success">Kích hoạt</button>
+                  <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="body-emphasis">JKL Technology</div>
+                <div class="caption text-muted">Mã: TN-004</div>
+              </td>
+              <td class="text-muted">contact@jkltech.vn</td>
+              <td>—</td>
+              <td><span class="badge badge-error">REJECT</span></td>
+              <td class="text-muted">05/05/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Xem lý do</button>
+                  <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <span>Hiển thị 1–5 / 8 tổ chức</span>
+          <div class="pagination-pages">
+            <button>‹</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>›</button>
+          </div>
+          <div class="flex flex-center gap-sm">
+            <span class="caption text-muted">Số hàng/trang:</span>
+            <select class="form-select" style="width:80px;padding:6px 28px 6px 8px;">
+              <option>10</option>
+              <option>25</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+function approveAction(btn, status) {
+  const row = btn.closest('tr');
+  const badge = row.querySelector('.badge');
+  if (status === 'ACTIVE') {
+    badge.className = 'badge badge-success';
+    badge.textContent = 'ACTIVE';
+    row.style.background = '';
+  } else {
+    badge.className = 'badge badge-error';
+    badge.textContent = 'REJECT';
+    row.style.background = '';
+  }
+  const actions = row.querySelector('.actions');
+  actions.innerHTML = '<button class="btn btn-ghost btn-sm">Xem</button><button class="btn btn-ghost btn-sm">Sửa</button>';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Nhân viên — Ocany LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="layout-dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+      <nav class="sidebar-nav">
+        <a href="overview.html" class="sidebar-item">
+          <span class="item-icon">📊</span> Tổng quan
+        </a>
+        <a href="employees.html" class="sidebar-item active">
+          <span class="item-icon">👥</span> Nhân viên
+        </a>
+        <a href="departments.html" class="sidebar-item">
+          <span class="item-icon">🏛</span> Phòng ban
+        </a>
+        <a href="job-titles.html" class="sidebar-item">
+          <span class="item-icon">💼</span> Chức danh
+        </a>
+        <a href="courses.html" class="sidebar-item">
+          <span class="item-icon">📚</span> Khoá học
+        </a>
+        <a href="progress.html" class="sidebar-item">
+          <span class="item-icon">📈</span> Tiến độ
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <div class="dashboard-main">
+      <header class="dashboard-header">
+        <span class="body-emphasis">Ocany</span>
+        <div class="dropdown" id="userDropdown">
+          <button class="dropdown-trigger" onclick="toggleDropdown('userDropdown')">
+            <div class="avatar avatar-sm">NT</div>
+            <span>NT ▾</span>
+          </button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Hồ sơ tổ chức</a>
+            <a href="#" class="dropdown-item">Cài đặt</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item text-error">Đăng xuất</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="dashboard-content">
+        <div class="page-header">
+          <h1>Nhân viên</h1>
+          <div class="page-actions">
+            <button class="btn btn-tertiary">📧 Mời qua email</button>
+            <button class="btn btn-tertiary">⬆ Import Excel</button>
+            <button class="btn btn-primary">+ Thêm nhân viên</button>
+          </div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div style="display: flex; gap: var(--sp-sm); margin-bottom: var(--sp-md);">
+          <div class="search-box" style="flex: 1; max-width: 360px;">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Tìm kiếm nhân viên..." />
+          </div>
+          <select class="form-select" style="width: 180px;">
+            <option>Tất cả phòng ban</option>
+            <option>Phòng Bán hàng</option>
+            <option>Phòng Marketing</option>
+            <option>Phòng Nhân sự</option>
+            <option>Phòng Kế toán</option>
+          </select>
+          <select class="form-select" style="width: 160px;">
+            <option>Tất cả trạng thái</option>
+            <option>Đang hoạt động</option>
+            <option>Tạm ngừng</option>
+          </select>
+        </div>
+
+        <!-- Table -->
+        <div class="card" style="padding: 0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" /></th>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Phòng ban</th>
+                <th>Chức danh</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm">NV</div>
+                    <span class="body-emphasis">Nguyễn Văn An</span>
+                  </div>
+                </td>
+                <td class="text-muted">an.nv@ngocducng.vn</td>
+                <td>Phòng Bán hàng</td>
+                <td>Chuyên viên</td>
+                <td><span class="badge badge-success"><span class="badge-dot" style="background: var(--success);"></span>Đang hoạt động</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm">✏️</button>
+                    <button class="btn btn-ghost btn-sm">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: var(--success);">TL</div>
+                    <span class="body-emphasis">Trần Thị Lan</span>
+                  </div>
+                </td>
+                <td class="text-muted">lan.tt@ngocducng.vn</td>
+                <td>Phòng Marketing</td>
+                <td>Trưởng phòng</td>
+                <td><span class="badge badge-success"><span class="badge-dot" style="background: var(--success);"></span>Đang hoạt động</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm">✏️</button>
+                    <button class="btn btn-ghost btn-sm">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: var(--ink-muted);">PH</div>
+                    <span class="body-emphasis">Phạm Minh Hùng</span>
+                  </div>
+                </td>
+                <td class="text-muted">hung.pm@ngocducng.vn</td>
+                <td>Phòng Kế toán</td>
+                <td>Nhân viên</td>
+                <td><span class="badge badge-neutral"><span class="badge-dot" style="background: var(--ink-subtle);"></span>Tạm ngừng</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm">✏️</button>
+                    <button class="btn btn-ghost btn-sm">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: #6929c4;">LT</div>
+                    <span class="body-emphasis">Lê Thị Thu Hương</span>
+                  </div>
+                </td>
+                <td class="text-muted">huong.lt@ngocducng.vn</td>
+                <td>Phòng Nhân sự</td>
+                <td>Phó phòng</td>
+                <td><span class="badge badge-success"><span class="badge-dot" style="background: var(--success);"></span>Đang hoạt động</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm">✏️</button>
+                    <button class="btn btn-ghost btn-sm">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" /></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: var(--sp-sm);">
+                    <div class="avatar avatar-sm" style="background: #005d5d;">VD</div>
+                    <span class="body-emphasis">Vũ Quốc Dũng</span>
+                  </div>
+                </td>
+                <td class="text-muted">dung.vq@ngocducng.vn</td>
+                <td>Phòng Bán hàng</td>
+                <td>Chuyên viên</td>
+                <td><span class="badge badge-success"><span class="badge-dot" style="background: var(--success);"></span>Đang hoạt động</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-sm">✏️</button>
+                    <button class="btn btn-ghost btn-sm">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <span>Hiển thị 1–5 trong 128 nhân viên</span>
+            <div class="pagination-pages">
+              <button>‹</button>
+              <button class="active">1</button>
+              <button>2</button>
+              <button>3</button>
+              <button>...</button>
+              <button>26</button>
+              <button>›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+      }
+    });
+  </script>
+</body>
+</html>

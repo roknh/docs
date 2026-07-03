@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Bảng điều khiển — Catcuri LMS</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+<div class="layout-client">
+
+  <!-- Client Header -->
+  <header class="client-header">
+    <div class="header-left">
+      <a href="home.html" class="header-logo"><img src="../images/logo.png" alt="Catcuri"></a>
+      <nav class="header-nav">
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </nav>
+    </div>
+    <div class="header-right">
+      <span style="font-size:13px; color:var(--ink-muted);">Ocany</span>
+      <div class="notif-bell">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a6 6 0 0 0-6 6v3l-1.5 2.5h15L16 11V8a6 6 0 0 0-6-6zm0 16a2 2 0 0 0 2-2H8a2 2 0 0 0 2 2z" fill="#525252"/>
+        </svg>
+        <span class="notif-count">3</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">NT</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <a href="profile.html" class="dropdown-item">Hồ sơ</a>
+          <a href="courses.html" class="dropdown-item">Khoá học của tôi</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Client Content -->
+  <main class="client-content">
+
+    <div class="page-header">
+      <h1 class="headline">Xin chào, Ngọc Trân!</h1>
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid grid-3 mb-xl">
+      <div class="stat-card">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Đang học</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color: var(--success);">7</div>
+        <div class="stat-label">Hoàn thành</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color: var(--primary);">5</div>
+        <div class="stat-label">Chứng chỉ</div>
+      </div>
+    </div>
+
+    <!-- Sắp hết hạn warning -->
+    <div class="mb-xl" style="border-left: 3px solid var(--warning); background: rgba(255,214,0,0.06); border-radius: var(--radius); padding: var(--sp-md) var(--sp-lg);">
+      <div class="flex flex-center flex-between mb-md">
+        <span class="body-emphasis">⚠️ Sắp hết hạn</span>
+        <span class="caption text-muted">Khoá học cần hoàn thành trong 7 ngày tới</span>
+      </div>
+      <div class="flex flex-center flex-between">
+        <div style="flex: 1;">
+          <div class="flex flex-center flex-between mb-xs">
+            <div class="body-emphasis">An toàn lao động</div>
+            <span class="caption" style="color: var(--warning); font-weight: 600;">70%</span>
+          </div>
+          <div class="progress mb-xs">
+            <div class="progress-bar" style="width: 70%; background: var(--warning);"></div>
+          </div>
+          <span class="caption text-muted">còn 5 ngày (HSD: 15/07/2026)</span>
+        </div>
+        <div style="margin-left: var(--sp-lg); flex-shrink: 0;">
+          <a href="learning.html" class="btn btn-primary btn-sm">Tiếp tục</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2-column grid -->
+    <div class="grid grid-2 gap-xl mb-xl">
+
+      <!-- Khoá học đang học -->
+      <section>
+        <h2 class="subhead mb-lg">Khoá học đang học</h2>
+        <div style="display: flex; flex-direction: column; gap: var(--sp-md);">
+
+          <div class="card">
+            <div class="flex flex-center flex-between mb-xs">
+              <div class="body-emphasis">Kỹ năng giao tiếp chuyên nghiệp</div>
+              <span class="caption text-primary">45%</span>
+            </div>
+            <div class="progress mb-md">
+              <div class="progress-bar" style="width: 45%;"></div>
+            </div>
+            <div class="flex flex-center flex-between">
+              <span class="caption text-muted">Bài 3 / 12</span>
+              <a href="learning.html" class="btn btn-primary btn-sm">Tiếp tục</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="flex flex-center flex-between mb-xs">
+              <div class="body-emphasis">An toàn lao động</div>
+              <span class="caption text-primary">70%</span>
+            </div>
+            <div class="progress mb-md">
+              <div class="progress-bar" style="width: 70%;"></div>
+            </div>
+            <div class="flex flex-center flex-between">
+              <span class="caption text-muted">Bài 7 / 10</span>
+              <a href="learning.html" class="btn btn-primary btn-sm">Tiếp tục</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="flex flex-center flex-between mb-xs">
+              <div class="body-emphasis">Excel nâng cao</div>
+              <span class="caption text-primary">20%</span>
+            </div>
+            <div class="progress mb-md">
+              <div class="progress-bar" style="width: 20%;"></div>
+            </div>
+            <div class="flex flex-center flex-between">
+              <span class="caption text-muted">Bài 3 / 15</span>
+              <a href="learning.html" class="btn btn-primary btn-sm">Tiếp tục</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Đã hoàn thành gần đây -->
+      <section>
+        <h2 class="subhead mb-lg">Đã hoàn thành gần đây</h2>
+        <div class="card">
+          <div style="display: flex; flex-direction: column; gap: var(--sp-md);">
+
+            <div class="flex flex-center flex-between">
+              <div class="flex flex-center" style="gap: var(--sp-sm);">
+                <span style="color: var(--success); font-size: 18px;">✅</span>
+                <div>
+                  <div class="body-emphasis">PCCC cơ bản</div>
+                  <div class="caption text-muted">28/06/2026</div>
+                </div>
+              </div>
+              <a href="#" class="caption text-primary" style="white-space: nowrap;">📜 Chứng chỉ</a>
+            </div>
+
+            <div style="border-top: 1px solid var(--border);"></div>
+
+            <div class="flex flex-center flex-between">
+              <div class="flex flex-center" style="gap: var(--sp-sm);">
+                <span style="color: var(--success); font-size: 18px;">✅</span>
+                <div>
+                  <div class="body-emphasis">Giao tiếp khách hàng</div>
+                  <div class="caption text-muted">15/06/2026</div>
+                </div>
+              </div>
+              <a href="#" class="caption text-primary" style="white-space: nowrap;">📜 Chứng chỉ</a>
+            </div>
+
+            <div style="border-top: 1px solid var(--border);"></div>
+
+            <div class="flex flex-center flex-between">
+              <div class="flex flex-center" style="gap: var(--sp-sm);">
+                <span style="color: var(--success); font-size: 18px;">✅</span>
+                <div>
+                  <div class="body-emphasis">Onboarding Q1</div>
+                  <div class="caption text-muted">01/04/2026</div>
+                </div>
+              </div>
+              <span></span>
+            </div>
+
+          </div>
+          <div style="border-top: 1px solid var(--border); margin-top: var(--sp-md); padding-top: var(--sp-md); text-align: right;">
+            <a href="courses.html" class="caption text-primary">Xem tất cả →</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bài kiểm tra gần đây -->
+    <section>
+      <h2 class="subhead mb-lg">Bài kiểm tra gần đây</h2>
+      <div class="card" style="padding: 0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Bài kiểm tra</th>
+              <th>Điểm</th>
+              <th>Ngày</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>KT Chương 1 — Giao tiếp</td>
+              <td>
+                <span style="color: var(--success); font-weight: 600;">5/5</span>
+                <span class="text-success" style="margin-left: 4px;">✓</span>
+              </td>
+              <td class="caption text-muted">01/07/2026</td>
+              <td><a href="quiz.html" class="text-primary" style="font-size: 12px;">Làm lại</a></td>
+            </tr>
+            <tr>
+              <td>KT Chương 2 — An toàn</td>
+              <td>
+                <span style="color: var(--success); font-weight: 600;">4/5</span>
+                <span class="text-success" style="margin-left: 4px;">✓</span>
+              </td>
+              <td class="caption text-muted">28/06/2026</td>
+              <td><a href="quiz.html" class="text-primary" style="font-size: 12px;">Làm lại</a></td>
+            </tr>
+            <tr>
+              <td>KT Chương 1 — An toàn</td>
+              <td>
+                <span style="color: var(--error); font-weight: 600;">3/5</span>
+                <span class="text-error" style="margin-left: 4px;">✗</span>
+              </td>
+              <td class="caption text-muted">25/06/2026</td>
+              <td><a href="quiz.html" class="text-primary" style="font-size: 12px;">Làm lại</a></td>
+            </tr>
+            <tr>
+              <td>KT Chương 3 — Excel</td>
+              <td>
+                <span style="color: var(--success); font-weight: 600;">5/5</span>
+                <span class="text-success" style="margin-left: 4px;">✓</span>
+              </td>
+              <td class="caption text-muted">20/06/2026</td>
+              <td><a href="quiz.html" class="text-primary" style="font-size: 12px;">Làm lại</a></td>
+            </tr>
+            <tr>
+              <td>KT Chương 1 — Excel</td>
+              <td>
+                <span style="color: var(--error); font-weight: 600;">2/5</span>
+                <span class="text-error" style="margin-left: 4px;">✗</span>
+              </td>
+              <td class="caption text-muted">18/06/2026</td>
+              <td><a href="quiz.html" class="text-primary" style="font-size: 12px;">Làm lại</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Client Footer -->
+  <footer class="client-footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Catcuri</h4>
+        <p style="font-size: 14px; color: var(--inverse-ink-muted); margin-top: var(--sp-xs);">Nền tảng đào tạo trực tuyến dành cho doanh nghiệp.</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <a href="home.html">Trang chủ</a>
+        <a href="courses.html">Khoá học</a>
+        <a href="exams.html">Kỳ thi</a>
+      </div>
+      <div>
+        <h4>Hỗ trợ</h4>
+        <a href="#">Trung tâm trợ giúp</a>
+        <a href="#">Chính sách bảo mật</a>
+        <a href="#">Điều khoản sử dụng</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Catcuri. Bảo lưu mọi quyền.
+    </div>
+  </footer>
+
+</div>
+<script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <title>Quản lý thông báo — Catcuri LMS Admin</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<div class="layout-dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../images/logo.png" alt="Catcuri"></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group-label">Tổng quan</div>
+      <a href="overview.html" class="sidebar-item">
+        <span class="item-icon">📊</span> Dashboard
+      </a>
+      <div class="sidebar-group-label">Thư viện</div>
+      <a href="curricula.html" class="sidebar-item">
+        <span class="item-icon">📖</span> Bài giảng
+      </a>
+      <a href="tests.html" class="sidebar-item">
+        <span class="item-icon">📋</span> Bài kiểm tra
+      </a>
+      <a href="questions.html" class="sidebar-item">
+        <span class="item-icon">❓</span> Câu hỏi
+      </a>
+      <a href="topics.html" class="sidebar-item">
+        <span class="item-icon">🏷</span> Topics
+      </a>
+      <div class="sidebar-group-label">Đào tạo</div>
+      <a href="courses.html" class="sidebar-item">
+        <span class="item-icon">📚</span> Khoá học
+      </a>
+      <a href="exams.html" class="sidebar-item">
+        <span class="item-icon">📝</span> Kỳ thi
+      </a>
+      <div class="sidebar-group-label">AI</div>
+      <a href="ai-course-builder.html" class="sidebar-item">
+        <span class="item-icon">🤖</span> Course Builder
+      </a>
+      <div class="sidebar-group-label">Nhân sự</div>
+      <a href="employees.html" class="sidebar-item">
+        <span class="item-icon">👥</span> Nhân viên
+      </a>
+      <a href="departments.html" class="sidebar-item">
+        <span class="item-icon">🏛</span> Phòng ban
+      </a>
+      <a href="job-titles.html" class="sidebar-item">
+        <span class="item-icon">💼</span> Chức danh
+      </a>
+      <div class="sidebar-group-label">Quản lý hệ thống</div>
+      <a href="tenants.html" class="sidebar-item">
+        <span class="item-icon">🏢</span> Tenants
+      </a>
+      <a href="users.html" class="sidebar-item">
+        <span class="item-icon">👤</span> Users
+      </a>
+      <div class="sidebar-group-label">Báo cáo</div>
+      <a href="learning-progress.html" class="sidebar-item">
+        <span class="item-icon">📈</span> Tiến độ học viên
+      </a>
+      <div class="sidebar-group-label">Hệ thống</div>
+      <a href="notifications.html" class="sidebar-item active">
+        <span class="item-icon">🔔</span> Thông báo
+      </a>
+      <a href="roles.html" class="sidebar-item">
+        <span class="item-icon">🔐</span> Roles &amp; Rules
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <div class="breadcrumb">
+        <a href="overview.html">Dashboard</a>
+        <span class="separator">/</span>
+        <span class="current">Thông báo</span>
+      </div>
+      <div class="dropdown" id="avatarDropdown">
+        <button class="dropdown-trigger">
+          <span class="avatar">AD</span> ▾
+        </button>
+        <div class="dropdown-menu">
+          <div style="padding:8px 16px;font-size:12px;color:var(--ink-subtle);">Tenant</div>
+          <a href="#" class="dropdown-item" style="font-weight:600;">🏢 Ocany</a>
+          <a href="#" class="dropdown-item">🏢 Zema Academy</a>
+          <a href="#" class="dropdown-item" style="font-size:12px;color:var(--ink-subtle);">Hệ thống (Super Admin)</a>
+          <div class="dropdown-divider"></div>
+          <a href="../auth/login.html" class="dropdown-item">Đăng xuất</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div class="page-header">
+        <h1>Quản lý thông báo</h1>
+        <div class="page-actions">
+          <button class="btn btn-primary btn-sm">+ Tạo thông báo</button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-center gap-md mb-lg">
+        <div class="search-box" style="flex:1;max-width:400px;">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Tìm theo tiêu đề thông báo...">
+        </div>
+        <select class="form-select" style="width:180px;">
+          <option value="">Tất cả trạng thái</option>
+          <option>Đã gửi</option>
+          <option>Nháp</option>
+          <option>Đã lên lịch</option>
+        </select>
+        <select class="form-select" style="width:180px;">
+          <option value="">Tất cả người nhận</option>
+          <option>Tất cả người dùng</option>
+          <option>Theo Tenant</option>
+          <option>Theo Role</option>
+        </select>
+      </div>
+
+      <!-- Table -->
+      <div class="card" style="padding:0;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox"></th>
+              <th>Tiêu đề</th>
+              <th style="min-width:240px;">Nội dung</th>
+              <th>Người nhận</th>
+              <th>Trạng thái</th>
+              <th>Ngày tạo</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="body-emphasis">Thông báo kỳ thi An toàn lao động Q2</div>
+                <div class="caption text-muted">ID: NTF-001</div>
+              </td>
+              <td>
+                <div class="body-sm" style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-muted);">
+                  Kỳ thi An toàn lao động Q2/2026 sẽ diễn ra từ ngày 01/07 đến 31/07. Vui lòng chuẩn bị và hoàn thành đúng hạn.
+                </div>
+              </td>
+              <td>
+                <div class="flex flex-center gap-xs">
+                  <span class="badge badge-neutral">Tất cả</span>
+                  <span class="caption text-muted">1,234 người</span>
+                </div>
+              </td>
+              <td><span class="badge badge-success">Đã gửi</span></td>
+              <td class="text-muted">28/06/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Xem</button>
+                  <button class="btn btn-ghost btn-sm">Sao chép</button>
+                  <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="body-emphasis">Nhắc nhở hoàn thành khoá học tháng 6</div>
+                <div class="caption text-muted">ID: NTF-002</div>
+              </td>
+              <td>
+                <div class="body-sm" style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-muted);">
+                  Còn 5 ngày để hoàn thành khoá học đã đăng ký trong tháng 6. Hãy dành thời gian để tiếp tục học nhé!
+                </div>
+              </td>
+              <td>
+                <div class="flex flex-center gap-xs">
+                  <span class="badge badge-primary">Tenant</span>
+                  <span class="caption text-muted">ABC Corp</span>
+                </div>
+              </td>
+              <td><span class="badge badge-success">Đã gửi</span></td>
+              <td class="text-muted">25/06/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Xem</button>
+                  <button class="btn btn-ghost btn-sm">Sao chép</button>
+                  <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="body-emphasis">Khoá học mới: Quản lý thời gian hiệu quả</div>
+                <div class="caption text-muted">ID: NTF-003</div>
+              </td>
+              <td>
+                <div class="body-sm" style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-muted);">
+                  Chúng tôi vừa ra mắt khoá học "Quản lý thời gian hiệu quả". Đăng ký ngay để nâng cao kỹ năng của bạn!
+                </div>
+              </td>
+              <td>
+                <div class="flex flex-center gap-xs">
+                  <span class="badge badge-neutral">Tất cả</span>
+                  <span class="caption text-muted">1,234 người</span>
+                </div>
+              </td>
+              <td><span class="badge badge-neutral">Nháp</span></td>
+              <td class="text-muted">30/06/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Sửa</button>
+                  <button class="btn btn-primary btn-sm">Gửi ngay</button>
+                  <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox"></td>
+              <td>
+                <div class="body-emphasis">Chúc mừng hoàn thành chứng chỉ</div>
+                <div class="caption text-muted">ID: NTF-004</div>
+              </td>
+              <td>
+                <div class="body-sm" style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-muted);">
+                  Chúc mừng bạn đã hoàn thành xuất sắc khoá học và nhận chứng chỉ. Tiếp tục phát huy nhé!
+                </div>
+              </td>
+              <td>
+                <div class="flex flex-center gap-xs">
+                  <span class="badge badge-warning">Tự động</span>
+                  <span class="caption text-muted">Trigger event</span>
+                </div>
+              </td>
+              <td><span class="badge badge-success">Đã gửi</span></td>
+              <td class="text-muted">01/06/2026</td>
+              <td>
+                <div class="actions">
+                  <button class="btn btn-ghost btn-sm">Xem</button>
+                  <button class="btn btn-ghost btn-sm">Sao chép</button>
+                  <button class="btn btn-ghost btn-sm text-error">Xoá</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <span>Hiển thị 1–4 / 18 thông báo</span>
+          <div class="pagination-pages">
+            <button>‹</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>›</button>
+          </div>
+          <div class="flex flex-center gap-sm">
+            <span class="caption text-muted">Số hàng/trang:</span>
+            <select class="form-select" style="width:80px;padding:6px 28px 6px 8px;">
+              <option>10</option>
+              <option>25</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>
