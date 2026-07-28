@@ -147,9 +147,40 @@ td code,th code{background:none;border:none;padding:0;color:inherit}
 /* footer */
 footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid var(--border-subtle);color:var(--text-helper);font-size:12.5px}
 /* responsive */
+/* Tablet: ẩn side nav, bỏ lề trái */
 @media(max-width:900px){
-  .sidenav{display:none} main,footer{margin-left:0;padding-left:24px;padding-right:24px}
+  .sidenav{display:none}
+  main,footer{margin-left:0;padding-left:24px;padding-right:24px}
   h1{font-size:32px}
+}
+/* Mobile: bảng -> dạng card, thu gọn khoảng cách */
+@media(max-width:640px){
+  main{padding:0 16px 80px}
+  footer{padding:24px 16px}
+  h1{font-size:26px;line-height:1.25}
+  h2{font-size:22px}
+  h3{font-size:17px}
+  .hero{padding-top:40px}
+  .hero .lead{font-size:16px}
+  .meta-row{gap:16px}
+  .tiles{grid-template-columns:1fr}
+  .mod{padding:18px 16px}
+  .flow{font-size:11px;padding:12px}
+  /* Data table -> card */
+  .tbl-wrap{border:none;overflow:visible}
+  table{font-size:13px;background:transparent}
+  thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  table,tbody,tr,td{display:block;width:100%}
+  tbody tr{border:1px solid var(--border-subtle);background:var(--background);margin-bottom:12px;padding:4px 0}
+  tbody tr:hover{background:var(--background)}
+  tbody td{border:none;border-bottom:1px solid var(--border-subtle);padding:10px 16px}
+  tbody td:last-child{border-bottom:none}
+  tbody td::before{
+    content:attr(data-label);display:block;margin-bottom:3px;
+    font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-helper);
+  }
+  tbody td[data-label=""]::before,tbody td:not([data-label])::before{display:none}
+  tbody td:first-child{color:var(--text-primary);font-weight:600}
 }
 </style>
 </head>
@@ -210,13 +241,13 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
         <table>
           <thead><tr><th>Đặc thù</th><th>Hệ quả lên thiết kế</th></tr></thead>
           <tbody>
-            <tr><td>Sản phẩm dễ hư, hạn dùng ngắn</td><td>Bắt buộc FEFO, quản lý cận date, chuỗi lạnh</td></tr>
-            <tr><td>Truy xuất theo lô/mẻ bắt buộc</td><td>Mỗi mẻ gắn lô NVL, kết quả QA và các lô bán ra</td></tr>
-            <tr><td>Nguyên liệu biến động chất lượng</td><td>Kiểm nghiệm đầu vào &amp; định giá sữa theo chất lượng từng xe</td></tr>
-            <tr><td>Công thức có hiệu suất &amp; hao hụt</td><td>Quản lý định mức, hao hụt (yield/loss), tái chế (rework)</td></tr>
-            <tr><td>Kênh phân phối nhiều tầng</td><td>DMS/van sales, khuyến mãi, trưng bày (trade marketing)</td></tr>
-            <tr><td>Công nợ &amp; trả hàng</td><td>Bán gối đầu, hạn mức tín dụng, đổi/trả hàng cận date</td></tr>
-            <tr><td>Tuân thủ ATTP</td><td>HACCP/ISO 22000, hóa đơn điện tử, kê khai thuế</td></tr>
+            <tr><td data-label="Đặc thù">Sản phẩm dễ hư, hạn dùng ngắn</td><td data-label="Hệ quả lên thiết kế">Bắt buộc FEFO, quản lý cận date, chuỗi lạnh</td></tr>
+            <tr><td data-label="Đặc thù">Truy xuất theo lô/mẻ bắt buộc</td><td data-label="Hệ quả lên thiết kế">Mỗi mẻ gắn lô NVL, kết quả QA và các lô bán ra</td></tr>
+            <tr><td data-label="Đặc thù">Nguyên liệu biến động chất lượng</td><td data-label="Hệ quả lên thiết kế">Kiểm nghiệm đầu vào &amp; định giá sữa theo chất lượng từng xe</td></tr>
+            <tr><td data-label="Đặc thù">Công thức có hiệu suất &amp; hao hụt</td><td data-label="Hệ quả lên thiết kế">Quản lý định mức, hao hụt (yield/loss), tái chế (rework)</td></tr>
+            <tr><td data-label="Đặc thù">Kênh phân phối nhiều tầng</td><td data-label="Hệ quả lên thiết kế">DMS/van sales, khuyến mãi, trưng bày (trade marketing)</td></tr>
+            <tr><td data-label="Đặc thù">Công nợ &amp; trả hàng</td><td data-label="Hệ quả lên thiết kế">Bán gối đầu, hạn mức tín dụng, đổi/trả hàng cận date</td></tr>
+            <tr><td data-label="Đặc thù">Tuân thủ ATTP</td><td data-label="Hệ quả lên thiết kế">HACCP/ISO 22000, hóa đơn điện tử, kê khai thuế</td></tr>
           </tbody>
         </table>
       </div>
@@ -241,23 +272,23 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
         <table>
           <thead><tr><th>#</th><th>Phân hệ</th><th>Mã</th><th>Mức độ</th><th>Mô tả ngắn</th></tr></thead>
           <tbody>
-            <tr><td>1</td><td>Nền tảng &amp; Quản trị hệ thống</td><td><code>SYS</code></td><td><span class="tag core">Core</span></td><td>Người dùng, phân quyền, tổ chức, audit</td></tr>
-            <tr><td>2</td><td>Master Data (Danh mục)</td><td><code>MDM</code></td><td><span class="tag core">Core</span></td><td>Sản phẩm, NVL, đối tác, kho, quy đổi ĐVT</td></tr>
-            <tr><td>3</td><td>Mua hàng &amp; Nhà cung cấp</td><td><code>PUR</code></td><td><span class="tag core">Core</span></td><td>PR/PO, nhận hàng, thu mua sữa nguyên liệu</td></tr>
-            <tr><td>4</td><td>Kho &amp; Tồn kho</td><td><code>INV</code></td><td><span class="tag core">Core</span></td><td>Nhập/xuất/chuyển, lô–date, FEFO, chuỗi lạnh</td></tr>
-            <tr><td>5</td><td>Sản xuất &amp; Công thức</td><td><code>MFG</code></td><td><span class="tag core">Core</span></td><td>BOM, lệnh SX, mẻ, hao hụt, rework</td></tr>
-            <tr><td>6</td><td>Chất lượng (QA/QC)</td><td><code>QMS</code></td><td><span class="tag core">Core</span></td><td>Kiểm nghiệm, COA, HACCP, thu hồi</td></tr>
-            <tr><td>7</td><td>Bán hàng &amp; Phân phối (DMS)</td><td><code>SAL</code></td><td><span class="tag core">Core</span></td><td>Đơn hàng, khuyến mãi, tuyến giao, van sales</td></tr>
-            <tr><td>8</td><td>Khách hàng &amp; CRM</td><td><code>CRM</code></td><td><span class="tag opt">Tối ưu</span></td><td>Đại lý/điểm bán, chăm sóc, khiếu nại</td></tr>
-            <tr><td>9</td><td>Công nợ &amp; Thanh toán</td><td><code>AR/AP</code></td><td><span class="tag core">Core</span></td><td>Phải thu/phải trả, hạn mức, đối soát</td></tr>
-            <tr><td>10</td><td>Kế toán &amp; Tài chính</td><td><code>FIN</code></td><td><span class="tag core">Core</span></td><td>Sổ cái, HĐĐT, thuế, giá thành, BCTC</td></tr>
-            <tr><td>11</td><td>Nhân sự</td><td><code>HRM</code></td><td><span class="tag opt">Tối ưu</span></td><td>Hồ sơ, chấm công, ca kíp, đào tạo</td></tr>
-            <tr><td>12</td><td>Tiền lương</td><td><code>PAY</code></td><td><span class="tag opt">Tối ưu</span></td><td>Bảng lương, BHXH, lương sản phẩm/KPI</td></tr>
-            <tr><td>13</td><td>Tài sản &amp; Bảo trì thiết bị</td><td><code>EAM</code></td><td><span class="tag adv">Nâng cao</span></td><td>Máy móc, bảo trì phòng ngừa, OEE</td></tr>
-            <tr><td>14</td><td>Kế hoạch &amp; Dự báo (S&amp;OP)</td><td><code>PLN</code></td><td><span class="tag adv">Nâng cao</span></td><td>Dự báo nhu cầu, MRP, kế hoạch SX</td></tr>
-            <tr><td>15</td><td>Báo cáo &amp; BI / Dashboard</td><td><code>BI</code></td><td><span class="tag opt">Tối ưu</span></td><td>Chỉ số điều hành, phân tích, cảnh báo</td></tr>
-            <tr><td>16</td><td>Cổng đối tác (Portal)</td><td><code>POR</code></td><td><span class="tag adv">Nâng cao</span></td><td>Đại lý/NCC tự đặt hàng, tra cứu công nợ</td></tr>
-            <tr><td>17</td><td>Lớp AI &amp; Tự động hóa</td><td><code>AI</code></td><td><span class="tag cross">Xuyên suốt</span></td><td>Dự báo, tối ưu, thị giác máy, trợ lý</td></tr>
+            <tr><td data-label="#">1</td><td data-label="Phân hệ">Nền tảng &amp; Quản trị hệ thống</td><td data-label="Mã"><code>SYS</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">Người dùng, phân quyền, tổ chức, audit</td></tr>
+            <tr><td data-label="#">2</td><td data-label="Phân hệ">Master Data (Danh mục)</td><td data-label="Mã"><code>MDM</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">Sản phẩm, NVL, đối tác, kho, quy đổi ĐVT</td></tr>
+            <tr><td data-label="#">3</td><td data-label="Phân hệ">Mua hàng &amp; Nhà cung cấp</td><td data-label="Mã"><code>PUR</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">PR/PO, nhận hàng, thu mua sữa nguyên liệu</td></tr>
+            <tr><td data-label="#">4</td><td data-label="Phân hệ">Kho &amp; Tồn kho</td><td data-label="Mã"><code>INV</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">Nhập/xuất/chuyển, lô–date, FEFO, chuỗi lạnh</td></tr>
+            <tr><td data-label="#">5</td><td data-label="Phân hệ">Sản xuất &amp; Công thức</td><td data-label="Mã"><code>MFG</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">BOM, lệnh SX, mẻ, hao hụt, rework</td></tr>
+            <tr><td data-label="#">6</td><td data-label="Phân hệ">Chất lượng (QA/QC)</td><td data-label="Mã"><code>QMS</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">Kiểm nghiệm, COA, HACCP, thu hồi</td></tr>
+            <tr><td data-label="#">7</td><td data-label="Phân hệ">Bán hàng &amp; Phân phối (DMS)</td><td data-label="Mã"><code>SAL</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">Đơn hàng, khuyến mãi, tuyến giao, van sales</td></tr>
+            <tr><td data-label="#">8</td><td data-label="Phân hệ">Khách hàng &amp; CRM</td><td data-label="Mã"><code>CRM</code></td><td data-label="Mức độ"><span class="tag opt">Tối ưu</span></td><td data-label="Mô tả ngắn">Đại lý/điểm bán, chăm sóc, khiếu nại</td></tr>
+            <tr><td data-label="#">9</td><td data-label="Phân hệ">Công nợ &amp; Thanh toán</td><td data-label="Mã"><code>AR/AP</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">Phải thu/phải trả, hạn mức, đối soát</td></tr>
+            <tr><td data-label="#">10</td><td data-label="Phân hệ">Kế toán &amp; Tài chính</td><td data-label="Mã"><code>FIN</code></td><td data-label="Mức độ"><span class="tag core">Core</span></td><td data-label="Mô tả ngắn">Sổ cái, HĐĐT, thuế, giá thành, BCTC</td></tr>
+            <tr><td data-label="#">11</td><td data-label="Phân hệ">Nhân sự</td><td data-label="Mã"><code>HRM</code></td><td data-label="Mức độ"><span class="tag opt">Tối ưu</span></td><td data-label="Mô tả ngắn">Hồ sơ, chấm công, ca kíp, đào tạo</td></tr>
+            <tr><td data-label="#">12</td><td data-label="Phân hệ">Tiền lương</td><td data-label="Mã"><code>PAY</code></td><td data-label="Mức độ"><span class="tag opt">Tối ưu</span></td><td data-label="Mô tả ngắn">Bảng lương, BHXH, lương sản phẩm/KPI</td></tr>
+            <tr><td data-label="#">13</td><td data-label="Phân hệ">Tài sản &amp; Bảo trì thiết bị</td><td data-label="Mã"><code>EAM</code></td><td data-label="Mức độ"><span class="tag adv">Nâng cao</span></td><td data-label="Mô tả ngắn">Máy móc, bảo trì phòng ngừa, OEE</td></tr>
+            <tr><td data-label="#">14</td><td data-label="Phân hệ">Kế hoạch &amp; Dự báo (S&amp;OP)</td><td data-label="Mã"><code>PLN</code></td><td data-label="Mức độ"><span class="tag adv">Nâng cao</span></td><td data-label="Mô tả ngắn">Dự báo nhu cầu, MRP, kế hoạch SX</td></tr>
+            <tr><td data-label="#">15</td><td data-label="Phân hệ">Báo cáo &amp; BI / Dashboard</td><td data-label="Mã"><code>BI</code></td><td data-label="Mức độ"><span class="tag opt">Tối ưu</span></td><td data-label="Mô tả ngắn">Chỉ số điều hành, phân tích, cảnh báo</td></tr>
+            <tr><td data-label="#">16</td><td data-label="Phân hệ">Cổng đối tác (Portal)</td><td data-label="Mã"><code>POR</code></td><td data-label="Mức độ"><span class="tag adv">Nâng cao</span></td><td data-label="Mô tả ngắn">Đại lý/NCC tự đặt hàng, tra cứu công nợ</td></tr>
+            <tr><td data-label="#">17</td><td data-label="Phân hệ">Lớp AI &amp; Tự động hóa</td><td data-label="Mã"><code>AI</code></td><td data-label="Mức độ"><span class="tag cross">Xuyên suốt</span></td><td data-label="Mô tả ngắn">Dự báo, tối ưu, thị giác máy, trợ lý</td></tr>
           </tbody>
         </table>
       </div>
@@ -393,17 +424,17 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
         <table>
           <thead><tr><th>Từ → Đến</th><th>Dữ liệu truyền</th></tr></thead>
           <tbody>
-            <tr><td>PUR → INV</td><td>Nhập kho NVL/sữa theo lô</td></tr>
-            <tr><td>INV → MFG</td><td>Cấp NVL theo định mức (FEFO)</td></tr>
-            <tr><td>MFG → INV</td><td>Nhập thành phẩm theo lô + HSD</td></tr>
-            <tr><td>QMS ↔ MFG/INV/PUR</td><td>Trạng thái lô (hold/release/reject)</td></tr>
-            <tr><td>SAL → INV</td><td>Phân bổ &amp; xuất lô (FEFO)</td></tr>
-            <tr><td>SAL → AR</td><td>Ghi công nợ, thu tiền, đổi trả</td></tr>
-            <tr><td>PUR → AP</td><td>Công nợ NCC/nông hộ</td></tr>
-            <tr><td>MFG/PUR/SAL → FIN</td><td>Bút toán, giá thành, giá vốn</td></tr>
-            <tr><td>HRM → PAY</td><td>Công, ca, KPI → lương</td></tr>
-            <tr><td>SAL → PLN → MFG/PUR</td><td>Bán → dự báo → kế hoạch SX &amp; mua</td></tr>
-            <tr><td>Tất cả → BI/AI</td><td>Dữ liệu phân tích &amp; huấn luyện</td></tr>
+            <tr><td data-label="Từ → Đến">PUR → INV</td><td data-label="Dữ liệu truyền">Nhập kho NVL/sữa theo lô</td></tr>
+            <tr><td data-label="Từ → Đến">INV → MFG</td><td data-label="Dữ liệu truyền">Cấp NVL theo định mức (FEFO)</td></tr>
+            <tr><td data-label="Từ → Đến">MFG → INV</td><td data-label="Dữ liệu truyền">Nhập thành phẩm theo lô + HSD</td></tr>
+            <tr><td data-label="Từ → Đến">QMS ↔ MFG/INV/PUR</td><td data-label="Dữ liệu truyền">Trạng thái lô (hold/release/reject)</td></tr>
+            <tr><td data-label="Từ → Đến">SAL → INV</td><td data-label="Dữ liệu truyền">Phân bổ &amp; xuất lô (FEFO)</td></tr>
+            <tr><td data-label="Từ → Đến">SAL → AR</td><td data-label="Dữ liệu truyền">Ghi công nợ, thu tiền, đổi trả</td></tr>
+            <tr><td data-label="Từ → Đến">PUR → AP</td><td data-label="Dữ liệu truyền">Công nợ NCC/nông hộ</td></tr>
+            <tr><td data-label="Từ → Đến">MFG/PUR/SAL → FIN</td><td data-label="Dữ liệu truyền">Bút toán, giá thành, giá vốn</td></tr>
+            <tr><td data-label="Từ → Đến">HRM → PAY</td><td data-label="Dữ liệu truyền">Công, ca, KPI → lương</td></tr>
+            <tr><td data-label="Từ → Đến">SAL → PLN → MFG/PUR</td><td data-label="Dữ liệu truyền">Bán → dự báo → kế hoạch SX &amp; mua</td></tr>
+            <tr><td data-label="Từ → Đến">Tất cả → BI/AI</td><td data-label="Dữ liệu truyền">Dữ liệu phân tích &amp; huấn luyện</td></tr>
           </tbody>
         </table>
       </div>
@@ -419,52 +450,52 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
       <div class="tbl-wrap"><table>
         <thead><tr><th>#</th><th>Ứng dụng</th><th>Tầng</th><th>Giá trị</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td>Dự báo nhu cầu (SKU × vùng × kênh × mùa, khuyến mãi, thời tiết)</td><td>2</td><td>Giảm hết hàng &amp; hàng cận date; nền cho MRP</td></tr>
-          <tr><td>2</td><td>Tối ưu tồn kho &amp; tồn an toàn động</td><td>2</td><td>Cân đối thiếu hàng vs ứ cận date</td></tr>
-          <tr><td>3</td><td>Xếp lịch sản xuất tối ưu (OR)</td><td>2/3</td><td>Tăng hiệu suất dây chuyền, giảm hao phí</td></tr>
+          <tr><td data-label="#">1</td><td data-label="Ứng dụng">Dự báo nhu cầu (SKU × vùng × kênh × mùa, khuyến mãi, thời tiết)</td><td data-label="Tầng">2</td><td data-label="Giá trị">Giảm hết hàng &amp; hàng cận date; nền cho MRP</td></tr>
+          <tr><td data-label="#">2</td><td data-label="Ứng dụng">Tối ưu tồn kho &amp; tồn an toàn động</td><td data-label="Tầng">2</td><td data-label="Giá trị">Cân đối thiếu hàng vs ứ cận date</td></tr>
+          <tr><td data-label="#">3</td><td data-label="Ứng dụng">Xếp lịch sản xuất tối ưu (OR)</td><td data-label="Tầng">2/3</td><td data-label="Giá trị">Tăng hiệu suất dây chuyền, giảm hao phí</td></tr>
         </tbody></table></div>
 
       <h3>B · Sản xuất &amp; chất lượng</h3>
       <div class="tbl-wrap"><table>
         <thead><tr><th>#</th><th>Ứng dụng</th><th>Tầng</th><th>Giá trị</th></tr></thead>
         <tbody>
-          <tr><td>4</td><td>Vision QC — phát hiện lỗi bao bì, date-code, dị vật</td><td>3</td><td>Giảm lỗi lọt thị trường, giảm khiếu nại</td></tr>
-          <tr><td>5</td><td>OCR + LLM đọc COA/chứng từ/hóa đơn NCC</td><td>3</td><td>Giảm nhập tay, tăng tốc 3-way match</td></tr>
-          <tr><td>6</td><td>Dự đoán chất lượng &amp; tối ưu công thức phối trộn</td><td>3</td><td>Đạt tiêu chuẩn với chi phí thấp nhất</td></tr>
-          <tr><td>7</td><td>Bảo trì dự đoán (từ IoT/OEE)</td><td>3</td><td>Giảm dừng máy &amp; rủi ro hỏng lô do mất lạnh</td></tr>
-          <tr><td>8</td><td>Giám sát chuỗi lạnh thông minh (IoT + AI)</td><td>1→3</td><td>Cảnh báo tức thời, đánh giá ảnh hưởng lô</td></tr>
+          <tr><td data-label="#">4</td><td data-label="Ứng dụng">Vision QC — phát hiện lỗi bao bì, date-code, dị vật</td><td data-label="Tầng">3</td><td data-label="Giá trị">Giảm lỗi lọt thị trường, giảm khiếu nại</td></tr>
+          <tr><td data-label="#">5</td><td data-label="Ứng dụng">OCR + LLM đọc COA/chứng từ/hóa đơn NCC</td><td data-label="Tầng">3</td><td data-label="Giá trị">Giảm nhập tay, tăng tốc 3-way match</td></tr>
+          <tr><td data-label="#">6</td><td data-label="Ứng dụng">Dự đoán chất lượng &amp; tối ưu công thức phối trộn</td><td data-label="Tầng">3</td><td data-label="Giá trị">Đạt tiêu chuẩn với chi phí thấp nhất</td></tr>
+          <tr><td data-label="#">7</td><td data-label="Ứng dụng">Bảo trì dự đoán (từ IoT/OEE)</td><td data-label="Tầng">3</td><td data-label="Giá trị">Giảm dừng máy &amp; rủi ro hỏng lô do mất lạnh</td></tr>
+          <tr><td data-label="#">8</td><td data-label="Ứng dụng">Giám sát chuỗi lạnh thông minh (IoT + AI)</td><td data-label="Tầng">1→3</td><td data-label="Giá trị">Cảnh báo tức thời, đánh giá ảnh hưởng lô</td></tr>
         </tbody></table></div>
 
       <h3>C · Bán hàng &amp; phân phối</h3>
       <div class="tbl-wrap"><table>
         <thead><tr><th>#</th><th>Ứng dụng</th><th>Tầng</th><th>Giá trị</th></tr></thead>
         <tbody>
-          <tr><td>9</td><td>Tối ưu tuyến giao hàng (route optimization)</td><td>2</td><td>Giảm chi phí &amp; thời gian, giao FEFO</td></tr>
-          <tr><td>10</td><td>Gợi ý đơn hàng thông minh cho salesman</td><td>2</td><td>Tăng độ phủ SKU, giảm ứ cận date ở đại lý</td></tr>
-          <tr><td>11</td><td>Phân khúc &amp; dự báo rời bỏ (churn) đại lý</td><td>2</td><td>Chăm sóc đúng đối tượng</td></tr>
-          <tr><td>12</td><td>Phát hiện gian lận (check-in giả, đơn ảo, lạm dụng KM)</td><td>2</td><td>Bảo vệ ngân sách &amp; kỷ luật thị trường</td></tr>
-          <tr><td>13</td><td>Định giá &amp; khuyến mãi tối ưu (đo uplift, ROI)</td><td>3</td><td>Ngân sách khuyến mãi hiệu quả</td></tr>
+          <tr><td data-label="#">9</td><td data-label="Ứng dụng">Tối ưu tuyến giao hàng (route optimization)</td><td data-label="Tầng">2</td><td data-label="Giá trị">Giảm chi phí &amp; thời gian, giao FEFO</td></tr>
+          <tr><td data-label="#">10</td><td data-label="Ứng dụng">Gợi ý đơn hàng thông minh cho salesman</td><td data-label="Tầng">2</td><td data-label="Giá trị">Tăng độ phủ SKU, giảm ứ cận date ở đại lý</td></tr>
+          <tr><td data-label="#">11</td><td data-label="Ứng dụng">Phân khúc &amp; dự báo rời bỏ (churn) đại lý</td><td data-label="Tầng">2</td><td data-label="Giá trị">Chăm sóc đúng đối tượng</td></tr>
+          <tr><td data-label="#">12</td><td data-label="Ứng dụng">Phát hiện gian lận (check-in giả, đơn ảo, lạm dụng KM)</td><td data-label="Tầng">2</td><td data-label="Giá trị">Bảo vệ ngân sách &amp; kỷ luật thị trường</td></tr>
+          <tr><td data-label="#">13</td><td data-label="Ứng dụng">Định giá &amp; khuyến mãi tối ưu (đo uplift, ROI)</td><td data-label="Tầng">3</td><td data-label="Giá trị">Ngân sách khuyến mãi hiệu quả</td></tr>
         </tbody></table></div>
 
       <h3>D · Tài chính, nhân sự &amp; điều hành</h3>
       <div class="tbl-wrap"><table>
         <thead><tr><th>#</th><th>Ứng dụng</th><th>Tầng</th><th>Giá trị</th></tr></thead>
         <tbody>
-          <tr><td>14</td><td>Chấm điểm &amp; dự báo rủi ro công nợ; hạn mức động</td><td>2</td><td>Giảm nợ xấu, bảo vệ dòng tiền</td></tr>
-          <tr><td>15</td><td>Phát hiện bất thường kế toán/dòng tiền</td><td>2</td><td>Cờ bút toán/chi phí bất thường, trùng thanh toán</td></tr>
-          <tr><td>16</td><td>Trợ lý dự báo dòng tiền (AR – AP – lương – mua)</td><td>2</td><td>Chủ động dòng tiền</td></tr>
-          <tr><td>17</td><td>Tự động hóa chấm công – lương (RPA)</td><td>1</td><td>Giảm thao tác tay &amp; sai sót</td></tr>
-          <tr><td>20</td><td>Cảnh báo điều hành chủ động (cận date, tồn thấp, QC fail…)</td><td>1→2</td><td>Phát hiện sớm kèm gợi ý hành động</td></tr>
-          <tr><td>22</td><td>Phân tích khiếu nại &amp; phản hồi (NLP)</td><td>2</td><td>Phát hiện sớm vấn đề chất lượng theo lô/vùng</td></tr>
+          <tr><td data-label="#">14</td><td data-label="Ứng dụng">Chấm điểm &amp; dự báo rủi ro công nợ; hạn mức động</td><td data-label="Tầng">2</td><td data-label="Giá trị">Giảm nợ xấu, bảo vệ dòng tiền</td></tr>
+          <tr><td data-label="#">15</td><td data-label="Ứng dụng">Phát hiện bất thường kế toán/dòng tiền</td><td data-label="Tầng">2</td><td data-label="Giá trị">Cờ bút toán/chi phí bất thường, trùng thanh toán</td></tr>
+          <tr><td data-label="#">16</td><td data-label="Ứng dụng">Trợ lý dự báo dòng tiền (AR – AP – lương – mua)</td><td data-label="Tầng">2</td><td data-label="Giá trị">Chủ động dòng tiền</td></tr>
+          <tr><td data-label="#">17</td><td data-label="Ứng dụng">Tự động hóa chấm công – lương (RPA)</td><td data-label="Tầng">1</td><td data-label="Giá trị">Giảm thao tác tay &amp; sai sót</td></tr>
+          <tr><td data-label="#">20</td><td data-label="Ứng dụng">Cảnh báo điều hành chủ động (cận date, tồn thấp, QC fail…)</td><td data-label="Tầng">1→2</td><td data-label="Giá trị">Phát hiện sớm kèm gợi ý hành động</td></tr>
+          <tr><td data-label="#">22</td><td data-label="Ứng dụng">Phân tích khiếu nại &amp; phản hồi (NLP)</td><td data-label="Tầng">2</td><td data-label="Giá trị">Phát hiện sớm vấn đề chất lượng theo lô/vùng</td></tr>
         </tbody></table></div>
 
       <h3>Lộ trình đưa AI vào</h3>
       <div class="tbl-wrap"><table>
         <thead><tr><th>Giai đoạn</th><th>Ưu tiên AI / tự động hóa</th></tr></thead>
         <tbody>
-          <tr><td>Ngay (nền số hóa)</td><td>#17 RPA lương · #20 cảnh báo luật · #8 giám sát lạnh · #5 OCR (thí điểm)</td></tr>
-          <tr><td>Sau 3–6 tháng có dữ liệu</td><td>#1 dự báo · #2 tồn kho · #9 tuyến giao · #10 gợi ý đơn · #14 rủi ro công nợ</td></tr>
-          <tr><td>Nâng cao (6–18 tháng)</td><td>#3 xếp lịch SX · #4 Vision QC · #7 bảo trì dự đoán · #13 tối ưu KM</td></tr>
+          <tr><td data-label="Giai đoạn">Ngay (nền số hóa)</td><td data-label="Ưu tiên AI / tự động hóa">#17 RPA lương · #20 cảnh báo luật · #8 giám sát lạnh · #5 OCR (thí điểm)</td></tr>
+          <tr><td data-label="Giai đoạn">Sau 3–6 tháng có dữ liệu</td><td data-label="Ưu tiên AI / tự động hóa">#1 dự báo · #2 tồn kho · #9 tuyến giao · #10 gợi ý đơn · #14 rủi ro công nợ</td></tr>
+          <tr><td data-label="Giai đoạn">Nâng cao (6–18 tháng)</td><td data-label="Ưu tiên AI / tự động hóa">#3 xếp lịch SX · #4 Vision QC · #7 bảo trì dự đoán · #13 tối ưu KM</td></tr>
         </tbody></table></div>
       <div class="note warn"><b>Điều kiện tiên quyết</b>Dữ liệu phải sạch &amp; đủ — đây là lý do số hóa vận hành phải đi trước AI. Cần quy trình gán nhãn/hồi tiếp và đo lường hiệu quả (A/B) trước khi mở rộng.</div>
     </section>
@@ -494,14 +525,14 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
       <div class="tbl-wrap"><table>
         <thead><tr><th>Nhóm</th><th>Thực thể tiêu biểu</th></tr></thead>
         <tbody>
-          <tr><td>Nền tảng &amp; danh mục</td><td><code>Organization · Branch · Warehouse · Location · User · Role · Permission · AuditLog · Product · Material · UoM · UoMConversion · Partner · PriceList</code></td></tr>
-          <tr><td>Lô &amp; tồn kho <span class="tag cross">trục</span></td><td><code>Lot · StockItem · StockMove · StockTransfer · StockCount · ColdChainReading</code></td></tr>
-          <tr><td>Mua &amp; thu mua sữa</td><td><code>PurchaseRequest · PurchaseOrder · GoodsReceipt · SupplierInvoice · MilkIntake · MilkQualityTest · MilkPricePolicy</code></td></tr>
-          <tr><td>Sản xuất &amp; chất lượng</td><td><code>BOM · Routing · ProductionOrder · Batch · MaterialConsumption · ProductionLog · CostSheet · QualitySpec · Sample · QCTest · COA · NonConformance · CAPA · RecallCase</code></td></tr>
-          <tr><td>Bán hàng &amp; CRM</td><td><code>SalesRoute · Outlet · VisitPlan · VisitCheckin · SalesOrder · SOLine · Promotion · Delivery · ePOD · SalesReturn · Complaint</code></td></tr>
-          <tr><td>Công nợ &amp; tài chính</td><td><code>Receivable · Payable · CreditLimit · PaymentReceipt · PaymentVoucher · ChartOfAccounts · JournalEntry · EInvoice · FixedAsset</code></td></tr>
-          <tr><td>Nhân sự &amp; lương</td><td><code>Employee · Shift · Attendance · SalaryStructure · Payroll · Commission</code></td></tr>
-          <tr><td>Kế hoạch &amp; AI</td><td><code>DemandForecast · ProductionPlan · MRPRun · SafetyStockPolicy · Alert</code></td></tr>
+          <tr><td data-label="Nhóm">Nền tảng &amp; danh mục</td><td data-label="Thực thể tiêu biểu"><code>Organization · Branch · Warehouse · Location · User · Role · Permission · AuditLog · Product · Material · UoM · UoMConversion · Partner · PriceList</code></td></tr>
+          <tr><td data-label="Nhóm">Lô &amp; tồn kho <span class="tag cross">trục</span></td><td data-label="Thực thể tiêu biểu"><code>Lot · StockItem · StockMove · StockTransfer · StockCount · ColdChainReading</code></td></tr>
+          <tr><td data-label="Nhóm">Mua &amp; thu mua sữa</td><td data-label="Thực thể tiêu biểu"><code>PurchaseRequest · PurchaseOrder · GoodsReceipt · SupplierInvoice · MilkIntake · MilkQualityTest · MilkPricePolicy</code></td></tr>
+          <tr><td data-label="Nhóm">Sản xuất &amp; chất lượng</td><td data-label="Thực thể tiêu biểu"><code>BOM · Routing · ProductionOrder · Batch · MaterialConsumption · ProductionLog · CostSheet · QualitySpec · Sample · QCTest · COA · NonConformance · CAPA · RecallCase</code></td></tr>
+          <tr><td data-label="Nhóm">Bán hàng &amp; CRM</td><td data-label="Thực thể tiêu biểu"><code>SalesRoute · Outlet · VisitPlan · VisitCheckin · SalesOrder · SOLine · Promotion · Delivery · ePOD · SalesReturn · Complaint</code></td></tr>
+          <tr><td data-label="Nhóm">Công nợ &amp; tài chính</td><td data-label="Thực thể tiêu biểu"><code>Receivable · Payable · CreditLimit · PaymentReceipt · PaymentVoucher · ChartOfAccounts · JournalEntry · EInvoice · FixedAsset</code></td></tr>
+          <tr><td data-label="Nhóm">Nhân sự &amp; lương</td><td data-label="Thực thể tiêu biểu"><code>Employee · Shift · Attendance · SalaryStructure · Payroll · Commission</code></td></tr>
+          <tr><td data-label="Nhóm">Kế hoạch &amp; AI</td><td data-label="Thực thể tiêu biểu"><code>DemandForecast · ProductionPlan · MRPRun · SafetyStockPolicy · Alert</code></td></tr>
         </tbody>
       </table></div>
 
@@ -542,17 +573,17 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
         <table>
           <thead><tr><th>Lớp</th><th>Công nghệ đề xuất</th><th>Ghi chú</th></tr></thead>
           <tbody>
-            <tr><td>Web frontend</td><td>React + Next.js, TypeScript, Tailwind</td><td>Bộ UI nghiệp vụ (Carbon/AntD)</td></tr>
-            <tr><td>Mobile</td><td>React Native hoặc Flutter</td><td><b>Offline-first</b> cho kho &amp; van sales</td></tr>
-            <tr><td>Backend</td><td>NestJS (Node) hoặc Spring Boot / .NET</td><td>Chọn theo năng lực đội</td></tr>
-            <tr><td>API</td><td>REST (chính) + GraphQL (BI/portal)</td><td>OpenAPI làm hợp đồng</td></tr>
-            <tr><td>Hàng đợi/sự kiện</td><td>Kafka hoặc RabbitMQ</td><td>Sự kiện lô/tồn/công nợ</td></tr>
-            <tr><td>CSDL giao dịch</td><td>PostgreSQL</td><td>JSONB, partition theo thời gian</td></tr>
-            <tr><td>Cache · Lưu trữ tệp</td><td>Redis · S3/MinIO</td><td>Bảng giá, tồn realtime; ảnh QC/COA</td></tr>
-            <tr><td>Data warehouse</td><td>ClickHouse / BigQuery / Snowflake</td><td>BI &amp; huấn luyện AI</td></tr>
-            <tr><td>AI/ML</td><td>Python, LightGBM/XGBoost, Prophet, PyTorch</td><td>Dịch vụ tách riêng</td></tr>
-            <tr><td>LLM</td><td>API mô hình ngôn ngữ + RAG</td><td>Trợ lý, OCR, tóm tắt</td></tr>
-            <tr><td>Hạ tầng · Giám sát</td><td>Docker/K8s · Prometheus/Grafana · ELK</td><td>CI/CD, log tập trung</td></tr>
+            <tr><td data-label="Lớp">Web frontend</td><td data-label="Công nghệ đề xuất">React + Next.js, TypeScript, Tailwind</td><td data-label="Ghi chú">Bộ UI nghiệp vụ (Carbon/AntD)</td></tr>
+            <tr><td data-label="Lớp">Mobile</td><td data-label="Công nghệ đề xuất">React Native hoặc Flutter</td><td data-label="Ghi chú"><b>Offline-first</b> cho kho &amp; van sales</td></tr>
+            <tr><td data-label="Lớp">Backend</td><td data-label="Công nghệ đề xuất">NestJS (Node) hoặc Spring Boot / .NET</td><td data-label="Ghi chú">Chọn theo năng lực đội</td></tr>
+            <tr><td data-label="Lớp">API</td><td data-label="Công nghệ đề xuất">REST (chính) + GraphQL (BI/portal)</td><td data-label="Ghi chú">OpenAPI làm hợp đồng</td></tr>
+            <tr><td data-label="Lớp">Hàng đợi/sự kiện</td><td data-label="Công nghệ đề xuất">Kafka hoặc RabbitMQ</td><td data-label="Ghi chú">Sự kiện lô/tồn/công nợ</td></tr>
+            <tr><td data-label="Lớp">CSDL giao dịch</td><td data-label="Công nghệ đề xuất">PostgreSQL</td><td data-label="Ghi chú">JSONB, partition theo thời gian</td></tr>
+            <tr><td data-label="Lớp">Cache · Lưu trữ tệp</td><td data-label="Công nghệ đề xuất">Redis · S3/MinIO</td><td data-label="Ghi chú">Bảng giá, tồn realtime; ảnh QC/COA</td></tr>
+            <tr><td data-label="Lớp">Data warehouse</td><td data-label="Công nghệ đề xuất">ClickHouse / BigQuery / Snowflake</td><td data-label="Ghi chú">BI &amp; huấn luyện AI</td></tr>
+            <tr><td data-label="Lớp">AI/ML</td><td data-label="Công nghệ đề xuất">Python, LightGBM/XGBoost, Prophet, PyTorch</td><td data-label="Ghi chú">Dịch vụ tách riêng</td></tr>
+            <tr><td data-label="Lớp">LLM</td><td data-label="Công nghệ đề xuất">API mô hình ngôn ngữ + RAG</td><td data-label="Ghi chú">Trợ lý, OCR, tóm tắt</td></tr>
+            <tr><td data-label="Lớp">Hạ tầng · Giám sát</td><td data-label="Công nghệ đề xuất">Docker/K8s · Prometheus/Grafana · ELK</td><td data-label="Ghi chú">CI/CD, log tập trung</td></tr>
           </tbody>
         </table>
       </div>
@@ -624,22 +655,22 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
       <div class="tbl-wrap"><table>
         <thead><tr><th>Mã</th><th>Viết đầy đủ</th><th>Nghĩa</th></tr></thead>
         <tbody>
-          <tr><td><code>SYS</code></td><td>System &amp; Administration</td><td>Nền tảng &amp; quản trị hệ thống</td></tr>
-          <tr><td><code>MDM</code></td><td>Master Data Management</td><td>Quản lý dữ liệu danh mục nền</td></tr>
-          <tr><td><code>PUR</code></td><td>Purchasing</td><td>Mua hàng &amp; thu mua sữa</td></tr>
-          <tr><td><code>INV</code></td><td>Inventory</td><td>Kho &amp; tồn kho</td></tr>
-          <tr><td><code>MFG</code></td><td>Manufacturing</td><td>Sản xuất &amp; công thức</td></tr>
-          <tr><td><code>QMS</code></td><td>Quality Management System</td><td>Hệ thống quản lý chất lượng (QA/QC)</td></tr>
-          <tr><td><code>SAL</code></td><td>Sales &amp; Distribution</td><td>Bán hàng &amp; phân phối</td></tr>
-          <tr><td><code>CRM</code></td><td>Customer Relationship Management</td><td>Quản lý quan hệ khách hàng</td></tr>
-          <tr><td><code>AR / AP</code></td><td>Accounts Receivable / Payable</td><td>Công nợ phải thu / phải trả</td></tr>
-          <tr><td><code>FIN</code></td><td>Finance &amp; Accounting</td><td>Kế toán &amp; tài chính</td></tr>
-          <tr><td><code>HRM</code></td><td>Human Resource Management</td><td>Quản trị nhân sự</td></tr>
-          <tr><td><code>PAY</code></td><td>Payroll</td><td>Tiền lương</td></tr>
-          <tr><td><code>EAM</code></td><td>Enterprise Asset Management</td><td>Quản lý tài sản &amp; bảo trì thiết bị</td></tr>
-          <tr><td><code>PLN</code></td><td>Planning (S&amp;OP)</td><td>Kế hoạch &amp; dự báo</td></tr>
-          <tr><td><code>BI</code></td><td>Business Intelligence</td><td>Báo cáo &amp; phân tích dữ liệu</td></tr>
-          <tr><td><code>POR</code></td><td>Partner Portal</td><td>Cổng đối tác</td></tr>
+          <tr><td data-label="Mã"><code>SYS</code></td><td data-label="Viết đầy đủ">System &amp; Administration</td><td data-label="Nghĩa">Nền tảng &amp; quản trị hệ thống</td></tr>
+          <tr><td data-label="Mã"><code>MDM</code></td><td data-label="Viết đầy đủ">Master Data Management</td><td data-label="Nghĩa">Quản lý dữ liệu danh mục nền</td></tr>
+          <tr><td data-label="Mã"><code>PUR</code></td><td data-label="Viết đầy đủ">Purchasing</td><td data-label="Nghĩa">Mua hàng &amp; thu mua sữa</td></tr>
+          <tr><td data-label="Mã"><code>INV</code></td><td data-label="Viết đầy đủ">Inventory</td><td data-label="Nghĩa">Kho &amp; tồn kho</td></tr>
+          <tr><td data-label="Mã"><code>MFG</code></td><td data-label="Viết đầy đủ">Manufacturing</td><td data-label="Nghĩa">Sản xuất &amp; công thức</td></tr>
+          <tr><td data-label="Mã"><code>QMS</code></td><td data-label="Viết đầy đủ">Quality Management System</td><td data-label="Nghĩa">Hệ thống quản lý chất lượng (QA/QC)</td></tr>
+          <tr><td data-label="Mã"><code>SAL</code></td><td data-label="Viết đầy đủ">Sales &amp; Distribution</td><td data-label="Nghĩa">Bán hàng &amp; phân phối</td></tr>
+          <tr><td data-label="Mã"><code>CRM</code></td><td data-label="Viết đầy đủ">Customer Relationship Management</td><td data-label="Nghĩa">Quản lý quan hệ khách hàng</td></tr>
+          <tr><td data-label="Mã"><code>AR / AP</code></td><td data-label="Viết đầy đủ">Accounts Receivable / Payable</td><td data-label="Nghĩa">Công nợ phải thu / phải trả</td></tr>
+          <tr><td data-label="Mã"><code>FIN</code></td><td data-label="Viết đầy đủ">Finance &amp; Accounting</td><td data-label="Nghĩa">Kế toán &amp; tài chính</td></tr>
+          <tr><td data-label="Mã"><code>HRM</code></td><td data-label="Viết đầy đủ">Human Resource Management</td><td data-label="Nghĩa">Quản trị nhân sự</td></tr>
+          <tr><td data-label="Mã"><code>PAY</code></td><td data-label="Viết đầy đủ">Payroll</td><td data-label="Nghĩa">Tiền lương</td></tr>
+          <tr><td data-label="Mã"><code>EAM</code></td><td data-label="Viết đầy đủ">Enterprise Asset Management</td><td data-label="Nghĩa">Quản lý tài sản &amp; bảo trì thiết bị</td></tr>
+          <tr><td data-label="Mã"><code>PLN</code></td><td data-label="Viết đầy đủ">Planning (S&amp;OP)</td><td data-label="Nghĩa">Kế hoạch &amp; dự báo</td></tr>
+          <tr><td data-label="Mã"><code>BI</code></td><td data-label="Viết đầy đủ">Business Intelligence</td><td data-label="Nghĩa">Báo cáo &amp; phân tích dữ liệu</td></tr>
+          <tr><td data-label="Mã"><code>POR</code></td><td data-label="Viết đầy đủ">Partner Portal</td><td data-label="Nghĩa">Cổng đối tác</td></tr>
         </tbody>
       </table></div>
 
@@ -647,26 +678,26 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
       <div class="tbl-wrap"><table>
         <thead><tr><th>Viết tắt</th><th>Viết đầy đủ</th><th>Nghĩa</th></tr></thead>
         <tbody>
-          <tr><td><code>FEFO</code></td><td>First-Expired, First-Out</td><td>Xuất hàng theo hạn dùng gần nhất trước</td></tr>
-          <tr><td><code>FIFO</code></td><td>First-In, First-Out</td><td>Nhập trước xuất trước (định giá tồn kho)</td></tr>
-          <tr><td><code>BOM</code></td><td>Bill of Materials</td><td>Công thức / định mức nguyên vật liệu</td></tr>
-          <tr><td><code>Lot / Batch</code></td><td>—</td><td>Lô nguyên liệu / mẻ sản xuất (trục truy xuất)</td></tr>
-          <tr><td><code>NVL</code></td><td>—</td><td>Nguyên vật liệu</td></tr>
-          <tr><td><code>SKU</code></td><td>Stock Keeping Unit</td><td>Mã hàng / đơn vị lưu kho</td></tr>
-          <tr><td><code>UoM</code></td><td>Unit of Measure</td><td>Đơn vị tính</td></tr>
-          <tr><td><code>NSX / HSD</code></td><td>—</td><td>Ngày sản xuất / Hạn sử dụng</td></tr>
-          <tr><td><code>QA / QC</code></td><td>Quality Assurance / Control</td><td>Đảm bảo / kiểm soát chất lượng</td></tr>
-          <tr><td><code>COA</code></td><td>Certificate of Analysis</td><td>Phiếu kết quả phân tích / chứng nhận chất lượng lô</td></tr>
-          <tr><td><code>HACCP</code></td><td>Hazard Analysis &amp; Critical Control Points</td><td>Phân tích mối nguy &amp; điểm kiểm soát tới hạn</td></tr>
-          <tr><td><code>ISO 22000</code></td><td>—</td><td>Tiêu chuẩn hệ thống quản lý an toàn thực phẩm</td></tr>
-          <tr><td><code>CCP</code></td><td>Critical Control Point</td><td>Điểm kiểm soát tới hạn</td></tr>
-          <tr><td><code>NCR</code></td><td>Non-Conformance Report</td><td>Báo cáo không phù hợp</td></tr>
-          <tr><td><code>CAPA</code></td><td>Corrective &amp; Preventive Action</td><td>Hành động khắc phục &amp; phòng ngừa</td></tr>
-          <tr><td><code>CIP</code></td><td>Cleaning In Place</td><td>Vệ sinh dây chuyền tại chỗ</td></tr>
-          <tr><td><code>TPC</code></td><td>Total Plate Count</td><td>Tổng số vi sinh vật hiếu khí</td></tr>
-          <tr><td><code>OEE</code></td><td>Overall Equipment Effectiveness</td><td>Hiệu suất thiết bị tổng thể</td></tr>
-          <tr><td><code>PM</code></td><td>Preventive Maintenance</td><td>Bảo trì phòng ngừa</td></tr>
-          <tr><td><code>ATTP</code></td><td>—</td><td>An toàn thực phẩm</td></tr>
+          <tr><td data-label="Viết tắt"><code>FEFO</code></td><td data-label="Viết đầy đủ">First-Expired, First-Out</td><td data-label="Nghĩa">Xuất hàng theo hạn dùng gần nhất trước</td></tr>
+          <tr><td data-label="Viết tắt"><code>FIFO</code></td><td data-label="Viết đầy đủ">First-In, First-Out</td><td data-label="Nghĩa">Nhập trước xuất trước (định giá tồn kho)</td></tr>
+          <tr><td data-label="Viết tắt"><code>BOM</code></td><td data-label="Viết đầy đủ">Bill of Materials</td><td data-label="Nghĩa">Công thức / định mức nguyên vật liệu</td></tr>
+          <tr><td data-label="Viết tắt"><code>Lot / Batch</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Lô nguyên liệu / mẻ sản xuất (trục truy xuất)</td></tr>
+          <tr><td data-label="Viết tắt"><code>NVL</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Nguyên vật liệu</td></tr>
+          <tr><td data-label="Viết tắt"><code>SKU</code></td><td data-label="Viết đầy đủ">Stock Keeping Unit</td><td data-label="Nghĩa">Mã hàng / đơn vị lưu kho</td></tr>
+          <tr><td data-label="Viết tắt"><code>UoM</code></td><td data-label="Viết đầy đủ">Unit of Measure</td><td data-label="Nghĩa">Đơn vị tính</td></tr>
+          <tr><td data-label="Viết tắt"><code>NSX / HSD</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Ngày sản xuất / Hạn sử dụng</td></tr>
+          <tr><td data-label="Viết tắt"><code>QA / QC</code></td><td data-label="Viết đầy đủ">Quality Assurance / Control</td><td data-label="Nghĩa">Đảm bảo / kiểm soát chất lượng</td></tr>
+          <tr><td data-label="Viết tắt"><code>COA</code></td><td data-label="Viết đầy đủ">Certificate of Analysis</td><td data-label="Nghĩa">Phiếu kết quả phân tích / chứng nhận chất lượng lô</td></tr>
+          <tr><td data-label="Viết tắt"><code>HACCP</code></td><td data-label="Viết đầy đủ">Hazard Analysis &amp; Critical Control Points</td><td data-label="Nghĩa">Phân tích mối nguy &amp; điểm kiểm soát tới hạn</td></tr>
+          <tr><td data-label="Viết tắt"><code>ISO 22000</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Tiêu chuẩn hệ thống quản lý an toàn thực phẩm</td></tr>
+          <tr><td data-label="Viết tắt"><code>CCP</code></td><td data-label="Viết đầy đủ">Critical Control Point</td><td data-label="Nghĩa">Điểm kiểm soát tới hạn</td></tr>
+          <tr><td data-label="Viết tắt"><code>NCR</code></td><td data-label="Viết đầy đủ">Non-Conformance Report</td><td data-label="Nghĩa">Báo cáo không phù hợp</td></tr>
+          <tr><td data-label="Viết tắt"><code>CAPA</code></td><td data-label="Viết đầy đủ">Corrective &amp; Preventive Action</td><td data-label="Nghĩa">Hành động khắc phục &amp; phòng ngừa</td></tr>
+          <tr><td data-label="Viết tắt"><code>CIP</code></td><td data-label="Viết đầy đủ">Cleaning In Place</td><td data-label="Nghĩa">Vệ sinh dây chuyền tại chỗ</td></tr>
+          <tr><td data-label="Viết tắt"><code>TPC</code></td><td data-label="Viết đầy đủ">Total Plate Count</td><td data-label="Nghĩa">Tổng số vi sinh vật hiếu khí</td></tr>
+          <tr><td data-label="Viết tắt"><code>OEE</code></td><td data-label="Viết đầy đủ">Overall Equipment Effectiveness</td><td data-label="Nghĩa">Hiệu suất thiết bị tổng thể</td></tr>
+          <tr><td data-label="Viết tắt"><code>PM</code></td><td data-label="Viết đầy đủ">Preventive Maintenance</td><td data-label="Nghĩa">Bảo trì phòng ngừa</td></tr>
+          <tr><td data-label="Viết tắt"><code>ATTP</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">An toàn thực phẩm</td></tr>
         </tbody>
       </table></div>
 
@@ -674,14 +705,14 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
       <div class="tbl-wrap"><table>
         <thead><tr><th>Viết tắt</th><th>Viết đầy đủ</th><th>Nghĩa</th></tr></thead>
         <tbody>
-          <tr><td><code>DMS</code></td><td>Distribution Management System</td><td>Hệ thống quản lý phân phối (bán hàng hiện trường)</td></tr>
-          <tr><td><code>NPP</code></td><td>—</td><td>Nhà phân phối</td></tr>
-          <tr><td><code>GT / MT</code></td><td>General / Modern Trade</td><td>Kênh truyền thống / kênh hiện đại</td></tr>
-          <tr><td><code>MCP</code></td><td>Monthly Coverage Plan</td><td>Kế hoạch tuyến / lịch viếng thăm điểm bán</td></tr>
-          <tr><td><code>Van sales</code></td><td>—</td><td>Bán hàng &amp; giao hàng lưu động theo tuyến</td></tr>
-          <tr><td><code>ePOD</code></td><td>electronic Proof of Delivery</td><td>Chứng từ giao nhận điện tử (ký nhận)</td></tr>
-          <tr><td><code>Sell-in / Sell-out</code></td><td>—</td><td>Bán vào đại lý / bán ra người tiêu dùng</td></tr>
-          <tr><td><code>KPI</code></td><td>Key Performance Indicator</td><td>Chỉ số hiệu suất trọng yếu</td></tr>
+          <tr><td data-label="Viết tắt"><code>DMS</code></td><td data-label="Viết đầy đủ">Distribution Management System</td><td data-label="Nghĩa">Hệ thống quản lý phân phối (bán hàng hiện trường)</td></tr>
+          <tr><td data-label="Viết tắt"><code>NPP</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Nhà phân phối</td></tr>
+          <tr><td data-label="Viết tắt"><code>GT / MT</code></td><td data-label="Viết đầy đủ">General / Modern Trade</td><td data-label="Nghĩa">Kênh truyền thống / kênh hiện đại</td></tr>
+          <tr><td data-label="Viết tắt"><code>MCP</code></td><td data-label="Viết đầy đủ">Monthly Coverage Plan</td><td data-label="Nghĩa">Kế hoạch tuyến / lịch viếng thăm điểm bán</td></tr>
+          <tr><td data-label="Viết tắt"><code>Van sales</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Bán hàng &amp; giao hàng lưu động theo tuyến</td></tr>
+          <tr><td data-label="Viết tắt"><code>ePOD</code></td><td data-label="Viết đầy đủ">electronic Proof of Delivery</td><td data-label="Nghĩa">Chứng từ giao nhận điện tử (ký nhận)</td></tr>
+          <tr><td data-label="Viết tắt"><code>Sell-in / Sell-out</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Bán vào đại lý / bán ra người tiêu dùng</td></tr>
+          <tr><td data-label="Viết tắt"><code>KPI</code></td><td data-label="Viết đầy đủ">Key Performance Indicator</td><td data-label="Nghĩa">Chỉ số hiệu suất trọng yếu</td></tr>
         </tbody>
       </table></div>
 
@@ -689,17 +720,17 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
       <div class="tbl-wrap"><table>
         <thead><tr><th>Viết tắt</th><th>Viết đầy đủ</th><th>Nghĩa</th></tr></thead>
         <tbody>
-          <tr><td><code>PR / PO</code></td><td>Purchase Request / Order</td><td>Đề nghị mua / Đơn mua hàng</td></tr>
-          <tr><td><code>GRN</code></td><td>Goods Receipt Note</td><td>Phiếu nhập kho / nhận hàng</td></tr>
-          <tr><td><code>SO</code></td><td>Sales Order</td><td>Đơn bán hàng</td></tr>
-          <tr><td><code>GL</code></td><td>General Ledger</td><td>Sổ cái kế toán</td></tr>
-          <tr><td><code>COGS</code></td><td>Cost of Goods Sold</td><td>Giá vốn hàng bán</td></tr>
-          <tr><td><code>HĐĐT</code></td><td>—</td><td>Hóa đơn điện tử</td></tr>
-          <tr><td><code>GTGT / TNDN / TNCN</code></td><td>—</td><td>Thuế giá trị gia tăng / thu nhập doanh nghiệp / thu nhập cá nhân</td></tr>
-          <tr><td><code>BHXH</code></td><td>—</td><td>Bảo hiểm xã hội</td></tr>
-          <tr><td><code>BCTC</code></td><td>—</td><td>Báo cáo tài chính</td></tr>
-          <tr><td><code>BCĐKT / KQKD / LCTT</code></td><td>—</td><td>Bảng cân đối kế toán / Kết quả kinh doanh / Lưu chuyển tiền tệ</td></tr>
-          <tr><td><code>3-way match</code></td><td>—</td><td>Đối chiếu 3 chiều: PO – GRN – hóa đơn</td></tr>
+          <tr><td data-label="Viết tắt"><code>PR / PO</code></td><td data-label="Viết đầy đủ">Purchase Request / Order</td><td data-label="Nghĩa">Đề nghị mua / Đơn mua hàng</td></tr>
+          <tr><td data-label="Viết tắt"><code>GRN</code></td><td data-label="Viết đầy đủ">Goods Receipt Note</td><td data-label="Nghĩa">Phiếu nhập kho / nhận hàng</td></tr>
+          <tr><td data-label="Viết tắt"><code>SO</code></td><td data-label="Viết đầy đủ">Sales Order</td><td data-label="Nghĩa">Đơn bán hàng</td></tr>
+          <tr><td data-label="Viết tắt"><code>GL</code></td><td data-label="Viết đầy đủ">General Ledger</td><td data-label="Nghĩa">Sổ cái kế toán</td></tr>
+          <tr><td data-label="Viết tắt"><code>COGS</code></td><td data-label="Viết đầy đủ">Cost of Goods Sold</td><td data-label="Nghĩa">Giá vốn hàng bán</td></tr>
+          <tr><td data-label="Viết tắt"><code>HĐĐT</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Hóa đơn điện tử</td></tr>
+          <tr><td data-label="Viết tắt"><code>GTGT / TNDN / TNCN</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Thuế giá trị gia tăng / thu nhập doanh nghiệp / thu nhập cá nhân</td></tr>
+          <tr><td data-label="Viết tắt"><code>BHXH</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Bảo hiểm xã hội</td></tr>
+          <tr><td data-label="Viết tắt"><code>BCTC</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Báo cáo tài chính</td></tr>
+          <tr><td data-label="Viết tắt"><code>BCĐKT / KQKD / LCTT</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Bảng cân đối kế toán / Kết quả kinh doanh / Lưu chuyển tiền tệ</td></tr>
+          <tr><td data-label="Viết tắt"><code>3-way match</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Đối chiếu 3 chiều: PO – GRN – hóa đơn</td></tr>
         </tbody>
       </table></div>
 
@@ -707,29 +738,29 @@ footer{margin-left:256px;max-width:960px;padding:32px 40px;border-top:1px solid 
       <div class="tbl-wrap"><table>
         <thead><tr><th>Viết tắt</th><th>Viết đầy đủ</th><th>Nghĩa</th></tr></thead>
         <tbody>
-          <tr><td><code>ERP</code></td><td>Enterprise Resource Planning</td><td>Hệ thống hoạch định nguồn lực doanh nghiệp</td></tr>
-          <tr><td><code>MVP</code></td><td>Minimum Viable Product</td><td>Phiên bản khả dụng tối thiểu</td></tr>
-          <tr><td><code>API</code></td><td>Application Programming Interface</td><td>Giao diện lập trình ứng dụng</td></tr>
-          <tr><td><code>BFF</code></td><td>Backend for Frontend</td><td>Lớp trung gian phục vụ giao diện</td></tr>
-          <tr><td><code>REST / GraphQL</code></td><td>—</td><td>Chuẩn thiết kế API</td></tr>
-          <tr><td><code>OLTP / OLAP</code></td><td>Online Transaction / Analytical Processing</td><td>Xử lý giao dịch / phân tích trực tuyến</td></tr>
-          <tr><td><code>MRP</code></td><td>Material Requirements Planning</td><td>Hoạch định nhu cầu vật tư</td></tr>
-          <tr><td><code>S&amp;OP</code></td><td>Sales &amp; Operations Planning</td><td>Hoạch định bán hàng &amp; vận hành</td></tr>
-          <tr><td><code>RBAC / ABAC</code></td><td>Role / Attribute-Based Access Control</td><td>Phân quyền theo vai trò / thuộc tính</td></tr>
-          <tr><td><code>SSO / 2FA</code></td><td>Single Sign-On / Two-Factor Auth</td><td>Đăng nhập một lần / xác thực 2 lớp</td></tr>
-          <tr><td><code>NFR</code></td><td>Non-Functional Requirements</td><td>Yêu cầu phi chức năng</td></tr>
-          <tr><td><code>IoT</code></td><td>Internet of Things</td><td>Thiết bị kết nối (cảm biến nhiệt, GPS…)</td></tr>
-          <tr><td><code>GPS</code></td><td>Global Positioning System</td><td>Định vị toàn cầu</td></tr>
-          <tr><td><code>SCADA</code></td><td>Supervisory Control &amp; Data Acquisition</td><td>Giám sát &amp; thu thập dữ liệu dây chuyền</td></tr>
-          <tr><td><code>AI / ML</code></td><td>Artificial Intelligence / Machine Learning</td><td>Trí tuệ nhân tạo / học máy</td></tr>
-          <tr><td><code>OR</code></td><td>Operations Research</td><td>Vận trù học (bài toán tối ưu)</td></tr>
-          <tr><td><code>RPA</code></td><td>Robotic Process Automation</td><td>Tự động hóa quy trình bằng robot phần mềm</td></tr>
-          <tr><td><code>OCR</code></td><td>Optical Character Recognition</td><td>Nhận dạng ký tự quang học (số hóa chứng từ)</td></tr>
-          <tr><td><code>LLM</code></td><td>Large Language Model</td><td>Mô hình ngôn ngữ lớn</td></tr>
-          <tr><td><code>RAG</code></td><td>Retrieval-Augmented Generation</td><td>Sinh câu trả lời dựa trên truy hồi dữ liệu nội bộ</td></tr>
-          <tr><td><code>NLP</code></td><td>Natural Language Processing</td><td>Xử lý ngôn ngữ tự nhiên</td></tr>
-          <tr><td><code>ROI</code></td><td>Return on Investment</td><td>Tỷ suất hoàn vốn</td></tr>
-          <tr><td><code>A/B testing</code></td><td>—</td><td>So sánh hai phương án để đo hiệu quả</td></tr>
+          <tr><td data-label="Viết tắt"><code>ERP</code></td><td data-label="Viết đầy đủ">Enterprise Resource Planning</td><td data-label="Nghĩa">Hệ thống hoạch định nguồn lực doanh nghiệp</td></tr>
+          <tr><td data-label="Viết tắt"><code>MVP</code></td><td data-label="Viết đầy đủ">Minimum Viable Product</td><td data-label="Nghĩa">Phiên bản khả dụng tối thiểu</td></tr>
+          <tr><td data-label="Viết tắt"><code>API</code></td><td data-label="Viết đầy đủ">Application Programming Interface</td><td data-label="Nghĩa">Giao diện lập trình ứng dụng</td></tr>
+          <tr><td data-label="Viết tắt"><code>BFF</code></td><td data-label="Viết đầy đủ">Backend for Frontend</td><td data-label="Nghĩa">Lớp trung gian phục vụ giao diện</td></tr>
+          <tr><td data-label="Viết tắt"><code>REST / GraphQL</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">Chuẩn thiết kế API</td></tr>
+          <tr><td data-label="Viết tắt"><code>OLTP / OLAP</code></td><td data-label="Viết đầy đủ">Online Transaction / Analytical Processing</td><td data-label="Nghĩa">Xử lý giao dịch / phân tích trực tuyến</td></tr>
+          <tr><td data-label="Viết tắt"><code>MRP</code></td><td data-label="Viết đầy đủ">Material Requirements Planning</td><td data-label="Nghĩa">Hoạch định nhu cầu vật tư</td></tr>
+          <tr><td data-label="Viết tắt"><code>S&amp;OP</code></td><td data-label="Viết đầy đủ">Sales &amp; Operations Planning</td><td data-label="Nghĩa">Hoạch định bán hàng &amp; vận hành</td></tr>
+          <tr><td data-label="Viết tắt"><code>RBAC / ABAC</code></td><td data-label="Viết đầy đủ">Role / Attribute-Based Access Control</td><td data-label="Nghĩa">Phân quyền theo vai trò / thuộc tính</td></tr>
+          <tr><td data-label="Viết tắt"><code>SSO / 2FA</code></td><td data-label="Viết đầy đủ">Single Sign-On / Two-Factor Auth</td><td data-label="Nghĩa">Đăng nhập một lần / xác thực 2 lớp</td></tr>
+          <tr><td data-label="Viết tắt"><code>NFR</code></td><td data-label="Viết đầy đủ">Non-Functional Requirements</td><td data-label="Nghĩa">Yêu cầu phi chức năng</td></tr>
+          <tr><td data-label="Viết tắt"><code>IoT</code></td><td data-label="Viết đầy đủ">Internet of Things</td><td data-label="Nghĩa">Thiết bị kết nối (cảm biến nhiệt, GPS…)</td></tr>
+          <tr><td data-label="Viết tắt"><code>GPS</code></td><td data-label="Viết đầy đủ">Global Positioning System</td><td data-label="Nghĩa">Định vị toàn cầu</td></tr>
+          <tr><td data-label="Viết tắt"><code>SCADA</code></td><td data-label="Viết đầy đủ">Supervisory Control &amp; Data Acquisition</td><td data-label="Nghĩa">Giám sát &amp; thu thập dữ liệu dây chuyền</td></tr>
+          <tr><td data-label="Viết tắt"><code>AI / ML</code></td><td data-label="Viết đầy đủ">Artificial Intelligence / Machine Learning</td><td data-label="Nghĩa">Trí tuệ nhân tạo / học máy</td></tr>
+          <tr><td data-label="Viết tắt"><code>OR</code></td><td data-label="Viết đầy đủ">Operations Research</td><td data-label="Nghĩa">Vận trù học (bài toán tối ưu)</td></tr>
+          <tr><td data-label="Viết tắt"><code>RPA</code></td><td data-label="Viết đầy đủ">Robotic Process Automation</td><td data-label="Nghĩa">Tự động hóa quy trình bằng robot phần mềm</td></tr>
+          <tr><td data-label="Viết tắt"><code>OCR</code></td><td data-label="Viết đầy đủ">Optical Character Recognition</td><td data-label="Nghĩa">Nhận dạng ký tự quang học (số hóa chứng từ)</td></tr>
+          <tr><td data-label="Viết tắt"><code>LLM</code></td><td data-label="Viết đầy đủ">Large Language Model</td><td data-label="Nghĩa">Mô hình ngôn ngữ lớn</td></tr>
+          <tr><td data-label="Viết tắt"><code>RAG</code></td><td data-label="Viết đầy đủ">Retrieval-Augmented Generation</td><td data-label="Nghĩa">Sinh câu trả lời dựa trên truy hồi dữ liệu nội bộ</td></tr>
+          <tr><td data-label="Viết tắt"><code>NLP</code></td><td data-label="Viết đầy đủ">Natural Language Processing</td><td data-label="Nghĩa">Xử lý ngôn ngữ tự nhiên</td></tr>
+          <tr><td data-label="Viết tắt"><code>ROI</code></td><td data-label="Viết đầy đủ">Return on Investment</td><td data-label="Nghĩa">Tỷ suất hoàn vốn</td></tr>
+          <tr><td data-label="Viết tắt"><code>A/B testing</code></td><td data-label="Viết đầy đủ">—</td><td data-label="Nghĩa">So sánh hai phương án để đo hiệu quả</td></tr>
         </tbody>
       </table></div>
     </section>
