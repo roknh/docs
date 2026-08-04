@@ -453,7 +453,7 @@
     </tbody>
   </table>
   <div class="callout mt24"><strong>Material ID (cột xanh)</strong> là <strong>mã final duy nhất hệ thống dùng</strong> — lưu làm khóa chính, in lên tem QR/barcode và tham chiếu trong ERP–kế toán–bảo trì. Class Code, thuộc tính và mô tả NMQ đều là dữ liệu <em>gắn theo</em> Material ID, không phải khóa. Nhờ vậy đổi phân loại / thông số về sau, <strong>mã final không đổi</strong> → lịch sử không gãy.</div>
-  <p style="font-size:13px;color:var(--ink-subtle);margin-top:16px;max-width:820px;"><strong style="color:var(--ink-muted)">Lưu ý:</strong> nếu sau này cần một mã “đọc được nhóm” (VD <code>3.42.38.000042</code> = Class Code + số thứ tự) để tiện in ấn / tra cứu bằng mắt, có thể thêm một cột <em>mã hiển thị</em> riêng — nhưng <strong>Material ID thuần vẫn là khóa chính</strong> của hệ thống, để tránh gãy lịch sử khi vật tư bị tái phân loại.</p>
+  <p style="font-size:13px;color:var(--ink-subtle);margin-top:16px;max-width:860px;"><strong style="color:var(--ink-muted)">Lưu ý:</strong> nếu sau này cần một mã “đọc được nhóm” để tiện in ấn / tra cứu bằng mắt, có thể thêm một cột <em>mã hiển thị</em> riêng. Ví dụ với dòng <strong>Van một chiều</strong> ở bảng trên — Material ID <code>VT00100008</code> ↔ mã hiển thị <code style="color:var(--primary)">5.19.75.000042</code> = Class Code <code>5.19.75</code> (Phụ tùng › Van › Van một chiều) + số thứ tự <code>000042</code>, nhìn là biết ngay nhóm vật tư. Tuy vậy <strong>Material ID thuần (<code>VT00100008</code>) vẫn là khóa chính</strong> của hệ thống, để tránh gãy lịch sử khi vật tư bị tái phân loại.</p>
 </div></section>
 
 <!-- Lộ trình -->
