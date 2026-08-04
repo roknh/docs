@@ -103,6 +103,15 @@
   .req{color:var(--success); font-weight:600;} .opt{color:var(--ink-subtle);}
   .pill{display:inline-block; padding:2px 8px; font-size:12px; background:var(--surface-1); border:1px solid var(--hairline);}
 
+  /* Tem / nhãn kho */
+  .label{border:1px solid var(--ink); background:var(--canvas); padding:20px; display:flex; gap:20px; align-items:flex-start; max-width:440px;}
+  .label .qr{width:104px; height:104px; min-width:104px; border:1px solid var(--ink); background-image:conic-gradient(var(--ink) 90deg,#fff 0 180deg,var(--ink) 0 270deg,#fff 0); background-size:15px 15px; background-position:center;}
+  .label .qr-cap{font-size:11px; color:var(--ink-subtle); margin-top:6px; text-align:center; font-family:"IBM Plex Mono",monospace; letter-spacing:0;}
+  .label .l-id{font-family:"IBM Plex Mono",monospace; font-size:22px; font-weight:600; color:var(--ink); letter-spacing:0; line-height:1;}
+  .label .l-nmq{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink); margin:10px 0; letter-spacing:0; line-height:1.4;}
+  .label .l-meta{font-size:12px; color:var(--ink-muted); line-height:1.6;}
+  .label .l-meta strong{font-family:"IBM Plex Mono",monospace; color:var(--primary); letter-spacing:0;}
+
   /* before/after */
   .ba .before{color:var(--ink-subtle);}
   .ba .after{font-family:"IBM Plex Mono",monospace; letter-spacing:0; color:var(--ink);}
@@ -453,13 +462,61 @@
     </tbody>
   </table>
   <div class="callout mt24"><strong>Material ID (cột xanh)</strong> là <strong>mã final duy nhất hệ thống dùng</strong> — lưu làm khóa chính, in lên tem QR/barcode và tham chiếu trong ERP–kế toán–bảo trì. Class Code, thuộc tính và mô tả NMQ đều là dữ liệu <em>gắn theo</em> Material ID, không phải khóa. Nhờ vậy đổi phân loại / thông số về sau, <strong>mã final không đổi</strong> → lịch sử không gãy.</div>
-  <p style="font-size:13px;color:var(--ink-subtle);margin-top:16px;max-width:860px;"><strong style="color:var(--ink-muted)">Lưu ý:</strong> nếu sau này cần một mã “đọc được nhóm” để tiện in ấn / tra cứu bằng mắt, có thể thêm một cột <em>mã hiển thị</em> riêng. Ví dụ với dòng <strong>Van một chiều</strong> ở bảng trên — Material ID <code>VT00100008</code> ↔ mã hiển thị <code style="color:var(--primary)">5.19.75.000042</code> = Class Code <code>5.19.75</code> (Phụ tùng › Van › Van một chiều) + số thứ tự <code>000042</code>, nhìn là biết ngay nhóm vật tư. Tuy vậy <strong>Material ID thuần (<code>VT00100008</code>) vẫn là khóa chính</strong> của hệ thống, để tránh gãy lịch sử khi vật tư bị tái phân loại.</p>
+  <p style="font-size:13px;color:var(--ink-subtle);margin-top:16px;max-width:860px;"><strong style="color:var(--ink-muted)">Lưu ý:</strong> nếu sau này cần một mã “đọc được nhóm” để tiện in ấn / tra cứu bằng mắt, có thể thêm một cột <em>mã hiển thị</em> riêng. Ví dụ với dòng <strong>Van một chiều</strong> ở bảng trên — Material ID <code>VT00100008</code> ↔ mã hiển thị <code style="color:var(--primary)">5.19.75.000042</code>. Trong đó phần đầu <code>5.19.75</code> là Class Code (Phụ tùng › Van › Van một chiều) — <em>nhìn tiền tố này là biết ngay nhóm vật tư</em>; phần đuôi <code>000042</code> chỉ là số thứ tự chạy trong nhóm để phân biệt từng item. Tuy vậy <strong>Material ID thuần (<code>VT00100008</code>) vẫn là khóa chính</strong> của hệ thống, để tránh gãy lịch sử khi vật tư bị tái phân loại.</p>
+</div></section>
+
+<!-- In tem / nhãn kho -->
+<section class="block alt" id="in-tem"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">07 — In tem / nhãn kho</p>
+    <h2>Quy tắc in tem</h2>
+    <p>Không gộp Material ID + Class Code + số thứ tự thành một chuỗi định danh duy nhất. In <strong>tách trường</strong> trên cùng một tem; mã QR/barcode <strong>chỉ chứa Material ID</strong>.</p>
+  </div>
+  <div class="subgrid">
+    <div>
+      <div class="label">
+        <div>
+          <div class="qr"></div>
+          <div class="qr-cap">QR = VT00100008</div>
+        </div>
+        <div>
+          <div class="l-id">VT00100008</div>
+          <div class="l-nmq">VAN; một chiều; DN125;<br>GG-25/A216WCB</div>
+          <div class="l-meta">Nhóm <strong>5.19.75.000042</strong><br>Phụ tùng › Van › Van một chiều<br>ĐVT: Cái</div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--ink-subtle);margin-top:10px;">▲ Tem mẫu — mã QR (minh họa) chỉ mã hóa Material ID <code>VT00100008</code>.</p>
+    </div>
+    <div>
+      <div class="callout">
+        <strong>① QR / barcode chỉ mã hóa Material ID.</strong><br>Máy quét đọc khóa → hệ thống tra ra toàn bộ thông tin. Class Code đổi cũng <em>không phải in lại tem</em>.
+      </div>
+      <div class="callout" style="margin-top:16px;">
+        <strong>② Phần chữ in tách dòng cho người đọc.</strong><br>Material ID (nổi bật) · mô tả NMQ · mã hiển thị nhóm · ĐVT — các dòng riêng biệt, <em>không nối liền thành một chuỗi</em>.
+      </div>
+    </div>
+  </div>
+  <div class="mt24" style="margin-top:32px;">
+    <p class="eyebrow">Vì sao không gộp thành một chuỗi định danh</p>
+    <table>
+      <thead><tr><th style="width:150px">Thành phần</th><th style="width:190px">Vai trò</th><th>Tính chất</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">VT00100008</td><td>Khóa định danh</td><td><strong>Bất biến</strong> — không bao giờ đổi</td></tr>
+        <tr><td class="mono">5.19.75</td><td>Class Code (phân loại)</td><td><strong>Khả biến</strong> — đổi khi vật tư được tái phân loại</td></tr>
+        <tr><td class="mono">000042</td><td>Số thứ tự trong nhóm</td><td>Gắn theo Class Code</td></tr>
+      </tbody>
+    </table>
+    <ul class="clean mt16" style="font-size:14px;color:var(--ink-muted);">
+      <li><strong style="color:var(--ink)">Xung đột bất biến ↔ khả biến:</strong> chuỗi gộp có chứa Class Code sẽ đổi khi tái phân loại → mất chính tính bất biến mà khóa cần có.</li>
+      <li><strong style="color:var(--ink)">Trùng vai trò định danh:</strong> Material ID đã định danh duy nhất; mã hiển thị chỉ là cách “đọc được nhóm”. Gộp cả hai = định danh 2 lần, thừa và dễ nhập sai.</li>
+    </ul>
+  </div>
 </div></section>
 
 <!-- Lộ trình -->
-<section class="block alt" id="lo-trinh"><div class="container">
+<section class="block" id="lo-trinh"><div class="container">
   <div class="sec-head">
-    <p class="eyebrow">07 — Triển khai</p>
+    <p class="eyebrow">08 — Triển khai</p>
     <h2>Lộ trình 6 bước</h2>
   </div>
   <div class="steps">
