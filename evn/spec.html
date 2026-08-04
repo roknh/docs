@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bộ mã VTTB EVN — Chuẩn mã hóa danh mục</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#0f62fe; --on-primary:#ffffff;
+    --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+    --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+    --hairline:#e0e0e0; --hairline-strong:#161616;
+    --blue-60:#0043ce; --blue-80:#002d9c;
+    --success:#24a148; --warning:#f1c21b; --error:#da1e28;
+    --inverse-canvas:#161616; --inverse-surface-1:#262626;
+    --inverse-ink:#ffffff; --inverse-ink-muted:#c6c6c6;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--canvas); color:var(--ink);
+    font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+    font-weight:400; font-size:16px; line-height:1.5; letter-spacing:0.16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  code,.mono{font-family:"IBM Plex Mono",monospace; letter-spacing:0;}
+  a{color:var(--primary); text-decoration:none;}
+  a:hover{color:var(--blue-60); text-decoration:underline;}
+
+  .container{max-width:1056px; margin:0 auto; padding:0 24px;}
+
+  /* Utility bar */
+  .utility{background:var(--surface-1); color:var(--ink-muted); height:32px; border-bottom:1px solid var(--hairline);}
+  .utility .container{height:32px; display:flex; align-items:center; justify-content:space-between; font-size:12px; letter-spacing:0.32px;}
+
+  /* Top nav */
+  .topnav{background:var(--canvas); border-bottom:1px solid var(--hairline); position:sticky; top:0; z-index:20;}
+  .topnav .container{height:48px; display:flex; align-items:center; gap:24px; font-size:14px;}
+  .brand{font-weight:600; letter-spacing:0.16px;}
+  .brand .b{color:var(--primary);}
+  .topnav nav{display:flex; gap:24px; margin-left:auto;}
+  .topnav nav a{color:var(--ink-muted);}
+  .topnav nav a:hover{color:var(--ink); text-decoration:none;}
+
+  /* Hero */
+  .hero{border-bottom:1px solid var(--hairline); padding:72px 0 64px;}
+  .eyebrow{font-size:14px; color:var(--ink-muted); margin:0 0 16px; display:flex; align-items:center; gap:10px;}
+  .eyebrow::before{content:""; width:16px; height:2px; background:var(--primary); display:inline-block;}
+  .hero h1{font-weight:300; font-size:60px; line-height:1.17; letter-spacing:-0.4px; margin:0 0 20px;}
+  .hero p.lead{font-size:20px; line-height:1.4; color:var(--ink-muted); max-width:760px; margin:0 0 32px;}
+  .meta{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline); max-width:760px;}
+  .meta div{padding:16px 24px; border-right:1px solid var(--hairline); flex:1; min-width:150px;}
+  .meta div:last-child{border-right:none;}
+  .meta .k{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle); margin-bottom:6px;}
+  .meta .v{font-size:16px; font-weight:600;}
+  .badge{display:inline-block; padding:4px 10px; font-size:12px; letter-spacing:0.32px; font-weight:600;}
+  .badge.draft{background:#fcf4d6; color:#8e6a00;}
+
+  /* Sections */
+  section.block{padding:72px 0; border-bottom:1px solid var(--hairline);}
+  section.block.alt{background:var(--surface-1);}
+  .sec-head{margin-bottom:40px;}
+  .sec-head h2{font-weight:300; font-size:42px; line-height:1.2; margin:0 0 12px;}
+  .sec-head p{font-size:18px; color:var(--ink-muted); margin:0; max-width:720px;}
+
+  /* Cards grid */
+  .grid{display:grid; gap:1px; background:var(--hairline); border:1px solid var(--hairline);}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr);}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr);}
+  .card{background:var(--canvas); padding:24px;}
+  .card .num{font-size:12px; letter-spacing:0.32px; color:var(--primary); font-weight:600; margin-bottom:12px;}
+  .card h3{font-size:20px; font-weight:400; margin:0 0 8px;}
+  .card p{font-size:14px; line-height:1.5; color:var(--ink-muted); margin:0;}
+
+  /* Layer diagram */
+  .layers{border:1px solid var(--hairline);}
+  .layer{display:flex; align-items:stretch; border-bottom:1px solid var(--hairline); background:var(--canvas);}
+  .layer:last-child{border-bottom:none;}
+  .layer .lnum{width:64px; min-width:64px; background:var(--primary); color:#fff; font-weight:300; font-size:28px; display:flex; align-items:center; justify-content:center;}
+  .layer.soft .lnum{background:var(--ink);}
+  .layer .lbody{padding:20px 24px; flex:1;}
+  .layer .ltitle{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle); margin-bottom:6px;}
+  .layer .lname{font-size:20px; font-weight:400;}
+  .layer .lcode{font-family:"IBM Plex Mono",monospace; color:var(--primary); font-size:18px; letter-spacing:0;}
+  .layer .lnote{margin-left:auto; align-self:center; padding:20px 24px; font-size:13px; color:var(--ink-muted); text-align:right; max-width:280px;}
+
+  /* Code sample block */
+  .codeblock{background:var(--ink); color:#f4f4f4; padding:24px; font-family:"IBM Plex Mono",monospace; font-size:14px; line-height:1.7; letter-spacing:0; overflow-x:auto; white-space:pre;}
+  .codeblock .c-blue{color:#78a9ff;} .codeblock .c-dim{color:#8d8d8d;}
+
+  /* Tables */
+  table{width:100%; border-collapse:collapse; font-size:14px; background:var(--canvas); border:1px solid var(--hairline);}
+  th,td{text-align:left; padding:12px 16px; border-bottom:1px solid var(--hairline); vertical-align:top;}
+  thead th{background:var(--ink); color:#fff; font-weight:600; letter-spacing:0.16px; border-bottom:none;}
+  tbody tr:nth-child(even){background:var(--surface-1);}
+  tbody tr:last-child td{border-bottom:none;}
+  td.mono,th.mono{font-family:"IBM Plex Mono",monospace; letter-spacing:0;}
+  .final{background:#edf5ff !important; color:var(--primary); font-weight:600; border-left:3px solid var(--primary);}
+  thead th.final{background:var(--primary) !important; color:#fff; border-left:3px solid var(--blue-80);}
+  .req{color:var(--success); font-weight:600;} .opt{color:var(--ink-subtle);}
+  .pill{display:inline-block; padding:2px 8px; font-size:12px; background:var(--surface-1); border:1px solid var(--hairline);}
+
+  /* before/after */
+  .ba .before{color:var(--ink-subtle);}
+  .ba .after{font-family:"IBM Plex Mono",monospace; letter-spacing:0; color:var(--ink);}
+
+  /* Roadmap */
+  .steps{border:1px solid var(--hairline);}
+  .step{display:flex; gap:20px; padding:20px 24px; border-bottom:1px solid var(--hairline); background:var(--canvas);}
+  .step:last-child{border-bottom:none;}
+  .step .s-n{width:40px; min-width:40px; height:40px; border:1px solid var(--primary); color:var(--primary); font-size:16px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .step .s-t{font-size:16px; font-weight:600; margin-bottom:4px;}
+  .step .s-d{font-size:14px; color:var(--ink-muted);}
+
+  /* callout */
+  .callout{border-left:4px solid var(--primary); background:var(--surface-1); padding:20px 24px; font-size:15px;}
+  .callout strong{color:var(--ink);}
+
+  /* CTA */
+  .cta{background:var(--primary); color:#fff; padding:64px 0;}
+  .cta h2{font-weight:300; font-size:42px; line-height:1.2; margin:0 0 16px;}
+  .cta p{font-size:18px; color:#e8efff; margin:0 0 32px; max-width:640px;}
+  .btn{display:inline-block; padding:14px 20px; font-size:14px; letter-spacing:0.16px; border:1px solid transparent; cursor:pointer;}
+  .btn-white{background:#fff; color:var(--primary);}
+  .btn-white:hover{background:#e8efff; text-decoration:none;}
+  .btn-outline{border-color:rgba(255,255,255,.6); color:#fff; margin-left:12px;}
+  .btn-outline:hover{background:rgba(255,255,255,.1); text-decoration:none; color:#fff;}
+
+  /* Footer */
+  footer{background:var(--inverse-canvas); color:var(--inverse-ink-muted); padding:56px 0 40px;}
+  footer .cols{display:flex; gap:64px; flex-wrap:wrap; margin-bottom:40px;}
+  footer .brand-lg{font-size:24px; font-weight:600; color:#fff; margin-bottom:8px;}
+  footer h4{color:#fff; font-size:12px; letter-spacing:0.32px; margin:0 0 12px; text-transform:none;}
+  footer ul{list-style:none; margin:0; padding:0; font-size:14px;}
+  footer li{margin-bottom:8px; color:var(--inverse-ink-muted);}
+  footer .fine{border-top:1px solid var(--inverse-surface-1); padding-top:24px; font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);}
+
+  .subgrid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  .mt24{margin-top:24px;} .mt16{margin-top:16px;}
+  ul.clean{margin:0; padding-left:20px;} ul.clean li{margin-bottom:8px;}
+
+  @media (max-width:820px){
+    .hero h1{font-size:40px;} .sec-head h2,.cta h2{font-size:32px;}
+    .grid.cols-3,.grid.cols-2{grid-template-columns:1fr;}
+    .subgrid{grid-template-columns:1fr;}
+    .layer{flex-wrap:wrap;} .layer .lnote{margin-left:0; text-align:left; max-width:none; padding-top:0;}
+    .topnav nav{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Utility bar -->
+<div class="utility"><div class="container"><span>Tập đoàn Điện lực Việt Nam — EVN</span><span>Tài liệu trao đổi khách hàng · Nội bộ</span></div></div>
+
+<!-- Top nav -->
+<header class="topnav"><div class="container">
+  <span class="brand"><span class="b">EVN</span> · VTTB Coding Standard</span>
+  <nav>
+    <a href="#boi-canh">Bối cảnh</a>
+    <a href="#kien-truc">Kiến trúc</a>
+    <a href="#thuoc-tinh">Thuộc tính</a>
+    <a href="#lo-trinh">Lộ trình</a>
+  </nav>
+</div></header>
+
+<!-- Hero -->
+<div class="hero"><div class="container">
+  <p class="eyebrow">Chuẩn mã hóa danh mục vật tư thiết bị</p>
+  <h1>Bộ mã VTTB EVN</h1>
+  <p class="lead">Chuẩn hóa danh mục vật tư kho theo mô hình quốc tế eCl@ss + NMQ — phục vụ mua sắm, tồn kho, chống trùng và báo cáo trên toàn hệ thống.</p>
+  <div class="meta">
+    <div><div class="k">PHIÊN BẢN</div><div class="v">1.0</div></div>
+    <div><div class="k">NGÀY</div><div class="v">04/08/2026</div></div>
+    <div><div class="k">QUY MÔ</div><div class="v">~89.333 mã</div></div>
+    <div><div class="k">TRẠNG THÁI</div><div class="v"><span class="badge draft">🟡 Chờ khách confirm</span></div></div>
+  </div>
+  <p style="font-size:13px;color:var(--ink-subtle);margin-top:20px;max-width:760px;line-height:1.6;"><strong style="color:var(--ink-muted)">Phạm vi:</strong> tài liệu này chuẩn hóa <strong>(A) Mã danh mục vật tư</strong> (Material Master). Song song tồn tại <strong>(B) Mã định danh thiết bị lắp đặt — Asset tag</strong> (kiểu KKS / RDS-PP / IEC 81346): định danh <em>từng thiết bị vật lý</em> trên lưới theo vị trí lắp đặt &amp; lý lịch bảo trì (VD <code>10LAB10CT001</code>). (B) là hệ thống riêng, <strong>ngoài phạm vi</strong> tài liệu này.</p>
+</div></div>
+
+<!-- Bối cảnh -->
+<section class="block" id="boi-canh"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">01 — Bối cảnh &amp; mục tiêu</p>
+    <h2>Vì sao cần chuẩn hóa</h2>
+    <p>Bộ mã hiện tại có cấu trúc 4 cấp <code>N1.N2.N3.N4</code> (VD <code>3.42.02.001</code>), đã đúng tinh thần “nhóm + số thứ tự”, nhưng còn ba điểm yếu cốt lõi cần khắc phục.</p>
+  </div>
+  <div class="grid cols-3">
+    <div class="card"><div class="num">ĐIỂM YẾU 01</div><h3>Mã gắn chết vào nhóm</h3><p>Số thứ tự <code>.001</code> phụ thuộc nhóm → khi tái phân loại phải đổi mã → gãy lịch sử kho, kế toán, phiếu xuất–nhập.</p></div>
+    <div class="card"><div class="num">ĐIỂM YẾU 02</div><h3>Thông số nằm trong tên</h3><p>Toàn bộ thông số kỹ thuật nhồi vào cột “Tên” dạng text tự do → khó lọc, khó so sánh, khó phát hiện trùng lặp.</p></div>
+    <div class="card"><div class="num">ĐIỂM YẾU 03</div><h3>Thiếu từ điển thuộc tính</h3><p>Chưa có bộ thuộc tính chuẩn theo từng nhóm → không so sánh giá, gộp trùng hay phân tích tồn kho bằng dữ liệu được.</p></div>
+  </div>
+  <div class="callout mt24"><strong>Định hướng:</strong> giữ và tinh chỉnh cấu trúc phân loại hiện có theo chuẩn quốc tế — <strong>không đập đi xây lại</strong>. Bộ 4 cấp EVN đã gần trùng khớp mô hình eCl@ss (4 cấp, 2 chữ số/cấp).</div>
+</div></section>
+
+<!-- Kiến trúc 4 lớp -->
+<section class="block alt" id="kien-truc"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">02 — Kiến trúc</p>
+    <h2>Bốn lớp tách bạch</h2>
+    <p>Nguyên tắc vàng: khóa chính là mã định danh <em>vô nghĩa</em>; mọi thông tin “thông minh” nằm ở các lớp thuộc tính tra cứu được — không nhồi vào khóa chính.</p>
+  </div>
+  <div class="layers">
+    <div class="layer">
+      <div class="lnum">①</div>
+      <div class="lbody"><div class="ltitle">MÃ ĐỊNH DANH — MATERIAL ID</div><div class="lname"><span class="lcode">VT00042517</span></div></div>
+      <div class="lnote">Khóa chính · bất biến · vô nghĩa · không tái sử dụng</div>
+    </div>
+    <div class="layer">
+      <div class="lnum">②</div>
+      <div class="lbody"><div class="ltitle">MÃ PHÂN LOẠI — CLASS CODE</div><div class="lname"><span class="lcode">3.42.38</span> &nbsp;Nhóm › Phân nhóm › Loại</div></div>
+      <div class="lnote">Thuộc tính · có thể thay đổi khi tái phân loại</div>
+    </div>
+    <div class="layer soft">
+      <div class="lnum">③</div>
+      <div class="lbody"><div class="ltitle">THUỘC TÍNH CHUẨN — ATTRIBUTES</div><div class="lname">điện áp = 24kV · dòng = 630A · pha = 3 …</div></div>
+      <div class="lnote">Lọc · so sánh · chống trùng bằng dữ liệu</div>
+    </div>
+    <div class="layer soft">
+      <div class="lnum">④</div>
+      <div class="lbody"><div class="ltitle">MÔ TẢ NMQ</div><div class="lname">“MÁY CẮT; SF6; 3 pha; 24kV; 630A …”</div></div>
+      <div class="lnote">Danh từ – Bổ nghĩa – Định tính · đọc hiểu tức thì</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- Lớp 1 + 2 -->
+<section class="block"><div class="container">
+  <div class="subgrid">
+    <div>
+      <div class="sec-head" style="margin-bottom:24px;">
+        <p class="eyebrow">Lớp ① — Material ID</p>
+        <h2 style="font-size:32px;">Mã định danh bất biến</h2>
+      </div>
+      <table>
+        <tbody>
+          <tr><td style="width:38%"><strong>Định dạng</strong></td><td><code>VT</code> + 8 chữ số → <code>VT00042517</code></td></tr>
+          <tr><td><strong>Cấp phát</strong></td><td>Tuần tự toàn hệ thống, từ một bộ đếm trung tâm</td></tr>
+          <tr><td><strong>Ý nghĩa</strong></td><td>Không mang thông tin nào</td></tr>
+          <tr><td><strong>Bất biến</strong></td><td>Không đổi trọn đời, kể cả khi đổi nhóm / thông số</td></tr>
+          <tr><td><strong>Tái sử dụng</strong></td><td>Không — mã “chết” bị khóa vĩnh viễn</td></tr>
+          <tr><td><strong>Ứng dụng</strong></td><td>In tem QR/barcode; khóa liên kết ERP–kế toán–bảo trì</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="sec-head" style="margin-bottom:24px;">
+        <p class="eyebrow">Lớp ② — Class Code</p>
+        <h2 style="font-size:32px;">Mã phân loại 3 cấp</h2>
+      </div>
+      <div class="codeblock"><span class="c-blue">3</span> . <span class="c-blue">42</span> . <span class="c-blue">38</span>
+<span class="c-dim">│     │      └─ N3 Loại       → Máy cắt trung áp</span>
+<span class="c-dim">│     └──────── N2 Phân nhóm  → Máy cắt &amp; phụ kiện</span>
+<span class="c-dim">└────────────── N1 Nhóm       → VTTB điện</span></div>
+      <ul class="clean mt16" style="font-size:14px; color:var(--ink-muted);">
+        <li>Mỗi cấp có từ điển giá trị cố định (controlled list).</li>
+        <li>Chừa số nhảy cách để chèn nhóm mới về sau.</li>
+        <li>Cấp N4 cũ bỏ vai trò định danh → thay bằng Material ID.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt24">
+    <p class="eyebrow" style="margin-top:32px;">Danh mục nhóm gốc N1</p>
+    <table>
+      <thead><tr><th class="mono" style="width:80px">Mã</th><th>Tên nhóm</th><th class="mono" style="width:80px">Mã</th><th>Tên nhóm</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">1</td><td>Nhiên liệu, dầu mỡ, hóa chất</td><td class="mono">4</td><td>VTTB khác</td></tr>
+        <tr><td class="mono">2</td><td>VTTB cơ khí</td><td class="mono">5</td><td>Phụ tùng thay thế</td></tr>
+        <tr><td class="mono">3</td><td>VTTB điện</td><td class="mono">6</td><td>Văn phòng phẩm</td></tr>
+        <tr><td class="mono">8</td><td>Công cụ dụng cụ</td><td class="mono"></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></section>
+
+<!-- Lớp 3 thuộc tính -->
+<section class="block alt" id="thuoc-tinh"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">03 — Lớp ③ Từ điển thuộc tính</p>
+    <h2>Property Dictionary</h2>
+    <p>Mỗi nhóm N3 định nghĩa sẵn danh sách thuộc tính + đơn vị + giá trị hợp lệ. Ví dụ nhóm <code>3.42.38 — Máy cắt trung áp</code>:</p>
+  </div>
+  <table>
+    <thead><tr><th style="width:44px">#</th><th>Thuộc tính</th><th style="width:80px">Đơn vị</th><th style="width:100px">Bắt buộc</th><th>Giá trị hợp lệ (ví dụ)</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td>Công nghệ dập hồ quang</td><td>—</td><td><span class="req">✓ Bắt buộc</span></td><td>SF6 / Chân không / Khí / Dầu</td></tr>
+      <tr><td class="mono">2</td><td>Điện áp định mức</td><td>kV</td><td><span class="req">✓ Bắt buộc</span></td><td>12 / 24 / 36</td></tr>
+      <tr><td class="mono">3</td><td>Dòng định mức</td><td>A</td><td><span class="req">✓ Bắt buộc</span></td><td>630 / 1250 / 2000</td></tr>
+      <tr><td class="mono">4</td><td>Dòng cắt ngắn mạch</td><td>kA</td><td><span class="req">✓ Bắt buộc</span></td><td>16 / 25 / 31.5</td></tr>
+      <tr><td class="mono">5</td><td>Số pha</td><td>pha</td><td><span class="req">✓ Bắt buộc</span></td><td>1 / 3</td></tr>
+      <tr><td class="mono">6</td><td>Kiểu lắp đặt</td><td>—</td><td><span class="req">✓ Bắt buộc</span></td><td>Trong nhà / Ngoài trời</td></tr>
+      <tr><td class="mono">7</td><td>Tần số</td><td>Hz</td><td><span class="opt">Tùy chọn</span></td><td>50 / 60</td></tr>
+      <tr><td class="mono">8</td><td>Hãng sản xuất</td><td>—</td><td><span class="opt">Tùy chọn</span></td><td>Siemens / ABB / Schneider…</td></tr>
+      <tr><td class="mono">9</td><td>Model / Mã hãng</td><td>—</td><td><span class="opt">Tùy chọn</span></td><td>3AP1FG / VD4…</td></tr>
+      <tr><td class="mono">10</td><td>Tiêu chuẩn áp dụng</td><td>—</td><td><span class="opt">Tùy chọn</span></td><td>IEC 62271-100…</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<!-- Lớp 4 NMQ -->
+<section class="block"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">04 — Lớp ④ Mô tả NMQ</p>
+    <h2>Noun – Modifier – Qualifier</h2>
+    <p>Công thức cố định: <code>DANH TỪ CHÍNH; công nghệ; số pha; điện áp; dòng; dòng cắt; kiểu lắp; Hãng Model</code>. Danh từ đứng đầu → sort tự nhiên; thứ tự thông số cố định → tự phát hiện trùng.</p>
+  </div>
+  <table class="ba">
+    <thead><tr><th style="width:50%">Hiện tại (lộn xộn)</th><th>Chuẩn NMQ</th></tr></thead>
+    <tbody>
+      <tr><td class="before">Tủ truyền động máy cắt 3AP1FA; 1 pha; 22kV</td><td class="after">TỦ TRUYỀN ĐỘNG MÁY CẮT; 1 pha; 22kV; Siemens 3AP1FA</td></tr>
+      <tr><td class="before">Tủ truyền động máy cắt BLK-222; 3 pha; 22kV</td><td class="after">TỦ TRUYỀN ĐỘNG MÁY CẮT; 3 pha; 22kV; ABB BLK-222</td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<!-- Ví dụ bản ghi -->
+<section class="block alt"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">05 — Minh họa</p>
+    <h2>Một bản ghi hoàn chỉnh</h2>
+  </div>
+  <table>
+    <tbody>
+      <tr><td style="width:34%"><strong>① Material ID</strong></td><td class="mono">VT00042517</td></tr>
+      <tr><td><strong>② Class Code</strong></td><td class="mono">3.42.38 &nbsp;<span style="font-family:inherit;color:var(--ink-muted)">(VTTB điện › Máy cắt › Máy cắt trung áp)</span></td></tr>
+      <tr><td><strong>③ Thuộc tính</strong></td><td>Công nghệ=SF6; Điện áp=24kV; Dòng=630A; Dòng cắt=25kA; Pha=3; Lắp=Ngoài trời; Hãng=Siemens; Model=3AP1FG</td></tr>
+      <tr><td><strong>④ Mô tả NMQ</strong></td><td class="mono">MÁY CẮT; SF6; 3 pha; 24kV; 630A; 25kA; ngoài trời; Siemens 3AP1FG</td></tr>
+      <tr><td><strong>ĐVT</strong></td><td>Cái</td></tr>
+      <tr><td><strong>Chiều quản lý</strong></td><td><span class="pill">Trung áp</span> <span class="pill">ABC: A</span> <span class="pill">Đang dùng</span> <span class="pill">EVN</span></td></tr>
+    </tbody>
+  </table>
+</div></section>
+
+<!-- 10 mã mẫu -->
+<section class="block" id="ma-mau"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">06 — Mã mẫu thực tế</p>
+    <h2>10 vật tư ngẫu nhiên → mã chuẩn</h2>
+    <p>Lấy ngẫu nhiên 10 item từ dữ liệu <code>cates.xlsx</code> (đa dạng nhóm), chuẩn hóa hoàn chỉnh 4 lớp: Material ID · Class Code · Thuộc tính · Mô tả NMQ.</p>
+  </div>
+  <table>
+    <thead><tr>
+      <th class="final mono" style="width:132px">Material ID<div style="font-family:'IBM Plex Sans',sans-serif;font-weight:400;font-size:11px;color:#d0e2ff;margin-top:3px;letter-spacing:0.32px">mã final · dùng cho hệ thống</div></th>
+      <th style="width:150px">Class Code</th>
+      <th style="width:52px">ĐVT</th>
+      <th>Mô tả gốc → NMQ chuẩn &amp; thuộc tính</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td class="mono final">VT00100001</td>
+        <td class="mono">4.88.46<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">Cao su › Ống cao su chịu áp lực</div></td>
+        <td>Mét</td>
+        <td>
+          <div class="before" style="font-size:13px">Ống cao su chịu áp lực; d103xD127mm; Nhiệt độ -60 đến 250 độ C</div>
+          <div class="after" style="margin:4px 0">ỐNG CAO SU; chịu áp lực; d103×D127mm; −60…250°C</div>
+          <div style="font-size:12px;color:var(--ink-muted)">d_trong=103mm · D_ngoài=127mm · nhiệt độ=−60…250°C</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100002</td>
+        <td class="mono">5.77.93<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">Phụ tùng NĐ than 622MW › phần điện</div></td>
+        <td>Cái</td>
+        <td>
+          <div class="before" style="font-size:13px">Cảm biến đo TSS EXT-TURB-L; 0-1500mg/l; 5%</div>
+          <div class="after" style="margin:4px 0">CẢM BIẾN; đo TSS; 0–1500mg/l; ±5%; EXT-TURB-L</div>
+          <div style="font-size:12px;color:var(--ink-muted)">đại lượng=TSS · dải đo=0–1500mg/l · sai số=±5% · model=EXT-TURB-L</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100003</td>
+        <td class="mono">8.05.60<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">CCDC › Mũi khoan các loại</div></td>
+        <td>Cái</td>
+        <td>
+          <div class="before" style="font-size:13px">Mũi khoan ta rô inox; M8</div>
+          <div class="after" style="margin:4px 0">MŨI KHOAN; ta rô; inox; M8</div>
+          <div style="font-size:12px;color:var(--ink-muted)">kiểu=ta rô · vật liệu gia công=inox · ren=M8</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100004</td>
+        <td class="mono">2.11.05<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">Thép cây tròn › hợp kim đặc</div></td>
+        <td>m · kg</td>
+        <td>
+          <div class="before" style="font-size:13px">Thép tròn; D15x6000mm; inox 316</div>
+          <div class="after" style="margin:4px 0">THÉP TRÒN; inox 316; D15×6000mm</div>
+          <div style="font-size:12px;color:var(--ink-muted)">đường kính=15mm · chiều dài=6000mm · vật liệu=inox 316</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100005</td>
+        <td class="mono">8.25.74<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">CCDC cầm tay › Tuốc nơ vít dẹt</div></td>
+        <td>Cái</td>
+        <td>
+          <div class="before" style="font-size:13px">Tuốc nơ vít dẹ 2 (cạnh)t; 65-197; 8×200mm</div>
+          <div class="after" style="margin:4px 0">TUỐC NƠ VÍT; dẹt; 8×200mm; 65-197</div>
+          <div style="font-size:12px;color:var(--ink-muted)">kiểu đầu=dẹt · kích thước=8×200mm · mã=65-197</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100006</td>
+        <td class="mono">5.17.31<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">VT làm kín › Phớt cơ khí</div></td>
+        <td>Cái</td>
+        <td>
+          <div class="before" style="font-size:13px">Phớt; d45xD68x8mm; cao su</div>
+          <div class="after" style="margin:4px 0">PHỚT; cao su; d45×D68×8mm</div>
+          <div style="font-size:12px;color:var(--ink-muted)">d_trong=45mm · D_ngoài=68mm · dày=8mm · vật liệu=cao su</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100007</td>
+        <td class="mono">5.23.05<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">Phụ tùng máy nén khí</div></td>
+        <td>Cái</td>
+        <td>
+          <div class="before" style="font-size:13px">Bơm cấp dầu; 093044</div>
+          <div class="after" style="margin:4px 0">BƠM; cấp dầu; P/N 093044</div>
+          <div style="font-size:12px;color:var(--ink-muted)">chức năng=cấp dầu · mã hãng=093044</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100008</td>
+        <td class="mono">5.19.75<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">Các loại van › Van một chiều</div></td>
+        <td>Cái</td>
+        <td>
+          <div class="before" style="font-size:13px">Van một chiều; DN125; vật liệu: GG-25/A216WCB</div>
+          <div class="after" style="margin:4px 0">VAN; một chiều; DN125; GG-25/A216WCB</div>
+          <div style="font-size:12px;color:var(--ink-muted)">loại=một chiều · DN=125 · vật liệu thân=GG-25/A216WCB</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100009</td>
+        <td class="mono">2.57.01<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">Đồng ống › Ống đồng đỏ</div></td>
+        <td>kg</td>
+        <td>
+          <div class="before" style="font-size:13px">Ống đồng đỏ; D45mm</div>
+          <div class="after" style="margin:4px 0">ỐNG ĐỒNG; đỏ; D45mm</div>
+          <div style="font-size:12px;color:var(--ink-muted)">vật liệu=đồng đỏ · đường kính=45mm</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="mono final">VT00100010</td>
+        <td class="mono">4.20.02<div style="font-family:inherit;font-size:12px;color:var(--ink-subtle);margin-top:4px">Gạch, ngói, kính › Gạch xây dựng</div></td>
+        <td>M²</td>
+        <td>
+          <div class="before" style="font-size:13px">Gạch ceramic; 400x400mm</div>
+          <div class="after" style="margin:4px 0">GẠCH; ceramic; 400×400mm</div>
+          <div style="font-size:12px;color:var(--ink-muted)">loại=ceramic · kích thước=400×400mm</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout mt24"><strong>Material ID (cột xanh)</strong> là <strong>mã final duy nhất hệ thống dùng</strong> — lưu làm khóa chính, in lên tem QR/barcode và tham chiếu trong ERP–kế toán–bảo trì. Class Code, thuộc tính và mô tả NMQ đều là dữ liệu <em>gắn theo</em> Material ID, không phải khóa. Nhờ vậy đổi phân loại / thông số về sau, <strong>mã final không đổi</strong> → lịch sử không gãy.</div>
+  <p style="font-size:13px;color:var(--ink-subtle);margin-top:16px;max-width:820px;"><strong style="color:var(--ink-muted)">Lưu ý:</strong> nếu sau này cần một mã “đọc được nhóm” (VD <code>3.42.38.000042</code> = Class Code + số thứ tự) để tiện in ấn / tra cứu bằng mắt, có thể thêm một cột <em>mã hiển thị</em> riêng — nhưng <strong>Material ID thuần vẫn là khóa chính</strong> của hệ thống, để tránh gãy lịch sử khi vật tư bị tái phân loại.</p>
+</div></section>
+
+<!-- Lộ trình -->
+<section class="block alt" id="lo-trinh"><div class="container">
+  <div class="sec-head">
+    <p class="eyebrow">07 — Triển khai</p>
+    <h2>Lộ trình 6 bước</h2>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="s-n">1</div><div><div class="s-t">Chốt khung phân loại N1→N3</div><div class="s-d">Đã có sẵn ~1.350 nhóm N3, chỉ cần rà soát &amp; làm sạch.</div></div></div>
+    <div class="step"><div class="s-n">2</div><div><div class="s-t">Xây từ điển thuộc tính từng nhóm N3</div><div class="s-d">Ưu tiên nhóm lớn: điện (3), phụ tùng (5), cơ khí (2).</div></div></div>
+    <div class="step"><div class="s-n">3</div><div><div class="s-t">Tách thông số từ cột Tên → cột thuộc tính</div><div class="s-d">Parse bán tự động; dữ liệu có dấu “;” khá đều nên thuận lợi.</div></div></div>
+    <div class="step"><div class="s-n">4</div><div><div class="s-t">Cấp Material ID tuần tự, khóa cứng</div><div class="s-d">Từ bộ đếm trung tâm, không tái sử dụng.</div></div></div>
+    <div class="step"><div class="s-n">5</div><div><div class="s-t">Sinh mô tả NMQ tự động từ thuộc tính</div><div class="s-d">Theo công thức chuẩn, đồng nhất toàn bộ danh mục.</div></div></div>
+    <div class="step"><div class="s-n">6</div><div><div class="s-t">Liên kết mã cũ 2007 → Material ID mới</div><div class="s-d">Dùng bảng mapping sẵn có để giữ lịch sử tra cứu.</div></div></div>
+  </div>
+</div></section>
+
+<!-- CTA -->
+<div class="cta"><div class="container">
+  <h2>Rất mong nhận phản hồi của Quý khách</h2>
+  <p>Tài liệu đang ở trạng thái bản thảo. Xin xác nhận các nguyên tắc mã hóa, hoặc góp ý điều chỉnh trước khi chuyển sang bước dựng mẫu dữ liệu thực tế.</p>
+  <a class="btn btn-white" href="#kien-truc">Xem lại kiến trúc</a>
+</div></div>
+
+<!-- Footer -->
+<footer><div class="container">
+  <div class="cols">
+    <div style="flex:2; min-width:220px;">
+      <div class="brand-lg"><span style="color:#78a9ff">EVN</span> · VTTB Coding Standard</div>
+      <div style="font-size:14px; max-width:320px;">Chuẩn mã hóa danh mục vật tư thiết bị theo mô hình eCl@ss + NMQ.</div>
+    </div>
+    <div><h4>TÀI LIỆU</h4><ul><li>spec.md (chi tiết kỹ thuật)</li><li>spec.html (bản trình bày)</li><li>cates.xlsx (dữ liệu nguồn)</li></ul></div>
+    <div><h4>THAM CHIẾU</h4><ul><li>eCl@ss / UNSPSC</li><li>NMQ classification</li><li>ISO 8000 / 22745</li></ul></div>
+    <div><h4>TRẠNG THÁI</h4><ul><li>Version 1.0</li><li>04/08/2026</li><li>🟡 Chờ confirm</li></ul></div>
+  </div>
+  <div class="fine">© 2026 Tập đoàn Điện lực Việt Nam (EVN) — Tài liệu nội bộ phục vụ trao đổi khách hàng.</div>
+</div></footer>
+
+</body>
+</html>
