@@ -138,7 +138,7 @@ Ngành mẹ & bé mua 2–4 tuần một lần. Nếu app chỉ để đặt hà
                             ▲ ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  LỚP KÍCH HOẠT                                              │
-│  Engine kịch bản  │  Rule tuân thủ  │  DS chăm sóc theo CH (optional) │
+│  Engine kịch bản  │  Rule tuân thủ                                    │
 └─────────────────────────────────────────────────────────────┘
                             ▲ ▼
 ┌─────────────────────────────────────────────────────────────┐
@@ -197,9 +197,7 @@ Haravan cung cấp REST API và webhook có xác thực HMAC. Các ràng buộc 
 
 ### 4.5 Lớp kích hoạt
 
-Các kênh theo thứ tự ưu tiên: App push và hộp thư trong app → Zalo ZNS/OA → SMS → **danh sách chăm sóc theo cửa hàng *(optional)***.
-
-Kênh cuối cùng là tùy chọn: hệ thống đẩy danh sách khách cần chăm sóc về cửa hàng gần nhất để nhân viên chủ động liên hệ. Hiệu quả cao với đơn giá trị lớn, nhưng phụ thuộc vào năng lực vận hành của từng cửa hàng.
+Các kênh theo thứ tự ưu tiên: App push và hộp thư trong app → Zalo ZNS/OA → SMS. Khi kịch bản cần kích hoạt chăm sóc bằng nhân viên, hệ thống tự động đẩy xuống cửa hàng phù hợp.
 
 ---
 
@@ -269,7 +267,7 @@ Mỗi kịch bản được định nghĩa đủ 6 thành phần: `trigger → �
 | Cảm ơn + hướng dẫn dùng sản phẩm | D+1 sau giao hàng | Push |
 | Nội dung liên quan sản phẩm đã mua | D+3 | Feed trong app |
 | Ưu đãi đơn thứ 2 có thời hạn | D+10 nếu chưa mua lại | Push + ZNS |
-| Chuyển chăm sóc cửa hàng *(optional)* | D+21 nếu im lặng và đơn 1 giá trị cao | Danh sách chăm sóc theo cửa hàng |
+| Kích hoạt chăm sóc nhân viên | D+21 nếu im lặng và đơn 1 giá trị cao | Đẩy xuống cửa hàng |
 
 ### 6.3 Nhóm C — Mua lại theo chu kỳ (trục doanh thu chính)
 
@@ -278,7 +276,7 @@ Mỗi kịch bản được định nghĩa đủ 6 thành phần: `trigger → �
 | Sắp hết hàng | Ngày dự kiến hết − 5 | Tính theo định mức tiêu thụ |
 | Hết hàng hôm nay | Ngày dự kiến hết | Mua lại 1 chạm |
 | Trễ chu kỳ | + 3 ngày | Tín hiệu rời bỏ mạnh nhất |
-| Trễ nặng | + 10 ngày | Chuyển chăm sóc cửa hàng *(optional)* |
+| Trễ nặng | + 10 ngày | Kích hoạt chăm sóc nhân viên |
 | Đề xuất giao định kỳ | Sau 3 lần mua lại đúng chu kỳ | Chuyển sang subscription |
 | Nhắc theo sản phẩm phụ trợ | Theo chu kỳ riêng từng nhóm hàng | Bán chéo tự nhiên |
 
@@ -299,7 +297,7 @@ Nhóm **không mang tính thương mại**, quan trọng cả về giữ chân l
 | Khách im lặng 45 ngày | Nội dung giá trị trước, ưu đãi sau |
 | Khách im lặng 90 ngày | Khảo sát một câu: vì sao chưa quay lại |
 | Sắp rớt hạng thành viên | Cảnh báo trước 15 ngày |
-| Chu kỳ lệch bất thường | Chuyển chăm sóc cửa hàng *(optional)* |
+| Chu kỳ lệch bất thường | Kích hoạt chăm sóc nhân viên |
 
 ### 6.6 Nhóm F — Vận hành và sự vụ
 
