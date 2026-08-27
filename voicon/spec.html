@@ -816,7 +816,7 @@ footer .footer-info {
                             ▲ ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  LỚP KÍCH HOẠT                                              │
-│  Engine kịch bản  │  Rule tuân thủ  │  Danh sách gọi CH     │
+│  Engine kịch bản  │  Rule tuân thủ  │  DS chăm sóc theo CH (optional) │
 └─────────────────────────────────────────────────────────────┘
                             ▲ ▼
 ┌─────────────────────────────────────────────────────────────┐
@@ -881,8 +881,8 @@ footer .footer-info {
       <blockquote><p>Trễ chu kỳ 7 ngày là tín hiệu rời bỏ chính xác hơn nhiều so với mô hình RFM truyền thống trong ngành này, vì nó có nghĩa là khách gần như chắc chắn đã mua ở nơi khác.</p></blockquote>
 
       <h3>4.5 Lớp kích hoạt</h3>
-      <p>Các kênh theo thứ tự ưu tiên: <strong>App push và hộp thư trong app → Zalo ZNS/OA → SMS → danh sách nhắc gọi đẩy về cửa hàng gần nhất</strong>.</p>
-      <p>Kênh cuối cùng thường bị bỏ qua nhưng rất hiệu quả: với đơn giá sữa cao, một cuộc gọi từ cửa hàng quen chuyển đổi tốt hơn nhiều so với tin nhắn tự động.</p>
+      <p>Các kênh theo thứ tự ưu tiên: <strong>App push và hộp thư trong app → Zalo ZNS/OA → SMS → danh sách chăm sóc theo cửa hàng <em>(optional)</em></strong>.</p>
+      <p>Kênh cuối cùng là tùy chọn: hệ thống đẩy danh sách khách cần chăm sóc về cửa hàng gần nhất để nhân viên chủ động liên hệ. Hiệu quả cao với đơn giá trị lớn, nhưng phụ thuộc vào năng lực vận hành của từng cửa hàng.</p>
     </section>
 
     <!-- 5. Mô hình dữ liệu -->
@@ -972,7 +972,7 @@ footer .footer-info {
             <tr><td>Cảm ơn + hướng dẫn dùng sản phẩm</td><td>D+1 sau giao hàng</td><td>Push</td></tr>
             <tr><td>Nội dung liên quan sản phẩm đã mua</td><td>D+3</td><td>Feed trong app</td></tr>
             <tr><td>Ưu đãi đơn thứ 2 có thời hạn</td><td>D+10 nếu chưa mua lại</td><td>Push + ZNS</td></tr>
-            <tr><td>Chuyển nhân viên gọi</td><td>D+21 nếu im lặng và đơn 1 giá trị cao</td><td>Danh sách gọi cho cửa hàng</td></tr>
+            <tr><td>Chuyển chăm sóc cửa hàng <em>(optional)</em></td><td>D+21 nếu im lặng và đơn 1 giá trị cao</td><td>Danh sách chăm sóc theo cửa hàng</td></tr>
           </tbody>
         </table>
       </div>
@@ -986,7 +986,7 @@ footer .footer-info {
             <tr><td>Sắp hết hàng</td><td>Ngày dự kiến hết − 5</td><td>Tính theo định mức tiêu thụ</td></tr>
             <tr><td>Hết hàng hôm nay</td><td>Ngày dự kiến hết</td><td>Mua lại 1 chạm</td></tr>
             <tr><td>Trễ chu kỳ</td><td>+ 3 ngày</td><td>Tín hiệu rời bỏ mạnh nhất</td></tr>
-            <tr><td>Trễ nặng</td><td>+ 10 ngày</td><td>Chuyển nhân viên</td></tr>
+            <tr><td>Trễ nặng</td><td>+ 10 ngày</td><td>Chuyển chăm sóc cửa hàng <em>(optional)</em></td></tr>
             <tr><td>Đề xuất giao định kỳ</td><td>Sau 3 lần mua lại đúng chu kỳ</td><td>Chuyển sang subscription</td></tr>
             <tr><td>Nhắc theo sản phẩm phụ trợ</td><td>Theo chu kỳ riêng từng nhóm hàng</td><td>Bán chéo tự nhiên</td></tr>
           </tbody>
@@ -1011,7 +1011,7 @@ footer .footer-info {
             <tr><td>Khách im lặng 45 ngày</td><td>Nội dung giá trị trước, ưu đãi sau</td></tr>
             <tr><td>Khách im lặng 90 ngày</td><td>Khảo sát một câu: vì sao chưa quay lại</td></tr>
             <tr><td>Sắp rớt hạng thành viên</td><td>Cảnh báo trước 15 ngày</td></tr>
-            <tr><td>Chu kỳ lệch bất thường</td><td>Chuyển nhân viên gọi</td></tr>
+            <tr><td>Chu kỳ lệch bất thường</td><td>Chuyển chăm sóc cửa hàng <em>(optional)</em></td></tr>
           </tbody>
         </table>
       </div>
