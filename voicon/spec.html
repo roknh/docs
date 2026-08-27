@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoiCon — Đặc tả nền tảng CDP + App khách hàng</title>
+<link rel="icon" type="image/png" href="icon-voicon.png">
+<link rel="apple-touch-icon" href="icon-voicon.png">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #0f62fe;
+  --on-primary: #fff;
+  --ink: #161616;
+  --ink-muted: #525252;
+  --ink-subtle: #8c8c8c;
+  --canvas: #fff;
+  --surface-1: #f4f4f4;
+  --surface-2: #e0e0e0;
+  --hairline: #e0e0e0;
+  --inverse-canvas: #161616;
+  --inverse-ink: #fff;
+  --inverse-ink-muted: #c6c6c6;
+  --success: #24a148;
+  --warning: #f1c21b;
+  --error: #da1e28;
+  --blue-hover: #0050e6;
+  --blue-80: #002d9c;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.16px;
+  color: var(--ink);
+  background: var(--canvas);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Utility bar */
+.utility-bar {
+  background: var(--surface-1);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 32px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.32px;
+  color: var(--ink-muted);
+  border-bottom: 1px solid var(--hairline);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.utility-bar span { margin-left: 24px; }
+
+/* Top nav */
+.top-nav {
+  background: var(--canvas);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--hairline);
+  position: sticky;
+  top: 32px;
+  z-index: 99;
+}
+.top-nav .logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+.top-nav .logo img {
+  height: 32px;
+  width: auto;
+}
+.top-nav nav {
+  margin-left: auto;
+  display: flex;
+  gap: 0;
+}
+.top-nav nav a {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 0 16px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, background 0.15s;
+}
+.top-nav nav a:hover {
+  color: var(--ink);
+  background: var(--surface-1);
+}
+
+/* Hero */
+.hero {
+  padding: 96px 32px 64px;
+  max-width: 1312px;
+  margin: 0 auto;
+}
+.hero .eyebrow {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-size: 60px;
+  font-weight: 300;
+  line-height: 1.17;
+  letter-spacing: -0.4px;
+  color: var(--ink);
+  margin-bottom: 24px;
+  max-width: 900px;
+}
+.hero .lead {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink-muted);
+  max-width: 720px;
+  margin-bottom: 32px;
+}
+.hero-meta {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.hero-meta .meta-item {
+  font-size: 14px;
+  letter-spacing: 0.16px;
+}
+.hero-meta .meta-item .label {
+  color: var(--ink-subtle);
+  margin-bottom: 4px;
+}
+.hero-meta .meta-item .value {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Sidebar TOC */
+.page-layout {
+  max-width: 1312px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  padding: 0 32px;
+}
+.sidebar {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  padding-right: 32px;
+  border-right: 1px solid var(--hairline);
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  padding-bottom: 48px;
+}
+.sidebar::-webkit-scrollbar { width: 0; }
+.sidebar .toc-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.32px;
+  color: var(--ink-subtle);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-top: 24px;
+}
+.sidebar a {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 8px 0;
+  border-left: 2px solid transparent;
+  padding-left: 16px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.sidebar a:hover {
+  color: var(--ink);
+}
+.sidebar a.active {
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 600;
+}
+
+/* Main content */
+.main-content {
+  padding-left: 48px;
+  padding-bottom: 96px;
+}
+
+/* Sections */
+.section {
+  padding-top: 48px;
+  margin-bottom: 48px;
+}
+.section:first-child { padding-top: 24px; }
+
+.section-eyebrow {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.33;
+  color: var(--ink);
+  margin-top: 40px;
+  margin-bottom: 16px;
+}
+
+h4 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+p {
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+strong { font-weight: 600; }
+
+/* Tables */
+.table-wrap {
+  overflow-x: auto;
+  margin: 16px 0 24px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  letter-spacing: 0.16px;
+}
+thead th {
+  background: var(--surface-1);
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--ink);
+  color: var(--ink);
+  white-space: nowrap;
+}
+tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--ink);
+  vertical-align: top;
+}
+tbody tr:hover { background: var(--surface-1); }
+
+/* Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  margin: 24px 0;
+}
+.card {
+  background: var(--canvas);
+  padding: 24px;
+}
+.card .card-label {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.32px;
+  color: var(--ink-subtle);
+  margin-bottom: 8px;
+}
+.card .card-title {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.card p {
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.43;
+}
+
+/* Feature tiles */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0;
+  margin: 24px 0;
+}
+.tile {
+  padding: 24px;
+  border: 1px solid var(--hairline);
+  margin-top: -1px;
+  margin-left: -1px;
+}
+.tile .tile-icon {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.tile .tile-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.16px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.tile p {
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.43;
+}
+
+/* Callout / blockquote */
+blockquote, .callout {
+  border-left: 3px solid var(--primary);
+  padding: 16px 24px;
+  margin: 16px 0 24px;
+  background: var(--surface-1);
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+blockquote p:last-child, .callout p:last-child { margin-bottom: 0; }
+
+.callout-warning {
+  border-left-color: var(--warning);
+}
+.callout-error {
+  border-left-color: var(--error);
+}
+.callout-success {
+  border-left-color: var(--success);
+}
+
+/* Tag / badge */
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.32px;
+  padding: 2px 8px;
+  background: var(--surface-1);
+  color: var(--ink-muted);
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+.tag-blue { background: #d0e2ff; color: var(--blue-80); }
+.tag-green { background: #defbe6; color: #0e6027; }
+.tag-red { background: #fff1f1; color: #a2191f; }
+.tag-yellow { background: #fcf4d6; color: #684e00; }
+
+/* Lists */
+ul, ol {
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+li::marker { color: var(--ink-subtle); }
+
+/* Code / diagram blocks */
+.diagram {
+  background: var(--surface-1);
+  border: 1px solid var(--hairline);
+  padding: 24px;
+  margin: 16px 0 24px;
+  overflow-x: auto;
+  font-family: 'IBM Plex Mono', 'Menlo', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+  white-space: pre;
+}
+
+/* Separator band */
+.band {
+  background: var(--surface-1);
+  padding: 48px 0;
+  margin: 48px -48px;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+/* Phase timeline */
+.timeline {
+  margin: 24px 0;
+  position: relative;
+  padding-left: 24px;
+  border-left: 2px solid var(--hairline);
+}
+.timeline-item {
+  padding: 16px 0 32px 24px;
+  position: relative;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -29px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--primary);
+  background: var(--canvas);
+}
+.timeline-item.active::before {
+  background: var(--primary);
+}
+.timeline-item .phase-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.32px;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.timeline-item .phase-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.timeline-item .phase-duration {
+  font-size: 14px;
+  color: var(--ink-subtle);
+  margin-bottom: 12px;
+}
+.timeline-item p, .timeline-item ul {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+/* Risk matrix */
+.risk-high { color: var(--error); font-weight: 600; }
+.risk-medium { color: #b28600; font-weight: 600; }
+.risk-low { color: var(--success); font-weight: 600; }
+
+/* CTA Banner */
+.cta-banner {
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 48px;
+  margin: 48px 0;
+}
+.cta-banner h3 {
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--on-primary);
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.cta-banner p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.85);
+  max-width: 640px;
+}
+
+/* Footer */
+footer {
+  background: var(--inverse-canvas);
+  color: var(--inverse-ink-muted);
+  padding: 64px 32px 32px;
+}
+footer .footer-inner {
+  max-width: 1312px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+footer .footer-brand {
+  display: flex;
+  align-items: center;
+}
+footer .footer-brand img {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+footer .footer-info {
+  font-size: 12px;
+  letter-spacing: 0.32px;
+  color: var(--inverse-ink-muted);
+}
+
+/* Responsive */
+@media (max-width: 1056px) {
+  .hero h1 { font-size: 42px; }
+  .page-layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    padding-left: 0;
+  }
+  h2 { font-size: 32px; }
+}
+@media (max-width: 672px) {
+  .utility-bar { display: none; }
+  .top-nav { top: 0; padding: 0 16px; }
+  .top-nav nav { display: none; }
+  .hero { padding: 40px 16px 28px; }
+  .hero .eyebrow { font-size: 15px; }
+  .hero h1 { font-size: 32px; letter-spacing: 0; line-height: 1.2; }
+  .hero .lead { font-size: 18px; line-height: 1.55; }
+  .hero-meta .meta-item .label { font-size: 13px; }
+  .hero-meta .meta-item .value { font-size: 15px; }
+  .page-layout { padding: 0 16px; }
+  body { font-size: 17px; }
+  p { font-size: 17px; line-height: 1.6; }
+  li { font-size: 17px; line-height: 1.6; }
+  h2 { font-size: 28px; }
+  h3 { font-size: 22px; }
+  h4 { font-size: 19px; }
+  .section-eyebrow { font-size: 15px; }
+  table { font-size: 15px; }
+  thead th { padding: 10px 12px; font-size: 14px; }
+  tbody td { padding: 10px 12px; font-size: 15px; }
+  .card .card-title { font-size: 19px; }
+  .card p { font-size: 15px; line-height: 1.5; }
+  .card .card-label { font-size: 13px; }
+  .tile .tile-title { font-size: 16px; }
+  .tile p { font-size: 15px; line-height: 1.5; }
+  .card-grid { grid-template-columns: 1fr; }
+  .tile-grid { grid-template-columns: 1fr; }
+  blockquote, .callout { font-size: 15px; line-height: 1.55; }
+  .tag { font-size: 13px; }
+  .diagram { font-size: 12px; padding: 16px; }
+  .cta-banner { padding: 32px 16px; }
+  .cta-banner h3 { font-size: 24px; }
+  .cta-banner p { font-size: 16px; }
+  .band { margin: 32px -16px; padding: 32px 16px; }
+  .timeline-item .phase-title { font-size: 19px; }
+  .timeline-item .phase-label { font-size: 13px; }
+  .timeline-item .phase-duration { font-size: 15px; }
+  .timeline-item p, .timeline-item ul { font-size: 15px; }
+}
+
+/* Print */
+@media print {
+  .utility-bar, .top-nav, .sidebar { display: none; }
+  .page-layout { grid-template-columns: 1fr; }
+  .main-content { padding-left: 0; }
+  .hero { padding: 24px 0; }
+  body { font-size: 11pt; }
+  h2 { font-size: 22pt; }
+}
+</style>
+</head>
+<body>
+
+<!-- Utility bar -->
+<div class="utility-bar">
+  <span>Phiên bản 1.0</span>
+  <span>27/08/2026</span>
+</div>
+
+<!-- Top nav -->
+<header class="top-nav">
+  <a class="logo" href="#">
+    <img src="logo-voicon.png" alt="VoiCon — Baby and Mom Stores">
+  </a>
+  <nav>
+    <a href="#sec0">Tóm tắt</a>
+    <a href="#sec4">Kiến trúc</a>
+    <a href="#sec7">App</a>
+    <a href="#sec12">Lộ trình</a>
+    <a href="#sec15">Quyết định</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="eyebrow">Đặc tả nền tảng</div>
+  <h1>CDP + App khách hàng VoiCon</h1>
+  <p class="lead">Chuỗi bán lẻ Mẹ & Bé VoiCon — 13 cửa hàng. Hệ thống thông minh chạy song song Haravan, hợp nhất dữ liệu khách hàng và tự động hóa chăm sóc vòng đời.</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <div class="label">Trạng thái</div>
+      <div class="value">Chờ khách hàng phản hồi</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Phiên bản</div>
+      <div class="value">1.0 — Bản thảo luận</div>
+    </div>
+    <div class="meta-item">
+      <div class="label">Ngày</div>
+      <div class="value">27/08/2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- Page layout -->
+<div class="page-layout">
+
+  <!-- Sidebar TOC -->
+  <aside class="sidebar">
+    <div class="toc-title">Mục lục</div>
+    <a href="#sec0">0. Tóm tắt điều hành</a>
+    <a href="#sec1">1. Bối cảnh và hiện trạng</a>
+    <a href="#sec2">2. Nhận định chiến lược</a>
+    <a href="#sec3">3. Mục tiêu và phạm vi</a>
+    <a href="#sec4">4. Kiến trúc tổng thể</a>
+    <a href="#sec5">5. Mô hình dữ liệu</a>
+    <a href="#sec6">6. Kịch bản chăm sóc</a>
+    <a href="#sec7">7. App khách hàng</a>
+    <a href="#sec8">8. Hệ thống nội dung</a>
+    <a href="#sec9">9. Tư vấn bác sĩ</a>
+    <a href="#sec10">10. Automation-first</a>
+    <a href="#sec11">11. Tuân thủ pháp lý</a>
+    <a href="#sec12">12. Lộ trình triển khai</a>
+    <a href="#sec13">13. Chỉ số đo lường</a>
+    <a href="#sec14">14. Rủi ro chính</a>
+    <a href="#sec15">15. Quyết định cần chốt</a>
+    <a href="#appA">Phụ lục A</a>
+    <a href="#appB">Phụ lục B</a>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <!-- 0. Tóm tắt điều hành -->
+    <section class="section" id="sec0">
+      <div class="section-eyebrow">Mục 0</div>
+      <h2>Tóm tắt điều hành</h2>
+      <p>VoiCon hiện vận hành tốt ở khâu bán hàng nhưng chưa chủ động ở khâu giữ khách. Haravan đáp ứng đủ cho đơn hàng, kho và POS, nhưng hạn chế ở marketing automation và chăm sóc vòng đời khách hàng.</p>
+      <p>Đề xuất: xây dựng một lớp hệ thống chạy <strong>song song</strong> với Haravan, gồm hai cấu phần:</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Cấu phần 1</div>
+          <div class="card-title">CDP</div>
+          <p>Customer Data Platform — hợp nhất dữ liệu khách hàng từ online, POS và app; tính toán chu kỳ tiêu thụ, dự báo nhu cầu và rủi ro rời bỏ.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Cấu phần 2</div>
+          <div class="card-title">App khách hàng</div>
+          <p>Vừa là kênh chăm sóc, vừa là nguồn dữ liệu hành vi, vừa là kênh bán hàng ở giai đoạn sau.</p>
+        </div>
+      </div>
+
+      <blockquote>
+        <p><strong>Nguyên tắc phân vai:</strong> Haravan giữ vai trò hệ thống ghi nhận (system of record), hệ thống mới là hệ thống thông minh (system of intelligence). Không thay thế Haravan ở đơn hàng, kho và POS.</p>
+      </blockquote>
+
+      <h3>Ba điểm khác biệt</h3>
+      <div class="tile-grid">
+        <div class="tile">
+          <div class="tile-title">Mở rộng đối tượng</div>
+          <p>Từ mẹ & bé sang bà bầu và người lớn tuổi, biến vòng đời từ 36 tháng thành hàng chục năm.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Đội ngũ bác sĩ liên kết</div>
+          <p>Xây dựng lớp nội dung và tư vấn — tài sản đối thủ khó sao chép.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Tự động hóa mặc định</div>
+          <p>Nhân sự chỉ xử lý khiếu nại và ca đặc biệt.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Bối cảnh -->
+    <section class="section" id="sec1">
+      <div class="section-eyebrow">Mục 1</div>
+      <h2>Bối cảnh và hiện trạng</h2>
+
+      <h3>1.1 Hiện trạng vận hành</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hạng mục</th><th>Hiện trạng</th></tr></thead>
+          <tbody>
+            <tr><td>Ngành hàng</td><td>Phân phối hàng mẹ & bé, trọng tâm là các dòng sữa</td></tr>
+            <tr><td>Cửa hàng</td><td>13 điểm, bán trực tiếp và trưng bày giới thiệu sản phẩm</td></tr>
+            <tr><td>Online</td><td>Đầy đủ sàn TMĐT và website</td></tr>
+            <tr><td>Nền tảng bán hàng</td><td>Haravan (kho, quản lý, POS, xử lý đơn)</td></tr>
+            <tr><td>Kế toán</td><td>MISA</td></tr>
+            <tr><td>Livestream</td><td>Đầy đủ các nền tảng</td></tr>
+            <tr><td>Nguồn lực đặc biệt</td><td>Đội ngũ bác sĩ liên kết tư vấn</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>1.2 Vấn đề cần giải quyết</h3>
+      <ul>
+        <li>Haravan chưa được khai thác hết ở công cụ marketing và chăm sóc khách hàng, và bản thân nền tảng còn hạn chế ở nhóm chức năng này.</li>
+        <li>Chưa có kịch bản chăm sóc vòng đời khách hàng đối với tệp đã mua hàng.</li>
+        <li>Bị động: khách hàng nằm trên nền tảng của bên thứ ba, doanh nghiệp không chủ động được kênh tiếp cận.</li>
+        <li>Chưa khai thác giá trị vòng đời khách hàng.</li>
+      </ul>
+
+      <h3>1.3 Mục tiêu chiến lược</h3>
+      <p>Chủ động giữ chân khách hàng trong hệ thống, tối ưu giá trị vòng đời, và mở rộng quy mô với tư duy <strong>lấy công nghệ làm lợi thế cạnh tranh</strong>.</p>
+    </section>
+
+    <!-- 2. Nhận định chiến lược -->
+    <section class="section" id="sec2">
+      <div class="section-eyebrow">Mục 2</div>
+      <h2>Nhận định chiến lược</h2>
+
+      <h3>2.1 Vòng đời khách hàng là vòng đời của người tiêu dùng cuối</h3>
+      <p>Từ một mốc thời gian duy nhất (ngày dự sinh, ngày sinh của bé, độ tuổi người cao tuổi), hệ thống suy ra được gần như toàn bộ nhu cầu trong nhiều tháng tới. Không ngành bán lẻ nào có được trục thời gian dự đoán chính xác như ngành này.</p>
+      <blockquote><p><strong>Hệ quả thiết kế:</strong> dữ liệu quan trọng nhất không nằm trong Haravan. Nó phải được chủ động thu thập và là mục tiêu số một của giai đoạn đầu.</p></blockquote>
+
+      <h3>2.2 Sữa là mặt hàng có chu kỳ tiêu thụ tính được</h3>
+      <p>Biết mã sản phẩm, trọng lượng và đối tượng sử dụng là ra được số ngày dùng hết với sai số khoảng ±3 ngày. Không cần mô hình học máy phức tạp — một bảng định mức tiêu thụ cộng vài phép tính cho độ chính xác tốt hơn phần lớn mô hình dự đoán.</p>
+      <blockquote><p><strong>Hệ quả thiết kế:</strong> đây là quick win lớn nhất, cần làm trước tiên.</p></blockquote>
+
+      <h3>2.3 Một tài khoản, ba chu kỳ tiêu dùng chồng lên nhau</h3>
+      <p>Người mua chính (thường là phụ nữ 28–40 tuổi) đồng thời là người dùng sữa bầu, người mua sữa cho con, và người mua sữa cho bố mẹ mình.</p>
+      <div class="diagram">Bà bầu (9 tháng) → Mẹ sau sinh + Bé sơ sinh (24 tháng)
+                 → Bé lớn (đến 6 tuổi)
+                 → Ông bà (quanh năm + đỉnh mùa lễ Tết)
+                 → Bản thân người mẹ (dinh dưỡng người trưởng thành)</div>
+      <blockquote><p><strong>Hệ quả thiết kế:</strong> đơn vị chăm sóc phải là <strong>hộ gia đình</strong>, không phải khách hàng cá nhân. Mô hình dữ liệu phải hỗ trợ đa hồ sơ ngay từ đầu — sửa sau rất tốn kém.</p></blockquote>
+
+      <h3>2.4 Lợi thế cạnh tranh không nằm ở việc "có app"</h3>
+      <p>Các chuỗi lớn đều đã có app và chương trình khách hàng thân thiết. Khác biệt phải đến từ chất lượng lớp dự đoán, mức độ cá nhân hóa, và đặc biệt là <strong>lớp nội dung và tư vấn có bác sĩ</strong> — thứ đòi hỏi thời gian tích lũy chứ không mua được bằng ngân sách.</p>
+
+      <h3>2.5 App chỉ sống nếu có lý do mở khi không mua hàng</h3>
+      <p>Ngành mẹ & bé mua 2–4 tuần một lần. Nếu app chỉ để đặt hàng, tần suất mở app sẽ bằng tần suất mua và app sẽ chết.</p>
+      <blockquote><p><strong>Hệ quả thiết kế:</strong> định vị app là <strong>sổ theo dõi sức khỏe gia đình có bác sĩ đồng hành</strong>, chức năng mua hàng gắn vào sau.</p></blockquote>
+    </section>
+
+    <!-- 3. Mục tiêu và phạm vi -->
+    <section class="section" id="sec3">
+      <div class="section-eyebrow">Mục 3</div>
+      <h2>Mục tiêu và phạm vi</h2>
+
+      <h3>3.1 Mục tiêu</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nhóm</th><th>Mục tiêu</th></tr></thead>
+          <tbody>
+            <tr><td>Dữ liệu</td><td>Hợp nhất dữ liệu khách hàng online + POS + app thành hồ sơ duy nhất theo hộ gia đình</td></tr>
+            <tr><td>Giữ chân</td><td>Tăng tỷ lệ mua lại và kéo dài vòng đời khách hàng qua nhiều đối tượng trong hộ</td></tr>
+            <tr><td>Tự động hóa</td><td>Đưa phần lớn hoạt động chăm sóc sang tự động, nhân sự tập trung vào ca cần con người</td></tr>
+            <tr><td>Thương hiệu</td><td>Xây dựng vị thế cố vấn dinh dưỡng và chăm sóc gia đình, không chỉ là nơi bán hàng</td></tr>
+            <tr><td>Nền tảng</td><td>Tạo hạ tầng dữ liệu phục vụ mở rộng quy mô chuỗi</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.2 Trong phạm vi</h3>
+      <ul>
+        <li>Đường ống đồng bộ dữ liệu hai chiều với Haravan</li>
+        <li>Nền tảng dữ liệu khách hàng (CDP) và engine kịch bản</li>
+        <li>App khách hàng đa nền tảng (iOS, Android)</li>
+        <li>Hệ thống quản trị nội dung và quy trình duyệt chuyên môn</li>
+        <li>Cổng làm việc cho bác sĩ</li>
+        <li>Bảng điều khiển vận hành cho đội ngũ nội bộ</li>
+      </ul>
+
+      <h3>3.3 Ngoài phạm vi</h3>
+      <ul>
+        <li>Thay thế Haravan ở quản lý kho, đơn hàng, POS</li>
+        <li>Thay thế MISA ở nghiệp vụ kế toán</li>
+        <li>Nghiệp vụ khám chữa bệnh từ xa có cấp phép <em>(xem Mục 11.2)</em></li>
+        <li>Sàn thương mại điện tử mở cho bên thứ ba</li>
+      </ul>
+    </section>
+
+    <!-- 4. Kiến trúc tổng thể -->
+    <section class="section" id="sec4">
+      <div class="section-eyebrow">Mục 4</div>
+      <h2>Kiến trúc tổng thể</h2>
+
+      <h3>4.1 Sơ đồ lớp</h3>
+      <div class="diagram">┌─────────────────────────────────────────────────────────────┐
+│  KÊNH TIẾP XÚC                                              │
+│  App KH  │  Zalo OA/ZNS  │  SMS  │  Web  │  POS cửa hàng    │
+└─────────────────────────────────────────────────────────────┘
+                            ▲ ▼
+┌─────────────────────────────────────────────────────────────┐
+│  LỚP KÍCH HOẠT                                              │
+│  Engine kịch bản  │  Rule tuân thủ  │  Danh sách gọi CH     │
+└─────────────────────────────────────────────────────────────┘
+                            ▲ ▼
+┌─────────────────────────────────────────────────────────────┐
+│  LỚP TÍNH TOÁN                                              │
+│  Chu kỳ mua lại │ Điểm rủi ro rời bỏ │ Gợi ý theo mốc       │
+└─────────────────────────────────────────────────────────────┘
+                            ▲ ▼
+┌─────────────────────────────────────────────────────────────┐
+│  LỚP DỮ LIỆU (CDP)                                          │
+│  Event store │ Hồ sơ hộ GĐ + hồ sơ dinh dưỡng │ Identity    │
+└─────────────────────────────────────────────────────────────┘
+                            ▲ ▼
+┌─────────────────────────────────────────────────────────────┐
+│  LỚP THU THẬP                                               │
+│  Webhook Haravan │ REST API │ Job đối soát │ Event SDK app  │
+└─────────────────────────────────────────────────────────────┘
+                            ▲ ▼
+┌─────────────────────────────────────────────────────────────┐
+│  HỆ THỐNG NGUỒN                                             │
+│  Haravan (đơn, kho, POS, KH)  │  MISA  │  Sàn TMĐT          │
+└─────────────────────────────────────────────────────────────┘</div>
+
+      <h3>4.2 Lớp thu thập — yêu cầu kỹ thuật</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ràng buộc của Haravan</th><th>Yêu cầu thiết kế</th></tr></thead>
+          <tbody>
+            <tr><td>Webhook timeout 5 giây</td><td>Endpoint chỉ ghi vào hàng đợi rồi trả 200 ngay, xử lý bất đồng bộ</td></tr>
+            <tr><td>Retry 19 lần trong 48 giờ, thất bại liên tiếp thì tự xóa subscription</td><td>Watchdog kiểm tra subscription còn sống, cảnh báo khi mất</td></tr>
+            <tr><td>Có khả năng thất lạc sự kiện</td><td>Job đối soát hàng ngày qua REST API để bù dữ liệu</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote><p><strong>Nguyên tắc:</strong> không bao giờ coi webhook là nguồn dữ liệu duy nhất.</p></blockquote>
+
+      <h3>4.3 Lớp dữ liệu</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Thành phần</th><th>Công nghệ đề xuất</th><th>Vai trò</th></tr></thead>
+          <tbody>
+            <tr><td>Event store</td><td><span class="tag tag-blue">ClickHouse</span></td><td>Lưu toàn bộ sự kiện hành vi, phân tích</td></tr>
+            <tr><td>Hồ sơ và trạng thái</td><td><span class="tag tag-blue">PostgreSQL</span></td><td>Hồ sơ hộ gia đình, hồ sơ dinh dưỡng, trạng thái kịch bản</td></tr>
+            <tr><td>Hàng đợi và cache</td><td><span class="tag tag-blue">Redis</span></td><td>Xử lý bất đồng bộ, giới hạn tần suất gửi tin</td></tr>
+            <tr><td>Ứng dụng</td><td><span class="tag tag-blue">Node.js</span></td><td>Backend, API, engine kịch bản</td></tr>
+            <tr><td>App</td><td><span class="tag tag-blue">Flutter</span></td><td>Đa nền tảng, một codebase</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>4.4 Lớp tính toán</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Mô hình</th><th>Cách làm</th><th>Độ phức tạp</th></tr></thead>
+          <tbody>
+            <tr><td>Chu kỳ mua lại</td><td>Bảng định mức tiêu thụ theo sản phẩm × đối tượng × giai đoạn</td><td><span class="tag tag-green">Thấp — làm ngay</span></td></tr>
+            <tr><td>Điểm rủi ro rời bỏ</td><td>Số ngày trễ so với chu kỳ dự kiến</td><td><span class="tag tag-green">Thấp</span></td></tr>
+            <tr><td>Gợi ý theo mốc</td><td>Luật theo giai đoạn trước, học từ dữ liệu sau</td><td><span class="tag tag-yellow">Trung bình</span></td></tr>
+            <tr><td>Dự báo giá trị vòng đời</td><td>Theo nhóm khách hàng cùng thời điểm bắt đầu</td><td><span class="tag tag-yellow">Trung bình — giai đoạn sau</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote><p>Trễ chu kỳ 7 ngày là tín hiệu rời bỏ chính xác hơn nhiều so với mô hình RFM truyền thống trong ngành này, vì nó có nghĩa là khách gần như chắc chắn đã mua ở nơi khác.</p></blockquote>
+
+      <h3>4.5 Lớp kích hoạt</h3>
+      <p>Các kênh theo thứ tự ưu tiên: <strong>App push và hộp thư trong app → Zalo ZNS/OA → SMS → danh sách nhắc gọi đẩy về cửa hàng gần nhất</strong>.</p>
+      <p>Kênh cuối cùng thường bị bỏ qua nhưng rất hiệu quả: với đơn giá sữa cao, một cuộc gọi từ cửa hàng quen chuyển đổi tốt hơn nhiều so với tin nhắn tự động.</p>
+    </section>
+
+    <!-- 5. Mô hình dữ liệu -->
+    <section class="section" id="sec5">
+      <div class="section-eyebrow">Mục 5</div>
+      <h2>Mô hình dữ liệu</h2>
+
+      <h3>5.1 Ba thực thể trung tâm</h3>
+      <div class="diagram">HỘ GIA ĐÌNH (Household)
+   ├── TÀI KHOẢN (nhiều người: mẹ, bà, bố...)
+   ├── VÍ ĐIỂM CHUNG
+   └── HỒ SƠ DINH DƯỠNG (nhiều hồ sơ)
+          ├── Bà bầu
+          ├── Mẹ sau sinh
+          ├── Bé (nhiều bé)
+          ├── Người lớn tuổi (nhiều người)
+          └── Người trưởng thành</div>
+
+      <h3>5.2 Hồ sơ dinh dưỡng</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Loại hồ sơ</th><th>Ngày mốc</th><th>Đồng hồ vòng đời</th><th>Đặc điểm</th></tr></thead>
+          <tbody>
+            <tr><td>Bà bầu</td><td>Ngày dự sinh</td><td>Tuần thai 1–40</td><td>Ngắn, deadline cứng, mật độ nội dung cao nhất</td></tr>
+            <tr><td>Mẹ sau sinh</td><td>Ngày sinh</td><td>Tháng 0–12</td><td>Nối tiếp tự động từ hồ sơ bà bầu</td></tr>
+            <tr><td>Bé</td><td>Ngày sinh</td><td>Tháng 0–72</td><td>Trục doanh thu chính hiện tại</td></tr>
+            <tr><td>Người lớn tuổi</td><td>Năm sinh</td><td>Theo tình trạng</td><td>Chu kỳ ổn định nhất, giá trị vòng đời cao nhất</td></tr>
+            <tr><td>Người trưởng thành</td><td>—</td><td>Theo mục tiêu dinh dưỡng</td><td>Nhóm mở rộng giai đoạn sau</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>5.3 Ba quy tắc bắt buộc</h3>
+      <div class="tile-grid">
+        <div class="tile">
+          <div class="tile-title">1. Người mua khác người dùng</div>
+          <p>Mỗi hồ sơ có trường riêng cho "người tiêu dùng" và "người thanh toán". Nhóm người lớn tuổi gần như luôn lệch hai vai này.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">2. Một hộ, nhiều hồ sơ, một ví chung</div>
+          <p>Điểm tích từ sữa bầu phải dùng được cho sữa của ông bà. Đây là cơ chế giữ chân mạnh nhất khi hộ có nhiều hồ sơ.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">3. Chuyển trạng thái tự động</div>
+          <p>Đến ngày dự sinh, hệ thống chủ động xác nhận và tách thành hồ sơ mẹ sau sinh + hồ sơ bé. Không bắt khách khai lại.</p>
+        </div>
+      </div>
+
+      <h3>5.4 Định danh khách hàng</h3>
+      <ul>
+        <li><strong>Khóa chính:</strong> số điện thoại (nối App ↔ Haravan ↔ POS)</li>
+        <li><strong>Đồ thị định danh:</strong> ở cấp hộ gia đình — nhiều SĐT có thể trỏ về cùng một hộ</li>
+        <li><strong>Mã QR thành viên:</strong> trong app là công cụ định danh tại quầy</li>
+      </ul>
+      <div class="callout callout-error">
+        <p><strong>Điểm chết cần xử lý trước:</strong> nếu nhân viên tại 13 cửa hàng không nhập định danh khách khi thanh toán, toàn bộ CDP mất mảng dữ liệu quan trọng nhất. Đây là bài toán vận hành, không phải kỹ thuật. <strong>Cần đo tỷ lệ đơn có định danh theo từng cửa hàng trước khi bắt đầu dự án.</strong></p>
+      </div>
+    </section>
+
+    <!-- 6. Kịch bản chăm sóc -->
+    <section class="section" id="sec6">
+      <div class="section-eyebrow">Mục 6</div>
+      <h2>Danh mục kịch bản chăm sóc tự động</h2>
+      <p>Mỗi kịch bản được định nghĩa đủ 6 thành phần: <strong>trigger → điều kiện lọc → kênh → nội dung → hành động mong muốn → chỉ số đo</strong>.</p>
+
+      <h3>Nhóm A — Onboarding và thu thập dữ liệu</h3>
+      <p><span class="tag tag-blue">7 ngày đầu</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kịch bản</th><th>Trigger</th><th>Kênh</th><th>Mục tiêu</th></tr></thead>
+          <tbody>
+            <tr><td>Chào mừng, tạo hồ sơ</td><td>Cài app / đơn đầu tiên</td><td>Push + in-app</td><td>Có ngày mốc của hồ sơ</td></tr>
+            <tr><td>Khai "tủ nhà mình"</td><td>Sau khi có hồ sơ</td><td>In-app</td><td>Kích hoạt toàn bộ nhóm C</td></tr>
+            <tr><td>Nhắc hoàn thiện hồ sơ</td><td>D+3 nếu thiếu ngày mốc</td><td>Push</td><td>Đổi quà nhỏ lấy dữ liệu</td></tr>
+            <tr><td>Hướng dẫn tích điểm tại cửa hàng</td><td>D+5</td><td>Push + Zalo</td><td>Nối định danh POS ↔ app</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <blockquote><p>Nhóm này quyết định thành bại của tất cả nhóm còn lại.</p></blockquote>
+
+      <h3>Nhóm B — Chuyển đơn 1 sang đơn 2</h3>
+      <p><span class="tag tag-red">Giai đoạn rơi rụng lớn nhất</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kịch bản</th><th>Trigger</th><th>Kênh</th></tr></thead>
+          <tbody>
+            <tr><td>Cảm ơn + hướng dẫn dùng sản phẩm</td><td>D+1 sau giao hàng</td><td>Push</td></tr>
+            <tr><td>Nội dung liên quan sản phẩm đã mua</td><td>D+3</td><td>Feed trong app</td></tr>
+            <tr><td>Ưu đãi đơn thứ 2 có thời hạn</td><td>D+10 nếu chưa mua lại</td><td>Push + ZNS</td></tr>
+            <tr><td>Chuyển nhân viên gọi</td><td>D+21 nếu im lặng và đơn 1 giá trị cao</td><td>Danh sách gọi cho cửa hàng</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Nhóm C — Mua lại theo chu kỳ</h3>
+      <p><span class="tag tag-green">Trục doanh thu chính</span></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kịch bản</th><th>Trigger</th><th>Ghi chú</th></tr></thead>
+          <tbody>
+            <tr><td>Sắp hết hàng</td><td>Ngày dự kiến hết − 5</td><td>Tính theo định mức tiêu thụ</td></tr>
+            <tr><td>Hết hàng hôm nay</td><td>Ngày dự kiến hết</td><td>Mua lại 1 chạm</td></tr>
+            <tr><td>Trễ chu kỳ</td><td>+ 3 ngày</td><td>Tín hiệu rời bỏ mạnh nhất</td></tr>
+            <tr><td>Trễ nặng</td><td>+ 10 ngày</td><td>Chuyển nhân viên</td></tr>
+            <tr><td>Đề xuất giao định kỳ</td><td>Sau 3 lần mua lại đúng chu kỳ</td><td>Chuyển sang subscription</td></tr>
+            <tr><td>Nhắc theo sản phẩm phụ trợ</td><td>Theo chu kỳ riêng từng nhóm hàng</td><td>Bán chéo tự nhiên</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Nhóm D — Mốc vòng đời</h3>
+      <p><span class="tag">Trục giữ chân — không mang tính thương mại</span></p>
+      <ul>
+        <li>Nhắc mốc theo giai đoạn của từng hồ sơ</li>
+        <li>Nhắc lịch tiêm chủng, lịch khám định kỳ</li>
+        <li>Nhắc đo và cập nhật chỉ số theo dõi</li>
+        <li>Mốc chuyển giai đoạn quan trọng</li>
+        <li>Sinh nhật và các dịp cá nhân</li>
+      </ul>
+
+      <h3>Nhóm E — Win-back và giữ chân</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kịch bản</th><th>Trigger</th></tr></thead>
+          <tbody>
+            <tr><td>Khách im lặng 45 ngày</td><td>Nội dung giá trị trước, ưu đãi sau</td></tr>
+            <tr><td>Khách im lặng 90 ngày</td><td>Khảo sát một câu: vì sao chưa quay lại</td></tr>
+            <tr><td>Sắp rớt hạng thành viên</td><td>Cảnh báo trước 15 ngày</td></tr>
+            <tr><td>Chu kỳ lệch bất thường</td><td>Chuyển nhân viên gọi</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Nhóm F — Vận hành và sự vụ</h3>
+      <p><span class="tag tag-green">Tự động 100%</span> Trạng thái đơn hàng, giao hàng, đổi trả, xác nhận tích điểm, nhắc điểm và voucher sắp hết hạn.</p>
+
+      <h3>Nhóm H — Kịch bản riêng cho bà bầu</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kịch bản</th><th>Trigger</th></tr></thead>
+          <tbody>
+            <tr><td>Nội dung theo tuần thai</td><td>Hàng tuần, tự động suốt 40 tuần</td></tr>
+            <tr><td>Nhắc lịch khám thai</td><td>Trước mốc 3 ngày</td></tr>
+            <tr><td>Chu kỳ sữa bầu</td><td>Ngày dự kiến hết − 5</td></tr>
+            <tr><td>Chuẩn bị đi sinh</td><td>Tuần 32, 35, 37</td></tr>
+            <tr><td><strong>Chuyển đổi sang hồ sơ bé</strong></td><td>Quanh ngày dự sinh</td></tr>
+            <tr><td>Chăm sóc sau sinh</td><td>Tuần 1–6 sau sinh</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-error">
+        <p><strong>Yêu cầu đặc biệt cho kịch bản chuyển đổi quanh ngày dự sinh:</strong> chuyển sang chế độ im lặng vài ngày quanh mốc; hỏi bằng ngôn ngữ nhẹ nhàng; <strong>có nhánh xử lý trường hợp kết quả không như mong đợi — dừng toàn bộ automation và chuyển người.</strong> Hệ thống không bao giờ được tiếp tục gửi nội dung mừng em bé trong trường hợp này.</p>
+      </div>
+
+      <h3>Nhóm I — Kịch bản riêng cho người lớn tuổi</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kịch bản</th><th>Trigger</th></tr></thead>
+          <tbody>
+            <tr><td>Chu kỳ giao định kỳ</td><td>Trước ngày giao 3 ngày, xác nhận 1 chạm</td></tr>
+            <tr><td>Nhắc uống cho người dùng cuối</td><td>Hàng ngày qua Zalo/SMS, nếu bật</td></tr>
+            <tr><td>Mùa biếu tặng</td><td>Trước Tết 30/15/7 ngày, Vu Lan, 20/10, 8/3</td></tr>
+            <tr><td>Kịch bản "mua cho bố mẹ"</td><td>Khách nhóm mẹ & bé có tuổi tài khoản > 12 tháng</td></tr>
+            <tr><td>Tạm dừng có lý do</td><td>Khách chủ động báo ngưng — hỏi lý do, đặt lịch quay lại</td></tr>
+            <tr><td>Giữ chân subscription</td><td>Trước ngày gia hạn</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Nhóm G — Tầng kiểm tra tuân thủ</h3>
+      <p>Đặt giữa engine kịch bản và kênh gửi, chạy trước mọi nhóm khác. Chi tiết tại Mục 11.</p>
+    </section>
+
+    <!-- 7. App khách hàng -->
+    <section class="section" id="sec7">
+      <div class="section-eyebrow">Mục 7</div>
+      <h2>Đặc tả chức năng App khách hàng</h2>
+
+      <h3>M1 — Tài khoản và định danh</h3>
+      <ul>
+        <li>Đăng nhập bằng SĐT qua OTP</li>
+        <li>Một tài khoản quản lý nhiều hồ sơ dinh dưỡng</li>
+        <li>Chia sẻ tài khoản trong gia đình (mẹ, bà cùng xem một hồ sơ)</li>
+        <li>Đồng bộ hai chiều với dữ liệu khách hàng trên Haravan</li>
+        <li>Bản ghi đồng ý xử lý dữ liệu riêng cho từng loại hồ sơ</li>
+      </ul>
+
+      <h3>M2 — Sổ theo dõi sức khỏe gia đình</h3>
+      <div class="tile-grid">
+        <div class="tile">
+          <div class="tile-title">Hồ sơ bé</div>
+          <p>Biểu đồ tăng trưởng chiều cao/cân nặng theo chuẩn WHO có phân vị; lịch tiêm chủng với nhắc trước 3 ngày; nhật ký mốc phát triển; album ảnh theo tháng.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Hồ sơ bà bầu</div>
+          <p>Đồng hồ thai kỳ theo tuần; lịch khám và mốc xét nghiệm, lưu được kết quả và ảnh siêu âm; theo dõi cân nặng theo chuẩn tăng cân thai kỳ; đếm cử động thai ở tam cá nguyệt cuối.</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Hồ sơ người lớn tuổi</div>
+          <p>Cân nặng, huyết áp, đường huyết do người dùng hoặc người con nhập.</p>
+        </div>
+      </div>
+      <div class="callout callout-warning">
+        <p><strong>Yêu cầu bắt buộc toàn bộ M2:</strong> đây là công cụ ghi nhận và hiển thị, <strong>không diễn giải, không chẩn đoán, không gợi ý sản phẩm dựa trên chỉ số y tế</strong>. Mọi kết quả nằm ngoài ngưỡng bình thường đều dẫn đến khuyến nghị đi khám.</p>
+      </div>
+
+      <h3>M3 — Tủ nhà mình</h3>
+      <p><span class="tag tag-blue">Tính năng khác biệt lớn nhất</span> Đầu vào của toàn bộ nhóm kịch bản C.</p>
+      <ul>
+        <li>Khách khai sản phẩm đang dùng cho từng hồ sơ</li>
+        <li>App đếm ngược số ngày còn lại theo định mức tiêu thụ</li>
+        <li>Tự cập nhật khi có đơn mới từ online hoặc POS</li>
+        <li>Cho phép chỉnh tay để hệ thống học chu kỳ thực tế</li>
+        <li>Hỗ trợ nhiều địa chỉ giao cho nhiều hồ sơ trong cùng hộ</li>
+      </ul>
+
+      <h3>M4 — Trung tâm nội dung</h3>
+      <ul>
+        <li>Feed cá nhân hóa theo từng hồ sơ, không phải feed chung</li>
+        <li>Thư viện tra cứu chủ động, phân loại theo đối tượng và chủ đề</li>
+        <li>Công cụ tra cứu nhanh và checklist thực hành</li>
+        <li>Bản tin tuần cố định giờ, có chữ ký bác sĩ</li>
+        <li>Lịch livestream chuyên môn cố định hàng tuần</li>
+        <li>Chuyên mục "Hỏi bác sĩ tuần này"</li>
+        <li>Khóa học ngắn theo chặng</li>
+      </ul>
+
+      <h3>M5 — Thành viên và ví</h3>
+      <ul>
+        <li>Hạng thành viên, tích điểm hợp nhất online + 13 cửa hàng</li>
+        <li><strong>Mã QR thành viên hiển thị nhanh ở màn hình chính</strong> — sửa bài toán định danh tại POS bằng chính app</li>
+        <li>Ví trả trước và gói giao định kỳ <em>(giai đoạn sau)</em></li>
+        <li>Lượt tư vấn bác sĩ gắn theo hạng thành viên</li>
+      </ul>
+
+      <h3>M6 — Mua hàng</h3>
+      <ul>
+        <li>Mua lại 1 chạm từ tủ nhà mình và từ lịch sử</li>
+        <li>Giỏ hàng đồng bộ với web và Haravan</li>
+        <li>Đặt giữ hàng tại cửa hàng gần nhất</li>
+        <li>Kiểm tra tồn kho theo cửa hàng</li>
+        <li>Chức năng biếu tặng: gửi kèm thiệp, giao đến địa chỉ người nhận, đặt trước cho dịp lễ</li>
+      </ul>
+
+      <h3>M7 — Tư vấn bác sĩ</h3>
+      <p>Chi tiết tại <a href="#sec9" style="color: var(--primary)">Mục 9</a>.</p>
+
+      <h3>M8 — Chăm sóc và khiếu nại</h3>
+      <ul>
+        <li>Hộp thư kịch bản trong app — không chỉ push, vì push bị tắt là mất kênh</li>
+        <li>Chatbot xử lý câu hỏi thường gặp, tra cứu đơn, chính sách</li>
+        <li>Nút "cần người hỗ trợ" luôn hiện diện, tối đa 2 chạm</li>
+      </ul>
+
+      <h3>M9 — Chế độ chăm sóc từ xa</h3>
+      <p>Dành cho nhóm người lớn tuổi, nơi người mua là con cái:</p>
+      <ul>
+        <li>Con tạo và quản lý hồ sơ cho bố mẹ</li>
+        <li>Đặt giao định kỳ về địa chỉ khác</li>
+        <li>Nhận nhắc thay cho người dùng cuối</li>
+        <li>Nhắc uống sữa gửi trực tiếp cho người lớn tuổi qua Zalo/SMS, không bắt cài app</li>
+        <li>Chế độ hiển thị đơn giản: chữ lớn, ít bước, nút gọi tổng đài nổi bật</li>
+      </ul>
+
+      <h3>M10 — Yêu cầu phi chức năng</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hạng mục</th><th>Yêu cầu</th></tr></thead>
+          <tbody>
+            <tr><td>Event SDK</td><td>Mọi màn hình, mọi tương tác bắn sự kiện về CDP. App vừa là kênh vừa là nguồn dữ liệu hành vi phong phú nhất</td></tr>
+            <tr><td>Preference center</td><td>Khách tự chọn loại thông báo, tần suất, từ chối từng nhóm</td></tr>
+            <tr><td>Đồng ý dữ liệu</td><td>Theo Nghị định 13/2023, dữ liệu trẻ em và thai kỳ ở mức nhạy cảm, lưu vết theo phiên bản</td></tr>
+            <tr><td>Thử nghiệm</td><td>Feature flag và A/B testing ngay từ bản đầu</td></tr>
+            <tr><td>Mạng yếu</td><td>Hoạt động được ở mạng chậm; sổ theo dõi xem được offline</td></tr>
+            <tr><td>Bảo mật</td><td>Mã hóa dữ liệu sức khỏe, phân quyền chặt giữa vai trò bác sĩ và vai trò kinh doanh</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 8. Hệ thống nội dung -->
+    <section class="section" id="sec8">
+      <div class="section-eyebrow">Mục 8</div>
+      <h2>Hệ thống nội dung</h2>
+
+      <h3>8.1 Ba lớp nội dung</h3>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">Lớp nền</div>
+          <div class="card-title">Tri thức thường trực</div>
+          <p>Không gắn thời điểm. Thư viện tra cứu, đồng bộ ra web cho SEO.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Lớp nhịp</div>
+          <div class="card-title">Theo giai đoạn</div>
+          <p>Gắn với tuần thai, tháng tuổi, mùa. Hệ thống tự đẩy đúng thời điểm.</p>
+        </div>
+        <div class="card">
+          <div class="card-label">Lớp phản ứng</div>
+          <div class="card-title">Theo hành vi</div>
+          <p>Theo hành vi hoặc câu hỏi cụ thể. Kích hoạt bởi CDP.</p>
+        </div>
+      </div>
+      <p>Một chủ đề tốt nên tồn tại ở cả ba dạng.</p>
+
+      <h3>8.2 Bản đồ chủ đề theo đối tượng</h3>
+      <div class="tile-grid">
+        <div class="tile">
+          <div class="tile-title">Bà bầu</div>
+          <p>Theo tam cá nguyệt · dinh dưỡng thai kỳ · triệu chứng thường gặp · khám và xét nghiệm · dấu hiệu cần đi khám ngay · chuẩn bị sinh · tâm lý · thực hành hàng ngày</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Mẹ sau sinh</div>
+          <p>Phục hồi sau sinh · sữa mẹ và cho bú · dinh dưỡng mẹ · tâm lý sau sinh · sắp xếp sinh hoạt</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Bé 0–72 tháng</div>
+          <p>Dinh dưỡng theo tháng · mốc phát triển · giấc ngủ · bệnh thường gặp · dấu hiệu nguy hiểm · tiêm chủng · chăm sóc hàng ngày · nuôi dạy</p>
+        </div>
+        <div class="tile">
+          <div class="tile-title">Người lớn tuổi</div>
+          <p>Dinh dưỡng người cao tuổi · vận động và phòng té ngã · chăm sóc từ xa · sinh hoạt với bệnh mạn tính · tâm lý tuổi già · kiệt sức của người chăm sóc</p>
+        </div>
+      </div>
+
+      <h3>8.3 Định dạng nội dung</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Định dạng</th><th>Vai trò</th></tr></thead>
+          <tbody>
+            <tr><td>Bài nền</td><td>Tri thức đầy đủ, tra cứu</td></tr>
+            <tr><td>Nội dung theo mốc</td><td>Đẩy tự động theo giai đoạn</td></tr>
+            <tr><td>Công cụ tra cứu</td><td>Tra dấu hiệu, tra lịch, tra định lượng — trả lời ngay, không phải bài viết</td></tr>
+            <tr><td>Checklist thực hành</td><td>Tích được, dẫn tự nhiên sang giỏ hàng (trừ nhóm bị hạn chế)</td></tr>
+            <tr><td>FAQ ngắn</td><td>200–300 chữ, chuyển hóa từ câu hỏi 1:1 của bác sĩ</td></tr>
+            <tr><td>Video ngắn</td><td>Cắt từ livestream, tái sử dụng cả tuần</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>8.4 Ước lượng khối lượng</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Đối tượng</th><th>Bài nền</th><th>Nội dung theo mốc</th><th>Công cụ/checklist</th></tr></thead>
+          <tbody>
+            <tr><td>Bà bầu</td><td>50–60</td><td>40</td><td>4–5</td></tr>
+            <tr><td>Mẹ sau sinh</td><td>30–40</td><td>12</td><td>2–3</td></tr>
+            <tr><td>Bé</td><td>80–100</td><td>36</td><td>5–6</td></tr>
+            <tr><td>Người lớn tuổi</td><td>40–50</td><td>12</td><td>3–4</td></tr>
+            <tr style="font-weight:600; background:var(--surface-1)"><td>Tổng</td><td>200–250</td><td>~100</td><td>~15</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Khoảng <strong>350 đơn vị nội dung</strong>, khả thi trong 4–6 tháng với AI soạn nháp và bác sĩ duyệt — nhưng chỉ khi có người sở hữu trách nhiệm này toàn thời gian.</p>
+
+      <h3>8.5 Quy trình sản xuất</h3>
+      <div class="diagram">Đề tài  →  AI soạn nháp  →  Biên tập  →  BÁC SĨ DUYỆT VÀ KÝ  →  Xuất bản  →  Rà lại 12 tháng
+   ↑                                                                              │
+   └────────── Nguồn: câu hỏi thật của khách + tìm kiếm không có kết quả ─────────┘</div>
+      <p><strong>Metadata bắt buộc:</strong> đối tượng · khoảng tuổi hoặc tuần thai · chủ đề · mức khẩn · người duyệt · ngày duyệt · ngày rà lại · phiên bản · nguồn tham khảo.</p>
+
+      <h3>8.6 Nguyên tắc nội dung bắt buộc</h3>
+      <ul>
+        <li>Mọi bài y tế có tên và chuyên khoa người duyệt</li>
+        <li>Mọi bài về triệu chứng kết thúc bằng mục "khi nào cần đi khám"</li>
+        <li>Không gắn liên kết sản phẩm trong nội dung nhóm bé dưới 24 tháng</li>
+        <li>Không hướng dẫn liều lượng thuốc, không thay thế chỉ định của bác sĩ</li>
+        <li>Hiển thị ngày cập nhật gần nhất</li>
+        <li><strong>Nội dung về sức khỏe tâm thần:</strong> không chạy qua automation thông thường, không gợi ý sản phẩm, luôn kèm đường dẫn tới hỗ trợ chuyên môn thật</li>
+      </ul>
+    </section>
+
+    <!-- 9. Tư vấn bác sĩ -->
+    <section class="section" id="sec9">
+      <div class="section-eyebrow">Mục 9</div>
+      <h2>Chăm sóc 1:1 với bác sĩ</h2>
+
+      <h3>9.1 Mô hình kim tự tháp</h3>
+      <p>Bác sĩ là tài nguyên khan hiếm. Nếu để mọi người dùng chat 1:1 tự do, chi phí sẽ vỡ và chất lượng sẽ giảm.</p>
+      <div class="diagram">1:1 riêng tư          ~5% nhu cầu   →  gói thành viên / tính phí
+1:ít (nhóm)          ~25%           →  miễn phí, tạo nhịp
+1:nhiều (nội dung)   ~70%           →  miễn phí, tạo thói quen</div>
+
+      <h3>9.2 Hỏi đáp bất đồng bộ — hình thái chính</h3>
+      <p>Khách gửi câu hỏi kèm ảnh, bác sĩ trả lời trong 24 giờ. Rẻ hơn video nhiều lần, phù hợp với 80–90% nhu cầu thực tế.</p>
+      <p>Yêu cầu: gửi được ảnh và video ngắn · hỏi tiếp trong cùng chủ đề trong 48 giờ · bác sĩ thấy trước hồ sơ sức khỏe · có SLA đếm ngược.</p>
+
+      <h3>9.3 Tư vấn video có đặt lịch</h3>
+      <p>Chọn chuyên khoa → chọn khung giờ → thanh toán hoặc trừ lượt. Sau phiên, bác sĩ ghi tóm tắt vào sổ theo dõi — biến mỗi lần tư vấn thành dữ liệu tích lũy.</p>
+
+      <h3>9.4 Lợi thế từ CDP</h3>
+      <p>Bác sĩ mở phiên đã thấy sẵn tuổi, biểu đồ tăng trưởng, lịch sử hỏi đáp trước, kết quả sàng lọc gần nhất. Chất lượng tư vấn cao hơn hẳn các nền tảng tư vấn đại trà.</p>
+
+      <h3>9.5 Mô hình gói thành viên</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hạng</th><th>Quyền lợi tư vấn</th></tr></thead>
+          <tbody>
+            <tr><td>Cơ bản</td><td>Nội dung, livestream, hỏi đáp cộng đồng</td></tr>
+            <tr><td>Thân thiết</td><td>2 câu hỏi bất đồng bộ mỗi tháng</td></tr>
+            <tr><td>VIP</td><td>Không giới hạn hỏi đáp + 1 phiên video mỗi tháng</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Lượt không dùng hết thì mất theo tháng — tạo động lực dùng, mà dùng thì mở app.</p>
+
+      <h3>9.6 Vận hành: đảm bảo đủ năng lực</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Cơ chế</th><th>Tác dụng</th></tr></thead>
+          <tbody>
+            <tr><td>Tầng sàng lọc trước bác sĩ</td><td>Lọc được ước tính 40–60% khối lượng</td></tr>
+            <tr><td>AI soạn nháp</td><td>Sinh bản nháp từ thư viện đã duyệt, bác sĩ sửa và ký. <strong>Không bao giờ gửi câu trả lời chưa có bác sĩ duyệt</strong></td></tr>
+            <tr><td>Định tuyến khẩn cấp</td><td>Nhận diện tình huống nguy hiểm ngay tại màn hình nhập, hiển thị cảnh báo đi cấp cứu</td></tr>
+            <tr><td>Bảng điều khiển bác sĩ</td><td>Hàng đợi, SLA đếm ngược, hồ sơ khách, thư viện mẫu, lịch trực</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-error">
+        <p><strong>Điều kiện tiên quyết:</strong> không tự động hóa được phần định tuyến khẩn cấp thì không nên mở tính năng tư vấn.</p>
+      </div>
+
+      <h3>9.7 Tạo nhịp mở app hàng tuần</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Cơ chế</th><th>Mô tả</th></tr></thead>
+          <tbody>
+            <tr><td>Bản tin tuần</td><td>Cố định giờ (ví dụ 20h Chủ nhật), cá nhân hóa theo từng hồ sơ, có chữ ký bác sĩ</td></tr>
+            <tr><td>Lịch livestream cố định</td><td>Tách hoàn toàn khỏi livestream bán hàng — khác giờ, khác định dạng, khác người dẫn</td></tr>
+            <tr><td>Hỏi bác sĩ tuần này</td><td>5–7 câu mỗi tuần, bác sĩ trả lời bằng video 1–2 phút. Chi phí thấp (~30 phút quay/tuần)</td></tr>
+            <tr><td>Check-in định kỳ có phản hồi</td><td>Sau mỗi lần nhập chỉ số, hiển thị nhận xét từ thư viện phản hồi đã được bác sĩ duyệt sẵn</td></tr>
+            <tr><td>Sàng lọc mốc phát triển hàng tháng</td><td>Bộ câu hỏi ngắn theo tháng tuổi. <strong>Là công cụ sàng lọc, không phải chẩn đoán</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Lịch phát sóng đề xuất</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Thứ</th><th>Chuyên mục</th><th>Đối tượng</th></tr></thead>
+          <tbody>
+            <tr><td>Ba</td><td>Bác sĩ sản nói chuyện thai kỳ</td><td>Bà bầu</td></tr>
+            <tr><td>Năm</td><td>Bác sĩ nhi giải đáp</td><td>Mẹ có con nhỏ</td></tr>
+            <tr><td>Bảy</td><td>Dinh dưỡng người cao tuổi</td><td>Người mua cho bố mẹ</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Một buổi livestream 45 phút tạo ra 8–10 clip ngắn dùng cho cả tuần.</p>
+    </section>
+
+    <!-- 10. Automation-first -->
+    <section class="section" id="sec10">
+      <div class="section-eyebrow">Mục 10</div>
+      <h2>Mô hình Automation-first</h2>
+
+      <h3>10.1 Ba tầng xử lý</h3>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-label">L0 — ~80%</div>
+          <div class="card-title">Tự động hoàn toàn</div>
+          <p>Kịch bản vòng đời, trạng thái đơn, tích điểm, nhắc lịch, nội dung</p>
+        </div>
+        <div class="card">
+          <div class="card-label">L1 — ~15%</div>
+          <div class="card-title">AI hội thoại</div>
+          <p>FAQ, tư vấn chọn sản phẩm theo giai đoạn, tra cứu</p>
+        </div>
+        <div class="card">
+          <div class="card-label">L2 — ~5%</div>
+          <div class="card-title">Nhân viên</div>
+          <p>Khiếu nại, đổi trả, đơn giá trị cao, khách VIP</p>
+        </div>
+      </div>
+      <p>L1 chỉ trả lời trong phạm vi tri thức đã duyệt, có ngưỡng tin cậy. Dưới ngưỡng thì chuyển L2, không đoán.</p>
+
+      <h3>10.2 Danh sách tuyệt đối không tự động</h3>
+      <div class="callout callout-error">
+        <ul style="margin-bottom: 0">
+          <li>Bé hoặc người dùng có phản ứng bất thường sau khi dùng sản phẩm</li>
+          <li>Nghi ngờ hàng giả, hàng lỗi, hết hạn</li>
+          <li>Mọi câu hỏi mang tính tư vấn y tế cho trường hợp cụ thể</li>
+          <li>Khiếu nại lần thứ hai về cùng một vụ việc</li>
+          <li>Ngôn ngữ thể hiện bức xúc mạnh</li>
+          <li>Dấu hiệu liên quan sức khỏe tâm thần nghiêm trọng</li>
+          <li>Trường hợp thai kỳ có kết quả không như mong đợi</li>
+        </ul>
+      </div>
+      <blockquote><p>Với ngành mẹ & bé, một ca xử lý sai kiểu này lan nhanh trên mạng xã hội và phá hỏng nhiều hơn phần tiết kiệm được từ automation. <strong>Automation-first không có nghĩa là human-last — nghĩa là con người ở đúng chỗ đắt tiền.</strong></p></blockquote>
+    </section>
+
+    <!-- 11. Tuân thủ pháp lý -->
+    <section class="section" id="sec11">
+      <div class="section-eyebrow">Mục 11</div>
+      <h2>Tuân thủ pháp lý</h2>
+      <div class="callout callout-warning">
+        <p>Toàn bộ mục này cần bộ phận pháp chế rà soát và chốt trước khi bật các kịch bản liên quan. Nội dung dưới đây là nhận diện rủi ro để thiết kế hệ thống, không phải ý kiến pháp lý chính thức.</p>
+      </div>
+
+      <h3>11.1 Quảng cáo sản phẩm thay thế sữa mẹ</h3>
+      <p>Nghị định 100/2014/NĐ-CP có các quy định hạn chế đối với quảng cáo sản phẩm thay thế sữa mẹ dùng cho trẻ dưới 24 tháng tuổi.</p>
+      <h4>Tường lửa cứng giữa luồng tư vấn và luồng bán hàng</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ràng buộc</th><th>Cách thực thi trong hệ thống</th></tr></thead>
+          <tbody>
+            <tr><td>Không nội dung thương mại cho hồ sơ bé dưới 24 tháng</td><td>Rule engine chặn trước khi gửi, ghi log mọi lần chặn</td></tr>
+            <tr><td>Bác sĩ không tham gia bán hàng</td><td>Bác sĩ không thấy lịch sử mua hàng của hồ sơ dưới 24 tháng; không KPI doanh thu, không hoa hồng</td></tr>
+            <tr><td>Luồng tư vấn nhi dưới 24 tháng</td><td>Không hiển thị sản phẩm, không gắn link mua, không đề xuất sau phiên</td></tr>
+            <tr><td>Nhóm C với bé dưới 24 tháng</td><td>Chỉ ở dạng tiện ích (nhắc tồn kho cá nhân), không kèm giá và khuyến mại</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>11.2 Định vị pháp lý của kênh tư vấn</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Phương án</th><th>Yêu cầu</th><th>Đánh giá</th></tr></thead>
+          <tbody>
+            <tr><td>Khám chữa bệnh từ xa</td><td>Cơ sở được cấp phép, điều kiện theo Luật Khám bệnh, chữa bệnh 2023</td><td>Nặng, không phù hợp ở giai đoạn này</td></tr>
+            <tr><td><strong>Tư vấn dinh dưỡng và chăm sóc</strong></td><td>Phạm vi hẹp hơn, ràng buộc nhẹ hơn</td><td><span class="tag tag-green">Đề xuất chọn</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>11.3 Quảng cáo thực phẩm</h3>
+      <p><strong>Ba quy tắc cứng đưa vào hệ thống:</strong></p>
+      <ol>
+        <li>Rule engine chặn mọi nội dung tự động ghép <strong>chỉ số sức khỏe</strong> với <strong>gợi ý sản phẩm</strong>.</li>
+        <li>AI hội thoại không trả lời câu hỏi mang tính tư vấn bệnh lý — chuyển người hoặc khuyến nghị đi khám.</li>
+        <li>Nội dung nhóm thai kỳ và người lớn tuổi qua duyệt chuyên môn có lưu vết.</li>
+      </ol>
+
+      <h3>11.4 Bảo vệ dữ liệu cá nhân</h3>
+      <p>Theo Nghị định 13/2023/NĐ-CP: dữ liệu trẻ em, dữ liệu thai kỳ và chỉ số sức khỏe thuộc nhóm dữ liệu cá nhân nhạy cảm.</p>
+      <ul>
+        <li>Bản ghi đồng ý <strong>riêng cho từng loại hồ sơ</strong>, không gộp chung một lần</li>
+        <li>Lưu vết đồng ý theo phiên bản</li>
+        <li>Cơ chế rút lại đồng ý và xóa dữ liệu theo yêu cầu</li>
+        <li>Phân quyền chặt: vai trò kinh doanh không truy cập được dữ liệu sức khỏe</li>
+      </ul>
+    </section>
+
+    <!-- 12. Lộ trình -->
+    <section class="section" id="sec12">
+      <div class="section-eyebrow">Mục 12</div>
+      <h2>Lộ trình triển khai</h2>
+
+      <div class="timeline">
+        <div class="timeline-item active">
+          <div class="phase-label">Giai đoạn 0</div>
+          <div class="phase-title">Chuẩn bị nền tảng dữ liệu</div>
+          <div class="phase-duration">2–4 tuần · Chưa cần hệ thống mới</div>
+          <ul>
+            <li>Đo tỷ lệ đơn có định danh khách tại từng cửa hàng</li>
+            <li>Đặt KPI định danh cho cửa hàng, thiết kế cơ chế khuyến khích</li>
+            <li>Thiết kế cơ chế thu thập ngày mốc của hồ sơ</li>
+            <li>Chốt định vị pháp lý của kênh tư vấn</li>
+            <li>Chốt cam kết lịch của đội ngũ bác sĩ liên kết</li>
+            <li>Khởi động sản xuất nội dung nhóm bà bầu</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Giai đoạn 1</div>
+          <div class="phase-title">Đường ống dữ liệu + một kịch bản</div>
+          <div class="phase-duration">4–6 tuần</div>
+          <ul>
+            <li>Đồng bộ Haravan → CDP, dựng hồ sơ hộ gia đình thống nhất</li>
+            <li>Mô hình dữ liệu đa hồ sơ hoàn chỉnh <em>(bắt buộc làm đúng ngay từ đầu)</em></li>
+            <li>Chạy đúng <strong>một</strong> kịch bản: nhắc mua lại theo chu kỳ</li>
+            <li>Đo bằng A/B với nhóm đối chứng</li>
+          </ul>
+          <blockquote><p><strong>Tiêu chí quyết định:</strong> nếu kịch bản này không nâng được tỷ lệ mua lại, các kịch bản còn lại cũng sẽ không.</p></blockquote>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Giai đoạn 2</div>
+          <div class="phase-title">App bản đầu</div>
+          <div class="phase-duration">8–12 tuần</div>
+          <p><strong>Phạm vi:</strong> M1 + M2 + M3 + M5 (điểm và QR) + M6 (mua lại) + M8 + nhóm kịch bản A, C, F.</p>
+          <p><strong>Nội dung đợt 1:</strong> bản tin tuần, lịch livestream cố định, hỏi bác sĩ tuần này, check-in có phản hồi.</p>
+          <p><strong>Đối tượng:</strong> nhóm mẹ & bé + nhóm bà bầu.</p>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Giai đoạn 3</div>
+          <div class="phase-title">Mở rộng kịch bản và tư vấn</div>
+          <div class="phase-duration">8–10 tuần</div>
+          <ul>
+            <li>Nhóm kịch bản B, D, E, H đầy đủ</li>
+            <li>M4 trung tâm nội dung đầy đủ, thư viện tra cứu</li>
+            <li>Hỏi đáp bất đồng bộ có SLA + tầng sàng lọc + AI soạn nháp</li>
+            <li>L1 AI hội thoại</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Giai đoạn 4</div>
+          <div class="phase-title">Người lớn tuổi và subscription</div>
+          <div class="phase-duration">8–10 tuần</div>
+          <ul>
+            <li>M9 chế độ chăm sóc từ xa</li>
+            <li>Giao hàng định kỳ và ví trả trước</li>
+            <li>Nhóm kịch bản I</li>
+            <li>Tư vấn video có lịch, gói thành viên</li>
+            <li>Sàng lọc mốc phát triển, khóa học</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="phase-label">Giai đoạn 5</div>
+          <div class="phase-title">Mở rộng</div>
+          <div class="phase-duration">Tiếp tục</div>
+          <p>Kịch bản chuyển đổi chéo giữa các nhóm · mùa vụ biếu tặng · cộng đồng · dự báo giá trị vòng đời.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. Chỉ số đo lường -->
+    <section class="section" id="sec13">
+      <div class="section-eyebrow">Mục 13</div>
+      <h2>Chỉ số đo lường</h2>
+
+      <h3>13.1 Chỉ số nền tảng dữ liệu</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Chỉ số</th><th>Ý nghĩa</th></tr></thead>
+          <tbody>
+            <tr><td>Tỷ lệ đơn có định danh tại POS</td><td>Điều kiện tiên quyết của mọi thứ khác</td></tr>
+            <tr><td>Tỷ lệ khách có hồ sơ đầy đủ ngày mốc</td><td>Điều kiện kích hoạt automation</td></tr>
+            <tr><td>Tỷ lệ khách khai tủ nhà mình</td><td>Điều kiện của nhóm kịch bản C</td></tr>
+            <tr><td>Số hồ sơ trung bình / hộ</td><td>Đo hiệu quả mở rộng đối tượng</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>13.2 Chỉ số giữ chân</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Chỉ số</th><th>Ghi chú</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Tỷ lệ mở app hàng tuần (WAU/MAU)</strong></td><td><span class="tag tag-red">Chỉ số chặn</span> Không vượt 40% sau 3 tháng → lớp nội dung chưa đủ sức tạo nhịp</td></tr>
+            <tr><td>Tỷ lệ mua lại theo cohort</td><td></td></tr>
+            <tr><td>Khoảng cách trung bình giữa hai đơn</td><td>So với chu kỳ dự kiến</td></tr>
+            <tr><td>Tỷ lệ rời bỏ theo nhóm đối tượng</td><td></td></tr>
+            <tr><td>Giá trị vòng đời theo nhóm</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>13.3 Chỉ số vận hành</h3>
+      <p>Tỷ lệ tự phục vụ · tỷ lệ chuyển tầng · thời gian phản hồi trung bình của bác sĩ · tỷ lệ trễ SLA · tỷ lệ hài lòng · tỷ lệ câu trả lời 1:1 được tái sử dụng thành nội dung.</p>
+
+      <h3>13.4 Chỉ số kinh doanh</h3>
+      <p>Doanh thu qua app · tỷ lệ đơn có nguồn từ kịch bản automation · tỷ lệ chuyển đổi giữa các nhóm đối tượng · tỷ lệ khách chuyển sang giao định kỳ.</p>
+    </section>
+
+    <!-- 14. Rủi ro -->
+    <section class="section" id="sec14">
+      <div class="section-eyebrow">Mục 14</div>
+      <h2>Rủi ro chính</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Rủi ro</th><th>Mức độ</th><th>Cách giảm thiểu</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Tỷ lệ định danh tại POS thấp, CDP thiếu dữ liệu cốt lõi</td><td><span class="risk-high">Cao</span></td><td>Giai đoạn 0 xử lý trước; QR thành viên; KPI cho cửa hàng</td></tr>
+            <tr><td>2</td><td>Sản xuất nội dung là nút thắt, không phải kỹ thuật</td><td><span class="risk-high">Cao</span></td><td>Người sở hữu toàn thời gian; AI soạn nháp; làm sâu từng đối tượng</td></tr>
+            <tr><td>3</td><td>Bác sĩ không cam kết lịch cố định, phá nhịp đã công bố</td><td><span class="risk-high">Cao</span></td><td>Hợp đồng có lịch trước khi công bố lịch với khách</td></tr>
+            <tr><td>4</td><td>Vi phạm quy định quảng cáo sữa</td><td><span class="risk-high">Cao</span></td><td>Rule engine chặn tự động; tường lửa tư vấn – bán hàng; pháp chế duyệt</td></tr>
+            <tr><td>5</td><td>App không tạo được thói quen, chỉ mở khi mua hàng</td><td><span class="risk-medium">Trung bình</span></td><td>Theo dõi WAU/MAU; nội dung và nhịp làm trước tính năng bán</td></tr>
+            <tr><td>6</td><td>Sự cố xử lý sai trong tình huống nhạy cảm</td><td><span class="risk-medium">Trung bình</span></td><td>Danh sách tuyệt đối không tự động; định tuyến khẩn cấp</td></tr>
+            <tr><td>7</td><td>Phạm vi mở rộng quá nhanh, nhiều hạng mục dở dang</td><td><span class="risk-medium">Trung bình</span></td><td>Khóa chặt phạm vi từng giai đoạn; tiêu chí nghiệm thu rõ</td></tr>
+            <tr><td>8</td><td>Phụ thuộc thay đổi từ phía Haravan</td><td><span class="risk-low">Thấp</span></td><td>Tách lớp kết nối thành adapter riêng</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 15. Quyết định -->
+    <section class="section" id="sec15">
+      <div class="section-eyebrow">Mục 15</div>
+      <h2>Các quyết định cần khách hàng chốt</h2>
+
+      <div class="cta-banner">
+        <h3>8 quyết định cần phản hồi</h3>
+        <p>Các quyết định dưới đây ảnh hưởng trực tiếp đến thiết kế và phạm vi hệ thống. Cần được chốt trước khi bước vào thiết kế chi tiết.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Nội dung</th><th>Ảnh hưởng</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>Tỷ lệ đơn có định danh khách tại 13 cửa hàng hiện là bao nhiêu?</strong></td><td>Xác định bắt đầu từ Giai đoạn 0 hay Giai đoạn 1</td></tr>
+            <tr><td>2</td><td>Định vị pháp lý của kênh tư vấn: tư vấn dinh dưỡng hay khám chữa bệnh từ xa</td><td>Ảnh hưởng toàn bộ thiết kế Mục 9 và câu chữ trong app</td></tr>
+            <tr><td>3</td><td>Hình thức hợp tác với bác sĩ: theo vụ việc hay theo ca có lịch cố định</td><td>Quyết định có mở được lịch livestream tuần hay không</td></tr>
+            <tr><td>4</td><td>Ai sở hữu trách nhiệm sản xuất và duyệt nội dung</td><td>Rủi ro tiến độ lớn thứ hai của dự án</td></tr>
+            <tr><td>5</td><td>Thứ tự ưu tiên đối tượng: bà bầu trước hay người lớn tuổi trước</td><td>Ảnh hưởng lộ trình Giai đoạn 3–4</td></tr>
+            <tr><td>6</td><td>Mô hình thu phí tư vấn: gắn hạng thành viên, bán lẻ lượt, hay miễn phí</td><td>Ảnh hưởng M5 và mô hình vận hành bác sĩ</td></tr>
+            <tr><td>7</td><td>Ngân sách và mốc thời gian kỳ vọng</td><td>Điều chỉnh phạm vi từng giai đoạn</td></tr>
+            <tr><td>8</td><td>Nguồn lực nội bộ có sẵn (kỹ thuật, nội dung, vận hành)</td><td>Xác định phần nào tự làm, phần nào thuê ngoài</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Phụ lục A -->
+    <section class="section" id="appA">
+      <div class="section-eyebrow">Phụ lục A</div>
+      <h2>Nguyên tắc thiết kế xuyên suốt</h2>
+      <ol>
+        <li><strong>Haravan là hệ thống ghi nhận, hệ thống mới là hệ thống thông minh.</strong> Không cạnh tranh vai trò.</li>
+        <li><strong>Đơn vị chăm sóc là hộ gia đình</strong>, không phải khách hàng cá nhân.</li>
+        <li><strong>Dữ liệu trước, kịch bản sau, app sau nữa, bán hàng qua app sau cùng.</strong></li>
+        <li><strong>App là sổ theo dõi sức khỏe gia đình</strong>, chức năng mua hàng gắn vào sau.</li>
+        <li><strong>Nhịp cố định tạo thói quen</strong>, không phải nội dung hay.</li>
+        <li><strong>AI viết, con người chịu trách nhiệm.</strong> Không bao giờ gửi nội dung y tế chưa qua duyệt.</li>
+        <li><strong>Tường lửa giữa tư vấn và bán hàng</strong> ở nhóm bị hạn chế quảng cáo.</li>
+        <li><strong>Tự động hóa là mặc định, con người ở đúng chỗ đắt tiền.</strong></li>
+        <li><strong>Mỗi giai đoạn phải chứng minh được kết quả</strong> trước khi mở rộng.</li>
+      </ol>
+    </section>
+
+    <!-- Phụ lục B -->
+    <section class="section" id="appB">
+      <div class="section-eyebrow">Phụ lục B</div>
+      <h2>Ghi chú về khả năng sản phẩm hóa</h2>
+      <p>Lớp CDP và kịch bản vòng đời chồng lên Haravan gần như không có gì riêng cho VoiCon. Nhiều chuỗi bán lẻ Việt Nam đang dùng Haravan, Sapo hoặc KiotViet và gặp đúng vấn đề: nền tảng đủ tốt cho bán hàng, yếu ở giữ khách.</p>
+      <p>Nếu tính đến khả năng đóng gói thành sản phẩm cho thị trường rộng hơn, cần đảm bảo ngay từ Giai đoạn 1:</p>
+      <ul>
+        <li>Tách lớp kết nối nền tảng bán hàng thành <strong>adapter riêng</strong></li>
+        <li>Không hard-code logic đặc thù ngành sữa vào phần lõi</li>
+        <li>Cấu hình hóa bảng định mức tiêu thụ, danh mục kịch bản và rule tuân thủ</li>
+        <li>Tách rõ phần lõi CDP và phần cấu hình theo ngành</li>
+      </ul>
+      <blockquote><p>Việc này làm ngay từ đầu gần như không tăng chi phí, nhưng làm lại về sau thì rất tốn kém.</p></blockquote>
+    </section>
+
+    <!-- Signoff -->
+    <section class="section" style="border-top: 2px solid var(--ink); padding-top: 32px; margin-top: 48px;">
+      <p style="font-size: 14px; color: var(--ink-muted); font-style: italic;">Tài liệu này là bản thảo luận. Sau khi khách hàng phản hồi và chốt các quyết định ở Mục 15, bước tiếp theo là xây dựng đặc tả chi tiết theo từng module với user story và tiêu chí nghiệm thu.</p>
+
+      <div style="margin-top: 32px; padding: 24px; border: 1px solid var(--hairline);">
+        <h4 style="margin-top: 0;">Signoff</h4>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td style="width: 200px;">Khách hàng đã đọc và đồng ý</td><td>☐</td></tr>
+              <tr><td>Ngày confirm</td><td>________</td></tr>
+              <tr><td>Tên người confirm</td><td>________</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand"><img src="logo-voicon.png" alt="VoiCon"></div>
+      <p style="margin-top: 8px; font-size: 12px;">Chuỗi bán lẻ Mẹ & Bé — 13 cửa hàng</p>
+    </div>
+    <div class="footer-info">
+      <p>Đặc tả nền tảng CDP + App khách hàng</p>
+      <p>Phiên bản 1.0 — 27/08/2026</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll spy for sidebar -->
+<script>
+(function() {
+  const links = document.querySelectorAll('.sidebar a');
+  const sections = [];
+  links.forEach(link => {
+    const id = link.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ el, link });
+  });
+
+  function update() {
+    let current = sections[0];
+    const offset = 120;
+    for (const s of sections) {
+      if (s.el.getBoundingClientRect().top <= offset) current = s;
+    }
+    links.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
