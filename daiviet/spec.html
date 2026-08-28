@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đại Việt — Đề Xuất Giải Pháp Công Nghệ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Reset ─────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ─── Tokens ─────────────────────────────────────────────────────────── */
+    :root {
+      --primary:         #0f62fe;
+      --primary-hover:   #0050e6;
+      --primary-pressed: #002d9c;
+      --on-primary:      #ffffff;
+      --ink:             #161616;
+      --ink-muted:       #525252;
+      --ink-subtle:      #8c8c8c;
+      --canvas:          #ffffff;
+      --surface-1:       #f4f4f4;
+      --surface-2:       #e0e0e0;
+      --hairline:        #e0e0e0;
+      --inverse-canvas:  #161616;
+      --inverse-surface: #262626;
+      --inverse-ink:     #ffffff;
+      --inverse-muted:   #c6c6c6;
+      --success:         #24a148;
+      --warning:         #f1c21b;
+      --error:           #da1e28;
+    }
+
+    /* ─── Base ───────────────────────────────────────────────────────────── */
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      background: var(--canvas);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    a:hover { color: var(--primary-hover); text-decoration: underline; }
+
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+
+    /* ─── Container ──────────────────────────────────────────────────────── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    @media (max-width: 672px) {
+      .container { padding: 0 16px; }
+    }
+
+    /* ─── Top Nav ────────────────────────────────────────────────────────── */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      height: 48px;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      align-items: center;
+    }
+    .top-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .nav-brand {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .nav-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: 24px;
+    }
+    .nav-tag {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+      border: 1px solid var(--hairline);
+      padding: 2px 8px;
+    }
+    .nav-tag.draft {
+      color: #7a5d00;
+      background: #fdf3c0;
+      border-color: var(--warning);
+    }
+    @media (max-width: 672px) {
+      .nav-brand { font-size: 13px; }
+      .nav-tag:not(.draft) { display: none; }
+    }
+
+    /* ─── Hero ───────────────────────────────────────────────────────────── */
+    .hero {
+      background: var(--canvas);
+      padding: 80px 0 72px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .hero-eyebrow {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--primary);
+      text-transform: none;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.20;
+      letter-spacing: 0;
+      color: var(--ink);
+      margin-bottom: 16px;
+      max-width: 800px;
+    }
+    .hero-subtitle {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--ink-muted);
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border-top: 1px solid var(--hairline);
+      padding-top: 24px;
+      margin-top: 8px;
+    }
+    .hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 24px 0 0;
+      margin-right: 24px;
+      border-right: 1px solid var(--hairline);
+    }
+    .hero-meta-item:last-child {
+      border-right: none;
+    }
+    .hero-meta-label {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.32px;
+      color: var(--ink-subtle);
+    }
+    .hero-meta-value {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+    }
+    .hero-meta-value.status-draft {
+      color: #7a5d00;
+    }
+    @media (max-width: 672px) {
+      .hero { padding: 48px 0 40px; }
+      .hero-title { font-size: 28px; }
+      .hero-subtitle { font-size: 16px; }
+      .hero-meta-item { margin-bottom: 12px; border-right: none; }
+    }
+
+    /* ─── Table of Contents ──────────────────────────────────────────────── */
+    .toc-section {
+      background: var(--surface-1);
+      padding: 64px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .toc-heading {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--ink-muted);
+      margin-bottom: 24px;
+      text-transform: none;
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--hairline);
+      border: 1px solid var(--hairline);
+    }
+    .toc-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--canvas);
+      padding: 20px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: background 0.1s ease;
+    }
+    .toc-card:hover {
+      background: var(--surface-1);
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .toc-card:hover .toc-card-title {
+      color: var(--primary);
+    }
+    .toc-card-num {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.32px;
+      color: var(--ink-subtle);
+    }
+    .toc-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      line-height: 1.29;
+    }
+    .toc-card.appendix {
+      background: var(--surface-1);
+    }
+    .toc-card.appendix:hover {
+      background: var(--surface-2);
+    }
+    @media (max-width: 1056px) {
+      .toc-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 672px) {
+      .toc-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 400px) {
+      .toc-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Document Sections ──────────────────────────────────────────────── */
+    .doc-section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .doc-section.on-canvas { background: var(--canvas); }
+    .doc-section.on-surface { background: var(--surface-1); }
+
+    .section-eyebrow {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: 0;
+      color: var(--ink);
+      margin-bottom: 40px;
+    }
+    .section-intro {
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink-muted);
+      letter-spacing: 0.16px;
+      margin-bottom: 32px;
+      padding: 16px;
+      border-left: 4px solid var(--hairline);
+    }
+
+    /* Subsections */
+    .subsection {
+      margin-bottom: 48px;
+    }
+    .subsection:last-child { margin-bottom: 0; }
+    .subsection-title {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      letter-spacing: 0;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .subsubsection-title {
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.4;
+      color: var(--ink);
+      margin-bottom: 16px;
+      margin-top: 24px;
+    }
+
+    /* Body text */
+    .doc-p {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .doc-p:last-child { margin-bottom: 0; }
+
+    /* Lists */
+    .doc-ul, .doc-ol {
+      margin: 0 0 16px 0;
+      padding-left: 24px;
+    }
+    .doc-ul li, .doc-ol li {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .doc-ul li:last-child, .doc-ol li:last-child { margin-bottom: 0; }
+    .doc-ul li ul {
+      margin-top: 8px;
+      padding-left: 20px;
+    }
+
+    /* Blockquotes */
+    .doc-quote {
+      border-left: 4px solid var(--primary);
+      padding: 16px 24px;
+      margin: 24px 0;
+      background: var(--canvas);
+    }
+    .on-surface .doc-quote {
+      background: var(--canvas);
+    }
+    .on-canvas .doc-quote {
+      background: var(--surface-1);
+    }
+    .doc-quote p {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .doc-quote p:last-child { margin-bottom: 0; }
+    .doc-quote strong {
+      font-weight: 600;
+    }
+
+    /* Strategy quote (larger) */
+    .strategy-quote {
+      border-left: 4px solid var(--primary);
+      padding: 24px 32px;
+      margin: 32px 0;
+      background: var(--inverse-canvas);
+    }
+    .strategy-quote p {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: 0;
+      color: var(--inverse-ink);
+    }
+
+    /* Warning quote */
+    .warn-quote {
+      border-left: 4px solid var(--warning);
+      padding: 16px 24px;
+      margin: 24px 0;
+      background: #fdf9e9;
+    }
+    .warn-quote p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 24px 0;
+      border: 1px solid var(--hairline);
+    }
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      letter-spacing: 0.16px;
+      min-width: 400px;
+    }
+    .doc-table thead tr {
+      background: var(--surface-1);
+    }
+    .doc-table th {
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      color: var(--ink);
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hairline);
+      white-space: nowrap;
+    }
+    .doc-table td {
+      font-weight: 400;
+      color: var(--ink);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hairline);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .doc-table tr:last-child td {
+      border-bottom: none;
+    }
+    .doc-table tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+    .doc-table td code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      background: var(--surface-1);
+      padding: 1px 6px;
+      border: 1px solid var(--hairline);
+    }
+
+    /* Code / Pre blocks */
+    .code-block {
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      letter-spacing: 0;
+      background: var(--surface-1);
+      border: 1px solid var(--hairline);
+      padding: 24px;
+      overflow-x: auto;
+      margin: 24px 0;
+      color: var(--ink);
+      white-space: pre;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'IBM Plex Mono', 'Courier New', monospace;
+      font-size: 13px;
+      background: var(--surface-1);
+      padding: 1px 5px;
+      border: 1px solid var(--hairline);
+    }
+
+    /* Phase cards */
+    .phase-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--hairline);
+      margin: 24px 0;
+    }
+    .phase-card {
+      padding: 24px;
+      border-right: 1px solid var(--hairline);
+    }
+    .phase-card:last-child { border-right: none; }
+    .phase-num {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.32px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .phase-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .phase-timeline {
+      font-size: 13px;
+      color: var(--ink-muted);
+      margin-bottom: 16px;
+    }
+    .phase-body {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+    }
+    .phase-card ul {
+      padding-left: 18px;
+      margin-top: 8px;
+    }
+    .phase-card li {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      margin-bottom: 6px;
+    }
+    @media (max-width: 672px) {
+      .phase-cards { grid-template-columns: 1fr; }
+      .phase-card { border-right: none; border-bottom: 1px solid var(--hairline); }
+      .phase-card:last-child { border-bottom: none; }
+    }
+
+    /* Principle blocks */
+    .principle {
+      padding: 20px 24px;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .principle:first-child { border-top: 1px solid var(--hairline); }
+    .principle-num {
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--primary);
+      line-height: 1.4;
+    }
+    .principle-body {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.5;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+    }
+    .principle-body strong {
+      font-weight: 600;
+    }
+
+    /* Zone boxes */
+    .zone-box {
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      border: 1px solid var(--hairline);
+    }
+    .zone-box.safe { border-left: 4px solid var(--success); }
+    .zone-box.conflict { border-left: 4px solid var(--error); }
+    .zone-box-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.16px;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .zone-box.safe .zone-box-title { color: var(--success); }
+    .zone-box.conflict .zone-box-title { color: var(--error); }
+
+    /* Tech comparison table - special highlight for best column */
+    .doc-table .best {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Metrics row */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--hairline);
+      margin: 24px 0;
+    }
+    .metric-item {
+      padding: 24px;
+      border-right: 1px solid var(--hairline);
+      text-align: center;
+    }
+    .metric-item:last-child { border-right: none; }
+    .metric-val {
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-label {
+      font-size: 14px;
+      color: var(--ink-muted);
+      letter-spacing: 0.16px;
+    }
+
+    /* Section dividers */
+    .content-divider {
+      height: 1px;
+      background: var(--hairline);
+      margin: 40px 0;
+    }
+
+    /* Attribution note */
+    .doc-note {
+      font-size: 14px;
+      color: var(--ink-muted);
+      letter-spacing: 0.16px;
+      line-height: 1.5;
+      margin-top: 8px;
+      padding-left: 12px;
+      border-left: 2px solid var(--hairline);
+    }
+
+    /* Appendix */
+    .appendix-section {
+      background: var(--surface-1);
+      padding: 64px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .appendix-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.32px;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .appendix-title {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+
+    /* Footer */
+    .doc-footer {
+      background: var(--inverse-canvas);
+      padding: 64px 0 48px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid var(--inverse-surface);
+      padding-bottom: 40px;
+      margin-bottom: 32px;
+    }
+    .footer-col {
+      padding: 0 32px 0 0;
+      border-right: 1px solid var(--inverse-surface);
+      margin-right: 32px;
+    }
+    .footer-col:last-child {
+      border-right: none;
+      padding-right: 0;
+      margin-right: 0;
+    }
+    .footer-col-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.32px;
+      color: var(--inverse-muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .footer-col-value {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--inverse-ink);
+      line-height: 1.5;
+    }
+    .footer-col-value.primary { color: #78a9ff; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-brand {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--inverse-ink);
+      letter-spacing: 0.16px;
+    }
+    .footer-legal {
+      font-size: 12px;
+      color: var(--inverse-muted);
+      letter-spacing: 0.32px;
+      line-height: 1.5;
+      max-width: 600px;
+    }
+    @media (max-width: 672px) {
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-col { border-right: none; margin-right: 0; padding-right: 0; margin-bottom: 24px; border-bottom: 1px solid var(--inverse-surface); padding-bottom: 24px; }
+      .footer-col:last-child { border-bottom: none; margin-bottom: 0; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ─── Print ───────────────────────────────────────────────────────────── */
+    @media print {
+      .top-nav { position: relative; }
+      .toc-section { page-break-after: always; }
+      .doc-section, .appendix-section { page-break-inside: avoid; }
+      body { font-size: 11pt; }
+      .hero-title { font-size: 28pt; }
+      .section-title { font-size: 20pt; }
+      .doc-footer { background: #f4f4f4; color: #161616; }
+      .doc-footer * { color: #161616 !important; }
+      a { color: #161616; text-decoration: none; }
+      .code-block { font-size: 9pt; }
+    }
+
+    /* ─── Misc helpers ───────────────────────────────────────────────────── */
+    .mt-8  { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mb-8  { margin-bottom: 8px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+    .text-muted { color: var(--ink-muted); }
+    .text-primary { color: var(--primary); }
+    .label {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.32px;
+      color: var(--ink-subtle);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .priority-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 1px 6px;
+      vertical-align: middle;
+      margin-left: 10px;
+      position: relative;
+      top: -2px;
+    }
+    .pilot-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.16px;
+      color: var(--success);
+      border: 1px solid var(--success);
+      padding: 1px 6px;
+      vertical-align: middle;
+      margin-left: 10px;
+      position: relative;
+      top: -2px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     TOP NAVIGATION
+═══════════════════════════════════════════════════════════ -->
+<nav class="top-nav" role="navigation" aria-label="Document navigation">
+  <div class="container">
+    <span class="nav-brand">Đại Việt — Đề Xuất Giải Pháp Công Nghệ</span>
+    <div class="nav-meta">
+      <span class="nav-tag">v1.0</span>
+      <span class="nav-tag">28/08/2026</span>
+      <span class="nav-tag draft">Bản thảo</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="container">
+    <p class="hero-eyebrow">Đề Xuất Giải Pháp Công Nghệ</p>
+    <h1 class="hero-title">Hệ thống Vận hành Dịch vụ Khách hàng &amp; Nền tảng Dữ liệu Tập trung</h1>
+    <p class="hero-subtitle">Công ty TNHH Sản xuất Tập đoàn Đại Việt</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Phiên bản</span>
+        <span class="hero-meta-value">1.0</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Ngày</span>
+        <span class="hero-meta-value">28/08/2026</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Đơn vị thụ hưởng</span>
+        <span class="hero-meta-value">Tập đoàn Đại Việt</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Trạng thái</span>
+        <span class="hero-meta-value status-draft">Bản thảo trao đổi</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════
+     TABLE OF CONTENTS
+═══════════════════════════════════════════════════════════ -->
+<section class="toc-section" id="muc-luc" aria-label="Mục lục">
+  <div class="container">
+    <p class="toc-heading">Mục lục — 14 phần chính + 2 phụ lục</p>
+    <nav class="toc-grid" aria-label="Danh sách phần">
+      <a href="#sec1" class="toc-card">
+        <span class="toc-card-num">Phần 1</span>
+        <span class="toc-card-title">Tóm tắt điều hành</span>
+      </a>
+      <a href="#sec2" class="toc-card">
+        <span class="toc-card-num">Phần 2</span>
+        <span class="toc-card-title">Bối cảnh doanh nghiệp</span>
+      </a>
+      <a href="#sec3" class="toc-card">
+        <span class="toc-card-num">Phần 3</span>
+        <span class="toc-card-title">Nhận định về mô hình kinh doanh</span>
+      </a>
+      <a href="#sec4" class="toc-card">
+        <span class="toc-card-num">Phần 4</span>
+        <span class="toc-card-title">Xác định vấn đề cốt lõi</span>
+      </a>
+      <a href="#sec5" class="toc-card">
+        <span class="toc-card-num">Phần 5</span>
+        <span class="toc-card-title">Định hướng giải pháp</span>
+      </a>
+      <a href="#sec6" class="toc-card">
+        <span class="toc-card-num">Phần 6</span>
+        <span class="toc-card-title">Cơ chế thu thập dữ liệu</span>
+      </a>
+      <a href="#sec7" class="toc-card">
+        <span class="toc-card-num">Phần 7</span>
+        <span class="toc-card-title">Làm giàu và khai thác dữ liệu</span>
+      </a>
+      <a href="#sec8" class="toc-card">
+        <span class="toc-card-num">Phần 8</span>
+        <span class="toc-card-title">Chính sách hỗ trợ nhà phân phối</span>
+      </a>
+      <a href="#sec9" class="toc-card">
+        <span class="toc-card-num">Phần 9</span>
+        <span class="toc-card-title">Hệ thống vận hành thời gian thực</span>
+      </a>
+      <a href="#sec10" class="toc-card">
+        <span class="toc-card-num">Phần 10</span>
+        <span class="toc-card-title">Kiến trúc kỹ thuật</span>
+      </a>
+      <a href="#sec11" class="toc-card">
+        <span class="toc-card-num">Phần 11</span>
+        <span class="toc-card-title">Lộ trình triển khai</span>
+      </a>
+      <a href="#sec12" class="toc-card">
+        <span class="toc-card-num">Phần 12</span>
+        <span class="toc-card-title">Chỉ số đo lường</span>
+      </a>
+      <a href="#sec13" class="toc-card">
+        <span class="toc-card-num">Phần 13</span>
+        <span class="toc-card-title">Rủi ro và biện pháp kiểm soát</span>
+      </a>
+      <a href="#sec14" class="toc-card">
+        <span class="toc-card-num">Phần 14</span>
+        <span class="toc-card-title">Câu hỏi cần làm rõ</span>
+      </a>
+      <a href="#app-a" class="toc-card appendix">
+        <span class="toc-card-num">Phụ lục A</span>
+        <span class="toc-card-title">Tóm tắt các quyết định đã thống nhất</span>
+      </a>
+      <a href="#app-b" class="toc-card appendix">
+        <span class="toc-card-num">Phụ lục B</span>
+        <span class="toc-card-title">Một câu tóm tắt</span>
+      </a>
+    </nav>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 1 — TÓM TẮT ĐIỀU HÀNH
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-canvas" id="sec1">
+  <div class="container">
+    <p class="section-eyebrow">Phần 1</p>
+    <h2 class="section-title" id="1-tom-tat-dieu-hanh">Tóm tắt điều hành</h2>
+
+    <div class="subsection" id="1-1-van-de">
+      <h3 class="subsection-title">1.1. Vấn đề</h3>
+      <p class="doc-p">Đại Việt hiện sở hữu một trong những mạng lưới phân phối hàng gia dụng sức khỏe lớn nhất Việt Nam — gần 10.000 điểm bán, phủ toàn bộ hệ thống modern trade lớn. Tuy nhiên, <strong>toàn bộ quan hệ với người dùng cuối đang thuộc về kênh phân phối, không thuộc về Đại Việt.</strong></p>
+      <p class="doc-p">Hệ quả trực tiếp:</p>
+      <ul class="doc-ul">
+        <li>Không biết ai đang sử dụng sản phẩm của mình</li>
+        <li>Không khai thác được doanh thu lặp lại từ vật tư tiêu hao (lõi lọc) — vốn là dòng tiền lớn nhất và biên cao nhất trong ngành lọc nước</li>
+        <li>Không bán chéo được trong danh mục sản phẩm rất rộng đang có</li>
+        <li>Dữ liệu chất lượng sản phẩm từ hiện trường không phản hồi ngược về nhà máy</li>
+        <li>Ban lãnh đạo không có số liệu vận hành tức thời để ra quyết định</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="1-2-de-xuat">
+      <h3 class="subsection-title">1.2. Đề xuất</h3>
+      <p class="doc-p">Xây dựng <strong>hệ thống vận hành dịch vụ khách hàng có dữ liệu thời gian thực</strong>, đóng vai trò vừa là công cụ chạy việc hàng ngày, vừa là nơi tập trung dữ liệu khách hàng từ nhiều nguồn.</p>
+      <p class="doc-p">Nguyên tắc thiết kế xuyên suốt: <strong>dữ liệu được sinh ra như sản phẩm phụ của công việc thực tế</strong>, không phải do ai đó nhập liệu riêng cho báo cáo.</p>
+    </div>
+
+    <div class="subsection" id="1-3-nguyen-tac-chien-luoc">
+      <h3 class="subsection-title">1.3. Nguyên tắc chiến lược</h3>
+      <div class="strategy-quote">
+        <p>Không giành giao dịch đầu tiên. Giành toàn bộ vòng đời sau đó.</p>
+      </div>
+      <p class="doc-p">Kênh phân phối giữ việc bán máy — đây là vùng không đụng tới. Đại Việt giành lấy phần mà hiện tại <strong>không ai đang sở hữu</strong>: bảo hành, bảo trì, thay lõi, bán chéo, và mối quan hệ dài hạn với hộ gia đình.</p>
+    </div>
+
+    <div class="subsection" id="1-4-pham-vi">
+      <h3 class="subsection-title">1.4. Phạm vi giai đoạn 1</h3>
+      <ul class="doc-ul">
+        <li><strong>Web responsive</strong> — không xây App native, không xây Zalo Mini App</li>
+        <li>Ba phân hệ: Khách hàng · Kỹ thuật viên · Nhà phân phối</li>
+        <li>Ba luồng nghiệp vụ: Kích hoạt bảo hành · Ticket bảo hành · Lịch kỹ thuật viên</li>
+        <li>Chưa tích hợp hệ thống bán hàng hiện hữu (để giai đoạn 2)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 2 — BỐI CẢNH DOANH NGHIỆP
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-surface" id="sec2">
+  <div class="container">
+    <p class="section-eyebrow">Phần 2</p>
+    <h2 class="section-title" id="2-boi-canh-doanh-nghiep">Bối cảnh doanh nghiệp</h2>
+    <p class="section-intro">Phần này tổng hợp từ thông tin công khai trên website và báo chí, phục vụ mục đích thống nhất bối cảnh trước khi trao đổi.</p>
+
+    <div class="subsection" id="2-1-phap-nhan">
+      <h3 class="subsection-title">2.1. Pháp nhân</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Hạng mục</th><th>Thông tin</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Tên đầy đủ</td><td>Công ty TNHH Sản xuất Tập đoàn Đại Việt</td></tr>
+            <tr><td>Trụ sở chính</td><td>Lô F1 Đường số 10, CCN Hải Sơn, Xã Mỹ Hạnh, Tỉnh Tây Ninh</td></tr>
+            <tr><td>Văn phòng giao dịch</td><td>Tầng 12, Toà nhà Tổng Công ty 319 (Pico Plaza), Số 20 Cộng Hoà, P. Bảy Hiền, TP.HCM</td></tr>
+            <tr><td>GPĐKKD</td><td>1101928050 — Sở KH&amp;ĐT Long An cấp ngày 10/09/2019</td></tr>
+            <tr><td>Hotline</td><td>1900 63 60 98</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="2-2-quy-mo">
+      <h3 class="subsection-title">2.2. Quy mô công bố</h3>
+      <ul class="doc-ul">
+        <li>Hơn 20 năm hình thành và phát triển</li>
+        <li>Nhà máy tổng diện tích ~100.000 m² (10 ha)</li>
+        <li>Gần 10.000 điểm bán trong và ngoài nước</li>
+        <li>Top 500 doanh nghiệp tư nhân lớn nhất Việt Nam (VNR500) năm 2021</li>
+        <li>Top 500 doanh nghiệp tăng trưởng nhanh nhất Việt Nam (FAST500)</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="2-3-lich-su">
+      <h3 class="subsection-title">2.3. Lịch sử hình thành</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Mốc</th><th>Sự kiện</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Khởi nguồn</td><td>Nhóm người Việt trẻ từng học tập và làm việc tại Liên bang Nga</td></tr>
+            <tr><td>12/2002</td><td>Thành lập Công ty CP Cơ Điện Lạnh Đại Việt</td></tr>
+            <tr><td>2016</td><td>Bước vào nghiên cứu và sản xuất máy lọc nước tại miền Nam</td></tr>
+            <tr><td>2018</td><td>Thành lập công ty công nghệ Baspro — hậu cần, xử lý đơn hàng, bán hàng đa kênh, kho vận</td></tr>
+            <tr><td>2019</td><td>Đổi tên thành Công ty TNHH Sản xuất Tập đoàn Đại Việt, mở rộng hệ sinh thái chăm sóc sức khỏe</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="2-4-mo-hinh">
+      <h3 class="subsection-title">2.4. Mô hình kinh doanh hiện tại</h3>
+      <p class="doc-p"><strong>Hai chân doanh thu:</strong></p>
+      <p class="doc-p"><strong>(A) Sản xuất &amp; bán lẻ hàng gia dụng sức khỏe</strong></p>
+      <p class="doc-p">Hai thương hiệu phân tầng:</p>
+      <ul class="doc-ul">
+        <li><strong>Daikiosan</strong> — định vị cao cấp, công nghệ tiên tiến</li>
+        <li><strong>Makano</strong> — định vị giá đúng giá trị, thanh lịch</li>
+      </ul>
+      <p class="doc-p">Ngành hàng: máy lọc nước (RO, đầu nguồn, ion kiềm tươi) · quạt điều hòa · ghế massage · máy chạy bộ · xe đạp tập · thiết bị bếp · thiết bị chống giật</p>
+      <p class="doc-p mt-16"><strong>(B) Nhà thầu cơ điện lạnh (M&amp;E)</strong></p>
+      <ul class="doc-ul">
+        <li>Hơn 25 năm kinh nghiệm, trọn gói: tư vấn → thiết kế → cung cấp → thi công → bảo trì</li>
+        <li>Lọc nước công nghiệp, lọc nước đầu nguồn, hệ thống điều hòa &amp; thông gió</li>
+        <li>Nhà phân phối điều hòa trung tâm và quạt thông gió: Daikin, Kruger</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="2-5-san-pham">
+      <h3 class="subsection-title">2.5. Sản phẩm mũi nhọn</h3>
+      <p class="doc-p"><strong>Máy lọc nước ion kiềm tươi</strong> — kết hợp lọc RO, công nghệ hấp thụ MOFs và điện phân magie.</p>
+      <p class="doc-p">Bộ bảo chứng:</p>
+      <ul class="doc-ul">
+        <li>Bằng độc quyền giải pháp hữu ích (Cục Sở hữu Trí tuệ — Bộ KH&amp;CN) cho thiết bị điện phân điện cực magie</li>
+        <li>Giải "Máy lọc nước ion kiềm được yêu thích" — Tech Awards 2024</li>
+        <li>Đạt chuẩn nước uống trực tiếp QCVN 6-1:2010/BYT</li>
+        <li>Kỷ lục Việt Nam về công nghệ điện phân</li>
+        <li>ISO 9001:2015</li>
+      </ul>
+      <p class="doc-p mt-16"><strong>Thiết bị chống giật trọn đời</strong> — dòng sản phẩm mới, truyền thông mạnh trong 2025 với gói bảo hiểm 50 tỷ và hợp tác Điện lưới Miền Bắc.</p>
+    </div>
+
+    <div class="subsection" id="2-6-kenh-phan-phoi">
+      <h3 class="subsection-title">2.6. Kênh phân phối</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Loại kênh</th><th>Đối tác</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Modern trade</td><td>Điện Máy Xanh, FPT Shop, Điện Máy Chợ Lớn, MediaMart</td></tr>
+            <tr><td>Sàn TMĐT</td><td>Shopee, TikTok Shop</td></tr>
+            <tr><td>Trực tiếp</td><td>Website tự vận hành (WooCommerce), Zalo OA</td></tr>
+            <tr><td>Hạ tầng phụ trợ</td><td>Subdomain tra cứu bảo hành riêng (bhdt)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 3 — NHẬN ĐỊNH VỀ MÔ HÌNH KINH DOANH
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-canvas" id="sec3">
+  <div class="container">
+    <p class="section-eyebrow">Phần 3</p>
+    <h2 class="section-title" id="3-nhan-dinh-mo-hinh">Nhận định về mô hình kinh doanh</h2>
+    <p class="section-intro">Nhận định "outside-in" dựa trên thông tin công khai — mang tính giả thuyết chiến lược, cần đối chiếu với số liệu nội bộ.</p>
+
+    <div class="subsection" id="3-1-ban-chat">
+      <h3 class="subsection-title">3.1. Bản chất mô hình</h3>
+      <p class="doc-p">Đại Việt không phải công ty công nghệ, cũng không thuần thương mại. Đây là <strong>nhà sản xuất sở hữu kênh, lấy marketing làm năng lực lõi</strong>, cấu trúc ba lớp:</p>
+      <ol class="doc-ol">
+        <li><strong>Nhà máy</strong> (~100.000 m²) — tài sản cứng, kiểm soát giá vốn, ra SKU nhanh</li>
+        <li><strong>Hai thương hiệu Daikiosan / Makano</strong> — công cụ phân tầng giá, phủ từ cao cấp xuống phổ thông</li>
+        <li><strong>Hai chân doanh thu</strong> — B2C hàng gia dụng qua modern trade + sàn; B2B thầu cơ điện lạnh</li>
+      </ol>
+      <p class="doc-p"><strong>Điểm đáng chú ý:</strong> danh mục sản phẩm không có logic công nghệ, chỉ có <strong>logic kênh</strong>. Máy lọc nước → quạt điều hòa → ghế massage → máy chạy bộ → bếp → thiết bị chống giật. Các dòng này không chia sẻ R&amp;D chung, chúng chia sẻ <em>kệ hàng</em> và <em>đội marketing</em>.</p>
+      <p class="doc-p">Đây là mô hình "lấp đầy kệ": tài sản thật là quan hệ với chuỗi bán lẻ cộng năng lực dựng câu chuyện sản phẩm; SKU chỉ là thứ đổ vào đó.</p>
+    </div>
+
+    <div class="subsection" id="3-2-diem-manh">
+      <h3 class="subsection-title">3.2. Điểm mạnh</h3>
+      <p class="doc-p"><strong>Năng lực tạo category.</strong> "Ion kiềm tươi" là một danh mục do chính Đại Việt đặt tên và chiếm giữ, kèm bộ bảo chứng đầy đủ (bằng sáng chế hữu ích, kỷ lục, giải thưởng, chuẩn Bộ Y tế). Điều này cho phép chuyển định vị từ "máy lọc nước" sang "thiết bị sức khỏe" và nhảy bậc giá. Đa số nhà sản xuất nội địa không có kỹ năng này.</p>
+      <p class="doc-p"><strong>Vòng lặp marketing rất nhanh.</strong> Trường hợp thiết bị chống giật là ví dụ điển hình: lấy một sản phẩm có sẵn hàng chục năm (RCD/ELCB), đóng gói lại thành khái niệm mới, gắn bảo hiểm 50 tỷ làm proxy niềm tin, ký hợp tác với điện lực, phủ báo chí lớn trong vài tuần. Tốc độ từ ý tưởng đến rầm rộ chỉ vài tháng.</p>
+      <p class="doc-p"><strong>Chân B2B là phần chất lượng nhất.</strong> Thầu M&amp;E, lọc nước công nghiệp, phân phối Daikin/Kruger — doanh thu lớn, rào cản cao (hồ sơ năng lực, quan hệ chủ đầu tư), ít bị ép giá theo mùa. Nghịch lý là toàn bộ truyền thông lại dồn vào B2C.</p>
+    </div>
+
+    <div class="subsection" id="3-3-diem-yeu">
+      <h3 class="subsection-title">3.3. Điểm yếu</h3>
+      <p class="doc-p"><strong>Khác biệt nằm ở câu chuyện, không nằm ở rào cản.</strong><br>
+      Bằng "giải pháp hữu ích" có mức bảo hộ thấp hơn sáng chế, phạm vi hẹp — đối thủ đi vòng khá dễ. Lợi ích sức khỏe của nước ion kiềm cũng chưa được y học chứng minh vững chắc; đây là rủi ro pháp lý và truyền thông đang ngủ. Khi một hãng lớn hơn quyết định đánh vào category này, thứ giữ lại được chỉ là lợi thế nhận biết của người đi trước.</p>
+      <p class="doc-p"><strong>Mất quyền sở hữu khách hàng — lỗ hổng lớn nhất.</strong><br>
+      Máy lọc nước là mô hình dao cạo/lưỡi dao kinh điển: máy bán một lần, <strong>lõi lọc mới là dòng tiền lặp lại suốt vòng đời 5–10 năm</strong>. Bán qua Điện Máy Xanh, Shopee, TikTok Shop nghĩa là kênh giữ khách, Đại Việt chỉ giữ được cái phễu bảo hành. Với gần 10.000 điểm bán, đang ngồi trên một base khách hàng khổng lồ mà gần như không khai thác được giá trị vòng đời.</p>
+      <p class="doc-p"><strong>Thương hiệu bị pha loãng.</strong><br>
+      Daikiosan hôm nay là gì? Nước, gió mát, massage, chạy bộ, bếp, hay an toàn điện? Càng mở rộng càng khó tích lũy equity, và mỗi category mới lại phải chi marketing từ đầu. Chi phí này là biến phí vĩnh viễn, không chuyển hóa thành tài sản.</p>
+      <p class="doc-p"><strong>Rủi ro danh tính thương hiệu.</strong><br>
+      Tên gọi kiểu Nhật cho hàng sản xuất trong nước là con dao hai lưỡi. Tiền lệ trong ngành cho thấy khi bị đặt vấn đề, thiệt hại rất nhanh và sâu. Trớ trêu là trang giới thiệu lại nói về "trí tuệ con người Việt Nam vươn tầm thế giới" — hai thông điệp đang mâu thuẫn.</p>
+      <p class="doc-p"><strong>Ngành hàng khó.</strong><br>
+      Ghế massage và quạt điều hòa ở Việt Nam là chiến trường giá: neo giá niêm yết cao rồi xả sâu, chi phí bảo hành và đổi trả lớn, tính mùa vụ nặng. Biên lợi nhuận thực tế nhiều khả năng mỏng hơn ấn tượng mà giá niêm yết tạo ra.</p>
+    </div>
+
+    <div class="subsection" id="3-4-don-bay">
+      <h3 class="subsection-title">3.4. Đòn bẩy chưa dùng</h3>
+      <ol class="doc-ol">
+        <li><strong>Chuyển từ bán máy sang bán dịch vụ nước</strong> — thuê bao thay lõi định kỳ, biến 10.000 điểm bán thành mạng lưới service</li>
+        <li><strong>Xây dữ liệu quanh phễu bảo hành</strong> — điểm duy nhất khách hàng buộc phải để lại danh tính</li>
+        <li><strong>Dùng nhà máy làm ODM</strong> — công suất 100.000 m² chỉ phục vụ thương hiệu nội bộ là dưới mức tối ưu</li>
+      </ol>
+    </div>
+
+    <div class="subsection" id="3-5-ket-luan">
+      <h3 class="subsection-title">3.5. Kết luận đánh giá</h3>
+      <blockquote class="doc-quote">
+        <p>Mô hình mạnh về <strong>tốc độ và phân phối</strong>, yếu về <strong>giữ khách và rào cản</strong>.</p>
+        <p>Tạo tiền tốt khi thị trường còn tin vào câu chuyện sản phẩm, nhưng mỗi năm phải "sáng tạo" một category mới để duy trì đà — mà việc đó không tích lũy thành tài sản. Cái duy nhất tích lũy được là quan hệ kênh và nhà máy, cả hai đều có thể bị mua đứt bởi đối thủ vốn lớn hơn.</p>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 4 — XÁC ĐỊNH VẤN ĐỀ CỐT LÕI
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-surface" id="sec4">
+  <div class="container">
+    <p class="section-eyebrow">Phần 4</p>
+    <h2 class="section-title" id="4-van-de-cot-loi">Xác định vấn đề cốt lõi</h2>
+
+    <div class="subsection" id="4-1-khac-biet-cau-truc">
+      <h3 class="subsection-title">4.1. Khác biệt cấu trúc so với mô hình CDP thông thường</h3>
+      <p class="doc-p">Mô hình CDP quen thuộc (chuỗi bán lẻ, chuỗi dịch vụ) có một điều kiện nền: <strong>doanh nghiệp sở hữu điểm giao dịch</strong>, nên dữ liệu tự chảy vào.</p>
+      <p class="doc-p">Đại Việt <strong>không có điều kiện đó</strong>. Giao dịch xảy ra ở Điện Máy Xanh, FPT Shop, Shopee, TikTok Shop. Đại Việt đứng ngoài — không thấy ai mua, mua lúc nào, giá bao nhiêu.</p>
+      <p class="doc-p"><strong>Hệ quả thiết kế:</strong> không thể bê nguyên kiến trúc CDP retail sang. Ở đây không có "nguồn dữ liệu để hợp nhất", mà phải <strong>tự tạo ra sự kiện sinh dữ liệu</strong>. Đây là bài toán khác về bản chất.</p>
+    </div>
+
+    <div class="subsection" id="4-2-bon-khoang-trong">
+      <h3 class="subsection-title">4.2. Bốn khoảng trống cụ thể</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>#</th><th>Khoảng trống</th><th>Hệ quả</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Không sở hữu danh tính người dùng cuối</td><td>Mất toàn bộ doanh thu vật tư tiêu hao và bán chéo</td></tr>
+            <tr><td>2</td><td>Dữ liệu hiện trường bốc hơi</td><td>Không có bản đồ chất lượng nước, không có hồ sơ thiết bị hộ gia đình</td></tr>
+            <tr><td>3</td><td>Vòng phản hồi chất lượng đứt gãy</td><td>Nhà máy không nhận được dữ liệu lỗi theo model/lô sản xuất</td></tr>
+            <tr><td>4</td><td>Ban lãnh đạo thiếu số liệu tức thời</td><td>Quyết định dựa trên báo cáo cuối kỳ, nhiều nguồn số liệu mâu thuẫn</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 5 — ĐỊNH HƯỚNG GIẢI PHÁP
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-canvas" id="sec5">
+  <div class="container">
+    <p class="section-eyebrow">Phần 5</p>
+    <h2 class="section-title" id="5-dinh-huong-giai-phap">Định hướng giải pháp</h2>
+
+    <div class="subsection" id="5-1-nguyen-tac-nen-tang">
+      <h3 class="subsection-title">5.1. Nguyên tắc nền tảng</h3>
+      <div class="principle">
+        <span class="principle-num">1</span>
+        <div class="principle-body"><strong>Không xung đột kênh.</strong> Hệ thống <strong>không bán máy</strong>. Chỉ bán dịch vụ và vật tư tiêu hao — vùng mà nhà phân phối gần như không phục vụ (giá trị đơn nhỏ, cần đến tận nhà, không đáng công).</div>
+      </div>
+      <div class="principle">
+        <span class="principle-num">2</span>
+        <div class="principle-body"><strong>Kênh phải được hưởng lợi.</strong> Mọi doanh thu phát sinh từ hệ thống đều gắn attribution về cửa hàng đã bán máy đầu tiên. CDP không phải mối đe dọa với kênh, mà là <strong>công cụ tạo thêm thu nhập cho kênh</strong>.</div>
+      </div>
+      <div class="principle">
+        <span class="principle-num">3</span>
+        <div class="principle-body"><strong>Dữ liệu sinh ra từ công việc.</strong> Không ai phải nhập liệu riêng cho báo cáo. Kỹ thuật viên đóng ca → có bản ghi dịch vụ. Tổng đài mở ticket → có bản ghi bảo hành. Khách quét QR → có bản ghi kích hoạt.</div>
+      </div>
+      <div class="principle">
+        <span class="principle-num">4</span>
+        <div class="principle-body"><strong>Schema đúng từ ngày đầu, công cụ thay sau.</strong> Sai schema thì 2 năm sau phải làm lại. Sai công cụ thì chỉ tốn tiền migrate.</div>
+      </div>
+    </div>
+
+    <div class="subsection mt-32" id="5-2-phan-dinh-vung">
+      <h3 class="subsection-title">5.2. Phân định vùng an toàn / vùng xung đột</h3>
+      <div class="zone-box safe">
+        <div class="zone-box-title">Vùng AN TOÀN — đại lý hoan nghênh</div>
+        <ul class="doc-ul">
+          <li>Kích hoạt bảo hành, tra cứu bảo hành điện tử</li>
+          <li>Đặt lịch bảo trì, thay lõi, gọi kỹ thuật</li>
+          <li>Nhắc chu kỳ thay lõi, cảnh báo chất lượng nước</li>
+          <li>Hướng dẫn sử dụng, nội dung giáo dục</li>
+          <li><strong>Bán lõi lọc và vật tư tiêu hao</strong></li>
+        </ul>
+      </div>
+      <div class="zone-box conflict">
+        <div class="zone-box-title">Vùng XUNG ĐỘT — tránh tuyệt đối trong 24 tháng đầu</div>
+        <ul class="doc-ul">
+          <li>Bán máy trên web rẻ hơn giá tại cửa hàng</li>
+          <li>Flash sale riêng trong mùa cao điểm của kênh</li>
+          <li>Dùng dữ liệu đại lý cung cấp để remarketing bán trực tiếp</li>
+        </ul>
+      </div>
+      <p class="doc-p"><strong>Xử lý nút "mua máy":</strong> dẫn ra "cửa hàng gần nhất" — tức đẩy đơn ngược về kênh.</p>
+    </div>
+
+    <div class="subsection" id="5-3-hinh-thai-san-pham">
+      <h3 class="subsection-title">5.3. Quyết định về hình thái sản phẩm</h3>
+      <p class="doc-p"><strong>Kết luận: Web responsive. Không App native. Không Zalo Mini App.</strong></p>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Tiêu chí</th><th>Web responsive</th><th>Zalo Mini App</th><th>App native</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Rào cản tiếp cận</td><td class="best">Không cần cài</td><td>Cần có Zalo</td><td>Cần tải &amp; cài</td></tr>
+            <tr><td>Sở hữu dữ liệu</td><td class="best">Hoàn toàn</td><td>Phụ thuộc nền tảng</td><td>Hoàn toàn</td></tr>
+            <tr><td>Tích lũy SEO</td><td class="best">Có</td><td>Không</td><td>Không</td></tr>
+            <tr><td>Phù hợp tần suất thấp</td><td class="best">Rất phù hợp</td><td>Phù hợp</td><td>Không phù hợp</td></tr>
+            <tr><td>Chi phí giai đoạn đầu</td><td class="best">Thấp nhất</td><td>Trung bình</td><td>Cao</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="doc-p"><strong>Lý giải:</strong></p>
+      <p class="doc-p"><em>Tần suất quyết định hình thái.</em> Máy lọc nước 3–12 tháng chạm một lần; máy chống giật gần như không bao giờ. Đây là mô hình <em>pull khi có nhu cầu</em>, không phải <em>daily engagement</em>.</p>
+      <p class="doc-p"><em>Mini App khóa vào một nền tảng.</em> Dữ liệu nằm trong hệ sinh thái bên thứ ba, phụ thuộc chính sách của họ, không bao giờ là tài sản độc lập. Điều này mâu thuẫn trực tiếp với mục tiêu "chủ động tập database khai thác về sau".</p>
+      <p class="doc-p"><em>App native ngay từ đầu là sai thứ tự.</em> Cài đặt là rào cản lớn nhất trong toàn phễu. Bắt khách tải app chỉ để kích hoạt bảo hành sẽ giết tỷ lệ kích hoạt — chỉ số sống còn của giai đoạn 1.</p>
+      <p class="doc-p"><strong>Bù đắp phần Mini App bỏ đi:</strong></p>
+      <p class="doc-p">Cái Mini App cho miễn phí mà web không có là <strong>kênh chạm chủ động</strong>. Giải quyết bằng cách tách vai trò:</p>
+      <ul class="doc-ul">
+        <li><strong>Zalo OA + ZNS</strong> — gửi nhắc thay lõi, nhắc bảo hành, xác nhận lịch hẹn</li>
+        <li><strong>SMS</strong> — cho nhóm không dùng Zalo</li>
+        <li>Link trong tin nhắn dẫn thẳng về web</li>
+      </ul>
+      <blockquote class="doc-quote">
+        <p><strong>Web chứa dữ liệu và xử lý tương tác; Zalo OA chỉ là ống dẫn thông báo.</strong> Dữ liệu không nằm trong Zalo, chỉ đi qua nó.</p>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 6 — CƠ CHẾ THU THẬP DỮ LIỆU
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-surface" id="sec6">
+  <div class="container">
+    <p class="section-eyebrow">Phần 6</p>
+    <h2 class="section-title" id="6-co-che-thu-thap">Cơ chế thu thập dữ liệu</h2>
+    <p class="doc-p">Xếp theo tỷ lệ thành công thực tế và mức ưu tiên triển khai.</p>
+
+    <div class="subsection" id="6-1-kich-hoat">
+      <h3 class="subsection-title">6.1. Kích hoạt bảo hành đổi lấy quyền lợi cộng thêm <span class="priority-badge">⭐ Ưu tiên 1</span></h3>
+      <p class="doc-p">QR trên tem niêm phong → quét → nhập SĐT → nhận thêm 6 tháng bảo hành.</p>
+      <p class="doc-p">Chi phí thực tế gần bằng 0 (tỷ lệ hỏng năm thứ 3 rất thấp), giá trị cảm nhận cao. Cơ chế rẻ nhất và hiệu quả nhất.</p>
+    </div>
+
+    <div class="subsection" id="6-2-qr-loi-loc">
+      <h3 class="subsection-title">6.2. QR trên lõi lọc <span class="priority-badge">⭐ Ưu tiên 1</span></h3>
+      <p class="doc-p"><strong>Quan trọng hơn QR trên máy.</strong> Mỗi lõi thay ra là một sự kiện.</p>
+      <p class="doc-p">Quét lõi khi lắp → hệ thống biết chính xác model máy, ngày thay, người thay, địa chỉ → tự tính ngày hết hạn kế tiếp.</p>
+      <p class="doc-p">Một mũi tên ba đích:</p>
+      <ul class="doc-ul">
+        <li>Dữ liệu chu kỳ tiêu hao</li>
+        <li>Dòng tiền lặp lại</li>
+        <li>Chống hàng giả lõi (vấn đề mọi hãng lọc nước đều đau)</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="6-3-ung-dung-ktv">
+      <h3 class="subsection-title">6.3. Ứng dụng cho kỹ thuật viên <span class="priority-badge">⭐ Ưu tiên 1</span></h3>
+      <p class="doc-p">Kỹ thuật viên là <strong>người duy nhất bước vào nhà khách hàng</strong>.</p>
+      <p class="doc-p">Mỗi lần lắp đặt hoặc bảo trì, ghi nhận:</p>
+      <ul class="doc-ul">
+        <li>Model, vị trí lắp đặt</li>
+        <li>Số nhân khẩu trong hộ</li>
+        <li>Nguồn nước (máy / giếng / mưa)</li>
+        <li>Chỉ số TDS, pH đo được</li>
+        <li>Các thiết bị khác đang có trong nhà</li>
+        <li>Hình ảnh hiện trường</li>
+      </ul>
+      <p class="doc-p">Đây là <strong>dữ liệu chất lượng cao nhất trong toàn hệ thống</strong>, không mua được bằng tiền, và hiện đang bốc hơi mỗi ngày.</p>
+    </div>
+
+    <div class="subsection" id="6-4-bao-hiem">
+      <h3 class="subsection-title">6.4. Bảo hiểm làm lý do chính đáng <span class="pilot-badge">Chọn làm pilot</span></h3>
+      <p class="doc-p">Với dòng thiết bị chống giật: bảo hiểm 50 tỷ chỉ có hiệu lực khi sản phẩm được đăng ký chính chủ.</p>
+      <p class="doc-p">Đây là lý do hợp pháp, dễ giải thích, và khách hàng <strong>muốn</strong> đăng ký chứ không bị ép. Tỷ lệ kích hoạt ở dòng này sẽ cao bất thường — nên chọn làm điểm khởi động.</p>
+    </div>
+
+    <div class="subsection" id="6-5-bao-hanh-dien-tu">
+      <h3 class="subsection-title">6.5. Bảo hành điện tử thay phiếu giấy</h3>
+      <p class="doc-p">Mất phiếu bảo hành là nỗi sợ phổ biến. Thông điệp "Không cần giữ giấy, chỉ cần SĐT" đủ mạnh, không cần khuyến mãi kèm theo.</p>
+    </div>
+
+    <div class="subsection" id="6-6-hoa-don-dien-tu">
+      <h3 class="subsection-title">6.6. Hóa đơn điện tử</h3>
+      <p class="doc-p">Đã bắt buộc theo luật, mỗi hóa đơn đều có SĐT hoặc email người mua.</p>
+      <p class="doc-p"><strong>Đây là kênh thu dữ liệu đã trả chi phí rồi mà chưa được khai thác</strong> — chỉ cần nối vào kho dữ liệu.</p>
+    </div>
+
+    <div class="subsection" id="6-7-doi-cu-lay-moi">
+      <h3 class="subsection-title">6.7. Chương trình đổi cũ lấy mới</h3>
+      <p class="doc-p">Muốn nhận trợ giá phải khai máy cũ đang dùng.</p>
+      <p class="doc-p">Ba lợi ích: lấy dữ liệu · cướp khách của đối thủ · tạo cớ để đại lý gọi lại khách cũ.</p>
+    </div>
+
+    <div class="subsection" id="6-8-xo-so">
+      <h3 class="subsection-title">6.8. Xổ số theo số seri</h3>
+      <p class="doc-p">Cơ chế cổ điển nhưng hiệu quả với hàng gia dụng mùa vụ (quạt điều hòa mùa nóng). Chi phí thấp, thu SĐT nhanh.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 7 — LÀM GIÀU VÀ KHAI THÁC DỮ LIỆU
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-canvas" id="sec7">
+  <div class="container">
+    <p class="section-eyebrow">Phần 7</p>
+    <h2 class="section-title" id="7-lam-giau-khai-thac">Làm giàu và khai thác dữ liệu</h2>
+
+    <div class="subsection" id="7-1-lam-giau">
+      <h3 class="subsection-title">7.1. Làm giàu — nơi tạo ra khác biệt thật</h3>
+      <p class="doc-p">Dữ liệu chỉ có tên và SĐT thì vô dụng. <strong>500.000 record chỉ có tên và số điện thoại không phải tài sản.</strong></p>
+      <p class="doc-p">Ba trường sau biến nó thành tài sản:</p>
+
+      <h4 class="subsubsection-title">(a) Hồ sơ nguồn nước theo địa chỉ</h4>
+      <p class="doc-p">Khi kỹ thuật viên đo TDS/pH và ghi lại, sau vài nghìn điểm đo Đại Việt sẽ có <strong>bản đồ chất lượng nước Việt Nam theo phường/xã</strong> mà không đối thủ nào có.</p>
+      <p class="doc-p">Ứng dụng:</p>
+      <ul class="doc-ul">
+        <li>Khuyến nghị model đúng theo khu vực</li>
+        <li>Dự báo tuổi thọ lõi theo chất lượng nước</li>
+        <li>Tài sản PR rất mạnh</li>
+        <li>Hồ sơ năng lực cho đấu thầu B2B</li>
+      </ul>
+
+      <h4 class="subsubsection-title">(b) Chu kỳ tiêu hao suy ra từ hành vi</h4>
+      <p class="doc-p">Ngày lắp + chất lượng nước + số nhân khẩu → tính được ngày lõi hết hạn.<br>
+      Đây là engine sinh ra doanh thu lặp lại.</p>
+
+      <h4 class="subsubsection-title">(c) Bản đồ thiết bị trong hộ gia đình</h4>
+      <p class="doc-p">Kỹ thuật viên ghi nhận nhà đó đang có gì. Đây là nền tảng cho bán chéo — <strong>biết ai chưa có gì mới bán chéo được.</strong></p>
+    </div>
+
+    <div class="subsection" id="7-2-khai-thac">
+      <h3 class="subsection-title">7.2. Khai thác — theo thứ tự ưu tiên</h3>
+
+      <p class="doc-p"><strong>Ưu tiên 1 — Lõi lọc và vật tư tiêu hao</strong></p>
+      <p class="doc-p">Doanh thu lặp lại, biên cao, kênh phân phối không tranh. Nhắc đúng thời điểm là chuyển đổi.<br>
+      <strong>Đây là lý do tồn tại của cả hệ thống.</strong></p>
+
+      <p class="doc-p mt-16"><strong>Ưu tiên 2 — Bán chéo theo logic vòng đời</strong></p>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Trạng thái khách hàng</th><th>Sản phẩm đề xuất</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Mua máy lọc nước → 3 tháng sau vào mùa nóng</td><td>Quạt điều hòa</td></tr>
+            <tr><td>Nhà mới lắp máy lọc</td><td>Thiết bị bếp, thiết bị chống giật</td></tr>
+            <tr><td>Hộ có người lớn tuổi (KTV ghi nhận)</td><td>Ghế massage</td></tr>
+            <tr><td>Đã mua ghế massage</td><td>Máy chạy bộ, xe đạp tập</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="doc-p"><strong>Ưu tiên 3 — Thiết bị chống giật là sản phẩm bán chéo hoàn hảo</strong></p>
+      <p class="doc-p">Giá vừa phải, ai cũng cần, lý do mua là an toàn gia đình — dễ thuyết phục nhất trong toàn danh mục. <strong>Mọi khách hàng cũ đều là khách tiềm năng, không loại trừ ai.</strong></p>
+
+      <p class="doc-p mt-16"><strong>Ưu tiên 4 — Chương trình giới thiệu</strong></p>
+      <p class="doc-p">Hàng gia dụng sức khỏe lan theo hàng xóm và họ hàng rất mạnh. Khách giới thiệu → cả hai được giảm giá lõi.</p>
+      <p class="doc-note"><em>Lưu ý:</em> phải chia hoa hồng cho đại lý gần nhất, nếu không sẽ thành xung đột kênh.</p>
+    </div>
+
+    <div class="subsection" id="7-3-vong-phan-hoi">
+      <h3 class="subsection-title">7.3. Vòng phản hồi chất lượng về sản xuất</h3>
+      <p class="doc-p"><strong>Hạng mục có giá trị cao nhưng thường bị bỏ qua.</strong></p>
+      <p class="doc-p">Với doanh nghiệp có nhà máy riêng, dữ liệu bảo hành phản hồi ngược về sản xuất là vòng lặp cải tiến chất lượng <strong>hiện đang đứt hoàn toàn</strong>.</p>
+      <p class="doc-p">Phân tích khả thi ngay từ giai đoạn 1:</p>
+      <ul class="doc-ul">
+        <li>Tỷ lệ lỗi theo model</li>
+        <li>Tỷ lệ lỗi theo lô sản xuất</li>
+        <li>Tỷ lệ lỗi theo khu vực địa lý (tương quan với chất lượng nước)</li>
+        <li>Thời điểm hỏng trung bình theo dòng sản phẩm</li>
+      </ul>
+      <blockquote class="doc-quote">
+        <p><strong>Ghi chú trình bày:</strong> Bán ý tưởng cho ban lãnh đạo bằng góc "cải tiến chất lượng sản xuất" có khi dễ hơn góc "chăm sóc khách hàng".</p>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 8 — CHÍNH SÁCH HỖ TRỢ NHÀ PHÂN PHỐI
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-surface" id="sec8">
+  <div class="container">
+    <p class="section-eyebrow">Phần 8</p>
+    <h2 class="section-title" id="8-chinh-sach-phan-phoi">Chính sách hỗ trợ nhà phân phối</h2>
+    <blockquote class="doc-quote">
+      <p><strong>Đây là phần quyết định thành bại của toàn bộ dự án.</strong> Không có nó, mọi thứ khác chỉ là một hệ thống không ai dùng.</p>
+    </blockquote>
+
+    <div class="subsection" id="8-1-attribution">
+      <h3 class="subsection-title">8.1. Attribution vĩnh viễn</h3>
+      <p class="doc-p">Cửa hàng bán máy đầu tiên được gắn với khách hàng đó <strong>mãi mãi</strong>. Mọi doanh thu lõi lọc, dịch vụ, bán chéo phát sinh sau đó đều chia một phần về cửa hàng gốc.</p>
+      <p class="doc-p">Chưa hãng nào ở Việt Nam làm điều này. Nó biến việc "đẩy khách kích hoạt" thành <strong>lợi ích của chính đại lý</strong>.</p>
+    </div>
+
+    <div class="subsection" id="8-2-tra-nguoc-du-lieu">
+      <h3 class="subsection-title">8.2. Trả ngược dữ liệu về đại lý</h3>
+      <p class="doc-p">Cung cấp dashboard cho đại lý:</p>
+      <ul class="doc-ul">
+        <li>Khách nào trong khu vực sắp hết hạn lõi</li>
+        <li>Khách nào sắp hết bảo hành</li>
+        <li>Khách nào chưa mua thiết bị chống giật</li>
+      </ul>
+      <p class="doc-p">Đại lý tự gọi, tự bán. Họ có động lực, có thông tin — và Đại Việt không phải xây call center.</p>
+    </div>
+
+    <div class="subsection" id="8-3-chuyen-lead">
+      <h3 class="subsection-title">8.3. Chuyển lead ngược về cửa hàng gần nhất</h3>
+      <p class="doc-p">Người dùng vào web tìm hiểu sản phẩm → đẩy lead về đại lý khu vực thay vì tự bán.</p>
+      <p class="doc-p">Thông điệp gửi tới kênh rất rõ: <strong>hệ thống này sinh đơn cho các anh, không cướp đơn của các anh.</strong></p>
+    </div>
+
+    <div class="subsection" id="8-4-xep-hang">
+      <h3 class="subsection-title">8.4. Xếp hạng theo tỷ lệ kích hoạt</h3>
+      <p class="doc-p">Thưởng cửa hàng có tỷ lệ khách kích hoạt bảo hành cao, không chỉ thưởng theo doanh số.<br>
+      Đây là cách rẻ nhất để đẩy tỷ lệ kích hoạt lên.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 9 — HỆ THỐNG VẬN HÀNH THỜI GIAN THỰC
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-canvas" id="sec9">
+  <div class="container">
+    <p class="section-eyebrow">Phần 9</p>
+    <h2 class="section-title" id="9-he-thong-van-hanh">Hệ thống vận hành thời gian thực</h2>
+
+    <div class="subsection" id="9-1-phan-dinh-nhu-cau">
+      <h3 class="subsection-title">9.1. Phân định hai loại nhu cầu</h3>
+      <p class="doc-p">Đây là điểm cần thống nhất rõ với ban lãnh đạo ngay từ đầu, vì gộp chung là chỗ các dự án loại này hay thất bại.</p>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th></th><th>Vận hành</th><th>Điều hành</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Độ trễ</strong></td><td>30 giây – 5 phút (thời gian thực)</td><td>15 phút – 1 giờ</td></tr>
+            <tr><td><strong>Người dùng</strong></td><td>Trưởng bộ phận dịch vụ, điều phối</td><td>Ban lãnh đạo</td></tr>
+            <tr><td><strong>Nội dung</strong></td><td>Ticket đang mở, ca hôm nay, KTV đang ở đâu, ca quá SLA</td><td>Doanh số, tồn kho, tỷ lệ kích hoạt, tỷ lệ thay lõi</td></tr>
+            <tr><td><strong>Lý do cần độ trễ thấp</strong></td><td>Có hành động tương ứng ngay lập tức</td><td>Không có quyết định nào thay đổi vì chậm 30 phút</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="doc-p"><strong>Nhận định thẳng:</strong> Ban lãnh đạo không ra quyết định theo giây — họ ra quyết định theo ngày, tuần, tháng. Dashboard cập nhật 5 phút/lần với họ là <em>không phân biệt được</em> với realtime, nhưng chi phí kỹ thuật chênh nhau nhiều lần.</p>
+      <p class="doc-p"><strong>Cái ban lãnh đạo thực sự thiếu không phải độ trễ, mà là một con số duy nhất đáng tin.</strong> Hiện tại hỏi "tháng này bán bao nhiêu máy lọc nước" thì kế toán trả lời một kiểu, sale một kiểu, sàn TMĐT số khác. Đó mới là nỗi đau thật.</p>
+      <blockquote class="doc-quote">
+        <p>Nếu dựng realtime mà vẫn ba nguồn ba số thì đã tốn tiền lại còn mất uy tín ngay lần trình đầu tiên.</p>
+      </blockquote>
+    </div>
+
+    <div class="subsection" id="9-2-ba-luong">
+      <h3 class="subsection-title">9.2. Ba luồng vận hành ưu tiên</h3>
+      <div class="principle">
+        <span class="principle-num">1</span>
+        <div class="principle-body"><strong>Ticket bảo hành.</strong> Từ lúc khách gọi hoặc quét QR đến lúc đóng ca. Luồng có SLA rõ ràng nhất, dễ đo, và là chỗ ban lãnh đạo cảm nhận cải thiện nhanh nhất.</div>
+      </div>
+      <div class="principle">
+        <span class="principle-num">2</span>
+        <div class="principle-body"><strong>Lịch kỹ thuật viên.</strong> Phân ca, theo dõi tiến độ, đóng ca kèm dữ liệu hiện trường. Khó nhất về kỹ thuật (offline-first) nhưng sinh dữ liệu giá trị nhất.</div>
+      </div>
+      <div class="principle">
+        <span class="principle-num">3</span>
+        <div class="principle-body"><strong>Kích hoạt bảo hành.</strong> Đơn giản nhất, chạy được sớm nhất, và là nguồn nuôi cả hai luồng trên.</div>
+      </div>
+      <p class="doc-p mt-16">Ba luồng này ghép lại đủ trả lời những câu ban lãnh đạo hay hỏi mà hiện không ai trả lời được:</p>
+      <ul class="doc-ul">
+        <li>Hôm nay còn bao nhiêu ca chưa xử lý?</li>
+        <li>Ca nào quá hạn SLA?</li>
+        <li>Khu vực nào hỏng nhiều bất thường?</li>
+        <li>Model nào có tỷ lệ lỗi cao?</li>
+      </ul>
+    </div>
+
+    <div class="subsection" id="9-3-lop-hop-nhat">
+      <h3 class="subsection-title">9.3. Vai trò lớp trung gian hợp nhất dữ liệu</h3>
+      <p class="doc-p">Hệ thống đóng vai trò <strong>lớp hợp nhất dữ liệu</strong> đặt giữa các hệ thống nguồn và tầng hiển thị. Không đụng vào ERP, không đụng vào hệ thống bán hàng đang chạy — chỉ đọc ra, chuẩn hóa, đối chiếu.</p>
+      <p class="doc-p"><strong>Ưu điểm:</strong> hệ thống cũ không phải thay, không phải nâng cấp, không có rủi ro gián đoạn kinh doanh. Đây cũng là lý do dễ được phê duyệt hơn nhiều so với đề xuất "thay hệ thống".</p>
+      <p class="doc-p"><strong>Cảnh báo cần nói rõ với ban lãnh đạo:</strong></p>
+      <blockquote class="doc-quote">
+        <p>Lớp trung gian <strong>không sửa được dữ liệu bẩn ở nguồn</strong>. Nếu ERP nhập sai model, nếu sàn TMĐT không có mã sản phẩm khớp với mã nội bộ, dashboard sẽ hiển thị đúng cái sai đó — chỉ nhanh hơn.</p>
+      </blockquote>
+      <p class="doc-p">Ước tính <strong>60–70% công sức của dự án tích hợp nằm ở ánh xạ mã sản phẩm và chuẩn hóa danh mục</strong>, không phải ở việc vẽ biểu đồ. Việc này cần một người có thẩm quyền bên khách hàng đứng ra quyết, không phải việc của đội kỹ thuật.</p>
+    </div>
+
+    <div class="subsection" id="9-4-nguyen-tac-bao-ve">
+      <h3 class="subsection-title">9.4. Hai nguyên tắc bảo vệ niềm tin</h3>
+      <p class="doc-p">Dashboard cho ban lãnh đạo có đặc tính khác mọi hệ thống khác: <strong>nó chết vì mất niềm tin chứ không chết vì lỗi kỹ thuật.</strong> Chỉ cần một lần thấy số trên dashboard khác số trong báo cáo kế toán mà không giải thích được, họ sẽ quay lại dùng Excel và không mở lại nữa.</p>
+      <p class="doc-p"><strong>Nguyên tắc bắt buộc:</strong></p>
+      <ol class="doc-ol">
+        <li><strong>Mỗi con số phải khoan xuống được tới chứng từ gốc.</strong> Bấm vào "doanh số hôm nay" phải ra được danh sách đơn hàng cấu thành.</li>
+        <li><strong>Hiển thị thời điểm đồng bộ gần nhất của từng nguồn</strong>, báo đỏ khi một nguồn lỗi. Thà hiện "dữ liệu Shopee cập nhật lúc 09:15, đang lỗi" còn hơn hiện một con số thiếu mà không ai biết.</li>
+      </ol>
+    </div>
+
+    <div class="subsection" id="9-5-ten-goi">
+      <h3 class="subsection-title">9.5. Đề xuất về tên gọi</h3>
+      <p class="doc-p">Không gọi là "realtime dashboard" mà gọi là <strong>"hệ thống vận hành dịch vụ có dữ liệu thời gian thực"</strong>.</p>
+      <p class="doc-p">Cách gọi này giúp ban lãnh đạo hiểu ngay đây là công cụ chạy việc hàng ngày, không phải một màn hình đẹp để họp — và đặt đúng kỳ vọng về độ trễ ngay từ đầu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 10 — KIẾN TRÚC KỸ THUẬT
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-surface" id="sec10">
+  <div class="container">
+    <p class="section-eyebrow">Phần 10</p>
+    <h2 class="section-title" id="10-kien-truc-ky-thuat">Kiến trúc kỹ thuật</h2>
+
+    <div class="subsection" id="10-1-ba-phan-he">
+      <h3 class="subsection-title">10.1. Ba phân hệ trên một nền tảng web</h3>
+      <div class="principle">
+        <span class="principle-num" style="font-size:14px;font-weight:600;">KH</span>
+        <div class="principle-body">
+          <strong>Khu Khách hàng</strong> (public, không bắt đăng nhập)<br>
+          <ul class="doc-ul mt-8">
+            <li>Quét QR → nhập SĐT → OTP → kích hoạt xong. <strong>Ba bước, không tạo mật khẩu, không email.</strong></li>
+            <li>Tra cứu bảo hành, xem lịch sử dịch vụ</li>
+            <li>Đặt lịch thay lõi, gọi kỹ thuật</li>
+          </ul>
+        </div>
+      </div>
+      <div class="principle">
+        <span class="principle-num" style="font-size:14px;font-weight:600;">KTV</span>
+        <div class="principle-body">
+          <strong>Khu Kỹ thuật viên</strong> (login, dùng trên điện thoại ngoài hiện trường)<br>
+          <ul class="doc-ul mt-8">
+            <li>Nhận ca, xem lộ trình</li>
+            <li>Quét lõi khi lắp, ghi TDS/pH, ghi thiết bị trong nhà, chụp ảnh</li>
+            <li>Đóng ca, ghi nhận kết quả</li>
+            <li><strong>Bắt buộc offline-first</strong> — nhà khách thường ở chung cư, tầng hầm, khu sóng yếu. Dùng IndexedDB, đồng bộ khi có mạng. Đây là yêu cầu kỹ thuật khó nhất của dự án, phải tính từ đầu.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="principle">
+        <span class="principle-num" style="font-size:14px;font-weight:600;">NPP</span>
+        <div class="principle-body">
+          <strong>Khu Nhà phân phối</strong> (login)<br>
+          <ul class="doc-ul mt-8">
+            <li>Danh sách khách trong khu vực</li>
+            <li>Cảnh báo sắp hết hạn lõi / hết bảo hành / chưa mua chống giật</li>
+            <li>Báo cáo hoa hồng attribution</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection" id="10-2-kien-truc-du-lieu">
+      <h3 class="subsection-title">10.2. Kiến trúc dữ liệu ba tầng</h3>
+<pre class="code-block">┌─────────────────────────────────────────────┐
+│  TẦNG HIỂN THỊ                              │
+│  Dashboard vận hành · Dashboard điều hành   │
+│  Đọc từ bảng đã tổng hợp sẵn                │
+└─────────────────────────────────────────────┘
+                    ▲
+┌─────────────────────────────────────────────┐
+│  TẦNG CHUẨN HÓA                             │
+│  Ánh xạ mã sản phẩm                         │
+│  Hợp nhất khách hàng theo SĐT               │
+│  Đối chiếu số liệu chéo                     │
+│  ← Phần khó và có giá trị nhất              │
+└─────────────────────────────────────────────┘
+                    ▲
+┌─────────────────────────────────────────────┐
+│  TẦNG THU THẬP                              │
+│  Mỗi nguồn một connector độc lập            │
+│  Ghi vào kho thô, giữ nguyên bản            │
+│  Một connector hỏng không kéo sập cái khác  │
+└─────────────────────────────────────────────┘
+                    ▲
+   Bảo hành │ Dịch vụ │ Sàn TMĐT │ HĐĐT │ ERP</pre>
+    </div>
+
+    <div class="subsection" id="10-3-schema">
+      <h3 class="subsection-title">10.3. Schema cốt lõi (khung sơ bộ)</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Bảng</th><th>Vai trò</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>customer</code></td><td>Danh tính hợp nhất, khóa chính = SĐT chuẩn hóa</td></tr>
+            <tr><td><code>device</code></td><td>Thiết bị đã bán, seri, model, lô sản xuất, ngày kích hoạt</td></tr>
+            <tr><td><code>installation</code></td><td>Dữ liệu hiện trường: địa chỉ, TDS, pH, nguồn nước, nhân khẩu</td></tr>
+            <tr><td><code>service_event</code></td><td>Mọi lần chạm: lắp đặt, bảo hành, bảo trì, thay lõi</td></tr>
+            <tr><td><code>consumable</code></td><td>Lõi lọc: seri, ngày lắp, ngày hết hạn dự kiến</td></tr>
+            <tr><td><code>ticket</code></td><td>Yêu cầu bảo hành, trạng thái, SLA</td></tr>
+            <tr><td><code>technician_task</code></td><td>Ca làm việc, phân công, tiến độ</td></tr>
+            <tr><td><code>attribution</code></td><td>Gắn khách hàng ↔ cửa hàng gốc, dùng cho chia hoa hồng</td></tr>
+            <tr><td><code>consent</code></td><td>Bản ghi đồng ý theo từng mục đích sử dụng</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="10-4-cong-nghe">
+      <h3 class="subsection-title">10.4. Lựa chọn công nghệ</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Hạng mục</th><th>Đề xuất</th><th>Ghi chú</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Frontend</td><td>Next.js (responsive)</td><td>Một codebase, ba phân hệ</td></tr>
+            <tr><td>Backend</td><td>Node.js / Express, API tách bạch</td><td>Web chỉ là một client</td></tr>
+            <tr><td>Database</td><td>PostgreSQL</td><td>Đủ cho quy mô này</td></tr>
+            <tr><td>Tổng hợp điều hành</td><td>Materialized view / bảng tổng hợp refresh theo lịch</td><td>Không tính toán trực tiếp trên dữ liệu thô</td></tr>
+            <tr><td>Realtime vận hành</td><td>WebSocket</td><td>Chỉ cho phần thực sự cần</td></tr>
+            <tr><td>Offline KTV</td><td>PWA + IndexedDB</td><td>Service worker, đồng bộ khi có mạng</td></tr>
+            <tr><td>Kênh chạm</td><td>Zalo OA (ZNS) + SMS</td><td>Không phải Mini App</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="doc-note"><strong>Nguyên tắc:</strong> không cần Kafka, không cần data warehouse chuyên dụng ở quy mô này. Thêm hạ tầng là thêm chỗ hỏng.</p>
+    </div>
+
+    <div class="subsection" id="10-5-luu-y">
+      <h3 class="subsection-title">10.5. Lưu ý kỹ thuật quan trọng</h3>
+      <p class="doc-p"><strong>Deep link từ QR phải mang theo số seri.</strong><br>
+      <code>.../kich-hoat?sn=XXXX</code> — khách quét xong không phải gõ lại seri. Đây là điểm rơi rụng lớn nhất nếu làm sai.</p>
+      <p class="doc-p"><strong>SĐT làm khóa chính, OTP làm định danh.</strong><br>
+      Không mật khẩu, không email. Người mua máy lọc nước ở Việt Nam có độ tuổi trung bình khá cao — mọi bước thêm đều là mất khách.</p>
+      <p class="doc-p"><strong>Tối ưu cho 3G và máy cấu hình thấp.</strong><br>
+      Khách hàng thật không dùng điện thoại đời mới ở khu vực phủ sóng tốt.</p>
+      <p class="doc-p"><strong>PWA nhẹ, không tham vọng.</strong><br>
+      Thêm manifest + service worker để khách "Thêm vào màn hình chính" nếu muốn, và để KTV chạy offline. Nhưng không cố biến nó thành app giả — trải nghiệm nửa vời còn tệ hơn web thuần.</p>
+      <p class="doc-p"><strong>Không query thẳng vào database production của hệ thống bán hàng.</strong><br>
+      Query nặng của dashboard có thể làm chậm hệ thống đang chạy. Bắt buộc qua replica hoặc đồng bộ theo lô ra kho riêng.</p>
+      <p class="doc-p"><strong>Backend tách bạch để mở đường cho App sau này.</strong><br>
+      Nếu API tách riêng từ đầu, App native ở giai đoạn 3 chỉ là thêm một client — dùng lại toàn bộ backend, schema, logic. Web giai đoạn 1–2 không phải đồ bỏ đi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 11 — LỘ TRÌNH TRIỂN KHAI
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-canvas" id="sec11">
+  <div class="container">
+    <p class="section-eyebrow">Phần 11</p>
+    <h2 class="section-title" id="11-lo-trinh-trien-khai">Lộ trình triển khai</h2>
+
+    <div class="phase-cards">
+      <div class="phase-card">
+        <div class="phase-num">Giai đoạn 1</div>
+        <div class="phase-title">Thu dữ liệu &amp; Vận hành cơ bản</div>
+        <div class="phase-timeline">3–6 tháng</div>
+        <div class="phase-body">
+          <strong>Mục tiêu duy nhất:</strong> chứng minh có thể thu dữ liệu ở quy mô, và cho ban lãnh đạo thấy giá trị sớm.
+          <ul>
+            <li>Web responsive — khu Khách hàng</li>
+            <li>Kích hoạt bảo hành qua QR trên tem sản phẩm</li>
+            <li>Zalo OA + ZNS cho nhắc lịch</li>
+            <li>Luồng ticket bảo hành cơ bản</li>
+            <li>Dashboard vận hành từ dữ liệu tự sinh</li>
+          </ul>
+          <p style="margin-top:12px;font-size:13px;color:var(--primary)">Pilot: dòng thiết bị chống giật</p>
+          <p style="margin-top:4px;font-size:13px;color:var(--ink-muted)">Chưa làm: tích hợp hệ thống bán hàng, chưa CDP đầy đủ.</p>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Giai đoạn 2</div>
+        <div class="phase-title">Hợp nhất &amp; Số hóa hiện trường</div>
+        <div class="phase-timeline">6–12 tháng</div>
+        <div class="phase-body">
+          <ul>
+            <li>Khu Kỹ thuật viên (offline-first) — nguồn dữ liệu giá trị nhất</li>
+            <li>Khu Nhà phân phối + cơ chế attribution</li>
+            <li>Tích hợp sàn TMĐT (Shopee, TikTok Shop)</li>
+            <li>Tích hợp hóa đơn điện tử</li>
+            <li>Tích hợp hệ thống bán hàng hiện hữu <em>(phụ thuộc kết quả khảo sát)</em></li>
+            <li>Dashboard điều hành hợp nhất</li>
+            <li>Bản đồ chất lượng nước bắt đầu hình thành</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-num">Giai đoạn 3</div>
+        <div class="phase-title">Doanh thu lặp lại</div>
+        <div class="phase-timeline">12–24 tháng</div>
+        <div class="phase-body">
+          <ul>
+            <li>Thuê bao thay lõi định kỳ</li>
+            <li>Gói bảo trì định kỳ</li>
+            <li>Bán chéo tự động theo vòng đời</li>
+            <li>Vòng phản hồi chất lượng về nhà máy</li>
+            <li><em>Cân nhắc</em> App native — chỉ khi có thuê bao hoặc base đủ lớn</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="doc-quote mt-24">
+      <p><strong>Lưu ý quan trọng:</strong> Giai đoạn 3 là mục tiêu thật; hai giai đoạn đầu chỉ là hạ tầng để đến được đó.</p>
+      <p>Nếu ban lãnh đạo không đồng ý với đích đến ở giai đoạn 3, hệ thống sẽ dừng lại ở mức một CRM đắt tiền.</p>
+    </blockquote>
+
+    <blockquote class="doc-quote">
+      <p><strong>Lý do đi theo thứ tự này:</strong> bắt đầu từ dữ liệu do hệ thống mới sinh ra thì hoàn toàn chủ động, không phụ thuộc ai, dựng được trong vài tuần. Nếu làm ngược lại — bắt đầu từ tích hợp — rất dễ mắc kẹt 3 tháng chờ vendor mà chưa show được gì.</p>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 12 — CHỈ SỐ ĐO LƯỜNG
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-surface" id="sec12">
+  <div class="container">
+    <p class="section-eyebrow">Phần 12</p>
+    <h2 class="section-title" id="12-chi-so-do-luong">Chỉ số đo lường</h2>
+
+    <div class="subsection" id="12-1-chi-so-song-con">
+      <h3 class="subsection-title">12.1. Chỉ số sống còn giai đoạn 1</h3>
+      <p class="doc-p"><strong>Tỷ lệ kích hoạt trên số máy xuất kho</strong></p>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Ngưỡng</th><th>Ý nghĩa</th><th>Hành động</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--error);font-weight:600;">&lt; 15%</td>
+              <td>Cơ chế thu dữ liệu đang sai</td>
+              <td><strong>Sửa cơ chế</strong>, không đổ tiền vào marketing</td>
+            </tr>
+            <tr>
+              <td style="color:var(--warning);font-weight:600;">15–30%</td>
+              <td>Đang đi đúng hướng</td>
+              <td>Tối ưu điểm rơi rụng trong phễu</td>
+            </tr>
+            <tr>
+              <td style="color:var(--success);font-weight:600;">&gt; 30%</td>
+              <td>Đủ nền tảng</td>
+              <td>Có thể bắt đầu nghĩ tới thuê bao lõi lọc</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="12-2-chi-so-giai-doan-2">
+      <h3 class="subsection-title">12.2. Chỉ số giai đoạn 2–3</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Chỉ số</th><th>Ý nghĩa</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Tỷ lệ thay lõi đúng hạn</td><td>Sức khỏe của dòng doanh thu lặp lại</td></tr>
+            <tr><td>Doanh thu vật tư / doanh thu máy</td><td>Mức độ chuyển dịch sang mô hình dịch vụ</td></tr>
+            <tr><td>Tỷ lệ ca xử lý trong SLA</td><td>Chất lượng vận hành dịch vụ</td></tr>
+            <tr><td>Tỷ lệ bán chéo trên base</td><td>Hiệu quả khai thác dữ liệu</td></tr>
+            <tr><td>Tỷ lệ lỗi theo model / lô</td><td>Đầu vào cho cải tiến sản xuất</td></tr>
+            <tr><td>Số đại lý chủ động dùng dashboard</td><td>Mức độ kênh chấp nhận hệ thống</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="12-3-chi-so-khong-nen">
+      <h3 class="subsection-title">12.3. Chỉ số KHÔNG nên dùng</h3>
+      <ul class="doc-ul">
+        <li><strong>"Số lượng user"</strong> — không phản ánh gì. Record chỉ có tên và SĐT không phải tài sản.</li>
+        <li><strong>Lượt truy cập web</strong> — mô hình tần suất thấp, chỉ số này gây hiểu nhầm.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 13 — RỦI RO VÀ BIỆN PHÁP KIỂM SOÁT
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-canvas" id="sec13">
+  <div class="container">
+    <p class="section-eyebrow">Phần 13</p>
+    <h2 class="section-title" id="13-rui-ro">Rủi ro và biện pháp kiểm soát</h2>
+
+    <div class="subsection" id="13-1-rui-ro-san-pham">
+      <h3 class="subsection-title">13.1. Rủi ro sản phẩm</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Rủi ro</th><th>Mức độ</th><th>Biện pháp</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hệ thống không có tần suất sử dụng</td>
+              <td style="color:var(--error);font-weight:600;">Cao</td>
+              <td>Thiết kế nhọn quanh 3 điểm chạm thật: chu kỳ thay lõi, cảnh báo chất lượng nước, bảo hành. Không cố tạo engagement giả.</td>
+            </tr>
+            <tr>
+              <td>Dữ liệu nhiều nhưng vô dụng</td>
+              <td style="color:var(--error);font-weight:600;">Cao</td>
+              <td>Bắt buộc mỗi record phải có: sản phẩm gì, mua khi nào, lõi hết hạn ngày nào, đã gọi bảo hành mấy lần</td>
+            </tr>
+            <tr>
+              <td>Xung đột kênh phân phối</td>
+              <td style="color:var(--error);font-weight:600;">Cao</td>
+              <td>Web không bán máy · Attribution vĩnh viễn · Trả ngược lead và dữ liệu về đại lý</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="13-2-rui-ro-tich-hop">
+      <h3 class="subsection-title">13.2. Rủi ro tích hợp</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Rủi ro</th><th>Mức độ</th><th>Biện pháp</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hệ thống nguồn không sẵn sàng cho việc đọc</td>
+              <td style="color:var(--error);font-weight:600;">Rất cao</td>
+              <td>Khảo sát trước khi cam kết bất cứ điều gì (xem mục 14)</td>
+            </tr>
+            <tr>
+              <td>Vendor hệ thống cũ tính phí / kéo dài mở API</td>
+              <td style="color:var(--error);font-weight:600;">Cao</td>
+              <td>Đưa vào điều kiện tiên quyết của giai đoạn 2, không đưa vào giai đoạn 1</td>
+            </tr>
+            <tr>
+              <td>Query dashboard làm chậm hệ thống bán hàng</td>
+              <td style="color:var(--warning);font-weight:600;">Trung bình</td>
+              <td>Bắt buộc qua replica hoặc đồng bộ theo lô</td>
+            </tr>
+            <tr>
+              <td>Sàn TMĐT giới hạn tần suất gọi API</td>
+              <td style="color:var(--ink-muted);font-weight:600;">Chắc chắn xảy ra</td>
+              <td>Ràng buộc cứng — chỉ đồng bộ định kỳ, không kéo realtime</td>
+            </tr>
+            <tr>
+              <td>Mã sản phẩm không khớp giữa các hệ thống</td>
+              <td style="color:var(--error);font-weight:600;">Rất cao</td>
+              <td>Cần một người có thẩm quyền bên khách hàng đứng ra quyết danh mục chuẩn</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="subsection" id="13-3-rui-ro-phap-ly">
+      <h3 class="subsection-title">13.3. Rủi ro pháp lý</h3>
+      <p class="doc-p"><strong>Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân</strong> và khung pháp lý dữ liệu hiện hành yêu cầu:</p>
+      <ul class="doc-ul">
+        <li>Consent theo <strong>từng mục đích sử dụng</strong> cụ thể</li>
+        <li>Đặc biệt lưu ý khi dữ liệu đi qua tay bên thứ ba là đại lý</li>
+      </ul>
+      <div class="warn-quote">
+        <p><strong>Cảnh báo:</strong> phải cài đúng từ ngày đầu. Sửa sau thì phải xin lại consent toàn bộ base — thực tế gần như không làm được.</p>
+      </div>
+      <p class="doc-p">Đề xuất: bảng <code>consent</code> riêng, ghi nhận từng mục đích, có timestamp và phiên bản điều khoản.</p>
+    </div>
+
+    <div class="subsection" id="13-4-rui-ro-to-chuc">
+      <h3 class="subsection-title">13.4. Rủi ro tổ chức</h3>
+      <div class="table-wrapper">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Rủi ro</th><th>Biện pháp</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ban lãnh đạo kỳ vọng "realtime" theo nghĩa giây</td>
+              <td>Thống nhất phân định vận hành / điều hành ngay từ buổi đầu (mục 9.1)</td>
+            </tr>
+            <tr>
+              <td>Mất niềm tin vì số liệu lệch</td>
+              <td>Khoan xuống chứng từ gốc · Hiển thị trạng thái đồng bộ từng nguồn (mục 9.4)</td>
+            </tr>
+            <tr>
+              <td>Kỹ thuật viên không dùng app</td>
+              <td>Thiết kế để <strong>giảm việc</strong> cho họ, không phải thêm việc. Đóng ca trên app thay cho báo cáo giấy.</td>
+            </tr>
+            <tr>
+              <td>Đại lý phản ứng</td>
+              <td>Truyền thông rõ ngay từ đầu: hệ thống sinh đơn cho kênh, không cướp đơn</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     SECTION 14 — CÂU HỎI CẦN LÀM RÕ
+═══════════════════════════════════════════════════════════ -->
+<section class="doc-section on-surface" id="sec14">
+  <div class="container">
+    <p class="section-eyebrow">Phần 14</p>
+    <h2 class="section-title" id="14-cau-hoi">Câu hỏi cần làm rõ</h2>
+
+    <div class="subsection" id="14-1-he-thong-hien-huu">
+      <h3 class="subsection-title">14.1. Về hệ thống hiện hữu (ảnh hưởng toàn bộ phần tích hợp)</h3>
+      <ol class="doc-ol">
+        <li>Hệ thống bán hàng / ERP hiện tại là gì? Tự phát triển hay của vendor nào?</li>
+        <li>Có API sẵn không, hay chỉ truy cập được ở mức database?</li>
+        <li>Có được phép truy cập read-only vào DB không, hay bắt buộc phải qua vendor?</li>
+        <li>Nếu qua vendor: chi phí mở API và thời gian dự kiến?</li>
+        <li>Hệ thống bảo hành hiện tại (subdomain bhdt) đang chạy trên nền tảng gì? Dữ liệu có xuất ra được không?</li>
+        <li>Đội kỹ thuật/bảo hành hiện đang quản lý ca bằng gì? (giấy / Excel / phần mềm)</li>
+      </ol>
+      <div class="warn-quote">
+        <p><strong>Lưu ý:</strong> Nếu câu trả lời cho (4) là "phải qua vendor và họ báo 6 tháng" thì toàn bộ timeline giai đoạn 2 phải viết lại. Nhiều dự án dashboard chết đúng ở đây chứ không phải ở phần kỹ thuật.</p>
+      </div>
+    </div>
+
+    <div class="subsection" id="14-2-van-hanh">
+      <h3 class="subsection-title">14.2. Về vận hành</h3>
+      <ol class="doc-ol" start="7">
+        <li>Quy mô đội kỹ thuật viên hiện tại? Là nhân sự công ty hay thuê ngoài theo khu vực?</li>
+        <li>Sản lượng máy lọc nước xuất kho hàng tháng (để ước tính quy mô dữ liệu)?</li>
+        <li>Hiện có bán lõi lọc trực tiếp cho khách không, hay hoàn toàn qua đại lý?</li>
+        <li>Tem niêm phong sản phẩm hiện có in mã seri riêng từng máy chưa?</li>
+      </ol>
+    </div>
+
+    <div class="subsection" id="14-3-to-chuc">
+      <h3 class="subsection-title">14.3. Về tổ chức</h3>
+      <ol class="doc-ol" start="11">
+        <li>Ai là người có thẩm quyền quyết danh mục sản phẩm chuẩn giữa các hệ thống?</li>
+        <li>Quan hệ với nhà phân phối lớn (ĐMX, FPT Shop) do bộ phận nào phụ trách? Mức độ sẵn sàng đàm phán chính sách attribution?</li>
+        <li>Ban lãnh đạo kỳ vọng thấy kết quả đầu tiên sau bao lâu?</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     APPENDIX A
+═══════════════════════════════════════════════════════════ -->
+<section class="appendix-section" id="app-a">
+  <div class="container">
+    <p class="appendix-label">Phụ lục A</p>
+    <h2 class="appendix-title" id="phuluc-a">Tóm tắt các quyết định đã thống nhất</h2>
+    <div class="table-wrapper">
+      <table class="doc-table">
+        <thead>
+          <tr><th>#</th><th>Quyết định</th><th>Lý do</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Web responsive</strong>, không App native giai đoạn đầu</td>
+            <td>Rào cản cài đặt giết tỷ lệ kích hoạt — chỉ số sống còn</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Không xây Zalo Mini App</strong></td>
+            <td>Khóa vào nền tảng bên thứ ba, mâu thuẫn mục tiêu sở hữu dữ liệu</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Zalo OA chỉ dùng làm <strong>ống dẫn thông báo</strong></td>
+            <td>Dữ liệu nằm ở web, chỉ đi qua Zalo</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Hệ thống vận hành có dữ liệu thời gian thực</strong>, không gọi là "realtime dashboard"</td>
+            <td>Đặt đúng kỳ vọng, phân định vận hành vs điều hành</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Web <strong>không bán máy</strong></td>
+            <td>Tránh xung đột kênh triệt để</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Bắt đầu từ <strong>dữ liệu tự sinh</strong>, tích hợp hệ thống cũ để sau</td>
+            <td>Chủ động hoàn toàn, cho kết quả sớm</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Pilot từ <strong>dòng thiết bị chống giật</strong></td>
+            <td>Bảo hiểm 50 tỷ là cơ chế ép kích hoạt tự nhiên nhất</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>Schema và API đúng từ ngày đầu</strong></td>
+            <td>Tài sản là schema, giao diện là thứ thay được</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     APPENDIX B
+═══════════════════════════════════════════════════════════ -->
+<section class="appendix-section" id="app-b" style="background:var(--canvas);">
+  <div class="container">
+    <p class="appendix-label">Phụ lục B</p>
+    <h2 class="appendix-title" id="phuluc-b">Một câu tóm tắt</h2>
+    <div class="strategy-quote">
+      <p>Đại Việt đang sở hữu một trong những mạng lưới phân phối lớn nhất ngành, nhưng không sở hữu khách hàng nào.</p>
+      <p style="margin-top:16px;">Đề xuất này không giành giao dịch đầu tiên — kênh giữ, cứ để kênh giữ.<br>
+      Nó giành <strong style="color:var(--on-primary);">toàn bộ vòng đời sau đó</strong>: bảo hành, bảo trì, thay lõi, bán chéo — thứ mà hiện tại <strong style="color:var(--on-primary);">không ai đang sở hữu, kể cả nhà phân phối.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer class="doc-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-col">
+        <div class="footer-col-label">Tài liệu</div>
+        <div class="footer-col-value">Đề Xuất Giải Pháp Công Nghệ<br>Hệ thống Vận hành Dịch vụ Khách hàng<br>&amp; Nền tảng Dữ liệu Tập trung</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Thông tin phiên bản</div>
+        <div class="footer-col-value">
+          Phiên bản 1.0 · 28/08/2026<br>
+          <span style="color:var(--warning);">Bản thảo trao đổi</span><br>
+          14 phần · 2 phụ lục
+        </div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Lưu ý</div>
+        <div class="footer-col-value">Tài liệu này là bản thảo phục vụ trao đổi, chưa phải cam kết phạm vi hay báo giá. Các nhận định về mô hình kinh doanh dựa trên thông tin công khai và cần được đối chiếu với số liệu nội bộ của doanh nghiệp.</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-brand">Công ty TNHH Sản xuất Tập đoàn Đại Việt</span>
+      <span class="footer-legal">Tài liệu nội bộ — không phân phối ra bên ngoài khi chưa có sự đồng ý bằng văn bản. Hotline: 1900 63 60 98</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
