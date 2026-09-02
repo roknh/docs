@@ -2427,7 +2427,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
   if(btn&&panel){
     btn.addEventListener('click',function(){panel.classList.toggle('show');});
     panel.addEventListener('click',function(e){
-      if(e.target.tagName==='A'){panel.classList.remove('show');}
+      if(e.target.closest('a')){panel.classList.remove('show');}
     });
   }
 
