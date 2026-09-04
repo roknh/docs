@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Người Giữ Cửa Nhà Xác</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -103,8 +103,6 @@ a:hover{color:var(--blue-hover); text-decoration:underline;}
   margin:0 0 12px;}
 .cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
   letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
-.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
-  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
 .cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
 .cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
   font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
@@ -160,150 +158,229 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 </style>
 </head>
 <body id="top">
+
 <div id="progress"></div>
 
 <header class="top-nav">
-<button class="menu-btn">≡ Mục lục</button>
-<span class="brand">Người Giữ Cửa Nhà Xác</span>
-<span class="spacer"></span>
-<span class="top-meta">Tư Mệnh Sư · 13 chương</span>
-<button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
-<svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
-<svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
-</button>
+  <button class="menu-btn" id="menuBtn">&#8801; M&#7909;c l&#7909;c</button>
+  <span class="brand">Người Giữ Cửa Nhà Xác</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Tư Mệnh Sư &middot; 13 t&#7853;p</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuy&#7875;n giao di&#7879;n s&#225;ng/t&#7889;i" title="Chuy&#7875;n giao di&#7879;n s&#225;ng/t&#7889;i">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
 </header>
 
 <div class="toc-mobile" id="tocMobile">
-<div class="toc-wrap">
-<p class="toc-cap">Mục lục</p>
-<ul class="toc-list">
-<li class="toc-part">Hồi I: Những ngăn lạnh mở ra</li>
-<li><a href="#ch01"><span class="toc-num">Tập 01</span><span class="toc-title">Ca trực thứ mười ba</span></a></li>
-<li><a href="#ch02"><span class="toc-num">Tập 02</span><span class="toc-title">Những người chết không có tên</span></a></li>
-<li><a href="#ch03"><span class="toc-num">Tập 03</span><span class="toc-title">Chữ ký của người sống</span></a></li>
-<li class="toc-part">Hồi II: Giá của một phép màu</li>
-<li><a href="#ch04"><span class="toc-num">Tập 04</span><span class="toc-title">Phòng mổ không có trong sơ đồ</span></a></li>
-<li><a href="#ch05"><span class="toc-num">Tập 05</span><span class="toc-title">Người được chọn để sống</span></a></li>
-<li><a href="#ch06"><span class="toc-num">Tập 06</span><span class="toc-title">Giá niêm yết của một mạng người</span></a></li>
-<li><a href="#ch07"><span class="toc-num">Tập 07</span><span class="toc-title">Trái tim mang mã số</span></a></li>
-<li class="toc-part">Hồi III: Trái tim gọi chủ</li>
-<li><a href="#ch08"><span class="toc-num">Tập 08</span><span class="toc-title">Hai cô gái, một nhịp tim</span></a></li>
-<li><a href="#ch09"><span class="toc-num">Tập 09</span><span class="toc-title">Danh sách những người chưa chết</span></a></li>
-<li><a href="#ch10"><span class="toc-num">Tập 10</span><span class="toc-title">Tên của người chết</span></a></li>
-<li class="toc-part">Hồi IV: Trước lúc gà gáy</li>
-<li><a href="#ch11"><span class="toc-num">Tập 11</span><span class="toc-title">Người nào đáng được cứu</span></a></li>
-<li><a href="#ch12"><span class="toc-num">Tập 12</span><span class="toc-title">Cánh cửa cuối cùng</span></a></li>
-<li><a href="#ch13"><span class="toc-num">Tập 13</span><span class="toc-title">Trước tiếng gà gáy</span></a></li>
-</ul>
-</div>
+  <div class="toc-wrap">
+    <p class="toc-cap">M&#7909;c l&#7909;c</p>
+    <ul class="toc-list">
+      <li class="toc-part">Hồi I: Những ngăn lạnh mở ra</li>
+        <li><a href="#ch01">
+          <span class="toc-num">Tập 01</span>
+          <span class="toc-title">Ca trực thứ mười ba</span>
+        </a></li>
+        <li><a href="#ch02">
+          <span class="toc-num">Tập 02</span>
+          <span class="toc-title">Những người chết không có tên</span>
+        </a></li>
+        <li><a href="#ch03">
+          <span class="toc-num">Tập 03</span>
+          <span class="toc-title">Chữ ký của người sống</span>
+        </a></li>
+        <li class="toc-part">Hồi II: Giá của một phép màu</li>
+        <li><a href="#ch04">
+          <span class="toc-num">Tập 04</span>
+          <span class="toc-title">Phòng mổ không có trong sơ đồ</span>
+        </a></li>
+        <li><a href="#ch05">
+          <span class="toc-num">Tập 05</span>
+          <span class="toc-title">Người được chọn để sống</span>
+        </a></li>
+        <li><a href="#ch06">
+          <span class="toc-num">Tập 06</span>
+          <span class="toc-title">Giá niêm yết của một mạng người</span>
+        </a></li>
+        <li><a href="#ch07">
+          <span class="toc-num">Tập 07</span>
+          <span class="toc-title">Trái tim mang mã số</span>
+        </a></li>
+        <li class="toc-part">Hồi III: Trái tim gọi chủ</li>
+        <li><a href="#ch08">
+          <span class="toc-num">Tập 08</span>
+          <span class="toc-title">Hai cô gái, một nhịp tim</span>
+        </a></li>
+        <li><a href="#ch09">
+          <span class="toc-num">Tập 09</span>
+          <span class="toc-title">Danh sách những người chưa chết</span>
+        </a></li>
+        <li><a href="#ch10">
+          <span class="toc-num">Tập 10</span>
+          <span class="toc-title">Tên của người chết</span>
+        </a></li>
+        <li class="toc-part">Hồi IV: Trước lúc gà gáy</li>
+        <li><a href="#ch11">
+          <span class="toc-num">Tập 11</span>
+          <span class="toc-title">Người nào đáng được cứu</span>
+        </a></li>
+        <li><a href="#ch12">
+          <span class="toc-num">Tập 12</span>
+          <span class="toc-title">Cánh cửa cuối cùng</span>
+        </a></li>
+        <li><a href="#ch13">
+          <span class="toc-num">Tập 13</span>
+          <span class="toc-title">Trước tiếng gà gáy</span>
+        </a></li>
+    </ul>
+  </div>
 </div>
 
 <div class="shell">
-<aside class="side-nav">
-<div class="toc-wrap">
-<p class="toc-cap">Mục lục</p>
-<ul class="toc-list">
-<li class="toc-part">Hồi I: Những ngăn lạnh mở ra</li>
-<li><a href="#ch01"><span class="toc-num">Tập 01</span><span class="toc-title">Ca trực thứ mười ba</span></a></li>
-<li><a href="#ch02"><span class="toc-num">Tập 02</span><span class="toc-title">Những người chết không có tên</span></a></li>
-<li><a href="#ch03"><span class="toc-num">Tập 03</span><span class="toc-title">Chữ ký của người sống</span></a></li>
-<li class="toc-part">Hồi II: Giá của một phép màu</li>
-<li><a href="#ch04"><span class="toc-num">Tập 04</span><span class="toc-title">Phòng mổ không có trong sơ đồ</span></a></li>
-<li><a href="#ch05"><span class="toc-num">Tập 05</span><span class="toc-title">Người được chọn để sống</span></a></li>
-<li><a href="#ch06"><span class="toc-num">Tập 06</span><span class="toc-title">Giá niêm yết của một mạng người</span></a></li>
-<li><a href="#ch07"><span class="toc-num">Tập 07</span><span class="toc-title">Trái tim mang mã số</span></a></li>
-<li class="toc-part">Hồi III: Trái tim gọi chủ</li>
-<li><a href="#ch08"><span class="toc-num">Tập 08</span><span class="toc-title">Hai cô gái, một nhịp tim</span></a></li>
-<li><a href="#ch09"><span class="toc-num">Tập 09</span><span class="toc-title">Danh sách những người chưa chết</span></a></li>
-<li><a href="#ch10"><span class="toc-num">Tập 10</span><span class="toc-title">Tên của người chết</span></a></li>
-<li class="toc-part">Hồi IV: Trước lúc gà gáy</li>
-<li><a href="#ch11"><span class="toc-num">Tập 11</span><span class="toc-title">Người nào đáng được cứu</span></a></li>
-<li><a href="#ch12"><span class="toc-num">Tập 12</span><span class="toc-title">Cánh cửa cuối cùng</span></a></li>
-<li><a href="#ch13"><span class="toc-num">Tập 13</span><span class="toc-title">Trước tiếng gà gáy</span></a></li>
-</ul>
-</div>
-</aside>
+  <aside class="side-nav">
+    <div class="toc-wrap">
+      <p class="toc-cap">M&#7909;c l&#7909;c</p>
+      <ul class="toc-list">
+        <li class="toc-part">Hồi I: Những ngăn lạnh mở ra</li>
+        <li><a href="#ch01">
+          <span class="toc-num">Tập 01</span>
+          <span class="toc-title">Ca trực thứ mười ba</span>
+        </a></li>
+        <li><a href="#ch02">
+          <span class="toc-num">Tập 02</span>
+          <span class="toc-title">Những người chết không có tên</span>
+        </a></li>
+        <li><a href="#ch03">
+          <span class="toc-num">Tập 03</span>
+          <span class="toc-title">Chữ ký của người sống</span>
+        </a></li>
+        <li class="toc-part">Hồi II: Giá của một phép màu</li>
+        <li><a href="#ch04">
+          <span class="toc-num">Tập 04</span>
+          <span class="toc-title">Phòng mổ không có trong sơ đồ</span>
+        </a></li>
+        <li><a href="#ch05">
+          <span class="toc-num">Tập 05</span>
+          <span class="toc-title">Người được chọn để sống</span>
+        </a></li>
+        <li><a href="#ch06">
+          <span class="toc-num">Tập 06</span>
+          <span class="toc-title">Giá niêm yết của một mạng người</span>
+        </a></li>
+        <li><a href="#ch07">
+          <span class="toc-num">Tập 07</span>
+          <span class="toc-title">Trái tim mang mã số</span>
+        </a></li>
+        <li class="toc-part">Hồi III: Trái tim gọi chủ</li>
+        <li><a href="#ch08">
+          <span class="toc-num">Tập 08</span>
+          <span class="toc-title">Hai cô gái, một nhịp tim</span>
+        </a></li>
+        <li><a href="#ch09">
+          <span class="toc-num">Tập 09</span>
+          <span class="toc-title">Danh sách những người chưa chết</span>
+        </a></li>
+        <li><a href="#ch10">
+          <span class="toc-num">Tập 10</span>
+          <span class="toc-title">Tên của người chết</span>
+        </a></li>
+        <li class="toc-part">Hồi IV: Trước lúc gà gáy</li>
+        <li><a href="#ch11">
+          <span class="toc-num">Tập 11</span>
+          <span class="toc-title">Người nào đáng được cứu</span>
+        </a></li>
+        <li><a href="#ch12">
+          <span class="toc-num">Tập 12</span>
+          <span class="toc-title">Cánh cửa cuối cùng</span>
+        </a></li>
+        <li><a href="#ch13">
+          <span class="toc-num">Tập 13</span>
+          <span class="toc-title">Trước tiếng gà gáy</span>
+        </a></li>
+      </ul>
+    </div>
+  </aside>
 
-<div class="content">
-<div class="inner">
+  <div class="content">
+    <div class="inner">
 
-<section class="cover">
-<p class="cover-eyebrow">Tư Mệnh Sư · 2026</p>
-<h1 class="cover-title">Người Giữ Cửa Nhà Xác</h1>
-<div class="cover-tags">
-<span>Kinh dị siêu nhiên</span>
-<span>Điều tra</span>
-<span>Bi kịch đạo đức</span>
-<span>Chính kịch xã hội</span>
-</div>
-<p class="cover-logline">Khi những thi thể bị lấy cắp nội tạng đồng loạt thức dậy trong nhà xác, một bảo vệ già phát hiện chữ ký của mình đã giúp bệnh viện biến người nghèo thành nguồn tạng cho người giàu. Muốn giải thoát cô gái không tên trước lúc gà gáy, ông phải trả lại trái tim đang đập trong lồng ngực con gái mình.</p>
-<div class="cover-stats">
-<div class="stat">
-<div class="num">13</div>
-<div class="lab">Chương</div>
-</div>
-<div class="stat">
-<div class="num">~40k</div>
-<div class="lab">Từ</div>
-</div>
-<div class="stat">
-<div class="num">100%</div>
-<div class="lab">Tiến độ</div>
-</div>
-</div>
-<a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
-</section>
+      <section class="cover">
+        <p class="cover-eyebrow">Tư Mệnh Sư &middot; 2026</p>
+        <h1 class="cover-title">Người Giữ Cửa Nhà Xác</h1>
+        <div class="cover-tags">
+          <span>Kinh dị siêu nhiên</span>
+            <span>Điều tra</span>
+            <span>Bi kịch đạo đức</span>
+            <span>Chính kịch xã hội</span>
+        </div>
+        <p class="cover-logline">Khi những thi thể bị lấy cắp nội tạng đồng loạt thức dậy trong nhà xác, một bảo vệ già phát hiện chữ ký của mình đã giúp bệnh viện biến người nghèo thành nguồn tạng cho người giàu...</p>
+        <div class="cover-stats">
+          <div class="stat">
+            <div class="num">13</div>
+            <div class="lab">T&#7853;p</div>
+          </div>
+          <div class="stat">
+            <div class="num">~40k</div>
+            <div class="lab">T&#7915;</div>
+          </div>
+          <div class="stat">
+            <div class="num">100%</div>
+            <div class="lab">Ti&#7871;n &#273;&#7897;</div>
+          </div>
+        </div>
+        <a class="btn-primary" href="#ch01">B&#7855;t &#273;&#7847;u &#273;&#7885;c &#8595;</a>
+      </section>
 
-<section class="characters" id="characters">
-<h2 class="section-title">Nhân vật</h2>
-<div class="char-grid">
-<div class="char-card">
-<div class="char-name">Nguyễn Văn Hòa</div>
-<div class="char-role">Nhân vật chính</div>
-<div class="char-desc">Bảo vệ ca đêm nhà xác, 57 tuổi. Gầy, lưng còng, đeo chùm chìa khóa. Người ký biên bản bàn giao cho đường dây giết người.</div>
-</div>
-<div class="char-card">
-<div class="char-name">Trần Ngọc Mai</div>
-<div class="char-role">Nhân vật chính</div>
-<div class="char-desc">Công nhân may 19 tuổi, bị mổ lấy tim khi còn tỉnh. Hồn ma với sợi chỉ đỏ và chuông đồng trên cổ tay.</div>
-</div>
-<div class="char-card">
-<div class="char-name">Nguyễn Thảo Vy</div>
-<div class="char-role">Nhân vật chính</div>
-<div class="char-desc">Con gái ông Hòa, 24 tuổi. Người nhận trái tim của Mai, mang mã H.T.V.24.</div>
-</div>
-<div class="char-card">
-<div class="char-name">BS Lê Quang Vĩnh</div>
-<div class="char-role">Phản diện chính</div>
-<div class="char-desc">Trưởng khoa hồi sức, 48 tuổi. Điều hành đường dây khai tử sớm lấy nội tạng.</div>
-</div>
-<div class="char-card">
-<div class="char-name">Phạm Mỹ Dung</div>
-<div class="char-role">Đồng phạm → Đồng minh</div>
-<div class="char-desc">Điều dưỡng, 35 tuổi. Điều phối viên đường dây, phản bội khi phát hiện mẹ mình nằm trong danh sách nguồn.</div>
-</div>
-<div class="char-card">
-<div class="char-name">Đặng Minh Khang</div>
-<div class="char-role">Phản diện</div>
-<div class="char-desc">Phó giám đốc bệnh viện, 55 tuổi. Người phê duyệt hành chính cho đường dây.</div>
-</div>
-<div class="char-card">
-<div class="char-name">Trung úy Trần Quốc Nam</div>
-<div class="char-role">Cảnh sát</div>
-<div class="char-desc">31 tuổi, anh họ Mai. Người điều tra vụ mất tích của em gái.</div>
-</div>
-<div class="char-card">
-<div class="char-name">Bà Mười</div>
-<div class="char-role">Nhân vật phụ</div>
-<div class="char-desc">Bán cháo đêm, 63 tuổi. Từng làm vệ sinh nhà xác, chứng nhân vụ lấy tạng đầu tiên.</div>
-</div>
-</div>
-</section>
+      <section class="characters" id="characters">
+        <h2 class="section-title">Nh&#226;n v&#7853;t</h2>
+        <div class="char-grid">
+          <div class="char-card">
+              <div class="char-name">Nguyễn Văn Hòa</div>
+              <div class="char-role">Nhân vật chính — Bảo vệ ca đêm nhà xác</div>
+              <div class="char-desc">57 tuổi, bảo vệ ca đêm nhà xác bệnh viện tỉnh suốt 11 năm. Cha của Vy, người đã ký hàng trăm biên bản bàn giao mà không hỏi.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Trần Ngọc Mai</div>
+              <div class="char-role">Nhân vật chính — Cô gái trong ngăn lạnh</div>
+              <div class="char-desc">19 tuổi, công nhân may. Bị lấy tim khi chưa tử vong. Đeo sợi chỉ đỏ buộc chuông đồng mẹ để lại.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Nguyễn Thảo Vy</div>
+              <div class="char-role">Nhân vật chính — Con gái ông Hòa</div>
+              <div class="char-desc">24 tuổi, nhận trái tim ghép từ Mai. Mơ thấy ký ức người khác và bắt đầu tự tìm sự thật.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">BS Lê Quang Vĩnh</div>
+              <div class="char-role">Phản diện chính — Trưởng khoa hồi sức</div>
+              <div class="char-desc">48 tuổi, bác sĩ giỏi nhất bệnh viện tỉnh. Điều hành đường dây mua bán tạng với logic &#x27;cứu người sống bằng người sắp chết&#x27;.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Phạm Mỹ Dung</div>
+              <div class="char-role">Nhân vật phụ quan trọng — Điều dưỡng</div>
+              <div class="char-desc">35 tuổi, tham gia đường dây để lấy tiền chữa bệnh cho mẹ. Âm thầm thu thập chứng cứ suốt nhiều tháng.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Đặng Minh Khang</div>
+              <div class="char-role">Phản diện — Phó giám đốc bệnh viện</div>
+              <div class="char-desc">55 tuổi, người bảo kê hành chính cho đường dây. Cố hủy bằng chứng bằng cách đốt kho lưu trữ.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Trần Quốc Nam</div>
+              <div class="char-role">Nhân vật phụ quan trọng — Trung úy cảnh sát</div>
+              <div class="char-desc">31 tuổi, anh họ Mai. Tìm em suốt 5 tháng mất tích. Người thu thập bằng chứng và đưa vụ án ra ánh sáng.</div>
+            </div>
+            <div class="char-card">
+              <div class="char-name">Bà Mười</div>
+              <div class="char-role">Nhân vật phụ — Bán cháo đêm</div>
+              <div class="char-desc">63 tuổi, từng làm vệ sinh bệnh viện. Nhân chứng vụ người sống trong túi xác 9 năm trước.</div>
+            </div>
+        </div>
+      </section>
 
-<article class="chapter" id="ch01">
-<p class="eyebrow">Tập 01 · Hồi I: Những ngăn lạnh mở ra</p>
-<h2 class="ch-title">Ca trực thứ mười ba</h2>
-<p>Ngăn lạnh số bảy bị kẹt từ tuần trước. Ông Hòa dùng tay đập hai lần vào góc phải, chờ tiếng khớp kim loại bật, rồi kéo. Cánh cửa trượt ra, để lộ khoảng trống phủ sương lạnh.</p>
+      <article class="chapter" id="ch01">
+          <p class="eyebrow">Tập 01 · Hồi I: Những ngăn lạnh mở ra</p>
+          <h2 class="ch-title">Ca trực thứ mười ba</h2>
+          <p>Ngăn lạnh số bảy bị kẹt từ tuần trước. Ông Hòa dùng tay đập hai lần vào góc phải, chờ tiếng khớp kim loại bật, rồi kéo. Cánh cửa trượt ra, để lộ khoảng trống phủ sương lạnh.</p>
 <p>Mười hai ngăn, sáu đang chứa người. Ông ghi vào sổ trực: 22 giờ 40 phút, kiểm tra định kỳ, không bất thường. Nét chữ nhỏ, nghiêng về phải, giống hệt hàng trăm dòng ông đã viết trong mười một năm qua. Bàn tay ông không run. Lưng không mỏi. Mùi formaldehyde đã trở thành mùi quen thuộc, giống mùi nhà mình sau khi sống đủ lâu.</p>
 <p>Phòng nhà xác nằm cuối dãy hành lang B3, tách biệt khỏi khu điều trị bằng hai cánh cửa chống cháy và một đoạn dốc xuống. Đèn huỳnh quang trắng cháy suốt đêm, sáng đều nhưng không bao giờ đem lại cảm giác sạch sẽ. Tường gạch men trắng ố vàng ở các mối nối. Sàn bê tông phủ epoxy, mỗi lần lau xong vẫn còn vệt nước loang dưới ánh đèn.</p>
 <p>Ông Hòa đặt sổ xuống bàn trực, rót trà từ bình giữ nhiệt. Trà nguội, ông uống vậy. Mười một năm, ông đã quen với việc uống trà nguội, ăn cơm nguội, và nhìn những khuôn mặt không còn biểu cảm.</p>
@@ -373,7 +450,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa buông tay khỏi cửa. Đứng yên mười giây, lưng tựa vào mặt thép lạnh. Hơi thở dần chậm lại, không phải vì ông bình tĩnh, mà vì ông hiểu rằng chạy không giúp được gì.</p>
 <p>Ông quay lại.</p>
 <p>Hành lang B3 dài hơn ông nhớ. Hoặc có lẽ nó luôn dài như vậy, chỉ là ông chưa bao giờ đi bộ dọc nó trong khi biết rằng phía cuối, sáu cánh cửa ngăn lạnh đang mở và sáu người chết đang ngồi hướng mặt về phía ông. Mùi formaldehyde đặc hơn bình thường, trộn lẫn với mùi kim loại lạnh và một thứ gì đó khác mà ông không đặt tên được. Không phải mùi thối. Gần hơn với mùi sắt rỉ dưới mưa, hoặc mùi đồng xu cũ ấp trong lòng bàn tay quá lâu.</p>
-<p>Bước chân ông vang trên nền epoxy. Từng bước một, đều, không nhanh không chậm, giống nhịp đi tuần mà ông đã lặp lại hàng nghìn lần. Ông không chạy nữa. Chạy không có ích, và ông không phải kiểu người hoảng loạn lâu. Mười một năm bên cạnh người chết đã dạy ông rằng sợ hãi chỉ kéo dài nếu cho phép nó kéo dài.</p>
+<p>Bước chân ông vang trên nền epoxy. Từng bước một, đều, giống nhịp đi tuần mà ông đã lặp lại hàng nghìn lần. Ông không chạy nữa. Chạy không có ích, và ông không phải kiểu người hoảng loạn lâu. Mười một năm bên cạnh người chết đã dạy ông rằng sợ hãi chỉ kéo dài nếu cho phép nó kéo dài.</p>
 <hr class="scene-break">
 <p>Cô gái không còn nằm trong ngăn số chín.</p>
 <p>Cô ngồi trên bàn khám nghiệm giữa phòng, hai chân buông thõng, lưng thẳng. Áo bệnh viện trắng phủ đến đầu gối, tóc đen rủ qua vai. Dưới ánh đèn huỳnh quang, da cô trắng như sáp, nhưng không phải cái trắng của người sống thiếu máu mà là cái trắng của thứ đã ngừng lưu thông.</p>
@@ -396,15 +473,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Chuông vẫn rung. Đều đặn. Bình thản.</p>
 <p>Ông Hòa nhìn cô gái không tên trên bàn khám nghiệm, rồi nhìn xuống bàn tay mình, bàn tay vừa ký vào một dòng giờ chết để trống bốn mươi phút trước.</p>
 <p>Sổ trực vẫn mở trên bàn, trang cuối cùng, dòng cuối cùng, nét bút đậm hơn bình thường.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch02">
-<p class="eyebrow">Tập 02 · Hồi I: Những ngăn lạnh mở ra</p>
-<h2 class="ch-title">Những người chết không có tên</h2>
-<p>Sáu giờ sáng, ông Hòa mở mắt trên ghế trực.</p>
+        <article class="chapter" id="ch02">
+          <p class="eyebrow">Tập 02 · Hồi I: Những ngăn lạnh mở ra</p>
+          <h2 class="ch-title">Những người chết không có tên</h2>
+          <p>Sáu giờ sáng, ông Hòa mở mắt trên ghế trực.</p>
 <p>Ông không nhớ mình đã ngủ. Ký ức cuối cùng là hình ảnh cô gái ngồi trên bàn khám nghiệm, bàn tay đặt lên ngực trống, hai chữ "TÌM TIM" viết bằng máu trên mặt thép ngăn số chín. Nhưng khi ông nhìn về phía đó, cửa ngăn đóng kín. Tất cả sáu ngăn đều đóng. Sàn epoxy khô, không vệt sương, không dấu chân. Bàn khám nghiệm trống, mặt thép sạch, lớp vải phủ gấp gọn ở đầu bàn giống hệt lúc ông vào ca.</p>
 <p>Ông đứng dậy, bước đến ngăn số chín, mở cửa. Cô gái nằm yên trong đó, mắt nhắm, tay xuôi hai bên, sợi chỉ đỏ vẫn quấn trên cổ tay trái. Chiếc chuông đồng nhỏ bất động.</p>
 <p>Ông kiểm tra mặt trong cửa ngăn. Thép sạch. Không một vệt máu.</p>
@@ -487,8 +564,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Không đau. Không nhức. Chỉ là thị lực bên trái mờ dần, như ai đặt một tấm kính mài trước mắt ông. Ông đưa tay lên, dụi mắt, nheo lại rồi mở ra. Mắt phải vẫn bình thường. Mắt trái nhìn mọi thứ qua một lớp sương mỏng.</p>
 <p><em>Ông Tư mất giác mạc. Tôi sửa tên ông Tư. Mắt tôi mờ.</em></p>
 <p>Ông nhìn bốn thi thể còn lại vẫn ngồi trên ngăn lạnh. Chị Bích chỉ vào hai bên hông, nơi bị lấy thận. Cậu Phúc chỉ vào sườn phải, nơi bị lấy gan. Và ngăn số chín, cô gái không tên, tay đặt trên ngực trống.</p>
-<p>Chị Bích mất thận, cậu Phúc mất gan, cô gái mất tim. Nếu ông sửa tên cho từng người, ông sẽ nhận triệu chứng tương ứng.</p>
-<p>Ông đóng sổ. Đặt bút xuống. Ngồi lại ghế trực, mắt trái nhìn mọi thứ qua lớp sương mờ không tan.</p>
+<p>Ông đóng sổ. Đặt bút xuống. Ngồi lại ghế trực, mắt trái nhìn mọi thứ qua lớp sương mờ không tan. Ông không biết vì sao mắt mờ. Ông chỉ biết nó bắt đầu từ lúc ông đọc tên ông Tư thành tiếng, từ lúc ông lần đầu tiên thừa nhận điều mà mười một năm qua ông chọn không nhìn.</p>
 <p>Bốn thi thể vẫn ngồi, vẫn chỉ, vẫn chờ.</p>
 <p>Ông mở sổ trực lần nữa, lật qua từng trang, từ đầu. Tìm kiếm gì đó mà ông chưa biết rõ. Ông đọc từng biên bản bàn giao, từng chữ ký. Phần lớn là chữ ký của ông, vài trang là chữ ký của người trực ca khác. Ngày, giờ, tên hoặc mã số, nguyên nhân tử vong, chữ ký bác sĩ xác nhận, chữ ký bảo vệ nhận xác.</p>
 <p>Ông dừng lại ở trang 47.</p>
@@ -506,21 +582,21 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p><em>Không thuộc phận tôi.</em> Câu đó lặp trong đầu ông, nhưng lần này nó mang âm sắc khác. Giống lời tự biện hộ của một người đã biết mình sai mà vẫn nói.</p>
 <p>Ông nhìn xuống bàn tay phải. Bàn tay đã ký hơn bốn trăm lần trong cuốn sổ này. Bao nhiêu lần trong số đó là ông ký thật, bao nhiêu lần là ai đó ký thay, ông không chắc nữa.</p>
 <p>Ông chỉ chắc một điều: cô gái ngồi trên bàn khám nghiệm đêm qua, tay đặt lên ngực trống, không có tên trong bất kỳ hồ sơ nào. Cô gái đó mất tim, và tim đó đang đập đâu đó trong một lồng ngực khác. Và ông, người giữ cửa nhà xác, đã ký vào tờ giấy để điều đó xảy ra.</p>
-<p>Tiếng chuông đồng vẫn rung từ ngăn số chín. Đều đặn, không gấp, không chậm, giống nhịp thở của ai đó đang kiên nhẫn chờ ông quyết định.</p>
+<p>Tiếng chuông đồng vẫn rung từ ngăn số chín. Đều đặn, giống nhịp thở của ai đó đang kiên nhẫn chờ ông quyết định.</p>
 <p>Ông Hòa cầm bút lên, mở sổ, và viết bên cạnh trang 47: <em>Đêm 12/3, tôi không trực. Chữ ký không phải tôi ký tại đây.</em></p>
 <p>Nét chữ nghiêng phải, giống mọi lần. Nhưng lần này, ông nhấn bút nhẹ hơn, để dòng chữ mỏng, dễ đọc, không lõm vào giấy. Như thể ông đang viết cho ai đó sẽ đọc cuốn sổ này sau ông, và ông muốn dòng chữ đó rõ ràng, không thể nhầm lẫn.</p>
 <p>Bốn thi thể vẫn ngồi. Chuông vẫn rung. Mắt trái ông vẫn mờ.</p>
 <p>Ông Hòa đặt bút xuống và nhìn sang ngăn số chín. Cô gái nằm yên trong đó, cửa mở, nhưng cô không ngồi dậy như đêm trước. Cô chỉ nằm, tay trái buông thõng, sợi chỉ đỏ rung nhẹ theo nhịp chuông, và ông nhận ra lần đầu tiên rằng khuôn mặt cô giống ai đó mà ông từng thấy, từng gặp, từng ký nhận vào một đêm nào đó trong mười một năm qua.</p>
 <p>Ông không nhớ là ai. Nhưng cảm giác quen thuộc bám vào ông như mùi formaldehyde bám vào tóc và quần áo ông mỗi sáng khi về nhà, thứ mùi mà Vy bảo cô đã quen và không còn nhận ra nữa.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch03">
-<p class="eyebrow">Tập 03 · Hồi I: Những ngăn lạnh mở ra</p>
-<h2 class="ch-title">Chữ ký của người sống</h2>
-<p>Phòng camera an ninh nằm ở tầng một, cuối hành lang hành chính, cách xa khu điều trị. Ông Hòa đến lúc mười giờ sáng, sau khi ngủ được hai tiếng ở nhà. Mắt trái vẫn mờ, lớp sương không tan dù ông đã rửa mặt ba lần bằng nước lạnh.</p>
+        <article class="chapter" id="ch03">
+          <p class="eyebrow">Tập 03 · Hồi I: Những ngăn lạnh mở ra</p>
+          <h2 class="ch-title">Chữ ký của người sống</h2>
+          <p>Phòng camera an ninh nằm ở tầng một, cuối hành lang hành chính, cách xa khu điều trị. Ông Hòa đến lúc mười giờ sáng, sau khi ngủ được hai tiếng ở nhà. Mắt trái vẫn mờ, lớp sương không tan dù ông đã rửa mặt ba lần bằng nước lạnh.</p>
 <p>Bảo vệ trực phòng giám sát là Thành, ba mươi tuổi, hay ngủ gật giữa ca. Ông Hòa vỗ vai anh ta.</p>
 <p class="dialogue">– Thành, cho bác xem lại camera hành lang B3 đêm 12 tháng 3 được không?</p>
 <p>Thành ngáp, xoay ghế lại phía bàn điều khiển. Sáu màn hình nhỏ hiển thị góc quay từ các hành lang, sảnh chính, cổng ra vào. Anh ta gõ vào bảng điều khiển, mở phần lưu trữ.</p>
@@ -558,14 +634,14 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa uống một ngụm cà phê. Bình tĩnh, chậm, như mọi lần ông xử lý giấy tờ lúc nửa đêm. Bên trong, ngực ông siết lại, và ông không biết đó là vì câu hỏi của Nam hay vì trái tim ông tự phản ứng với một thứ mà ông chưa muốn đối diện.</p>
 <p class="dialogue">– Nhà xác nhận nhiều ca. Tôi cần xem lại sổ mới trả lời chính xác được.</p>
 <p>Nam lật tấm ảnh. Một cô gái trẻ, tóc đen, mặt tròn, đang cười trong ảnh, tay giơ chai nước trước một xưởng may. Trên cổ tay trái có sợi chỉ đỏ buộc chiếc chuông đồng nhỏ.</p>
-<p class="dialogue">– Trần Ngọc Mai, mười chín tuổi, công nhân may. Em họ tôi. Mất liên lạc bốn ngày trước. Đặc điểm nhận dạng: sợi chỉ đỏ trên cổ tay trái, buộc chuông nhỏ. Mẹ Mai buộc cho Mai trước khi Mai lên tỉnh, em trai buộc lại lần nữa trước khi Mai rời quê. Chuông không bao giờ tháo.</p>
+<p class="dialogue">– Trần Ngọc Mai, mười chín tuổi, công nhân may. Em họ tôi. Mất liên lạc từ năm tháng trước, cùng thời điểm xưởng may báo Mai nghỉ không lý do. Đặc điểm nhận dạng: sợi chỉ đỏ trên cổ tay trái, buộc chuông nhỏ. Mẹ Mai mất sớm, để lại chiếc chuông. Em trai Mai buộc vào cổ tay chị trước ngày Mai rời quê lên tỉnh. Chuông không bao giờ tháo.</p>
 <p>Ông Hòa nhìn tấm ảnh. Khuôn mặt trong ảnh khác với khuôn mặt ông nhìn thấy trong ngăn lạnh, khác ở chỗ trong ảnh cô gái còn sống, da có máu, mắt có sáng, và nụ cười mang theo vẻ ngại ngùng của người không quen chụp ảnh. Nhưng sợi chỉ đỏ thì giống hệt, và chiếc chuông đồng thì ông nhận ra ngay, vì ông đã nhìn nó rung suốt hai đêm qua.</p>
 <p class="dialogue">– Nhà xác không nhận ai như vậy.</p>
 <p>Ông nói câu đó bằng giọng phẳng, không ngập ngừng, không tránh mắt. Mười một năm trong nhà xác đã dạy ông cách nói dối mà không thay đổi nhịp thở. Hoặc có lẽ mười một năm ông đã nói dối nhiều đến mức bản thân không còn nhận ra khi nào mình đang nói dối.</p>
 <p>Nam nhìn ông ba giây. Mắt anh ta không tin, nhưng anh ta cũng không có bằng chứng để phản bác.</p>
 <p class="dialogue">– Nếu bác nhớ ra điều gì, gọi cho tôi.</p>
 <p>Nam đứng dậy, nhưng không đi ngay. Anh ta nhìn ra cổng bệnh viện, hai tay đút túi quần, hàm cứng.</p>
-<p class="dialogue">– Mai là em họ tôi. Mẹ Mai gọi tôi mỗi ngày, hỏi tôi tìm được chưa. Bà ấy bán vé số ngoài chợ, chân bị gout, đi không nổi, mà vẫn muốn lên tỉnh tự tìm. Tôi bảo bà ở nhà, để tôi lo.</p>
+<p class="dialogue">– Mai là em họ tôi. Em trai Mai mười bốn tuổi, ở quê một mình, gọi tôi mỗi tuần hỏi tìm được chị chưa. Năm tháng rồi. Thằng bé gửi tin nhắn cho chị mỗi ngày, không bao giờ có người đọc.</p>
 <p>Ông Hòa không đáp. Nam đặt danh thiếp lên bàn, gõ ngón tay vào mặt gỗ một lần rồi bước đi. Ông nhìn lưng anh ta qua đường, nhìn tấm danh thiếp trên bàn, rồi nhìn tấm ảnh mà Nam bỏ quên hoặc cố ý để lại.</p>
 <p>Trần Ngọc Mai. Mười chín tuổi. Sợi chỉ đỏ. Chuông nhỏ.</p>
 <p>Ông Hòa gấp tấm ảnh, nhét vào túi áo ngực, cạnh điện thoại.</p>
@@ -605,15 +681,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa ngồi một mình trong nhà xác, sổ trực mở trước mặt, tấm ảnh Mai bên cạnh. Mắt trái mờ, ngực nặng, và trong túi áo, danh thiếp của trung úy Nam nằm cạnh điện thoại. Số điện thoại của người đang tìm cô gái mà ông vừa nói dối là không biết.</p>
 <p>Ông nhìn danh thiếp. Nhìn sổ trực. Nhìn ngăn số chín. Ngăn đóng, chuông im, nhưng ông biết bên trong cô gái vẫn nằm đó, mắt mở, tay đặt trên ngực trống, chờ ông quyết định mình là người giữ cửa hay người mở cửa.</p>
 <p>Rồi ông đóng sổ, đặt bút xuống, và ngồi chờ trời sáng.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch04">
-<p class="eyebrow">Tập 04 · Hồi II: Giá của một phép màu</p>
-<h2 class="ch-title">Phòng mổ không có trong sơ đồ</h2>
-<p>Ông Hòa biết lối vận chuyển xác trước khi biết nó được dùng để làm gì.</p>
+        <article class="chapter" id="ch04">
+          <p class="eyebrow">Tập 04 · Hồi II: Giá của một phép màu</p>
+          <h2 class="ch-title">Phòng mổ không có trong sơ đồ</h2>
+          <p>Ông Hòa biết lối vận chuyển xác trước khi biết nó được dùng để làm gì.</p>
 <p>Lối đi nằm sau nhà xác, qua một cánh cửa sắt sơn xám mà ông luôn nghĩ dẫn đến kho vật tư cũ. Mười một năm, ông chưa bao giờ mở cánh cửa đó vì không có lý do, và vì không có ai yêu cầu ông mở. Chìa khóa nằm trong chùm chìa ông đeo bên hông, chiếc thứ tám từ phải qua, giữa chìa nhà xác và chìa kho khăn liệm.</p>
 <p>Đêm thứ tư. 22 giờ 30 phút. Ông đứng trước cánh cửa sắt, tay cầm chùm chìa khóa, lần từng chiếc một. Hành lang B3 yên tĩnh, máy lạnh ù đều, đèn huỳnh quang sáng trắng. Trong nhà xác, năm ngăn lạnh đóng kín chờ nửa đêm.</p>
 <p>Ông xoay chìa. Ổ khóa bật, cánh cửa mở ra phía trong. Mùi khử trùng nồng hơn nhà xác, trộn lẫn mùi kim loại sạch, mùi của phòng mổ.</p>
@@ -693,15 +769,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông lắc đầu, cảm ơn bà. Vy vẫy tay chào bà Mười rồi kéo cha đi tiếp. Ông Hòa không nhìn lại, nhưng ông nghe bà Mười nói thêm, giọng nhỏ, nửa như hỏi nửa như tự nhủ:</p>
 <p class="dialogue">– Dạo này nhà xác có yên không, bác Hòa?</p>
 <p>Ông giả vờ không nghe. Bước tiếp. Tay vẫn nắm tay Vy. Trong lồng ngực con gái, trái tim đập đều, không biết rằng ở tầng hầm B3 phía sau, chủ nhân cũ của nó đang nằm trong ngăn lạnh, mắt mở, chờ.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch05">
-<p class="eyebrow">Tập 05 · Hồi II: Giá của một phép màu</p>
-<h2 class="ch-title">Người được chọn để sống</h2>
-<p>Kho lưu trữ nằm ở tầng hai, cuối dãy phòng hành chính, sau một cánh cửa gỗ mà ông Hòa chưa từng mở trong mười một năm. Ông biết phòng này tồn tại vì mỗi quý, nhân viên văn thư đẩy xe hồ sơ xuống tầng hầm, đi qua hành lang B3, và ông luôn mở cửa chống cháy cho họ. Ông không bao giờ hỏi xe chở gì. Không thuộc phận ông.</p>
+        <article class="chapter" id="ch05">
+          <p class="eyebrow">Tập 05 · Hồi II: Giá của một phép màu</p>
+          <h2 class="ch-title">Người được chọn để sống</h2>
+          <p>Kho lưu trữ nằm ở tầng hai, cuối dãy phòng hành chính, sau một cánh cửa gỗ mà ông Hòa chưa từng mở trong mười một năm. Ông biết phòng này tồn tại vì mỗi quý, nhân viên văn thư đẩy xe hồ sơ xuống tầng hầm, đi qua hành lang B3, và ông luôn mở cửa chống cháy cho họ. Ông không bao giờ hỏi xe chở gì. Không thuộc phận ông.</p>
 <p>Sáng ngày thứ năm. Chín giờ. Ông đứng trước cánh cửa gỗ, tay cầm chùm chìa khóa. Chiếc thứ mười một, chìa khóa dự phòng mà phòng hành chính cấp cho bảo vệ ca đêm để mở cửa khi có sự cố nước ngập hoặc cháy nổ.</p>
 <p>Ông xoay chìa. Cửa mở.</p>
 <p>Phòng lưu trữ rộng khoảng ba mươi mét vuông, ba dãy kệ sắt chạy dọc, mỗi kệ bảy tầng, mỗi tầng xếp đầy hộp bìa cứng đánh số theo năm và khoa. Mùi giấy cũ, mùi ẩm, mùi mực photocopy. Đèn huỳnh quang phía trần nhấp nháy khi ông bật công tắc, rồi sáng đều.</p>
@@ -733,7 +809,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông nhận ra bác sĩ Vĩnh trước khi nhìn thấy mặt. Dáng cao, lưng thẳng, áo choàng trắng không một nếp nhăn, tay đút túi áo trước, đứng tựa vào tường bên trái hành lang. Tư thế của người đang chờ, không phải tình cờ đi ngang.</p>
 <p>Ông Hòa dừng bước cách ba mét. Hành lang vắng, đèn sáng đều, mùi thuốc sát trùng thoang thoảng. Giữa hai người là sáu cánh cửa phòng bệnh đóng kín, bên trong tiếng máy theo dõi tim đập đều.</p>
 <p class="dialogue">– Ông Hòa.</p>
-<p>Bác sĩ Vĩnh gọi ông bằng giọng không cao không thấp, giọng mà ông từng nghe khi bác sĩ giải thích chỉ số thải ghép của Vy, giọng của người quen nói chuyện sinh tử bằng ngôn ngữ kỹ thuật.</p>
+<p>Bác sĩ Vĩnh gọi ông bằng giọng phẳng, giọng mà ông từng nghe khi bác sĩ giải thích chỉ số thải ghép của Vy, giọng của người quen nói chuyện sinh tử bằng ngôn ngữ kỹ thuật.</p>
 <p class="dialogue">– Bác sĩ Vĩnh.</p>
 <p class="dialogue">– Tôi biết ông vừa vào kho lưu trữ sáng nay. Ông Thành báo.</p>
 <p>Ông Hòa không ngạc nhiên. Hệ thống giám sát trong bệnh viện không chỉ là camera.</p>
@@ -765,7 +841,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông không trả lời. Không phải vì ông không có câu trả lời. Mà vì câu trả lời, dù là "có" hay "không", đều không thay đổi được thực tế rằng một cô gái mười chín tuổi đã bị mổ lấy tim khi còn tỉnh.</p>
 <p>Bác sĩ Vĩnh gật nhẹ, như thể sự im lặng của ông Hòa đã xác nhận điều ông ta biết.</p>
 <p class="dialogue">– Sự im lặng của ông là câu trả lời, ông Hòa. Nó luôn là câu trả lời.</p>
-<p>Bác sĩ Vĩnh quay người, bước đi dọc hành lang, vạt áo trắng lướt qua các cánh cửa phòng bệnh. Bước chân ông ta đều, không nhanh không chậm, giống bước chân của người vừa hoàn thành một ca khám bệnh thường quy.</p>
+<p>Bác sĩ Vĩnh quay người, bước đi dọc hành lang, vạt áo trắng lướt qua các cánh cửa phòng bệnh. Bước chân ông ta đều, giống bước chân của người vừa hoàn thành một ca khám bệnh thường quy.</p>
 <p>Ông Hòa đứng một mình trong hành lang. Tiếng máy theo dõi tim vọng qua cánh cửa, nhịp đều. Ông nghiêng đầu để dồn hành lang về phía mắt phải, phần bên trái vẫn tan thành một dải sáng trắng không hình. Ông đứng đó ba mươi giây, rồi quay về cầu thang.</p>
 <hr class="scene-break">
 <p>Bảy giờ tối. Ông Hòa ngồi ở bàn ăn trong căn nhà thuê gần bệnh viện. Cơm nguội trong nồi, canh rau muống loãng, đĩa đậu hũ rán. Vy ngồi đối diện, tay cầm đũa nhưng không gắp, mắt nhìn xuống bát cơm.</p>
@@ -805,17 +881,23 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa nhìn bàn tay Vy trên ngực. Lòng bàn tay áp vào vị trí trái tim, ngón tay hơi cong, giống cách Mai đặt tay lên ngực trống trong nhà xác. Nhưng ngực Vy không trống. Bên trong có trái tim đang đập, đều đặn, khỏe mạnh, giữ cô sống qua mỗi ngày.</p>
 <p>Trái tim của Trần Ngọc Mai.</p>
 <p>Ông không đáp. Ông đứng dậy, dọn bát, rửa chén, lau bàn. Tay ông làm theo thói quen, mỗi cử động chính xác và vô cảm như mỗi đêm ông ghi sổ trực trong nhà xác. Vy ngồi ở bàn, tay vẫn đặt trên ngực, nhìn cha rửa chén.</p>
+<p>Ông về phòng, đóng cửa. Nhưng qua vách mỏng, ông nghe Vy chưa ngủ. Tiếng bàn phím laptop gõ nhẹ, đều, kéo dài gần một tiếng.</p>
+<p>Sáng hôm sau ông dậy trước Vy, như mọi ngày. Nhưng khi đi ngang bàn học của cô, ông thấy laptop vẫn mở, màn hình tắt, bên cạnh là cuốn sổ tay cô dùng ghi chép ở trường. Ông liếc nhanh. Trang mở dở ghi mấy dòng bằng bút bi xanh, chữ Vy rõ ràng, ngay ngắn:</p>
+<p class="message"><em>"Ngày ghép: 15/3. Giấc mơ đầu tiên: 12/3 (3 ngày trước ghép). Xưởng may — kiểm tra: có xưởng may Hưng Phát, đường Nguyễn Trãi, đóng cửa 5 tháng trước. Trùng."</em></p>
+<p>Bên dưới, gạch chân hai lần: <em>"Tìm: danh sách người hiến tạng tháng 3."</em></p>
+<p>Ông Hòa đặt cuốn sổ lại đúng vị trí cũ. Tay ông không run, nhưng ông đứng đó lâu hơn cần thiết, nhìn dòng chữ "Trùng" viết gọn ở cuối dòng.</p>
+<p>Vy đang tìm. Không phải tìm trong giấc mơ. Cô đang tìm ngoài đời thật.</p>
 <p>Ngoài cửa sổ, trời tối hẳn. Đèn đường vàng, tiếng xe máy thưa dần. Ở đâu đó trong bệnh viện, dưới tầng hầm B3, sau hai cánh cửa chống cháy và một đoạn dốc xuống, cô gái trong ngăn lạnh số chín nằm yên, mắt mở, sợi chỉ đỏ trên cổ tay buộc chiếc chuông không rung.</p>
 <p>Chuông không cần rung. Tim đã ở đây rồi.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch06">
-<p class="eyebrow">Tập 06 · Hồi II: Giá của một phép màu</p>
-<h2 class="ch-title">Giá niêm yết của một mạng người</h2>
-<p>Bảy giờ rưỡi sáng ngày thứ sáu, ông Hòa ngồi ở mép giường trong căn phòng trọ, tờ danh thiếp của Nam kẹp giữa hai ngón tay cái và ngón trỏ.</p>
+        <article class="chapter" id="ch06">
+          <p class="eyebrow">Tập 06 · Hồi II: Giá của một phép màu</p>
+          <h2 class="ch-title">Giá niêm yết của một mạng người</h2>
+          <p>Bảy giờ rưỡi sáng ngày thứ sáu, ông Hòa ngồi ở mép giường trong căn phòng trọ, tờ danh thiếp của Nam kẹp giữa hai ngón tay cái và ngón trỏ.</p>
 <p>Danh thiếp đã nằm trong túi áo ông từ chiều hôm ấy, ba ngày trước, khi Nam đến nhà xác hỏi về một cô gái có sợi chỉ đỏ và chuông nhỏ. Ông đã nói không có ai như vậy. Nhét danh thiếp vào túi, bước vào phòng trực, đóng cửa. Ông không biết tại sao không vứt đi. Người nói dối không cần giữ vật chứng.</p>
 <p>Phòng bên, Vy vẫn ngủ. Ông nghe tiếng thở đều qua vách mỏng. Sáu giờ sáng cô mới dùng thuốc, thêm hai tiếng nữa mới đến giờ tái khám. Ông có thời gian.</p>
 <p>Ông bấm số.</p>
@@ -887,19 +969,28 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Họ đứng ở đầu hành lang B3, nơi ánh sáng từ tầng trên rọi xuống vừa đủ thấy mặt nhau. Tiếng bước chân từ tầng trên vọng xuống, đều, nhịp công việc buổi sáng.</p>
 <p class="dialogue">– Tôi đã tìm được em trai cô ấy, Nam nói.</p>
 <p class="dialogue">– Khi nào?</p>
-<p class="dialogue">– Hôm qua. Cậu bé đang ở nhà người bà con cách đây năm cây số. Tên Minh. Mười hai tuổi.</p>
-<p>Ông Hòa nghĩ đến giấc mơ Vy kể tối qua: xưởng may, cậu bé chạy vào gọi chị đi ăn cơm trưa, nhường miếng dưa leo rồi cười. Cậu bé trong giấc mơ của Vy khoảng mười tuổi, hoặc mười hai.</p>
+<p class="dialogue">– Hôm qua. Cậu bé đang ở nhà người bà con cách đây năm cây số. Tên Minh. Mười bốn tuổi.</p>
+<p>Ông Hòa nghĩ đến giấc mơ Vy kể tối qua: xưởng may, cậu bé chạy vào gọi chị đi ăn cơm trưa, nhường miếng dưa leo rồi cười. Cậu bé trong giấc mơ của Vy khoảng mười hai, hoặc mười ba, nhỏ hơn tuổi thật.</p>
 <p class="dialogue">– Cậu bé nói gì?</p>
 <p>Nam thay đổi tư thế, chuyển trọng tâm từ chân này sang chân kia. Một cử chỉ nhỏ, nhưng ông Hòa nhận ra: cách người ta làm khi sắp nói điều mà họ không muốn nói.</p>
 <p class="dialogue">– Chuông là vật mẹ cậu bé để lại trước khi mất. Mai đeo từ ngày rời quê lên tỉnh làm công nhân, hơn hai năm. Cậu Minh nói chưa bao giờ thấy chị tháo ra.</p>
 <p>Sợi chỉ đỏ buộc cổ tay Mai trong ngăn lạnh. Chiếc chuông nhỏ. Vật mẹ để lại.</p>
 <p class="dialogue">– Mai có đăng ký hiến tạng không?</p>
 <p class="dialogue">– Tôi hỏi thẳng câu đó. Cậu bé hỏi lại tôi: "Anh họ ơi, hiến tạng là gì?"</p>
-<p>Mười hai tuổi, không biết hiến tạng là gì. Chị gái đi làm công nhân may hai năm nuôi em, đeo chiếc chuông mẹ để lại, không ký bất kỳ tờ giấy nào ngoài hợp đồng lao động và phiếu thuê phòng trọ.</p>
+<p>Mười bốn tuổi, không biết hiến tạng là gì. Chị gái đi làm công nhân may hai năm nuôi em, đeo chiếc chuông mẹ để lại, không ký bất kỳ tờ giấy nào ngoài hợp đồng lao động và phiếu thuê phòng trọ.</p>
 <p class="dialogue">– Cậu bé có biết chị đang ở đâu không?</p>
 <p class="dialogue">– Tôi nói chị cậu đang nằm viện, chưa tỉnh. Tôi không nói thêm.</p>
 <p>Nam dừng lại. Rồi nói thêm, giọng phẳng hơn, thứ giọng người ta dùng khi kể lại điều mình không muốn kể lại:</p>
 <p class="dialogue">– Cậu bé hỏi: "Bao giờ chị dậy được, anh?" Tôi không có câu trả lời.</p>
+<p>Nam dừng một nhịp. Rồi nói thêm, giọng thấp hơn, như kể điều mà cậu bé không muốn kể nhưng vẫn kể:</p>
+<p class="dialogue">– Cậu Minh nói, đêm trước ngày Mai lên tỉnh, hai chị em cãi nhau. Minh không muốn chị đi. Cậu bé nắm tay áo chị, giật lại, Mai tát cậu một cái. Không nặng, nhưng cả hai đều khóc. Sáng hôm sau Minh lấy sợi chỉ đỏ buộc chuông vào cổ tay chị, không nói gì. Mai cũng không nói gì. Hai chị em đứng ở ngõ, cúi đầu, im. Rồi Mai bước đi.</p>
+<p>Ông Hòa nhìn chùm chìa khóa đeo ở thắt lưng. Mười bốn tuổi, sống nhờ nhà bà con, gửi tin nhắn cho chị mỗi ngày, không bao giờ có người đọc. Và ký ức cuối cùng về chị là một cái tát, rồi sợi chỉ đỏ.</p>
+<p class="dialogue">– Còn chuyện này, Nam nói. Con gái bác gọi tôi sáng nay.</p>
+<p>Ông Hòa ngẩng lên.</p>
+<p class="dialogue">– Vy gọi anh?</p>
+<p class="dialogue">– Cô ấy nói tìm được số tôi trên mạng. Hỏi tôi có biết ai tên Mai, nữ, làm công nhân may, mất tích khoảng năm tháng trước không. Cô ấy nói nhìn thấy xưởng may trong giấc mơ, đã đối chiếu ngày ghép tim của mình với thời điểm xưởng đóng cửa, thấy trùng.</p>
+<p>Nam nhìn ông Hòa, chờ.</p>
+<p class="dialogue">– Bác nói gì với cô ấy chưa?</p>
 <p>Ông Hòa không nói gì. Hành lang dưới tầng hầm không có cửa sổ, không có gió. Mùi formaldehyde nhạt. Đèn huỳnh quang nhấp nháy hai giây rồi sáng lại.</p>
 <hr class="scene-break">
 <p>Tám giờ tối. Gánh cháo bà Mười đặt ở góc vỉa hè trước cổng phụ bệnh viện, đèn vàng treo trên cột, ba người đang ăn ở bàn ngoài. Ông Hòa đến khi gánh cháo vãn người, còn hai bàn.</p>
@@ -954,13 +1045,13 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Hôm nay, trong căn phòng lạnh với bốn ngăn lạnh chứa bốn người bị cướp bộ phận cơ thể và một cô gái mười chín tuổi bị mổ lấy tim khi vẫn còn tỉnh, ông thử nói câu đó thêm một lần nữa.</p>
 <p>Câu không thành tiếng.</p>
 <p>Không phải vì ông không còn tin vào nó. Mà vì ông biết rằng mình đã tin vào nó quá lâu, và niềm tin đó chính xác không phải là nạn nhân bị lợi dụng mà là một bộ phận trong hệ thống.</p>
-<p>Đúng nửa đêm, ngăn số ba mở.</p>
+<p>Đúng nửa đêm, ngăn số một mở.</p>
 <p>Không phải tất cả ngăn như đêm đầu tiên. Chỉ một ngăn. Tiếng chốt sắt bật nhẹ, cánh cửa kéo ra từng phân. Lạnh tràn ra, mỏng, lan theo sàn bê tông.</p>
-<p>Ông Hòa không đứng dậy. Ông biết ngăn ba là của ai. Ông đã sửa tên người đó từ ba đêm trước.</p>
+<p>Ông Hòa không đứng dậy. Ông biết ngăn một là của ai. Ông đã sửa tên người đó từ ba đêm trước.</p>
 <p>Bàn tay xám vươn ra khỏi bóng tối trong ngăn, dài, da sần, ngón tay cong như vẫn cứng. Bàn tay đó với tới mặt bàn trực, lần từng phân về phía ông, rồi nắm lấy cổ tay ông.</p>
 <p>Không mạnh. Lạnh thôi. Lạnh của thứ không còn nhiệt độ.</p>
 <p>Ông không kéo tay lại. Ngồi yên, nhìn bàn tay xám nắm cổ tay mình, nhìn ngón cái ấn lên mạch máu. Nhịp tim ông đập dưới đó, đều.</p>
-<p>Rồi ông nhìn lên mặt người trong ngăn ba. Ông Tư Lẫm. Người nhặt ve chai, bị lấy giác mạc, được ông gọi đúng tên ba đêm trước. Đã nằm xuống. Không lẽ ra còn ở đây.</p>
+<p>Rồi ông nhìn lên mặt người trong ngăn một. Ông Tư Lẫm. Người nhặt ve chai, bị lấy giác mạc, được ông gọi đúng tên ba đêm trước. Đã nằm xuống. Không lẽ ra còn ở đây.</p>
 <p>Nhưng môi ông Tư mấp máy. Tiếng thoát ra khô, hẹp, như hơi thở đi qua chỗ không còn đủ khoảng trống:</p>
 <p class="dialogue">– Đến lượt...</p>
 <p>Ngăn ba đóng lại. Cánh cửa kéo chậm vào trong, chốt bật, tiếng kim loại nhỏ trong không khí lạnh.</p>
@@ -969,20 +1060,20 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Đến lượt ai. Ông chưa biết.</p>
 <p>Nhưng ông biết đêm sau sẽ biết, và ông biết mình sẽ không thể tránh được câu trả lời đó dù cả đêm nay ông có muốn.</p>
 <p>Ông cầm bút lên. Ghi vào sổ trực: giờ trực, nhiệt độ phòng, tình trạng ngăn lạnh. Chữ viết bình thường, đều, không run. Mười một năm, tay ông đã học cách giữ thẳng ngay cả khi người viết không còn thẳng được nữa.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch07">
-<p class="eyebrow">Tập 07 · Hồi II: Giá của một phép màu</p>
-<h2 class="ch-title">Trái tim mang mã số</h2>
-<p>Câu nói hoàn tất vào lúc 00:07.</p>
-<p>Ông Hòa còn đang ngồi ở bàn trực, tay cầm bút nhưng chưa viết gì vào sổ, khi ngăn ba mở lần thứ hai trong đêm. Tiếng chốt sắt bật giống lần trước, cánh cửa kéo ra đúng khoảng đó, bàn tay xám vươn ra giữ lấy thành ngăn như người vịn cửa để đứng thẳng.</p>
+        <article class="chapter" id="ch07">
+          <p class="eyebrow">Tập 07 · Hồi II: Giá của một phép màu</p>
+          <h2 class="ch-title">Trái tim mang mã số</h2>
+          <p>Câu nói hoàn tất vào lúc 00:07.</p>
+<p>Ông Hòa còn đang ngồi ở bàn trực, tay cầm bút nhưng chưa viết gì vào sổ, khi ngăn một mở lần thứ hai trong đêm. Tiếng chốt sắt bật giống lần trước, cánh cửa kéo ra đúng khoảng đó, bàn tay xám vươn ra giữ lấy thành ngăn như người vịn cửa để đứng thẳng.</p>
 <p>Nhưng lần này không phải cổ tay ông. Lần này chỉ là giọng.</p>
 <p class="dialogue">– Đến lượt con ông.</p>
 <p>Tiếng của ông Tư Lẫm. Hơi thở qua chỗ trống, không âm lượng, chỉ là rung động không khí mang theo bốn chữ.</p>
-<p>Ngăn ba đóng lại.</p>
+<p>Ngăn một đóng lại.</p>
 <p>Ông Hòa đặt bút xuống. Tay phải ông nằm trên sổ trực, trên trang trắng chưa viết gì. Ông nhìn ngón tay mình, móng cắt sát, đốt ngón có vết chai từ chùm chìa khóa. Bàn tay này đã ký vào biên bản nhận xác Mai đêm thứ nhất. Bàn tay này đã ký giấy trắng đổi tiền thuốc cho Vy. Bàn tay này đã mở cửa phòng mổ bí mật và đóng lại sau khi ca phẫu thuật kết thúc.</p>
 <p>Ông biết điều thi thể vừa nói. Biết từ lâu, từ đêm thứ tư, từ khi đọc "H.T.V.24, 24 tuổi, nhóm máu O, giá 0 đồng, hình thức khác." Biết từ khi Dung nói "nếu đường dây lộ, hồ sơ ghép tim Vy bị điều tra." Biết từ khi chuông rung gần khu hậu phẫu nơi Vy tái khám. Biết từ khi Vy đặt tay lên ngực và nói có người đang khóc trong đó.</p>
 <p>Ông chỉ chưa cho phép mình biết.</p>
@@ -1002,7 +1093,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Tiền sử điều trị: Điều trị nội khoa hai năm không đáp ứng. Đề nghị ghép tim. Bốn bệnh viện từ chối tiếp nhận ca.</p>
 <p>Bên dưới là tên bốn bệnh viện, ngày từ chối, lý do. Lý do của ba bệnh viện đầu: "Không đủ nguồn lực phẫu thuật ghép tim." Lý do của bệnh viện thứ tư: "Chức năng tống máu quá thấp, tiên lượng hậu phẫu không đảm bảo."</p>
 <p>Người đồng ý tiếp nhận và thực hiện ca ghép: Bác sĩ Lê Quang Vĩnh.</p>
-<p>Thời điểm đồng ý: ghi ngày, giờ. Hai mươi tám tháng trước.</p>
+<p>Thời điểm đồng ý: ghi ngày, giờ. Năm tháng trước.</p>
 <p>Ông Hòa đứng yên. Ánh đèn pin nhỏ chiếu xuống tờ giấy, chữ mực xanh rõ trong vòng sáng. Tên Vy. Chức năng tống máu mười ba phần trăm. Bốn bệnh viện từ chối. Ông nhớ những lần Vy ho ra máu lúc nửa đêm, ông chạy sang phòng, tay ông ép lên lưng cô trong khi cơn ho kéo dài. Ông nhớ khuôn mặt cô khi bác sĩ đầu tiên lắc đầu, rồi bác sĩ thứ hai, thứ ba.</p>
 <p>Ông lật sang trang ba.</p>
 <p>Biên bản phẫu thuật. Bảng kẻ ô vuông, điền bằng chữ viết nhanh, bút mực đen, kiểu chữ khác người điền trang hai.</p>
@@ -1049,7 +1140,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p class="dialogue">– Vy đang chờ chết ở nhà của ông, ông Hòa ơi. Không phải ở trung ương. Tôi có tim của cô gái đó và một bệnh nhân cần tim trong sáu tiếng. Tôi đã làm điều tôi có thể làm với những gì tôi có. Ông có thể gọi đó là sai. Nhưng con gái ông còn sống.</p>
 <p>Ông Hòa đứng yên. Hành lang dưới tầng hầm yên tĩnh, chỉ có tiếng điều hòa chạy xa xa từ khu nhà xác.</p>
 <p class="dialogue">– Bác sĩ muốn tôi chấp nhận rằng vì không có ai khác, bác sĩ được quyền tự quyết định.</p>
-<p class="dialogue">– Tôi muốn ông hiểu rằng quyết định đó đã cứu con gái ông. Hai mươi tám tháng. Vy đi lại, ăn uống, ngủ, sống. Tất cả nhờ ca ghép đó.</p>
+<p class="dialogue">– Tôi muốn ông hiểu rằng quyết định đó đã cứu con gái ông. Năm tháng. Vy đi lại, ăn uống, ngủ, sống. Tất cả nhờ ca ghép đó.</p>
 <p class="dialogue">– Nhờ tim cô gái mười chín tuổi bị lấy khi chưa tử vong.</p>
 <p>Bác sĩ Vĩnh không trả lời ngay. Mắt ông ta nhìn bìa hồ sơ trên bàn mổ, nhìn cột thời gian.</p>
 <p class="dialogue">– Tôi sẽ nói điều ông chưa nghĩ đến. Nếu vụ này phanh phui, hồ sơ ghép tim của Vy bị điều tra. Ca ghép thực hiện ngoài quy trình, nguồn tim không đáp ứng tiêu chuẩn hiến tạng hợp pháp. Vy mất quyền tiếp tục điều trị hậu phẫu tại đây. Thuốc chống thải ghép bị cắt. Ông biết Vy sống được bao lâu không có thuốc đó.</p>
@@ -1066,7 +1157,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p class="dialogue">– Bác sĩ ra ngoài.</p>
 <p class="dialogue">– Ông định làm gì?</p>
 <p class="dialogue">– Điều không thuộc phận bác sĩ.</p>
-<p>Bác sĩ Vĩnh đứng yên hai giây. Rồi quay người, đi ra cửa. Bước chân không nhanh, không chậm. Ở ngưỡng cửa, ông ta dừng lại mà không quay người.</p>
+<p>Bác sĩ Vĩnh đứng yên hai giây. Rồi quay người, đi ra cửa. Bước chân đều. Ở ngưỡng cửa, ông ta dừng lại mà không quay người.</p>
 <p class="dialogue">– Tôi không hối hận về ca ghép đó. Nhưng tôi sẽ không ngăn ông.</p>
 <p>Bước chân dần xa trong hành lang B3.</p>
 <hr class="scene-break">
@@ -1080,7 +1171,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Mai đứng ở góc phòng sau lưng vị trí bác sĩ Vĩnh vừa đứng.</p>
 <p>Cô không mặc gì ngoài tấm vải mỏng. Ngực trống, da xám. Mắt mở, không có biểu cảm. Tóc xõa xuống, tay buông thẳng theo hai bên thân người.</p>
 <p>Ông Hòa nhìn cô. Không nhìn đi chỗ khác, không lui bước. Ông đứng yên nhìn cô gái mà ông đã ký nhận vào nhà xác, ký vào biên bản trống giờ chết, đứng bên cạnh khi ca phẫu thuật tiến hành và đóng cửa sau khi kết thúc.</p>
-<p>Mười chín tuổi. Công nhân may. Đeo chuông mẹ để lại trên cổ tay. Không đăng ký hiến tạng. Có em trai mười hai tuổi đang đợi tin ở nhà người bà con.</p>
+<p>Mười chín tuổi. Công nhân may. Đeo chuông mẹ để lại trên cổ tay. Không đăng ký hiến tạng. Có em trai mười bốn tuổi đang đợi tin ở nhà người bà con.</p>
 <p>Mai giơ tay phải lên. Cánh tay xám, ngón tay cong nhẹ. Cô đưa bàn tay đặt vào không khí nơi bác sĩ Vĩnh vừa đứng, ngay vị trí ngực trái, như xuyên qua cơ thể của ai đó còn ở đó. Xuyên vào, dừng lại một giây, rút ra.</p>
 <p>Không lấy gì. Không kéo gì. Chỉ đặt tay vào và rút ra.</p>
 <p>Rồi cô nhìn ông Hòa. Đôi mắt mở to, không chớp, không có điểm nhìn rõ ràng nhưng ông biết cô nhìn ông. Biết theo cách ông biết chuông rung là dấu hiệu, biết theo cách ông biết chữ "TÌM TIM" viết trên cửa lạnh là lời yêu cầu.</p>
@@ -1091,15 +1182,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông đứng trong hành lang B3, ánh đèn hành lang vàng mờ, mùi formaldehyde nhạt. Tiếng bước chân từ tầng trên bệnh viện vọng xuống, tiếng máy theo dõi tim từ khoa hồi sức vẳng xa.</p>
 <p>Đêm thứ sáu đã qua nửa. Từ đây, ông không còn có thể nói với mình rằng ông không biết.</p>
 <p>Ông đi về phía cầu thang, bước chân đều trên sàn xi măng, chùm chìa khóa kẹp chặt trong tay.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch08">
-<p class="eyebrow">Tập 08 · Hồi III: Trái tim gọi chủ</p>
-<h2 class="ch-title">Hai cô gái, một nhịp tim</h2>
-<p>Ông Hòa về đến nhà lúc năm giờ mười lăm sáng. Trời chưa sáng hẳn, mây xám thấp, đèn đường vẫn còn sáng. Ông mở khóa, bước vào, đứng ở cửa mà không đi thêm. Trong nhà tối. Từ phòng trong vọng ra tiếng thở đều của Vy.</p>
+        <article class="chapter" id="ch08">
+          <p class="eyebrow">Tập 08 · Hồi III: Trái tim gọi chủ</p>
+          <h2 class="ch-title">Hai cô gái, một nhịp tim</h2>
+          <p>Ông Hòa về đến nhà lúc năm giờ mười lăm sáng. Trời chưa sáng hẳn, mây xám thấp, đèn đường vẫn còn sáng. Ông mở khóa, bước vào, đứng ở cửa mà không đi thêm. Trong nhà tối. Từ phòng trong vọng ra tiếng thở đều của Vy.</p>
 <p>Ông đứng ở ngưỡng cửa hai mươi giây. Nhìn vào bóng tối của căn phòng trọ, nhìn vệt sáng mỏng từ khe cửa sổ phòng trong chiếu ra. Nghe tiếng thở của con gái.</p>
 <p>Ông bước vào, khóa cửa ngoài lại, đặt chìa khóa lên bàn. Rồi ông lấy điện thoại của Vy từ trên ghế sofa, nơi cô hay để trước khi ngủ. Cầm vào trong túi áo mình. Không phải lần đầu ông làm vậy, nhưng trước kia lý do là "để yên cho cô ngủ." Đêm nay lý do khác.</p>
 <p>Ông ngồi xuống ghế, mắt hướng về cửa phòng Vy. Chùm chìa khóa trong túi áo nặng hơn bình thường, hoặc không phải chùm chìa khóa mà là điều ông đang giữ theo, điều ông biết từ nửa đêm qua mà chưa đặt thành lời với ai.</p>
@@ -1159,6 +1250,9 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Vy quay lại nhìn người đó.</p>
 <p>Người đó nhìn lại.</p>
 <p>Không ai nói gì trong một lúc. Không cần nói, vì cả hai đã thấy ký ức của nhau, và ký ức không cần giải thích thêm. Ký ức chỉ là sự thật, trình bày đúng thứ tự xảy ra, không thêm không bớt.</p>
+<p>Nhưng không chỉ tai nạn và bàn mổ. Vy còn thấy những thứ nhỏ hơn, những thứ không liên quan đến cái chết, chỉ liên quan đến cuộc sống của người đứng trước mặt cô.</p>
+<p>Bàn tay gấp quần áo trong xưởng may, từng đường gấp vuông vức, chính xác, gấp theo thói quen đã lặp lại hàng nghìn lần. Bát cơm nguội rắc muối mè ăn một mình trên giường trọ, quạt trần quay chậm. Mùi cồn y tế thoảng qua đầu ngõ, và cách người đó quay mặt đi, bước nhanh, không giải thích. Một cuốn tập vở mở trên gối, trang cuối ghi bằng bút chì: <em>"Tiệm Sửa Quần Áo Mai"</em>, bên dưới vẽ sơ đồ cái tiệm nhỏ, ghi số vốn, ghi tên đường, chữ viết cẩn thận của người đang tính toán tương lai từ đồng lương mỗi tháng.</p>
+<p>Và ký ức cuối: đêm trước ngày rời quê. Một cậu bé nắm tay áo chị, kéo lại. Cô tát cậu bé. Không mạnh, nhưng cả hai khóc. Sáng hôm sau cậu bé đứng ở ngõ, buộc sợi chỉ đỏ vào cổ tay chị, không nói gì. Cô cũng không nói gì. Rồi cô bước đi.</p>
 <p>Vy nhìn vào ngực trống của người đứng trước mặt. Rồi nhìn vào ngực mình, nơi cô cảm thấy nhịp đập quen thuộc mà cô đã quen gọi là của mình.</p>
 <p>Rồi người đứng bên cạnh nói, giọng nhỏ, không có âm lượng thật nhưng vẫn nghe rõ:</p>
 <p class="dialogue">– Bạn thấy rồi.</p>
@@ -1242,15 +1336,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa nhìn sợi chỉ trong im lặng. Ông biết sợi chỉ đó từ đêm đầu tiên. Buộc trên cổ tay Mai trong ngăn lạnh, chiếc chuông nhỏ đính vào. Bây giờ sợi chỉ ở đây, không có chuông, không có nút thắt, chỉ là vòng chỉ quanh cổ tay cô gái đang sống bằng tim của cô gái đã chết.</p>
 <p>Ông đặt tay lên đùi. Không chạm vào sợi chỉ, không cố tháo ra. Có những thứ không tháo được bằng cách thông thường.</p>
 <p>Ngoài cửa sổ, trời tối hẳn. Đèn đường bật lên. Ở đâu đó trong bệnh viện, dưới tầng hầm B3, sau cánh cửa sắt xám, cô gái không tim nằm trong ngăn lạnh số chín. Đêm nay chuông sẽ rung lúc nửa đêm. Và ông sẽ không có mặt ở đó.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch09">
-<p class="eyebrow">Tập 09 · Hồi III: Trái tim gọi chủ</p>
-<h2 class="ch-title">Danh sách những người chưa chết</h2>
-<hr class="scene-break">
+        <article class="chapter" id="ch09">
+          <p class="eyebrow">Tập 09 · Hồi III: Trái tim gọi chủ</p>
+          <h2 class="ch-title">Danh sách những người chưa chết</h2>
+          <hr class="scene-break">
 <p>Ông Hòa ngồi trong phòng trực nhà xác từ 01:17, không bật đèn.</p>
 <p>Căn phòng đủ tối để ông thấy lờ mờ ánh sáng xanh nhạt của đồng hồ treo tường, kim phút chạy chậm theo từng vạch một. Bên ngoài cửa sổ nhỏ gần trần nhà, bầu trời không có gì ngoài đen tuyền và một vệt đèn đường vàng quạch xa tít. Ông để nguyên tay trên bàn, lòng bàn tay xuống, và chờ.</p>
 <p>Vy đã ngủ lúc mười một giờ đêm. Ông đã ngồi bên giường cô thêm mười lăm phút, nghe tiếng thở đều qua cánh cửa mỏng, trước khi đứng dậy lấy chìa khóa và đi. Không để lại ghi chú. Nếu cô tỉnh và tìm ông, không có lý do nào ông có thể đưa ra mà cô chấp nhận được.</p>
@@ -1269,13 +1363,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Rồi đọc tiếp. P.T.M.55: thận phải, phòng 417, nhóm A. N.T.L.58: thận trái, phòng 214, nhóm B, giai đoạn 4, ghi chú: tiên lượng xấu, ưu tiên xử lý sớm. Cột lịch: ngày mai.</p>
 <p>Dòng thứ bảy ông không đọc ngay. Ông nhìn dòng thứ sáu lâu hơn cần thiết.</p>
 <p class="dialogue">– Bao lâu? – Ông hỏi, không nhìn lên.</p>
-<p class="dialogue">– Ba tuần. Tôi thấy tên đó trong danh sách nội bộ ba tuần trước.</p>
+<p class="dialogue">– Danh sách này tôi sao chép được từ nhiều tháng trước. Từ khi tôi bắt đầu nghi ngờ các ca tử vong ngoài giờ không khớp với hồ sơ điều trị.</p>
 <p>Ông gấp tờ giấy lại, để trên bàn, rồi nhìn Dung.</p>
-<p class="dialogue">– Cô không báo với ai trong ba tuần.</p>
-<p class="dialogue">– Không.</p>
-<p class="dialogue">– Cô vẫn tiếp tục làm việc.</p>
-<p class="dialogue">– Có.</p>
-<p>Câu hỏi mà ông không nói thành tiếng là: nếu tên trên danh sách không phải mẹ cô, cô có đến đây tối nay không? Câu hỏi đó không cần trả lời. Họ đều biết đáp án và không ai cần phải nghe nó nói thành lời.</p>
+<p class="dialogue">– Nhiều tháng. Cô thu thập chứng cứ từ nhiều tháng trước mà không báo với ai.</p>
+<p class="dialogue">– Tôi chưa chắc chắn. Tôi cần đủ hồ sơ để không ai có thể nói là nhầm lẫn hay trùng hợp.</p>
+<p class="dialogue">– Vậy tại sao hôm nay?</p>
+<p>Dung im một nhịp. Rồi nói, giọng thấp hơn:</p>
+<p class="dialogue">– Vì tên mẹ tôi xuất hiện trong danh sách tuần này. Phòng 214. Suy thận giai đoạn bốn.</p>
+<p>Ông Hòa nhìn lại dòng thứ sáu. N.T.L.58. Phòng 214. Cột lịch: ngày mai.</p>
+<p class="dialogue">– Tôi biết từ trước rằng hệ thống này có vấn đề. Nhưng mẹ tôi là giọt nước tràn ly.</p>
 <hr class="scene-break">
 <p>Khang đến lúc 02:00 đúng, như thể đã ghi vào lịch từ trước.</p>
 <p>Ông ta không mặc áo blouse. Quần âu xám, áo sơ mi trắng bỏ trong, tay xắn lên đến khuỷu. Tóc vẫn gọn, mặc dù đã sau hai giờ sáng. Khang nhìn Dung, nhìn tờ giấy gấp trên bàn, nhìn ông Hòa, theo thứ tự đó, không vội.</p>
@@ -1285,7 +1381,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p class="dialogue">– Tôi cần anh ký biên bản hỏa táng cho thi thể ngăn số 9, – Khang nói. – Trước sáu giờ sáng nay.</p>
 <p class="dialogue">– Gia đình chưa xác nhận.</p>
 <p class="dialogue">– Gia đình đã xác nhận. Người anh ký hôm qua.</p>
-<p>Ông Hòa biết điều đó không đúng. Nam không phải người thân hợp pháp, và người giám hộ được đăng ký của Mai là Minh, mười hai tuổi, chưa ai liên lạc. Chữ ký mà Khang đang nhắc đến là chữ ký của ai đó khác, bằng cách nào đó.</p>
+<p>Ông Hòa biết điều đó không đúng. Nam không phải người thân hợp pháp, và người giám hộ được đăng ký của Mai là Minh, mười bốn tuổi, chưa ai liên lạc. Chữ ký mà Khang đang nhắc đến là chữ ký của ai đó khác, bằng cách nào đó.</p>
 <p class="dialogue">– Tôi cần kiểm tra lại thủ tục trước, – ông nói.</p>
 <p class="dialogue">– Không có gì cần kiểm tra. Đây là quyết định hành chính.</p>
 <p>Khang đặt một tờ giấy lên bàn, đẩy về phía ông. Biên bản đồng ý hỏa táng, điền sẵn tên và ngày, giờ thực hiện ghi 05:30 sáng. Chỉ còn thiếu chữ ký của người phụ trách ca trực.</p>
@@ -1312,9 +1408,9 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa nhìn tờ giấy vẫn nằm trên bàn, tờ giấy của Dung với bảy cái tên. Bên ngoài cửa sổ, bầu trời vẫn không có gì ngoài đen tuyền.</p>
 <p class="dialogue">– Vì Trần Ngọc Mai chưa được hỏi, – ông nói sau một lúc. – Không ai hỏi cô ấy có muốn không. Không ai hỏi cô ấy muốn gì với trái tim của mình, với cái chết của mình. Tôi không thể hoàn lại điều đó cho cô. Nhưng ít nhất tôi có thể không ký thêm một tờ giấy nữa mà không có ai được hỏi.</p>
 <p>Dung nhìn xuống tay mình đặt trên đầu gối.</p>
-<p class="dialogue">– Ba tuần trước, khi tôi thấy tên mẹ tôi, – cô nói chậm. – Tôi nói với bản thân là đó là nhầm lẫn. Rằng chắc chắn có người sẽ kiểm tra lại và xóa tên đó đi trước khi đến lượt. Rằng quy trình có bước xét duyệt và không ai bị đưa vào danh sách cuối mà chưa qua kiểm duyệt. Tôi nói với bản thân tất cả những điều đó trong ba tuần liên tiếp.</p>
-<p class="dialogue">– Và cô tin không?</p>
-<p class="dialogue">– Không. Nhưng tôi cần có thời gian để giả vờ tin.</p>
+<p class="dialogue">– Tôi sao hồ sơ từ nhiều tháng trước, – cô nói chậm. – Từng bản một, khi ca trực vắng, khi khoa hành chính đóng cửa. Tôi nói với bản thân là đang thu thập để phòng hờ, rằng biết đâu có ngày cần đến. Nhưng tôi không làm gì với chúng. Tôi chỉ cất vào phong bì, giấu ở nhà, và tiếp tục đi làm mỗi sáng.</p>
+<p class="dialogue">– Rồi cô thấy tên mẹ cô.</p>
+<p class="dialogue">– Rồi tôi thấy tên mẹ tôi. Và tôi hiểu rằng giả vờ không biết không bảo vệ được ai, kể cả người thân của mình.</p>
 <p>Điện thoại ông rung lên. Vy.</p>
 <p class="message"><em>"Con không ngủ được. Nhịp tim con kỳ lạ lắm cha ơi. Cha đang ở đâu?"</em></p>
 <p>Ông nhìn dòng chữ đó lâu hơn một người bình thường sẽ nhìn. Rồi gọi cho Nam.</p>
@@ -1334,7 +1430,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Cô rời phòng trực. Tiếng bước chân cô mất đi về phía hành lang dẫn đến khu hồ sơ.</p>
 <hr class="scene-break">
 <p>Ông ngồi một mình với ngọn đèn bàn và bảy cái tên trên tờ giấy.</p>
-<p>Mắt trái ông vẫn mờ như lớp sương mỏng phủ ngang một phần thị trường. Ông đã quen với cảm giác đó từ đêm đầu tiên ông sửa một cái tên trong sổ trực. Mỗi lần ông can thiệp vào những gì đã được viết sai, một phần thị lực rời đi và không quay trở lại. Ông không biết còn lại bao nhiêu. Ông không chắc mình muốn biết.</p>
+<p>Mắt trái ông vẫn mờ như lớp sương mỏng phủ ngang một phần thị trường. Ông đã quen với cảm giác đó từ đêm ông đọc tên ông Tư thành tiếng, từ lúc ông thừa nhận điều mà mười một năm qua ông chọn không nhìn. Mắt mờ không phải vì ông can thiệp vào những gì sai, mà vì ông đã thấy quá lâu mà chọn không thấy, và cơ thể cuối cùng thực hiện đúng điều ông đã tự ra lệnh cho nó.</p>
 <p>Vy nhắn tiếp: <em>"Con thấy sợi chỉ đó vẫn không tháo ra. Chỉ đỏ quanh cổ tay. Có phải đây là phản ứng thuốc không cha?"</em></p>
 <p>Ông không trả lời ngay. Ngón tay ông dừng trên màn hình điện thoại.</p>
 <p>Sợi chỉ đỏ. Chuông rung gần người mang tim. Bây giờ tim đang gọi chủ, và chủ nhân của nó đang chờ trong ngăn lạnh số 9.</p>
@@ -1375,15 +1471,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Đêm nay ông không đi đâu cả.</p>
 <hr class="scene-break">
 <p><em>Khang đứng ở hộp điện cuối hành lang tòa nhà phụ trong ba mươi giây trước khi cắt cầu dao chính. Ông ta không biết tiếng chuông bắt đầu ngay sau đó từ những chỗ mà không có ai đang kéo chuông.</em></p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch10">
-<p class="eyebrow">Tập 10 · Hồi III: Trái tim gọi chủ</p>
-<h2 class="ch-title">Tên của người chết</h2>
-<hr class="scene-break">
+        <article class="chapter" id="ch10">
+          <p class="eyebrow">Tập 10 · Hồi III: Trái tim gọi chủ</p>
+          <h2 class="ch-title">Tên của người chết</h2>
+          <hr class="scene-break">
 <p>Khi điện cúp, cái tối không phải tối dần từng phần. Nó đến như ai đó úp một cái hộp xuống.</p>
 <p>Ông Hòa ngồi im trong bóng tối mười lăm giây, nghe tiếng chuông từ mọi hướng. Từ hành lang trái, từ phía sau tường, từ đâu đó bên dưới sàn mà ông không biết có gì dưới đó. Những tiếng chuông không giống nhau: một tiếng đồng nhỏ và trong từ ngăn số 9, những tiếng khác trầm hơn, cao thấp khác nhau, khoảng cách khác nhau. Nhưng tất cả đều, không vội, như đang chờ.</p>
 <p>Ông lấy điện thoại, bật đèn pin. Ánh sáng trắng xanh chiếu lên khoảng không gian hẹp trước mặt ông, vách tường, cánh cửa gỗ mòn, cái bàn làm việc quen thuộc với ngăn kéo còn khóa.</p>
@@ -1490,15 +1586,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa nhìn con gái bằng mắt phải duy nhất còn lại. Cô không trốn tránh ánh mắt ông. Cô đứng trong hành lang tầng hầm và nhìn lại, với sợi chỉ đỏ trên cổ tay và trái tim mười chín tuổi trong lồng ngực, và chờ.</p>
 <p>Ông bắt đầu từ đêm đầu tiên. Không phải từ đêm ông tìm thấy thi thể Mai, mà từ đêm ông đứng ở cửa phòng mổ và không bước vào, không hỏi một câu nào, không làm gì khác ngoài ký tên vào một tờ biên bản mà ông không đọc kỹ. Ông bắt đầu từ đó vì đó là nơi câu chuyện thực sự bắt đầu, dù ông chỉ nhận ra điều đó sau mười ngày.</p>
 <p>Trong hành lang tầng hầm, bóng tối xung quanh họ và ánh đèn điện thoại nhỏ trên tay Vy, ông Hòa bắt đầu kể sự thật.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch11">
-<p class="eyebrow">Tập 11 · Hồi IV: Trước lúc gà gáy</p>
-<h2 class="ch-title">Người nào đáng được cứu</h2>
-<hr class="scene-break">
+        <article class="chapter" id="ch11">
+          <p class="eyebrow">Tập 11 · Hồi IV: Trước lúc gà gáy</p>
+          <h2 class="ch-title">Người nào đáng được cứu</h2>
+          <hr class="scene-break">
 <p>Vy không nói gì trong khoảng ba phút.</p>
 <p>Ông Hòa ngồi trong hành lang tầng hầm và nhìn con gái. Cô đứng tựa vào tường đối diện, hai tay buông thẳng dọc hai bên. Sợi chỉ đỏ trên cổ tay trái không căng, không kéo đi đâu. Đèn pin điện thoại cô chiếu xuống sàn xi măng giữa họ, tạo ra vùng sáng vừa đủ để nhìn thấy nhau mà không cần nhìn thẳng vào mắt nhau.</p>
 <p>Ông không thúc. Không có câu nào cần thêm vào sau những gì ông vừa nói.</p>
@@ -1549,50 +1645,21 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p class="dialogue">– Điều đó không thay đổi bác sĩ đã làm gì, – Vy nói thay ông.</p>
 <p>Bác sĩ Vĩnh không trả lời. Điều đó cũng là một câu trả lời, và ba người trong hành lang đó đều hiểu.</p>
 <hr class="scene-break">
-<p>Từ tầng trên, qua sàn bê tông dày, vọng xuống tiếng va chạm, tiếng vật nặng bị đẩy, tiếng cửa đập.</p>
-<p>Điện thoại ông Hòa rung. Nam gửi tin nhắn chứ không gọi:</p>
-<p><em>Cô Dung bị giữ, hành lang B tầng 3 khu hành chính, phòng cuối. Hai người theo Khang. Đang phá khóa kho lưu trữ. Tôi ở cầu thang bên ngoài.</em></p>
-<p>Ông Hòa đứng dậy. Nhìn bác sĩ Vĩnh.</p>
-<p class="dialogue">– Ông ở đây, – ông nói.</p>
-<p>Ông ta không phản đối. Không đồng ý. Chỉ đứng yên.</p>
-<p class="dialogue">– Con ở đây, – ông nói với Vy.</p>
-<p class="dialogue">– Không.</p>
-<p>Một từ, rõ, không cần giải thích. Vy đã bước đi về phía cầu thang trước khi ông kịp nói thêm.</p>
+<p>Điện thoại ông Hòa rung. Dung.</p>
+<p class="message"><em>"Khang vào kho lưu trữ. Tôi nghe tiếng phá khóa từ phòng trực điều dưỡng. Ông không cần lo hồ sơ, tôi có bản sao ở nhà từ nhiều tháng trước."</em></p>
+<p>Ông đọc tin nhắn hai lần. Nhiều tháng trước. Dung đã chuẩn bị từ trước khi ông biết bất cứ điều gì.</p>
+<p>Ông nhắn lại: <em>"Cô về nhà. Giữ bản sao an toàn. Sáng mai liên hệ Nam."</em></p>
+<p>Dung trả lời ngay: <em>"Tôi đã gửi bản sao cho Nam từ tối qua. Phong bì kín, ông ấy chưa mở. Tôi nói nếu sáng mai tôi không gọi thì mở ra."</em></p>
+<p>Ông Hòa đặt điện thoại xuống. Nhìn bác sĩ Vĩnh.</p>
+<p class="dialogue">– Khang đang phá hủy hồ sơ ở kho lưu trữ, – ông nói.</p>
+<p>Bác sĩ Vĩnh không tỏ vẻ gì. Ông ta biết, hoặc đã đoán.</p>
+<p class="dialogue">– Không thay đổi gì, – bác sĩ Vĩnh nói. – Bằng chứng vật lý trong phòng mổ, mười bốn bìa, vẫn còn đó. Nếu ông muốn dùng, nó đủ để dùng.</p>
+<p>Ông Hòa không đáp. Ông biết mười bốn bìa hồ sơ vẫn nằm trong phòng mổ bí mật, ông vừa đọc xong từng cái một. Và Dung có bản sao riêng, gửi qua tay Nam, nằm ngoài tầm với của Khang.</p>
+<p>Từ phía cầu thang vọng xuống mùi khói nhạt. Ông không cần lên để biết chuyện gì đang xảy ra ở kho lưu trữ. Khang đang đốt những thứ ông ta nghĩ là bằng chứng duy nhất, không biết rằng bằng chứng đã rời tòa nhà này từ tối qua.</p>
 <hr class="scene-break">
-<p>Hành lang tầng ba tối. Nam đứng ở cửa cầu thang khi họ lên đến nơi. Ông ta nhìn Vy một giây, nhìn sợi chỉ đỏ trên cổ tay cô, rồi không hỏi gì.</p>
-<p class="dialogue">– Phòng cuối bên phải, – Nam nói khẽ.</p>
-<p>Rồi, từ cuối hành lang B, một tiếng chuông. Nhỏ, rõ. Không đều nhau nhưng đều về hướng, như người bị giữ trong phòng và đang gõ nhịp vào thứ gì đó họ không thể nhìn thấy.</p>
-<p>Không phải từ cổ tay Vy. Từ cuối hành lang.</p>
-<p class="dialogue">– Cô ấy đang dẫn đường, – Vy nói.</p>
-<p>Ông Hòa gật đầu. Nam nhìn ông, không hỏi thêm câu nào, và bắt đầu đi.</p>
-<p>Họ đi theo tiếng chuông.</p>
-<p>Cánh cửa phòng cuối bị khóa bằng dây thừng quấn qua tay nắm cửa và một con ốc vít bắt vào tường. Không phải khóa của người có kế hoạch. Khóa của người vội.</p>
-<p>Nam cắt dây thừng bằng dao xếp nhỏ trong chưa đến ba mươi giây. Cánh cửa mở.</p>
-<p>Dung ngồi trong góc phòng, tay bị buộc sau lưng bằng dây điện. Không có dấu vết va chạm trên mặt. Mắt cô sưng đỏ nhưng tỉnh. Khi thấy Nam, cô không khóc. Cô nói ngay:</p>
-<p class="dialogue">– Khang đang đốt hồ sơ ở kho lưu trữ. Bản sao của tôi tôi cất trước khi bị giữ. Tủ kim loại đầu hành lang B, ngăn dưới cùng, khóa số. Mã là 1-7-0-3.</p>
-<p>Nam tháo dây buộc tay cho cô trước khi cô nói xong câu.</p>
-<p>Ông Hòa đứng ở cửa phòng và không vào. Ông lắng nghe. Từ cuối hành lang trái, hướng kho lưu trữ, có mùi gì đó không phải bụi giấy cũ. Nhẹ, nhưng ông nhận ra.</p>
-<p class="dialogue">– Nam, – ông nói.</p>
-<p class="dialogue">– Nghe.</p>
-<p class="dialogue">– Lấy bản sao của cô Dung trước. Rồi mới đến kho.</p>
-<hr class="scene-break">
-<p>Tủ kim loại đầu hành lang B không bị phá. Khang không biết tủ này. Phong bì vàng dày nằm trong ngăn dưới cùng, Dung tự mở khóa và tự lấy ra, cầm chặt trong tay bằng hai ngón tay vẫn còn hơi run vì bị buộc lâu.</p>
-<p class="dialogue">– Tôi giữ bản này từ đầu, – Dung nói. – Khi tôi biết mẹ tôi cũng trong danh sách đó, tôi biết tôi cần giữ riêng một bản.</p>
-<p>Không ai hỏi vì sao cô giữ đến tận lúc đó mới dùng. Câu hỏi đó không giúp ích gì lúc này.</p>
-<p>Kho lưu trữ ở cuối hành lang trái. Khóa cửa đã bị phá. Bên trong, lửa ăn từ một góc tủ, ngọn còn nhỏ nhưng đang lan. Khói mỏng tràn ra cửa theo gió từ hành lang.</p>
-<p>Không có người bên trong. Khang đã đi.</p>
-<p>Nam đội áo khoác lên đầu, bước vào. Một phút sau ông ta mang ra được ba tập tài liệu và cuốn sổ trực, nắp bìa sém mép nhưng ruột còn nguyên.</p>
-<p>Cuốn sổ trực với năm trang chữ ký giả. Với những dòng chữ ghi giờ chết không phải tay ông Hòa viết nhưng mang tên ông. Với mười mấy năm dấu vết của một hệ thống đã học cách biến giết người thành thủ tục hành chính.</p>
-<p class="dialogue">– Đủ rồi, – ông Hòa nói. – Ra ngay.</p>
-<p>Nam bước ra. Khói trong hành lang đã dày hơn khi ông ta vào.</p>
-<p class="dialogue">– Gọi cứu hỏa chưa, – Vy hỏi. Cô đứng ở đầu hành lang, tay cầm điện thoại.</p>
-<p class="dialogue">– Gọi bây giờ, – ông Hòa nói.</p>
-<p class="dialogue">– Để tôi gọi, – Nam nói, rút điện thoại.</p>
-<p>Dung đứng giữa hành lang, phong bì vàng ép vào ngực. Cô nhìn khói bốc ra từ cửa kho lưu trữ và không có gì trên mặt cô mà ông Hòa có thể đọc được rõ ràng. Chỉ là người đứng sau khi đã làm việc mình cần làm và chưa biết việc tiếp theo là gì.</p>
-<hr class="scene-break">
-<p>Bác sĩ Vĩnh quay đi, đi về cuối hành lang, không vội, không nhanh. Bước chân ông ta đều như khi bước đến. Ông Hòa nhìn theo cho đến khi blouse trắng khuất vào bóng tối.</p>
+<p>Bác sĩ Vĩnh quay đi, đi về cuối hành lang. Bước chân ông ta đều như khi bước đến. Ông Hòa nhìn theo cho đến khi blouse trắng khuất vào bóng tối.</p>
 <p>Ông Hòa biết mình cần xuống tầng hầm.</p>
-<p>Ông không giải thích với ai. Ông đi theo cầu thang bộ, một tay vịn lan can sắt lạnh, xuống. Bằng mắt phải duy nhất còn nhìn được, ông tìm đường theo trí nhớ của mười năm làm việc trong tòa nhà này, mỗi góc cầu thang, mỗi chỗ sàn lót gạch vỡ.</p>
+<p>Ông không giải thích với ai. Ông đi theo cầu thang bộ, một tay vịn lan can sắt lạnh, xuống. Bằng mắt phải duy nhất còn nhìn được, ông tìm đường theo trí nhớ của mười một năm làm việc trong tòa nhà này, mỗi góc cầu thang, mỗi chỗ sàn lót gạch vỡ.</p>
 <p>Nhà xác chưa cháy. Khói từ tầng ba chưa xuống đến đây theo nghĩa nguy hiểm. Nhưng trong không khí hành lang tầng hầm có mùi khác rồi, mùi của thứ gì đó đang thay đổi không thể đảo ngược.</p>
 <p>Ông đẩy cửa nhà xác vào.</p>
 <p>Mai đứng ở giữa phòng.</p>
@@ -1614,15 +1681,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông Hòa ngồi xuống trên thành bàn khám nghiệm gần cửa. Tay ông đặt lên đùi. Ông nhìn con gái đứng trước người chết trong căn phòng này và không nói gì, vì không có gì ông có thể nói thêm.</p>
 <p>Tiếng chuông vang từ ngăn số 9. Một lần. Nhỏ và trong.</p>
 <p>Không tắt ngay. Ngân một chút trong không khí lạnh, rồi mới im.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch12">
-<p class="eyebrow">Tập 12 · Hồi IV: Trước lúc gà gáy</p>
-<h2 class="ch-title">Cánh cửa cuối cùng</h2>
-<hr class="scene-break">
+        <article class="chapter" id="ch12">
+          <p class="eyebrow">Tập 12 · Hồi IV: Trước lúc gà gáy</p>
+          <h2 class="ch-title">Cánh cửa cuối cùng</h2>
+          <hr class="scene-break">
 <p>Vy không nói gì khi ông Hòa đứng dậy và bước đến cửa nhà xác.</p>
 <p>Cô đứng sau ông, nhìn ông đặt tay lên tay nắm cửa. Bên ngoài hành lang tầng hầm, tiếng cứu hỏa bắt đầu vọng xuống từ tầng trên: còi xe, tiếng giày trên sàn bê tông, tiếng lệnh ngắn của người chỉ huy. Khói nhẹ lan qua khe ô thông gió.</p>
 <p class="dialogue">– Cha, – Vy nói.</p>
@@ -1632,7 +1699,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p class="dialogue">– Cha cần con ra ngoài, – ông nói.</p>
 <p>Vy không nhúc nhích.</p>
 <p>Ông Hòa bước đến gần cô, chậm. Đặt tay lên vai cô và nhẹ nhàng đẩy cô ra phía cửa. Không mạnh. Cô không chống lại nhưng cũng không tự bước. Ông đẩy cô qua ngưỡng cửa, ra hành lang tầng hầm, rồi bước vào lại và đóng cửa lại.</p>
-<p>Chùm chìa khóa trên thắt lưng ông. Ông lấy chiếc chìa số ba, loại chìa dài mà ông đã cầm quen mười năm nay, và khóa cửa nhà xác từ bên trong.</p>
+<p>Chùm chìa khóa trên thắt lưng ông. Ông lấy chiếc chìa số ba, loại chìa dài mà ông đã cầm quen mười một năm nay, và khóa cửa nhà xác từ bên trong.</p>
 <p>Tiếng Vy bên ngoài:</p>
 <p class="dialogue">– Cha.</p>
 <p>Ông Hòa đứng ở cửa và nhìn cô qua ô kính nhỏ trên cánh cửa, tấm kính mờ chỉ thấy bóng. Cô không đập cửa, không la. Cô đứng đó.</p>
@@ -1657,29 +1724,16 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <hr class="scene-break">
 <p>Tiếng chìa khóa trong cửa.</p>
 <p>Không phải từ phía cửa ra hành lang. Từ phía cửa phụ sau phòng mổ bí mật, lối đi mà ông Hòa chưa bao giờ nhìn thấy có khóa ngoài. Bác sĩ Vĩnh bước vào.</p>
-<p>Ông ta mang theo một cái túi y tế nhỏ. Túi màu xanh, loại túi sơ cứu, nhưng ông Hòa biết bên trong không phải bông băng.</p>
-<p class="dialogue">– Tôi còn một phương án, – bác sĩ Vĩnh nói.</p>
-<p>Ông ta đặt túi xuống bàn khám nghiệm cạnh đó và mở ra. Bên trong: một bơm tiêm, hai lọ thuốc nhỏ, và thiết bị theo dõi nhịp tim cầm tay.</p>
-<p class="dialogue">– Tim cô Vy ngừng tạm thời. Adenosine liều cao, kiểm soát được. Ba mươi giây. Linh hồn kia sẽ nhận trái tim về vì tim ngừng. Từ góc nhìn y tế, tim ngừng là tim đã ngừng. Rồi tôi dùng epinephrine khởi động lại.</p>
-<p>Ông Hòa nghe.</p>
-<p class="dialogue">– Rủi ro là bao nhiêu, – ông hỏi.</p>
-<p class="dialogue">– Ba mươi giây tim ngừng trong điều kiện kiểm soát, tỷ lệ phục hồi hoàn toàn khoảng tám mươi phần trăm. Với bệnh nhân có tiền sử cơ tim.</p>
-<p class="dialogue">– Vy có tiền sử cơ tim.</p>
-<p class="dialogue">– Tôi biết. Đó là lý do tỷ lệ không phải chín mươi hay chín mươi lăm.</p>
-<p>Ông Hòa nhìn hai lọ thuốc trên bàn khám nghiệm. Trong căn phòng này, mười ngày trước, ông đã đọc tên mười bốn người. Mỗi người đều có hồ sơ ghi tiên lượng không có khả năng hồi phục, hồ sơ ghi quyết định y khoa dựa trên đánh giá lâm sàng tổng hợp. Những chữ đó nghe chuyên môn và đúng và không có chỗ nào cho câu hỏi của người bình thường.</p>
-<p>Giờ ông đứng trước hai lọ thuốc và một tỷ lệ hai mươi phần trăm.</p>
-<p class="dialogue">– Ông Hòa, – bác sĩ Vĩnh nói. – Cô ấy sẽ chết nếu không làm gì. Đó là điều ông biết. Tôi đang đưa ra một phương án khác.</p>
-<p class="dialogue">– Phương án của ông cũng có thể giết cô ấy.</p>
-<p class="dialogue">– Có. Nhưng không chắc chắn.</p>
-<p class="dialogue">– Đêm đó ông cũng nói không chắc chắn với Trần Ngọc Mai.</p>
-<p>Bác sĩ Vĩnh im lặng. Đó là lần đầu tiên ông ta im lặng trước khi trả lời, không phải sau.</p>
-<p class="dialogue">– Con tôi không có ở trong phòng này, – ông Hòa nói.</p>
-<p class="dialogue">– Cần đưa cô ấy vào.</p>
-<p class="dialogue">– Không.</p>
-<p class="dialogue">– Ông Hòa–</p>
-<p class="dialogue">– Không, – ông Hòa lặp lại. Giọng ông không tăng lên. Không cần thiết.</p>
-<p>Bác sĩ Vĩnh đứng yên. Nhìn ông Hòa, rồi nhìn Mai đứng ở giữa phòng. Ông ta biết Mai có thể thấy ông ta. Ông ta cũng biết Mai đã từng đặt tay lên ngực ông ta và chọn không làm gì.</p>
-<p>Ông ta không nói thêm. Ông ta đứng ở phía bàn khám nghiệm với hai lọ thuốc và thiết bị theo dõi nhịp tim cầm tay, và chờ.</p>
+<p>Không mang theo gì. Tay không. Áo sơ mi tối màu, không blouse. Dáng đứng thẳng như mọi khi nhưng có thứ gì đó khác trong cách ông ta nhìn quanh phòng nhà xác, nhìn các ngăn lạnh, nhìn Mai đứng ở giữa.</p>
+<p class="dialogue">– Tôi không đến để ngăn ông, – bác sĩ Vĩnh nói. – Tôi đến vì ngoài kia Khang đang đốt kho lưu trữ và mười lăm phút nữa ông ta sẽ xuống đây.</p>
+<p>Ông Hòa nhìn bác sĩ Vĩnh.</p>
+<p class="dialogue">– Ông có thể đi rồi, – ông nói. – Không có lý do gì ông phải ở đây.</p>
+<p class="dialogue">– Tôi biết.</p>
+<p>Bác sĩ Vĩnh bước đến bàn khám nghiệm cạnh đó, đứng tựa nhẹ vào thành bàn. Ông ta nhìn Mai theo cách nhìn của người biết mình đang bị nhìn lại.</p>
+<p class="dialogue">– Tôi đã quyết định mười bốn lần trong hơn một năm. Lần nào cũng đúng quy trình tôi tự đặt ra, đúng tiên lượng tôi tự đánh giá. Không ai kiểm tra vì không ai có tư cách kiểm tra. Đó là quyền lực mà ông nói tôi lạm dụng. Ông đúng. Nhưng tôi không đến đây đêm nay để tranh cãi điều đó.</p>
+<p>Ông ta dừng lại.</p>
+<p class="dialogue">– Tôi đến vì nếu chuyện này kết thúc tối nay, tôi muốn ở trong phòng khi nó kết thúc. Không phải đọc về nó trong biên bản ngày mai.</p>
+<p>Ông Hòa không đáp. Ông hiểu. Bác sĩ Vĩnh không đến để chuộc tội và cũng không đến để ngăn cản. Ông ta đến để chứng kiến, theo cái cách mà ông Hòa đã đứng ngoài cửa phòng mổ mười một năm trước và chọn không chứng kiến.</p>
 <hr class="scene-break">
 <p>Tiếng va đập ở cửa sau. Cửa sắt xám dẫn vào phòng mổ bí mật bị đẩy mạnh, kính trên cửa rung.</p>
 <p>Khang bước vào trước. Theo sau là hai người đàn ông ông Hòa chưa gặp trước đó, áo không phải đồng phục bệnh viện. Khang nhìn quanh phòng nhà xác, nhìn ông Hòa, nhìn bác sĩ Vĩnh, nhìn Mai đứng ở giữa phòng.</p>
@@ -1694,16 +1748,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Hơi lạnh tràn ra. Trong hơi lạnh đó, những hồ sơ mà ông Hòa đã đọc tên mười tiếng trước, mười bốn người trong hơn một năm, bắt đầu hiện diện theo cái cách ông đã học được không phải là nhìn thấy mà là cảm nhận được.</p>
 <p>Họ không bước ra khỏi ngăn. Họ không làm gì. Họ chỉ ở đó.</p>
 <p>Hai người theo Khang lùi lại. Khang không lùi, nhưng ông ta cũng không tiến. Ông ta đứng giữa phòng nhà xác với hai người đang rút về phía cửa sau lưng và nhìn về phía ngăn số 9, nơi ông Hòa đứng chắn và nơi hơi lạnh đang chảy ra sàn như nước.</p>
-<p>Khang quay đi. Bước về phía cửa phụ.</p>
-<p>Cánh cửa ngăn lạnh số 4 đóng lại theo một lực không phải tay người, đúng vào lúc ông ta đi qua. Không phải kẹp ngay vào tay Khang. Vào phần ống tay áo vest ông ta đang mặc, giữ ông ta lại.</p>
-<p>Ông ta kéo. Cửa không mở.</p>
-<p>Ông ta kéo mạnh hơn. Cán cửa ngăn lạnh, hệ thống cơ học của loại tủ cấp đông công nghiệp, không nhúc nhích.</p>
-<p>Ông Hòa đứng nhìn. Không có gì ông cần làm. Không có gì ông có thể làm.</p>
-<p>Khang kéo lần thứ ba. Cánh cửa thép của ngăn lạnh số 4 không phải loại cửa người bình thường kéo được khi nó đã chốt. Đó là loại cơ chế được thiết kế cho kho công nghiệp, cần chìa khóa chuyên dụng để mở từ ngoài khi bị khóa từ bên trong.</p>
-<p>Khi cánh cửa cuối cùng mở ra theo áp lực ngược, không phải do Khang, Khang đã chết.</p>
-<p>Hai người kia chạy.</p>
-<p>Bác sĩ Vĩnh đứng bên cạnh bàn khám nghiệm với hai lọ thuốc vẫn còn đó và nhìn Khang trong hơi lạnh tràn ra từ ngăn số 4. Ông ta không nói gì. Mặt ông ta không có gì để đọc được.</p>
-<p class="dialogue">– Cái chết của ông ấy không giải quyết điều gì, – bác sĩ Vĩnh nói sau cùng, không phải với ông Hòa, như nói cho mình nghe.</p>
+<p>Khang quay đi. Bước nhanh về phía cửa phụ, vai lách qua dãy ngăn lạnh bên trái.</p>
+<p>Cánh cửa ngăn lạnh số 4 bật ra đúng lúc ông ta đi qua. Ống tay áo vest kẹp vào khe cửa, vải bị cuốn vào gioăng cao su dày ở viền. Khang giật tay. Không thoát.</p>
+<p>Ông ta kéo mạnh hơn, chân trượt trên sàn ướt hơi lạnh. Cánh cửa thép của ngăn cấp đông công nghiệp âm mười lăm độ không phải loại cửa mở được bằng sức người khi gioăng đã kẹp chặt. Ông ta dùng tay kia đẩy. Không nhúc nhích.</p>
+<p>Ông Hòa đứng nhìn. Bước tới một bước, rồi dừng. Không phải vì ông chọn không giúp. Mà vì hơi lạnh từ ngăn bốn tràn ra quá nhanh, phủ lên cánh tay Khang, lan xuống vai, xuống ngực. Âm mười lăm độ trong khoảng cách mười phân.</p>
+<p>Khang hoảng. Giật mạnh hơn, cả người xoay, tay áo rách một phần nhưng gioăng vẫn giữ. Hai người theo Khang đã chạy khỏi phòng từ lúc ngăn lạnh bật mở. Không ai quay lại.</p>
+<p>Ba mươi giây. Khang ngừng giật. Cơ thể ông ta run, rồi cứng, rồi ngừng run. Hạ thân nhiệt cấp ở nhiệt độ âm mười lăm không cần lâu. Sốc lạnh, co mạch ngoại vi, tim ngừng. Bàn tay còn lại của ông ta buông thõng, ngón tay xanh tái.</p>
+<p>Khi cánh cửa tự mở ra, Khang đã chết. Ống tay áo rách lòi ra, cơ thể ông ta nằm nghiêng trên sàn xi măng, mắt mở, miệng hé, hơi thở trắng cuối cùng còn đọng trong không khí lạnh.</p>
+<p>Bác sĩ Vĩnh bước đến. Ông ta quỳ xuống, đặt hai ngón tay lên cổ Khang, giữ ba giây, rồi đứng dậy.</p>
+<p class="dialogue">– Sốc lạnh. Tim ngừng, – ông ta nói. Giọng chuyên môn, phẳng. Rồi thêm, nhỏ hơn, như nói cho mình nghe: – Cái chết của ông ấy không giải quyết điều gì.</p>
 <p class="dialogue">– Tôi biết, – ông Hòa nói. – Tôi đã biết từ lâu.</p>
 <hr class="scene-break">
 <p>Tiếng Vy từ bên ngoài cửa.</p>
@@ -1711,7 +1764,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p class="dialogue">– Cha nghe không.</p>
 <p>Ông Hòa bước đến gần cửa hơn. Ông nhìn qua ô kính mờ. Bóng cô vẫn đứng đó.</p>
 <p class="dialogue">– Nghe.</p>
-<p class="dialogue">– Con đã ghi âm từ khi cha và bác sĩ Vĩnh nói chuyện trong hành lang. Từ lúc bác sĩ nói tỷ lệ tám mươi phần trăm. Con đã gửi file âm thanh cho anh Nam cùng với ảnh chụp phong bì hồ sơ của cô Dung.</p>
+<p class="dialogue">– Con đã ghi âm từ khi cha và bác sĩ Vĩnh nói chuyện trong hành lang. Từ lúc bác sĩ nói "người ra quyết định là tôi." Con đã gửi file âm thanh cho anh Nam cùng với ảnh chụp phong bì hồ sơ của cô Dung.</p>
 <p>Ông Hòa đứng yên.</p>
 <p class="dialogue">– Con không làm điều đó để trừng phạt ai, – Vy tiếp tục. Giọng cô bình thản, theo cách của người đã chuẩn bị lời trước. – Con làm vì nếu có chuyện gì xảy ra với con trong đêm nay, cần có người biết đủ thứ để tiếp tục.</p>
 <p class="dialogue">– Con không được vào đây.</p>
@@ -1723,36 +1776,38 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Câu đó nằm giữa hai lớp cửa.</p>
 <p class="dialogue">– Những gì cha đang giữ con khỏi trong phòng đó, – Vy tiếp tục, – là quyết định của con. Con đã nghe cô ấy. Con đã nhận ký ức của cô ấy. Nếu con không được phép ở trong phòng đó khi quyết định được đưa ra, thì cha đang làm đúng điều cha đã tố cáo bác sĩ Vĩnh làm.</p>
 <p>Ông Hòa đứng nghe con gái nói qua cánh cửa nhà xác mà ông đã khóa từ bên trong. Chùm chìa khóa trên thắt lưng ông nặng hơn bình thường, theo cái nặng của thứ đã cầm quen nhưng bỗng nhiên nhận ra ý nghĩa khác của nó.</p>
-<p>Bên trong phòng, bác sĩ Vĩnh vẫn đứng cạnh bàn khám nghiệm. Ông ta không rời đi. Ông ta vẫn đang chờ.</p>
+<p>Bên trong phòng, bác sĩ Vĩnh vẫn đứng tựa vào bàn khám nghiệm. Ông ta không rời đi. Ông ta đã nói ông ta muốn ở lại khi chuyện này kết thúc.</p>
 <p>Mai nhìn cánh cửa. Rồi nhìn ông Hòa.</p>
 <p>Ông Hòa đứng với chùm chìa khóa trong tay và nhìn bóng con gái qua ô kính mờ. Ông nghĩ đến vợ ông. Đến đêm bà mất, khi ông đứng ngoài phòng cấp cứu và không ai nói với ông điều gì đang xảy ra bên trong vì ông không đủ tiền đặt cọc phẫu thuật. Ông đứng ngoài cửa phòng đó và nghe máy móc và không hiểu ý nghĩa của các tiếng bíp. Đó là lần đầu tiên ông học được rằng một cánh cửa bệnh viện có thể là ranh giới giữa biết và không biết.</p>
 <p>Ông đã đứng sau cánh cửa quá nhiều lần trong đời.</p>
-<p>Bác sĩ Vĩnh vẫn đứng cạnh bàn khám nghiệm. Ông ta không nói gì thêm. Hai lọ thuốc vẫn ở đó, chưa thu lại, chưa cất đi. Ông ta biết ông Hòa đang đứng trước một quyết định không phải quyết định về thuốc hay không thuốc.</p>
+<p>Bác sĩ Vĩnh vẫn đứng cạnh bàn khám nghiệm. Ông ta không nói gì thêm. Ông ta biết ông Hòa đang đứng trước một quyết định không phải quyết định về y khoa hay pháp luật.</p>
 <p>Mai nhìn ông Hòa.</p>
-<p>Cô không thúc. Cô không làm gì để thúc, vì cô đã làm tất cả những gì cô có thể làm: cho ông mười đêm, cho Vy những giấc mơ và ký ức, cho phòng mổ bí mật đứng mở trong bóng tối để ông vào và đọc tên người chết. Cô đã chờ.</p>
+<p>Cô không thúc. Cô đã làm tất cả những gì cô có thể làm: cho ông mười đêm, cho Vy những giấc mơ và ký ức, cho phòng mổ bí mật đứng mở trong bóng tối để ông vào và đọc tên người chết. Cô đã chờ.</p>
+<p>Rồi cô nói. Không phải bằng giọng, vì cô không còn giọng. Bằng cái cách mà ông đã nghe cô từ đêm thứ nhất, bằng tiếng không phải âm thanh mà vẫn rõ từng chữ:</p>
+<p><em>Tôi không đòi lại trái tim. Tôi đòi lại tên mình.</em></p>
 <p>Từ vườn bệnh viện bên ngoài, qua ô cửa sổ nhỏ gần trần nhà xác, tiếng khác vọng vào.</p>
 <p>Con gà trống của bà Mười.</p>
 <p>Tiếng vỗ cánh, tiếng chuẩn bị trước khi gáy, tiếng của vài mươi giây trước bình minh. Ông Hòa đã nghe tiếng đó nhiều lần qua nhiều ca trực khuya. Nó không bao giờ đến sớm hơn hay muộn hơn mấy phút.</p>
 <p>Ông Hòa cầm chùm chìa khóa, chiếc chìa số ba, và đứng trước cửa nhà xác.</p>
 <p>Chiếc chìa xoay trong ổ khóa. Một vòng.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-<article class="chapter" id="ch13">
-<p class="eyebrow">Tập 13 · Hồi IV: Trước lúc gà gáy</p>
-<h2 class="ch-title">Trước tiếng gà gáy</h2>
-<hr class="scene-break">
+        <article class="chapter" id="ch13">
+          <p class="eyebrow">Tập 13 · Hồi IV: Trước lúc gà gáy</p>
+          <h2 class="ch-title">Trước tiếng gà gáy</h2>
+          <hr class="scene-break">
 <p>Cánh cửa nhà xác mở ra.</p>
-<p>Không có tiếng gì đặc biệt. Chỉ là tiếng bản lề quen thuộc, tiếng ông Hòa đã nghe mỗi ca trực trong mười năm. Cánh cửa mở và hành lang tầng hầm ở bên ngoài, và Vy đứng đó.</p>
+<p>Không có tiếng gì đặc biệt. Chỉ là tiếng bản lề quen thuộc, tiếng ông Hòa đã nghe mỗi ca trực trong mười một năm. Cánh cửa mở và hành lang tầng hầm ở bên ngoài, và Vy đứng đó.</p>
 <p>Cô không bước vào ngay. Cô nhìn cha.</p>
 <p>Ông Hòa đứng ở ngưỡng cửa, một tay còn trên tay nắm cửa, và không nói gì. Không có gì để giải thích việc ông vừa làm. Ông mở cửa vì đó là điều duy nhất ông còn có thể làm mà không tiếp tục là phần của bộ máy đã lấy đi quyền đó của người khác.</p>
 <p>Vy bước vào.</p>
 <p>Cô đi qua ông, không dừng lại, bước vào phòng nhà xác. Ông quay người theo dõi con gái đi đến giữa phòng, đến chỗ Mai đứng đợi.</p>
 <hr class="scene-break">
 <p>Hai người đứng cách nhau ba bước.</p>
-<p>Vy nhìn Mai, và lần này không qua giấc mơ, không qua ký ức dùng chung, không có gì lọc ở giữa. Trước mặt cô là người mười chín tuổi, công nhân may, con của một người mẹ đã mất, chị của một đứa em trai mười hai tuổi đang đợi tin, người bị đưa vào bệnh viện sau tai nạn và không ra khỏi theo cách mình đáng ra phải ra.</p>
+<p>Vy nhìn Mai, và lần này không qua giấc mơ, không qua ký ức dùng chung, không có gì lọc ở giữa. Trước mặt cô là người mười chín tuổi, công nhân may, con của một người mẹ đã mất, chị của một đứa em trai mười bốn tuổi đang đợi tin, người bị đưa vào bệnh viện sau tai nạn và không ra khỏi theo cách mình đáng ra phải ra.</p>
 <p>Và trong ngực Vy, trái tim của người đó đang đập.</p>
 <p>Ông Hòa đứng ở cửa và không vào thêm. Ông hiểu đây không phải cảnh ông có phần trong đó. Điều xảy ra giữa hai người phụ nữ này nằm ngoài phần của ông, như nhiều điều quan trọng khác trong cuộc đời đã nằm ngoài phần của ông mà ông không nhận ra cho đến khi quá muộn để thay đổi.</p>
 <p>Vy đặt tay lên ngực mình. Cô nhắm mắt lại một giây, cảm nhận. Rồi mở mắt.</p>
@@ -1764,25 +1819,15 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Câu đó không phải câu hỏi và không cần câu trả lời. Vy nói vì cô cần nói.</p>
 <p>Mai nhìn cô lâu hơn. Rồi cô giơ tay trái lên. Không chỉ vào ai, không đe dọa ai. Chỉ giơ lên, và sợi chỉ đỏ trên cổ tay cô và sợi chỉ đỏ trên cổ tay Vy lúc đó cùng lúc sáng lên một chút, theo cách của thứ đang chờ đến gần hơn điểm kết.</p>
 <hr class="scene-break">
-<p class="dialogue">– Ông Hòa.</p>
-<p>Bác sĩ Vĩnh bước ra từ phía phòng mổ bí mật. Ông ta vẫn cầm túi y tế, không mở. Trên bàn khám nghiệm, hai lọ adenosine nằm cạnh bộ kim truyền mà ông ta đã bày ra trước đó. Ông Hòa nhìn chúng rồi nhìn đi chỗ khác. Không có canh bạc hai mươi phần trăm nào đáng đánh bằng quyền lựa chọn của người khác.</p>
-<p class="dialogue">– Cuối cùng vẫn có thể khác đi, – bác sĩ Vĩnh nói. Giọng ông ta khác một chút. Không lạnh hơn, không mềm hơn. Chỉ là giọng của người đang nói điều cuối cùng trước khi thôi. – Cô Vy không cần biết tất cả mọi thứ đêm nay. Điều tra có thể kéo dài, hồ sơ có thể bị thách thức. Ông có thể đưa con ông ra khỏi đây bây giờ và câu chuyện này vẫn có thể không xảy ra theo cách nó đang đi.</p>
-<p>Ông Hòa nhìn bác sĩ Vĩnh.</p>
-<p class="dialogue">– Có bao nhiêu người ông nói điều đó với, – ông hỏi.</p>
-<p>Bác sĩ Vĩnh không trả lời.</p>
-<p class="dialogue">– Bao nhiêu người ông nói "vẫn có thể khác đi" và họ nghe theo và sau đó không ai biết tên họ là gì. Họ trở thành mã số.</p>
-<p>Bác sĩ Vĩnh nhìn ông. Nhìn Vy. Nhìn Mai.</p>
-<p class="dialogue">– Tôi chưa bao giờ muốn làm hại ai, – bác sĩ Vĩnh nói.</p>
-<p class="dialogue">– Tôi biết, – ông Hòa nói. – Đó là phần đáng sợ nhất.</p>
+<p>Bác sĩ Vĩnh vẫn đứng tựa vào bàn khám nghiệm, nhìn hai cô gái đứng trước mặt nhau. Ông ta không nói gì. Không cần nói gì.</p>
 <p>Ông Hòa quay người, bước đến cửa nhà xác, và gõ vào tấm kính nhỏ bên trên. Bên ngoài hành lang, bóng người đứng đó. Nam. Ông ta đã xuống từ bao giờ.</p>
 <p class="dialogue">– Anh Nam, – ông Hòa nói qua cửa.</p>
 <p class="dialogue">– Nghe.</p>
-<p>Ông Hòa lấy cuốn sổ trực từ trong áo khoác ra. Cuốn sổ mà Nam đã mang ra khỏi kho lưu trữ và đưa cho ông trong hành lang. Ông đẩy nó qua khe cửa.</p>
-<p class="dialogue">– Sổ này. Và bản sao hồ sơ của cô Dung. Cùng với file âm thanh con tôi đã gửi anh. Anh đủ để làm tiếp không.</p>
+<p class="dialogue">– Bản sao hồ sơ của cô Dung, cùng với file âm thanh con tôi đã gửi anh. Anh đủ để làm tiếp không.</p>
 <p class="dialogue">– Đủ. – Nam dừng lại. – Bác Hòa.</p>
 <p class="dialogue">– Tôi biết.</p>
 <p class="dialogue">– Bác có muốn ra ngoài không.</p>
-<p>Ông Hòa nhìn vào phòng nhà xác. Vy đứng cách Mai ba bước. Bác sĩ Vĩnh đứng ở cửa phòng mổ bí mật với túi y tế vẫn cầm trên tay, không bước thêm.</p>
+<p>Ông Hòa nhìn vào phòng nhà xác. Vy đứng cách Mai ba bước. Bác sĩ Vĩnh đứng ở cửa phòng mổ bí mật, tay không, không bước thêm.</p>
 <p class="dialogue">– Chưa, – ông nói. – Tôi cần ở đây thêm một chút.</p>
 <p>Nam không hỏi thêm. Ông ta đứng ngoài cửa, chờ.</p>
 <hr class="scene-break">
@@ -1790,7 +1835,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Cô nhìn bàn tay mình. Rồi nhìn bàn tay Mai. Rồi cô bước thêm một bước đến gần, bước cuối cùng thu hết khoảng cách còn lại giữa hai người.</p>
 <p>Vy nhìn vào mắt Mai. Bên trong phòng nhà xác lạnh, trong ánh đèn dự phòng mờ mà điện bệnh viện vừa khôi phục một phần, ông Hòa đứng gần cửa và nhìn con gái đứng trước người chết mà trái tim người đó đang đập trong ngực con gái ông.</p>
 <p>Vy cầm lấy tay trái của Mai.</p>
-<p>Bàn tay người chết lạnh. Ông Hòa đã biết điều đó từ mười năm trực đêm trong phòng này. Nhưng khi Vy cầm bàn tay đó, sợi chỉ đỏ trên cổ tay Mai phát sáng mờ, và sợi chỉ đỏ trên cổ tay Vy cũng sáng theo. Hai sợi chỉ, một đầu mỗi sợi, theo hai hướng khác nhau trong năm tháng, đang ở cách nhau một bước.</p>
+<p>Bàn tay người chết lạnh. Ông Hòa đã biết điều đó từ mười một năm trực đêm trong phòng này. Nhưng khi Vy cầm bàn tay đó, sợi chỉ đỏ trên cổ tay Mai phát sáng mờ, và sợi chỉ đỏ trên cổ tay Vy cũng sáng theo. Hai sợi chỉ, một đầu mỗi sợi, theo hai hướng khác nhau trong năm tháng, đang ở cách nhau một bước.</p>
 <p>Vy quỳ xuống sàn nhà xác, vẫn giữ tay Mai. Cô nâng bàn tay người chết lên ngang ngực mình, lòng bàn tay Mai áp lên vải áo, chính xác lên vị trí trái tim.</p>
 <p>Ông Hòa hiểu trong một phần giây điều mình có thể làm. Bước tới. Lấy tay con ra. Lôi cô khỏi phòng này, ra ngoài, lên xe, về nhà thuê, ngồi bên giường con cả đêm và đợi sáng như ông đã làm hàng trăm lần trong những năm bệnh của Vy. Làm lại đúng điều ông đã làm mười ngày qua, và tất cả những năm trước đó: quyết định thay cho người khác nhân danh việc bảo vệ họ.</p>
 <p>Ông đứng yên.</p>
@@ -1809,7 +1854,7 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <hr class="scene-break">
 <p>Tiếng gà gáy đến từ vườn bệnh viện, qua ô cửa sổ nhỏ gần trần, và tiếng đó đầy đủ theo nghĩa của bình minh thực sự, không phải tiếng chuẩn bị. Tiếng gáy buổi sáng đánh dấu chuyển sang một ngày.</p>
 <p>Ông Hòa ngồi trên sàn nhà xác với con gái trong vòng tay, và nghe.</p>
-<p>Bác sĩ Vĩnh đứng ở cửa phòng mổ bí mật và không nói gì. Ông ta không rời đi. Ông ta đứng đó như người đang chờ xem điều tiếp theo là gì, dù ông ta biết điều tiếp theo là gì.</p>
+<p>Bác sĩ Vĩnh đứng tựa vào bàn khám nghiệm và không nói gì. Ông ta không rời đi. Ông ta đứng đó như người đã nói ông ta sẽ ở lại khi chuyện kết thúc, và giữ lời.</p>
 <p>Phòng nhà xác yên tĩnh. Không còn tiếng chuông. Không còn tiếng từ các ngăn lạnh. Tất cả các ngăn đều đóng, kể cả ngăn số 9. Cái yên tĩnh đó khác với cái yên tĩnh trước tiếng chuông đầu tiên, mười đêm trước. Yên tĩnh của chỗ đã xong.</p>
 <hr class="scene-break">
 <p>Mặt trời mọc lúc năm giờ bốn mươi hai phút.</p>
@@ -1819,7 +1864,11 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <p>Ông khai vụ người sống trong túi xác chín năm trước, tên người đó, ngày tháng, chữ ký ông trên tờ bàn giao.</p>
 <p>Vy ngồi cạnh ông suốt buổi lấy lời khai. Cô không nói gì, chỉ ngồi đó, tay đặt trên đùi, và nghe cha kể.</p>
 <p>Đội điều tra ghi chép. Nam ngồi đối diện ông và không hỏi gì ngoài những câu cần cho biên bản.</p>
-<p>Bác sĩ Vĩnh bị bắt trước bảy giờ sáng tại bãi đỗ xe của bệnh viện. Dung đã làm chứng từ ba giờ sáng, ngay sau khi được tháo dây buộc tay, trong phòng họp nhỏ mà Nam bố trí ở tầng một.</p>
+<p>Bác sĩ Vĩnh bị bắt trước bảy giờ sáng tại bãi đỗ xe của bệnh viện. Dung đã làm chứng từ ba giờ sáng, trong phòng họp nhỏ mà Nam bố trí ở tầng một, với bản sao hồ sơ cô đã âm thầm thu thập suốt nhiều tháng.</p>
+<p>Bà Mười đến lúc tám giờ, không ai gọi. Bà mang theo phong bì tiền mà người ta đưa cho bà chín năm trước, vẫn nguyên, vẫn đủ số, kẹp cùng một tờ giấy bà tự viết ghi ngày, giờ, tên người bà thấy trong túi xác. Chín năm bà giữ phong bì đó trong ngăn kéo, không tiêu, không vứt, không biết làm gì với nó. Bây giờ bà biết.</p>
+<hr class="scene-break">
+<p><em>Trích báo Pháp Luật, ngày 18 tháng 4:</em></p>
+<p class="message"><em>"Cơ quan điều tra tỉnh xác nhận đường dây mua bán tạng hoạt động hơn một năm tại Bệnh viện Đa khoa tỉnh, liên quan đến ít nhất 19 nạn nhân. Các nạn nhân phần lớn là lao động phổ thông nhập viện sau tai nạn hoặc bệnh nặng, bị thay đổi giờ tử vong trong hồ sơ y tế. Vụ việc được phát hiện nhờ đơn tố cáo kèm bằng chứng vật lý từ một nhân viên y tế và người phụ trách nhà xác của bệnh viện."</em></p>
 <hr class="scene-break">
 <p>Vụ án kéo dài tám tháng trước khi đưa ra xét xử.</p>
 <p>Điều tra tìm thấy hệ thống tài khoản ngân hàng đứng tên các pháp nhân trung gian, ba trong số đó có liên hệ với hai bệnh viện khác. Số ca thực tế: mười chín ca trong gần hai năm. Danh sách người nhận tạng không chỉ nằm trong phòng mổ bí mật: có hồ sơ khác, giữ ở nơi khác, không bị đốt vì không ai biết chúng tồn tại.</p>
@@ -1870,58 +1919,78 @@ hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spaci
 <hr class="scene-break">
 <p>Từ đêm ấy, nhà xác không còn tiếng chuông.</p>
 <p>Ông Hòa không quay lại đó. Nhưng mỗi lần ký tên vào bất cứ tờ giấy nào, ông vẫn dừng lại một nhịp trước khi đặt bút.</p>
-<div class="ch-foot">
-<a class="totop" href="#top">↑ Về đầu trang</a>
-</div>
-</article>
+          <div class="ch-foot">
+            <a class="totop" href="#top">↑ Về đầu trang</a>
+          </div>
+        </article>
 
-</div>
+    </div>
 
-<footer class="page-footer">
-<div class="fin">
-<p class="fbrand">Người Giữ Cửa Nhà Xác</p>
-<p>Tư Mệnh Sư — Kinh dị siêu nhiên, Điều tra, Bi kịch đạo đức, Chính kịch xã hội. 13 chương · ~40k từ.</p>
-<p class="fmeta">© 2026 Tư Mệnh Sư.</p>
-</div>
-</footer>
-</div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Người Giữ Cửa Nhà Xác</p>
+        <p>Tư Mệnh Sư &mdash; Kinh d&#7883; si&#234;u nhi&#234;n, &#273;i&#7873;u tra, bi k&#7883;ch &#273;&#7841;o &#273;&#7913;c. 13 t&#7853;p &middot; ~40k t&#7915;.</p>
+        <p class="fmeta">&copy; 2026 Tư Mệnh Sư.</p>
+      </div>
+    </footer>
+  </div>
 </div>
 
 <script>
 (function(){
-  var saved=localStorage.getItem('novel-theme');
-  if(saved==='dark') document.documentElement.setAttribute('data-theme','dark');
-  var btn=document.getElementById('themeToggle');
-  if(btn) btn.addEventListener('click',function(){
-    var isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    if(isDark){document.documentElement.removeAttribute('data-theme');localStorage.setItem('novel-theme','light');}
-    else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('novel-theme','dark');}
-  });
-  var prog=document.getElementById('progress');
-  if(prog) window.addEventListener('scroll',function(){
-    var h=document.documentElement.scrollHeight-window.innerHeight;
-    prog.style.width=(h>0?(window.scrollY/h*100):0)+'%';
-  });
-  var menuBtn=document.querySelector('.menu-btn');
-  var tocM=document.getElementById('tocMobile');
-  if(menuBtn&&tocM){
-    menuBtn.addEventListener('click',function(){tocM.classList.toggle('show');});
-    tocM.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){tocM.classList.remove('show');});});
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
   }
-  var tocLinks=document.querySelectorAll('.toc-list a');
-  var chapters=document.querySelectorAll('.chapter');
-  if(tocLinks.length&&chapters.length){
-    var obs=new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){
-          var id=e.target.id;
-          tocLinks.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')==='#'+id);});
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
         }
       });
-    },{rootMargin:'-48px 0px -60% 0px'});
-    chapters.forEach(function(ch){obs.observe(ch);});
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
   }
 })();
 </script>
+
 </body>
 </html>
