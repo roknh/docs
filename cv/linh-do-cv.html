@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linh Do (Kelly) — CV</title>
+<style>
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #2d2d2d;
+    background: #fff;
+    line-height: 1.5;
+    font-size: 10.5pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 36pt 40pt 32pt;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding-bottom: 14pt;
+    border-bottom: 2.5pt solid #1a3a5c;
+    margin-bottom: 16pt;
+  }
+  .header h1 {
+    font-size: 24pt;
+    font-weight: 700;
+    letter-spacing: 3pt;
+    color: #1a3a5c;
+    text-transform: uppercase;
+    margin-bottom: 2pt;
+  }
+  .header .subtitle {
+    font-size: 12pt;
+    color: #4a6a8a;
+    letter-spacing: 1.5pt;
+    font-weight: 400;
+    margin-bottom: 8pt;
+  }
+  .header .contact {
+    font-size: 9.5pt;
+    color: #555;
+    letter-spacing: 0.3pt;
+  }
+  .header .contact span {
+    margin: 0 6pt;
+  }
+  .header .contact .sep {
+    color: #1a3a5c;
+    font-weight: bold;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 14pt;
+  }
+  .section-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #1a3a5c;
+    text-transform: uppercase;
+    letter-spacing: 2pt;
+    border-bottom: 1pt solid #c5d3e0;
+    padding-bottom: 3pt;
+    margin-bottom: 8pt;
+  }
+
+  /* Profile */
+  .profile p {
+    text-align: justify;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #333;
+  }
+
+  /* Experience */
+  .job {
+    margin-bottom: 12pt;
+  }
+  .job:last-child {
+    margin-bottom: 0;
+  }
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1pt;
+  }
+  .job-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #2d2d2d;
+  }
+  .job-date {
+    font-size: 9.5pt;
+    color: #666;
+    font-style: italic;
+    white-space: nowrap;
+  }
+  .job-company {
+    font-size: 10pt;
+    color: #4a6a8a;
+    margin-bottom: 4pt;
+  }
+  .job ul {
+    padding-left: 16pt;
+  }
+  .job li {
+    font-size: 10pt;
+    line-height: 1.5;
+    margin-bottom: 2pt;
+    color: #333;
+  }
+
+  /* Key Expertise */
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3pt 24pt;
+    padding-left: 4pt;
+  }
+  .expertise-item {
+    font-size: 10pt;
+    color: #333;
+    position: relative;
+    padding-left: 12pt;
+  }
+  .expertise-item::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #1a3a5c;
+    font-size: 9pt;
+  }
+
+  /* Education */
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .edu-degree {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #2d2d2d;
+  }
+  .edu-date {
+    font-size: 9.5pt;
+    color: #666;
+    font-style: italic;
+  }
+  .edu-school {
+    font-size: 10pt;
+    color: #4a6a8a;
+    margin-bottom: 2pt;
+  }
+  .edu-detail {
+    font-size: 10pt;
+    color: #333;
+  }
+
+  /* Skills */
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6pt 10pt;
+  }
+  .skill-tag {
+    font-size: 9.5pt;
+    color: #1a3a5c;
+    border: 1pt solid #c5d3e0;
+    border-radius: 3pt;
+    padding: 2pt 8pt;
+    background: #f4f7fa;
+  }
+
+  /* Personal */
+  .personal-info {
+    font-size: 10pt;
+    color: #555;
+  }
+  .personal-info span {
+    margin-right: 16pt;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { padding: 36pt 40pt 32pt; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Linh Do (Kelly)</h1>
+    <div class="subtitle">Footwear Product Development Manager</div>
+    <div class="contact">
+      Long Binh Tan Ward, Bien Hoa, Dong Nai, Vietnam
+      <span class="sep">|</span>
+      0908 966 272
+      <span class="sep">|</span>
+      dnklinh@gmail.com
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL SUMMARY -->
+  <div class="section">
+    <div class="section-title">Professional Summary</div>
+    <div class="profile">
+      <p>
+        Results-driven Footwear Product Development Manager with over 13 years of progressive experience
+        spanning manufacturing engineering, costing, and end-to-end product development for global athletic
+        footwear brands. Proven track record of leading cross-functional teams through the full development
+        lifecycle — from initial concept and material selection through commercialization and mass production —
+        for Nike WHQ programs at one of the world's largest footwear manufacturers. Adept at evaluating material
+        properties, optimizing constructions for performance and cost, and resolving complex production challenges
+        under tight timelines. Known for building strong partnerships across brand, supplier, and factory
+        stakeholders while fostering a culture of ownership and continuous improvement.
+      </p>
+    </div>
+  </div>
+
+  <!-- KEY EXPERTISE -->
+  <div class="section">
+    <div class="section-title">Key Expertise</div>
+    <div class="expertise-grid">
+      <div class="expertise-item">End-to-End Product Development</div>
+      <div class="expertise-item">Material Evaluation & Selection</div>
+      <div class="expertise-item">Footwear Costing & Cost Optimization</div>
+      <div class="expertise-item">Supplier Management & Sourcing</div>
+      <div class="expertise-item">Cross-Functional Team Leadership</div>
+      <div class="expertise-item">Quality Assurance & Compliance</div>
+      <div class="expertise-item">Manufacturing Process Engineering</div>
+      <div class="expertise-item">Sustainability & Eco-Friendly Materials</div>
+      <div class="expertise-item">Brand & Factory Stakeholder Management</div>
+      <div class="expertise-item">Problem Solving & Root Cause Analysis</div>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">Professional Experience</div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Product Development Manager</div>
+        <div class="job-date">April 2021 — September 2025</div>
+      </div>
+      <div class="job-company">Fengtay Group · Dong Nai, Vietnam</div>
+      <ul>
+        <li>Led and mentored a team of product developers, cultivating a high-performance culture centered on ownership, accountability, and cross-functional collaboration.</li>
+        <li>Directed the end-to-end development process for Nike WHQ footwear programs — coordinating materials, pattern engineering, tooling, and production teams from design concept through production readiness.</li>
+        <li>Assessed material properties including durability, flexibility, breathability, abrasion resistance, and weight, while validating supplier availability and lead times to ensure selections met performance, aesthetic, and manufacturing standards.</li>
+        <li>Took ownership of abnormal and escalated issues during development and production phases, performing root cause analysis and driving timely resolutions to safeguard project schedules and quality targets.</li>
+        <li>Ensured full compliance with quality standards, wear-testing protocols, and sustainability requirements, incorporating material certifications and eco-friendly material alternatives into development workflows.</li>
+        <li>Championed process improvement initiatives across development stages, reducing lead times and increasing overall operational efficiency.</li>
+        <li>Managed a portfolio of material and component suppliers, securing consistent quality, capacity alignment, and on-time delivery from development through mass production.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Project Manager & Costing Specialist</div>
+        <div class="job-date">May 2015 — March 2021</div>
+      </div>
+      <div class="job-company">Fengtay Group · Dong Nai, Vietnam</div>
+      <ul>
+        <li>Managed footwear development projects end-to-end — from initial brief through commercialization — serving as the primary liaison with Nike WHQ project teams.</li>
+        <li>Evaluated technical blueprints, patterns, and materials by analyzing physical properties (tensile strength, flexibility, abrasion resistance, weight, and durability) and construction compatibility to optimize performance, aesthetics, and manufacturability.</li>
+        <li>Assessed material availability, minimum order quantities, and lead times across the supplier base to recommend viable material and construction options within project timelines and budget constraints.</li>
+        <li>Recommended and specified shoe construction methods, manufacturing processes, and material selections to Nike WHQ counterparts, consistently meeting costing targets without compromising function or quality.</li>
+        <li>Built and maintained strong working relationships with internal teams and external material and component suppliers to collaboratively resolve development challenges.</li>
+        <li>Initiated and led cross-functional coordination meetings with engineering, production, and quality teams to maintain project milestones and deliverables.</li>
+        <li>Supported senior leadership in establishing operational control systems to minimize errors and mitigate project risks.</li>
+        <li>Mentored junior developers on material evaluation techniques, costing methodology, and best practices in product development.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-header">
+        <div class="job-title">Manufacturing Process Engineer</div>
+        <div class="job-date">June 2013 — April 2015</div>
+      </div>
+      <div class="job-company">Fengtay Group · Dong Nai, Vietnam</div>
+      <ul>
+        <li>Re-engineered production line layouts and workflows to improve manufacturing flow, reduce bottlenecks, and increase throughput efficiency.</li>
+        <li>Collaborated with stitching and pattern teams to identify and implement process improvements and material-handling optimizations on the factory floor.</li>
+        <li>Monitored production output and verified quality against established standards, driving corrective actions when deviations were identified.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-title">Education</div>
+    <div class="edu-header">
+      <div class="edu-degree">Bachelor of Business Administration</div>
+      <div class="edu-date">2004 — 2008</div>
+    </div>
+    <div class="edu-school">Van Lang University · Ho Chi Minh City, Vietnam</div>
+    <div class="edu-detail">Major: Hotel & Restaurant Management</div>
+  </div>
+
+  <!-- CORE COMPETENCIES -->
+  <div class="section">
+    <div class="section-title">Core Competencies</div>
+    <div class="skills-list">
+      <div class="skill-tag">Leadership & Team Development</div>
+      <div class="skill-tag">Strategic Communication</div>
+      <div class="skill-tag">Analytical Thinking</div>
+      <div class="skill-tag">Collaboration & Teamwork</div>
+      <div class="skill-tag">Creative Problem Solving</div>
+      <div class="skill-tag">Adaptability</div>
+      <div class="skill-tag">Stakeholder Management</div>
+      <div class="skill-tag">Performance Under Pressure</div>
+    </div>
+  </div>
+
+  <!-- PERSONAL DETAILS -->
+  <div class="section">
+    <div class="section-title">Personal Details</div>
+    <div class="personal-info">
+      <span><strong>Date of Birth:</strong> March 11</span>
+      <span><strong>Nationality:</strong> Vietnamese</span>
+      <span><strong>Interests:</strong> Reading, Cooking</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
