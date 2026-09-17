@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nền tảng số ngành sữa — Yêu cầu hệ thống (Bản phác thảo)</title>
+<meta name="description" content="Phác thảo yêu cầu hệ thống và mô tả 21 phân hệ cho nền tảng số ngành sữa: sản xuất, phân phối, chăm sóc, người dùng cuối.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#0f62fe; --blue-d:#4589ff; --blue-soft:#edf5ff;
+  --bg:#ffffff; --surface:#f4f4f4; --surface-2:#ffffff;
+  --text:#161616; --muted:#525252; --faint:#6f6f6f;
+  --line:#e0e0e0; --line-s:#c6c6c6; --strong:#161616;
+  --teal:#007d79; --magenta:#d02670; --purple:#8a3ffc; --amber:#f1c21b; --amber-bg:#fff8e1;
+  --maxw:46rem;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --blue:#4589ff; --blue-soft:#12233f;
+  --bg:#161616; --surface:#262626; --surface-2:#1c1c1c;
+  --text:#f4f4f4; --muted:#c6c6c6; --faint:#a8a8a8;
+  --line:#393939; --line-s:#525252; --strong:#f4f4f4;
+  --teal:#3ddbd9; --magenta:#ff7eb6; --purple:#be95ff; --amber:#f1c21b; --amber-bg:#2a2412;
+}
+
+html{color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"IBM Plex Sans","Segoe UI",Roboto,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-size:17px; line-height:1.65; font-weight:400;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-wrap:break-word; word-break:normal; hyphens:none;
+}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px 88px}
+
+/* topbar */
+.bar{position:sticky; top:0; z-index:20; background:var(--bg); border-bottom:1px solid var(--line);
+     padding:10px 20px; display:flex; align-items:center; gap:10px}
+.bar .dot{width:14px; height:14px; background:var(--blue); flex:none}
+.bar .t{font-size:13px; font-weight:600; letter-spacing:.01em; line-height:1.3}
+.bar .v{margin-left:auto; font-size:11px; font-weight:600; color:var(--faint); letter-spacing:.08em; flex:none}
+
+/* hero */
+.hero{border-bottom:1px solid var(--line); padding:34px 0 30px; margin-bottom:8px}
+.eyebrow{font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--blue)}
+.hero h1{font-size:clamp(30px,9vw,44px); font-weight:300; line-height:1.1; letter-spacing:-.02em; margin:14px 0 0}
+.hero h1 strong{font-weight:600; display:block}
+.hero .sub{font-size:clamp(16px,4.4vw,19px); font-weight:300; color:var(--muted); margin-top:16px; line-height:1.5}
+.meta{margin-top:26px; border-top:1px solid var(--line)}
+.meta .row{display:flex; flex-wrap:wrap; gap:2px 12px; padding:11px 0; border-bottom:1px solid var(--line)}
+.meta .k{flex:0 0 100%; font-size:11px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--faint)}
+.meta .v{flex:1 1 100%; font-size:15px}
+.chips{margin-top:22px; display:flex; flex-wrap:wrap; gap:8px}
+.chip{border:1px solid var(--line-s); color:var(--muted); font-size:12px; font-weight:600; letter-spacing:.05em; padding:5px 10px}
+.note{margin-top:22px; border-left:3px solid var(--blue); padding:2px 0 2px 14px; font-size:14.5px; color:var(--muted); line-height:1.55}
+
+/* sections */
+.section{padding-top:40px; scroll-margin-top:62px}
+.hr{height:2px; background:var(--strong); margin-bottom:18px}
+h2{font-size:clamp(23px,6.4vw,30px); font-weight:300; letter-spacing:-.015em; line-height:1.18; margin:0 0 6px}
+h2 .num{display:block; font-size:12px; font-weight:600; letter-spacing:.14em; color:var(--blue); margin-bottom:9px}
+h3{font-size:19px; font-weight:600; line-height:1.35; margin:32px 0 8px}
+h4{font-size:17px; font-weight:600; margin:20px 0 6px}
+p{margin:0 0 14px}
+.lead{color:var(--muted); font-size:17.5px; font-weight:300; line-height:1.55; margin-bottom:22px}
+ul{margin:0 0 14px; padding-left:20px}
+li{margin-bottom:7px}
+strong{font-weight:600}
+a{color:var(--blue); text-decoration:none; border-bottom:1px solid transparent}
+a:hover{border-bottom-color:var(--blue)}
+
+/* toc */
+.toc{margin-top:16px}
+.toc .ti{display:flex; gap:14px; align-items:baseline; border-bottom:1px solid var(--line)}
+.toc .tn{flex:none; width:26px; font-size:13px; font-weight:600; color:var(--blue)}
+.toc .tt{flex:1; font-size:16px; padding:12px 0}
+.toc .tt a{color:var(--text); display:block}
+.toc .tt a:hover{color:var(--blue); border-bottom-color:transparent}
+
+/* layer cards */
+.layer{border-left:4px solid var(--blue); background:var(--surface); padding:16px 16px 14px; margin-bottom:12px}
+.layer .lname{font-size:17.5px; font-weight:600; line-height:1.35}
+.layer .ldesc{font-size:15px; color:var(--muted); margin-top:6px; line-height:1.5}
+.layer .lmods{margin-top:12px; display:flex; flex-wrap:wrap; gap:7px}
+.layer .lmods span{background:var(--surface-2); border:1px solid var(--line-s); font-size:13px; padding:5px 9px; line-height:1.3}
+.l1{border-left-color:var(--teal)} .l2{border-left-color:var(--blue)}
+.l3{border-left-color:var(--purple)} .l4{border-left-color:var(--magenta)}
+.l5{border-left-color:var(--faint)}
+
+/* module cards */
+.mod{border-top:2px solid var(--strong); padding-top:14px; margin:0 0 34px}
+.mod .code{font-size:12.5px; font-weight:600; letter-spacing:.12em; color:var(--blue)}
+.mod .title{font-size:21px; font-weight:600; line-height:1.28; margin:6px 0 8px; letter-spacing:-.01em}
+.mod .purpose{font-size:16px; color:var(--muted); line-height:1.55; margin-bottom:14px}
+.mod .f{border-top:1px solid var(--line); padding:12px 0}
+.mod .f .fk{display:block; font-size:11.5px; font-weight:600; letter-spacing:.09em; text-transform:uppercase; color:var(--faint); margin-bottom:5px}
+.mod .f .fv{display:block; font-size:16px; line-height:1.6}
+.mod .f .fv ul{margin:0; padding-left:19px}
+.mod .f .fv li{margin-bottom:6px}
+
+/* callouts */
+.callout{background:var(--blue-soft); border-left:4px solid var(--blue); padding:14px 16px; margin:22px 0; font-size:16px; line-height:1.58}
+.warn{background:var(--amber-bg); border-left:4px solid var(--amber); padding:14px 16px; margin:22px 0; font-size:16px; line-height:1.58}
+
+/* tables */
+.tw{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:16px -20px 24px; padding:0 20px}
+table{border-collapse:collapse; font-size:15px; min-width:32rem; width:100%}
+th{background:var(--surface); text-align:left; font-size:11.5px; font-weight:600; letter-spacing:.07em;
+   text-transform:uppercase; color:var(--faint); padding:10px 12px; border-bottom:1px solid var(--line-s); white-space:nowrap}
+td{padding:11px 12px; border-bottom:1px solid var(--line); vertical-align:top; line-height:1.5}
+td.id{font-weight:600; color:var(--blue); white-space:nowrap}
+
+.foot{margin-top:56px; padding-top:20px; border-top:1px solid var(--line); font-size:13.5px; color:var(--faint); line-height:1.6}
+.top{position:fixed; right:16px; bottom:16px; z-index:30; background:var(--blue); color:#fff; font-size:13px;
+     font-weight:600; padding:11px 14px; border:none; box-shadow:0 2px 10px rgba(0,0,0,.2); cursor:pointer;
+     opacity:0; pointer-events:none; transition:opacity .2s}
+.top.on{opacity:1; pointer-events:auto}
+
+@media (min-width:640px){
+  body{font-size:17.5px}
+  .wrap{padding:0 32px 100px}
+  .meta .row{flex-wrap:nowrap; gap:20px; padding:12px 0}
+  .meta .k{flex:0 0 140px}
+  .meta .v{flex:1}
+  .mod .f{display:flex; gap:20px}
+  .mod .f .fk{flex:0 0 132px; margin-bottom:0; padding-top:3px}
+  .mod .f .fv{flex:1}
+  .tw{margin:16px 0 24px; padding:0}
+  table{min-width:0}
+}
+@media print{ .bar,.top{display:none} .section{page-break-before:always} }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="dot"></div>
+  <div class="t">Nền tảng số ngành sữa — Yêu cầu hệ thống</div>
+  <div class="v">v0.1</div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Tài liệu phác thảo · Solution Blueprint</div>
+    <h1>Nền tảng số<strong>ngành sữa</strong></h1>
+    <div class="sub">Yêu cầu hệ thống và mô tả phân hệ cho nền tảng xuyên suốt: sản xuất — phân phối — chăm sóc — người dùng cuối.</div>
+    <div class="meta">
+      <div class="row"><div class="k">Loại tài liệu</div><div class="v">Phác thảo yêu cầu hệ thống (System Requirements Outline)</div></div>
+      <div class="row"><div class="k">Phạm vi</div><div class="v">Toàn chuỗi giá trị ngành sữa, cấp độ phân hệ</div></div>
+      <div class="row"><div class="k">Mức chi tiết</div><div class="v">Mức khái niệm — chưa bao gồm thiết kế kỹ thuật, lộ trình, dự toán</div></div>
+      <div class="row"><div class="k">Phiên bản</div><div class="v">v0.1 — Draft</div></div>
+      <div class="row"><div class="k">Ngày</div><div class="v">17/09/2026</div></div>
+    </div>
+    <div class="chips">
+      <span class="chip">5 LỚP KIẾN TRÚC</span><span class="chip">21 PHÂN HỆ</span>
+      <span class="chip">TRUY XUẤT THEO LÔ</span><span class="chip">CHUỖI LẠNH</span><span class="chip">FEFO</span>
+    </div>
+    <div class="note">Tài liệu này mô tả <strong>hệ thống cần đáp ứng cái gì</strong>, không mô tả <strong>làm bằng cách nào</strong>. Các quyết định về công nghệ, mô hình dữ liệu chi tiết, giao diện và kế hoạch triển khai sẽ được xử lý ở các tài liệu kế tiếp.</div>
+  </div>
+
+============ COVER ============ 
+
+ ============ 1 ============ 
+<section class="section" id="p01">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 01</span>Mục đích, phạm vi và cách đọc</h2>
+<p class="lead">Xác lập ranh giới của bản phác thảo trước khi đi vào nội dung, để tránh kỳ vọng sai về mức độ chi tiết.</p>
+<h3>1.1 Mục đích</h3>
+<p>Tài liệu phác thảo bức tranh tổng thể của một nền tảng số phục vụ doanh nghiệp ngành sữa, trải dài từ vùng nguyên liệu đến người tiêu dùng cuối. Mục tiêu là trả lời ba câu hỏi ở mức khái niệm:</p>
+<ul>
+<li>Ngành sữa đặt ra những <strong>ràng buộc gì</strong> mà một nền tảng bắt buộc phải đáp ứng.</li>
+<li>Nền tảng cần bao nhiêu <strong>phân hệ</strong>, mỗi phân hệ giải quyết bài toán nghiệp vụ nào.</li>
+<li>Những <strong>yêu cầu phi chức năng</strong> nào không thể thoả hiệp trong ngành hàng tươi, hạn dùng ngắn.</li>
+</ul>
+<h3>1.2 Phạm vi bao gồm</h3>
+<ul>
+<li>Bản đồ phân hệ theo 5 lớp kiến trúc nghiệp vụ.</li>
+<li>Mô tả từng phân hệ: mục tiêu, người dùng, năng lực chính, dữ liệu chủ, yêu cầu đặc thù.</li>
+<li>Yêu cầu phi chức năng, yêu cầu tích hợp, yêu cầu tuân thủ pháp lý.</li>
+</ul>
+<h3>1.3 Phạm vi loại trừ</h3>
+<ul>
+<li>Thiết kế kỹ thuật: kiến trúc triển khai, lược đồ dữ liệu, đặc tả API, thiết kế giao diện.</li>
+<li>Lộ trình, phân kỳ, ước lượng nguồn lực và dự toán chi phí.</li>
+<li>Lựa chọn nền tảng công nghệ cụ thể và quyết định mua — tự phát triển (build vs buy).</li>
+</ul>
+<div class="callout">
+<strong>Nguyên tắc đọc:</strong> Không doanh nghiệp nào triển khai đủ 21 phân hệ cùng lúc. Bản đồ này là khung tham chiếu để định vị hiện trạng, xác định khoảng trống và chọn điểm vào. Mỗi phân hệ được thiết kế để có thể đứng độc lập và ghép dần.
+  </div>
+<h3>1.4 Cấu trúc tài liệu</h3>
+<div class="toc">
+<div class="ti"><div class="tn">01</div><div class="tt"><a href="#p01">Mục đích, phạm vi và cách đọc</a></div></div>
+<div class="ti"><div class="tn">02</div><div class="tt"><a href="#p02">Đặc thù ngành và các ràng buộc chi phối kiến trúc</a></div></div>
+<div class="ti"><div class="tn">03</div><div class="tt"><a href="#p03">Bản đồ phân hệ theo 5 lớp</a></div></div>
+<div class="ti"><div class="tn">04</div><div class="tt"><a href="#p04">Mô tả phân hệ — Lớp 1: Thượng nguồn &amp; vùng nguyên liệu</a></div></div>
+<div class="ti"><div class="tn">05</div><div class="tt"><a href="#p05">Mô tả phân hệ — Lớp 2: Sản xuất &amp; chất lượng</a></div></div>
+<div class="ti"><div class="tn">06</div><div class="tt"><a href="#p06">Mô tả phân hệ — Lớp 3: Phân phối &amp; thị trường</a></div></div>
+<div class="ti"><div class="tn">07</div><div class="tt"><a href="#p07">Mô tả phân hệ — Lớp 4: Khách hàng &amp; người tiêu dùng</a></div></div>
+<div class="ti"><div class="tn">08</div><div class="tt"><a href="#p08">Mô tả phân hệ — Lớp 5: Nền tảng dùng chung</a></div></div>
+<div class="ti"><div class="tn">09</div><div class="tt"><a href="#p09">Yêu cầu phi chức năng</a></div></div>
+<div class="ti"><div class="tn">10</div><div class="tt"><a href="#p10">Yêu cầu tích hợp và dữ liệu</a></div></div>
+<div class="ti"><div class="tn">11</div><div class="tt"><a href="#p10">Yêu cầu tuân thủ pháp lý</a></div></div>
+<div class="ti"><div class="tn">12</div><div class="tt"><a href="#p11">Giả định, rủi ro và bước kế tiếp</a></div></div>
+</div>
+</section>
+ ============ 2 ============ 
+<section class="section" id="p02">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 02</span>Đặc thù ngành và ràng buộc chi phối kiến trúc</h2>
+<p class="lead">Ngành sữa không phải là FMCG thông thường. Năm ràng buộc dưới đây quyết định phần lớn các lựa chọn thiết kế và cần được xem là yêu cầu bắt buộc, không phải tính năng tuỳ chọn.</p>
+<h3>RB-01 · Hạn dùng ngắn và logic FEFO</h3>
+<p>Sữa tươi tiệt trùng có hạn dùng 7–15 ngày, sữa chua 30–45 ngày. Hệ quả: mọi logic xuất kho, phân bổ, điều chuyển và bán hàng phải vận hành theo <strong>FEFO (First Expired, First Out)</strong> thay vì FIFO. Tuổi thọ còn lại của hàng hoá phải là thuộc tính hiển thị được ở mọi điểm chạm, kể cả trên tay nhân viên bán hàng tại điểm bán.</p>
+<h3>RB-02 · Chuỗi lạnh là dữ liệu bắt buộc</h3>
+<p>Nhiệt độ trong quá trình lưu trữ và vận chuyển ảnh hưởng trực tiếp đến an toàn sản phẩm. Hệ thống phải ghi nhận, lưu vết và cảnh báo khi chuỗi lạnh bị phá vỡ. Đây không phải dữ liệu tham khảo mà là bằng chứng phục vụ giải trình khi có khiếu nại hoặc thu hồi.</p>
+<h3>RB-03 · Truy xuất theo lô, hai chiều, xuyên suốt</h3>
+<p>Mã lô phải liên tục từ ca vắt sữa tại trang trại hoặc điểm thu gom → bồn chứa → mẻ sản xuất → pallet thành phẩm → chuyến giao → điểm bán → người tiêu dùng. Hệ thống phải truy vết được theo cả hai chiều:</p>
+<ul>
+<li><strong>Xuôi:</strong> từ một lô nguyên liệu nghi vấn, xác định toàn bộ thành phẩm và khách hàng đã nhận.</li>
+<li><strong>Ngược:</strong> từ một sản phẩm khiếu nại, truy về nguyên liệu, ca sản xuất, kết quả kiểm nghiệm và người chịu trách nhiệm.</li>
+</ul>
+<p>Đây là xương sống của nền tảng. Phần lớn giá trị cảm nhận được của hệ thống nằm ở khả năng này.</p>
+<h3>RB-04 · Hồ sơ pháp lý là dữ liệu sống</h3>
+<p>Cơ chế tự công bố sản phẩm kết hợp hậu kiểm đặt gánh nặng chứng minh lên doanh nghiệp. Hồ sơ công bố, phiếu kiểm nghiệm, chứng nhận vùng nguyên liệu, nội dung quảng cáo đã duyệt đều phải xuất được thành bộ hồ sơ hoàn chỉnh trong thời gian ngắn khi có đoàn kiểm tra.</p>
+<h3>RB-05 · Thương hiệu không sở hữu dữ liệu người tiêu dùng</h3>
+<p>Sản phẩm sữa chủ yếu bán qua nhà phân phối, chuỗi bán lẻ và sàn thương mại điện tử. Nhà sản xuất gần như không có dữ liệu first-party về người dùng cuối. Bất kỳ nền tảng nào cũng phải có cơ chế tạo lập kênh dữ liệu trực tiếp — thường thông qua mã trên bao bì, chương trình khách hàng thân thiết hoặc kênh D2C.</p>
+<div class="warn">
+<strong>Hệ quả thiết kế:</strong> RB-01 đến RB-03 khiến <em>lô hàng (lot/batch)</em> — chứ không phải <em>sản phẩm (SKU)</em> — trở thành thực thể trung tâm của mô hình dữ liệu. Đây là khác biệt căn bản so với một hệ thống phân phối hàng tiêu dùng khô thông thường, và là chỗ các giải pháp đóng gói sẵn thường không đáp ứng được.
+  </div>
+</section>
+ ============ 3 ============ 
+<section class="section" id="p03">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 03</span>Bản đồ phân hệ theo 5 lớp</h2>
+<p class="lead">Nền tảng được tổ chức thành 5 lớp theo dòng chảy giá trị. Lớp 5 cắt ngang bốn lớp còn lại và là điều kiện để các lớp nói chuyện được với nhau.</p>
+<div class="layer l1">
+<div class="lname">Lớp 1 — Thượng nguồn &amp; vùng nguyên liệu</div>
+<div class="ldesc">Kiểm soát nguồn sữa tươi đầu vào, chất lượng và chi phí nguyên liệu tại gốc.</div>
+<div class="lmods"><span>F01 Quản lý đàn bò</span><span>F02 Thu mua sữa tươi</span><span>F03 Quản lý phòng kiểm nghiệm</span><span>F04 Hợp tác nông hộ</span></div>
+</div>
+<div class="layer l2">
+<div class="lname">Lớp 2 — Sản xuất &amp; chất lượng</div>
+<div class="ldesc">Biến nguyên liệu thành thành phẩm có hồ sơ chất lượng đầy đủ và mã lô truy xuất được.</div>
+<div class="lmods"><span>P01 Điều hành sản xuất</span><span>P02 Truy xuất lô</span><span>P03 Quản lý chất lượng &amp; ATTP</span><span>P04 Kho lạnh</span><span>P05 Bảo trì thiết bị</span></div>
+</div>
+<div class="layer l3">
+<div class="lname">Lớp 3 — Phân phối &amp; thị trường</div>
+<div class="ldesc">Đưa hàng tới điểm bán đúng thời gian, đúng nhiệt độ, đúng tuổi thọ còn lại, và nhìn thấy được sell-out.</div>
+<div class="lmods"><span>D01 Quản lý phân phối</span><span>D02 Ứng dụng nhân viên bán hàng</span><span>D03 Chương trình thương mại</span><span>D04 Vận tải &amp; chuỗi lạnh</span><span>D05 Hàng cận date &amp; đổi trả</span><span>D06 Dự báo nhu cầu</span></div>
+</div>
+<div class="layer l4">
+<div class="lname">Lớp 4 — Khách hàng &amp; người tiêu dùng</div>
+<div class="ldesc">Tạo lập và khai thác quan hệ trực tiếp với người dùng cuối, đồng thời bảo vệ thương hiệu.</div>
+<div class="lmods"><span>C01 Nền tảng dữ liệu khách hàng</span><span>C02 Khách hàng thân thiết &amp; mã QR</span><span>C03 Kênh D2C &amp; giao định kỳ</span><span>C04 Chăm sóc &amp; trợ lý AI</span><span>C05 Chống hàng giả</span></div>
+</div>
+<div class="layer l5">
+<div class="lname">Lớp 5 — Nền tảng dùng chung (cắt ngang)</div>
+<div class="ldesc">Lớp bảo đảm dữ liệu thống nhất, kết nối được và có thể kiểm toán. Không có lớp này, bốn lớp trên không bao giờ khớp số.</div>
+<div class="lmods"><span>S01 Dữ liệu chủ</span><span>S02 Tích hợp</span><span>S03 Dữ liệu &amp; phân tích</span><span>S04 Hồ sơ tuân thủ</span><span>S05 Định danh, phân quyền &amp; nhật ký</span></div>
+</div>
+<h3>Dòng dữ liệu xuyên suốt</h3>
+<div class="tw"><table>
+<tr><th>Mắt xích</th><th>Thực thể bàn giao</th><th>Phân hệ chủ trì</th></tr>
+<tr><td>Trang trại → Nhà máy</td><td>Lô sữa tươi kèm kết quả test nhanh và nhiệt độ tiếp nhận</td><td>F02, F03</td></tr>
+<tr><td>Nhà máy → Kho</td><td>Lô thành phẩm kèm hồ sơ chất lượng và hạn dùng</td><td>P01, P02, P03</td></tr>
+<tr><td>Kho → Phân phối</td><td>Pallet/thùng có mã lô, tuổi thọ còn lại, điều kiện bảo quản</td><td>P04, D01, D04</td></tr>
+<tr><td>Phân phối → Điểm bán</td><td>Đơn hàng, trưng bày, tồn kho cấp 2, dữ liệu sell-out</td><td>D01, D02</td></tr>
+<tr><td>Điểm bán → Người dùng</td><td>Lượt quét mã, hồ sơ khách hàng, phản hồi, khiếu nại</td><td>C01, C02, C04</td></tr>
+</table></div>
+</section>
+ ============ 4 — LAYER 1 ============ 
+<section class="section" id="p04">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 04</span>Lớp 1 — Thượng nguồn &amp; vùng nguyên liệu</h2>
+<p class="lead">Lớp có độ sâu nghiệp vụ lớn nhất và mức độ số hoá thấp nhất trên thực tế tại Việt Nam. Cũng là nơi quyết định giá vốn và chất lượng ở gốc.</p>
+<div class="mod">
+<div class="code">F01</div>
+<div class="title">Quản lý đàn bò sữa (Herd Management)</div>
+<div class="purpose">Theo dõi vòng đời và năng suất của từng cá thể bò, chuyển việc quản lý đàn từ cảm tính sang dữ liệu.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Quản lý trang trại, kỹ thuật viên thú y, kỹ thuật viên phối giống, chuyên viên dinh dưỡng vật nuôi.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Hồ sơ cá thể: lý lịch, phả hệ, ngày sinh, trạng thái sinh sản, chu kỳ sữa.</li>
+<li>Quản lý sinh sản: động dục, phối giống, chẩn đoán mang thai, dự kiến đẻ, cạn sữa.</li>
+<li>Nhật ký thú y: bệnh án, phác đồ, thuốc sử dụng và <strong>thời gian ngưng thuốc</strong> — dữ liệu chặn sữa không đủ điều kiện đưa vào chế biến.</li>
+<li>Khẩu phần ăn và tiêu hao thức ăn theo nhóm.</li>
+<li>Ghi nhận sản lượng theo ca vắt, theo cá thể; cảnh báo cá thể sụt sản lượng bất thường.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Cá thể bò, nhóm đàn, chuồng/khu, sự kiện sinh sản, sự kiện thú y, ca vắt.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Hoạt động được ở môi trường trang trại: kết nối chập chờn, thao tác bằng găng tay, nhập liệu nhanh. Bắt buộc có chế độ offline và đồng bộ khi có mạng.</div></div>
+</div>
+<div class="mod">
+<div class="code">F02</div>
+<div class="title">Thu mua sữa tươi nguyên liệu (Milk Collection)</div>
+<div class="purpose">Số hoá điểm thu gom — nơi hiện vẫn vận hành chủ yếu bằng sổ tay và bảng tính, và là nơi phát sinh tranh chấp nhiều nhất với nông hộ.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Nhân viên trạm thu mua, nông hộ, kế toán thu mua, cán bộ khuyến nông.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Ghi nhận khối lượng theo ca, theo hộ; kết nối cân điện tử để loại bỏ nhập tay.</li>
+<li>Ghi nhận kết quả test nhanh: chất béo, đạm, chất khô, vi sinh, dư lượng kháng sinh, điểm đông đặc.</li>
+<li><strong>Tính giá theo chất lượng</strong> — công thức giá nhiều bậc theo chỉ tiêu, cộng/trừ thưởng phạt.</li>
+<li>Bảng kê, đối soát và lịch thanh toán cho nông hộ; nông hộ tra cứu được số liệu của mình.</li>
+<li>Từ chối lô không đạt kèm lý do và bằng chứng; thống kê tỷ lệ từ chối theo hộ.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Nông hộ, trạm thu mua, ca thu mua, lô sữa tươi, bảng giá theo chất lượng.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Minh bạch tuyệt đối với nông hộ: mọi con số ảnh hưởng tới tiền phải có dấu vết và tra cứu được. Đây là điều kiện để giữ vùng nguyên liệu.</div></div>
+</div>
+<div class="mod">
+<div class="code">F03</div>
+<div class="title">Quản lý phòng kiểm nghiệm (LIMS)</div>
+<div class="purpose">Biến phòng lab thành chốt chặn có hiệu lực hệ thống, thay vì một bộ phận phát hành phiếu giấy.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Kiểm nghiệm viên, trưởng phòng QC, quản lý sản xuất.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Kế hoạch lấy mẫu theo nguyên liệu, bán thành phẩm, thành phẩm và mẫu môi trường.</li>
+<li>Quản lý mẫu, chỉ tiêu, phương pháp thử, giới hạn cho phép.</li>
+<li>Kết nối thiết bị phân tích, hạn chế nhập liệu thủ công.</li>
+<li><strong>Cơ chế chặn:</strong> lô chưa có kết quả đạt thì không được chuyển trạng thái sang sản xuất hoặc xuất bán.</li>
+<li>Quản lý mẫu lưu và lịch sử kiểm nghiệm phục vụ điều tra sự cố.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Mẫu, chỉ tiêu, phương pháp, kết quả, thiết bị, kiểm nghiệm viên.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Kết quả kiểm nghiệm không được phép sửa xoá; mọi hiệu chỉnh phải tạo bản ghi mới có lý do và người phê duyệt.</div></div>
+</div>
+<div class="mod">
+<div class="code">F04</div>
+<div class="title">Hợp tác và phát triển nông hộ</div>
+<div class="purpose">Công cụ giữ và nâng chất lượng vùng nguyên liệu — phần thường bị bỏ quên nhưng quyết định nguồn cung dài hạn.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Cán bộ phát triển vùng nguyên liệu, nông hộ, bộ phận tài chính.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Hợp đồng bao tiêu, cam kết sản lượng, điều khoản giá.</li>
+<li>Chương trình hỗ trợ: ứng trước thức ăn, con giống, thiết bị bảo quản lạnh; theo dõi công nợ hỗ trợ.</li>
+<li>Xếp hạng nông hộ theo chất lượng và độ ổn định; chương trình đào tạo, khuyến nông.</li>
+<li>Kênh thông tin hai chiều tới nông hộ qua ứng dụng hoặc tin nhắn.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Hợp đồng, chương trình hỗ trợ, khoản ứng trước, hồ sơ đánh giá nông hộ.</div></div>
+</div>
+</section>
+ ============ 5 — LAYER 2 ============ 
+<section class="section" id="p05">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 05</span>Lớp 2 — Sản xuất &amp; chất lượng</h2>
+<p class="lead">Nơi mã lô được sinh ra và hồ sơ chất lượng được hình thành. Mọi cam kết với người tiêu dùng ở hạ nguồn đều phải chứng minh được bằng dữ liệu của lớp này.</p>
+<div class="mod">
+<div class="code">P01</div>
+<div class="title">Điều hành sản xuất (MES)</div>
+<div class="purpose">Kết nối kế hoạch sản xuất với thực tế xưởng, theo thời gian thực thay vì báo cáo cuối ca.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Quản đốc, trưởng ca, vận hành viên dây chuyền, kế hoạch sản xuất.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Lệnh sản xuất, định mức nguyên vật liệu, công thức phối trộn theo dòng sản phẩm.</li>
+<li>Ghi nhận tiêu hao thực tế, sản lượng đạt, phế phẩm, hao hụt theo công đoạn.</li>
+<li>Theo dõi hiệu suất thiết bị tổng thể và nguyên nhân dừng máy.</li>
+<li>Quản lý công đoạn tiệt trùng/thanh trùng với thông số nhiệt độ — thời gian là dữ liệu bắt buộc lưu vết.</li>
+<li>Kiểm soát vệ sinh thiết bị giữa các mẻ, đặc biệt khi chuyển đổi sản phẩm có chất gây dị ứng.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Lệnh sản xuất, công thức, công đoạn, dây chuyền, ca sản xuất, mẻ.</div></div>
+</div>
+<div class="mod">
+<div class="code">P02</div>
+<div class="title">Truy xuất nguồn gốc theo lô (Batch Traceability)</div>
+<div class="purpose">Phân hệ xương sống. Duy trì chuỗi định danh liên tục và không đứt gãy từ nguyên liệu tới người tiêu dùng.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">QA, quản lý sản xuất, bộ phận pháp chế, chăm sóc khách hàng, cơ quan quản lý (qua bộ hồ sơ xuất ra).</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Sinh và quản lý mã lô ở mọi cấp: lô nguyên liệu, mẻ, lô thành phẩm, pallet, thùng, đơn vị bán lẻ.</li>
+<li>Truy vết xuôi và ngược, trả kết quả trong thời gian tính bằng phút chứ không phải ngày.</li>
+<li><strong>Mô phỏng thu hồi:</strong> khoanh vùng phạm vi ảnh hưởng của một lô nghi vấn trước khi ra quyết định.</li>
+<li>Quy trình thu hồi thực tế: thông báo, thu gom, đối chiếu số lượng thu về, xử lý hàng thu hồi.</li>
+<li>Kết xuất bộ hồ sơ truy xuất hoàn chỉnh theo định dạng nộp cho cơ quan quản lý.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Lô, quan hệ cha–con giữa các lô, sự kiện dịch chuyển, mã định danh in trên bao bì.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Dữ liệu truy xuất là bản ghi chỉ ghi thêm (append-only). Không cho phép xoá hay sửa chồng. Đây là yêu cầu bắt buộc, không thoả hiệp vì lý do hiệu năng hay tiện dụng.</div></div>
+</div>
+<div class="mod">
+<div class="code">P03</div>
+<div class="title">Quản lý chất lượng &amp; an toàn thực phẩm</div>
+<div class="purpose">Chuyển hệ thống HACCP/ISO 22000 từ bộ hồ sơ giấy sang quy trình có hiệu lực vận hành.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">QA/QC, trưởng bộ phận an toàn thực phẩm, ban lãnh đạo nhà máy.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Quản lý điểm kiểm soát tới hạn (CCP), giới hạn tới hạn và hành động khắc phục.</li>
+<li>Biểu mẫu kiểm tra điện tử theo ca, có ảnh và chữ ký số của người thực hiện.</li>
+<li>Quản lý sự không phù hợp, hành động khắc phục — phòng ngừa, phân tích nguyên nhân gốc.</li>
+<li>Quản lý khiếu nại chất lượng từ thị trường, liên kết ngược về lô và ca sản xuất.</li>
+<li>Lịch đánh giá nội bộ, đánh giá nhà cung cấp và chứng nhận bên thứ ba.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">CCP, biểu mẫu kiểm tra, sự không phù hợp, hành động khắc phục, chứng nhận.</div></div>
+</div>
+<div class="mod">
+<div class="code">P04</div>
+<div class="title">Quản lý kho lạnh (Cold WMS)</div>
+<div class="purpose">Quản lý tồn kho theo lô và tuổi thọ còn lại, trong điều kiện nhiệt độ được kiểm soát.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Thủ kho, nhân viên vận hành xe nâng, quản lý chuỗi cung ứng.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Quản lý vị trí lưu trữ theo khu nhiệt độ; giám sát nhiệt độ theo khu và cảnh báo vượt ngưỡng.</li>
+<li><strong>Xuất kho theo FEFO tự động</strong>, chặn xuất hàng vi phạm ngưỡng tuổi thọ tối thiểu theo từng kênh bán.</li>
+<li>Nhập, xuất, điều chuyển, kiểm kê theo lô; quản lý hàng chờ kiểm nghiệm và hàng bị giữ.</li>
+<li>Cảnh báo sớm hàng sắp hết tuổi thọ bán được, phân loại theo mức độ khẩn.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Vị trí kho, tồn theo lô, ngưỡng nhiệt độ, ngưỡng tuổi thọ theo kênh.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Ngưỡng tuổi thọ tối thiểu khi giao khác nhau theo kênh: siêu thị thường yêu cầu cao hơn kênh truyền thống. Hệ thống phải cấu hình được theo từng khách hàng, không hard-code.</div></div>
+</div>
+<div class="mod">
+<div class="code">P05</div>
+<div class="title">Bảo trì thiết bị (CMMS)</div>
+<div class="purpose">Giảm dừng máy đột xuất — trong ngành sữa, dừng dây chuyền đồng nghĩa với mất nguyên liệu tươi, không chỉ mất giờ máy.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Bộ phận cơ điện, kỹ thuật viên bảo trì, quản lý nhà máy.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Lý lịch thiết bị, kế hoạch bảo trì phòng ngừa theo thời gian hoặc theo số giờ chạy.</li>
+<li>Phiếu công việc, quản lý vật tư thay thế và tồn kho phụ tùng.</li>
+<li>Lịch hiệu chuẩn thiết bị đo — bắt buộc cho thiết bị liên quan tới CCP.</li>
+<li>Thống kê thời gian dừng máy và chi phí bảo trì theo thiết bị.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Thiết bị, kế hoạch bảo trì, phiếu công việc, phụ tùng, hồ sơ hiệu chuẩn.</div></div>
+</div>
+</section>
+ ============ 6 — LAYER 3 ============ 
+<section class="section" id="p06">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 06</span>Lớp 3 — Phân phối &amp; thị trường</h2>
+<p class="lead">Lớp có tác động tài chính trực tiếp và nhanh nhất. Cũng là nơi doanh nghiệp sữa tầm trung thường mất tiền nhiều nhất mà không nhìn thấy.</p>
+<div class="mod">
+<div class="code">D01</div>
+<div class="title">Quản lý hệ thống phân phối (DMS)</div>
+<div class="purpose">Trung tâm điều hành kênh bán. Mở rộng tầm nhìn của nhà sản xuất từ sell-in sang sell-out.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Nhà phân phối, giám sát bán hàng, quản lý vùng, kế toán công nợ, ban giám đốc kinh doanh.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Hồ sơ nhà phân phối, điểm bán, phân tuyến địa lý và phân quyền theo vùng.</li>
+<li>Đơn hàng, giao hàng, hoá đơn, công nợ và hạn mức tín dụng của nhà phân phối.</li>
+<li><strong>Tồn kho cấp 2 theo lô và hạn dùng</strong> — điều kiện để cảnh báo hàng cận date trước khi quá muộn.</li>
+<li>Theo dõi sell-in và sell-out tách bạch; phát hiện tồn kho ảo trong kênh.</li>
+<li>Bảng giá theo kênh, theo vùng; kiểm soát bán chéo vùng.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Nhà phân phối, điểm bán, tuyến, đơn hàng, tồn kho kênh, công nợ.</div></div>
+</div>
+<div class="mod">
+<div class="code">D02</div>
+<div class="title">Ứng dụng nhân viên bán hàng (SFA)</div>
+<div class="purpose">Công cụ hiện trường quyết định chất lượng dữ liệu của cả lớp phân phối.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Nhân viên bán hàng, giám sát, nhân viên trưng bày.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Kế hoạch viếng thăm theo tuyến, xác thực vị trí và thời gian tại điểm bán.</li>
+<li>Đặt hàng tại chỗ, kiểm tra tồn kho và trưng bày, chụp ảnh kệ hàng.</li>
+<li><strong>Kiểm tra hạn dùng tại điểm bán</strong> — ghi nhận hàng cận date, đề xuất luân chuyển hoặc đổi trả ngay.</li>
+<li>Khảo sát thị trường, ghi nhận hoạt động của đối thủ, giá bán lẻ thực tế.</li>
+<li>Hoạt động đầy đủ ở chế độ offline, đồng bộ khi có kết nối.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Lịch viếng thăm, kết quả viếng thăm, ảnh trưng bày, khảo sát.</div></div>
+</div>
+<div class="mod">
+<div class="code">D03</div>
+<div class="title">Quản lý chương trình thương mại (TPM)</div>
+<div class="purpose">Kiểm soát khoản chi lớn nhất và khó đo hiệu quả nhất của khối kinh doanh.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Trade marketing, giám sát bán hàng, kế toán, kiểm soát nội bộ.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Thiết kế chương trình: chiết khấu, tặng hàng, trưng bày, thưởng doanh số, hỗ trợ kênh hiện đại.</li>
+<li>Ngân sách theo vùng, theo kênh, theo nhãn hàng; kiểm soát vượt ngân sách.</li>
+<li>Quy trình duyệt nhiều cấp, hồ sơ chứng minh và nghiệm thu chương trình.</li>
+<li>Đo hiệu quả: doanh số gia tăng so với ngân sách chi, so sánh giữa các chương trình.</li>
+<li>Đối soát và thanh toán chi phí hỗ trợ cho nhà phân phối và điểm bán.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Chương trình, ngân sách, hồ sơ nghiệm thu, khoản chi hỗ trợ.</div></div>
+</div>
+<div class="mod">
+<div class="code">D04</div>
+<div class="title">Vận tải &amp; giám sát chuỗi lạnh (TMS + IoT)</div>
+<div class="purpose">Bảo đảm và chứng minh được rằng hàng đến nơi trong điều kiện bảo quản đúng.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Điều vận, lái xe, thủ kho nhận hàng, bộ phận khiếu nại.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Lập tuyến giao, gom đơn theo khu vực, tối ưu tải trọng và thứ tự điểm dừng.</li>
+<li>Thu thập dữ liệu nhiệt độ từ thiết bị ghi trên xe; cảnh báo thời gian thực khi vượt ngưỡng.</li>
+<li>Bằng chứng giao hàng điện tử: ký nhận, ảnh, nhiệt độ tại thời điểm giao, mã lô đã giao.</li>
+<li>Hồ sơ nhiệt độ của từng chuyến lưu trữ lâu dài, phục vụ tra cứu khi có khiếu nại.</li>
+<li>Quản lý đội xe tự vận hành và nhà thầu vận tải bên ngoài.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Chuyến giao, xe, tài xế, bản ghi nhiệt độ, bằng chứng giao hàng.</div></div>
+</div>
+<div class="mod">
+<div class="code">D05</div>
+<div class="title">Quản lý hàng cận date &amp; đổi trả</div>
+<div class="purpose">Một quy trình riêng biệt, vì đây là điểm thất thoát lợi nhuận đặc trưng và lớn nhất của ngành hàng tươi.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Giám sát bán hàng, nhà phân phối, kế toán, bộ phận xử lý hàng huỷ.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Cảnh báo sớm theo ngưỡng phần trăm tuổi thọ còn lại, ở cả kho nhà máy, kho nhà phân phối và điểm bán.</li>
+<li>Đề xuất hành động: điều chuyển sang vùng tiêu thụ nhanh, hạ giá theo chính sách, đưa vào chương trình khuyến mại.</li>
+<li>Quy trình đổi trả có kiểm soát: đề nghị, phê duyệt, thu hồi, xác nhận huỷ.</li>
+<li>Hạch toán chi phí hàng huỷ theo nguyên nhân và theo trách nhiệm.</li>
+<li>Phân tích nguyên nhân gốc: dự báo sai, chương trình khuyến mại kém hiệu quả, hay lỗi phân bổ tuyến.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Cảnh báo cận date, đề nghị đổi trả, biên bản huỷ, chi phí thất thoát.</div></div>
+</div>
+<div class="mod">
+<div class="code">D06</div>
+<div class="title">Dự báo nhu cầu &amp; hoạch định cung ứng</div>
+<div class="purpose">Với hàng có hạn dùng mười ngày, sai số dự báo chuyển thành hàng huỷ gần như ngay lập tức.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Kế hoạch cung ứng, kế hoạch sản xuất, giám đốc kinh doanh.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Dự báo theo SKU, theo vùng, theo kênh, ở chu kỳ ngày và tuần.</li>
+<li>Kết hợp dữ liệu sell-out, mùa vụ, lịch khuyến mại, ngày lễ và thời tiết.</li>
+<li>Điều chỉnh có kiểm soát của người dùng, kèm ghi nhận lý do điều chỉnh.</li>
+<li>Đo sai số dự báo và quy đổi sai số thành chi phí hàng huỷ hoặc doanh thu mất đi.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Dự báo theo phiên bản, sai số, kế hoạch cung ứng.</div></div>
+</div>
+</section>
+ ============ 7 — LAYER 4 ============ 
+<section class="section" id="p07">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 07</span>Lớp 4 — Khách hàng &amp; người tiêu dùng</h2>
+<p class="lead">Lớp tạo lập quan hệ trực tiếp với người dùng cuối — tài sản mà nhà sản xuất sữa hầu như chưa có, và cũng là tuyến phòng thủ trước hàng giả.</p>
+<div class="mod">
+<div class="code">C01</div>
+<div class="title">Nền tảng dữ liệu khách hàng (CDP)</div>
+<div class="purpose">Hợp nhất mọi mảnh dữ liệu rời rạc về người tiêu dùng thành một hồ sơ duy nhất, có thể hành động được.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Marketing, chăm sóc khách hàng, phân tích dữ liệu, quản lý thương hiệu.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Thu thập dữ liệu từ app, website, mã QR trên bao bì, POS chuỗi bán lẻ, sàn thương mại điện tử, hotline, mạng xã hội.</li>
+<li>Hợp nhất định danh và khử trùng lặp hồ sơ.</li>
+<li>Phân khúc động theo hành vi, vòng đời, nhóm nhu cầu dinh dưỡng.</li>
+<li>Kích hoạt chiến dịch đa kênh và đo lường đóng góp doanh thu.</li>
+<li>Quản lý sự đồng ý của người dùng và quyền rút lại đồng ý.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Hồ sơ khách hàng hợp nhất, sự kiện hành vi, phân khúc, trạng thái đồng ý.</div></div>
+</div>
+<div class="mod">
+<div class="code">C02</div>
+<div class="title">Khách hàng thân thiết &amp; mã QR trên bao bì</div>
+<div class="purpose">Một cơ chế phục vụ đồng thời ba mục tiêu: tích điểm, truy xuất nguồn gốc và thu thập dữ liệu first-party.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Người tiêu dùng, marketing, bộ phận vận hành chương trình.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Sinh và quản lý mã định danh trên từng đơn vị sản phẩm, gắn với lô sản xuất.</li>
+<li>Người tiêu dùng quét mã để xem nguồn gốc, ngày sản xuất, hạn dùng và thông tin kiểm nghiệm ở mức phù hợp.</li>
+<li>Tích điểm, đổi quà, hạng thành viên, giới thiệu bạn bè.</li>
+<li>Chương trình theo chiến dịch, quản lý ngân sách quà tặng và chống gian lận tích điểm.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Mã sản phẩm, lượt quét, tài khoản thành viên, điểm, giao dịch đổi thưởng.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Khối lượng mã rất lớn — hàng chục đến hàng trăm triệu mã mỗi năm. Việc sinh mã, in ấn và tra cứu phải chịu tải ở quy mô này.</div></div>
+</div>
+<div class="mod">
+<div class="code">C03</div>
+<div class="title">Kênh trực tiếp D2C &amp; giao định kỳ</div>
+<div class="purpose">Kênh bán trực tiếp, đồng thời là phòng thí nghiệm để thử sản phẩm mới trước khi tung ra kênh truyền thống.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Người tiêu dùng, bộ phận thương mại điện tử, vận hành giao hàng.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Ứng dụng và website bán hàng, giỏ hàng, thanh toán, theo dõi đơn.</li>
+<li><strong>Đăng ký giao định kỳ:</strong> tần suất, tạm dừng, đổi lịch, đổi sản phẩm, quản lý gia hạn.</li>
+<li>Kết nối với kho lạnh và đội giao hàng để bảo đảm điều kiện bảo quản tới cửa nhà.</li>
+<li>Ưu đãi riêng cho kênh trực tiếp, tránh xung đột giá với kênh phân phối.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Đơn hàng D2C, gói đăng ký, lịch giao, phương thức thanh toán.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Chính sách giá phải được thiết kế để không phá giá kênh phân phối — đây là rủi ro thương mại lớn hơn rủi ro kỹ thuật.</div></div>
+</div>
+<div class="mod">
+<div class="code">C04</div>
+<div class="title">Chăm sóc khách hàng &amp; trợ lý AI</div>
+<div class="purpose">Xử lý tương tác ở quy mô lớn, đồng thời giữ được ranh giới an toàn về nội dung dinh dưỡng và y tế.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Người tiêu dùng, tổng đài viên, bộ phận QA khi có khiếu nại chất lượng.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Hộp thư hợp nhất đa kênh: hotline, chat, mạng xã hội, email, đánh giá trên sàn.</li>
+<li>Trợ lý AI trả lời câu hỏi sản phẩm, hướng dẫn bảo quản, tra cứu nguồn gốc theo mã lô.</li>
+<li>Quy trình khiếu nại chất lượng: tiếp nhận, gắn với lô, chuyển QA, phản hồi và bồi hoàn.</li>
+<li>Chuyển tiếp sang người thật khi vượt phạm vi cho phép.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Phiếu yêu cầu, hội thoại, khiếu nại, kết quả xử lý.</div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Tư vấn dinh dưỡng cho trẻ nhỏ, phụ nữ mang thai và người bệnh là vùng pháp lý nhạy cảm. Trợ lý AI phải có hàng rào nội dung rõ ràng, chỉ trả lời trong phạm vi thông tin đã được duyệt, tuyệt đối không đưa ra khuyến nghị mang tính y tế và phải bắt buộc chuyển người thật khi câu hỏi vượt ngưỡng.</div></div>
+</div>
+<div class="mod">
+<div class="code">C05</div>
+<div class="title">Chống hàng giả &amp; bảo vệ thương hiệu</div>
+<div class="purpose">Chuyển niềm tin từ thông điệp truyền thông sang cơ chế kiểm chứng được, trong bối cảnh người tiêu dùng đã mất niềm tin với nhãn hàng nhỏ.</div>
+<div class="f"><div class="fk">Người dùng</div><div class="fv">Người tiêu dùng, bộ phận pháp chế, thị trường, quản lý thương hiệu.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Mã xác thực dùng một lần, phân biệt được với mã tra cứu thông tin thông thường.</li>
+<li>Phát hiện bất thường: một mã bị quét nhiều lần, quét ở vùng địa lý không được phân phối, quét trước ngày xuất kho.</li>
+<li>Kênh để người tiêu dùng báo nghi ngờ hàng giả kèm ảnh và vị trí.</li>
+<li>Bản đồ điểm nóng nghi vấn, hồ sơ phục vụ làm việc với cơ quan chức năng.</li>
+<li>Giám sát rao bán trên sàn thương mại điện tử và mạng xã hội.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Dữ liệu chủ</div><div class="fv">Mã xác thực, lịch sử quét, báo cáo nghi ngờ, hồ sơ vụ việc.</div></div>
+</div>
+</section>
+ ============ 8 — LAYER 5 ============ 
+<section class="section" id="p08">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 08</span>Lớp 5 — Nền tảng dùng chung</h2>
+<p class="lead">Lớp cắt ngang. Thường bị xem nhẹ ở giai đoạn đầu và là nguyên nhân phổ biến nhất khiến các phân hệ không khớp số với nhau sau hai năm vận hành.</p>
+<div class="mod">
+<div class="code">S01</div>
+<div class="title">Quản lý dữ liệu chủ (MDM)</div>
+<div class="purpose">Một định nghĩa duy nhất cho mỗi thực thể dùng chung, áp dụng cho toàn bộ nền tảng.</div>
+<div class="f"><div class="fk">Phạm vi dữ liệu</div><div class="fv">Sản phẩm và SKU, đơn vị tính và quy tắc quy đổi, khách hàng, nhà phân phối, điểm bán, nhà cung cấp, nông hộ, kho, nhân sự, cây địa lý hành chính.</div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Nguồn dữ liệu chuẩn duy nhất, có quy trình tạo — sửa — duyệt và vòng đời rõ ràng.</li>
+<li>Ánh xạ mã giữa các hệ thống khi doanh nghiệp đã có ERP hoặc phần mềm kế toán riêng.</li>
+<li>Phát hiện và hợp nhất bản ghi trùng.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Yêu cầu đặc thù</div><div class="fv">Quy tắc quy đổi đơn vị trong ngành sữa phức tạp: lít — kilogram — thùng — lốc — hộp, cộng thêm quy đổi theo hàm lượng chất khô. Sai lệch ở đây làm hỏng toàn bộ báo cáo sản lượng và doanh số.</div></div>
+</div>
+<div class="mod">
+<div class="code">S02</div>
+<div class="title">Lớp tích hợp (Integration)</div>
+<div class="purpose">Nền tảng gần như không bao giờ đứng một mình; khả năng kết nối quyết định việc triển khai được hay không.</div>
+<div class="f"><div class="fk">Đối tượng kết nối</div><div class="fv"><ul>
+<li>Hệ thống quản trị doanh nghiệp và kế toán sẵn có của khách hàng.</li>
+<li>Thiết bị: cân điện tử, máy phân tích sữa, thiết bị ghi nhiệt độ, máy in mã, máy quét.</li>
+<li>Kênh bán: POS chuỗi bán lẻ, nền tảng thương mại điện tử, sàn thương mại điện tử.</li>
+<li>Dịch vụ bên thứ ba: hoá đơn điện tử, chữ ký số, cổng thanh toán, đơn vị vận chuyển, nhà cung cấp tin nhắn.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv">API mở có phiên bản, hàng đợi thông điệp, cơ chế thử lại và xử lý lỗi, nhật ký trao đổi dữ liệu đầy đủ để đối chiếu khi lệch số.</div></div>
+</div>
+<div class="mod">
+<div class="code">S03</div>
+<div class="title">Nền tảng dữ liệu &amp; phân tích</div>
+<div class="purpose">Biến dữ liệu vận hành thành thông tin điều hành, ở tần suất đủ nhanh để kịp hành động.</div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Kho dữ liệu tập trung, đường ống thu thập từ mọi phân hệ.</li>
+<li>Bộ chỉ số chuẩn theo vai trò: ban điều hành, nhà máy, chuỗi cung ứng, kinh doanh, marketing.</li>
+<li>Báo cáo tự phục vụ và khả năng khoan sâu tới từng lô, từng điểm bán.</li>
+<li>Cảnh báo theo ngưỡng, đẩy tới người chịu trách nhiệm thay vì chờ họ mở báo cáo.</li>
+</ul></div></div>
+<div class="f"><div class="fk">Chỉ số then chốt</div><div class="fv">Tỷ lệ tự chủ nguyên liệu, giá thu mua bình quân theo chất lượng, hiệu suất thiết bị, tỷ lệ lô không đạt, độ phủ điểm bán, tồn kho theo ngày bán, tỷ lệ hàng huỷ do hết hạn, sai số dự báo, tỷ lệ phá vỡ chuỗi lạnh, chi phí thương mại trên doanh thu.</div></div>
+</div>
+<div class="mod">
+<div class="code">S04</div>
+<div class="title">Hồ sơ tuân thủ (Compliance Vault)</div>
+<div class="purpose">Tập trung toàn bộ hồ sơ pháp lý của sản phẩm, sẵn sàng cho hậu kiểm.</div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Quản lý hồ sơ tự công bố và đăng ký bản công bố sản phẩm, theo dõi hiệu lực và hạn gia hạn.</li>
+<li>Lưu trữ giấy chứng nhận cơ sở đủ điều kiện, chứng nhận hệ thống quản lý, kết quả kiểm nghiệm định kỳ.</li>
+<li>Quản lý nội dung quảng cáo đã được duyệt và lịch sử sử dụng trên từng kênh.</li>
+<li>Kết xuất bộ hồ sơ đầy đủ theo sản phẩm hoặc theo lô khi có yêu cầu kiểm tra.</li>
+</ul></div></div>
+</div>
+<div class="mod">
+<div class="code">S05</div>
+<div class="title">Định danh, phân quyền &amp; nhật ký hệ thống</div>
+<div class="purpose">Điều kiện nền để dữ liệu của nền tảng có giá trị chứng minh.</div>
+<div class="f"><div class="fk">Năng lực chính</div><div class="fv"><ul>
+<li>Đăng nhập một lần, phân quyền theo vai trò và theo phạm vi dữ liệu (vùng, nhà máy, nhà phân phối).</li>
+<li>Phân quyền cho người dùng bên ngoài: nông hộ, nhà phân phối, nhà thầu vận tải, chỉ thấy dữ liệu của mình.</li>
+<li><strong>Nhật ký thao tác không thể chối bỏ</strong> cho mọi thay đổi trên dữ liệu chất lượng, lô và tài chính.</li>
+<li>Quy trình phê duyệt nhiều cấp có thể cấu hình theo nghiệp vụ.</li>
+</ul></div></div>
+</div>
+</section>
+ ============ 9 — NFR ============ 
+<section class="section" id="p09">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 09</span>Yêu cầu phi chức năng</h2>
+<p class="lead">Ở mức phác thảo, các yêu cầu dưới đây nêu tính chất bắt buộc và lý do nghiệp vụ. Ngưỡng định lượng cụ thể sẽ được chốt ở giai đoạn đặc tả.</p>
+<div class="tw"><table>
+<tr><th>Mã</th><th>Nhóm</th><th>Yêu cầu và lý do nghiệp vụ</th></tr>
+<tr><td class="id">NFR-01</td><td>Vận hành offline</td><td>Các phân hệ hiện trường — thu mua tại trạm, quản lý đàn, ứng dụng bán hàng, giao nhận — phải hoạt động đầy đủ khi mất kết nối và đồng bộ có xử lý xung đột khi có mạng trở lại. Vùng nguyên liệu và tuyến bán hàng ở nông thôn không thể giả định có mạng ổn định.</td></tr>
+<tr><td class="id">NFR-02</td><td>Tính sẵn sàng</td><td>Phân hệ gắn với dây chuyền sản xuất và kho lạnh phải sẵn sàng liên tục theo ca sản xuất. Gián đoạn hệ thống trong ca không được phép làm dừng dây chuyền — cần có phương án vận hành dự phòng và bù dữ liệu sau.</td></tr>
+<tr><td class="id">NFR-03</td><td>Toàn vẹn dữ liệu</td><td>Dữ liệu lô, kết quả kiểm nghiệm, nhiệt độ và giao dịch tài chính là bản ghi chỉ ghi thêm. Mọi hiệu chỉnh tạo bản ghi mới kèm lý do và người phê duyệt; không cho phép sửa đè hay xoá cứng.</td></tr>
+<tr><td class="id">NFR-04</td><td>Khả năng truy vết</td><td>Toàn hệ thống phải trả lời được câu hỏi "ai, làm gì, lúc nào, trên dữ liệu nào" cho mọi thao tác thuộc phạm vi chất lượng, lô và tài chính.</td></tr>
+<tr><td class="id">NFR-05</td><td>Hiệu năng</td><td>Truy vấn truy xuất nguồn gốc và tra cứu mã QR của người tiêu dùng phải phản hồi gần tức thời, kể cả khi lịch sử dữ liệu đã tích luỹ nhiều năm và lượng mã lên tới hàng trăm triệu.</td></tr>
+<tr><td class="id">NFR-06</td><td>Khả năng mở rộng</td><td>Kiến trúc phải chịu được tăng trưởng theo số nhà máy, số nhà phân phối, số điểm bán và số mã sản phẩm mà không cần thiết kế lại. Cần hỗ trợ nhiều pháp nhân và nhiều nhà máy trong cùng một hệ thống.</td></tr>
+<tr><td class="id">NFR-07</td><td>Bảo mật</td><td>Phân tách dữ liệu chặt giữa các đối tác bên ngoài. Mã hoá dữ liệu nhạy cảm khi lưu trữ và truyền. Kiểm soát truy cập dữ liệu công thức sản phẩm và giá thu mua ở mức cao nhất.</td></tr>
+<tr><td class="id">NFR-08</td><td>Quyền riêng tư</td><td>Dữ liệu người tiêu dùng phải quản lý theo cơ chế đồng ý, có khả năng rút lại đồng ý, xoá dữ liệu theo yêu cầu và giới hạn mục đích sử dụng.</td></tr>
+<tr><td class="id">NFR-09</td><td>Khả dụng cho người dùng hiện trường</td><td>Giao diện phải dùng được bằng một tay, trên thiết bị phổ thông, trong điều kiện ánh sáng mạnh, đeo găng tay và thao tác nhanh. Ưu tiên quét mã thay vì nhập liệu.</td></tr>
+<tr><td class="id">NFR-10</td><td>Ngôn ngữ và bản địa hoá</td><td>Tiếng Việt là ngôn ngữ chính cho toàn bộ giao diện, báo cáo và tài liệu. Hỗ trợ đơn vị đo, định dạng ngày và quy ước kế toán theo chuẩn Việt Nam.</td></tr>
+<tr><td class="id">NFR-11</td><td>Lưu trữ dài hạn</td><td>Hồ sơ truy xuất, kiểm nghiệm và nhiệt độ phải lưu trữ vượt xa hạn dùng sản phẩm, đủ để phục vụ thanh tra và tranh chấp phát sinh sau nhiều năm.</td></tr>
+<tr><td class="id">NFR-12</td><td>Khả năng cấu hình</td><td>Công thức tính giá thu mua, ngưỡng tuổi thọ theo kênh, quy trình phê duyệt và cấu trúc chương trình thương mại phải cấu hình được bởi người dùng nghiệp vụ, không cần can thiệp mã nguồn. Mỗi doanh nghiệp sữa có luật chơi riêng.</td></tr>
+</table></div>
+</section>
+ ============ 10, 11, 12 ============ 
+<section class="section" id="p10">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 10</span>Yêu cầu tích hợp và dữ liệu</h2>
+<p class="lead">Nền tảng được giả định triển khai vào môi trường đã có sẵn hệ thống, không phải nền trắng.</p>
+<div class="tw"><table>
+<tr><th>Nhóm tích hợp</th><th>Yêu cầu</th></tr>
+<tr><td>Hệ thống quản trị sẵn có</td><td>Đồng bộ hai chiều dữ liệu chủ, đơn hàng, tồn kho và bút toán với hệ thống kế toán hoặc ERP hiện hữu của doanh nghiệp. Xác định rõ hệ thống nào là nguồn chuẩn cho từng loại dữ liệu.</td></tr>
+<tr><td>Thiết bị hiện trường</td><td>Kết nối cân điện tử, máy phân tích thành phần sữa, thiết bị ghi nhiệt độ, thiết bị vắt sữa, máy in và quét mã theo giao thức tiêu chuẩn.</td></tr>
+<tr><td>Kênh bán hiện đại</td><td>Tiếp nhận dữ liệu bán hàng từ chuỗi siêu thị, cửa hàng tiện lợi và sàn thương mại điện tử để hoàn thiện bức tranh sell-out.</td></tr>
+<tr><td>Dịch vụ pháp lý — tài chính</td><td>Hoá đơn điện tử, chữ ký số, cổng thanh toán, đối soát ngân hàng.</td></tr>
+<tr><td>Truyền thông</td><td>Tin nhắn, ứng dụng nhắn tin phổ biến tại Việt Nam, email và thông báo đẩy.</td></tr>
+</table></div>
+<h3>Nguyên tắc dữ liệu</h3>
+<ul>
+<li>Mỗi loại dữ liệu chỉ có <strong>một hệ thống nguồn chuẩn</strong>; các hệ thống khác là bản sao đọc.</li>
+<li>Lô là thực thể trung tâm; mọi giao dịch vật lý phải gắn được với lô.</li>
+<li>Dữ liệu vận hành và dữ liệu phân tích tách riêng, tránh báo cáo làm ảnh hưởng hệ thống chạy thật.</li>
+<li>Mọi trao đổi dữ liệu giữa các hệ thống phải có nhật ký đối chiếu được.</li>
+</ul>
+<div class="hr" style="margin-top:12mm"></div>
+<h2><span class="num">PHẦN 11</span>Yêu cầu tuân thủ pháp lý</h2>
+<p class="lead">Ở mức phác thảo, đây là danh mục nghĩa vụ mà hệ thống phải hỗ trợ doanh nghiệp thực hiện, chưa phải là phân tích pháp lý chi tiết.</p>
+<ul>
+<li><strong>An toàn thực phẩm:</strong> hỗ trợ đầy đủ nghĩa vụ tự công bố hoặc đăng ký bản công bố sản phẩm, lưu trữ hồ sơ và sẵn sàng phục vụ hậu kiểm.</li>
+<li><strong>Truy xuất nguồn gốc và thu hồi:</strong> đáp ứng yêu cầu truy xuất và thực hiện thu hồi sản phẩm không bảo đảm an toàn trong thời hạn quy định.</li>
+<li><strong>Ghi nhãn:</strong> quản lý nội dung nhãn đã duyệt, bảo đảm thông tin in trên bao bì khớp với hồ sơ công bố.</li>
+<li><strong>Quảng cáo sản phẩm dinh dưỡng:</strong> kiểm soát nội dung quảng cáo, đặc biệt với sản phẩm cho trẻ nhỏ, nơi có quy định hạn chế nghiêm ngặt.</li>
+<li><strong>Bảo vệ dữ liệu cá nhân:</strong> quản lý đồng ý, quyền của chủ thể dữ liệu và nghĩa vụ khi xử lý dữ liệu người tiêu dùng.</li>
+<li><strong>Hoá đơn và chứng từ điện tử:</strong> tuân thủ quy định về hoá đơn điện tử và lưu trữ chứng từ.</li>
+</ul>
+<div class="warn">
+    Danh mục này cần được rà soát bởi bộ phận pháp chế trước khi đưa vào đặc tả, vì khung pháp lý về an toàn thực phẩm và hậu kiểm đang trong giai đoạn siết chặt và thay đổi.
+  </div>
+</section>
+<section class="section" id="p11">
+<div class="hr"></div>
+<h2><span class="num">PHẦN 12</span>Giả định, rủi ro và bước kế tiếp</h2>
+<h3>12.1 Giả định</h3>
+<ul>
+<li>Doanh nghiệp áp dụng đã có hệ thống kế toán và ít nhất một phần hạ tầng công nghệ thông tin cơ bản.</li>
+<li>Nền tảng được triển khai theo từng phân hệ, không triển khai đồng loạt.</li>
+<li>Dữ liệu lịch sử của khách hàng ở trạng thái không đầy đủ và cần một giai đoạn làm sạch trước khi vận hành.</li>
+</ul>
+<h3>12.2 Rủi ro chính ở mức khái niệm</h3>
+<div class="tw"><table>
+<tr><th>Rủi ro</th><th>Mô tả</th></tr>
+<tr><td>Thiếu chuyên gia nghiệp vụ</td><td>Ba phân hệ F01, F03 và P01 đòi hỏi hiểu biết chuyên ngành thực sự về chăn nuôi, kiểm nghiệm và công nghệ chế biến sữa. Không thể suy luận đủ từ tài liệu; cần chuyên gia đồng hành từ giai đoạn phân tích.</td></tr>
+<tr><td>Chất lượng dữ liệu đầu vào</td><td>Nếu dữ liệu chủ không được chuẩn hoá trước, mọi báo cáo hợp nhất sẽ sai và niềm tin vào hệ thống sụp đổ ngay trong vài tháng đầu.</td></tr>
+<tr><td>Kháng cự từ hiện trường</td><td>Nhân viên trạm thu mua và nhân viên bán hàng là nhóm chịu thay đổi lớn nhất và có ít động lực nhất. Trải nghiệm kém ở nhóm này làm hỏng dữ liệu của toàn bộ lớp phía trên.</td></tr>
+<tr><td>Phụ thuộc thiết bị</td><td>Nhiều năng lực cốt lõi phụ thuộc thiết bị phần cứng — cân, máy phân tích, thiết bị ghi nhiệt. Cần xác định sớm phạm vi trách nhiệm phần cứng.</td></tr>
+<tr><td>Tham vọng phạm vi</td><td>Triển khai quá nhiều phân hệ cùng lúc là nguyên nhân thất bại phổ biến nhất của các dự án loại này.</td></tr>
+</table></div>
+<h3>12.3 Bước kế tiếp đề xuất</h3>
+<ul>
+<li>Khảo sát hiện trạng tại một doanh nghiệp mẫu để kiểm chứng bản đồ phân hệ với thực tế vận hành.</li>
+<li>Chọn nhóm phân hệ làm điểm vào dựa trên mức độ đau và khả năng chứng minh giá trị nhanh.</li>
+<li>Xác định ranh giới build — buy — partner cho từng phân hệ, đặc biệt nhóm phụ thuộc thiết bị.</li>
+<li>Chốt ngưỡng định lượng cho các yêu cầu phi chức năng.</li>
+<li>Chuyển sang tài liệu đặc tả chức năng và kiến trúc kỹ thuật cho nhóm phân hệ được chọn.</li>
+</ul>
+<div class="callout">
+<strong>Trạng thái tài liệu:</strong> Bản phác thảo v0.1. Nội dung ở mức khái niệm, phục vụ thảo luận và thống nhất phạm vi. Chưa dùng để ước lượng nguồn lực hoặc cam kết tiến độ.
+  </div>
+</section>
+
+
+  <div class="foot">Bản phác thảo v0.1 · 17/09/2026 · Nội dung ở mức khái niệm, phục vụ thảo luận và thống nhất phạm vi.</div>
+</div>
+
+<button class="top" id="top" aria-label="Lên đầu trang">↑ Đầu trang</button>
+<script>
+var b=document.getElementById('top');
+addEventListener('scroll',function(){b.classList.toggle('on',scrollY>700)},{passive:true});
+b.addEventListener('click',function(){scrollTo({top:0,behavior:'smooth'})});
+</script>
+</body>
+</html>
