@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Factory — Feasibility Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cds-white: #ffffff;
+      --cds-gray-10: #f4f4f4;
+      --cds-gray-20: #e0e0e0;
+      --cds-gray-30: #c6c6c6;
+      --cds-gray-50: #8d8d8d;
+      --cds-gray-60: #6f6f6f;
+      --cds-gray-70: #525252;
+      --cds-gray-80: #393939;
+      --cds-gray-90: #262626;
+      --cds-gray-100: #161616;
+      --cds-blue-20: #d0e2ff;
+      --cds-blue-40: #78a9ff;
+      --cds-blue-60: #0f62fe;
+      --cds-blue-70: #0043ce;
+      --cds-blue-80: #002d9c;
+      --cds-green-40: #42be65;
+      --cds-green-50: #24a148;
+      --cds-green-70: #0e6027;
+      --cds-yellow-30: #f1c21b;
+      --cds-red-50: #fa4d56;
+      --cds-red-60: #da1e28;
+      --cds-teal-40: #08bdba;
+      --cds-teal-50: #009d9a;
+      --cds-purple-40: #be95ff;
+      --cds-purple-60: #8a3ffc;
+      --cds-cyan-40: #33b1ff;
+      --cds-spacing-03: 0.5rem;
+      --cds-spacing-05: 1rem;
+      --cds-spacing-06: 1.5rem;
+      --cds-spacing-07: 2rem;
+      --cds-spacing-08: 2.5rem;
+      --cds-spacing-09: 3rem;
+      --cds-spacing-10: 4rem;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cds-gray-10);
+      color: var(--cds-gray-100);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grid */
+    .cds-grid {
+      max-width: 1584px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    @media (min-width: 1056px) {
+      .cds-grid { padding: 0 2rem; }
+    }
+
+    /* Header */
+    .cds-header {
+      background: var(--cds-gray-100);
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .cds-header__name {
+      color: var(--cds-white);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cds-header__name span {
+      color: var(--cds-gray-30);
+      font-weight: 400;
+    }
+
+    .cds-header__nav {
+      margin-left: auto;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .cds-header__nav a {
+      color: var(--cds-gray-30);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      text-transform: uppercase;
+      transition: color 0.15s;
+    }
+
+    .cds-header__nav a:hover { color: var(--cds-white); }
+
+    .cds-header__menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      margin-left: auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--cds-gray-100);
+      padding: var(--cds-spacing-10) 0 var(--cds-spacing-09);
+    }
+
+    .hero__eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      text-transform: uppercase;
+      color: var(--cds-blue-40);
+      margin-bottom: var(--cds-spacing-03);
+      font-weight: 400;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--cds-white);
+      max-width: 780px;
+      margin-bottom: var(--cds-spacing-06);
+    }
+
+    .hero__desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--cds-gray-30);
+      max-width: 640px;
+      font-weight: 300;
+    }
+
+    .hero__meta {
+      margin-top: var(--cds-spacing-07);
+      display: flex;
+      gap: var(--cds-spacing-07);
+      flex-wrap: wrap;
+    }
+
+    .hero__meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hero__meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.32px;
+      color: var(--cds-gray-50);
+    }
+
+    .hero__meta-value {
+      font-size: 14px;
+      color: var(--cds-gray-20);
+      font-weight: 500;
+    }
+
+    /* Section */
+    .section {
+      padding: var(--cds-spacing-09) 0;
+    }
+
+    .section--alt {
+      background: var(--cds-white);
+    }
+
+    .section__eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      text-transform: uppercase;
+      color: var(--cds-blue-60);
+      margin-bottom: var(--cds-spacing-03);
+      font-weight: 500;
+    }
+
+    .section__title {
+      font-size: 28px;
+      font-weight: 300;
+      line-height: 1.25;
+      margin-bottom: var(--cds-spacing-05);
+      color: var(--cds-gray-100);
+    }
+
+    .section__subtitle {
+      font-size: 16px;
+      color: var(--cds-gray-60);
+      font-weight: 400;
+      max-width: 640px;
+      margin-bottom: var(--cds-spacing-07);
+      line-height: 1.6;
+    }
+
+    /* Two Column Layout */
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--cds-spacing-07);
+    }
+
+    @media (min-width: 672px) {
+      .cols--2 { grid-template-columns: 1fr 1fr; }
+      .cols--3 { grid-template-columns: 1fr 1fr 1fr; }
+      .cols--4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+      .cols--1-2 { grid-template-columns: 1fr 2fr; }
+      .cols--2-1 { grid-template-columns: 2fr 1fr; }
+    }
+
+    /* Data Table */
+    .cds-table-wrap {
+      overflow-x: auto;
+      margin-bottom: var(--cds-spacing-07);
+      border: 1px solid var(--cds-gray-20);
+    }
+
+    .cds-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .cds-table caption {
+      text-align: left;
+      padding: 1rem;
+      font-size: 14px;
+      font-weight: 600;
+      background: var(--cds-gray-100);
+      color: var(--cds-white);
+      letter-spacing: 0.1px;
+    }
+
+    .cds-table thead th {
+      background: var(--cds-gray-80);
+      color: var(--cds-white);
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.16px;
+      text-transform: uppercase;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--cds-gray-70);
+    }
+
+    .cds-table tbody td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--cds-gray-20);
+      vertical-align: top;
+      background: var(--cds-white);
+    }
+
+    .cds-table tbody tr:hover td {
+      background: var(--cds-blue-20);
+    }
+
+    .cds-table--compact tbody td {
+      padding: 0.5rem 1rem;
+    }
+
+    .cds-table .num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .cds-table .highlight {
+      font-weight: 600;
+      color: var(--cds-blue-70);
+    }
+
+    .cds-table .right { text-align: right; }
+
+    /* Stat Tiles */
+    .stat-tile {
+      background: var(--cds-white);
+      border-left: 3px solid var(--cds-blue-60);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-tile--green { border-left-color: var(--cds-green-50); }
+    .stat-tile--teal { border-left-color: var(--cds-teal-50); }
+    .stat-tile--purple { border-left-color: var(--cds-purple-60); }
+    .stat-tile--red { border-left-color: var(--cds-red-60); }
+    .stat-tile--yellow { border-left-color: var(--cds-yellow-30); }
+
+    .stat-tile__label {
+      font-size: 12px;
+      letter-spacing: 0.32px;
+      text-transform: uppercase;
+      color: var(--cds-gray-60);
+    }
+
+    .stat-tile__value {
+      font-size: 36px;
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--cds-gray-100);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .stat-tile__unit {
+      font-size: 14px;
+      color: var(--cds-gray-60);
+    }
+
+    .stat-tile__delta {
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-tile__delta--up { color: var(--cds-green-50); }
+    .stat-tile__delta--down { color: var(--cds-red-50); }
+
+    /* Score bar */
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--cds-gray-20);
+    }
+
+    .score-row__label {
+      min-width: 160px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .score-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--cds-gray-20);
+      border-radius: 0;
+      overflow: hidden;
+    }
+
+    .score-bar__fill {
+      height: 100%;
+      transition: width 0.6s ease;
+    }
+
+    .score-bar__fill--high { background: var(--cds-green-50); }
+    .score-bar__fill--mid { background: var(--cds-yellow-30); }
+    .score-bar__fill--low { background: var(--cds-red-50); }
+
+    .score-row__value {
+      min-width: 48px;
+      text-align: right;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Card */
+    .card {
+      background: var(--cds-white);
+      border-top: 3px solid var(--cds-blue-60);
+      padding: 1.5rem;
+      height: 100%;
+    }
+
+    .card--dark {
+      background: var(--cds-gray-90);
+      color: var(--cds-white);
+    }
+
+    .card--dark .card__desc { color: var(--cds-gray-30); }
+
+    .card--teal { border-top-color: var(--cds-teal-50); }
+    .card--green { border-top-color: var(--cds-green-50); }
+    .card--purple { border-top-color: var(--cds-purple-60); }
+    .card--red { border-top-color: var(--cds-red-60); }
+    .card--yellow { border-top-color: var(--cds-yellow-30); }
+
+    .card__eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.32px;
+      color: var(--cds-gray-50);
+      margin-bottom: var(--cds-spacing-03);
+    }
+
+    .card__title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: var(--cds-spacing-03);
+      line-height: 1.3;
+    }
+
+    .card__desc {
+      font-size: 14px;
+      color: var(--cds-gray-60);
+      line-height: 1.5;
+    }
+
+    .card__number {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 28px;
+      font-weight: 300;
+      margin-bottom: 4px;
+    }
+
+    /* Tag */
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .tag--green { background: #defbe6; color: var(--cds-green-70); }
+    .tag--yellow { background: #fcf4d6; color: #684e00; }
+    .tag--red { background: #fff1f1; color: #a2191f; }
+    .tag--blue { background: var(--cds-blue-20); color: var(--cds-blue-80); }
+    .tag--purple { background: #e8daff; color: #6929c4; }
+    .tag--teal { background: #d9fbfb; color: #005d5d; }
+    .tag--gray { background: var(--cds-gray-20); color: var(--cds-gray-80); }
+
+    /* Notification */
+    .notification {
+      padding: 1rem 1.25rem;
+      border-left: 3px solid;
+      margin-bottom: var(--cds-spacing-05);
+      font-size: 14px;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .notification--info {
+      background: #edf5ff;
+      border-color: var(--cds-blue-60);
+      color: var(--cds-gray-90);
+    }
+
+    .notification--warning {
+      background: #fcf4d6;
+      border-color: var(--cds-yellow-30);
+      color: var(--cds-gray-90);
+    }
+
+    .notification--success {
+      background: #defbe6;
+      border-color: var(--cds-green-50);
+    }
+
+    .notification--error {
+      background: #fff1f1;
+      border-color: var(--cds-red-60);
+    }
+
+    .notification__icon { flex-shrink: 0; font-size: 18px; }
+    .notification__content { flex: 1; }
+    .notification__title { font-weight: 600; margin-bottom: 2px; }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--cds-gray-20);
+      margin: var(--cds-spacing-07) 0;
+    }
+
+    /* Comparison block */
+    .vs-block {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .vs-divider {
+      width: 1px;
+      background: var(--cds-gray-20);
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .vs-divider::after {
+      content: 'VS';
+      position: absolute;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--cds-gray-50);
+      background: var(--cds-gray-10);
+      padding: 4px 8px;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      gap: 0;
+      margin-bottom: var(--cds-spacing-07);
+    }
+
+    .timeline__phase {
+      flex: 1;
+      position: relative;
+      padding: 1.5rem;
+      background: var(--cds-white);
+      border: 1px solid var(--cds-gray-20);
+      border-right: none;
+    }
+
+    .timeline__phase:last-child { border-right: 1px solid var(--cds-gray-20); }
+
+    .timeline__phase::before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 4px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .timeline__phase:nth-child(1)::before { background: var(--cds-blue-60); }
+    .timeline__phase:nth-child(2)::before { background: var(--cds-teal-50); }
+    .timeline__phase:nth-child(3)::before { background: var(--cds-purple-60); }
+
+    .timeline__label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.32px;
+      color: var(--cds-gray-50);
+      margin-bottom: 4px;
+    }
+
+    .timeline__title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .timeline__detail {
+      font-size: 13px;
+      color: var(--cds-gray-60);
+      line-height: 1.5;
+    }
+
+    .timeline__cost {
+      margin-top: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--cds-gray-100);
+      color: var(--cds-gray-30);
+      padding: var(--cds-spacing-07) 0;
+      font-size: 12px;
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Prose */
+    .prose { max-width: 640px; }
+    .prose p { margin-bottom: var(--cds-spacing-05); line-height: 1.65; }
+    .prose ul { margin: 0 0 var(--cds-spacing-05) 1.25rem; }
+    .prose li { margin-bottom: 0.35rem; line-height: 1.5; }
+    .prose strong { font-weight: 600; }
+
+    /* List items */
+    .check-list { list-style: none; padding: 0; }
+    .check-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--cds-gray-20);
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+      font-size: 14px;
+    }
+    .check-list li:last-child { border-bottom: none; }
+
+    /* Utility */
+    .mt-3 { margin-top: var(--cds-spacing-05); }
+    .mt-5 { margin-top: var(--cds-spacing-07); }
+    .mt-7 { margin-top: var(--cds-spacing-09); }
+    .mb-3 { margin-bottom: var(--cds-spacing-05); }
+    .mb-5 { margin-bottom: var(--cds-spacing-07); }
+    .text-mono { font-family: 'IBM Plex Mono', monospace; }
+    .text-sm { font-size: 12px; }
+    .text-muted { color: var(--cds-gray-50); }
+    .fw-600 { font-weight: 600; }
+
+    /* ===== Tablet (672px – 1055px) ===== */
+    @media (max-width: 1055px) {
+      .cols--4 { grid-template-columns: 1fr 1fr; }
+      .cols--3 { grid-template-columns: 1fr 1fr; }
+      .cols--1-2,
+      .cols--2-1 { grid-template-columns: 1fr; }
+
+      .hero h1 { font-size: 36px; }
+
+      .card__number { font-size: 24px; }
+
+      .score-row__label { min-width: 130px; }
+    }
+
+    /* ===== Mobile (< 672px) ===== */
+    @media (max-width: 671px) {
+      /* Grid */
+      .cds-grid { padding: 0 1rem; }
+
+      /* Header */
+      .cds-header { height: 48px; flex-wrap: wrap; }
+      .cds-header__menu-btn { display: block; }
+      .cds-header__nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        background: var(--cds-gray-90);
+        padding: 0.5rem 0;
+        order: 3;
+      }
+      .cds-header__nav.is-open { display: flex; }
+      .cds-header__nav a {
+        padding: 0.75rem 1rem;
+        font-size: 14px;
+        letter-spacing: 0;
+        text-transform: none;
+        border-bottom: 1px solid var(--cds-gray-80);
+      }
+      .cds-header__nav a:last-child { border-bottom: none; }
+      .cds-header__nav a:active { background: var(--cds-gray-80); }
+      .cds-header__name span:last-child { display: none; }
+
+      /* Hero */
+      .hero { padding: var(--cds-spacing-07) 0 var(--cds-spacing-06); }
+      .hero h1 {
+        font-size: 26px;
+        line-height: 1.2;
+        word-break: keep-all;
+      }
+      .hero h1 br { display: none; }
+      .hero__desc { font-size: 14px; }
+      .hero__meta {
+        gap: 1rem;
+        flex-direction: column;
+      }
+      .hero__meta-item {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--cds-gray-80);
+      }
+      .hero__meta-item:last-child { border-bottom: none; }
+
+      /* Section */
+      .section { padding: var(--cds-spacing-07) 0; }
+      .section__title { font-size: 20px; }
+      .section__subtitle { font-size: 14px; margin-bottom: var(--cds-spacing-05); }
+
+      /* Columns → stack */
+      .cols--2,
+      .cols--3,
+      .cols--4,
+      .cols--1-2,
+      .cols--2-1 { grid-template-columns: 1fr; }
+      .cols { gap: 1rem; }
+
+      /* Stat tiles */
+      .stat-tile { padding: 1rem 1.25rem; }
+      .stat-tile__value { font-size: 28px; }
+      .stat-tile__label { font-size: 11px; }
+      .stat-tile__unit { font-size: 12px; }
+
+      /* Cards */
+      .card { padding: 1.25rem; }
+      .card__title { font-size: 16px; }
+      .card__number { font-size: 24px; }
+      .card__desc { font-size: 13px; }
+      .card__desc ul { padding-left: 1rem; }
+      .card__desc li { font-size: 13px; }
+
+      /* Tables — horizontal scroll with hint */
+      .cds-table-wrap {
+        position: relative;
+        -webkit-overflow-scrolling: touch;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        border-left: none;
+        border-right: none;
+      }
+      .cds-table-wrap::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 32px;
+        background: linear-gradient(to right, transparent, rgba(244,244,244,0.9));
+        pointer-events: none;
+        z-index: 1;
+      }
+      .section--alt .cds-table-wrap::after {
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.9));
+      }
+      .cds-table { font-size: 13px; min-width: 540px; }
+      .cds-table caption { font-size: 13px; padding: 0.75rem 1rem; position: sticky; left: 0; }
+      .cds-table thead th { font-size: 11px; padding: 0.5rem 0.75rem; }
+      .cds-table tbody td { padding: 0.5rem 0.75rem; font-size: 13px; }
+      .cds-table .num { font-size: 12px; }
+      .cds-table--compact tbody td { padding: 0.35rem 0.75rem; }
+
+      /* Score bars */
+      .score-row { gap: 0.5rem; padding: 0.6rem 0; }
+      .score-row__label {
+        min-width: 0;
+        flex: 0 0 100px;
+        font-size: 12px;
+        line-height: 1.3;
+      }
+      .score-row__value { min-width: 40px; font-size: 13px; }
+
+      /* Timeline → vertical */
+      .timeline { flex-direction: column; }
+      .timeline__phase {
+        border: 1px solid var(--cds-gray-20);
+        border-bottom: none;
+        padding: 1.25rem;
+      }
+      .timeline__phase:last-child { border-bottom: 1px solid var(--cds-gray-20); }
+      .timeline__phase::before { height: 3px; }
+      .timeline__title { font-size: 15px; }
+      .timeline__detail { font-size: 12px; }
+      .timeline__cost { font-size: 18px; }
+
+      /* Notifications */
+      .notification {
+        padding: 0.75rem 1rem;
+        font-size: 13px;
+        gap: 0.5rem;
+        margin-left: -1rem;
+        margin-right: -1rem;
+        border-left-width: 3px;
+      }
+      .notification__icon { font-size: 16px; }
+      .notification__title { font-size: 13px; }
+
+      /* Tags */
+      .tag { font-size: 11px; padding: 1px 6px; }
+
+      /* Divider */
+      .divider { margin: var(--cds-spacing-05) 0; }
+
+      /* VS block */
+      .vs-block { grid-template-columns: 1fr; }
+      .vs-divider { display: none; }
+
+      /* Footer */
+      .footer { padding: var(--cds-spacing-05) 0; }
+      .footer__inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; font-size: 11px; }
+
+      /* Inline h3 used in sections */
+      h3[style] { font-size: 16px !important; margin-bottom: 1rem !important; }
+
+      /* Utility overrides */
+      .mb-5 { margin-bottom: var(--cds-spacing-05); }
+      .mt-5 { margin-top: var(--cds-spacing-05); }
+    }
+
+    /* ===== Small mobile (< 380px) ===== */
+    @media (max-width: 379px) {
+      .hero h1 { font-size: 22px; }
+      .stat-tile__value { font-size: 24px; }
+      .section__title { font-size: 18px; }
+      .card__number { font-size: 20px; }
+      .score-row__label { flex: 0 0 80px; font-size: 11px; }
+      .cds-table { min-width: 480px; }
+    }
+
+    /* ===== Print ===== */
+    @media print {
+      .cds-header { position: static; }
+      .hero { break-after: avoid; }
+      .section { break-inside: avoid; }
+      .cds-table-wrap::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="cds-header">
+    <div class="cds-header__name">
+      Astral-X <span>/</span> <span>Feasibility Assessment</span>
+    </div>
+    <nav class="cds-header__nav" id="headerNav">
+      <a href="#market">Market</a>
+      <a href="#benchmark">Benchmark</a>
+      <a href="#capex">CapEx</a>
+      <a href="#opex">OpEx</a>
+      <a href="#scoring">Scoring</a>
+    </nav>
+    <button class="cds-header__menu-btn" id="menuBtn" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect y="4" width="20" height="1.5" fill="white"/>
+        <rect y="9.25" width="20" height="1.5" fill="white"/>
+        <rect y="14.5" width="20" height="1.5" fill="white"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="cds-grid">
+      <p class="hero__eyebrow">Feasibility Assessment Report</p>
+      <h1>Token Factory<br>Nhà máy sản xuất Token AI<br>có chủ quyền</h1>
+      <p class="hero__desc">
+        Đánh giá tính khả thi về kỹ thuật, tài chính, thị trường và cạnh tranh cho đề án xây dựng hạ tầng sản xuất token AI sovereign tại Việt Nam.
+      </p>
+      <div class="hero__meta">
+        <div class="hero__meta-item">
+          <span class="hero__meta-label">Ngày đánh giá</span>
+          <span class="hero__meta-value">19.09.2026</span>
+        </div>
+        <div class="hero__meta-item">
+          <span class="hero__meta-label">Phạm vi</span>
+          <span class="hero__meta-value">Kỹ thuật &middot; Tài chính &middot; Thị trường &middot; Cạnh tranh</span>
+        </div>
+        <div class="hero__meta-item">
+          <span class="hero__meta-label">Nguồn dữ liệu</span>
+          <span class="hero__meta-value">Q2/2026 &middot; 14 sources</span>
+        </div>
+        <div class="hero__meta-item">
+          <span class="hero__meta-label">Classification</span>
+          <span class="hero__meta-value">Internal — Confidential</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Global Market Overview -->
+  <section class="section" id="market">
+    <div class="cds-grid">
+      <p class="section__eyebrow">Section 01</p>
+      <h2 class="section__title">Thị trường AI Inference toàn cầu</h2>
+      <p class="section__subtitle">
+        Suy luận AI là phân khúc tăng trưởng nhanh và bền nhất, gắn với từng lần sử dụng chứ không chỉ một lần huấn luyện.
+      </p>
+
+      <div class="cols cols--4 mb-5">
+        <div class="stat-tile">
+          <span class="stat-tile__label">AI Inference toàn cầu 2025</span>
+          <span class="stat-tile__value">$106B</span>
+          <span class="stat-tile__delta stat-tile__delta--up">CAGR 19.2% &rarr; $255B (2030)</span>
+        </div>
+        <div class="stat-tile stat-tile--green">
+          <span class="stat-tile__label">Thị trường AI Việt Nam 2026</span>
+          <span class="stat-tile__value">$1B</span>
+          <span class="stat-tile__delta stat-tile__delta--up">CAGR 39% &rarr; $6.9B (2031)</span>
+        </div>
+        <div class="stat-tile stat-tile--teal">
+          <span class="stat-tile__label">Nhu cầu token toàn cầu 2030</span>
+          <span class="stat-tile__value">+3,400%</span>
+          <span class="stat-tile__unit">so với 2025 &middot; chiếm 2/3 tính toán AI</span>
+        </div>
+        <div class="stat-tile stat-tile--purple">
+          <span class="stat-tile__label">Mục tiêu GPU quốc gia VN</span>
+          <span class="stat-tile__value">250K</span>
+          <span class="stat-tile__unit">GPU by 2030 &middot; AI = 6% GDP</span>
+        </div>
+      </div>
+
+      <div class="cds-table-wrap">
+        <table class="cds-table">
+          <caption>Cuộc đua hạ tầng AI chủ quyền toàn cầu</caption>
+          <thead>
+            <tr>
+              <th>Quốc gia / Vùng</th>
+              <th>Dự án tiêu biểu</th>
+              <th>Quy mô đầu tư</th>
+              <th>Mục tiêu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">Mỹ</td>
+              <td>Stargate — siêu cụm tính toán AI</td>
+              <td class="num">~$500B</td>
+              <td>Dẫn đầu năng lực AI</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Ả Rập Xê Út</td>
+              <td>HUMAIN (PIF) — 600K GPU, 6.6GW</td>
+              <td class="num">~$100B</td>
+              <td>Compute exporter, đa dạng hóa KT</td>
+            </tr>
+            <tr>
+              <td class="fw-600">UAE</td>
+              <td>Stargate UAE — G42, OpenAI, Oracle</td>
+              <td class="num">$31–52B</td>
+              <td>Trung tâm AI khu vực</td>
+            </tr>
+            <tr>
+              <td class="fw-600">EU (Đức, Pháp, Anh)</td>
+              <td>Đám mây AI chủ quyền, GPU Blackwell</td>
+              <td class="num">$10B+</td>
+              <td>Tự chủ, giảm phụ thuộc Mỹ</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Ấn Độ</td>
+              <td>IndiaAI Mission, BharatGPT</td>
+              <td class="num">$2B+</td>
+              <td>Mô hình & hạ tầng nội địa</td>
+            </tr>
+            <tr>
+              <td class="fw-600">ASEAN</td>
+              <td>Đa quốc gia — DC boom</td>
+              <td class="num">$50B+</td>
+              <td>Hub tính toán khu vực</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Việt Nam</td>
+              <td>NVIDIA $4.5B, FPT AI Factory $200M</td>
+              <td class="num">$4.7B+</td>
+              <td>250K GPU, AI 6% GDP (2030)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notification notification--info">
+        <span class="notification__icon">&#9432;</span>
+        <div class="notification__content">
+          <div class="notification__title">Khoảng trống thị trường</div>
+          Hạ tầng tính toán (GPU, DC) đang được xây tại VN, nhưng lớp giữa — biến năng lực tính toán thành token bán được — vẫn còn trống. Đây chính là vị trí Token Factory nhắm tới.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Global Benchmark -->
+  <section class="section section--alt" id="benchmark">
+    <div class="cds-grid">
+      <p class="section__eyebrow">Section 02</p>
+      <h2 class="section__title">Benchmark — Ai đã làm thành công?</h2>
+      <p class="section__subtitle">
+        Mô hình "GPU infra &rarr; Inference serving &rarr; API gateway" đã được validate bởi nhiều công ty trị giá hàng tỷ USD.
+      </p>
+
+      <div class="cols cols--3 mb-5">
+        <div class="card">
+          <div class="card__eyebrow">IPO 03/2025 &middot; NASDAQ: CRWV</div>
+          <div class="card__title">CoreWeave</div>
+          <div class="card__number text-mono">$5.13B</div>
+          <div class="card__desc">
+            Doanh thu FY2025 (+168% YoY). Guided $12–13B FY2026.<br>
+            <strong>250,000+ GPU</strong> &middot; 2.9GW contracted<br>
+            Backlog: <strong>$104B</strong><br>
+            CapEx 2026: $31–35B
+          </div>
+          <div class="mt-3">
+            <span class="tag tag--green">Proven at scale</span>
+            <span class="tag tag--blue">Public company</span>
+          </div>
+        </div>
+        <div class="card card--teal">
+          <div class="card__eyebrow">Series C 07/2026 &middot; $8.3B valuation</div>
+          <div class="card__title">Together AI</div>
+          <div class="card__number text-mono">$1B ARR</div>
+          <div class="card__desc">
+            Annualized revenue hit $1B (02/2026).<br>
+            Raised $800M (Aramco, NVIDIA, Vista).<br>
+            Serverless API + Dedicated GPU + Instant Cluster.<br>
+            IPO expected &mdash; "a matter of timing."
+          </div>
+          <div class="mt-3">
+            <span class="tag tag--green">Revenue proven</span>
+            <span class="tag tag--purple">Inference-focused</span>
+          </div>
+        </div>
+        <div class="card card--purple">
+          <div class="card__eyebrow">Series E 11/2025 &middot; $5.9B &rarr; $12B+ (2026)</div>
+          <div class="card__title">Lambda Labs</div>
+          <div class="card__number text-mono">~$700M</div>
+          <div class="card__desc">
+            Revenue 2025 (+65% YoY). Guided >$1.5B (2026).<br>
+            Raised $1.5B Series E.<br>
+            In talks for $3B pre-IPO at $12B+ valuation.<br>
+            GPU cloud + on-prem clusters.
+          </div>
+          <div class="mt-3">
+            <span class="tag tag--green">High growth</span>
+            <span class="tag tag--teal">GPU cloud</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cols cols--3 mb-5">
+        <div class="card card--dark">
+          <div class="card__eyebrow" style="color: var(--cds-gray-50);">Saudi Arabia &middot; PIF</div>
+          <div class="card__title">HUMAIN</div>
+          <div class="card__number text-mono" style="color: var(--cds-cyan-40);">$100B</div>
+          <div class="card__desc">
+            600,000 GPU target &middot; 6.6GW by 2034.<br>
+            11 data centers (2.2GW).<br>
+            AMD $10B + xAI $3B partnerships.<br>
+            Production compute live: 08/2026.
+          </div>
+          <div class="mt-3">
+            <span class="tag tag--blue">Sovereign model</span>
+          </div>
+        </div>
+        <div class="card card--dark card--teal">
+          <div class="card__eyebrow" style="color: var(--cds-gray-50);">UAE &middot; G42 + OpenAI + Oracle</div>
+          <div class="card__title">Stargate UAE</div>
+          <div class="card__number text-mono" style="color: var(--cds-teal-40);">1GW</div>
+          <div class="card__desc">
+            200MW online in 2026.<br>
+            Microsoft invested $1.5B in G42.<br>
+            Core42 Sovereign AI Cloud: H100/H200/B200.<br>
+            BIS Tier 2: ~50K H100-eq cap/importer.
+          </div>
+          <div class="mt-3">
+            <span class="tag tag--blue">Sovereign model</span>
+          </div>
+        </div>
+        <div class="card card--dark card--green">
+          <div class="card__eyebrow" style="color: var(--cds-gray-50);">EU &middot; France</div>
+          <div class="card__title">Scaleway / OVHcloud</div>
+          <div class="card__number text-mono" style="color: var(--cds-green-40);">EU-only</div>
+          <div class="card__desc">
+            Scaleway: EU Cloud III framework (&#8364;180M).<br>
+            Airbus sovereign defense deal (2026).<br>
+            OVHcloud: H100 $2.99/hr, free egress.<br>
+            Data stays in EU jurisdiction.
+          </div>
+          <div class="mt-3">
+            <span class="tag tag--blue">Sovereign model</span>
+            <span class="tag tag--teal">EU compliance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="notification notification--success">
+        <span class="notification__icon">&#10003;</span>
+        <div class="notification__content">
+          <div class="notification__title">Verdict: Mô hình đã proven</div>
+          CoreWeave đạt $5B revenue với 168% tăng trưởng. Together AI đạt $1B ARR chỉ từ inference API. HUMAIN và Stargate UAE chứng minh mô hình sovereign AI infra được các quốc gia đầu tư hàng trăm tỷ USD.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: CapEx -->
+  <section class="section" id="capex">
+    <div class="cds-grid">
+      <p class="section__eyebrow">Section 03</p>
+      <h2 class="section__title">Dự toán đầu tư hạ tầng (CapEx)</h2>
+      <p class="section__subtitle">
+        Chi phí xây dựng Token Factory theo 3 giai đoạn, dựa trên giá GPU và hạ tầng thực tế Q2/2026.
+      </p>
+
+      <!-- GPU Pricing -->
+      <div class="cds-table-wrap">
+        <table class="cds-table cds-table--compact">
+          <caption>Giá GPU NVIDIA hiện tại (Q2/2026)</caption>
+          <thead>
+            <tr>
+              <th>GPU</th>
+              <th class="right">Giá mới / card</th>
+              <th class="right">Giá secondhand</th>
+              <th class="right">Hệ thống 8-GPU</th>
+              <th>TDP / card</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">H100 SXM 80GB</td>
+              <td class="num">$25,000–$40,000</td>
+              <td class="num">$12,000–$18,000</td>
+              <td class="num">$250K–$320K</td>
+              <td>700W</td>
+              <td>Giá giảm liên tục từ peak $40K+ (2023)</td>
+            </tr>
+            <tr>
+              <td class="fw-600">H200</td>
+              <td class="num">$30,000–$40,000</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num">~$315K</td>
+              <td>700W</td>
+              <td>HBM3e, inference throughput tốt hơn H100</td>
+            </tr>
+            <tr>
+              <td class="fw-600">B200</td>
+              <td class="num">$30,000–$50,000</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num">~$275K (DGX)</td>
+              <td>1,000W</td>
+              <td>3x throughput vs H200, cần liquid cooling</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Phase Timeline -->
+      <h3 class="section__title" style="font-size: 20px; margin-top: 2rem; margin-bottom: 1.5rem;">Lộ trình 3 giai đoạn</h3>
+      <div class="timeline">
+        <div class="timeline__phase">
+          <div class="timeline__label">Phase 1 &middot; Tháng 1–12</div>
+          <div class="timeline__title">Pilot</div>
+          <div class="timeline__detail">
+            128 GPU H100<br>
+            16 server (8-GPU DGX)<br>
+            DC colocation trong nước<br>
+            Serve 5–10 khách enterprise
+          </div>
+          <div class="timeline__cost">$5–8M</div>
+        </div>
+        <div class="timeline__phase">
+          <div class="timeline__label">Phase 2 &middot; Tháng 12–24</div>
+          <div class="timeline__title">Scale</div>
+          <div class="timeline__detail">
+            1,000 GPU H100/H200<br>
+            125 server, InfiniBand backbone<br>
+            Dedicated DC space + cooling<br>
+            Multi-tenant, 50+ customers
+          </div>
+          <div class="timeline__cost">$40–60M</div>
+        </div>
+        <div class="timeline__phase">
+          <div class="timeline__label">Phase 3 &middot; Tháng 24–36</div>
+          <div class="timeline__title">National</div>
+          <div class="timeline__detail">
+            5,000+ GPU (H200/B200)<br>
+            Multi-DC, HA/DR<br>
+            Government-grade isolation<br>
+            Marketplace + developer ecosystem
+          </div>
+          <div class="timeline__cost">$200–300M</div>
+        </div>
+      </div>
+
+      <!-- CapEx Breakdown -->
+      <div class="cds-table-wrap">
+        <table class="cds-table">
+          <caption>Chi tiết CapEx theo giai đoạn</caption>
+          <thead>
+            <tr>
+              <th>Hạng mục</th>
+              <th class="right">Phase 1 — Pilot</th>
+              <th class="right">Phase 2 — Scale</th>
+              <th class="right">Phase 3 — National</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">GPU (card)</td>
+              <td class="num">$3.2–5.1M</td>
+              <td class="num">$25–40M</td>
+              <td class="num">$125–200M</td>
+            </tr>
+            <tr>
+              <td>Server chassis & components</td>
+              <td class="num">$0.5–0.8M</td>
+              <td class="num">$3–5M</td>
+              <td class="num">$15–25M</td>
+            </tr>
+            <tr>
+              <td>Networking (InfiniBand/RoCE)</td>
+              <td class="num">$0.3–0.5M</td>
+              <td class="num">$3–5M</td>
+              <td class="num">$15–20M</td>
+            </tr>
+            <tr>
+              <td>Storage (NVMe, tiered)</td>
+              <td class="num">$0.2–0.3M</td>
+              <td class="num">$2–3M</td>
+              <td class="num">$8–12M</td>
+            </tr>
+            <tr>
+              <td>DC space, power, cooling</td>
+              <td class="num">$0.5–1.0M</td>
+              <td class="num">$5–8M</td>
+              <td class="num">$25–35M</td>
+            </tr>
+            <tr>
+              <td>Software & platform dev</td>
+              <td class="num">$0.3–0.5M</td>
+              <td class="num">$2–3M</td>
+              <td class="num">$8–12M</td>
+            </tr>
+            <tr style="background: var(--cds-gray-10); font-weight: 600;">
+              <td>TỔNG CAPEX</td>
+              <td class="num highlight">$5–8M</td>
+              <td class="num highlight">$40–60M</td>
+              <td class="num highlight">$200–300M</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notification notification--warning mt-5">
+        <span class="notification__icon">&#9888;</span>
+        <div class="notification__content">
+          <div class="notification__title">So sánh quy mô đầu tư</div>
+          FPT AI Factory: $200M &middot; HUMAIN (Saudi): $100B &middot; CoreWeave CapEx 2026: $31–35B. Phase 1 của Token Factory ($5–8M) rất khiêm tốn — đủ để validate mô hình. Phase 3 ($200–300M) tương đương FPT AI Factory và cần backing từ consortium.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: OpEx & Unit Economics -->
+  <section class="section section--alt" id="opex">
+    <div class="cds-grid">
+      <p class="section__eyebrow">Section 04</p>
+      <h2 class="section__title">Chi phí vận hành & Unit Economics</h2>
+      <p class="section__subtitle">
+        Phân tích chi phí sản xuất token, so sánh với giá bán API quốc tế, và lợi thế giá điện Việt Nam.
+      </p>
+
+      <!-- Electricity Advantage -->
+      <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 1rem;">Lợi thế giá điện Việt Nam</h3>
+      <div class="cds-table-wrap">
+        <table class="cds-table cds-table--compact">
+          <caption>Chi phí điện hàng năm cho cụm 1,000 GPU H100 (1.76MW liên tục)</caption>
+          <thead>
+            <tr>
+              <th>Địa điểm</th>
+              <th class="right">Giá điện / kWh</th>
+              <th class="right">Chi phí điện / năm</th>
+              <th class="right">So với VN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: #defbe6;">
+              <td class="fw-600">Việt Nam (CN, cao áp)</td>
+              <td class="num">$0.06–0.08</td>
+              <td class="num highlight">$930K–$1.24M</td>
+              <td class="num">&mdash;</td>
+            </tr>
+            <tr>
+              <td>Mỹ (median thương mại)</td>
+              <td class="num">$0.12</td>
+              <td class="num">$1.83M</td>
+              <td class="num" style="color: var(--cds-red-60);">+50–97%</td>
+            </tr>
+            <tr>
+              <td>California</td>
+              <td class="num">$0.20</td>
+              <td class="num">$3.05M</td>
+              <td class="num" style="color: var(--cds-red-60);">+146–228%</td>
+            </tr>
+            <tr>
+              <td>Đức</td>
+              <td class="num">$0.20–0.25</td>
+              <td class="num">$3.05–3.80M</td>
+              <td class="num" style="color: var(--cds-red-60);">+146–309%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cols cols--2 mb-5">
+        <div class="stat-tile stat-tile--green">
+          <span class="stat-tile__label">Tiết kiệm vs. Mỹ</span>
+          <span class="stat-tile__value">35–50%</span>
+          <span class="stat-tile__unit">chi phí điện công nghiệp thấp hơn</span>
+        </div>
+        <div class="stat-tile stat-tile--teal">
+          <span class="stat-tile__label">Tiết kiệm từ liquid cooling</span>
+          <span class="stat-tile__value">$1.18M</span>
+          <span class="stat-tile__unit">/ 3 năm khi giảm PUE từ 1.45 &rarr; 1.15</span>
+        </div>
+      </div>
+
+      <!-- Annual OpEx Breakdown -->
+      <div class="cds-table-wrap">
+        <table class="cds-table">
+          <caption>OpEx hàng năm — Cụm 1,000 GPU H100 tại Việt Nam</caption>
+          <thead>
+            <tr>
+              <th>Hạng mục</th>
+              <th class="right">Chi phí / năm</th>
+              <th class="right">% tổng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">Điện năng</td>
+              <td class="num">$930K–$1.24M</td>
+              <td class="num">25–27%</td>
+            </tr>
+            <tr>
+              <td>Bảo trì phần cứng (~5% CapEx)</td>
+              <td class="num">$1.5–2.0M</td>
+              <td class="num">35–40%</td>
+            </tr>
+            <tr>
+              <td>Nhân sự (20–30 kỹ sư)</td>
+              <td class="num">$600K–$1.2M</td>
+              <td class="num">15–22%</td>
+            </tr>
+            <tr>
+              <td>Băng thông mạng</td>
+              <td class="num">$200–400K</td>
+              <td class="num">5–8%</td>
+            </tr>
+            <tr>
+              <td>Phần mềm & license</td>
+              <td class="num">$200–500K</td>
+              <td class="num">5–9%</td>
+            </tr>
+            <tr style="background: var(--cds-gray-10); font-weight: 600;">
+              <td>TỔNG OPEX / NĂM</td>
+              <td class="num highlight">$3.5–5.5M</td>
+              <td class="num">100%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Token Production -->
+      <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 1rem;">Năng lực sản xuất token</h3>
+      <div class="cds-table-wrap">
+        <table class="cds-table cds-table--compact">
+          <caption>Throughput inference — 1,000 GPU H100</caption>
+          <thead>
+            <tr>
+              <th>Mô hình</th>
+              <th>Config</th>
+              <th class="right">tok/s per GPU</th>
+              <th class="right">Tổng 1,000 GPU</th>
+              <th class="right">Token / tháng</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">Llama 70B</td>
+              <td>1 GPU, TensorRT-LLM optimized</td>
+              <td class="num">250–300</td>
+              <td class="num">250K–300K tok/s</td>
+              <td class="num highlight">650–780T</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Llama 70B</td>
+              <td>4 GPU, 500 concurrent users</td>
+              <td class="num">1,750 / 4-GPU</td>
+              <td class="num">437K tok/s</td>
+              <td class="num highlight">~1,130T</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Llama 405B</td>
+              <td>8 GPU (FP8), typical workload</td>
+              <td class="num">250–562 / 8-GPU</td>
+              <td class="num">31K–70K tok/s</td>
+              <td class="num">80–181T</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Pricing Comparison -->
+      <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 1rem;">So sánh giá token: API quốc tế vs. Tự sản xuất</h3>
+      <div class="cds-table-wrap">
+        <table class="cds-table">
+          <caption>Giá bán / 1M token output (Q2/2026)</caption>
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Mô hình</th>
+              <th class="right">Input / 1M tok</th>
+              <th class="right">Output / 1M tok</th>
+              <th>Loại</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI</td>
+              <td>GPT-4.1</td>
+              <td class="num">$2.00</td>
+              <td class="num">$8.00</td>
+              <td><span class="tag tag--gray">Proprietary</span></td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude 4 Sonnet</td>
+              <td class="num">$3.00</td>
+              <td class="num">$15.00</td>
+              <td><span class="tag tag--gray">Proprietary</span></td>
+            </tr>
+            <tr>
+              <td>Anthropic</td>
+              <td>Claude Opus 4</td>
+              <td class="num">$15.00</td>
+              <td class="num">$75.00</td>
+              <td><span class="tag tag--gray">Proprietary</span></td>
+            </tr>
+            <tr>
+              <td>Google</td>
+              <td>Gemini 2.5 Pro</td>
+              <td class="num">$1.25</td>
+              <td class="num">$10.00</td>
+              <td><span class="tag tag--gray">Proprietary</span></td>
+            </tr>
+            <tr>
+              <td>Together AI / Fireworks</td>
+              <td>Llama 4 70B</td>
+              <td class="num" colspan="2">$0.20–0.60 blended</td>
+              <td><span class="tag tag--blue">Open-weight</span></td>
+            </tr>
+            <tr>
+              <td>DeepSeek</td>
+              <td>V4 Flash</td>
+              <td class="num" colspan="2">~$0.28 blended</td>
+              <td><span class="tag tag--blue">Open-weight</span></td>
+            </tr>
+            <tr style="background: #defbe6;">
+              <td class="fw-600">Token Factory (ước tính)</td>
+              <td>Open-weight models</td>
+              <td class="num highlight" colspan="2">$0.05–0.15 blended</td>
+              <td><span class="tag tag--green">Self-hosted</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cols cols--3 mt-5 mb-5">
+        <div class="stat-tile">
+          <span class="stat-tile__label">Breakeven volume</span>
+          <span class="stat-tile__value">11B</span>
+          <span class="stat-tile__unit">token / tháng (~500M/ngày)</span>
+        </div>
+        <div class="stat-tile stat-tile--green">
+          <span class="stat-tile__label">Margin tiềm năng (vs API ngoài)</span>
+          <span class="stat-tile__value">50–70%</span>
+          <span class="stat-tile__unit">khi bán rẻ hơn 30–50% so với proprietary</span>
+        </div>
+        <div class="stat-tile stat-tile--yellow">
+          <span class="stat-tile__label">API giá giảm YoY</span>
+          <span class="stat-tile__value">~80%</span>
+          <span class="stat-tile__unit">từ đầu 2025 &rarr; đầu 2026</span>
+        </div>
+      </div>
+
+      <div class="notification notification--warning">
+        <span class="notification__icon">&#9888;</span>
+        <div class="notification__content">
+          <div class="notification__title">Cảnh báo: Giá API đang giảm rất nhanh</div>
+          Giá inference API quốc tế giảm ~80% trong 12 tháng (2025&rarr;2026). Window cạnh tranh bằng giá đang hẹp dần. Token Factory cần cạnh tranh bằng <strong>data sovereignty + compliance + tùy chỉnh nghiệp vụ</strong>, không chỉ bằng giá.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: GPU Cloud Rental Benchmark -->
+  <section class="section" id="rental">
+    <div class="cds-grid">
+      <p class="section__eyebrow">Section 05</p>
+      <h2 class="section__title">Benchmark giá thuê GPU cloud</h2>
+      <p class="section__subtitle">
+        Giá thuê GPU trên các nền tảng inference toàn cầu — mặt bằng giá Token Factory cần cạnh tranh hoặc differentiate.
+      </p>
+
+      <div class="cds-table-wrap">
+        <table class="cds-table cds-table--compact">
+          <caption>Giá thuê GPU / giờ — On-demand (Q2/2026)</caption>
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Segment</th>
+              <th class="right">H100 / hr</th>
+              <th class="right">H200 / hr</th>
+              <th class="right">B200 / hr</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">Vast.ai</td>
+              <td><span class="tag tag--teal">Marketplace</span></td>
+              <td class="num">~$1.49</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num text-muted">&mdash;</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Together AI</td>
+              <td><span class="tag tag--purple">Instant Cluster</span></td>
+              <td class="num">$1.76–2.39</td>
+              <td class="num">$3.15–3.79</td>
+              <td class="num">$4.00–5.50</td>
+            </tr>
+            <tr>
+              <td class="fw-600">RunPod</td>
+              <td><span class="tag tag--teal">Cloud GPU</span></td>
+              <td class="num">$1.99–2.89</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num">~$8.64</td>
+            </tr>
+            <tr>
+              <td class="fw-600">CoreWeave</td>
+              <td><span class="tag tag--blue">Reserved</span></td>
+              <td class="num">~$2.21</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num text-muted">&mdash;</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Lambda Labs</td>
+              <td><span class="tag tag--teal">Cloud GPU</span></td>
+              <td class="num">$2.49–3.99</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num">~$6.99</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Scaleway</td>
+              <td><span class="tag tag--blue">EU Sovereign</span></td>
+              <td class="num">~&#8364;2.87</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num text-muted">&mdash;</td>
+            </tr>
+            <tr>
+              <td class="fw-600">OVHcloud</td>
+              <td><span class="tag tag--blue">EU Sovereign</span></td>
+              <td class="num">~$2.99</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num text-muted">&mdash;</td>
+            </tr>
+            <tr>
+              <td>AWS (Capacity Blocks)</td>
+              <td><span class="tag tag--gray">Hyperscaler</span></td>
+              <td class="num">$3.93–5.19</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num text-muted">&mdash;</td>
+            </tr>
+            <tr>
+              <td>Azure</td>
+              <td><span class="tag tag--gray">Hyperscaler</span></td>
+              <td class="num">$6.98–12.29</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num text-muted">&mdash;</td>
+            </tr>
+            <tr>
+              <td>Google Cloud</td>
+              <td><span class="tag tag--gray">Hyperscaler</span></td>
+              <td class="num">$10.98–11.06</td>
+              <td class="num text-muted">&mdash;</td>
+              <td class="num text-muted">&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notification notification--info">
+        <span class="notification__icon">&#9432;</span>
+        <div class="notification__content">
+          Giá trung bình H100 trên thị trường: <strong>~$3.11/hr</strong> (Q1/2026). Hợp đồng 1 năm: $1.70/hr (10/2025) &rarr; $2.35/hr (03/2026) do nhu cầu multi-agent inference tăng mạnh.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: Feasibility Scoring -->
+  <section class="section section--alt" id="scoring">
+    <div class="cds-grid">
+      <p class="section__eyebrow">Section 06</p>
+      <h2 class="section__title">Đánh giá tính khả thi tổng hợp</h2>
+      <p class="section__subtitle">
+        Scoring 6 khía cạnh chính: kỹ thuật, tài chính (pilot &amp; scale), thị trường, cạnh tranh, và chính sách.
+      </p>
+
+      <!-- Score Bars -->
+      <div style="max-width: 720px; margin-bottom: 2.5rem;">
+        <div class="score-row">
+          <span class="score-row__label">Kỹ thuật</span>
+          <div class="score-bar"><div class="score-bar__fill score-bar__fill--high" style="width: 80%;"></div></div>
+          <span class="score-row__value" style="color: var(--cds-green-50);">8/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Chính sách & Pháp lý</span>
+          <div class="score-bar"><div class="score-bar__fill score-bar__fill--high" style="width: 80%;"></div></div>
+          <span class="score-row__value" style="color: var(--cds-green-50);">8/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Tài chính — Phase 1</span>
+          <div class="score-bar"><div class="score-bar__fill score-bar__fill--high" style="width: 70%;"></div></div>
+          <span class="score-row__value" style="color: var(--cds-green-50);">7/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Thị trường</span>
+          <div class="score-bar"><div class="score-bar__fill score-bar__fill--mid" style="width: 60%;"></div></div>
+          <span class="score-row__value" style="color: #684e00;">6/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Cạnh tranh</span>
+          <div class="score-bar"><div class="score-bar__fill score-bar__fill--mid" style="width: 50%;"></div></div>
+          <span class="score-row__value" style="color: #684e00;">5/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row__label">Tài chính — Phase 3</span>
+          <div class="score-bar"><div class="score-bar__fill score-bar__fill--low" style="width: 40%;"></div></div>
+          <span class="score-row__value" style="color: var(--cds-red-50);">4/10</span>
+        </div>
+      </div>
+
+      <!-- Detail Cards -->
+      <div class="cols cols--3 mb-5">
+        <div class="card card--green">
+          <div class="card__eyebrow">8/10 &middot; Khả thi cao</div>
+          <div class="card__title">Kỹ thuật</div>
+          <div class="card__desc">
+            <ul style="margin-top: 8px; padding-left: 1.25rem;">
+              <li>Inference stack (vLLM, TensorRT-LLM, SGLang) 100% open-source, mature</li>
+              <li>Multi-model serving: Kubernetes + Ray Serve + Triton</li>
+              <li>API gateway + billing: commodity, nhiều open-source</li>
+              <li>Mô hình tiếng Việt: Viettel AI, VinAI có foundation models</li>
+            </ul>
+          </div>
+          <div class="mt-3"><span class="tag tag--green">Không có rào cản impossible</span></div>
+        </div>
+        <div class="card card--green">
+          <div class="card__eyebrow">8/10 &middot; Thuận lợi</div>
+          <div class="card__title">Chính sách & Pháp lý</div>
+          <div class="card__desc">
+            <ul style="margin-top: 8px; padding-left: 1.25rem;">
+              <li>Chiến lược AI quốc gia: 250K GPU, 6% GDP by 2030</li>
+              <li>Quy định data sovereignty đang siết chặt</li>
+              <li>NVIDIA $4.5B commitment vào VN</li>
+              <li>Giá điện CN ưu đãi cho FDI / dự án công nghệ cao</li>
+            </ul>
+          </div>
+          <div class="mt-3"><span class="tag tag--green">Aligned với chiến lược quốc gia</span></div>
+        </div>
+        <div class="card">
+          <div class="card__eyebrow">7/10 &middot; Khả thi</div>
+          <div class="card__title">Tài chính — Phase 1</div>
+          <div class="card__desc">
+            <ul style="margin-top: 8px; padding-left: 1.25rem;">
+              <li>$5–8M cho pilot 128 GPU — reasonable cho DN VN có backing</li>
+              <li>H100 secondhand ($12–18K) giảm CapEx xuống ~$3–4M</li>
+              <li>Prove unit economics trước khi scale</li>
+              <li>So sánh: Together AI Series A chỉ $20M (2022)</li>
+            </ul>
+          </div>
+          <div class="mt-3"><span class="tag tag--green">Entry cost hợp lý</span></div>
+        </div>
+      </div>
+
+      <div class="cols cols--3">
+        <div class="card card--yellow">
+          <div class="card__eyebrow">6/10 &middot; Có điều kiện</div>
+          <div class="card__title">Thị trường</div>
+          <div class="card__desc">
+            <ul style="margin-top: 8px; padding-left: 1.25rem;">
+              <li><span class="tag tag--green" style="font-size: 11px;">+</span> Nhu cầu sovereign AI có thật (ngân hàng, chính phủ, quốc phòng)</li>
+              <li><span class="tag tag--green" style="font-size: 11px;">+</span> AI VN CAGR 39% &rarr; $6.9B (2031)</li>
+              <li><span class="tag tag--red" style="font-size: 11px;">&minus;</span> DN VN phần lớn dùng ít token</li>
+              <li><span class="tag tag--red" style="font-size: 11px;">&minus;</span> Sales cycle enterprise rất dài (6–12 tháng)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card card--yellow">
+          <div class="card__eyebrow">5/10 &middot; Thách thức</div>
+          <div class="card__title">Cạnh tranh</div>
+          <div class="card__desc">
+            <ul style="margin-top: 8px; padding-left: 1.25rem;">
+              <li><span class="tag tag--red" style="font-size: 11px;">&minus;</span> FPT AI Factory đã đi trước ($200M, NVIDIA backing)</li>
+              <li><span class="tag tag--red" style="font-size: 11px;">&minus;</span> Viettel AI có infra + khách hàng chính phủ</li>
+              <li><span class="tag tag--red" style="font-size: 11px;">&minus;</span> API nước ngoài giá giảm 80% / năm</li>
+              <li><span class="tag tag--red" style="font-size: 11px;">&minus;</span> Hyperscaler mở region ASEAN</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card card--red">
+          <div class="card__eyebrow">4/10 &middot; Rủi ro cao</div>
+          <div class="card__title">Tài chính — Phase 3</div>
+          <div class="card__desc">
+            <ul style="margin-top: 8px; padding-left: 1.25rem;">
+              <li>$200–300M — rất khó nếu không có nhà nước / tập đoàn lớn</li>
+              <li>Cần consortium: telco + bank + government</li>
+              <li>GPU depreciation nhanh (3 năm)</li>
+              <li>Revenue cần cover CapEx + OpEx trong 3–5 năm</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Vietnam Competitive Landscape -->
+      <h3 style="font-size: 20px; font-weight: 400; margin-bottom: 1.5rem;">Bức tranh cạnh tranh tại Việt Nam</h3>
+      <div class="cds-table-wrap">
+        <table class="cds-table">
+          <caption>Đối thủ trực tiếp và gián tiếp</caption>
+          <thead>
+            <tr>
+              <th>Đối thủ</th>
+              <th>Lợi thế</th>
+              <th>Hạn chế</th>
+              <th>Mối đe dọa</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">FPT AI Factory</td>
+              <td>$200M, NVIDIA backing, tệp khách hàng lớn, đi trước 2 năm</td>
+              <td>Chưa rõ mô hình bán token-as-a-service, focus internal</td>
+              <td><span class="tag tag--red">Cao</span></td>
+            </tr>
+            <tr>
+              <td class="fw-600">Viettel AI</td>
+              <td>Infra telco sẵn, khách hàng chính phủ + quốc phòng, defense clearance</td>
+              <td>Tốc độ innovation chậm, bureaucracy</td>
+              <td><span class="tag tag--red">Cao</span></td>
+            </tr>
+            <tr>
+              <td class="fw-600">API nước ngoài</td>
+              <td>Giá rẻ và giảm liên tục, model chất lượng cao nhất, zero CapEx</td>
+              <td>Không đáp ứng data sovereignty, rủi ro "khóa van"</td>
+              <td><span class="tag tag--yellow">Trung bình</span></td>
+            </tr>
+            <tr>
+              <td class="fw-600">Hyperscaler (AWS/Azure/GCP)</td>
+              <td>Scale khổng lồ, có/sắp có region ASEAN, ecosystem mature</td>
+              <td>Giá cao, dữ liệu vẫn trên infra nước ngoài</td>
+              <td><span class="tag tag--yellow">Trung bình</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr class="divider">
+
+      <!-- NVIDIA VN -->
+      <h3 style="font-size: 20px; font-weight: 400; margin-bottom: 1.5rem;">NVIDIA tại Việt Nam — Chi tiết cam kết $4–4.5B</h3>
+      <div class="cols cols--2">
+        <div>
+          <div class="cds-table-wrap">
+            <table class="cds-table cds-table--compact">
+              <thead>
+                <tr>
+                  <th>Hạng mục</th>
+                  <th>Chi tiết</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fw-600">Tổng cam kết</td>
+                  <td>$4–4.5B / 4 năm (MOU 12/2024)</td>
+                </tr>
+                <tr>
+                  <td class="fw-600">R&D Center</td>
+                  <td>Trung tâm R&D AI thứ 3 trên toàn cầu</td>
+                </tr>
+                <tr>
+                  <td class="fw-600">FPT AI Factory</td>
+                  <td>$200M, Hà Nội, phase 1 hoạt động 11/2024</td>
+                </tr>
+                <tr>
+                  <td class="fw-600">Viettel AI DC</td>
+                  <td>Mở rộng infra NVIDIA-powered</td>
+                </tr>
+                <tr>
+                  <td class="fw-600">VinBrain</td>
+                  <td>NVIDIA mua lại (AI y tế — DrAid)</td>
+                </tr>
+                <tr>
+                  <td class="fw-600">Supply chain</td>
+                  <td>Foxconn — GPU manufacturing partner tiềm năng</td>
+                </tr>
+                <tr>
+                  <td class="fw-600">Việc làm</td>
+                  <td>~4,000 trực tiếp, 40–50K gián tiếp</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="notification notification--info" style="height: 100%;">
+            <div class="notification__content">
+              <div class="notification__title">Ý nghĩa cho Token Factory</div>
+              <p style="margin-top: 8px; line-height: 1.6;">
+                NVIDIA đang xây <strong>hệ sinh thái GPU tại VN</strong> — từ R&D, sản xuất đến ứng dụng. Điều này tạo môi trường thuận lợi cho Token Factory:
+              </p>
+              <ul style="margin-top: 8px; padding-left: 1.25rem; line-height: 1.8;">
+                <li>Nguồn cung GPU có thể mua trong nước</li>
+                <li>Pool nhân lực kỹ sư AI đang được đào tạo</li>
+                <li>Nhưng cũng có nghĩa FPT + Viettel đã nhận ưu đãi từ NVIDIA trước</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 7: Risk Matrix -->
+  <section class="section" id="risks">
+    <div class="cds-grid">
+      <p class="section__eyebrow">Section 07</p>
+      <h2 class="section__title">Ma trận rủi ro</h2>
+
+      <div class="cds-table-wrap">
+        <table class="cds-table">
+          <caption>Rủi ro chính và mức độ ảnh hưởng</caption>
+          <thead>
+            <tr>
+              <th>Rủi ro</th>
+              <th>Xác suất</th>
+              <th>Impact</th>
+              <th>Mô tả</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">Giá API quốc tế tiếp tục giảm mạnh</td>
+              <td><span class="tag tag--red">Cao</span></td>
+              <td><span class="tag tag--red">Cao</span></td>
+              <td>Giảm 80%/năm — nếu tiếp tục, lợi thế giá của self-hosting bị xói mòn. Cạnh tranh bằng sovereignty thay vì giá.</td>
+            </tr>
+            <tr>
+              <td class="fw-600">FPT / Viettel chiếm thị phần sovereign trước</td>
+              <td><span class="tag tag--red">Cao</span></td>
+              <td><span class="tag tag--red">Cao</span></td>
+              <td>Đã có hạ tầng, quan hệ chính phủ, NVIDIA backing. Token Factory cần differentiation rõ.</td>
+            </tr>
+            <tr>
+              <td class="fw-600">GPU depreciation nhanh</td>
+              <td><span class="tag tag--red">Cao</span></td>
+              <td><span class="tag tag--yellow">Trung bình</span></td>
+              <td>H100 giảm từ $40K &rarr; $12K (secondhand) trong 2 năm. CapEx cần recover trong 2–3 năm, không phải 5.</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Nhu cầu thực tế thấp hơn dự báo</td>
+              <td><span class="tag tag--yellow">Trung bình</span></td>
+              <td><span class="tag tag--red">Cao</span></td>
+              <td>DN VN có thể adopt AI chậm hơn kỳ vọng. Phase 1 pilot giúp validate trước khi commit lớn.</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Thiếu nhân lực senior ML/Infra</td>
+              <td><span class="tag tag--yellow">Trung bình</span></td>
+              <td><span class="tag tag--yellow">Trung bình</span></td>
+              <td>Cần 20–30 kỹ sư senior. VN có pool nhưng cạnh tranh talent với FPT, Viettel, NVIDIA.</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Thay đổi chính sách xuất khẩu GPU (BIS)</td>
+              <td><span class="tag tag--green">Thấp</span></td>
+              <td><span class="tag tag--red">Cao</span></td>
+              <td>VN chưa bị hạn chế, nhưng nếu bị đưa vào Tier hạn chế — mua GPU mới sẽ rất khó.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="cds-grid">
+      <div class="footer__inner">
+        <div>
+          <strong style="color: var(--cds-white);">Astral-X</strong> &middot; Token Factory Feasibility Assessment &middot; v1.0
+        </div>
+        <div>
+          Internal &middot; Confidential &middot; 19.09.2026
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menuBtn').addEventListener('click', function() {
+      document.getElementById('headerNav').classList.toggle('is-open');
+    });
+    document.querySelectorAll('#headerNav a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        document.getElementById('headerNav').classList.remove('is-open');
+      });
+    });
+  </script>
+
+</body>
+</html>
