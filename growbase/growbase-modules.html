@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrowBase — Bản đồ Module</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cds-blue-60: #0f62fe;
+      --cds-blue-70: #0043ce;
+      --cds-blue-10: #edf5ff;
+      --cds-blue-20: #d0e2ff;
+      --cds-gray-100: #161616;
+      --cds-gray-90: #262626;
+      --cds-gray-80: #393939;
+      --cds-gray-70: #525252;
+      --cds-gray-50: #8d8d8d;
+      --cds-gray-30: #c6c6c6;
+      --cds-gray-20: #e0e0e0;
+      --cds-gray-10: #f4f4f4;
+      --cds-white: #ffffff;
+      --cds-green-50: #24a148;
+      --cds-red-60: #da1e28;
+      --cds-yellow-30: #f1c21b;
+      --cds-purple-60: #8a3ffc;
+      --cds-teal-50: #009d9a;
+      --cds-cyan-50: #1192e8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'IBM Plex Sans', sans-serif; font-size: 1rem; line-height: 1.5; color: var(--cds-gray-100); background: var(--cds-white); }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 48px;
+      background: var(--cds-gray-100); z-index: 1000;
+      display: flex; align-items: center; padding: 0 1rem; gap: 0;
+    }
+    .nav-logo { font-size: 1rem; font-weight: 600; color: var(--cds-white); text-decoration: none; letter-spacing: .02em; flex-shrink: 0; }
+    .nav-links { display: flex; margin-left: 2rem; }
+    .nav-links a { color: var(--cds-gray-30); text-decoration: none; font-size: .875rem; padding: 0 1rem; height: 48px; display: flex; align-items: center; transition: background .15s, color .15s; }
+    .nav-links a:hover { color: var(--cds-white); background: var(--cds-gray-80); }
+    .nav-links a.active { color: var(--cds-white); border-bottom: 3px solid var(--cds-blue-60); }
+    .nav-hamburger { display: none; margin-left: auto; background: none; border: none; cursor: pointer; color: var(--cds-white); padding: .5rem; }
+    .nav-mobile-menu { display: none; position: fixed; top: 48px; left: 0; right: 0; background: var(--cds-gray-100); z-index: 999; flex-direction: column; }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a { color: var(--cds-gray-30); text-decoration: none; font-size: .875rem; padding: 1rem 1.5rem; border-bottom: 1px solid var(--cds-gray-80); }
+    .nav-mobile-menu a.active, .nav-mobile-menu a:hover { color: var(--cds-white); background: var(--cds-gray-80); }
+
+    /* ── HERO ── */
+    .hero { background: var(--cds-gray-90); padding: 3.5rem 1rem 2.5rem; margin-top: 48px; }
+    .hero-inner { max-width: 1312px; margin: 0 auto; }
+    .hero h1 { font-size: 2rem; font-weight: 400; color: var(--cds-white); margin-bottom: .375rem; }
+    .hero p { font-size: 1rem; color: var(--cds-gray-30); font-weight: 300; }
+
+    /* ── LAYOUT ── */
+    .main-wrapper { max-width: 1312px; margin: 0 auto; display: flex; padding: 0; }
+    .sidebar {
+      width: 256px; flex-shrink: 0;
+      position: sticky; top: 48px; height: calc(100vh - 48px); overflow-y: auto;
+      border-right: 1px solid var(--cds-gray-20); padding: 1.5rem 0;
+      display: none;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--cds-gray-30); border-radius: 2px; }
+    .sidebar-toc-title { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--cds-gray-50); padding: 0 1rem; margin-bottom: .75rem; }
+    .toc-group-link { display: flex; align-items: center; gap: .5rem; padding: .5rem 1rem; font-size: .875rem; font-weight: 600; color: var(--cds-gray-100); text-decoration: none; transition: background .15s; }
+    .toc-group-link:hover { background: var(--cds-gray-10); }
+    .toc-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .toc-modules { padding-left: .5rem; }
+    .toc-link { display: block; padding: .3rem 1rem; font-size: .8125rem; color: var(--cds-gray-70); text-decoration: none; border-left: 3px solid transparent; transition: all .15s; }
+    .toc-link:hover { color: var(--cds-gray-100); background: var(--cds-gray-10); }
+    .toc-link.active { color: var(--cds-blue-60); border-left-color: var(--cds-blue-60); background: var(--cds-blue-10); font-weight: 600; }
+
+    /* ── MOBILE TOC ── */
+    .mobile-toc { display: none; background: var(--cds-gray-10); border-bottom: 1px solid var(--cds-gray-20); }
+    .mobile-toc-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; background: none; border: none; cursor: pointer; font-size: .875rem; font-weight: 600; color: var(--cds-gray-100); padding: .875rem 1rem; }
+    .mobile-toc-toggle svg { transition: transform .2s; }
+    .mobile-toc-toggle.open svg { transform: rotate(180deg); }
+    .mobile-toc-body { display: none; padding: .5rem 0 1rem; border-top: 1px solid var(--cds-gray-20); }
+    .mobile-toc-body.open { display: block; }
+
+    /* ── CONTENT ── */
+    .content { flex: 1; min-width: 0; padding: 2rem 1.5rem 3rem; }
+    .section-anchor { scroll-margin-top: 64px; }
+
+    /* ── MODULE GROUP ── */
+    .module-group { margin-bottom: 3rem; }
+    .module-group + .module-group { border-top: 1px solid var(--cds-gray-20); padding-top: 2.5rem; }
+    .group-header { border-left: 5px solid var(--group-color, var(--cds-blue-60)); padding: 1.25rem 1.5rem; background: var(--cds-gray-10); margin-bottom: 1.5rem; }
+    .group-label { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+    .group-badge { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .75rem; font-weight: 700; flex-shrink: 0; }
+    .group-label-text { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .group-title { font-size: 1.75rem; font-weight: 400; color: var(--cds-gray-100); margin-bottom: .75rem; }
+    .group-description { font-size: .9375rem; color: var(--cds-gray-70); border-left: 3px solid var(--group-color, var(--cds-blue-60)); padding-left: .875rem; font-style: italic; line-height: 1.6; }
+
+    /* ── MODULE CARD ── */
+    .module-card {
+      background: var(--cds-white); border-left: 4px solid var(--group-color, var(--cds-blue-60));
+      box-shadow: 0 1px 3px rgba(0,0,0,.07); margin-bottom: 1.75rem;
+      opacity: 0; transform: translateY(14px); transition: opacity .4s, transform .4s, box-shadow .2s;
+    }
+    .module-card.visible { opacity: 1; transform: translateY(0); }
+    .module-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.11); }
+    .module-card-header { padding: 1.25rem 1.5rem .875rem; border-bottom: 1px solid var(--cds-gray-20); }
+    .module-code { font-family: 'IBM Plex Mono', monospace; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--code-color, var(--group-color, var(--cds-blue-60))); margin-bottom: .2rem; }
+    .module-title { font-size: 1.25rem; font-weight: 400; color: var(--cds-gray-100); margin-bottom: .2rem; }
+    .module-tagline { font-size: .875rem; color: var(--cds-gray-50); font-style: italic; }
+    .module-card-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .module-description { font-size: .9375rem; color: var(--cds-gray-70); line-height: 1.65; margin-bottom: 1.25rem; }
+    .module-section-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--cds-gray-100); margin-bottom: .625rem; margin-top: 1.25rem; }
+    .module-section-title:first-of-type { margin-top: 0; }
+
+    /* ── FEATURE LIST ── */
+    .feature-list { list-style: none; margin-bottom: 0; }
+    .feature-list li { display: flex; gap: .5rem; align-items: flex-start; padding: .3125rem 0; font-size: .875rem; color: var(--cds-gray-70); border-bottom: 1px solid var(--cds-gray-10); line-height: 1.45; }
+    .feature-list li:last-child { border-bottom: none; }
+    .check-icon { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; fill: var(--cds-green-50); }
+
+    /* ── AI PANEL ── */
+    .ai-panel { background: linear-gradient(135deg, #f5f0ff 0%, var(--cds-blue-10) 100%); border-left: 3px solid var(--cds-purple-60); padding: .875rem 1.125rem; border-radius: 0 4px 4px 0; }
+    .ai-panel-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--cds-purple-60); margin-bottom: .625rem; }
+    .ai-feature { padding: .5rem 0; font-size: .875rem; color: var(--cds-gray-80); border-bottom: 1px solid rgba(138,63,252,.1); line-height: 1.55; }
+    .ai-feature:last-child { border-bottom: none; padding-bottom: 0; }
+    .ai-feature strong { color: var(--cds-gray-100); font-weight: 600; }
+
+    /* ── CARBON TABLE ── */
+    .table-wrapper { overflow-x: auto; }
+    .carbon-table { width: 100%; border-collapse: collapse; font-size: .875rem; min-width: 400px; }
+    .carbon-table thead tr { background: var(--cds-gray-10); border-bottom: 2px solid var(--cds-gray-30); }
+    .carbon-table th { padding: .625rem 1rem; text-align: left; font-weight: 600; color: var(--cds-gray-100); white-space: nowrap; }
+    .carbon-table td { padding: .625rem 1rem; color: var(--cds-gray-70); border-bottom: 1px solid var(--cds-gray-20); vertical-align: top; }
+    .carbon-table tbody tr:hover { background: var(--cds-gray-10); }
+
+    /* ── ACTIVATION TAG ── */
+    .activation-row { display: flex; align-items: center; gap: .625rem; padding-top: .875rem; border-top: 1px solid var(--cds-gray-20); flex-wrap: wrap; }
+    .activation-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--cds-gray-50); }
+    .tag { display: inline-flex; align-items: center; padding: .2rem .75rem; border-radius: 999px; font-size: .75rem; font-weight: 600; }
+    .tag-always { background: #defbe6; color: var(--cds-green-50); }
+    .tag-month { background: var(--cds-blue-10); color: var(--cds-blue-70); }
+    .tag-year { background: #f6f2ff; color: var(--cds-purple-60); }
+    .activation-note { font-size: .8rem; color: var(--cds-gray-50); }
+
+    /* ── E1 COMPARISON CARDS ── */
+    .comparison-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .comparison-card { border: 1px solid var(--cds-gray-20); border-radius: 2px; padding: 1rem; }
+    .comparison-card-title { font-size: .875rem; font-weight: 700; color: var(--cds-gray-100); margin-bottom: .75rem; padding-bottom: .5rem; border-bottom: 2px solid var(--cds-gray-20); }
+    .comparison-card-title.zalo { border-bottom-color: var(--cds-blue-60); }
+    .comparison-card-title.mobile { border-bottom-color: var(--cds-green-50); }
+    .comparison-card-title.web { border-bottom-color: var(--cds-cyan-50); }
+    .cmp-row { display: flex; gap: .375rem; align-items: flex-start; font-size: .8rem; color: var(--cds-gray-70); padding: .2rem 0; line-height: 1.4; }
+    .cmp-row.pro .cmp-icon { color: var(--cds-green-50); }
+    .cmp-row.con .cmp-icon { color: var(--cds-red-60); }
+    .cmp-icon { flex-shrink: 0; font-size: .875rem; line-height: 1.4; }
+
+    /* ── ARCHITECTURE ── */
+    .arch-section { padding: 3rem 0 2rem; border-top: 1px solid var(--cds-gray-20); }
+    .arch-title { font-size: 1.75rem; font-weight: 400; color: var(--cds-gray-100); margin-bottom: .375rem; }
+    .arch-subtitle { font-size: .875rem; color: var(--cds-gray-50); margin-bottom: 2rem; }
+    .arch-layout { display: flex; gap: 1.25rem; align-items: stretch; max-width: 800px; }
+    .arch-stack { flex: 1; display: flex; flex-direction: column; gap: 0; }
+    .arch-layer { border: 2px solid var(--layer-color); padding: .875rem 1.25rem; }
+    .arch-layer-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--layer-color); margin-bottom: .25rem; }
+    .arch-layer-modules { font-size: .8125rem; color: var(--cds-gray-70); font-family: 'IBM Plex Mono', monospace; }
+    .arch-connector { text-align: center; font-size: 1.125rem; color: var(--cds-gray-30); line-height: 1.5; padding: .125rem 0; }
+    .arch-side { display: flex; flex-direction: column; gap: 1rem; width: 160px; flex-shrink: 0; }
+    .arch-side-box { border: 2px solid var(--side-color); padding: 1rem; text-align: center; }
+    .arch-side-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--side-color); margin-bottom: .375rem; }
+    .arch-side-modules { font-size: .75rem; color: var(--cds-gray-70); line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--cds-gray-90); padding: 2rem 1rem; margin-top: 4rem; }
+    .footer-inner { max-width: 1312px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-brand { font-size: .875rem; color: var(--cds-gray-30); }
+    .footer-link { font-size: .875rem; color: var(--cds-gray-30); text-decoration: none; }
+    .footer-link:hover { color: var(--cds-white); text-decoration: underline; }
+
+    /* ── BACK TO TOP ── */
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 40px; height: 40px; background: var(--cds-blue-60); color: var(--cds-white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.2); opacity: 0; pointer-events: none; transition: opacity .3s, background .15s; z-index: 100; }
+    .back-to-top.visible { opacity: 1; pointer-events: auto; }
+    .back-to-top:hover { background: var(--cds-blue-70); }
+
+    /* ── RESPONSIVE ── */
+    @media (min-width: 1056px) {
+      .sidebar { display: block; }
+      .mobile-toc { display: none !important; }
+      .nav-hamburger { display: none !important; }
+    }
+    @media (max-width: 1055px) {
+      .mobile-toc { display: block; }
+      .nav-hamburger { display: flex; margin-left: auto; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 671px) {
+      .comparison-grid { grid-template-columns: 1fr; }
+      .arch-layout { flex-direction: column; }
+      .arch-side { width: 100%; flex-direction: row; flex-wrap: wrap; gap: .75rem; }
+      .arch-side-box { flex: 1; min-width: 140px; }
+      .carbon-table { min-width: 300px; }
+      .hero h1 { font-size: 1.5rem; }
+      .group-title { font-size: 1.375rem; }
+      .module-title { font-size: 1.125rem; }
+    }
+    @media print {
+      .nav, .sidebar, .mobile-toc, .back-to-top, .footer { display: none !important; }
+      .main-wrapper { display: block; }
+      .content { padding: 0; }
+      .module-card { opacity: 1; transform: none; box-shadow: none; border: 1px solid var(--cds-gray-20); break-inside: avoid; }
+      body { margin-top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="growbase-overview.html" class="nav-logo">GrowBase</a>
+  <div class="nav-links" id="navLinks">
+    <a href="growbase-overview.html">Tổng quan</a>
+    <a href="growbase-modules.html" class="active">Bản đồ Module</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5h14a1 1 0 010 2H3a1 1 0 010-2zm0 4h14a1 1 0 010 2H3a1 1 0 010-2zm0 4h14a1 1 0 010 2H3a1 1 0 010-2z" clip-rule="evenodd"/></svg>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="growbase-overview.html">Tổng quan</a>
+  <a href="growbase-modules.html" class="active">Bản đồ Module</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Bản đồ Module</h1>
+    <p>17 module · 7 nhóm · Bật theo nhu cầu</p>
+  </div>
+</section>
+
+<!-- MOBILE TOC -->
+<div class="mobile-toc" id="mobileToc">
+  <button class="mobile-toc-toggle" id="mobileTocToggle" aria-expanded="false">
+    <span>Mục lục</span>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+  </button>
+  <div class="mobile-toc-body" id="mobileTocBody"></div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-wrapper">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-toc-title">Mục lục</div>
+    <div id="tocContent"></div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- ════════════════════════════════════
+         GROUP A — NỀN TẢNG
+    ════════════════════════════════════ -->
+    <section class="module-group section-anchor" id="group-a" style="--group-color: var(--cds-blue-60)">
+      <div class="group-header">
+        <div class="group-label">
+          <span class="group-badge" style="background:var(--cds-blue-60);color:#fff">A</span>
+          <span class="group-label-text" style="color:var(--cds-blue-60)">Nhóm A</span>
+        </div>
+        <h2 class="group-title">Nền tảng</h2>
+        <p class="group-description">Luôn bật. Mọi module khác đều cần nền tảng này để hoạt động. Đây là nơi dữ liệu chảy về và khách hàng được nhận diện.</p>
+      </div>
+
+      <!-- A1 -->
+      <article class="module-card section-anchor" id="a1" style="--group-color:var(--cds-blue-60)">
+        <div class="module-card-header">
+          <div class="module-code">A1</div>
+          <h3 class="module-title">Kết nối dữ liệu</h3>
+          <p class="module-tagline">Thu gom data từ mọi nơi bán hàng về một chỗ</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Kết nối tất cả các nguồn bán hàng hiện tại — POS tại cửa hàng, sàn thương mại điện tử, website, Zalo OA, tổng đài, hệ thống giao hàng — để dữ liệu tự động chảy về GrowBase. Cấu hình một lần, sau đó tự chạy.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kết nối POS / phần mềm bán hàng tại quầy</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kết nối sàn TMDT (Shopee, Lazada, TikTok Shop)</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kết nối website bán hàng riêng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kết nối Zalo OA, tổng đài, call center</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Import Excel/CSV cho data lịch sử</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Nhận webhook từ hệ thống giao hàng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Monitoring: trạng thái từng kết nối realtime</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Alert khi kết nối lỗi hoặc data ngừng chảy</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện data bất thường:</strong> tự cảnh báo khi data chảy về bất thường — đơn hàng đột ngột tăng 10x (nghi lỗi sync), data ngừng chảy 2 tiếng (nghi mất kết nối), giá trị đơn hàng lệch chuẩn (nghi nhập sai). Giảm thời gian phát hiện lỗi từ vài ngày xuống vài phút</div>
+            <div class="ai-feature">🤖 <strong>Tự đề xuất mapping dữ liệu:</strong> khi kết nối nguồn mới, AI tự nhận diện các trường dữ liệu (SĐT, tên, email, sản phẩm, giá) và gợi ý mapping — admin chỉ cần confirm thay vì cấu hình thủ công từng trường</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>IT / Admin</td><td>Cấu hình kết nối, theo dõi trạng thái, xử lý lỗi sync</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-always">Luôn bật</span>
+            <span class="activation-note">— không có data thì không có gì để làm</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- A2 -->
+      <article class="module-card section-anchor" id="a2" style="--group-color:var(--cds-blue-60)">
+        <div class="module-card-header">
+          <div class="module-code">A2</div>
+          <h3 class="module-title">Hồ sơ khách hàng</h3>
+          <p class="module-tagline">Nhận ra cùng 1 khách dù họ mua ở đâu, bằng kênh nào</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Hợp nhất hồ sơ khách hàng từ mọi nguồn. Cùng 1 SĐT mua trên Shopee và tại cửa hàng được nhận diện là cùng 1 người. Mỗi khách có trang 360° hiển thị toàn bộ lịch sử mua hàng, tương tác, điểm thưởng, hạng thành viên trên 1 màn hình duy nhất.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Hợp nhất profile theo SĐT, email, mã khách</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Trang 360°: lịch sử mua, tương tác, điểm, hạng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tìm kiếm nhanh bằng SĐT, tên, email</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Timeline hợp nhất mọi sự kiện theo thời gian</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Xử lý trùng lặp: gộp / tách profile</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Ghi chú nội bộ trên hồ sơ khách</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Gộp hồ sơ thông minh:</strong> fuzzy matching — phát hiện "Nguyễn Văn A" và "Nguyen Van A" là cùng 1 người dù SĐT khác nhau, dựa trên địa chỉ giao hàng, thiết bị truy cập, pattern mua hàng. Giảm trùng lặp profile từ 15–20% xuống &lt; 3%</div>
+            <div class="ai-feature">🤖 <strong>Làm giàu hồ sơ tự động:</strong> AI suy luận thông tin chưa có từ hành vi: "khách này có con nhỏ" (mua sữa bột), "khách này quan tâm sức khoẻ" (mua TPCN + nước lọc) — bổ sung tag tự động phục vụ cá nhân hoá</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Nhân viên bán hàng</td><td>Tra SĐT tại quầy → biết khách VIP hay mới, tư vấn phù hợp</td></tr>
+                <tr><td>Chăm sóc KH</td><td>Xem lịch sử mua + khiếu nại trước khi nghe máy</td></tr>
+                <tr><td>Marketing</td><td>Hiểu hành vi khách để thiết kế chương trình</td></tr>
+                <tr><td>Quản lý cửa hàng</td><td>Xem khách của chi nhánh mình</td></tr>
+                <tr><td>Ban lãnh đạo</td><td>Biết tổng bao nhiêu khách, phân bố ra sao</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-always">Luôn bật</span>
+            <span class="activation-note">— nền móng cho mọi module</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════════════════════════════════════
+         GROUP B — HIỂU KHÁCH
+    ════════════════════════════════════ -->
+    <section class="module-group section-anchor" id="group-b" style="--group-color:var(--cds-teal-50)">
+      <div class="group-header">
+        <div class="group-label">
+          <span class="group-badge" style="background:var(--cds-teal-50);color:#fff">B</span>
+          <span class="group-label-text" style="color:var(--cds-teal-50)">Nhóm B</span>
+        </div>
+        <h2 class="group-title">Hiểu khách</h2>
+        <p class="group-description">Trả lời câu hỏi: khách của tôi là ai? Họ mua gì? Ai quan trọng nhất? Kinh doanh đang tốt hơn hay tệ hơn?</p>
+      </div>
+
+      <!-- B1 -->
+      <article class="module-card section-anchor" id="b1" style="--group-color:var(--cds-teal-50)">
+        <div class="module-card-header">
+          <div class="module-code">B1</div>
+          <h3 class="module-title">Phân nhóm khách</h3>
+          <p class="module-tagline">Tự động chia khách thành các nhóm có đặc điểm chung</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Phân nhóm khách hàng theo hành vi, sản phẩm, kênh mua, địa lý, giá trị. Nhóm động — khách tự vào/ra khi thay đổi hành vi. Phục vụ gửi chương trình phù hợp cho từng nhóm thay vì đại trà.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân nhóm theo hành vi: mua thường xuyên, mới, lâu không quay lại</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân nhóm theo sản phẩm: khách sữa bột, sữa tươi, nước mắm cao cấp</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân nhóm theo kênh: online, tại quầy, hoặc cả hai</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân nhóm theo địa lý: khu vực, chi nhánh</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Nhóm động: tự cập nhật khi hành vi thay đổi</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Preview số lượng khách trước khi lưu nhóm</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Tự phát hiện phân khúc ẩn:</strong> clustering tự động — AI tìm ra nhóm khách mà marketer chưa nghĩ tới: "nhóm mua khuya", "nhóm chỉ mua khi có khuyến mãi", "nhóm hay mua combo", "nhóm mua tặng người khác". Hiển thị kèm giải thích: nhóm này có gì đặc biệt, nên tiếp cận thế nào</div>
+            <div class="ai-feature">🤖 <strong>Dự đoán dịch chuyển nhóm:</strong> "120 khách nhóm Thường xuyên đang có dấu hiệu chuyển sang nhóm Lâu không quay lại trong 2 tuần tới" — cảnh báo sớm trước khi xảy ra, kịp thời can thiệp</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Tạo nhóm để gửi chương trình phù hợp cho từng đối tượng</td></tr>
+                <tr><td>Ban lãnh đạo</td><td>Nhìn tổng quan cấu trúc khách hàng, xu hướng tăng/giảm</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Khi có &gt; 1.000 khách</span>
+            <span class="activation-note">— và muốn gửi chương trình khác nhau cho từng nhóm</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- B2 -->
+      <article class="module-card section-anchor" id="b2" style="--group-color:var(--cds-teal-50)">
+        <div class="module-card-header">
+          <div class="module-code">B2</div>
+          <h3 class="module-title">Chấm điểm &amp; phân hạng</h3>
+          <p class="module-tagline">Mỗi khách có 1 điểm giá trị — biết ai đáng chăm sóc nhất</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Chấm điểm dựa trên tổng chi tiêu, tần suất mua, mức độ gắn bó, thời gian là khách. Phân hạng tự động: Thường → Bạc → Vàng → Kim cương. Mỗi hạng có quyền lợi riêng. Thông báo tự động khi khách lên/xuống hạng.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Chấm điểm đa chiều: chi tiêu, tần suất, gắn bó</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân hạng tự động với ngưỡng tuỳ chỉnh</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cấu hình quyền lợi riêng theo hạng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Thông báo khi khách lên/xuống hạng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Xem trend: khách đang lên hay xuống hạng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cấu hình riêng cho từng thương hiệu/ngành</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Chấm điểm dự đoán (Predictive Scoring):</strong> thay vì chấm dựa trên quá khứ ("đã mua bao nhiêu"), chấm dựa trên tương lai: "khách này có 72% khả năng lên hạng Vàng trong 3 tháng tới" — giúp marketing chăm sóc sớm những khách tiềm năng</div>
+            <div class="ai-feature">🤖 <strong>Tối ưu ngưỡng phân hạng:</strong> AI phân tích phân bố chi tiêu, đề xuất ngưỡng tối ưu cho từng hạng: "Nếu hạ ngưỡng Vàng từ 5tr xuống 4tr, sẽ thêm 340 khách lên Vàng, dự kiến tăng 12% doanh thu nhờ quyền lợi VIP thúc đẩy mua thêm"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Thiết kế quyền lợi theo hạng, cấu hình ngưỡng điểm</td></tr>
+                <tr><td>Nhân viên bán hàng</td><td>Nhìn thấy hạng khách trên POS → đối xử tương ứng</td></tr>
+                <tr><td>Quản lý</td><td>Xem phân bố hạng, theo dõi dịch chuyển hạng theo tháng</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 5–6</span>
+            <span class="activation-note">— khi đã có data và tích điểm chạy ổn</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- B3 -->
+      <article class="module-card section-anchor" id="b3" style="--group-color:var(--cds-teal-50)">
+        <div class="module-card-header">
+          <div class="module-code">B3</div>
+          <h3 class="module-title">Đo lường &amp; báo cáo</h3>
+          <p class="module-tagline">Tháng này có tốt hơn tháng trước không?</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Dashboard kinh doanh bằng ngôn ngữ dễ hiểu. Doanh thu, khách mới, tỷ lệ mua lại, hiệu quả từng chương trình — tất cả trên 1 màn hình. So sánh kỳ, drill-down chi tiết, báo cáo tự động gửi hàng tuần.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Dashboard tổng quan: doanh thu, khách mới, tỷ lệ mua lại</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Báo cáo chương trình: hiệu quả, số người dùng, ROI</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Báo cáo sản phẩm: bán chạy, mua kèm</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Báo cáo chi nhánh: so sánh giữa các cửa hàng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>So sánh kỳ: tuần/tháng này vs trước, vs cùng kỳ</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Báo cáo tự động gửi email/Zalo hàng tuần</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Export PDF/Excel</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Insight tự động bằng ngôn ngữ tự nhiên:</strong> mỗi sáng thứ 2, hệ thống tự viết: "Tuần qua doanh thu tăng 12%, chủ yếu nhờ nhóm khách Vàng mua lại sữa bột. Tuy nhiên, khách mới giảm 8% — cần kiểm tra kênh quảng cáo". Không cần đọc biểu đồ, chỉ cần đọc 5 dòng</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện anomaly kinh doanh:</strong> tự cảnh báo khi có biến động bất thường: "Doanh thu chi nhánh Quận 7 giảm 35% so với tuần trước — trong khi các chi nhánh khác bình thường. Kiểm tra ngay"</div>
+            <div class="ai-feature">🤖 <strong>Gợi ý hành động từ số liệu:</strong> không chỉ báo "tỷ lệ mua lại giảm 5%", mà còn gợi ý: "Nguyên nhân chính: 230 khách nhóm Sữa bột chưa mua lại đúng chu kỳ. Gợi ý: bật kịch bản nhắc mua cho nhóm này"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Xem gì</th></tr></thead>
+              <tbody>
+                <tr><td>Chủ DN / CEO</td><td>Tổng quan: doanh thu, khách, tăng trưởng</td></tr>
+                <tr><td>Marketing Manager</td><td>Hiệu quả chương trình, tỷ lệ chuyển đổi</td></tr>
+                <tr><td>Quản lý cửa hàng</td><td>Số liệu chi nhánh mình, so với chi nhánh khác</td></tr>
+                <tr><td>Quản lý bán hàng</td><td>Hiệu suất đội sales, doanh số theo nhân viên</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-always">Bật ngay từ đầu</span>
+            <span class="activation-note">— đi cùng nền tảng</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════════════════════════════════════
+         GROUP C — TĂNG TRƯỞNG
+    ════════════════════════════════════ -->
+    <section class="module-group section-anchor" id="group-c" style="--group-color:var(--cds-green-50)">
+      <div class="group-header">
+        <div class="group-label">
+          <span class="group-badge" style="background:var(--cds-green-50);color:#fff">C</span>
+          <span class="group-label-text" style="color:var(--cds-green-50)">Nhóm C</span>
+        </div>
+        <h2 class="group-title">Tăng trưởng</h2>
+        <p class="group-description">Module tạo ra hành động cụ thể để tăng doanh thu từ khách hiện tại. Mỗi module giải quyết 1 bài toán tăng trưởng rõ ràng, đo lường được.</p>
+      </div>
+
+      <!-- C1 -->
+      <article class="module-card section-anchor" id="c1" style="--group-color:var(--cds-green-50)">
+        <div class="module-card-header">
+          <div class="module-code">C1</div>
+          <h3 class="module-title">Nhắc tái mua</h3>
+          <p class="module-tagline">Biết khách mua theo chu kỳ nào → nhắc đúng lúc sắp hết hàng</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Phát hiện chu kỳ mua tự nhiên của từng khách. Sữa 14 ngày, nước mắm 45 ngày, lõi lọc 6 tháng. Gửi nhắc mua đúng thời điểm sắp hết hàng, kèm ưu đãi cá nhân hoá. Module có ROI nhanh nhất trong toàn bộ nền tảng.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phát hiện chu kỳ mua tự nhiên từng khách</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kịch bản nhắc: trước X ngày hết hàng → gửi tin</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cá nhân hoá: đúng SP khách hay mua, kèm ưu đãi</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cấu hình riêng theo danh mục sản phẩm</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tự học: điều chỉnh chu kỳ khi thói quen thay đổi</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Đo lường: % khách mua lại sau khi nhận nhắc</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Dự đoán thời điểm mua cá nhân:</strong> không cần cấu hình "14 ngày" cứng — AI tự học mỗi khách có chu kỳ riêng: chị A 12 ngày, anh B 18 ngày. Tự điều chỉnh khi thói quen thay đổi (mùa hè uống sữa nhiều hơn → chu kỳ ngắn lại)</div>
+            <div class="ai-feature">🤖 <strong>Tối ưu thời điểm gửi nhắc:</strong> AI thử nghiệm liên tục: nhắc trước 3 ngày hay 1 ngày hiệu quả hơn? Gửi sáng hay tối? Từng khách có "sweet spot" riêng — hệ thống tự tìm ra</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Thiết kế kịch bản nhắc, chọn ưu đãi đi kèm</td></tr>
+                <tr><td>Hệ thống</td><td>Tự chạy hàng ngày, không cần người can thiệp</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-always">Bật sớm nhất có thể</span>
+            <span class="activation-note">— ROI nhanh nhất cho ngành hàng lặp lại</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- C2 -->
+      <article class="module-card section-anchor" id="c2" style="--group-color:var(--cds-green-50)">
+        <div class="module-card-header">
+          <div class="module-code">C2</div>
+          <h3 class="module-title">Tích điểm &amp; đổi thưởng</h3>
+          <p class="module-tagline">Cho khách lý do để quay lại — mỗi đơn hàng đều có giá trị tích luỹ</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Tích điểm theo giao dịch, đổi quà/voucher, nhận ưu đãi sinh nhật. Mọi thứ bằng SĐT — không cần thẻ vật lý. Tích hợp POS: nhân viên quét SĐT tại quầy → tự động cộng điểm.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tích điểm: mỗi X đồng = 1 điểm, tỷ lệ tuỳ chỉnh</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Điểm đặc biệt: nhân đôi ngày sinh nhật, nhân 3 ngày lễ</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Đổi thưởng: quà vật lý, voucher, SP miễn phí</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Danh mục quà: admin quản lý, giới hạn số lượng, hạn dùng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Hạn điểm: hết hạn sau X tháng → tạo urgency</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tích hợp POS: quét SĐT → cộng điểm tự động</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Lịch sử tích/đổi minh bạch cho khách</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Tối ưu phần thưởng:</strong> "Khách này thích voucher giảm giá, khách kia thích quà vật lý" — AI học từ lịch sử đổi thưởng để gợi ý phần thưởng có conversion cao nhất cho từng khách</div>
+            <div class="ai-feature">🤖 <strong>Nhắc đổi điểm thông minh:</strong> AI phát hiện khách có nhiều điểm sắp hết hạn nhưng chưa đổi → gửi nhắc kèm gợi ý quà phù hợp nhất với sở thích khách. Giảm lãng phí điểm, tăng engagement</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Thiết kế chương trình, cấu hình tỷ lệ, quản lý danh mục quà</td></tr>
+                <tr><td>Nhân viên bán hàng</td><td>Quét SĐT tích điểm, hỗ trợ đổi thưởng tại quầy</td></tr>
+                <tr><td>Kế toán</td><td>Đối soát giá trị điểm phát sinh, chi phí chương trình</td></tr>
+                <tr><td>Khách hàng</td><td>Xem điểm, đổi thưởng qua app/Zalo/web</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 3–4</span>
+            <span class="activation-note">— cùng lúc với Nhắc mua</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- C3 -->
+      <article class="module-card section-anchor" id="c3" style="--group-color:var(--cds-green-50)">
+        <div class="module-card-header">
+          <div class="module-code">C3</div>
+          <h3 class="module-title">Gợi ý sản phẩm</h3>
+          <p class="module-tagline">Mua nước mắm → gợi ý nước tương. Mua dòng thường → gợi ý dòng cao cấp</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Cross-sell, upsell, bundle — dựa trên data mua hàng thực tế. Gợi ý xuất hiện trên POS (nhân viên thấy khi bán), trên app/web (khách thấy khi mua online). Bắt đầu bằng rule đơn giản, nâng lên data-driven khi đủ data.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cross-sell: mua A → gợi ý B bổ trợ</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Upsell: gợi ý phiên bản cao cấp hơn</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Bundle: combo tiết kiệm theo thói quen mua</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Rule-based: admin tự thiết lập luật gợi ý</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Data-driven: tự phát hiện pattern mua kèm</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Hiển thị trên POS + app/web</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Collaborative filtering:</strong> "Những khách giống bạn cũng mua thêm X" — vượt xa rule thủ công "mua A → gợi B". AI phát hiện pattern ẩn: khách mua sữa organic + nước lọc cao cấp thường mua thêm thực phẩm hữu cơ</div>
+            <div class="ai-feature">🤖 <strong>Gợi ý theo ngữ cảnh:</strong> AI hiểu timing: gần Tết gợi ý combo quà tặng, mùa hè gợi ý sữa chua/nước giải khát, đầu năm học gợi ý sữa bột cho trẻ em</div>
+            <div class="ai-feature">🤖 <strong>Tối ưu thứ tự gợi ý:</strong> thay vì hiển thị 5 gợi ý random, AI xếp theo xác suất mua: gợi ý khách có khả năng mua cao nhất lên đầu</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Thiết lập rule gợi ý, theo dõi conversion</td></tr>
+                <tr><td>Nhân viên bán hàng</td><td>Nhìn gợi ý trên POS để tư vấn thêm cho khách</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Khi có data 3+ tháng</span>
+            <span class="activation-note">— cần đủ lịch sử mua hàng</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- C4 -->
+      <article class="module-card section-anchor" id="c4" style="--group-color:var(--cds-green-50)">
+        <div class="module-card-header">
+          <div class="module-code">C4</div>
+          <h3 class="module-title">Giữ khách &amp; win-back</h3>
+          <p class="module-tagline">Phát hiện khách đang nguội dần → can thiệp trước khi mất hẳn</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">So sánh hành vi gần đây với thói quen cũ để phát hiện khách đang giảm tần suất. Phân loại mức độ: Đang nguội → Nguy cơ → Đã mất. Tự động gửi ưu đãi win-back hoặc cảnh báo cho sales/CS gọi điện.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phát hiện sớm: flag khách giảm tần suất mua</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân loại: Đang nguội → Nguy cơ → Đã mất</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Can thiệp tự động: voucher win-back, ưu đãi riêng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cảnh báo cho sales/CS khi khách quan trọng nguy cơ</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kịch bản cấu hình: "VIP &gt; 30 ngày → voucher 20%"</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Đo lường: số khách "cứu" được, doanh thu phục hồi</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Churn scoring realtime:</strong> mỗi khách có điểm churn 0–100 cập nhật liên tục, kèm lý do giải thích được: "78% vì giảm tần suất 3 tuần + không mở tin nhắn 5 lần liên tiếp + lần cuối mua ít hơn bình thường"</div>
+            <div class="ai-feature">🤖 <strong>Chọn chiến thuật win-back tối ưu:</strong> AI phân tích khách nào phản hồi với voucher, khách nào cần cuộc gọi cá nhân, khách nào nên để yên. Tránh spam ưu đãi cho khách đã quyết định rời đi — tiết kiệm chi phí</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện nguyên nhân churn:</strong> "15 khách rời đi tuần này đều mua tại chi nhánh Quận 3 — có thể vấn đề dịch vụ tại chi nhánh?" → chuyển từ xử lý từng khách sang xử lý nguyên nhân gốc</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Thiết kế kịch bản win-back, cấu hình ngưỡng</td></tr>
+                <tr><td>Chăm sóc KH</td><td>Nhận cảnh báo khách nguy cơ, gọi điện chăm sóc</td></tr>
+                <tr><td>Quản lý</td><td>Xem tỷ lệ giữ khách, xu hướng churn</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 7–9</span>
+            <span class="activation-note">— khi đã có baseline hành vi khách</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- C5 -->
+      <article class="module-card section-anchor" id="c5" style="--group-color:var(--cds-green-50)">
+        <div class="module-card-header">
+          <div class="module-code">C5</div>
+          <h3 class="module-title">Giới thiệu bạn bè</h3>
+          <p class="module-tagline">Biến khách hàng hài lòng thành kênh marketing miễn phí</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Mỗi khách có mã/link giới thiệu riêng. Người giới thiệu và người mới đều nhận thưởng. Tracking đầy đủ: ai giới thiệu ai, khi nào chuyển đổi, doanh thu từ referral. Chống gian lận tự động.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Mã/link giới thiệu riêng cho từng khách</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Thưởng 2 chiều: người giới thiệu + người mới</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tracking chuyển đổi: ai → bao nhiêu người mua</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Nhiều cấp: 3 người → thưởng thêm, 10 → "đại sứ"</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Chia sẻ: Zalo, copy link, QR code tại quầy</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Chống gian lận: giới hạn, validate giao dịch thật</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Chấm điểm khả năng giới thiệu:</strong> AI tìm khách có xác suất giới thiệu cao nhất (NPS cao + mua đều + active trên app + có mạng lưới xã hội rộng) → ưu tiên mời tham gia, tặng thêm quyền lợi "đại sứ"</div>
+            <div class="ai-feature">🤖 <strong>Chống gian lận AI:</strong> phát hiện pattern bất thường: cùng thiết bị đăng ký nhiều tài khoản, giới thiệu liên tục trong thời gian ngắn, đơn hàng giá trị thấp bất thường — flag tự động thay vì kiểm tra thủ công</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Thiết kế chương trình referral, theo dõi hiệu quả</td></tr>
+                <tr><td>Khách hàng</td><td>Chia sẻ link và nhận thưởng tự động</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Khi đã có khách hài lòng</span>
+            <span class="activation-note">— referral cần sản phẩm/dịch vụ đã ổn</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- C6 -->
+      <article class="module-card section-anchor" id="c6" style="--group-color:var(--cds-green-50)">
+        <div class="module-card-header">
+          <div class="module-code">C6</div>
+          <h3 class="module-title">Khảo sát &amp; phản hồi</h3>
+          <p class="module-tagline">Lắng nghe khách hàng có hệ thống — không đợi họ lên mạng phàn nàn</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Khảo sát sau mua, NPS định kỳ, feedback sản phẩm mới. Gửi tự động qua Zalo/SMS theo event. Dashboard phản hồi real-time. Alert phản hồi tiêu cực → tạo ticket cho CS xử lý ngay.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Khảo sát sau mua: hài lòng 1–5 sao</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>NPS định kỳ: có giới thiệu cho người khác không?</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Khảo sát sản phẩm: feedback khi ra SP mới</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Gửi tự động theo event qua Zalo/SMS</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Dashboard phản hồi: theo thời gian, chi nhánh, SP</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Alert phản hồi xấu → tạo ticket CS ngay</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Phân tích cảm xúc (Sentiment Analysis):</strong> AI phân tích text phản hồi tự động, phát hiện keyword tiêu cực ("chậm", "hỏng", "thất vọng", "không bao giờ quay lại") → escalate ngay, không đợi người đọc từng phản hồi</div>
+            <div class="ai-feature">🤖 <strong>Tổng hợp chủ đề phản hồi:</strong> thay vì đọc 500 phản hồi, AI tóm: "Tuần này 3 chủ đề chính: (1) giao hàng chậm — 120 mention, (2) khen vị nước mắm mới — 85 mention, (3) bao bì khó mở — 45 mention"</div>
+            <div class="ai-feature">🤖 <strong>Dự đoán NPS từ hành vi:</strong> AI ước tính NPS của khách chưa trả lời khảo sát dựa trên hành vi mua — phát hiện khách không hài lòng kể cả khi họ không nói ra</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing / Product</td><td>Thiết kế khảo sát, phân tích kết quả</td></tr>
+                <tr><td>Chăm sóc KH</td><td>Nhận alert phản hồi xấu, xử lý nhanh</td></tr>
+                <tr><td>Quản lý chi nhánh</td><td>Xem điểm hài lòng chi nhánh mình</td></tr>
+                <tr><td>Ban lãnh đạo</td><td>Theo dõi NPS tổng, trend theo quý</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 10+</span>
+            <span class="activation-note">— khi đã có kênh liên lạc ổn định</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════════════════════════════════════
+         GROUP D — KÍCH HOẠT
+    ════════════════════════════════════ -->
+    <section class="module-group section-anchor" id="group-d" style="--group-color:var(--cds-purple-60)">
+      <div class="group-header">
+        <div class="group-label">
+          <span class="group-badge" style="background:var(--cds-purple-60);color:#fff">D</span>
+          <span class="group-label-text" style="color:var(--cds-purple-60)">Nhóm D</span>
+        </div>
+        <h2 class="group-title">Kích hoạt</h2>
+        <p class="group-description">Module thực thi — biến quyết định thành hành động. Các module Tăng trưởng ra quyết định "gửi gì, cho ai", module Kích hoạt thực hiện việc gửi đi.</p>
+      </div>
+
+      <!-- D1 -->
+      <article class="module-card section-anchor" id="d1" style="--group-color:var(--cds-purple-60)">
+        <div class="module-card-header">
+          <div class="module-code">D1</div>
+          <h3 class="module-title">Nhắn tin đa kênh</h3>
+          <p class="module-tagline">Gửi đúng tin, đúng người, qua đúng kênh, đúng lúc</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">"Cánh tay" thực thi chung cho toàn nền tảng. Nhắc mua, Giữ khách, Giới thiệu — tất cả đều dùng module này để gửi tin. Hỗ trợ Zalo OA, SMS, Email, App push, Web push. Cá nhân hoá nội dung, A/B testing, tracking đầy đủ chuỗi gửi → nhận → mở → click → mua.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kênh: Zalo OA, SMS, Email, App push, Web push</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cá nhân hoá: tên, SP hay mua, điểm, hạng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Hẹn giờ gửi hoặc để hệ thống chọn giờ tối ưu</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Template tin nhắn theo tình huống</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>A/B testing: thử 2 nội dung, chọn cái tốt hơn</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tracking: gửi → nhận → mở → click → mua</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tự loại khách đã từ chối nhận tin</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Chọn kênh tối ưu tự động:</strong> "Chị A hay mở Zalo lúc 8h tối, anh B chỉ đọc SMS" — AI chọn kênh + giờ gửi tối ưu cho từng người, không cần marketer đoán. Giảm chi phí gửi (SMS đắt hơn Zalo), tăng tỷ lệ mở</div>
+            <div class="ai-feature">🤖 <strong>Viết nội dung tin nhắn AI:</strong> AI sinh nội dung cá nhân hoá sâu: "Chị Lan ơi, chai nước mắm Phú Quốc 500ml chị hay mua đang giảm 10% — đặt lại nhé?" — thay vì template chung chung "Kính gửi quý khách, chương trình khuyến mãi..."</div>
+            <div class="ai-feature">🤖 <strong>Tối ưu tần suất gửi:</strong> AI phát hiện ngưỡng "quá nhiều tin" của từng khách — chị A chấp nhận 3 tin/tuần, anh B chỉ chịu 1 tin/tuần. Tự giảm tần suất trước khi khách block/từ chối nhận tin</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Soạn nội dung, chọn đối tượng, lên lịch gửi, đo kết quả</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 3</span>
+            <span class="activation-note">— cánh tay thực thi cho mọi module khác</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- D2 -->
+      <article class="module-card section-anchor" id="d2" style="--group-color:var(--cds-purple-60)">
+        <div class="module-card-header">
+          <div class="module-code">D2</div>
+          <h3 class="module-title">Kịch bản tự động</h3>
+          <p class="module-tagline">"Khi X xảy ra → tự làm Y" — chạy 24/7 không cần người</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Kéo thả xây dựng kịch bản tự động. Trigger: khách mua lần đầu, lên hạng, 30 ngày không mua, sinh nhật. Hành động: gửi Zalo, tặng voucher, cộng điểm, tạo task cho nhân viên. Chạy 24/7 sau khi bật, không cần người vận hành.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kéo thả workflow builder</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Trigger: mua hàng, lên hạng, X ngày không mua, sinh nhật</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Điều kiện: nếu VIP → nhánh A, thường → nhánh B</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Hành động: gửi tin, tặng voucher, cộng điểm, tạo task</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Chờ/delay: chờ X ngày hoặc chờ event xảy ra</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Báo cáo: bao nhiêu khách đi qua, conversion mỗi bước</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Tự tối ưu kịch bản (Auto-optimize):</strong> A/B testing tự động liên tục — AI thử nhiều biến thể (nội dung, thời điểm delay, kênh, mức ưu đãi) → tự chọn bản thắng → tiếp tục thử biến thể mới → cải thiện không ngừng mà marketer không cần can thiệp</div>
+            <div class="ai-feature">🤖 <strong>Gợi ý kịch bản mới:</strong> AI phân tích data, đề xuất: "Có 200 khách mua sữa bột xong không bao giờ mua sữa chua — nên tạo kịch bản cross-sell: sau mua sữa bột 7 ngày → gửi sample sữa chua miễn phí"</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện kịch bản kém hiệu quả:</strong> "Kịch bản chào mừng khách mới có tỷ lệ mở chỉ 12% (trung bình 35%) — cần sửa nội dung hoặc đổi kênh gửi"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Thiết kế kịch bản, theo dõi hiệu quả từng bước</td></tr>
+                <tr><td>Hệ thống</td><td>Tự chạy 24/7 sau khi bật</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 7–9</span>
+            <span class="activation-note">— khi đã dùng Nhắn tin thủ công quen</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- D3 -->
+      <article class="module-card section-anchor" id="d3" style="--group-color:var(--cds-purple-60)">
+        <div class="module-card-header">
+          <div class="module-code">D3</div>
+          <h3 class="module-title">Chương trình &amp; ưu đãi</h3>
+          <p class="module-tagline">Quản lý tập trung mọi khuyến mãi — biết cái nào đang chạy, cho ai, hiệu quả ra sao</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Tạo và quản lý chương trình: mua 1 tặng 1, giảm giá, tặng quà kèm, flash sale, combo. Gắn với nhóm khách cụ thể. Voucher unique, kiểm soát ngân sách, chống chồng chéo. Báo cáo ROI từng chương trình.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tạo: mua 1 tặng 1, giảm %, tặng quà, combo, flash sale</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Gắn với nhóm khách: "chỉ cho hạng Vàng trở lên"</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Voucher unique: giới hạn lần dùng, hạn sử dụng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Kiểm soát ngân sách: tự dừng khi hết budget</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Chống chồng chéo: không nhận quá nhiều ưu đãi</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Báo cáo: số người dùng, doanh thu tăng, chi phí, ROI</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Định giá ưu đãi động (Dynamic Discount):</strong> "Khách này chỉ cần giảm 5% là mua, khách kia cần 15%" — AI tính mức ưu đãi tối thiểu để convert, tránh cho quá nhiều khi không cần. Tiết kiệm 20–30% chi phí khuyến mãi</div>
+            <div class="ai-feature">🤖 <strong>Dự đoán ROI trước khi chạy:</strong> trước khi bật chương trình, AI ước tính: "Chương trình này dự kiến reach 2.400 khách, conversion 12%, doanh thu tăng thêm 180tr, chi phí 25tr, ROI 7.2x"</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện chồng chéo thông minh:</strong> AI cảnh báo: "Nếu chạy chương trình này, 340 khách hạng Vàng sẽ nhận cả voucher win-back + voucher sinh nhật + giảm giá flash sale = tổng giảm 45%. Có muốn giới hạn max 1 chương trình?"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Tạo chương trình, chọn đối tượng, set ngân sách</td></tr>
+                <tr><td>Quản lý</td><td>Duyệt chương trình trước khi chạy</td></tr>
+                <tr><td>Kế toán</td><td>Đối soát chi phí chương trình</td></tr>
+                <tr><td>NV bán hàng</td><td>Áp dụng ưu đãi tại quầy khi khách mua</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 7–9</span>
+            <span class="activation-note">— cùng lúc với Kịch bản tự động</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════════════════════════════════════
+         GROUP E — KÊNH KHÁCH HÀNG
+    ════════════════════════════════════ -->
+    <section class="module-group section-anchor" id="group-e" style="--group-color:var(--cds-cyan-50)">
+      <div class="group-header">
+        <div class="group-label">
+          <span class="group-badge" style="background:var(--cds-cyan-50);color:#fff">E</span>
+          <span class="group-label-text" style="color:var(--cds-cyan-50)">Nhóm E</span>
+        </div>
+        <h2 class="group-title">Kênh khách hàng</h2>
+        <p class="group-description">Điểm chạm trực tiếp với người tiêu dùng cuối và mạng lưới đại lý. Nơi khách hàng tự phục vụ: xem điểm, đổi quà, đặt hàng, nhận ưu đãi.</p>
+      </div>
+
+      <!-- E1 -->
+      <article class="module-card section-anchor" id="e1" style="--group-color:var(--cds-cyan-50)">
+        <div class="module-card-header">
+          <div class="module-code">E1</div>
+          <h3 class="module-title">App / Mini App khách hàng</h3>
+          <p class="module-tagline">Cho khách 1 nơi để xem điểm, đổi quà, đặt hàng, nhận ưu đãi riêng</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">White-label — thương hiệu của doanh nghiệp, không phải thương hiệu GrowBase. Khách xem hạng thành viên, tích/đổi điểm, nhận voucher cá nhân, mua lại sản phẩm hay mua, giới thiệu bạn bè. Triển khai trên Zalo Mini App (không cần tải), app mobile, hoặc web app.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Xem hạng, điểm, lịch sử mua hàng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Đổi thưởng: duyệt danh mục quà, đổi bằng điểm</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Nhận ưu đãi riêng: voucher cá nhân hoá theo hạng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Đặt hàng nhanh: mua lại SP hay mua chỉ 1 chạm</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Giới thiệu bạn bè: chia sẻ mã/link</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Push notification: ưu đãi, nhắc mua, thay đổi hạng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>White-label: logo, màu sắc thương hiệu doanh nghiệp</li>
+          </ul>
+
+          <div class="module-section-title">So sánh hình thức triển khai</div>
+          <div class="comparison-grid">
+            <div class="comparison-card">
+              <div class="comparison-card-title zalo">Zalo Mini App</div>
+              <div class="cmp-row pro"><span class="cmp-icon">✓</span><span>Không cần tải xuống</span></div>
+              <div class="cmp-row pro"><span class="cmp-icon">✓</span><span>70M+ người dùng Zalo có sẵn</span></div>
+              <div class="cmp-row con"><span class="cmp-icon">✗</span><span>Giới hạn tùy chỉnh UI</span></div>
+              <div class="cmp-row con"><span class="cmp-icon">✗</span><span>Phụ thuộc nền tảng Zalo</span></div>
+            </div>
+            <div class="comparison-card">
+              <div class="comparison-card-title mobile">App Mobile</div>
+              <div class="cmp-row pro"><span class="cmp-icon">✓</span><span>Trải nghiệm tốt nhất</span></div>
+              <div class="cmp-row pro"><span class="cmp-icon">✓</span><span>Push notification đầy đủ</span></div>
+              <div class="cmp-row con"><span class="cmp-icon">✗</span><span>Cần tải xuống</span></div>
+              <div class="cmp-row con"><span class="cmp-icon">✗</span><span>Chi phí phát triển cao hơn</span></div>
+            </div>
+            <div class="comparison-card">
+              <div class="comparison-card-title web">Web App (PWA)</div>
+              <div class="cmp-row pro"><span class="cmp-icon">✓</span><span>Không cần tải xuống</span></div>
+              <div class="cmp-row pro"><span class="cmp-icon">✓</span><span>Chạy mọi thiết bị</span></div>
+              <div class="cmp-row con"><span class="cmp-icon">✗</span><span>Hạn chế push notification trên iOS</span></div>
+            </div>
+          </div>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Chatbot tư vấn 24/7:</strong> trợ lý AI trên Mini App — hỏi đáp về điểm thưởng, gợi ý sản phẩm phù hợp, hỗ trợ đổi trả, tra cứu đơn hàng. Giảm 60–70% ticket CS câu hỏi lặp lại</div>
+            <div class="ai-feature">🤖 <strong>Cá nhân hoá giao diện:</strong> mỗi khách thấy trang chủ app khác nhau: khách sữa bột thấy banner sữa, khách gia vị thấy combo gia vị Tết, khách VIP thấy sản phẩm cao cấp. Tăng tỷ lệ click gấp 2–3x so với giao diện chung</div>
+            <div class="ai-feature">🤖 <strong>Tìm kiếm thông minh:</strong> khách gõ "sữa cho bé 2 tuổi" → AI hiểu ngữ cảnh, gợi ý đúng dòng sản phẩm thay vì tìm kiếm keyword cứng</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Marketing</td><td>Quản lý nội dung, banner, chương trình hiển thị</td></tr>
+                <tr><td>Khách hàng</td><td>Tự phục vụ: xem điểm, đổi quà, đặt hàng</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 5–6</span>
+            <span class="activation-note">— khi đã có tích điểm và chương trình sẵn sàng</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- E2 -->
+      <article class="module-card section-anchor" id="e2" style="--group-color:var(--cds-cyan-50)">
+        <div class="module-card-header">
+          <div class="module-code">E2</div>
+          <h3 class="module-title">Cổng thông tin đại lý</h3>
+          <p class="module-tagline">Cho đại lý/cửa hàng nhượng quyền 1 nơi để theo dõi và thực hiện chương trình</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Dashboard riêng cho từng đại lý/điểm bán: doanh số, khách mới, tỷ lệ mua lại. Nhận chương trình từ hãng để triển khai. Xếp hạng giữa các điểm bán. Gợi ý hành động: "45 khách nguy cơ churn — danh sách đây, gọi đi."</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Dashboard riêng: doanh số, khách, mua lại theo điểm bán</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Chỉ thấy khách của mình, không thấy điểm bán khác</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Nhận chương trình từ hãng để triển khai</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Xếp hạng so với các điểm bán khác</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Gợi ý hành động: khách nguy cơ, khách cần chăm sóc</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>To-do list hàng ngày tự động:</strong> AI biến data thành hành động cụ thể: "Hôm nay: (1) 23 khách sắp hết sữa — đây là danh sách, gọi nhắc. (2) 5 khách VIP sinh nhật tuần này — chuẩn bị quà. (3) 8 khách mới chưa quay lại — gửi tin chào"</div>
+            <div class="ai-feature">🤖 <strong>Benchmark thông minh:</strong> AI so sánh đại lý với các đại lý cùng quy mô/khu vực (không so nhỏ với lớn): "Tỷ lệ mua lại của bạn 32% — thấp hơn trung bình khu vực (41%). Đại lý tốt nhất đang làm gì khác: gọi điện nhắc mua sau 10 ngày"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Quản lý cửa hàng / đại lý</td><td>Xem số liệu, thực hiện chương trình từ hãng</td></tr>
+                <tr><td>Quản lý vùng</td><td>So sánh hiệu suất các điểm bán trong khu vực</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Khi có mạng lưới đại lý</span>
+            <span class="activation-note">— doanh nghiệp có đại lý/nhượng quyền</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════════════════════════════════════
+         GROUP F — VẬN HÀNH
+    ════════════════════════════════════ -->
+    <section class="module-group section-anchor" id="group-f" style="--group-color:var(--cds-yellow-30)">
+      <div class="group-header">
+        <div class="group-label">
+          <span class="group-badge" style="background:var(--cds-yellow-30);color:var(--cds-gray-100)">F</span>
+          <span class="group-label-text" style="color:var(--cds-gray-80)">Nhóm F</span>
+        </div>
+        <h2 class="group-title">Vận hành</h2>
+        <p class="group-description" style="border-left-color:var(--cds-gray-80)">Công cụ cho đội ngũ vận hành hàng ngày — chăm sóc khách, quản lý sales, phân quyền truy cập.</p>
+      </div>
+
+      <!-- F1 -->
+      <article class="module-card section-anchor" id="f1" style="--group-color:var(--cds-yellow-30)">
+        <div class="module-card-header">
+          <div class="module-code" style="color:var(--cds-gray-70)">F1</div>
+          <h3 class="module-title">Chăm sóc khách hàng</h3>
+          <p class="module-tagline">Quản lý mọi tương tác chăm sóc — không để khiếu nại rơi vào quên lãng</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Tiếp nhận yêu cầu/khiếu nại từ mọi kênh vào 1 hàng đợi. Gắn với hồ sơ khách → CS thấy toàn bộ lịch sử. Phân loại, assign cho nhân viên, theo dõi SLA. Báo cáo: số ticket, thời gian xử lý, tỷ lệ hài lòng.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tiếp nhận từ Zalo, hotline, Facebook, tại quầy → 1 hàng đợi</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Gắn yêu cầu với hồ sơ khách → thấy toàn bộ lịch sử</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân loại: hỏi / khiếu nại / đổi trả / góp ý</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Assign nhân viên, theo dõi thời gian xử lý</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>SLA: cảnh báo khi vượt thời gian cam kết</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Báo cáo: ticket, thời gian xử lý, tỷ lệ hài lòng</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Phân loại ticket tự động:</strong> AI đọc nội dung, tự phân loại (hỏi thông tin / khiếu nại / đổi trả / góp ý) và assign cho đúng bộ phận — giảm thời gian routing từ 15 phút xuống tức thì</div>
+            <div class="ai-feature">🤖 <strong>Gợi ý câu trả lời:</strong> dựa trên ticket tương tự trước đó, AI soạn sẵn câu trả lời — CS chỉ cần review, chỉnh nhẹ và gửi. Giảm thời gian xử lý 40–50%</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện khiếu nại nghiêm trọng:</strong> AI đánh giá mức độ nghiêm trọng: "Khách VIP Kim cương, đã mua 50tr trong 6 tháng, đang rất tức giận về đơn giao sai — escalate ngay cho quản lý"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Đội CS</td><td>Xử lý yêu cầu/khiếu nại hàng ngày</td></tr>
+                <tr><td>Quản lý CS</td><td>Theo dõi SLA, phân bổ nhân sự, xem báo cáo</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 10+</span>
+            <span class="activation-note">— hoặc sớm hơn nếu có đội CS sẵn</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- F2 -->
+      <article class="module-card section-anchor" id="f2" style="--group-color:var(--cds-yellow-30)">
+        <div class="module-card-header">
+          <div class="module-code" style="color:var(--cds-gray-70)">F2</div>
+          <h3 class="module-title">Quản lý đội bán hàng</h3>
+          <p class="module-tagline">Mỗi nhân viên biết khách nào của mình, KPI đang ở đâu</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Assign khách cho nhân viên theo khu vực/hạng/round-robin. Dashboard cá nhân: "Khách của tôi", doanh số, target. Nhắc việc tự động. Bảng xếp hạng nhân viên. Tính hoa hồng tự động nếu cần.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Assign khách theo khu vực, hạng, round-robin</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Dashboard cá nhân: khách của tôi, doanh số, target</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Nhắc việc: "Hôm nay gọi 5 khách VIP chưa mua"</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Ghi chú sau mỗi cuộc gọi/lần gặp</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Bảng xếp hạng: doanh số, tỷ lệ giữ khách</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Hoa hồng: tính commission tự động theo rule</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Coach bán hàng AI:</strong> brief trước mỗi cuộc gọi: "Khách Vàng Nguyễn B — hay mua sữa tươi organic, lần cuối mua 25 ngày trước, thường mua vào cuối tháng. Đề xuất: hỏi thăm + gợi ý combo sữa tươi + sữa chua organic mới"</div>
+            <div class="ai-feature">🤖 <strong>Phân khách thông minh:</strong> thay vì round-robin, AI assign khách cho NV phù hợp nhất: NV giỏi upsell nhận khách tiềm năng cao, NV giỏi giữ chân nhận khách nguy cơ churn, NV mới nhận khách ít phức tạp</div>
+            <div class="ai-feature">🤖 <strong>Dự đoán đạt target:</strong> "NV Minh đang đạt 65% target, với tốc độ hiện tại sẽ đạt 88% cuối tháng. Gợi ý: focus vào 12 khách Vàng chưa mua trong tháng — nếu 7/12 mua sẽ đạt 100%"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>NV bán hàng</td><td>Xem khách của mình, nhận nhắc việc, ghi chú</td></tr>
+                <tr><td>Quản lý sales</td><td>Theo dõi hiệu suất, phân bổ khách, xem ranking</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-month">Tháng 10+</span>
+            <span class="activation-note">— khi có đội bán hàng cần quản lý</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- F3 -->
+      <article class="module-card section-anchor" id="f3" style="--group-color:var(--cds-yellow-30)">
+        <div class="module-card-header">
+          <div class="module-code" style="color:var(--cds-gray-70)">F3</div>
+          <h3 class="module-title">Phân quyền &amp; kiểm soát</h3>
+          <p class="module-tagline">Mỗi người chỉ thấy data mình được phép thấy</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Phân quyền theo vai trò (Admin, Quản lý, Marketing, Sales, CS, Nhân viên) và theo phạm vi (toàn hệ thống, theo thương hiệu, theo chi nhánh). Data isolation nghiêm ngặt. Audit log đầy đủ.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân quyền theo vai trò: Admin, Marketing, Sales, CS, NV</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Phân quyền theo phạm vi: hệ thống, thương hiệu, chi nhánh</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Data isolation: NV chi nhánh A không thấy chi nhánh B</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Audit log: ai truy cập gì, khi nào, từ đâu</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>SSO: đăng nhập bằng tài khoản công ty</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện truy cập bất thường:</strong> AI phát hiện hành vi lạ: "NV sales vừa export danh sách 5.000 khách lúc 2h sáng — chưa từng làm trước đó" → cảnh báo admin ngay, bảo vệ dữ liệu khách hàng</div>
+            <div class="ai-feature">🤖 <strong>Gợi ý phân quyền:</strong> khi thêm nhân viên mới, AI gợi ý quyền phù hợp dựa trên vai trò tương tự: "NV sales chi nhánh khác có quyền X, Y, Z — áp dụng tương tự?"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>IT / Admin</td><td>Cấu hình vai trò, gán quyền, xem audit log</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-always">Luôn bật</span>
+            <span class="activation-note">— cấu hình 1 lần, cập nhật khi có người mới</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════════════════════════════════════
+         GROUP G — NÂNG CAO
+    ════════════════════════════════════ -->
+    <section class="module-group section-anchor" id="group-g" style="--group-color:var(--cds-red-60)">
+      <div class="group-header">
+        <div class="group-label">
+          <span class="group-badge" style="background:var(--cds-red-60);color:#fff">G</span>
+          <span class="group-label-text" style="color:var(--cds-red-60)">Nhóm G</span>
+        </div>
+        <h2 class="group-title">Nâng cao</h2>
+        <p class="group-description">AI-powered. Bật khi đã có đủ data và đã dùng ổn các module cơ bản. Chuyển từ reactive sang proactive — dự đoán thay vì chờ đợi.</p>
+      </div>
+
+      <!-- G1 -->
+      <article class="module-card section-anchor" id="g1" style="--group-color:var(--cds-red-60)">
+        <div class="module-card-header">
+          <div class="module-code">G1</div>
+          <h3 class="module-title">Dự đoán hành vi</h3>
+          <p class="module-tagline">Dự đoán: khách nào sắp rời đi, khách nào sẵn sàng mua thêm</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">AI dự đoán churn (% khả năng ngừng mua trong 30/60/90 ngày), dự đoán sản phẩm tiếp theo khách sẽ mua, ước tính giá trị khách 12 tháng tới. Giải thích được lý do — không phải "hộp đen". Dùng kết quả để tự động trigger kịch bản phù hợp.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Dự đoán churn: % khách ngừng mua trong 30/60/90 ngày</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Dự đoán SP tiếp theo khách sẽ mua</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Ước tính giá trị khách 12 tháng tới (pCLTV)</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Giải thích: "churn 78% VÌ giảm tần suất + engagement drop"</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Tự động trigger kịch bản từ kết quả dự đoán</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Dự đoán nhu cầu mới:</strong> AI phát hiện khách đang chuyển lifecycle: "Khách mua sữa bột cho trẻ 0–6 tháng → con sắp lên 1 tuổi → gợi ý chuyển sang sữa tươi + thực phẩm ăn dặm" — proactive chứ không đợi khách tự tìm</div>
+            <div class="ai-feature">🤖 <strong>Phát hiện cơ hội tăng trưởng tự động:</strong> AI quét toàn bộ data mỗi tuần, tự đề xuất: "Có 340 khách mua sữa bột đang chuyển sang mua sữa tươi — nên tạo chương trình giữ dòng sữa bột? Hay tạo chương trình cross-sell combo?"</div>
+            <div class="ai-feature">🤖 <strong>Mô phỏng kịch bản (What-if):</strong> "Nếu tăng điểm thưởng gấp đôi cho hạng Vàng, doanh thu sẽ thay đổi ra sao?" — AI mô phỏng kết quả dựa trên dữ liệu lịch sử trước khi chạy thật, giảm rủi ro quyết định sai</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Data / Marketing</td><td>Phân tích, thiết lập hành động dựa trên dự đoán</td></tr>
+                <tr><td>Hệ thống</td><td>Tự chạy model hàng tuần, trigger kịch bản</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-year">Năm 2+</span>
+            <span class="activation-note">— cần &gt; 12 tháng data và &gt; 10.000 khách</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- G2 -->
+      <article class="module-card section-anchor" id="g2" style="--group-color:var(--cds-red-60)">
+        <div class="module-card-header">
+          <div class="module-code">G2</div>
+          <h3 class="module-title">Báo cáo nâng cao</h3>
+          <p class="module-tagline">Phân tích chuyên sâu cho người muốn đào sâu hơn dashboard cơ bản</p>
+        </div>
+        <div class="module-card-body">
+          <p class="module-description">Cohort retention (khách tháng 1 → bao nhiêu % quay lại tháng 6?), customer journey mapping, basket analysis (SP hay mua cùng nhau), channel attribution (kênh nào đóng góp nhiều nhất), custom report builder.</p>
+
+          <div class="module-section-title">Tính năng</div>
+          <ul class="feature-list">
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Cohort retention: % quay lại theo tháng</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Customer journey: hành trình từ biết → mua → trung thành</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Basket analysis: SP hay mua cùng nhau</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Attribution: kênh nào đóng góp nhiều nhất</li>
+            <li><svg class="check-icon" viewBox="0 0 16 16"><path d="M6.5 11.5L2 7l1.4-1.4L6.5 8.7l6.1-6.1L14 4z"/></svg>Custom report: kéo thả tạo báo cáo riêng</li>
+          </ul>
+
+          <div class="module-section-title">AI nâng cao</div>
+          <div class="ai-panel">
+            <div class="ai-panel-title">🤖 Tính năng AI</div>
+            <div class="ai-feature">🤖 <strong>Hỏi đáp data bằng tiếng Việt:</strong> chủ chuỗi gõ: "Tháng này chi nhánh nào bán kém nhất?" hoặc "So sánh doanh thu sữa bột Q1 với Q2" → AI trả lời bằng biểu đồ + giải thích bằng ngôn ngữ tự nhiên. Không cần biết SQL, không cần kéo thả báo cáo</div>
+            <div class="ai-feature">🤖 <strong>Tự phát hiện insight:</strong> AI chạy hàng trăm phép phân tích mỗi tuần, chỉ surface cái đáng chú ý: "Khách mua lần đầu qua TikTok Shop có tỷ lệ mua lại thấp hơn 40% so với khách đến cửa hàng — nên có kịch bản onboarding riêng cho kênh này"</div>
+            <div class="ai-feature">🤖 <strong>Báo cáo tự viết (Auto-narrative):</strong> thay vì gửi bảng số liệu, hệ thống gửi email: "Tháng 9 tổng kết: doanh thu 2.1 tỷ (+8%), khách mới 450 (-12%), mua lại 68% (+5pp). Điểm sáng: chương trình nhắc mua sữa bột mang về 180 đơn. Cần chú ý: chi nhánh Q3 giảm 3 tháng liên tiếp"</div>
+          </div>
+
+          <div class="module-section-title">Bộ phận sử dụng</div>
+          <div class="table-wrapper">
+            <table class="carbon-table">
+              <thead><tr><th>Bộ phận</th><th>Sử dụng để</th></tr></thead>
+              <tbody>
+                <tr><td>Data analyst</td><td>Phân tích chuyên sâu, tìm insight</td></tr>
+                <tr><td>Marketing senior</td><td>Tối ưu chiến lược dựa trên data</td></tr>
+                <tr><td>Ban lãnh đạo</td><td>Đánh giá hiệu quả tổng thể, ra quyết định chiến lược</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="activation-row">
+            <span class="activation-label">Kích hoạt</span>
+            <span class="tag tag-year">Năm 2+</span>
+            <span class="activation-note">— khi cần phân tích sâu hơn dashboard cơ bản</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════════════════════════════════════
+         ARCHITECTURE DIAGRAM
+    ════════════════════════════════════ -->
+    <section class="arch-section section-anchor" id="architecture">
+      <h2 class="arch-title">Kiến trúc tổng thể</h2>
+      <p class="arch-subtitle">Các lớp module — từ nền tảng dữ liệu đến kênh tiếp cận khách hàng</p>
+
+      <div class="arch-layout">
+        <div class="arch-stack">
+          <div class="arch-layer" style="--layer-color:var(--cds-cyan-50)">
+            <div class="arch-layer-label">E — Kênh khách hàng</div>
+            <div class="arch-layer-modules">Mini App Zalo · App Mobile · Web · Cổng đại lý</div>
+          </div>
+          <div class="arch-connector">↓</div>
+          <div class="arch-layer" style="--layer-color:var(--cds-purple-60)">
+            <div class="arch-layer-label">D — Kích hoạt</div>
+            <div class="arch-layer-modules">Nhắn tin đa kênh · Kịch bản tự động · Chương trình</div>
+          </div>
+          <div class="arch-connector">↓</div>
+          <div class="arch-layer" style="--layer-color:var(--cds-green-50)">
+            <div class="arch-layer-label">C — Tăng trưởng</div>
+            <div class="arch-layer-modules">Nhắc mua · Tích điểm · Gợi ý SP · Giữ khách · Referral · Khảo sát</div>
+          </div>
+          <div class="arch-connector">↓</div>
+          <div class="arch-layer" style="--layer-color:var(--cds-teal-50)">
+            <div class="arch-layer-label">B — Hiểu khách</div>
+            <div class="arch-layer-modules">Phân nhóm · Chấm điểm &amp; phân hạng · Đo lường</div>
+          </div>
+          <div class="arch-connector">↓</div>
+          <div class="arch-layer" style="--layer-color:var(--cds-blue-60)">
+            <div class="arch-layer-label">A — Nền tảng</div>
+            <div class="arch-layer-modules">Kết nối dữ liệu · Hồ sơ khách hàng</div>
+          </div>
+        </div>
+
+        <div class="arch-side">
+          <div class="arch-side-box" style="--side-color:var(--cds-gray-80)">
+            <div class="arch-side-label" style="--side-color:var(--cds-gray-80)">F — Vận hành</div>
+            <div class="arch-side-modules">Chăm sóc KH<br>Quản lý Sales<br>Phân quyền</div>
+          </div>
+          <div class="arch-side-box" style="--side-color:var(--cds-red-60)">
+            <div class="arch-side-label" style="--side-color:var(--cds-red-60)">G — Nâng cao</div>
+            <div class="arch-side-modules">Dự đoán hành vi<br>Báo cáo AI</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div><!-- end main-wrapper -->
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-brand">GrowBase — Nền tảng Tăng trưởng Khách hàng · Bản đồ Module · 17 module · 7 nhóm</span>
+    <a href="growbase-overview.html" class="footer-link">← Quay lại Tổng quan</a>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" title="Quay về đầu trang">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 4L3 9h10z"/></svg>
+</button>
+
+<script>
+(function() {
+  // ── TOC DATA ──
+  var toc = [
+    { id:'group-a', label:'A — Nền tảng', color:'#0f62fe', modules:[
+      {id:'a1',label:'A1. Kết nối dữ liệu'},
+      {id:'a2',label:'A2. Hồ sơ khách hàng'}
+    ]},
+    { id:'group-b', label:'B — Hiểu khách', color:'#009d9a', modules:[
+      {id:'b1',label:'B1. Phân nhóm khách'},
+      {id:'b2',label:'B2. Chấm điểm & phân hạng'},
+      {id:'b3',label:'B3. Đo lường & báo cáo'}
+    ]},
+    { id:'group-c', label:'C — Tăng trưởng', color:'#24a148', modules:[
+      {id:'c1',label:'C1. Nhắc tái mua'},
+      {id:'c2',label:'C2. Tích điểm & đổi thưởng'},
+      {id:'c3',label:'C3. Gợi ý sản phẩm'},
+      {id:'c4',label:'C4. Giữ khách & win-back'},
+      {id:'c5',label:'C5. Giới thiệu bạn bè'},
+      {id:'c6',label:'C6. Khảo sát & phản hồi'}
+    ]},
+    { id:'group-d', label:'D — Kích hoạt', color:'#8a3ffc', modules:[
+      {id:'d1',label:'D1. Nhắn tin đa kênh'},
+      {id:'d2',label:'D2. Kịch bản tự động'},
+      {id:'d3',label:'D3. Chương trình & ưu đãi'}
+    ]},
+    { id:'group-e', label:'E — Kênh khách hàng', color:'#1192e8', modules:[
+      {id:'e1',label:'E1. App / Mini App khách hàng'},
+      {id:'e2',label:'E2. Cổng thông tin đại lý'}
+    ]},
+    { id:'group-f', label:'F — Vận hành', color:'#525252', modules:[
+      {id:'f1',label:'F1. Chăm sóc khách hàng'},
+      {id:'f2',label:'F2. Quản lý đội bán hàng'},
+      {id:'f3',label:'F3. Phân quyền & kiểm soát'}
+    ]},
+    { id:'group-g', label:'G — Nâng cao', color:'#da1e28', modules:[
+      {id:'g1',label:'G1. Dự đoán hành vi'},
+      {id:'g2',label:'G2. Báo cáo nâng cao'}
+    ]},
+    { id:'architecture', label:'Kiến trúc tổng thể', color:'#525252', modules:[] }
+  ];
+
+  function buildTOC(container) {
+    toc.forEach(function(g) {
+      var wrap = document.createElement('div');
+      var ga = document.createElement('a');
+      ga.className = 'toc-group-link';
+      ga.href = '#' + g.id;
+      ga.innerHTML = '<span class="toc-dot" style="background:'+g.color+'"></span>' + g.label;
+      wrap.appendChild(ga);
+      if (g.modules.length) {
+        var ml = document.createElement('div');
+        ml.className = 'toc-modules';
+        g.modules.forEach(function(m) {
+          var a = document.createElement('a');
+          a.className = 'toc-link';
+          a.href = '#' + m.id;
+          a.dataset.id = m.id;
+          a.textContent = m.label;
+          ml.appendChild(a);
+        });
+        wrap.appendChild(ml);
+      }
+      container.appendChild(wrap);
+    });
+  }
+
+  buildTOC(document.getElementById('tocContent'));
+  buildTOC(document.getElementById('mobileTocBody'));
+
+  // ── MOBILE TOC TOGGLE ──
+  var mToggle = document.getElementById('mobileTocToggle');
+  var mBody = document.getElementById('mobileTocBody');
+  mToggle.addEventListener('click', function() {
+    var open = mBody.classList.toggle('open');
+    mToggle.classList.toggle('open', open);
+    mToggle.setAttribute('aria-expanded', open);
+  });
+
+  // ── HAMBURGER ──
+  document.getElementById('hamburger').addEventListener('click', function() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  });
+
+  // ── INTERSECTION OBSERVER: active TOC ──
+  var allIds = [];
+  toc.forEach(function(g) {
+    allIds.push(g.id);
+    g.modules.forEach(function(m) { allIds.push(m.id); });
+  });
+
+  function setActive(id) {
+    document.querySelectorAll('.toc-link').forEach(function(l) {
+      l.classList.toggle('active', l.dataset.id === id);
+    });
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) setActive(e.target.id);
+      });
+    }, { rootMargin: '-48px 0px -55% 0px', threshold: 0 });
+    allIds.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+
+  // ── FADE-IN CARDS ──
+  if ('IntersectionObserver' in window) {
+    var co = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          co.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.04 });
+    document.querySelectorAll('.module-card').forEach(function(c) { co.observe(c); });
+  } else {
+    document.querySelectorAll('.module-card').forEach(function(c) { c.classList.add('visible'); });
+  }
+
+  // ── BACK TO TOP ──
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function() {
+    btn.classList.toggle('visible', window.scrollY > 500);
+  }, {passive:true});
+  btn.addEventListener('click', function() {
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+})();
+</script>
+</body>
+</html>

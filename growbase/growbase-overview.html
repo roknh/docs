@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GrowBase — Nền tảng Tăng trưởng Khách hàng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── IBM Carbon Design System Tokens ─── */
+    :root {
+      --cds-blue-60:   #0f62fe;
+      --cds-blue-70:   #0043ce;
+      --cds-blue-10:   #edf5ff;
+      --cds-blue-20:   #d0e2ff;
+      --cds-gray-100:  #161616;
+      --cds-gray-90:   #262626;
+      --cds-gray-80:   #393939;
+      --cds-gray-70:   #525252;
+      --cds-gray-50:   #8d8d8d;
+      --cds-gray-30:   #c6c6c6;
+      --cds-gray-20:   #e0e0e0;
+      --cds-gray-10:   #f4f4f4;
+      --cds-white:     #ffffff;
+      --cds-green-50:  #24a148;
+      --cds-red-60:    #da1e28;
+      --cds-yellow-30: #f1c21b;
+      --cds-purple-60: #8a3ffc;
+      --cds-teal-50:   #009d9a;
+      --cds-cyan-50:   #1192e8;
+
+      /* Spacing */
+      --sp-1:  0.125rem;
+      --sp-2:  0.25rem;
+      --sp-3:  0.5rem;
+      --sp-4:  0.75rem;
+      --sp-5:  1rem;
+      --sp-6:  1.5rem;
+      --sp-7:  2rem;
+      --sp-8:  2.5rem;
+      --sp-9:  3rem;
+      --sp-10: 4rem;
+
+      --nav-h: 3rem; /* 48px */
+      --max-w: 82rem; /* 1312px */
+    }
+
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--cds-gray-100);
+      background: var(--cds-white);
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: var(--cds-blue-60); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── Typography ─── */
+    .t-display  { font-size: 2.625rem; font-weight: 300; line-height: 1.2; }
+    .t-h05      { font-size: 2rem;     font-weight: 400; line-height: 1.25; }
+    .t-h04      { font-size: 1.75rem;  font-weight: 400; line-height: 1.3; }
+    .t-h03      { font-size: 1.25rem;  font-weight: 400; line-height: 1.4; }
+    .t-h02      { font-size: 1rem;     font-weight: 600; line-height: 1.375; }
+    .t-body     { font-size: 1rem;     font-weight: 400; line-height: 1.5; }
+    .t-small    { font-size: 0.875rem; font-weight: 400; line-height: 1.4; }
+    .t-caption  { font-size: 0.75rem;  font-weight: 400; line-height: 1.4; }
+    .t-mono     { font-family: 'IBM Plex Mono', monospace; }
+
+    /* ─── Layout ─── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--sp-5);
+    }
+    @media (min-width: 42rem) {
+      .container { padding: 0 var(--sp-7); }
+    }
+    @media (min-width: 66rem) {
+      .container { padding: 0 var(--sp-9); }
+    }
+
+    .section { padding: var(--sp-10) 0; }
+    .section--alt { background: var(--cds-gray-10); }
+    .section--dark { background: var(--cds-blue-60); color: var(--cds-white); }
+
+    .section-header {
+      margin-bottom: var(--sp-7);
+    }
+    .section-header h2 {
+      font-size: 1.75rem;
+      font-weight: 400;
+      line-height: 1.3;
+      padding-left: var(--sp-5);
+      border-left: 4px solid var(--cds-blue-60);
+    }
+    .section-header .sub {
+      margin-top: var(--sp-3);
+      padding-left: calc(var(--sp-5) + 4px);
+      color: var(--cds-gray-70);
+      font-size: 0.875rem;
+    }
+    .section--dark .section-header h2 {
+      border-left-color: var(--cds-blue-20);
+      color: var(--cds-white);
+    }
+    .section--dark .section-header .sub { color: var(--cds-blue-20); }
+
+    /* ─── Navigation ─── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      background: var(--cds-gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--sp-5);
+    }
+    @media (min-width: 42rem) { .nav { padding: 0 var(--sp-7); } }
+    @media (min-width: 66rem) { .nav { padding: 0 var(--sp-9); } }
+
+    .nav-logo {
+      color: var(--cds-white);
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .nav-logo span { color: var(--cds-blue-20); }
+
+    .nav-links {
+      display: none;
+      list-style: none;
+      gap: 0;
+    }
+    .nav-links a {
+      display: block;
+      padding: 0 var(--sp-5);
+      height: var(--nav-h);
+      line-height: var(--nav-h);
+      color: var(--cds-gray-30);
+      font-size: 0.875rem;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--cds-white);
+      background: var(--cds-gray-80);
+      text-decoration: none;
+    }
+    .nav-links a.active { border-bottom: 2px solid var(--cds-blue-60); }
+
+    .nav-hamburger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--cds-white);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: var(--sp-3);
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile-menu {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      background: var(--cds-gray-90);
+      z-index: 99;
+      padding: var(--sp-3) 0;
+    }
+    .nav-mobile-menu.open { display: block; }
+    .nav-mobile-menu a {
+      display: block;
+      padding: var(--sp-4) var(--sp-5);
+      color: var(--cds-gray-30);
+      font-size: 0.875rem;
+      border-bottom: 1px solid var(--cds-gray-80);
+    }
+    .nav-mobile-menu a.active { color: var(--cds-white); background: var(--cds-gray-80); }
+    .nav-mobile-menu a:hover { color: var(--cds-white); text-decoration: none; }
+
+    @media (min-width: 42rem) {
+      .nav-links { display: flex; }
+      .nav-hamburger { display: none; }
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      background: linear-gradient(135deg, var(--cds-blue-60) 0%, var(--cds-blue-70) 100%);
+      color: var(--cds-white);
+      padding: calc(var(--nav-h) + var(--sp-10)) 0 var(--sp-10);
+    }
+    .hero-inner { max-width: 50rem; }
+
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-3);
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: var(--sp-2) var(--sp-4);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: var(--sp-5);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: var(--sp-3);
+    }
+    .hero h1 strong { font-weight: 700; color: var(--cds-blue-20); }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--cds-blue-20);
+      margin-bottom: var(--sp-5);
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+      max-width: 42rem;
+      margin-bottom: var(--sp-7);
+    }
+
+    .hero-industries {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-8);
+    }
+    .hero-industry-badge {
+      padding: var(--sp-2) var(--sp-4);
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      font-size: 0.75rem;
+      border-radius: 9999px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      max-width: 36rem;
+    }
+    @media (min-width: 42rem) {
+      .hero-stats { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .hero-stat {
+      background: rgba(0,0,0,0.15);
+      padding: var(--sp-5) var(--sp-6);
+      text-align: center;
+    }
+    .hero-stat-num {
+      font-size: 2rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: var(--sp-2);
+      color: var(--cds-white);
+    }
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ─── Cards ─── */
+    .card {
+      background: var(--cds-white);
+      border: 1px solid var(--cds-gray-20);
+      padding: var(--sp-6);
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+    .section--alt .card { background: var(--cds-white); }
+
+    .card-grid {
+      display: grid;
+      gap: var(--sp-5);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 42rem) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 66rem) {
+      .card-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .card-grid--2col {
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 42rem) {
+      .card-grid--2col { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .card-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background: var(--cds-blue-60);
+      color: var(--cds-white);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: var(--sp-4);
+    }
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: var(--sp-3);
+      color: var(--cds-gray-100);
+    }
+    .card p {
+      font-size: 0.875rem;
+      color: var(--cds-gray-70);
+      line-height: 1.5;
+    }
+
+    /* ─── Stepper / Solution Flow ─── */
+    .stepper {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    @media (min-width: 66rem) {
+      .stepper {
+        flex-direction: row;
+        align-items: stretch;
+        gap: 0;
+      }
+    }
+
+    .step {
+      background: var(--cds-white);
+      border: 1px solid var(--cds-gray-20);
+      padding: var(--sp-5);
+      position: relative;
+      flex: 1;
+    }
+    @media (max-width: 65.99rem) {
+      .step {
+        display: flex;
+        gap: var(--sp-4);
+        align-items: flex-start;
+      }
+      .step + .step {
+        border-top: none;
+      }
+    }
+    @media (min-width: 66rem) {
+      .step + .step { border-left: none; }
+      .step::after {
+        content: '';
+        position: absolute;
+        right: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-left: 12px solid var(--cds-gray-20);
+        z-index: 2;
+      }
+      .step:last-child::after { display: none; }
+      .step::before {
+        content: '';
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 9px solid transparent;
+        border-bottom: 9px solid transparent;
+        border-left: 11px solid var(--cds-white);
+        z-index: 3;
+      }
+      .step:last-child::before { display: none; }
+    }
+
+    .step-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      min-width: 2.5rem;
+      background: var(--cds-blue-10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--sp-3);
+      font-size: 1.25rem;
+    }
+    @media (max-width: 65.99rem) {
+      .step-icon { margin-bottom: 0; }
+    }
+
+    .step-body {}
+    .step-num {
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cds-blue-60);
+      margin-bottom: var(--sp-2);
+    }
+    .step-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: var(--sp-2);
+    }
+    .step-sub {
+      font-size: 0.75rem;
+      color: var(--cds-gray-70);
+      line-height: 1.4;
+    }
+
+    /* ─── Industry Tabs ─── */
+    .industry-tabs {
+      display: none;
+    }
+    .industry-tab-btns {
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 2px solid var(--cds-gray-20);
+      margin-bottom: var(--sp-5);
+      gap: 0;
+      scrollbar-width: none;
+    }
+    .industry-tab-btns::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      padding: var(--sp-4) var(--sp-6);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--cds-gray-70);
+      transition: color 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--cds-gray-100); background: var(--cds-gray-10); }
+    .tab-btn.active {
+      color: var(--cds-blue-60);
+      border-bottom-color: var(--cds-blue-60);
+      font-weight: 600;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .industry-steps {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+    .industry-step {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-4);
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--cds-white);
+      border: 1px solid var(--cds-gray-20);
+    }
+    .industry-step-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.75rem;
+      height: 1.75rem;
+      min-width: 1.75rem;
+      background: var(--cds-blue-60);
+      color: var(--cds-white);
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 50%;
+    }
+    .industry-step-text {
+      flex: 1;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    /* ─── Industry Accordion (mobile) ─── */
+    .industry-accordion {}
+    .accordion-item {
+      border: 1px solid var(--cds-gray-20);
+      border-bottom: none;
+    }
+    .accordion-item:last-child { border-bottom: 1px solid var(--cds-gray-20); }
+    .accordion-btn {
+      width: 100%;
+      text-align: left;
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--cds-white);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--cds-gray-100);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .accordion-btn:hover { background: var(--cds-gray-10); }
+    .accordion-btn.open { background: var(--cds-blue-10); color: var(--cds-blue-60); }
+    .accordion-icon {
+      transition: transform 0.2s;
+      font-size: 1rem;
+    }
+    .accordion-btn.open .accordion-icon { transform: rotate(180deg); }
+    .accordion-body {
+      display: none;
+      padding: 0 var(--sp-5) var(--sp-5);
+      background: var(--cds-white);
+    }
+    .accordion-body.open { display: block; }
+
+    @media (min-width: 42rem) {
+      .industry-tabs { display: block; }
+      .industry-accordion { display: none; }
+    }
+
+    /* ─── Comparison Table ─── */
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .cds-table {
+      width: 100%;
+      min-width: 42rem;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .cds-table thead tr {
+      background: var(--cds-gray-10);
+      border-bottom: 2px solid var(--cds-gray-30);
+    }
+    .cds-table th {
+      padding: var(--sp-4) var(--sp-5);
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--cds-gray-70);
+      white-space: nowrap;
+    }
+    .cds-table td {
+      padding: var(--sp-4) var(--sp-5);
+      border-bottom: 1px solid var(--cds-gray-20);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .cds-table tbody tr:hover { background: var(--cds-gray-10); }
+
+    .col-highlight {
+      background: var(--cds-blue-10) !important;
+    }
+    .col-highlight th,
+    .col-highlight td {
+      color: var(--cds-blue-70);
+    }
+    thead .col-highlight th {
+      color: var(--cds-blue-60);
+      font-size: 0.875rem;
+    }
+    .cds-table td strong { color: var(--cds-blue-60); font-weight: 700; }
+
+    /* ─── Principle Cards ─── */
+    .principle-cards {
+      display: grid;
+      gap: var(--sp-5);
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 42rem) {
+      .principle-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 66rem) {
+      .principle-cards { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .principle-card {
+      background: var(--cds-white);
+      border: 1px solid var(--cds-gray-20);
+      padding: var(--sp-6);
+      transition: box-shadow 0.2s;
+    }
+    .principle-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .principle-card:first-child,
+    .principle-card:nth-child(2) {
+      /* no grid spanning — uniform */
+    }
+
+    .principle-num {
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--cds-blue-60);
+      line-height: 1;
+      margin-bottom: var(--sp-4);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .principle-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: var(--sp-3);
+    }
+    .principle-body {
+      font-size: 0.875rem;
+      color: var(--cds-gray-70);
+      line-height: 1.55;
+    }
+
+    /* ─── Timeline ─── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.6875rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--cds-gray-20);
+    }
+    @media (min-width: 66rem) {
+      .timeline {
+        padding-left: 0;
+        display: grid;
+        grid-template-columns: 1fr 2px 1fr;
+        gap: 0;
+        align-items: start;
+      }
+      .timeline::before { display: none; }
+      .timeline-line {
+        grid-column: 2;
+        grid-row: 1 / -1;
+        background: var(--cds-gray-20);
+        width: 2px;
+        min-height: 100%;
+        align-self: stretch;
+      }
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: var(--sp-7);
+    }
+    @media (max-width: 65.99rem) {
+      .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -2rem;
+        top: 0.3rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: var(--cds-blue-60);
+        border: 3px solid var(--cds-white);
+        box-shadow: 0 0 0 2px var(--cds-blue-60);
+      }
+    }
+
+    @media (min-width: 66rem) {
+      .timeline-item {
+        padding: 0 var(--sp-7) var(--sp-7);
+        position: relative;
+      }
+      .timeline-item:nth-child(odd) {
+        grid-column: 1;
+        text-align: right;
+        padding-right: var(--sp-7);
+        padding-left: 0;
+      }
+      .timeline-item:nth-child(even) {
+        grid-column: 3;
+        padding-left: var(--sp-7);
+        padding-right: 0;
+      }
+      .timeline-item::after {
+        content: '';
+        position: absolute;
+        top: 0.25rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: var(--cds-blue-60);
+        border: 3px solid var(--cds-white);
+        box-shadow: 0 0 0 2px var(--cds-blue-60);
+      }
+      .timeline-item:nth-child(odd)::after { right: calc(-3.5rem - 0.5rem); }
+      .timeline-item:nth-child(even)::after { left: calc(-3.5rem - 0.5rem); }
+    }
+
+    .timeline-phase {
+      display: inline-block;
+      background: var(--cds-blue-60);
+      color: var(--cds-white);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: var(--sp-1) var(--sp-3);
+      margin-bottom: var(--sp-3);
+    }
+    .timeline-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: var(--sp-3);
+    }
+    .timeline-body {
+      font-size: 0.875rem;
+      color: var(--cds-gray-70);
+      line-height: 1.55;
+      margin-bottom: var(--sp-4);
+    }
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+    }
+    @media (min-width: 66rem) {
+      .timeline-item:nth-child(odd) .timeline-tags { justify-content: flex-end; }
+    }
+
+    /* ─── Tags / Badges ─── */
+    .tag {
+      display: inline-block;
+      padding: var(--sp-1) var(--sp-4);
+      border-radius: 9999px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+    .tag--blue   { background: var(--cds-blue-10);            color: var(--cds-blue-60); }
+    .tag--green  { background: #defbe6;                       color: var(--cds-green-50); }
+    .tag--purple { background: #f6f2ff;                       color: var(--cds-purple-60); }
+    .tag--cyan   { background: #e5f6ff;                       color: var(--cds-cyan-50); }
+    .tag--teal   { background: #d9fbfb;                       color: var(--cds-teal-50); }
+    .tag--yellow { background: #fcf4d6;                       color: #8f5a00; }
+    .tag--red    { background: #fff1f1;                       color: var(--cds-red-60); }
+    .tag--gray   { background: var(--cds-gray-20);            color: var(--cds-gray-70); }
+
+    .tag-pill {
+      display: inline-block;
+      padding: 1px var(--sp-3);
+      border-radius: 9999px;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tag-pill--A { background: var(--cds-blue-60);   color: #fff; }
+    .tag-pill--B { background: var(--cds-purple-60); color: #fff; }
+    .tag-pill--C { background: var(--cds-green-50);  color: #fff; }
+    .tag-pill--D { background: var(--cds-cyan-50);   color: #fff; }
+    .tag-pill--E { background: var(--cds-teal-50);   color: #fff; }
+    .tag-pill--F { background: var(--cds-yellow-30); color: var(--cds-gray-100); }
+    .tag-pill--G { background: var(--cds-red-60);    color: #fff; }
+
+    /* ─── Stat Cards ─── */
+    .stat-grid {
+      display: grid;
+      gap: var(--sp-5);
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 42rem) {
+      .stat-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .stat-card {
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: var(--sp-6);
+      background: rgba(255,255,255,0.08);
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .stat-card:hover { background: rgba(255,255,255,0.15); }
+
+    .stat-num {
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--cds-white);
+      margin-bottom: var(--sp-3);
+    }
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--cds-blue-20);
+    }
+    .stat-desc {
+      margin-top: var(--sp-2);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ─── Module Table ─── */
+    .module-table {
+      width: 100%;
+      min-width: 42rem;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .module-table thead tr {
+      background: var(--cds-gray-10);
+      border-bottom: 2px solid var(--cds-gray-30);
+    }
+    .module-table th {
+      padding: var(--sp-4) var(--sp-5);
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--cds-gray-70);
+    }
+    .module-table td {
+      padding: var(--sp-4) var(--sp-5);
+      border-bottom: 1px solid var(--cds-gray-20);
+      vertical-align: middle;
+      line-height: 1.5;
+    }
+    .module-table tbody tr:hover { background: var(--cds-gray-10); }
+    .module-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-2);
+    }
+    .module-note {
+      font-size: 0.8125rem;
+      color: var(--cds-gray-70);
+      font-style: italic;
+    }
+
+    /* ─── Industry step action tags ─── */
+    .action-tag {
+      display: inline-block;
+      padding: 1px var(--sp-3);
+      border-radius: 9999px;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-left: var(--sp-3);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .action-tag--biet-khach   { background: #defbe6; color: #0e6027; }
+    .action-tag--nhac-mua     { background: var(--cds-blue-10); color: var(--cds-blue-70); }
+    .action-tag--tang-gio     { background: #f6f2ff; color: #491d8b; }
+    .action-tag--thuong-khach { background: #fcf4d6; color: #8f5a00; }
+    .action-tag--giu-khach    { background: #fff1f1; color: var(--cds-red-60); }
+    .action-tag--moi-khach    { background: #d9fbfb; color: #005d5d; }
+    .action-tag--khao-sat     { background: #e5f6ff; color: #003a6d; }
+    .action-tag--nhan-tin     { background: var(--cds-blue-10); color: var(--cds-blue-70); }
+
+    /* ─── Footer ─── */
+    .footer {
+      background: var(--cds-gray-90);
+      color: var(--cds-gray-30);
+      padding: var(--sp-9) 0;
+    }
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-5);
+    }
+    @media (min-width: 42rem) {
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+    .footer-brand {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--cds-white);
+      margin-bottom: var(--sp-3);
+    }
+    .footer-sub {
+      font-size: 0.75rem;
+      color: var(--cds-gray-50);
+    }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+      text-align: right;
+    }
+    .footer-links a {
+      color: var(--cds-gray-30);
+      font-size: 0.875rem;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover {
+      color: var(--cds-white);
+      text-decoration: none;
+    }
+
+    /* ─── Scroll Animations ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(1.25rem);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+    .fade-in-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── Print ─── */
+    @media print {
+      .nav, .nav-hamburger, .nav-mobile-menu { display: none !important; }
+      .hero { padding-top: var(--sp-7); }
+      .fade-in { opacity: 1; transform: none; }
+      .section { page-break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+      .hero { background: var(--cds-gray-90) !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      body { font-size: 11pt; }
+    }
+
+    /* ─── Utility ─── */
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+      white-space: nowrap; border: 0;
+    }
+    .mt-2  { margin-top: var(--sp-7); }
+    .note-box {
+      padding: var(--sp-4) var(--sp-5);
+      background: var(--cds-blue-10);
+      border-left: 4px solid var(--cds-blue-60);
+      font-size: 0.875rem;
+      color: var(--cds-gray-80);
+      margin-top: var(--sp-6);
+    }
+    .note-box a { font-weight: 600; }
+  </style>
+</head>
+
+<body>
+  <!-- ══════════════ NAVIGATION ══════════════ -->
+  <nav class="nav" role="navigation" aria-label="Điều hướng chính">
+    <span class="nav-logo">Grow<span>Base</span></span>
+    <ul class="nav-links" role="list">
+      <li><a href="growbase-overview.html" class="active" aria-current="page">Tổng quan</a></li>
+      <li><a href="growbase-modules.html">Bản đồ Module</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Mở menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-mobile-menu" id="mobileMenu" role="menu">
+    <a href="growbase-overview.html" class="active">Tổng quan</a>
+    <a href="growbase-modules.html">Bản đồ Module</a>
+  </div>
+
+  <main>
+    <!-- ══════════════ HERO ══════════════ -->
+    <section class="hero" id="tong-quan" aria-label="Giới thiệu GrowBase">
+      <div class="container">
+        <div class="hero-inner">
+          <span class="hero-tagline">Customer Growth Platform</span>
+          <h1><strong>GrowBase</strong></h1>
+          <p class="hero-subtitle">Nền tảng Tăng trưởng Khách hàng</p>
+          <p class="hero-description">
+            Giúp chuỗi bán lẻ biến mỗi đơn hàng thành mối quan hệ lâu dài.
+            Tăng trưởng từ khách hàng hiện tại — không phải chạy thêm quảng cáo.
+          </p>
+          <div class="hero-industries" aria-label="Ngành mục tiêu">
+            <span class="hero-industry-badge">Chuỗi sữa</span>
+            <span class="hero-industry-badge">Máy lọc nước</span>
+            <span class="hero-industry-badge">Gia vị &amp; nước mắm</span>
+            <span class="hero-industry-badge">Thực phẩm chức năng</span>
+            <span class="hero-industry-badge">Mẹ &amp; bé</span>
+          </div>
+          <div class="hero-stats" role="list" aria-label="Số liệu tổng quan">
+            <div class="hero-stat" role="listitem">
+              <div class="hero-stat-num">17</div>
+              <div class="hero-stat-label">modules</div>
+            </div>
+            <div class="hero-stat" role="listitem">
+              <div class="hero-stat-num">7</div>
+              <div class="hero-stat-label">nhóm chức năng</div>
+            </div>
+            <div class="hero-stat" role="listitem">
+              <div class="hero-stat-num">5+</div>
+              <div class="hero-stat-label">ngành mục tiêu</div>
+            </div>
+            <div class="hero-stat" role="listitem">
+              <div class="hero-stat-num">12</div>
+              <div class="hero-stat-label">tháng full deployment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 1. BÀI TOÁN ══════════════ -->
+    <section class="section" id="bai-toan" aria-labelledby="h-bai-toan">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-bai-toan">1. Bài toán</h2>
+          <p class="sub">Đã có đủ hạ tầng bán hàng. Thiếu hạ tầng giữ khách.</p>
+        </header>
+        <p class="t-body fade-in" style="margin-bottom: var(--sp-6); color: var(--cds-gray-70);">
+          Các chuỗi bán lẻ hàng tiêu dùng đã đầu tư đầy đủ cho việc bán hàng — POS, sàn thương mại điện tử, giao hàng. Nhưng sau khi đơn hàng hoàn tất, mối quan hệ với khách kết thúc ở đó.
+        </p>
+        <div class="card-grid">
+          <article class="card fade-in fade-in-delay-1">
+            <div class="card-num">1</div>
+            <h3>Bán hàng qua trung gian</h3>
+            <p>Bán qua đại lý, siêu thị, sàn TMDT — không biết người mua cuối là ai. Mất kết nối ngay sau giao dịch.</p>
+          </article>
+          <article class="card fade-in fade-in-delay-2">
+            <div class="card-num">2</div>
+            <h3>Mua lặp lại nhưng không nhắc</h3>
+            <p>Sữa hết sau 2 tuần, nước mắm hết sau 45 ngày, lõi lọc hết sau 6 tháng — nhưng không ai nhắc khách mua lại.</p>
+          </article>
+          <article class="card fade-in fade-in-delay-3">
+            <div class="card-num">3</div>
+            <h3>Ưu đãi đại trà, không cá nhân</h3>
+            <p>Khuyến mãi giống nhau cho mọi người. Khách VIP và khách mới nhận cùng 1 tin nhắn. Không có chương trình riêng.</p>
+          </article>
+          <article class="card fade-in fade-in-delay-1">
+            <div class="card-num">4</div>
+            <h3>Không biết khách đang rời đi</h3>
+            <p>Không có cơ chế phát hiện khách "nguội dần". Khi nhận ra thì đã mất khách — và mất doanh thu.</p>
+          </article>
+          <article class="card fade-in fade-in-delay-2">
+            <div class="card-num">5</div>
+            <h3>Kênh liên lạc rời rạc</h3>
+            <p>Zalo riêng, SMS riêng, email riêng, app riêng — không gắn vào hồ sơ khách, không đo được hiệu quả.</p>
+          </article>
+          <article class="card fade-in fade-in-delay-3">
+            <div class="card-num">6</div>
+            <h3>Chi phí tìm khách mới quá cao</h3>
+            <p>Quảng cáo ngày càng đắt. Giữ 1 khách cũ rẻ hơn 5–7 lần so với tìm khách mới — nhưng chưa ai đầu tư cho việc giữ.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 2. GIẢI PHÁP ══════════════ -->
+    <section class="section section--alt" id="giai-phap" aria-labelledby="h-giai-phap">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-giai-phap">2. Giải pháp</h2>
+          <p class="sub">GrowBase xử lý toàn bộ vòng đời khách hàng. Tất cả tự động.</p>
+        </header>
+        <div class="stepper fade-in" role="list" aria-label="Vòng đời khách hàng">
+          <div class="step" role="listitem">
+            <div class="step-icon" aria-hidden="true">🛒</div>
+            <div class="step-body">
+              <div class="step-num">Bước 1</div>
+              <div class="step-title">Mua hàng</div>
+              <div class="step-sub">POS, Shopee, Website</div>
+            </div>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-icon" aria-hidden="true">👤</div>
+            <div class="step-body">
+              <div class="step-num">Bước 2</div>
+              <div class="step-title">Nhận ra</div>
+              <div class="step-sub">Hợp nhất hồ sơ khách</div>
+            </div>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-icon" aria-hidden="true">🔔</div>
+            <div class="step-body">
+              <div class="step-num">Bước 3</div>
+              <div class="step-title">Nhắc mua</div>
+              <div class="step-sub">Đúng lúc sắp hết hàng</div>
+            </div>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-icon" aria-hidden="true">⭐</div>
+            <div class="step-body">
+              <div class="step-num">Bước 4</div>
+              <div class="step-title">Thưởng</div>
+              <div class="step-sub">Tích điểm, phân hạng</div>
+            </div>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-icon" aria-hidden="true">🛡️</div>
+            <div class="step-body">
+              <div class="step-num">Bước 5</div>
+              <div class="step-title">Giữ khách</div>
+              <div class="step-sub">Phát hiện churn, win-back</div>
+            </div>
+          </div>
+          <div class="step" role="listitem">
+            <div class="step-icon" aria-hidden="true">📈</div>
+            <div class="step-body">
+              <div class="step-num">Bước 6</div>
+              <div class="step-title">Tăng trưởng</div>
+              <div class="step-sub">Cross-sell, referral</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 3. NGÀNH MỤC TIÊU ══════════════ -->
+    <section class="section" id="nganh-muc-tieu" aria-labelledby="h-nganh">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-nganh">3. Ngành mục tiêu</h2>
+          <p class="sub">GrowBase không phải nền tảng generic. Mỗi ngành có template sẵn — chu kỳ mua, kịch bản nhắc, chương trình thưởng phù hợp với đặc thù ngành.</p>
+        </header>
+
+        <!-- Desktop: tabs -->
+        <div class="industry-tabs fade-in">
+          <div class="industry-tab-btns" role="tablist" aria-label="Chọn ngành">
+            <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-sua" id="btn-sua">Chuỗi sữa</button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-loc" id="btn-loc">Máy lọc nước</button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-mam" id="btn-mam">Nước mắm &amp; gia vị</button>
+            <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-tpcn" id="btn-tpcn">Thực phẩm chức năng</button>
+          </div>
+
+          <div id="tab-sua" role="tabpanel" aria-labelledby="btn-sua" class="tab-panel active">
+            <div class="industry-steps">
+              <div class="industry-step">
+                <div class="industry-step-num">1</div>
+                <div class="industry-step-text">Khách mua sữa tại cửa hàng, quét SĐT tích điểm <span class="action-tag action-tag--thuong-khach">Thưởng khách</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">2</div>
+                <div class="industry-step-text">Hệ thống phát hiện chu kỳ mua: 14 ngày/lần <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">3</div>
+                <div class="industry-step-text">Ngày thứ 13: Zalo "Sữa nhà mình sắp hết chưa? Đặt lại giảm 5%" <span class="action-tag action-tag--nhan-tin">Nhắn tin</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">4</div>
+                <div class="industry-step-text">Gợi ý thêm: "Sữa chua mới, combo giảm 15%" <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">5</div>
+                <div class="industry-step-text">Sau 3 tháng mua đều → lên hạng Vàng, nhận quà <span class="action-tag action-tag--thuong-khach">Thưởng khách</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-loc" role="tabpanel" aria-labelledby="btn-loc" class="tab-panel">
+            <div class="industry-steps">
+              <div class="industry-step">
+                <div class="industry-step-num">1</div>
+                <div class="industry-step-text">Khách mua máy, đăng ký bảo hành bằng SĐT <span class="action-tag action-tag--biet-khach">Biết khách</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">2</div>
+                <div class="industry-step-text">Sau 6 tháng: "Đã đến lúc thay lõi lọc, đặt lịch kỹ thuật viên?" <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">3</div>
+                <div class="industry-step-text">Gợi ý lõi lọc cao cấp, nước khoáng bổ sung <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">4</div>
+                <div class="industry-step-text">Sau 3 năm: "Máy đã dùng 3 năm, đổi mới giảm 20%" <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">5</div>
+                <div class="industry-step-text">Giới thiệu hàng xóm mua → tặng 1 bộ lõi <span class="action-tag action-tag--moi-khach">Mời khách</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-mam" role="tabpanel" aria-labelledby="btn-mam" class="tab-panel">
+            <div class="industry-steps">
+              <div class="industry-step">
+                <div class="industry-step-num">1</div>
+                <div class="industry-step-text">Khách mua trên Shopee, hệ thống capture data <span class="action-tag action-tag--biet-khach">Biết khách</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">2</div>
+                <div class="industry-step-text">Phát hiện chu kỳ: 45 ngày/chai <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">3</div>
+                <div class="industry-step-text">Ngày thứ 40: "Mua chai 1L tiết kiệm hơn 20%" <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">4</div>
+                <div class="industry-step-text">Cross-sell: mua nước mắm → gợi ý nước tương, dầu hào <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">5</div>
+                <div class="industry-step-text">Khách mua đều 6 tháng → tặng combo gia vị Tết <span class="action-tag action-tag--thuong-khach">Thưởng khách</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-tpcn" role="tabpanel" aria-labelledby="btn-tpcn" class="tab-panel">
+            <div class="industry-steps">
+              <div class="industry-step">
+                <div class="industry-step-num">1</div>
+                <div class="industry-step-text">Khách mua 1 hộp collagen 30 ngày, đăng ký SĐT <span class="action-tag action-tag--biet-khach">Biết khách</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">2</div>
+                <div class="industry-step-text">Ngày thứ 25: "Sắp hết liệu trình, đặt hộp tiếp giảm 10%" <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">3</div>
+                <div class="industry-step-text">Gợi ý combo 3 tháng tiết kiệm hơn mua lẻ <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">4</div>
+                <div class="industry-step-text">60 ngày không mua → "Chúng tôi nhớ bạn, tặng voucher 15%" <span class="action-tag action-tag--giu-khach">Giữ khách</span></div>
+              </div>
+              <div class="industry-step">
+                <div class="industry-step-num">5</div>
+                <div class="industry-step-text">Khảo sát: "Sản phẩm có hiệu quả không?" → thu feedback <span class="action-tag action-tag--khao-sat">Khảo sát</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile: accordion -->
+        <div class="industry-accordion fade-in">
+          <div class="accordion-item">
+            <button class="accordion-btn" aria-expanded="false" data-target="acc-sua">
+              Chuỗi sữa <span class="accordion-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="accordion-body" id="acc-sua">
+              <div class="industry-steps" style="padding-top: var(--sp-3);">
+                <div class="industry-step"><div class="industry-step-num">1</div><div class="industry-step-text">Khách mua sữa tại cửa hàng, quét SĐT tích điểm <span class="action-tag action-tag--thuong-khach">Thưởng khách</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">2</div><div class="industry-step-text">Hệ thống phát hiện chu kỳ mua: 14 ngày/lần <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">3</div><div class="industry-step-text">Ngày thứ 13: Zalo "Sữa nhà mình sắp hết chưa? Đặt lại giảm 5%" <span class="action-tag action-tag--nhan-tin">Nhắn tin</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">4</div><div class="industry-step-text">Gợi ý thêm: "Sữa chua mới, combo giảm 15%" <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">5</div><div class="industry-step-text">Sau 3 tháng mua đều → lên hạng Vàng, nhận quà <span class="action-tag action-tag--thuong-khach">Thưởng khách</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn" aria-expanded="false" data-target="acc-loc">
+              Máy lọc nước <span class="accordion-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="accordion-body" id="acc-loc">
+              <div class="industry-steps" style="padding-top: var(--sp-3);">
+                <div class="industry-step"><div class="industry-step-num">1</div><div class="industry-step-text">Khách mua máy, đăng ký bảo hành bằng SĐT <span class="action-tag action-tag--biet-khach">Biết khách</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">2</div><div class="industry-step-text">Sau 6 tháng: "Đã đến lúc thay lõi lọc, đặt lịch kỹ thuật viên?" <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">3</div><div class="industry-step-text">Gợi ý lõi lọc cao cấp, nước khoáng bổ sung <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">4</div><div class="industry-step-text">Sau 3 năm: "Máy đã dùng 3 năm, đổi mới giảm 20%" <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">5</div><div class="industry-step-text">Giới thiệu hàng xóm mua → tặng 1 bộ lõi <span class="action-tag action-tag--moi-khach">Mời khách</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn" aria-expanded="false" data-target="acc-mam">
+              Nước mắm &amp; gia vị <span class="accordion-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="accordion-body" id="acc-mam">
+              <div class="industry-steps" style="padding-top: var(--sp-3);">
+                <div class="industry-step"><div class="industry-step-num">1</div><div class="industry-step-text">Khách mua trên Shopee, hệ thống capture data <span class="action-tag action-tag--biet-khach">Biết khách</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">2</div><div class="industry-step-text">Phát hiện chu kỳ: 45 ngày/chai <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">3</div><div class="industry-step-text">Ngày thứ 40: "Mua chai 1L tiết kiệm hơn 20%" <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">4</div><div class="industry-step-text">Cross-sell: mua nước mắm → gợi ý nước tương, dầu hào <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">5</div><div class="industry-step-text">Khách mua đều 6 tháng → tặng combo gia vị Tết <span class="action-tag action-tag--thuong-khach">Thưởng khách</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn" aria-expanded="false" data-target="acc-tpcn">
+              Thực phẩm chức năng <span class="accordion-icon" aria-hidden="true">▼</span>
+            </button>
+            <div class="accordion-body" id="acc-tpcn">
+              <div class="industry-steps" style="padding-top: var(--sp-3);">
+                <div class="industry-step"><div class="industry-step-num">1</div><div class="industry-step-text">Khách mua 1 hộp collagen 30 ngày, đăng ký SĐT <span class="action-tag action-tag--biet-khach">Biết khách</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">2</div><div class="industry-step-text">Ngày thứ 25: "Sắp hết liệu trình, đặt hộp tiếp giảm 10%" <span class="action-tag action-tag--nhac-mua">Nhắc mua</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">3</div><div class="industry-step-text">Gợi ý combo 3 tháng tiết kiệm hơn mua lẻ <span class="action-tag action-tag--tang-gio">Tăng giỏ</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">4</div><div class="industry-step-text">60 ngày không mua → "Chúng tôi nhớ bạn, tặng voucher 15%" <span class="action-tag action-tag--giu-khach">Giữ khách</span></div></div>
+                <div class="industry-step"><div class="industry-step-num">5</div><div class="industry-step-text">Khảo sát: "Sản phẩm có hiệu quả không?" → thu feedback <span class="action-tag action-tag--khao-sat">Khảo sát</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 4. KHÁC BIỆT ══════════════ -->
+    <section class="section section--alt" id="khac-biet" aria-labelledby="h-khac-biet">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-khac-biet">4. Khác biệt</h2>
+          <p class="sub">Không phải CDP. Không phải CRM. Là nền tảng tăng trưởng.</p>
+        </header>
+        <p class="t-body fade-in" style="margin-bottom: var(--sp-6); color: var(--cds-gray-70);">
+          GrowBase nói ngôn ngữ kinh doanh, không nói ngôn ngữ công nghệ. Chủ chuỗi không cần biết "identity resolution" hay "segmentation" — họ cần biết tháng sau sẽ bán thêm bao nhiêu.
+        </p>
+        <div class="table-wrap fade-in">
+          <table class="cds-table" aria-label="So sánh GrowBase với CDP/CRM truyền thống">
+            <thead>
+              <tr>
+                <th scope="col">Tiêu chí</th>
+                <th scope="col">CDP / CRM truyền thống</th>
+                <th scope="col" class="col-highlight">GrowBase</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Ngôn ngữ</strong></td>
+                <td>Identity resolution, segmentation, attribution, omnichannel orchestration</td>
+                <td class="col-highlight">Nhắc mua, Thưởng khách, Giữ khách, Tăng giỏ</td>
+              </tr>
+              <tr>
+                <td><strong>Onboarding</strong></td>
+                <td>3–6 tháng triển khai, cần đội IT và consultant</td>
+                <td class="col-highlight">Kết nối POS, bật module, dùng trong 1–2 tuần</td>
+              </tr>
+              <tr>
+                <td><strong>Chi phí</strong></td>
+                <td>License lớn, cam kết theo năm, mua cả gói</td>
+                <td class="col-highlight">Trả theo module đang dùng, mở rộng dần</td>
+              </tr>
+              <tr>
+                <td><strong>Đối tượng</strong></td>
+                <td>Doanh nghiệp lớn có đội data, phân tích chuyên sâu</td>
+                <td class="col-highlight">Chủ chuỗi vừa-nhỏ, không cần biết kỹ thuật</td>
+              </tr>
+              <tr>
+                <td><strong>Giá trị truyền tải</strong></td>
+                <td>"Hợp nhất dữ liệu khách hàng đa kênh"</td>
+                <td class="col-highlight"><strong>"Tháng sau bạn sẽ bán thêm 15%"</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Ngành</strong></td>
+                <td>Generic — phải customize rất nhiều cho từng ngành</td>
+                <td class="col-highlight">Template sẵn cho sữa, lọc nước, gia vị, TPCN…</td>
+              </tr>
+              <tr>
+                <td><strong>Module hoá</strong></td>
+                <td>Mua cả platform, dùng 20% tính năng</td>
+                <td class="col-highlight">Bật module cần dùng, tắt module chưa cần</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 5. NGUYÊN TẮC THIẾT KẾ ══════════════ -->
+    <section class="section" id="nguyen-tac" aria-labelledby="h-nguyen-tac">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-nguyen-tac">5. Nguyên tắc thiết kế</h2>
+        </header>
+        <div class="principle-cards">
+          <article class="principle-card fade-in fade-in-delay-1">
+            <div class="principle-num">01</div>
+            <h3 class="principle-title">Kết quả kinh doanh, không phải tính năng công nghệ</h3>
+            <p class="principle-body">Mỗi module được đặt tên và đo lường bằng kết quả kinh doanh. "Nhắc mua" chứ không phải "Marketing Automation". "Giữ khách" chứ không phải "Churn Prediction Engine". Khách hàng mua kết quả, không mua công nghệ.</p>
+          </article>
+          <article class="principle-card fade-in fade-in-delay-2">
+            <div class="principle-num">02</div>
+            <h3 class="principle-title">Bật dần, không ép mua cả gói</h3>
+            <p class="principle-body">Bắt đầu với 2–3 module có ROI ngay. Khi thấy hiệu quả, bật thêm module mới. Không bao giờ bắt khách trả tiền cho thứ họ chưa dùng. Ngưỡng bắt đầu thấp, trần tăng trưởng cao.</p>
+          </article>
+          <article class="principle-card fade-in fade-in-delay-3">
+            <div class="principle-num">03</div>
+            <h3 class="principle-title">Template ngành, không phải canvas trống</h3>
+            <p class="principle-body">Mỗi ngành có sẵn: chu kỳ mua mặc định, kịch bản nhắc mua, chương trình thưởng mẫu, dashboard phù hợp. Khách chỉ cần chỉnh nhẹ, không phải build từ đầu. Onboarding tính bằng tuần, không bằng tháng.</p>
+          </article>
+          <article class="principle-card fade-in fade-in-delay-1">
+            <div class="principle-num">04</div>
+            <h3 class="principle-title">Tự chạy được, không cần đội IT</h3>
+            <p class="principle-body">Mọi thứ thao tác bằng UI. Tạo chương trình, phân nhóm khách, thiết kế kịch bản tự động — không cần viết code, không cần SQL, không cần data engineer. Marketing tự làm được.</p>
+          </article>
+          <article class="principle-card fade-in fade-in-delay-2">
+            <div class="principle-num">05</div>
+            <h3 class="principle-title">Đo lường được mọi thứ</h3>
+            <p class="principle-body">Mỗi chương trình, mỗi kịch bản, mỗi tin nhắn đều có ROI đo được. "Chương trình nhắc mua tháng này mang về 234 đơn, doanh thu tăng 18%." Không bao giờ chạy chương trình mà không biết hiệu quả.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 6. LỘ TRÌNH ══════════════ -->
+    <section class="section section--alt" id="lo-trinh" aria-labelledby="h-lo-trinh">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-lo-trinh">6. Lộ trình triển khai</h2>
+          <p class="sub">Từ zero đến tăng trưởng trong 12 tháng. Không cần bật tất cả cùng lúc. Mỗi giai đoạn bật thêm module mới khi đã thấy hiệu quả giai đoạn trước.</p>
+        </header>
+
+        <div class="timeline">
+          <div class="timeline-line" aria-hidden="true"></div>
+
+          <article class="timeline-item fade-in fade-in-delay-1">
+            <span class="timeline-phase">Tháng 1–2</span>
+            <h3 class="timeline-title">Nhìn thấy khách hàng</h3>
+            <p class="timeline-body">Data từ POS, sàn TMDT, website chảy về một nơi. Hồ sơ khách hợp nhất. Dashboard tổng quan hoạt động. Lần đầu tiên doanh nghiệp nhìn thấy toàn bộ khách hàng của mình.</p>
+            <div class="timeline-tags">
+              <span class="tag tag--blue">Kết nối dữ liệu</span>
+              <span class="tag tag--blue">Hồ sơ khách hàng</span>
+              <span class="tag tag--blue">Đo lường</span>
+            </div>
+          </article>
+
+          <article class="timeline-item fade-in fade-in-delay-2">
+            <span class="timeline-phase">Tháng 3–4</span>
+            <h3 class="timeline-title">Bắt đầu tạo doanh thu</h3>
+            <p class="timeline-body">Nhắc mua tự động theo chu kỳ. Tích điểm tại quầy. Gửi tin nhắn cá nhân hoá qua Zalo. Đo lường được: bao nhiêu khách mua lại nhờ hệ thống nhắc.</p>
+            <div class="timeline-tags">
+              <span class="tag tag--green">Nhắc tái mua</span>
+              <span class="tag tag--green">Tích điểm &amp; đổi thưởng</span>
+              <span class="tag tag--green">Nhắn tin đa kênh</span>
+            </div>
+          </article>
+
+          <article class="timeline-item fade-in fade-in-delay-3">
+            <span class="timeline-phase">Tháng 5–6</span>
+            <h3 class="timeline-title">Cá nhân hoá sâu hơn</h3>
+            <p class="timeline-body">Phân nhóm khách để gửi chương trình phù hợp. Phân hạng VIP. Cho khách một nơi để xem điểm, đổi quà qua Zalo Mini App hoặc app riêng.</p>
+            <div class="timeline-tags">
+              <span class="tag tag--purple">Phân nhóm khách</span>
+              <span class="tag tag--purple">Chấm điểm &amp; phân hạng</span>
+              <span class="tag tag--purple">App / Mini App</span>
+            </div>
+          </article>
+
+          <article class="timeline-item fade-in fade-in-delay-1">
+            <span class="timeline-phase">Tháng 7–9</span>
+            <h3 class="timeline-title">Tự động hoá toàn diện</h3>
+            <p class="timeline-body">Kịch bản tự động chạy 24/7: chào mừng khách mới, nhắc mua, win-back khách nguội. Chương trình khuyến mãi có cấu trúc. Phát hiện và ngăn churn.</p>
+            <div class="timeline-tags">
+              <span class="tag tag--cyan">Kịch bản tự động</span>
+              <span class="tag tag--cyan">Chương trình &amp; ưu đãi</span>
+              <span class="tag tag--cyan">Giữ khách &amp; win-back</span>
+            </div>
+          </article>
+
+          <article class="timeline-item fade-in fade-in-delay-2">
+            <span class="timeline-phase">Tháng 10–12</span>
+            <h3 class="timeline-title">Mở rộng &amp; tối ưu</h3>
+            <p class="timeline-body">Cross-sell tăng giỏ hàng. Referral biến khách cũ thành kênh marketing. Khảo sát thu feedback. Quản lý đội sales và CS bằng công cụ. Vận hành mạng lưới đại lý.</p>
+            <div class="timeline-tags">
+              <span class="tag tag--teal">Gợi ý sản phẩm</span>
+              <span class="tag tag--teal">Giới thiệu bạn bè</span>
+              <span class="tag tag--teal">Khảo sát</span>
+              <span class="tag tag--teal">Quản lý đội bán hàng</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 7. SỐ LIỆU ══════════════ -->
+    <section class="section section--dark" id="so-lieu" aria-labelledby="h-so-lieu">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-so-lieu">7. Tổng quan số liệu</h2>
+        </header>
+        <div class="stat-grid">
+          <div class="stat-card fade-in fade-in-delay-1">
+            <div class="stat-num">17</div>
+            <div class="stat-label">Module</div>
+            <div class="stat-desc">Chia thành 7 nhóm chức năng</div>
+          </div>
+          <div class="stat-card fade-in fade-in-delay-2">
+            <div class="stat-num">7</div>
+            <div class="stat-label">Nhóm chức năng</div>
+            <div class="stat-desc">Từ Nền tảng đến Nâng cao AI</div>
+          </div>
+          <div class="stat-card fade-in fade-in-delay-3">
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Ngành mục tiêu</div>
+            <div class="stat-desc">Template sẵn cho từng ngành</div>
+          </div>
+          <div class="stat-card fade-in fade-in-delay-4">
+            <div class="stat-num">12</div>
+            <div class="stat-label">Tháng từ zero đến full</div>
+            <div class="stat-desc">Triển khai theo từng giai đoạn</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ 8. CẤU TRÚC MODULE ══════════════ -->
+    <section class="section" id="cau-truc-module" aria-labelledby="h-module">
+      <div class="container">
+        <header class="section-header fade-in">
+          <h2 id="h-module">8. Cấu trúc module</h2>
+          <p class="sub">7 nhóm. 17 module. Bật theo nhu cầu. Mỗi nhóm giải quyết 1 câu hỏi kinh doanh. Trong mỗi nhóm, chọn module phù hợp để bật.</p>
+        </header>
+        <div class="table-wrap fade-in">
+          <table class="module-table" aria-label="Cấu trúc 7 nhóm module của GrowBase">
+            <thead>
+              <tr>
+                <th scope="col">Nhóm</th>
+                <th scope="col">Tên nhóm</th>
+                <th scope="col">Module</th>
+                <th scope="col">Ghi chú</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tag-pill tag-pill--A">A</span></td>
+                <td><strong>Nền tảng</strong></td>
+                <td>
+                  <div class="module-list">
+                    <span class="tag tag--blue">Kết nối dữ liệu</span>
+                    <span class="tag tag--blue">Hồ sơ khách hàng</span>
+                  </div>
+                </td>
+                <td><span class="module-note">Luôn bật — nền móng cho mọi thứ</span></td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill tag-pill--B">B</span></td>
+                <td><strong>Hiểu khách</strong></td>
+                <td>
+                  <div class="module-list">
+                    <span class="tag tag--purple">Phân nhóm</span>
+                    <span class="tag tag--purple">Chấm điểm &amp; phân hạng</span>
+                    <span class="tag tag--purple">Đo lường</span>
+                  </div>
+                </td>
+                <td><span class="module-note">Trả lời: khách là ai, ai quan trọng nhất</span></td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill tag-pill--C">C</span></td>
+                <td><strong>Tăng trưởng</strong></td>
+                <td>
+                  <div class="module-list">
+                    <span class="tag tag--green">Nhắc mua</span>
+                    <span class="tag tag--green">Tích điểm</span>
+                    <span class="tag tag--green">Gợi ý SP</span>
+                    <span class="tag tag--green">Giữ khách</span>
+                    <span class="tag tag--green">Referral</span>
+                    <span class="tag tag--green">Khảo sát</span>
+                  </div>
+                </td>
+                <td><span class="module-note">Hành động cụ thể tạo doanh thu</span></td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill tag-pill--D">D</span></td>
+                <td><strong>Kích hoạt</strong></td>
+                <td>
+                  <div class="module-list">
+                    <span class="tag tag--cyan">Nhắn tin</span>
+                    <span class="tag tag--cyan">Kịch bản tự động</span>
+                    <span class="tag tag--cyan">Chương trình ưu đãi</span>
+                  </div>
+                </td>
+                <td><span class="module-note">Thực thi — biến quyết định thành hành động</span></td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill tag-pill--E">E</span></td>
+                <td><strong>Kênh khách hàng</strong></td>
+                <td>
+                  <div class="module-list">
+                    <span class="tag tag--teal">App / Mini App</span>
+                    <span class="tag tag--teal">Cổng đại lý</span>
+                  </div>
+                </td>
+                <td><span class="module-note">Điểm chạm trực tiếp với người tiêu dùng</span></td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill tag-pill--F">F</span></td>
+                <td><strong>Vận hành</strong></td>
+                <td>
+                  <div class="module-list">
+                    <span class="tag tag--yellow">Chăm sóc KH</span>
+                    <span class="tag tag--yellow">Quản lý đội sales</span>
+                    <span class="tag tag--yellow">Phân quyền</span>
+                  </div>
+                </td>
+                <td><span class="module-note">Công cụ cho đội ngũ vận hành hàng ngày</span></td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill tag-pill--G">G</span></td>
+                <td><strong>Nâng cao</strong></td>
+                <td>
+                  <div class="module-list">
+                    <span class="tag tag--red">Dự đoán hành vi</span>
+                    <span class="tag tag--red">Báo cáo nâng cao</span>
+                  </div>
+                </td>
+                <td><span class="module-note">AI-powered — bật khi đã có đủ data</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note-box fade-in">
+          Chi tiết từng module: xem <a href="growbase-modules.html">Bản đồ Module →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <p class="footer-brand">GrowBase</p>
+          <p class="footer-sub">Nền tảng Tăng trưởng Khách hàng</p>
+          <p class="footer-sub" style="margin-top: 0.25rem;">Tài liệu nội bộ · v1.0 · 2026-09-30</p>
+        </div>
+        <div class="footer-links">
+          <a href="growbase-overview.html">Tổng quan</a>
+          <a href="growbase-modules.html">Bản đồ Module →</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Hamburger menu ───
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburgerBtn.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburgerBtn.classList.toggle('open', isOpen);
+      hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+      hamburgerBtn.setAttribute('aria-label', isOpen ? 'Đóng menu' : 'Mở menu');
+    });
+
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburgerBtn.classList.remove('open');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // ─── Industry Tabs ───
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        tabPanels.forEach(p => p.classList.remove('active'));
+
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        const targetId = btn.getAttribute('aria-controls');
+        const panel = document.getElementById(targetId);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    // ─── Industry Accordion ───
+    const accordionBtns = document.querySelectorAll('.accordion-btn');
+
+    accordionBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        const body = document.getElementById(targetId);
+        const isOpen = body.classList.contains('open');
+
+        // Close all
+        accordionBtns.forEach(b => {
+          b.classList.remove('open');
+          b.setAttribute('aria-expanded', 'false');
+          const bid = b.dataset.target;
+          const bb = document.getElementById(bid);
+          if (bb) bb.classList.remove('open');
+        });
+
+        // Open clicked if it was closed
+        if (!isOpen) {
+          btn.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+          body.classList.add('open');
+        }
+      });
+    });
+
+    // ─── Intersection Observer for fade-in ───
+    const fadeEls = document.querySelectorAll('.fade-in');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.1
+    });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    // ─── Smooth scroll offset for fixed nav ───
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          const y = el.getBoundingClientRect().top + window.scrollY - 56;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
