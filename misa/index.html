@@ -721,6 +721,190 @@ tbody tr:hover { background: var(--cds-layer-01); }
 .code-block .keyword { color: #78a9ff; }
 .code-block .string { color: #42be65; }
 .code-block .url { color: #82cfff; }
+
+/* ========================================
+   MOBILE RESPONSIVE — max-width: 671px
+   ======================================== */
+@media (max-width: 671px) {
+
+  /* Base font bump for readability */
+  body { font-size: 1.0625rem; line-height: 1.6; }
+
+  /* Grid: more breathing room */
+  .grid { padding: 0 1.25rem; }
+
+  /* Hero */
+  .hero { padding: 2.5rem 0 2rem; }
+  .hero .eyebrow { font-size: 0.8125rem; }
+  .hero h1 { font-size: 2rem; line-height: 1.25; margin-bottom: 1rem; }
+  .hero p { font-size: 1.0625rem; line-height: 1.65; }
+
+  .hero-stats { margin-top: 2rem; }
+  .hero-stat { padding: 1rem; }
+  .hero-stat .value { font-size: 1.75rem; }
+  .hero-stat .label { font-size: 0.8125rem; margin-top: 0.25rem; }
+
+  /* Section headers */
+  .section-header .number { font-size: 0.8125rem; }
+  .section-header h2 { font-size: 1.625rem; }
+  .section-header p { font-size: 1.0625rem; line-height: 1.65; }
+
+  /* Cards */
+  .card { padding: 1.25rem; min-height: auto; }
+  .card__subtitle { font-size: 0.8125rem; }
+  .card__title { font-size: 1.0625rem; }
+  .card__body { font-size: 1rem; line-height: 1.6; }
+  .card__footer { font-size: 0.8125rem; }
+
+  /* Tags */
+  .tag { font-size: 0.8125rem; padding: 3px 10px; }
+
+  /* Tables — larger text, relaxed padding */
+  table { font-size: 1rem; min-width: 0; }
+  th { font-size: 0.8125rem; padding: 0.75rem 0.75rem; }
+  td { padding: 0.75rem 0.75rem; font-size: 1rem; line-height: 1.5; }
+
+  /* Tables that must scroll — visual hint */
+  .table-wrapper {
+    position: relative;
+  }
+  .table-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 24px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.9));
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+  .table-wrapper.scrolled-end::after { opacity: 0; }
+
+  /* Force some tables to stack on mobile */
+  table.mobile-stack { min-width: 0; }
+  table.mobile-stack thead { display: none; }
+  table.mobile-stack tr {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--cds-border-subtle);
+  }
+  table.mobile-stack td {
+    display: block;
+    padding: 0.25rem 0;
+    border-bottom: none;
+  }
+  table.mobile-stack td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--cds-text-helper);
+    text-transform: uppercase;
+    letter-spacing: 0.32px;
+    margin-bottom: 2px;
+  }
+
+  /* Accordion — bigger touch targets */
+  .accordion-btn {
+    font-size: 1.0625rem;
+    padding: 1rem 0;
+    min-height: 48px;
+  }
+  .accordion-btn .chevron { width: 20px; height: 20px; }
+  .accordion-content { font-size: 1rem; line-height: 1.65; }
+
+  /* Tabs — bigger touch targets */
+  .tab-btn {
+    font-size: 1rem;
+    padding: 0.875rem 1rem;
+    min-height: 48px;
+  }
+
+  /* Inline list */
+  .inline-list li { font-size: 1rem; padding: 0.75rem 0; line-height: 1.6; }
+
+  /* Key-value pairs */
+  .kv-item dt { font-size: 0.8125rem; }
+  .kv-item dd { font-size: 1.0625rem; }
+
+  /* Progress bar */
+  .progress-bar { gap: 0.5rem; }
+  .progress-bar > span:first-child { font-size: 0.875rem; min-width: 70px !important; }
+  .progress-track { height: 10px; }
+  .progress-label { font-size: 0.875rem; }
+
+  /* Callout */
+  .callout { padding: 1.25rem; }
+  .callout__title { font-size: 1rem; }
+  .callout__body { font-size: 1rem; line-height: 1.65; }
+
+  /* Compare cards */
+  .compare-card { padding: 1.25rem; }
+  .compare-card h4 { font-size: 1.0625rem; }
+  .compare-card li { font-size: 1rem; padding: 0.5rem 0; line-height: 1.6; }
+
+  /* Feature strip */
+  .feature-item { padding: 1rem; }
+  .feature-item h4 { font-size: 1rem; }
+  .feature-item p { font-size: 0.9375rem; line-height: 1.6; }
+
+  /* Flow diagram — vertical stack on mobile */
+  .flow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .flow-node {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    white-space: normal;
+  }
+  .flow-arrow {
+    transform: rotate(90deg);
+    text-align: center;
+    padding: 0.25rem 0;
+    font-size: 1rem;
+  }
+
+  /* Code block */
+  .code-block {
+    font-size: 0.75rem;
+    padding: 1rem;
+    line-height: 1.6;
+    -webkit-text-size-adjust: none;
+  }
+
+  /* Footer */
+  .footer-links { gap: 0.75rem; flex-direction: column; }
+  .footer-links a { font-size: 1rem; }
+  .footer p { font-size: 0.875rem; }
+
+  /* Utility overrides */
+  .text-sm { font-size: 1rem; }
+  .text-xs { font-size: 0.875rem; }
+  .font-mono { font-size: 0.8125rem; }
+
+  /* Headings used as sub-section titles */
+  h3.text-sm.font-semibold { font-size: 1.0625rem !important; }
+  h4.text-xs.text-helper { font-size: 0.875rem !important; }
+
+  /* Top bar */
+  .top-bar__brand { font-size: 1rem; }
+}
+
+/* Small phones (iPhone SE, etc) */
+@media (max-width: 374px) {
+  .grid { padding: 0 1rem; }
+  .hero h1 { font-size: 1.75rem; }
+  .hero p { font-size: 1rem; }
+  .hero-stat .value { font-size: 1.5rem; }
+  .hero-stat { padding: 0.75rem; }
+  .section-header h2 { font-size: 1.5rem; }
+  .card { padding: 1rem; }
+  .callout { padding: 1rem; }
+}
 </style>
 </head>
 <body>
@@ -1499,6 +1683,14 @@ document.querySelectorAll('.accordion-btn').forEach(btn => {
     const item = btn.parentElement;
     const wasOpen = item.classList.contains('open');
     item.classList.toggle('open');
+  });
+});
+
+// Table scroll hint — hide fade when scrolled to end
+document.querySelectorAll('.table-wrapper').forEach(wrapper => {
+  wrapper.addEventListener('scroll', () => {
+    const atEnd = wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth - 2;
+    wrapper.classList.toggle('scrolled-end', atEnd);
   });
 });
 
