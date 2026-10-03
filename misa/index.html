@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISA — Nghiên cứu Phần mềm Kế toán</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cds-background: #ffffff;
+  --cds-background-hover: #e8e8e8;
+  --cds-layer-01: #f4f4f4;
+  --cds-layer-02: #ffffff;
+  --cds-layer-03: #e0e0e0;
+  --cds-text-primary: #161616;
+  --cds-text-secondary: #525252;
+  --cds-text-helper: #6f6f6f;
+  --cds-text-on-color: #ffffff;
+  --cds-border-subtle: #e0e0e0;
+  --cds-border-strong: #8d8d8d;
+  --cds-interactive: #0f62fe;
+  --cds-interactive-hover: #0043ce;
+  --cds-support-success: #24a148;
+  --cds-support-warning: #f1c21b;
+  --cds-support-error: #da1e28;
+  --cds-support-info: #0043ce;
+  --cds-tag-blue: #d0e2ff;
+  --cds-tag-green: #a7f0ba;
+  --cds-tag-purple: #e8daff;
+  --cds-tag-teal: #9ef0f0;
+  --cds-tag-red: #ffd7d9;
+  --cds-tag-cyan: #bae6ff;
+  --cds-tag-magenta: #ffd6e8;
+  --cds-tag-gray: #e0e0e0;
+  --cds-spacing-03: 0.5rem;
+  --cds-spacing-04: 0.75rem;
+  --cds-spacing-05: 1rem;
+  --cds-spacing-06: 1.5rem;
+  --cds-spacing-07: 2rem;
+  --cds-spacing-08: 2.5rem;
+  --cds-spacing-09: 3rem;
+  --cds-spacing-10: 4rem;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--cds-text-primary);
+  background: var(--cds-background);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.grid {
+  max-width: 1584px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 672px) { .grid { padding: 0 2rem; } }
+@media (min-width: 1056px) { .grid { padding: 0 2.5rem; } }
+
+/* Hero */
+.hero {
+  background: #161616;
+  color: #fff;
+  padding: var(--cds-spacing-10) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f62fe 0%, #6929c4 100%);
+  opacity: 0.08;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero .eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.32px;
+  text-transform: uppercase;
+  color: var(--cds-interactive);
+  margin-bottom: var(--cds-spacing-04);
+}
+
+.hero h1 {
+  font-size: 2.625rem;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: var(--cds-spacing-06);
+  max-width: 640px;
+}
+
+@media (min-width: 672px) {
+  .hero h1 { font-size: 3.375rem; }
+  .hero { padding: var(--cds-spacing-10) 0 5rem; }
+}
+
+.hero p {
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: #c6c6c6;
+  max-width: 640px;
+  line-height: 1.6;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin-top: var(--cds-spacing-09);
+  background: #393939;
+  max-width: 800px;
+}
+
+@media (min-width: 672px) {
+  .hero-stats { grid-template-columns: repeat(4, 1fr); }
+}
+
+.hero-stat {
+  background: #262626;
+  padding: var(--cds-spacing-05);
+}
+
+.hero-stat .value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.hero-stat .label {
+  font-size: 0.75rem;
+  color: #a8a8a8;
+  margin-top: var(--cds-spacing-03);
+  letter-spacing: 0.32px;
+}
+
+/* Sections */
+section {
+  padding: var(--cds-spacing-09) 0;
+  border-bottom: 1px solid var(--cds-border-subtle);
+}
+
+section:last-child { border-bottom: none; }
+
+.section-header {
+  margin-bottom: var(--cds-spacing-07);
+}
+
+.section-header .number {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cds-interactive);
+  letter-spacing: 0.32px;
+  margin-bottom: var(--cds-spacing-03);
+}
+
+.section-header h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+  line-height: 1.3;
+}
+
+@media (min-width: 672px) {
+  .section-header h2 { font-size: 2rem; }
+}
+
+.section-header p {
+  color: var(--cds-text-secondary);
+  margin-top: var(--cds-spacing-04);
+  max-width: 640px;
+  font-size: 1rem;
+}
+
+/* Cards */
+.card-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--cds-border-subtle);
+}
+
+.card-grid--2 { grid-template-columns: 1fr; }
+.card-grid--3 { grid-template-columns: 1fr; }
+.card-grid--4 { grid-template-columns: 1fr; }
+
+@media (min-width: 672px) {
+  .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
+  .card-grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .card-grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1056px) {
+  .card-grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .card-grid--4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+.card {
+  background: var(--cds-layer-01);
+  padding: var(--cds-spacing-06);
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  transition: background 0.15s;
+}
+
+.card:hover {
+  background: var(--cds-background-hover);
+}
+
+.card__icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: var(--cds-spacing-06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: var(--cds-spacing-03);
+}
+
+.card__subtitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cds-interactive);
+  letter-spacing: 0.32px;
+  text-transform: uppercase;
+  margin-bottom: var(--cds-spacing-04);
+}
+
+.card__body {
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+  flex: 1;
+}
+
+.card__footer {
+  margin-top: var(--cds-spacing-06);
+  padding-top: var(--cds-spacing-04);
+  border-top: 1px solid var(--cds-border-subtle);
+  font-size: 0.75rem;
+  color: var(--cds-text-helper);
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 24px;
+  margin: 2px 4px 2px 0;
+  letter-spacing: 0.16px;
+}
+
+.tag--blue { background: var(--cds-tag-blue); color: #0043ce; }
+.tag--green { background: var(--cds-tag-green); color: #0e6027; }
+.tag--purple { background: var(--cds-tag-purple); color: #6929c4; }
+.tag--teal { background: var(--cds-tag-teal); color: #005d5d; }
+.tag--red { background: var(--cds-tag-red); color: #a2191f; }
+.tag--cyan { background: var(--cds-tag-cyan); color: #003a6d; }
+.tag--magenta { background: var(--cds-tag-magenta); color: #9f1853; }
+.tag--gray { background: var(--cds-tag-gray); color: #393939; }
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: var(--cds-spacing-05) 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  min-width: 480px;
+}
+
+thead {
+  background: #161616;
+  color: #fff;
+}
+
+th {
+  text-align: left;
+  padding: 0.875rem 1rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.16px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--cds-border-subtle);
+  vertical-align: top;
+}
+
+tbody tr {
+  background: var(--cds-layer-02);
+  transition: background 0.15s;
+}
+
+tbody tr:hover { background: var(--cds-layer-01); }
+
+/* Accordion */
+.accordion {
+  border-top: 1px solid var(--cds-border-subtle);
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--cds-border-subtle);
+}
+
+.accordion-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--cds-spacing-05) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cds-text-primary);
+  text-align: left;
+  gap: 1rem;
+}
+
+.accordion-btn:hover { color: var(--cds-interactive); }
+
+.accordion-btn .chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  color: var(--cds-text-secondary);
+}
+
+.accordion-item.open .chevron { transform: rotate(180deg); }
+
+.accordion-content {
+  display: none;
+  padding: 0 0 var(--cds-spacing-06);
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+  line-height: 1.6;
+}
+
+.accordion-item.open .accordion-content { display: block; }
+
+/* Tabs */
+.tabs {
+  border-bottom: 2px solid var(--cds-border-subtle);
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  gap: 0;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--cds-text-secondary);
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.tab-btn:hover { color: var(--cds-text-primary); background: var(--cds-layer-01); }
+.tab-btn.active { color: var(--cds-text-primary); border-bottom-color: var(--cds-interactive); }
+
+.tab-panel { display: none; padding: var(--cds-spacing-06) 0; }
+.tab-panel.active { display: block; }
+
+/* Progress bar */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--cds-spacing-03);
+  margin: var(--cds-spacing-03) 0;
+}
+
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: var(--cds-layer-03);
+  border-radius: 0;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 0;
+  transition: width 0.3s;
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cds-text-secondary);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Key-value pairs */
+.kv-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cds-spacing-05);
+}
+
+@media (min-width: 672px) {
+  .kv-list { grid-template-columns: repeat(2, 1fr); }
+}
+
+.kv-item {
+  padding-bottom: var(--cds-spacing-04);
+  border-bottom: 1px solid var(--cds-border-subtle);
+}
+
+.kv-item dt {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--cds-text-helper);
+  letter-spacing: 0.32px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.kv-item dd {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* Callout */
+.callout {
+  padding: var(--cds-spacing-05);
+  margin: var(--cds-spacing-05) 0;
+  border-left: 3px solid;
+  background: var(--cds-layer-01);
+}
+
+.callout--info { border-color: var(--cds-support-info); }
+.callout--success { border-color: var(--cds-support-success); }
+.callout--warning { border-color: var(--cds-support-warning); }
+.callout--error { border-color: var(--cds-support-error); }
+
+.callout__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: var(--cds-spacing-03);
+}
+
+.callout__body {
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+  line-height: 1.6;
+}
+
+/* Two-column layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cds-spacing-07);
+}
+
+@media (min-width: 1056px) {
+  .two-col { grid-template-columns: 1fr 1fr; }
+}
+
+/* Inline list */
+.inline-list {
+  list-style: none;
+  padding: 0;
+}
+
+.inline-list li {
+  padding: var(--cds-spacing-04) 0;
+  border-bottom: 1px solid var(--cds-border-subtle);
+  font-size: 0.875rem;
+  display: flex;
+  gap: var(--cds-spacing-03);
+  align-items: flex-start;
+}
+
+.inline-list li::before {
+  content: '→';
+  color: var(--cds-interactive);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Comparison */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--cds-border-subtle);
+  margin: var(--cds-spacing-05) 0;
+}
+
+@media (min-width: 672px) {
+  .compare-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.compare-card {
+  background: var(--cds-layer-01);
+  padding: var(--cds-spacing-06);
+}
+
+.compare-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: var(--cds-spacing-04);
+}
+
+.compare-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.compare-card li {
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+  padding: var(--cds-spacing-03) 0;
+  border-bottom: 1px solid var(--cds-border-subtle);
+  display: flex;
+  gap: var(--cds-spacing-03);
+  align-items: flex-start;
+}
+
+.compare-card li:last-child { border-bottom: none; }
+
+/* Flow diagram */
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cds-spacing-03);
+  margin: var(--cds-spacing-05) 0;
+}
+
+.flow-node {
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle);
+  padding: var(--cds-spacing-03) var(--cds-spacing-04);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.flow-node--active {
+  background: var(--cds-interactive);
+  border-color: var(--cds-interactive);
+  color: #fff;
+}
+
+.flow-arrow {
+  color: var(--cds-text-helper);
+  font-size: 0.875rem;
+}
+
+/* Footer */
+.footer {
+  background: #161616;
+  color: #c6c6c6;
+  padding: var(--cds-spacing-09) 0;
+}
+
+.footer p {
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.footer a { color: var(--cds-interactive); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cds-spacing-05);
+  margin-bottom: var(--cds-spacing-06);
+  list-style: none;
+}
+
+.footer-links a {
+  font-size: 0.875rem;
+  color: #f4f4f4;
+}
+
+/* Utility */
+.mb-4 { margin-bottom: var(--cds-spacing-05); }
+.mb-6 { margin-bottom: var(--cds-spacing-06); }
+.mb-8 { margin-bottom: var(--cds-spacing-07); }
+.mt-6 { margin-top: var(--cds-spacing-06); }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.text-secondary { color: var(--cds-text-secondary); }
+.text-helper { color: var(--cds-text-helper); }
+.font-mono { font-family: 'IBM Plex Mono', monospace; }
+.font-semibold { font-weight: 600; }
+
+/* Structured list */
+.structured-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--cds-spacing-05) 0;
+}
+
+.structured-list th {
+  background: var(--cds-layer-01);
+  color: var(--cds-text-primary);
+  text-transform: none;
+  font-size: 0.875rem;
+}
+
+.structured-list td {
+  font-size: 0.875rem;
+}
+
+/* Feature cards */
+.feature-strip {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--cds-border-subtle);
+  margin: var(--cds-spacing-05) 0;
+}
+
+@media (min-width: 672px) {
+  .feature-strip { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1056px) {
+  .feature-strip { grid-template-columns: repeat(3, 1fr); }
+}
+
+.feature-item {
+  background: var(--cds-layer-01);
+  padding: var(--cds-spacing-05);
+}
+
+.feature-item h4 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: var(--cds-spacing-03);
+}
+
+.feature-item p {
+  font-size: 0.8125rem;
+  color: var(--cds-text-secondary);
+  line-height: 1.5;
+}
+
+/* Nav */
+.top-bar {
+  background: #161616;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+@media (min-width: 672px) { .top-bar { padding: 0 2rem; } }
+
+.top-bar__brand {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.16px;
+}
+
+.top-bar__brand span { font-weight: 300; color: #c6c6c6; margin-left: 4px; }
+
+/* API code block */
+.code-block {
+  background: #262626;
+  color: #f4f4f4;
+  padding: var(--cds-spacing-05);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin: var(--cds-spacing-05) 0;
+  white-space: pre;
+}
+
+.code-block .comment { color: #6f6f6f; }
+.code-block .keyword { color: #78a9ff; }
+.code-block .string { color: #42be65; }
+.code-block .url { color: #82cfff; }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<nav class="top-bar">
+  <div class="top-bar__brand">MISA<span>Research Report</span></div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="grid hero-content">
+    <div class="eyebrow">Nghiên cứu phần mềm · Tháng 10/2026</div>
+    <h1>Phần mềm Kế toán MISA</h1>
+    <p>Báo cáo nghiên cứu toàn diện về hệ sinh thái phần mềm kế toán số 1 Việt Nam — sản phẩm, tính năng, giá cả, API, và bối cảnh cạnh tranh.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="value">33%</div>
+        <div class="label">Thị phần tổng thể</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">254K+</div>
+        <div class="label">Doanh nghiệp sử dụng</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">2.907</div>
+        <div class="label">Tỷ VND doanh thu 2024</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">1994</div>
+        <div class="label">Năm thành lập</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 01. Company Overview -->
+<section id="overview">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">01</div>
+      <h2>Tổng quan Công ty</h2>
+      <p>Công ty Cổ phần MISA — từ nhóm R&D tại Viện CNTT đến công ty phần mềm kế toán dẫn đầu thị trường Việt Nam.</p>
+    </div>
+
+    <div class="two-col mb-8">
+      <dl class="kv-list">
+        <div class="kv-item">
+          <dt>Tên đầy đủ</dt>
+          <dd>Công ty Cổ phần MISA (MISA JSC)</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Thành lập</dt>
+          <dd>25/12/1994 — CTCP từ 2002</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Chủ tịch HĐQT</dt>
+          <dd>Lữ Thành Long (sinh 1972)</dd>
+        </div>
+        <div class="kv-item">
+          <dt>CEO</dt>
+          <dd>Đinh Thị Thủy</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Nhân sự</dt>
+          <dd>~4.200 người (2025)</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Trụ sở</dt>
+          <dd>Tòa nhà Technosoft, Cầu Giấy, Hà Nội</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Chi nhánh</dt>
+          <dd>HCM, Đà Nẵng, Cần Thơ, Buôn Ma Thuột</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Đầu tư</dt>
+          <dd>TA Associates (Mỹ) — ~30% cổ phần (2020)</dd>
+        </div>
+      </dl>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4">Chỉ số Tài chính</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Chỉ số</th><th>Giá trị</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Doanh thu 2024</td><td>2.907 tỷ VND (~116M USD), +13% YoY</td></tr>
+              <tr><td>Lợi nhuận sau thuế 2024</td><td>439 tỷ VND, +51% YoY</td></tr>
+              <tr><td>Tăng trưởng H1/2025</td><td>+72,9% YoY</td></tr>
+              <tr><td>Định giá (2020)</td><td>>4.100 tỷ VND (~170M USD)</td></tr>
+              <tr><td>Mục tiêu</td><td>Doanh thu 1 tỷ USD + IPO</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="text-sm font-semibold mt-6 mb-4">Thị phần theo Phân khúc</h3>
+        <div class="progress-bar">
+          <span class="text-xs" style="min-width:80px">SME</span>
+          <div class="progress-track"><div class="progress-fill" style="width:50%;background:var(--cds-interactive)"></div></div>
+          <span class="progress-label">~50%</span>
+        </div>
+        <div class="progress-bar">
+          <span class="text-xs" style="min-width:80px">Tổng thể</span>
+          <div class="progress-track"><div class="progress-fill" style="width:33%;background:#6929c4"></div></div>
+          <span class="progress-label">~33%</span>
+        </div>
+        <div class="progress-bar">
+          <span class="text-xs" style="min-width:80px">HCSN</span>
+          <div class="progress-track"><div class="progress-fill" style="width:71%;background:var(--cds-support-success)"></div></div>
+          <span class="progress-label">~71%</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="text-sm font-semibold mb-4">Giải thưởng 2024</h3>
+    <div class="feature-strip">
+      <div class="feature-item">
+        <h4>Thương hiệu Quốc gia</h4>
+        <p>MISA AMIS và meInvoice — Thương hiệu Quốc gia Việt Nam 2024</p>
+      </div>
+      <div class="feature-item">
+        <h4>Sao Khuê 2024</h4>
+        <p>5 sản phẩm: AMIS Kế toán, MISA Kimi, eSign, meInvoice, ASP</p>
+      </div>
+      <div class="feature-item">
+        <h4>Make in Vietnam</h4>
+        <p>Gold Award — MISA Lending (Fintech)</p>
+      </div>
+      <div class="feature-item">
+        <h4>Sao Vàng Đất Việt</h4>
+        <p>Top thương hiệu xuất sắc 2024</p>
+      </div>
+      <div class="feature-item">
+        <h4>APICTA</h4>
+        <p>First Prize — Giải thưởng CNTT châu Á-Thái Bình Dương</p>
+      </div>
+      <div class="feature-item">
+        <h4>Nộp thuế tiêu biểu</h4>
+        <p>Doanh nghiệp nộp thuế tiêu biểu Thủ đô 2024</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02. Products -->
+<section id="products">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">02</div>
+      <h2>Danh mục Sản phẩm</h2>
+      <p>Hệ sinh thái 15+ sản phẩm phủ từ cá nhân, SME, doanh nghiệp lớn đến cơ quan nhà nước, có mặt tại 22 quốc gia.</p>
+    </div>
+
+    <div class="tabs mb-6" role="tablist">
+      <button class="tab-btn active" data-tab="tab-amis">AMIS</button>
+      <button class="tab-btn" data-tab="tab-sme">SME.NET</button>
+      <button class="tab-btn" data-tab="tab-gov">Nhà nước</button>
+      <button class="tab-btn" data-tab="tab-other">Khác</button>
+    </div>
+
+    <!-- AMIS Tab -->
+    <div class="tab-panel active" id="tab-amis">
+      <div class="callout callout--info mb-6">
+        <div class="callout__title">MISA AMIS — Nền tảng Quản trị Doanh nghiệp Hợp nhất (Cloud/SaaS)</div>
+        <div class="callout__body">Platform chủ lực với 40+ module, phục vụ DN mọi quy mô. 150.000+ DN đang sử dụng AMIS CRM. Trợ lý AI AVA tích hợp sẵn — phân tích tài chính, cảnh báo bất thường, dự báo dòng tiền.</div>
+      </div>
+
+      <h3 class="text-sm font-semibold mb-4">Gói Kế toán</h3>
+      <div class="table-wrapper mb-6">
+        <table>
+          <thead>
+            <tr><th>Gói</th><th>Tính năng cộng thêm</th><th>Giá/năm</th><th>User</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Starter</strong></td>
+              <td>Quỹ, ngân hàng, bán hàng, hóa đơn, thuế, tổng hợp</td>
+              <td>3.650.000đ</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td><strong>Standard</strong></td>
+              <td>+ Quản lý kho, công cụ dụng cụ</td>
+              <td>4.550.000đ</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td><strong>Professional</strong></td>
+              <td>+ TSCĐ, tiền lương, hợp đồng, thu nợ</td>
+              <td>5.750.000đ</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td><strong>Enterprise</strong></td>
+              <td>+ Giá thành sản xuất, xây lắp</td>
+              <td>6.950.000đ</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td><strong>Enterprise Plus</strong></td>
+              <td>+ Ngân sách, phân tích TC, quản trị hợp nhất</td>
+              <td>8.150.000đ</td>
+              <td>3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-sm font-semibold mb-4">Các nhóm Module khác</h3>
+      <div class="card-grid card-grid--3">
+        <div class="card">
+          <div class="card__subtitle">CRM & Marketing</div>
+          <div class="card__title">Bán hàng & Tiếp thị</div>
+          <div class="card__body">CRM (pipeline, loyalty, GPS check-in đại lý), aiMarketing (automation đa kênh email/SMS/Zalo)</div>
+        </div>
+        <div class="card">
+          <div class="card__subtitle">HRM</div>
+          <div class="card__title">Quản lý Nhân sự</div>
+          <div class="card__body">Tuyển dụng, Employee Central, Mục tiêu & Đánh giá, Chấm công, Bảng lương</div>
+        </div>
+        <div class="card">
+          <div class="card__subtitle">Vận hành</div>
+          <div class="card__title">Công việc & Quy trình</div>
+          <div class="card__body">Quản lý công việc, quy trình phê duyệt, WeSign, mạng xã hội nội bộ, AMIS OneAI</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SME.NET Tab -->
+    <div class="tab-panel" id="tab-sme">
+      <div class="callout callout--info mb-6">
+        <div class="callout__title">MISA SME.NET (SME 2026) — Phần mềm Desktop On-premise</div>
+        <div class="callout__body">Phần mềm kế toán desktop truyền thống cho DN cần kiểm soát dữ liệu tại chỗ. Được giảng dạy rộng rãi trong các trường ĐH kế toán Việt Nam.</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3 class="text-sm font-semibold mb-4">Mô hình Thuê bao (hàng năm)</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Gói</th><th>Giá/năm</th><th>Thêm user</th></tr></thead>
+              <tbody>
+                <tr><td>Standard</td><td>6.150.000đ</td><td>2.050.000đ</td></tr>
+                <tr><td>Professional</td><td>7.650.000đ</td><td>2.550.000đ</td></tr>
+                <tr><td>Enterprise</td><td>9.150.000đ</td><td>3.050.000đ</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold mb-4">Mô hình Mua vĩnh viễn (one-time)</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Gói</th><th>Giá</th><th>Thêm user</th></tr></thead>
+              <tbody>
+                <tr><td>Standard</td><td>13.950.000đ</td><td>4.650.000đ</td></tr>
+                <tr><td>Professional</td><td>16.950.000đ</td><td>5.650.000đ</td></tr>
+                <tr><td>Enterprise</td><td>19.950.000đ</td><td>6.650.000đ</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--warning mt-6">
+        <div class="callout__title">Lưu ý</div>
+        <div class="callout__body">License vĩnh viễn bao gồm 12 tháng bảo hành/hỗ trợ. Hết hạn thuê bao: còn xem/in, không nhập liệu mới. Phí thay đổi thông tin DN trên license: 650.000đ/lần.</div>
+      </div>
+    </div>
+
+    <!-- Gov Tab -->
+    <div class="tab-panel" id="tab-gov">
+      <div class="card-grid card-grid--2 mb-6">
+        <div class="card">
+          <div class="card__subtitle">Cấp Xã/Phường</div>
+          <div class="card__title">MISA Bamboo</div>
+          <div class="card__body">Kế toán UBND Xã/Phường. Triển khai tại ~85% xã/phường (~9.000 đơn vị). Kết nối trực tiếp Kho bạc Nhà nước, ký số điện tử.</div>
+          <div class="card__footer">
+            <span class="tag tag--green">85% phủ sóng</span>
+            <span class="tag tag--gray">Desktop + Cloud</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__subtitle">Hành chính Sự nghiệp</div>
+          <div class="card__title">MISA Mimosa</div>
+          <div class="card__body">Kế toán cho trường học, bệnh viện, cơ quan nhà nước. Tuân thủ TT24/2024/TT-BTC. Tự động 80% bút toán, lập báo cáo quyết toán.</div>
+          <div class="card__footer">
+            <span class="tag tag--blue">44.500+ đơn vị</span>
+            <span class="tag tag--gray">TT24/2024</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__subtitle">Tài sản Công</div>
+          <div class="card__title">MISA QLTS</div>
+          <div class="card__body">Quản lý vòng đời tài sản: mua sắm → ghi tăng/giảm → điều chuyển → kiểm kê → thanh lý. Mobile quét barcode, AI kiểm kê.</div>
+          <div class="card__footer">
+            <span class="tag tag--purple">Mobile + Barcode</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__subtitle">Nền tảng Tài chính Nhà nước</div>
+          <div class="card__title">MISA FinGov</div>
+          <div class="card__body">Nền tảng hợp nhất cho Bộ/Ngành/UBND tỉnh: Bumas (dự toán) + Mimosa/Bamboo (chấp hành) + Lekima (quyết toán) + Analytics.</div>
+          <div class="card__footer">
+            <span class="tag tag--cyan">71% thị phần HCSN</span>
+            <span class="tag tag--green">55.000+ đơn vị</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Tab -->
+    <div class="tab-panel" id="tab-other">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Sản phẩm</th><th>Mô tả</th><th>Ghi chú</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>CukCuk</strong></td><td>Quản lý F&B — POS, kho nguyên liệu, CRM, loyalty</td><td>22 quốc gia, từ 199K/tháng</td></tr>
+            <tr><td><strong>meInvoice</strong></td><td>Hóa đơn điện tử</td><td>Thương hiệu Quốc gia 2024</td></tr>
+            <tr><td><strong>eSign</strong></td><td>Ký số văn bản điện tử</td><td>Sao Khuê 2024</td></tr>
+            <tr><td><strong>BankHub</strong></td><td>Hub kết nối ngân hàng điện tử đa ngân hàng</td><td>10+ ngân hàng</td></tr>
+            <tr><td><strong>ASP</strong></td><td>Nền tảng kế toán dịch vụ (multi-client)</td><td>2.4–4M VND/năm</td></tr>
+            <tr><td><strong>eShop / OCM</strong></td><td>Quản lý bán lẻ / bán hàng đa kênh online</td><td></td></tr>
+            <tr><td><strong>EMIS</strong></td><td>Quản lý giáo dục</td><td></td></tr>
+            <tr><td><strong>Lending</strong></td><td>Kết nối tín dụng/vay vốn (Fintech)</td><td>Gold Award 2024</td></tr>
+            <tr><td><strong>JetPay</strong></td><td>Cổng thanh toán</td><td></td></tr>
+            <tr><td><strong>Money Keeper</strong></td><td>Quản lý tài chính cá nhân</td><td>~2 triệu người dùng</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03. Core Features -->
+<section id="features">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">03</div>
+      <h2>Tính năng Kế toán Cốt lõi</h2>
+      <p>Bộ tính năng đầy đủ theo chuẩn kế toán Việt Nam — TT200/2014 và TT133/2016.</p>
+    </div>
+
+    <div class="accordion">
+      <div class="accordion-item open">
+        <button class="accordion-btn">
+          Kế toán Tổng hợp
+          <svg class="chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+        </button>
+        <div class="accordion-content">
+          <ul class="inline-list">
+            <li>Hệ thống tài khoản theo chuẩn TT200 và TT133</li>
+            <li>Tự động phát sinh bút toán từ chứng từ gốc</li>
+            <li>Sổ cái, sổ chi tiết, nhật ký chung đầy đủ</li>
+            <li>Kết chuyển cuối kỳ tự động, lập BCTC tự động</li>
+            <li>Gói Enterprise Plus: báo cáo hợp nhất đa công ty</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">
+          Kế toán Thuế & Kê khai
+          <svg class="chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+        </button>
+        <div class="accordion-content">
+          <ul class="inline-list">
+            <li>Kê khai VAT (mẫu 01, 02, 03, 04), TNCN, TNDN, TTĐB, thuế môn bài</li>
+            <li>Kết nối T-VAN qua MISA mTax — nộp khai thuế trực tiếp, không cần HTKK</li>
+            <li>Nộp thuế điện tử (liên kết tài khoản ngân hàng)</li>
+            <li>Tự động cập nhật biểu mẫu mới theo quy định thuế</li>
+            <li>Miễn phí trên tất cả gói SME 2023 trở lên</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">
+          Quản lý Kho
+          <svg class="chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+        </button>
+        <div class="accordion-content">
+          <ul class="inline-list">
+            <li>Phương pháp tính giá xuất: FIFO, bình quân gia quyền, đích danh</li>
+            <li>Theo dõi tồn kho theo lô/hạn dùng</li>
+            <li>Kiểm kê, điều chuyển kho, xử lý hàng hỏng</li>
+            <li>Quản lý đơn đặt hàng mua/bán, theo dõi công nợ nhà cung cấp</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">
+          Tài sản Cố định
+          <svg class="chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+        </button>
+        <div class="accordion-content">
+          <ul class="inline-list">
+            <li>Ghi tăng/giảm, điều chuyển, đánh giá lại tài sản</li>
+            <li>Tự động tính khấu hao (đường thẳng, theo sản lượng)</li>
+            <li>Tuân thủ TT45, TT147 và TT23/2023</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">
+          Tiền lương & BHXH
+          <svg class="chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+        </button>
+        <div class="accordion-content">
+          <ul class="inline-list">
+            <li>Tính lương theo ca, sản phẩm, hệ số</li>
+            <li>BHXH, BHYT, BHTN theo quy định mới nhất</li>
+            <li>Tự động lập bảng lương, phiếu lương</li>
+            <li>Quyết toán thuế TNCN cuối năm</li>
+          </ul>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">
+          Ngân hàng Điện tử (BankHub)
+          <svg class="chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+        </button>
+        <div class="accordion-content">
+          <p class="mb-4">Kết nối 10+ ngân hàng: Vietcombank, VietinBank, MB, VPBank, MSB, BIDV, HDBank, SHB, Techcombank, Nam A Bank.</p>
+          <h4 class="text-sm font-semibold mb-4">Luồng xử lý</h4>
+          <div class="flow">
+            <span class="flow-node">Lập lệnh thanh toán</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-node flow-node--active">Đẩy lên eBanking</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-node">Approver duyệt</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-node">Ngân hàng xử lý</span>
+            <span class="flow-arrow">→</span>
+            <span class="flow-node flow-node--active">Tự động hạch toán</span>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-btn">
+          Báo cáo Tài chính
+          <svg class="chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+        </button>
+        <div class="accordion-content">
+          <ul class="inline-list">
+            <li>Bảng cân đối kế toán (CĐKT)</li>
+            <li>Báo cáo kết quả hoạt động kinh doanh (KQHĐKD)</li>
+            <li>Báo cáo lưu chuyển tiền tệ (LCTT)</li>
+            <li>Thuyết minh báo cáo tài chính</li>
+            <li>Phân tích: ROE, ROA, hệ số thanh toán, v.v.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04. Integration Ecosystem -->
+<section id="integration">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">04</div>
+      <h2>Hệ sinh thái Tích hợp</h2>
+      <p>Kết nối khép kín từ kế toán → hóa đơn điện tử → khai thuế → ngân hàng.</p>
+    </div>
+
+    <div class="card-grid card-grid--3 mb-8">
+      <div class="card">
+        <div class="card__subtitle">Thuế</div>
+        <div class="card__title">MISA mTax (T-VAN)</div>
+        <div class="card__body">Nộp tờ khai thuế trực tiếp từ phần mềm, nộp thuế điện tử, nộp BCTC — thay thế hoàn toàn HTKK của Tổng cục Thuế. Miễn phí.</div>
+      </div>
+      <div class="card">
+        <div class="card__subtitle">Hóa đơn</div>
+        <div class="card__title">Hóa đơn Điện tử</div>
+        <div class="card__body">meInvoice (native) + 7 nhà cung cấp: Viettel S-Invoice, VNPT, FPT, BKAV, Softdreams, Thái Sơn, Bưu điện VN. Kết nối qua cổng Tổng cục Thuế.</div>
+      </div>
+      <div class="card">
+        <div class="card__subtitle">Ngân hàng</div>
+        <div class="card__title">MISA BankHub</div>
+        <div class="card__body">Xem số dư, lịch sử giao dịch, lập lệnh thanh toán, tự động hạch toán. 10+ ngân hàng hỗ trợ. Middleware khép kín.</div>
+      </div>
+    </div>
+
+    <h3 class="text-sm font-semibold mb-4">Luồng Tích hợp Tổng thể</h3>
+    <div class="code-block"><span class="comment">// Hệ sinh thái kết nối MISA</span>
+
+<span class="keyword">CukCuk POS</span>  ──→  <span class="keyword">AMIS Kế toán</span>  ←──→  <span class="keyword">meInvoice</span>  (hóa đơn điện tử)
+                        │                    │
+                        ├──→  <span class="keyword">mTax</span>          │──→  Viettel / VNPT / FPT / BKAV...
+                        │     (khai thuế)     │
+                        ├──→  <span class="keyword">BankHub</span>       └──→  Cổng tra cứu Tổng cục Thuế
+                        │     (10+ ngân hàng)
+                        ├──→  <span class="keyword">AMIS CRM</span>
+                        ├──→  <span class="keyword">AMIS HRM</span>
+                        └──→  <span class="keyword">Open API</span>  ──→  Ứng dụng bên thứ 3</div>
+  </div>
+</section>
+
+<!-- 05. API -->
+<section id="api">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">05</div>
+      <h2>API & Khả năng Tích hợp Kỹ thuật</h2>
+      <p>Open API tại developer.misa.vn — đánh giá 3.5/5 bởi Beehexa (2025).</p>
+    </div>
+
+    <div class="two-col mb-8">
+      <div>
+        <h3 class="text-sm font-semibold mb-4">Authentication Flow</h3>
+        <div class="code-block"><span class="comment">// 1. Nhận app_id từ MISA (đăng ký partner)</span>
+<span class="comment">// 2. Admin tạo access_code trong AMIS</span>
+
+<span class="keyword">POST</span> <span class="url">https://actapp.misa.vn/api/oauth/actopen/connect</span>
+{
+  <span class="string">"app_id"</span>: <span class="string">"your_app_id"</span>,
+  <span class="string">"access_code"</span>: <span class="string">"from_amis_admin"</span>,
+  <span class="string">"org_company_code"</span>: <span class="string">"company_code"</span>
+}
+<span class="comment">// → Trả về access_token (12h validity)</span>
+
+<span class="comment">// Sử dụng trong mọi request:</span>
+<span class="keyword">Header:</span> X-MISA-AccessToken: {token}</div>
+
+        <h3 class="text-sm font-semibold mb-4 mt-6">Endpoints chính</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Chức năng</th><th>Method / Endpoint</th></tr></thead>
+            <tbody>
+              <tr><td>Lấy danh mục</td><td class="font-mono text-xs">GET /apir/sync/actopen/get_dictionary</td></tr>
+              <tr><td>Lưu danh mục</td><td class="font-mono text-xs">POST /apir/sync/actopen/save_dictionary</td></tr>
+              <tr><td>Tồn kho</td><td class="font-mono text-xs">GET /apir/sync/actopen/get_list_inventory_balance</td></tr>
+              <tr><td>Tạo chứng từ</td><td class="font-mono text-xs">POST /apir/sync/actopen/save</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4">Sản phẩm có API</h3>
+        <div class="table-wrapper mb-6">
+          <table>
+            <thead><tr><th>Sản phẩm</th><th>Token validity</th></tr></thead>
+            <tbody>
+              <tr><td>AMIS Kế toán DN</td><td>12 giờ</td></tr>
+              <tr><td>MISA CRM</td><td>24 giờ</td></tr>
+              <tr><td>MISA ASP</td><td>12 giờ</td></tr>
+              <tr><td>AMIS Chấm công</td><td>—</td></tr>
+              <tr><td>AMIS Tiền lương</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="text-sm font-semibold mb-4">Hạn chế API</h3>
+        <div class="callout callout--warning">
+          <div class="callout__body">
+            <ul class="inline-list">
+              <li>Không self-serve — phải liên hệ MISA để nhận app_id</li>
+              <li>Không có SDK cho bất kỳ ngôn ngữ nào</li>
+              <li>Tài liệu chỉ tiếng Việt</li>
+              <li>Chỉ tạo mới — không update khách hàng/vật tư</li>
+              <li>Webhook không trả voucher ID vừa tạo</li>
+              <li>Performance giảm khi >5.000 dòng</li>
+              <li>BankHub không có developer API</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06. Pricing comparison -->
+<section id="pricing">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">06</div>
+      <h2>So sánh SaaS vs On-premise</h2>
+      <p>Chọn mô hình phù hợp với quy mô và nhu cầu doanh nghiệp. Tất cả giá chưa bao gồm VAT.</p>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>Yếu tố</th><th>MISA AMIS (Cloud)</th><th>MISA SME.NET (On-premise)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Mô hình</strong></td><td>SaaS — trả hàng năm</td><td>Thuê bao hoặc mua vĩnh viễn</td></tr>
+          <tr><td><strong>Truy cập từ xa</strong></td><td>Browser + Mobile app</td><td>Chỉ LAN hoặc VPN</td></tr>
+          <tr><td><strong>Giá khởi điểm</strong></td><td>3.650.000đ/năm (1 user)</td><td>6.150.000đ/năm hoặc 13.950.000đ vĩnh viễn</td></tr>
+          <tr><td><strong>Thêm user</strong></td><td>~1.95–2.05M/user/năm</td><td>2.05–3.05M/user/năm</td></tr>
+          <tr><td><strong>Cập nhật</strong></td><td>Tự động, liên tục</td><td>Trong thời gian bảo hành/thuê bao</td></tr>
+          <tr><td><strong>Dữ liệu</strong></td><td>Cloud (MISA quản lý)</td><td>Tại chỗ (DN kiểm soát)</td></tr>
+          <tr><td><strong>AI (AVA)</strong></td><td>Có</td><td>Hạn chế</td></tr>
+          <tr><td><strong>Dùng thử</strong></td><td>15 ngày miễn phí</td><td>Liên hệ</td></tr>
+          <tr><td><strong>Phù hợp</strong></td><td>Startup, đa chi nhánh, mobile-first</td><td>SME cần kiểm soát dữ liệu tại chỗ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 07. Competition -->
+<section id="competition">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">07</div>
+      <h2>Bối cảnh Cạnh tranh</h2>
+      <p>Thị trường phần mềm kế toán Việt Nam ~277 triệu USD (2025), CAGR 5.1%, dự báo 392 triệu USD vào 2032.</p>
+    </div>
+
+    <div class="table-wrapper mb-8">
+      <table>
+        <thead>
+          <tr><th>Nhà cung cấp</th><th>Phân khúc</th><th>Khách hàng</th><th>Thị phần</th><th>Giá khởi điểm</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MISA</strong></td>
+            <td><span class="tag tag--blue">SME</span></td>
+            <td>254.000+ DN</td>
+            <td>~33% tổng thể, ~50% SME</td>
+            <td>3.65M VND/năm</td>
+          </tr>
+          <tr>
+            <td><strong>Fast Accounting</strong></td>
+            <td><span class="tag tag--purple">SME → Mid</span></td>
+            <td>70.000+ DN</td>
+            <td>Top 2 nội địa</td>
+            <td>1.1M VND/6 tháng</td>
+          </tr>
+          <tr>
+            <td><strong>Bravo</strong></td>
+            <td><span class="tag tag--teal">Enterprise</span></td>
+            <td>3.600 DN</td>
+            <td>Nhỏ, tập trung lớn</td>
+            <td>>100M VND/dự án</td>
+          </tr>
+          <tr>
+            <td><strong>Effect</strong></td>
+            <td><span class="tag tag--green">Mọi quy mô</span></td>
+            <td>4.000+ DN</td>
+            <td>Nhỏ</td>
+            <td>Miễn phí (Standard)</td>
+          </tr>
+          <tr>
+            <td><strong>SAP B1</strong></td>
+            <td><span class="tag tag--red">MNC/FDI</span></td>
+            <td>—</td>
+            <td>FDI only</td>
+            <td>50K–250K USD</td>
+          </tr>
+          <tr>
+            <td><strong>Oracle NetSuite</strong></td>
+            <td><span class="tag tag--magenta">MNC/FDI</span></td>
+            <td>—</td>
+            <td>FDI only</td>
+            <td>100K–500K USD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="text-sm font-semibold mb-4">MISA vs Fast Accounting — So sánh Chi tiết</h3>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4 style="color:var(--cds-support-success)">Fast mạnh hơn MISA</h4>
+        <ul>
+          <li>Hiệu năng tốt hơn với dữ liệu lớn và truy vấn phức tạp</li>
+          <li>Export Excel có format template đẹp hơn</li>
+          <li>Tùy biến báo cáo mạnh hơn (phòng ban, dự án, hợp đồng)</li>
+          <li>Module tính giá thành tốt hơn</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h4 style="color:var(--cds-interactive)">MISA mạnh hơn Fast</h4>
+        <ul>
+          <li>Giao diện thân thiện hơn, phù hợp kế toán mới</li>
+          <li>Mobile app mạnh hơn đáng kể</li>
+          <li>Nhận diện thương hiệu cao hơn, phổ biến trong trường ĐH</li>
+          <li>Hệ sinh thái tích hợp đầy đủ hơn (thuế, HĐĐT, ngân hàng)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08. Pros & Cons -->
+<section id="evaluation">
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">08</div>
+      <h2>Đánh giá Ưu & Nhược điểm</h2>
+      <p>Tổng hợp từ góc nhìn người dùng cuối và developer/integrator.</p>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h3 class="text-sm font-semibold mb-4" style="color:var(--cds-support-success)">Ưu điểm</h3>
+
+        <h4 class="text-xs text-helper mb-4" style="text-transform:uppercase;letter-spacing:0.32px">Người dùng</h4>
+        <ul class="inline-list mb-6">
+          <li>Giao diện thân thiện nhất thị trường — kế toán mới dùng được ngay</li>
+          <li>Tự động cập nhật chế độ kế toán/thuế theo Bộ Tài Chính</li>
+          <li>Hệ sinh thái khép kín: kế toán → hóa đơn → thuế → ngân hàng</li>
+          <li>Mobile app mạnh, làm việc mọi lúc mọi nơi</li>
+          <li>Dùng thử 15 ngày miễn phí, dễ tiếp cận</li>
+          <li>Phổ biến trong trường ĐH — sinh viên ra trường đã quen dùng</li>
+          <li>Cộng đồng hỗ trợ lớn (danketoan.com, đại lý phủ rộng)</li>
+        </ul>
+
+        <h4 class="text-xs text-helper mb-4" style="text-transform:uppercase;letter-spacing:0.32px">Developer / Integrator</h4>
+        <ul class="inline-list">
+          <li>Open API cho accounting, CRM, HR, payroll</li>
+          <li>Ecosystem đủ để tích hợp chuỗi value đầy đủ</li>
+          <li>Middleware bên thứ 3 (Beehexa iPaaS) nếu cần tích hợp nhanh</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4" style="color:var(--cds-support-error)">Nhược điểm</h3>
+
+        <h4 class="text-xs text-helper mb-4" style="text-transform:uppercase;letter-spacing:0.32px">Người dùng</h4>
+        <ul class="inline-list mb-6">
+          <li><strong>Hỗ trợ quá tải nghiêm trọng</strong> mùa quyết toán thuế (T1, T3) — gọi 100 lần không ai nghe máy</li>
+          <li>Chi phí hàng năm tăng dần — áp lực mua phiên bản mới</li>
+          <li>Hiệu năng giảm với dữ liệu lớn (5–7 năm), yêu cầu phần cứng cao</li>
+          <li>AMIS (cloud) phụ thuộc internet — mất mạng = mất việc</li>
+          <li>SME.NET (offline) bị giam vào máy cài đặt</li>
+          <li>Tùy biến hạn chế cho ngành đặc thù hoặc tập đoàn đa pháp nhân</li>
+          <li>Module lương không xử lý hoa hồng bán hàng trực tiếp</li>
+        </ul>
+
+        <h4 class="text-xs text-helper mb-4" style="text-transform:uppercase;letter-spacing:0.32px">Developer / Integrator</h4>
+        <ul class="inline-list">
+          <li>API không self-serve — phải liên hệ MISA để đăng ký app_id</li>
+          <li>Không có SDK cho bất kỳ ngôn ngữ nào</li>
+          <li>Tài liệu chỉ tiếng Việt — rào cản team quốc tế</li>
+          <li>Webhook thiếu voucher ID — không thể reconcile chứng từ</li>
+          <li>Không có API update cho khách hàng/vật tư</li>
+          <li>BankHub không có developer API</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout--info mt-6">
+      <div class="callout__title">Nhận định Chiến lược</div>
+      <div class="callout__body">MISA xây dựng hào phòng thủ trên <strong>lock-in hệ sinh thái</strong> — khi DN đã dùng AMIS Kế toán + CRM + HRM + meInvoice + mTax + BankHub, chi phí chuyển đổi rất cao. Điểm yếu lớn nhất: chất lượng hỗ trợ ở quy mô 250K+ khách hàng và giới hạn API cho tích hợp phức tạp.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="grid">
+    <ul class="footer-links">
+      <li><a href="https://misa.vn" target="_blank">misa.vn</a></li>
+      <li><a href="https://amis.misa.vn" target="_blank">amis.misa.vn</a></li>
+      <li><a href="https://developer.misa.vn" target="_blank">developer.misa.vn</a></li>
+      <li><a href="https://meinvoice.vn" target="_blank">meinvoice.vn</a></li>
+    </ul>
+    <p>Báo cáo nghiên cứu · Tháng 10/2026 · Tổng hợp từ 30+ nguồn: misa.vn, Wikipedia, CafeF, Beehexa, 6W Research, báo Nhân Dân, accnet.vn và các nguồn khác.</p>
+    <p style="margin-top:0.5rem;color:#6f6f6f">Giá và thông tin có thể thay đổi. Liên hệ MISA để xác nhận thông tin mới nhất.</p>
+  </div>
+</footer>
+
+<script>
+// Accordion
+document.querySelectorAll('.accordion-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    item.classList.toggle('open');
+  });
+});
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tabId = btn.dataset.tab;
+    const tabList = btn.closest('.grid');
+
+    tabList.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    tabList.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+    btn.classList.add('active');
+    tabList.querySelector('#' + tabId).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
