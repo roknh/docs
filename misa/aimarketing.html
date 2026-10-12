@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISA AMIS aiMarketing — Nghiên cứu Chuyên sâu</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cds-background: #ffffff;
+  --cds-background-hover: #e8e8e8;
+  --cds-layer-01: #f4f4f4;
+  --cds-layer-02: #ffffff;
+  --cds-layer-03: #e0e0e0;
+  --cds-text-primary: #161616;
+  --cds-text-secondary: #525252;
+  --cds-text-helper: #6f6f6f;
+  --cds-border-subtle: #e0e0e0;
+  --cds-interactive: #0f62fe;
+  --cds-support-success: #24a148;
+  --cds-support-warning: #f1c21b;
+  --cds-support-error: #da1e28;
+  --cds-support-info: #0043ce;
+  --cds-tag-blue: #d0e2ff;
+  --cds-tag-green: #a7f0ba;
+  --cds-tag-purple: #e8daff;
+  --cds-tag-teal: #9ef0f0;
+  --cds-tag-red: #ffd7d9;
+  --cds-tag-cyan: #bae6ff;
+  --cds-tag-magenta: #ffd6e8;
+  --cds-tag-gray: #e0e0e0;
+  --cds-tag-warm-gray: #e0e0e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--cds-text-primary);
+  background: var(--cds-background);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.grid { max-width: 1584px; margin: 0 auto; padding: 0 1rem; }
+@media (min-width: 672px) { .grid { padding: 0 2rem; } }
+@media (min-width: 1056px) { .grid { padding: 0 2.5rem; } }
+
+/* Top bar */
+.top-bar {
+  background: #161616;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+@media (min-width: 672px) { .top-bar { padding: 0 2rem; } }
+.top-bar__brand { font-size: 0.875rem; font-weight: 600; color: #fff; }
+.top-bar__brand span { font-weight: 300; color: #c6c6c6; margin-left: 4px; }
+.top-bar__back {
+  color: #78a9ff;
+  text-decoration: none;
+  font-size: 0.875rem;
+  margin-left: auto;
+}
+.top-bar__back:hover { color: #a6c8ff; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #161616 0%, #1a1a2e 50%, #16213e 100%);
+  color: #fff;
+  padding: 3rem 0 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(15,98,254,0.15) 0%, transparent 70%);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%; left: -10%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(105,41,196,0.1) 0%, transparent 70%);
+}
+.hero-content { position: relative; z-index: 1; }
+.hero .eyebrow {
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.32px; text-transform: uppercase;
+  color: #78a9ff; margin-bottom: 0.75rem;
+}
+.hero h1 { font-size: 2.25rem; font-weight: 300; line-height: 1.2; margin-bottom: 1rem; max-width: 700px; }
+@media (min-width: 672px) { .hero h1 { font-size: 3rem; } .hero { padding: 4rem 0 3.5rem; } }
+.hero p { font-size: 1.125rem; font-weight: 300; color: #c6c6c6; max-width: 640px; line-height: 1.6; }
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px; margin-top: 2.5rem;
+  background: #393939; max-width: 900px;
+}
+@media (min-width: 672px) { .hero-stats { grid-template-columns: repeat(4, 1fr); } }
+.hero-stat { background: #262626; padding: 1rem; }
+.hero-stat .value { font-size: 1.75rem; font-weight: 600; color: #fff; }
+.hero-stat .label { font-size: 0.75rem; color: #a8a8a8; margin-top: 0.25rem; }
+
+/* Section */
+section { padding: 3rem 0; border-bottom: 1px solid var(--cds-border-subtle); }
+section:last-of-type { border-bottom: none; }
+
+.section-header { margin-bottom: 2rem; }
+.section-header .number {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--cds-interactive);
+  letter-spacing: 0.32px; margin-bottom: 0.5rem;
+}
+.section-header h2 { font-size: 1.75rem; font-weight: 300; line-height: 1.3; }
+@media (min-width: 672px) { .section-header h2 { font-size: 2rem; } }
+.section-header p { color: var(--cds-text-secondary); margin-top: 0.5rem; max-width: 640px; }
+
+/* Tables */
+.table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 480px; }
+thead { background: #161616; color: #fff; }
+th { text-align: left; padding: 0.75rem 1rem; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.16px; text-transform: uppercase; white-space: nowrap; }
+td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--cds-border-subtle); vertical-align: top; }
+tbody tr { background: var(--cds-layer-02); transition: background 0.15s; }
+tbody tr:hover { background: var(--cds-layer-01); }
+
+/* Cards */
+.card-grid { display: grid; gap: 1px; background: var(--cds-border-subtle); }
+.card-grid--2 { grid-template-columns: 1fr; }
+.card-grid--3 { grid-template-columns: 1fr; }
+@media (min-width: 672px) {
+  .card-grid--2 { grid-template-columns: repeat(2, 1fr); }
+  .card-grid--3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1056px) { .card-grid--3 { grid-template-columns: repeat(3, 1fr); } }
+
+.card {
+  background: var(--cds-layer-01);
+  padding: 1.5rem;
+  display: flex; flex-direction: column;
+  min-height: 180px;
+  transition: background 0.15s;
+}
+.card:hover { background: var(--cds-background-hover); }
+.card__subtitle {
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--cds-interactive);
+  letter-spacing: 0.32px; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.card__title { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+.card__body { font-size: 0.875rem; color: var(--cds-text-secondary); flex: 1; line-height: 1.6; }
+.card__footer {
+  margin-top: 1rem; padding-top: 0.75rem;
+  border-top: 1px solid var(--cds-border-subtle);
+  font-size: 0.75rem; color: var(--cds-text-helper);
+}
+
+/* Tags */
+.tag {
+  display: inline-block; font-size: 0.75rem; font-weight: 500;
+  padding: 2px 8px; border-radius: 24px;
+  margin: 2px 4px 2px 0; letter-spacing: 0.16px;
+}
+.tag--blue { background: var(--cds-tag-blue); color: #0043ce; }
+.tag--green { background: var(--cds-tag-green); color: #0e6027; }
+.tag--purple { background: var(--cds-tag-purple); color: #6929c4; }
+.tag--teal { background: var(--cds-tag-teal); color: #005d5d; }
+.tag--red { background: var(--cds-tag-red); color: #a2191f; }
+.tag--cyan { background: var(--cds-tag-cyan); color: #003a6d; }
+.tag--magenta { background: var(--cds-tag-magenta); color: #9f1853; }
+.tag--gray { background: var(--cds-tag-gray); color: #393939; }
+
+/* Accordion */
+.accordion { border-top: 1px solid var(--cds-border-subtle); }
+.accordion-item { border-bottom: 1px solid var(--cds-border-subtle); }
+.accordion-btn {
+  width: 100%; display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0; background: none; border: none;
+  cursor: pointer; font-family: inherit;
+  font-size: 0.875rem; font-weight: 600;
+  color: var(--cds-text-primary); text-align: left; gap: 1rem;
+}
+.accordion-btn:hover { color: var(--cds-interactive); }
+.accordion-btn .chevron {
+  width: 16px; height: 16px; flex-shrink: 0;
+  transition: transform 0.2s; color: var(--cds-text-secondary);
+}
+.accordion-item.open .chevron { transform: rotate(180deg); }
+.accordion-content {
+  display: none; padding: 0 0 1.5rem;
+  font-size: 0.875rem; color: var(--cds-text-secondary); line-height: 1.6;
+}
+.accordion-item.open .accordion-content { display: block; }
+
+/* Tabs */
+.tabs {
+  border-bottom: 2px solid var(--cds-border-subtle);
+  display: flex; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  padding: 0.75rem 1rem;
+  background: none; border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px; cursor: pointer;
+  font-family: inherit; font-size: 0.875rem; font-weight: 500;
+  color: var(--cds-text-secondary); white-space: nowrap;
+  transition: all 0.15s;
+}
+.tab-btn:hover { color: var(--cds-text-primary); background: var(--cds-layer-01); }
+.tab-btn.active { color: var(--cds-text-primary); border-bottom-color: var(--cds-interactive); }
+.tab-panel { display: none; padding: 1.5rem 0; }
+.tab-panel.active { display: block; }
+
+/* Callout */
+.callout {
+  padding: 1rem; margin: 1rem 0;
+  border-left: 3px solid; background: var(--cds-layer-01);
+}
+.callout--info { border-color: var(--cds-support-info); }
+.callout--success { border-color: var(--cds-support-success); }
+.callout--warning { border-color: var(--cds-support-warning); }
+.callout--error { border-color: var(--cds-support-error); }
+.callout__title { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; }
+.callout__body { font-size: 0.875rem; color: var(--cds-text-secondary); line-height: 1.6; }
+
+/* Two col */
+.two-col { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+@media (min-width: 1056px) { .two-col { grid-template-columns: 1fr 1fr; } }
+
+/* Lists */
+.inline-list { list-style: none; padding: 0; }
+.inline-list li {
+  padding: 0.75rem 0; border-bottom: 1px solid var(--cds-border-subtle);
+  font-size: 0.875rem; display: flex; gap: 0.5rem; align-items: flex-start;
+}
+.inline-list li::before { content: '→'; color: var(--cds-interactive); font-weight: 600; flex-shrink: 0; }
+
+/* KV pairs */
+.kv-list { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 672px) { .kv-list { grid-template-columns: repeat(2, 1fr); } }
+.kv-item { padding-bottom: 0.75rem; border-bottom: 1px solid var(--cds-border-subtle); }
+.kv-item dt { font-size: 0.75rem; font-weight: 500; color: var(--cds-text-helper); letter-spacing: 0.32px; text-transform: uppercase; margin-bottom: 4px; }
+.kv-item dd { font-size: 1rem; }
+
+/* Compare */
+.compare-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--cds-border-subtle); margin: 1rem 0; }
+@media (min-width: 672px) { .compare-grid { grid-template-columns: repeat(2, 1fr); } }
+.compare-card { background: var(--cds-layer-01); padding: 1.5rem; }
+.compare-card h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; }
+.compare-card ul { list-style: none; padding: 0; }
+.compare-card li {
+  font-size: 0.875rem; color: var(--cds-text-secondary);
+  padding: 0.5rem 0; border-bottom: 1px solid var(--cds-border-subtle);
+  display: flex; gap: 0.5rem; align-items: flex-start;
+}
+.compare-card li:last-child { border-bottom: none; }
+
+/* Feature strip */
+.feature-strip { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--cds-border-subtle); margin: 1rem 0; }
+@media (min-width: 672px) { .feature-strip { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1056px) { .feature-strip { grid-template-columns: repeat(3, 1fr); } }
+.feature-item { background: var(--cds-layer-01); padding: 1rem; }
+.feature-item h4 { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; }
+.feature-item p { font-size: 0.8125rem; color: var(--cds-text-secondary); line-height: 1.5; }
+
+/* Flow */
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 1rem 0; }
+.flow-node {
+  background: var(--cds-layer-01); border: 1px solid var(--cds-border-subtle);
+  padding: 0.5rem 0.75rem; font-size: 0.75rem; font-weight: 500; white-space: nowrap;
+}
+.flow-node--active { background: var(--cds-interactive); border-color: var(--cds-interactive); color: #fff; }
+.flow-arrow { color: var(--cds-text-helper); font-size: 0.875rem; }
+
+/* Code block */
+.code-block {
+  background: #262626; color: #f4f4f4;
+  padding: 1rem; font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8125rem; line-height: 1.7;
+  overflow-x: auto; margin: 1rem 0; white-space: pre;
+}
+.code-block .comment { color: #6f6f6f; }
+.code-block .keyword { color: #78a9ff; }
+.code-block .string { color: #42be65; }
+.code-block .url { color: #82cfff; }
+
+/* Progress bar */
+.progress-bar { display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0; }
+.progress-track { flex: 1; height: 8px; background: var(--cds-layer-03); }
+.progress-fill { height: 100%; }
+.progress-label { font-size: 0.75rem; font-weight: 500; color: var(--cds-text-secondary); min-width: 50px; text-align: right; }
+
+/* Pricing highlight */
+.pricing-grid {
+  display: grid; grid-template-columns: 1fr;
+  gap: 1px; background: var(--cds-border-subtle); margin: 1rem 0;
+}
+@media (min-width: 672px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1056px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.pricing-card {
+  background: var(--cds-layer-02); padding: 1.5rem;
+  display: flex; flex-direction: column;
+}
+.pricing-card--featured {
+  background: #161616; color: #fff;
+}
+.pricing-card__name {
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.32px; text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.pricing-card--featured .pricing-card__name { color: #78a9ff; }
+.pricing-card__price {
+  font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;
+}
+.pricing-card__period {
+  font-size: 0.75rem; color: var(--cds-text-helper); margin-bottom: 1rem;
+}
+.pricing-card--featured .pricing-card__period { color: #a8a8a8; }
+.pricing-card__features {
+  list-style: none; padding: 0; flex: 1;
+  border-top: 1px solid var(--cds-border-subtle);
+  padding-top: 1rem;
+}
+.pricing-card--featured .pricing-card__features { border-color: #393939; }
+.pricing-card__features li {
+  font-size: 0.8125rem; padding: 0.375rem 0;
+  color: var(--cds-text-secondary);
+  display: flex; gap: 0.5rem;
+}
+.pricing-card--featured .pricing-card__features li { color: #c6c6c6; }
+.pricing-card__features li::before { content: '~'; color: var(--cds-interactive); font-weight: 600; }
+.pricing-card__badge {
+  display: inline-block; font-size: 0.6875rem; font-weight: 600;
+  background: var(--cds-interactive); color: #fff;
+  padding: 2px 8px; border-radius: 2px; margin-bottom: 0.75rem;
+  align-self: flex-start;
+}
+
+/* Footer */
+.footer { background: #161616; color: #c6c6c6; padding: 3rem 0; }
+.footer p { font-size: 0.75rem; line-height: 1.6; }
+.footer a { color: var(--cds-interactive); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; list-style: none; }
+.footer-links a { font-size: 0.875rem; color: #f4f4f4; }
+
+/* Utilities */
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mt-6 { margin-top: 1.5rem; }
+.text-sm { font-size: 0.875rem; }
+.text-xs { font-size: 0.75rem; }
+.text-secondary { color: var(--cds-text-secondary); }
+.text-helper { color: var(--cds-text-helper); }
+.font-mono { font-family: 'IBM Plex Mono', monospace; }
+.font-semibold { font-weight: 600; }
+
+/* ========== MOBILE ========== */
+@media (max-width: 671px) {
+  body { font-size: 1.0625rem; line-height: 1.6; }
+  .grid { padding: 0 1.25rem; }
+
+  .hero { padding: 2.5rem 0 2rem; }
+  .hero .eyebrow { font-size: 0.8125rem; }
+  .hero h1 { font-size: 1.875rem; line-height: 1.25; }
+  .hero p { font-size: 1.0625rem; }
+  .hero-stat .value { font-size: 1.5rem; }
+  .hero-stat .label { font-size: 0.8125rem; }
+
+  .section-header .number { font-size: 0.8125rem; }
+  .section-header h2 { font-size: 1.5rem; }
+  .section-header p { font-size: 1.0625rem; }
+
+  .card { padding: 1.25rem; min-height: auto; }
+  .card__subtitle { font-size: 0.8125rem; }
+  .card__title { font-size: 1.0625rem; }
+  .card__body { font-size: 1rem; }
+  .card__footer { font-size: 0.8125rem; }
+
+  .tag { font-size: 0.8125rem; padding: 3px 10px; }
+
+  table { font-size: 1rem; }
+  th { font-size: 0.8125rem; padding: 0.75rem; }
+  td { padding: 0.75rem; font-size: 1rem; line-height: 1.5; }
+
+  .table-wrapper { position: relative; }
+  .table-wrapper::after {
+    content: ''; position: absolute;
+    top: 0; right: 0; width: 24px; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.9));
+    pointer-events: none;
+  }
+  .table-wrapper.scrolled-end::after { opacity: 0; }
+
+  .accordion-btn { font-size: 1.0625rem; padding: 1rem 0; min-height: 48px; }
+  .accordion-btn .chevron { width: 20px; height: 20px; }
+  .accordion-content { font-size: 1rem; }
+
+  .tab-btn { font-size: 1rem; padding: 0.875rem 1rem; min-height: 48px; }
+
+  .inline-list li { font-size: 1rem; padding: 0.75rem 0; }
+  .kv-item dt { font-size: 0.8125rem; }
+  .kv-item dd { font-size: 1.0625rem; }
+
+  .callout { padding: 1.25rem; }
+  .callout__title { font-size: 1rem; }
+  .callout__body { font-size: 1rem; }
+
+  .compare-card { padding: 1.25rem; }
+  .compare-card h4 { font-size: 1.0625rem; }
+  .compare-card li { font-size: 1rem; }
+
+  .feature-item h4 { font-size: 1rem; }
+  .feature-item p { font-size: 0.9375rem; }
+
+  .flow { flex-direction: column; align-items: stretch; gap: 0; }
+  .flow-node { font-size: 0.875rem; padding: 0.75rem 1rem; text-align: center; white-space: normal; }
+  .flow-arrow { transform: rotate(90deg); text-align: center; padding: 0.25rem 0; }
+
+  .code-block { font-size: 0.75rem; padding: 1rem; }
+
+  .pricing-card__price { font-size: 1.25rem; }
+  .pricing-card__features li { font-size: 0.9375rem; }
+
+  .footer-links { flex-direction: column; gap: 0.75rem; }
+  .footer-links a { font-size: 1rem; }
+  .footer p { font-size: 0.875rem; }
+
+  .text-sm { font-size: 1rem; }
+  .text-xs { font-size: 0.875rem; }
+  h3.text-sm.font-semibold { font-size: 1.0625rem !important; }
+  .top-bar__brand { font-size: 1rem; }
+
+  .progress-bar > span:first-child { font-size: 0.875rem; }
+  .progress-track { height: 10px; }
+  .progress-label { font-size: 0.875rem; }
+}
+
+@media (max-width: 374px) {
+  .grid { padding: 0 1rem; }
+  .hero h1 { font-size: 1.625rem; }
+  .hero p { font-size: 1rem; }
+  .hero-stat .value { font-size: 1.375rem; }
+  .section-header h2 { font-size: 1.375rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="top-bar">
+  <div class="top-bar__brand">MISA<span>aiMarketing Deep Dive</span></div>
+  <a href="index.html" class="top-bar__back">< MISA Overview</a>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="grid hero-content">
+    <div class="eyebrow">Nghien cuu chuyen sau · Thang 10/2026</div>
+    <h1>MISA AMIS aiMarketing</h1>
+    <p>Marketing Automation All-in-One "Make in Vietnam" — tu dong hoa da kenh Email, SMS Brandname, Zalo OA/ZNS trong mot nen tang thong nhat voi he sinh thai MISA AMIS.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="value">12K+</div>
+        <div class="label">Doanh nghiep su dung</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">90%</div>
+        <div class="label">Inbox rate (tu cong bo)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">100+</div>
+        <div class="label">Email & LP templates</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">4.8/5</div>
+        <div class="label">Rating (8.869 reviews)</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 01. Overview -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">01</div>
+      <h2>Tong quan San pham</h2>
+      <p>Module marketing automation trong he sinh thai MISA AMIS — tu dong hoa hanh trinh Thu hut, Nuoi duong, Chuyen doi, Do luong.</p>
+    </div>
+
+    <div class="two-col mb-8">
+      <dl class="kv-list">
+        <div class="kv-item">
+          <dt>Ten san pham</dt>
+          <dd>MISA AMIS aiMarketing</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Nha phat trien</dt>
+          <dd>Cong ty Co phan MISA (tu 1994)</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Ra mat</dt>
+          <dd>25/12/2020 (cung MISA AMIS)</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Mo hinh</dt>
+          <dd>Cloud SaaS — tra phi hang nam</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Doi tuong</dt>
+          <dd>SME den doanh nghiep vua tai Viet Nam</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Giai thuong</dt>
+          <dd>Thuong hieu Quoc gia 2024, Sao Khue 2022</dd>
+        </div>
+        <div class="kv-item">
+          <dt>AI</dt>
+          <dd>Tro ly AVA + AMIS OneAI (09/2025)</dd>
+        </div>
+        <div class="kv-item">
+          <dt>Hotline</dt>
+          <dd>0904 885 833</dd>
+        </div>
+      </dl>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4">USP cot loi</h3>
+        <ul class="inline-list">
+          <li><strong>Zalo OA + ZNS native</strong> — duy nhat trong marketing automation (doi thu quoc te khong co)</li>
+          <li><strong>8 nha cung cap SMS Brandname</strong> Viet Nam tich hop san</li>
+          <li><strong>Ket noi he sinh thai doc:</strong> aiMarketing → CRM → Ke toan → HRM</li>
+          <li><strong>Gia VND</strong>, ho tro tieng Viet 24/7, tuan thu phap luat VN</li>
+          <li><strong>Smart Fallback:</strong> ZNS that bai → tu dong chuyen SMS sau ~15 giay</li>
+          <li>Bo loc email thong minh dat inbox rate 90%</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="text-sm font-semibold mb-4">Hanh trinh Marketing Automation</h3>
+    <div class="flow">
+      <span class="flow-node flow-node--active">Thu hut</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node">Landing Page / Form / Popup</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node flow-node--active">Nuoi duong</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node">Email / SMS / Zalo Workflow</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node flow-node--active">Chuyen doi</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node">Lead Scoring → CRM</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node flow-node--active">Do luong</span>
+    </div>
+  </div>
+</section>
+
+<!-- 02. Channels -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">02</div>
+      <h2>Tinh nang Chi tiet theo Kenh</h2>
+      <p>Email Marketing, SMS Brandname, Zalo OA/ZNS — tich hop da kenh trong mot giao dien.</p>
+    </div>
+
+    <div class="tabs mb-6" role="tablist">
+      <button class="tab-btn active" data-tab="tab-email">Email</button>
+      <button class="tab-btn" data-tab="tab-sms">SMS</button>
+      <button class="tab-btn" data-tab="tab-zalo">Zalo</button>
+      <button class="tab-btn" data-tab="tab-other-ch">Kenh khac</button>
+    </div>
+
+    <!-- Email -->
+    <div class="tab-panel active" id="tab-email">
+      <div class="two-col mb-6">
+        <div>
+          <h3 class="text-sm font-semibold mb-4">Template Builder</h3>
+          <ul class="inline-list">
+            <li>Drag & Drop editor — khong can ky nang thiet ke hay HTML</li>
+            <li><strong>100+ mau email</strong> phan loai theo nganh va muc dich</li>
+            <li>Phan tu keo-tha: van ban, hinh anh, nut CTA, layout da cot, HTML tuy chinh</li>
+            <li>Auto-save moi 10 phut + phuc hoi phien ban cu</li>
+            <li>Responsive tu dong PC va Mobile</li>
+            <li>Tai khoan moi: <strong>2.000 email mien phi + 200+ template</strong></li>
+          </ul>
+
+          <h3 class="text-sm font-semibold mt-6 mb-4">Ca nhan hoa (Personalization)</h3>
+          <ul class="inline-list">
+            <li>Merge Tag bang ky tu <code>#</code>: <code>#Ten</code>, <code>#Ho</code>, <code>#GioiTinh</code></li>
+            <li>Ap dung ca Subject Line (gioi han 60 ky tu) va body email</li>
+            <li>Fallback value khi contact thieu thong tin</li>
+            <li>Tu dong dien tu AMIS CRM</li>
+            <li>Tuan thu Nghi dinh 91/2020: email quang cao bat buoc co nhan <code>[QC]</code></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold mb-4">Deliverability & Loc thong minh</h3>
+          <div class="callout callout--success mb-4">
+            <div class="callout__title">Inbox rate: 90% (tu cong bo)</div>
+            <div class="callout__body">Bo loc tu dong loai truoc khi gui: email khong ton tai, da unsubscribe, da bounce, da bao spam. Canh bao tuong tac kem (khong mo >20 email) va tan suat cao (>5 email/24h).</div>
+          </div>
+          <ul class="inline-list mb-6">
+            <li>Cau hinh SPF, DKIM qua DNS (hieu luc sau 12h)</li>
+            <li>IP warming: khuyen nghi 30 ngay cho IP moi</li>
+            <li>Gioi han gui khuyen nghi: toi da <strong>50.000 dia chi/lan</strong></li>
+          </ul>
+
+          <h3 class="text-sm font-semibold mb-4">Tracking Metrics</h3>
+          <div class="feature-strip">
+            <div class="feature-item"><h4>Open Rate</h4><p>Ty le mo email</p></div>
+            <div class="feature-item"><h4>Click Rate</h4><p>Ty le nhap link</p></div>
+            <div class="feature-item"><h4>Bounce</h4><p>Soft/Hard bounce</p></div>
+            <div class="feature-item"><h4>Unsubscribe</h4><p>Ty le huy dang ky</p></div>
+            <div class="feature-item"><h4>Spam Report</h4><p>Ty le bao spam</p></div>
+            <div class="feature-item"><h4>Device</h4><p>Thong ke theo thiet bi</p></div>
+          </div>
+
+          <div class="callout callout--warning mt-6">
+            <div class="callout__title">A/B Testing</div>
+            <div class="callout__body">Khong co A/B testing native (khong co UI built-in nhu Mailchimp). Phai tao nhieu chien dich rieng biet roi so sanh metrics thu cong.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="text-sm font-semibold mb-4">Gioi han Email theo Goi</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Goi</th><th>Email/nam</th><th>Quy ra/thang</th></tr></thead>
+          <tbody>
+            <tr><td>Email Marketing / Starter</td><td>60.000</td><td>~5.000</td></tr>
+            <tr><td>Standard</td><td>200.000</td><td>~16.700</td></tr>
+            <tr><td>Professional</td><td>800.000</td><td>~66.700</td></tr>
+            <tr><td>Enterprise</td><td>2.000.000+</td><td>~166.700+</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SMS -->
+    <div class="tab-panel" id="tab-sms">
+      <div class="two-col mb-6">
+        <div>
+          <h3 class="text-sm font-semibold mb-4">SMS Brandname</h3>
+          <ul class="inline-list">
+            <li>Ten doanh nghiep thay the so gui — brandname toi da <strong>11 ky tu</strong></li>
+            <li>Noi dung toi da <strong>612 ky tu</strong> (gap ~4 lan SMS thuong)</li>
+            <li>Gui SMS hang loat den danh sach da luu</li>
+            <li>Len lich tu dong (sinh nhat, ngay le...)</li>
+            <li>Ca nhan hoa noi dung</li>
+            <li>Gui SMS trong workflow da kenh</li>
+          </ul>
+
+          <h3 class="text-sm font-semibold mt-6 mb-4">Gia SMS Brandname</h3>
+          <div class="callout callout--info">
+            <div class="callout__title">~650–900 VND/tin thanh cong</div>
+            <div class="callout__body">Chi tinh tin gui thanh cong. Gia thuc te phu thuoc nha cung cap SMS gateway va hop dong. Chi phi nay ngoai phi phan mem aiMarketing.</div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold mb-4">Nha mang & Gateway</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Loai</th><th>Chi tiet</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Nha mang</strong></td><td>Viettel, VinaPhone, MobiFone, GTel, Vietnamobile</td></tr>
+                <tr><td><strong>8 Gateway</strong></td><td>VHT, SouthTelecom, CMC, Viettel, VMG, NorthTelecom, eSMS, FPT</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="text-sm font-semibold mt-6 mb-4">Dinh dang Brandname theo Nha mang</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Nha mang</th><th>Ky tu phan cach cho phep</th></tr></thead>
+              <tbody>
+                <tr><td>Viettel, VinaPhone, Gtel</td><td>Khoang trang, <code>. _ -</code></td></tr>
+                <tr><td>MobiFone</td><td>Chi <code>. _ -</code> (khong khoang trang)</td></tr>
+                <tr><td>Vietnamobile</td><td>Chi khoang trang</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="text-sm font-semibold mt-6 mb-4">Compliance</h3>
+          <ul class="inline-list">
+            <li>Nghi dinh 91/2020/ND-CP: phai co su dong y truoc</li>
+            <li>Co che opt-out ro rang</li>
+            <li>Chi gui quang cao trong khung <strong>7:00–22:00</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zalo -->
+    <div class="tab-panel" id="tab-zalo">
+      <div class="callout callout--info mb-6">
+        <div class="callout__title">Kien truc tich hop</div>
+        <div class="callout__body">MISA aiMarketing <strong>khong ket noi truc tiep voi Zalo</strong> — bat buoc qua doi tac <strong>eSMS</strong>. Thiet lap: Cai dat → Ket noi–Tich hop → Nhap API Key + Secret Key tu tai khoan eSMS.</div>
+      </div>
+
+      <h3 class="text-sm font-semibold mb-4">3 loai tin nhan Zalo</h3>
+      <div class="table-wrapper mb-6">
+        <table>
+          <thead>
+            <tr><th>Tieu chi</th><th>ZNS Template</th><th>ZNS Follower</th><th>OA Broadcast</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Chi phi</strong></td><td>120–300 VND/tin + phu phi CTA</td><td>Mien phi 1.000 tin/thang dau; 55 VND/tin tiep</td><td>Mien phi</td></tr>
+            <tr><td><strong>Doi tuong</strong></td><td>So dien thoai co lich su Zalo</td><td>Nguoi da follow OA</td><td>Nguoi da follow OA</td></tr>
+            <tr><td><strong>Broadcast/thang</strong></td><td>Khong gioi han</td><td>Khong gioi han</td><td>Toi da 40/OA/thang</td></tr>
+            <tr><td><strong>Gioi han/nguoi</strong></td><td>—</td><td>—</td><td>4 tin/nguoi/thang, max 1/ngay</td></tr>
+            <tr><td><strong>Ca nhan hoa</strong></td><td>Co (chi CSKH)</td><td>Co (cho phep QC)</td><td>Khong</td></tr>
+            <tr><td><strong>Template</strong></td><td>Phai dang ky + duyet 2–3 ngay</td><td>Khong can</td><td>Khong can</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col mb-6">
+        <div>
+          <h3 class="text-sm font-semibold mb-4">Bang gia ZNS (tu 24/03/2025)</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Loai ZNS</th><th>Don gia</th></tr></thead>
+              <tbody>
+                <tr><td>ZNS xac thuc</td><td>300 VND/tin</td></tr>
+                <tr><td>ZNS yeu cau thanh toan</td><td>300 VND/tin</td></tr>
+                <tr><td>ZNS voucher</td><td>300 VND/tin</td></tr>
+                <tr><td>ZNS hanh chinh cong</td><td>120 VND/tin</td></tr>
+                <tr><td>Cac loai con lai</td><td>200 VND/tin</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-semibold mb-4">Phu phi nut CTA (tu 24/03/2025)</h3>
+          <div class="table-wrapper">
+            <table>
+              <thead><tr><th>Loai nut</th><th>Don gia</th></tr></thead>
+              <tbody>
+                <tr><td>Den trang OA / Mini App DN</td><td>0 VND</td></tr>
+                <tr><td>Den trang DN / goi dien</td><td>100 VND</td></tr>
+                <tr><td>Den web / Mini App khac</td><td>400 VND</td></tr>
+                <tr><td>Den trang tai ung dung</td><td>500 VND</td></tr>
+                <tr><td>Den ung dung khac</td><td>700 VND</td></tr>
+                <tr><td>Hinh anh dinh kem</td><td>200 VND</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout--success mb-4">
+        <div class="callout__title">Smart Fallback</div>
+        <div class="callout__body">ZNS that bai → tu dong chuyen sang <strong>SMS Brandname</strong> sau ~15 giay. Dam bao tin nhan den tay khach hang.</div>
+      </div>
+
+      <div class="callout callout--warning">
+        <div class="callout__title">ZNS Automation chua ra mat</div>
+        <div class="callout__body">Tu dong gui ZNS trong workflow dang phat trien, chua ra mat. Hien chi gui ZNS thu cong hang loat hoac qua campaign rieng.</div>
+      </div>
+
+      <h3 class="text-sm font-semibold mt-6 mb-4">Ty le mo Broadcast Zalo vs Email</h3>
+      <div class="progress-bar">
+        <span class="text-xs" style="min-width:100px">Zalo Broadcast</span>
+        <div class="progress-track"><div class="progress-fill" style="width:70%;background:var(--cds-interactive)"></div></div>
+        <span class="progress-label">60–80%</span>
+      </div>
+      <div class="progress-bar">
+        <span class="text-xs" style="min-width:100px">Email</span>
+        <div class="progress-track"><div class="progress-fill" style="width:20%;background:#6929c4"></div></div>
+        <span class="progress-label">15–25%</span>
+      </div>
+    </div>
+
+    <!-- Other channels -->
+    <div class="tab-panel" id="tab-other-ch">
+      <div class="card-grid card-grid--3">
+        <div class="card">
+          <div class="card__subtitle">Social</div>
+          <div class="card__title">Facebook Fanpage</div>
+          <div class="card__body">Quan ly binh luan, chat, tao lead — cung man hinh voi Zalo OA. Tich hop Facebook Pixel cho tracking.</div>
+        </div>
+        <div class="card">
+          <div class="card__subtitle">Quang cao</div>
+          <div class="card__title">Facebook & Google Ads</div>
+          <div class="card__body">Tu dong dong bo chi phi quang cao vao bao cao ROI. TikTok Ads cung duoc de cap (can xac nhan).</div>
+        </div>
+        <div class="card">
+          <div class="card__subtitle">Website</div>
+          <div class="card__title">Popup / Banner / CTA</div>
+          <div class="card__body">Trinh tao popup tich hop trong Landing Page builder. Web push notifications (can xac nhan muc do hoan thien).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03. Automation -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">03</div>
+      <h2>Marketing Automation & Workflow</h2>
+      <p>Visual drag-and-drop workflow builder voi phan nhanh da dieu kien, lead scoring, va segmentation tu dong.</p>
+    </div>
+
+    <div class="two-col mb-8">
+      <div>
+        <h3 class="text-sm font-semibold mb-4">Workflow Builder</h3>
+        <ul class="inline-list mb-6">
+          <li>Giao dien keo-tha truc quan (visual drag-and-drop)</li>
+          <li>Phan nhanh da dieu kien (YES/NO paths)</li>
+          <li>Kenh trong workflow: <strong>Email, SMS</strong> (ZNS dang phat trien)</li>
+          <li>Bat buoc co <strong>Delay truoc Branch</strong></li>
+        </ul>
+
+        <h3 class="text-sm font-semibold mb-4">Trigger Types</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Loai</th><th>Mo ta</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag tag--blue">Event</span></td><td>Lien he submit form duoc chi dinh</td></tr>
+              <tr><td><span class="tag tag--green">Segment</span></td><td>Lien he duoc them vao nhom/danh sach</td></tr>
+              <tr><td><span class="tag tag--purple">Attribute</span></td><td>Thuoc tinh lien he thay doi (vd: lifecycle stage → "Lead")</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="text-sm font-semibold mt-6 mb-4">Dieu kien Phan nhanh</h3>
+        <ul class="inline-list">
+          <li>Tuong tac email: da mo / chua mo</li>
+          <li>Click link cu the trong email</li>
+          <li>Da submit form duoc chi dinh</li>
+          <li>Thay doi thuoc tinh lien he</li>
+          <li>Logic: AND (tat ca) hoac OR (it nhat mot)</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4">Kich ban Mau</h3>
+        <div class="callout callout--info mb-6">
+          <div class="callout__body">
+            Gui email sau 1 ngay dang ky → neu khong mo thi gui lai sau 3 ngay → neu khach dat 60 diem → gui ma giam gia → neu khong mua trong 30 ngay → gui tin hoi tham + offer moi
+          </div>
+        </div>
+
+        <h3 class="text-sm font-semibold mb-4">Gioi han Workflow theo Goi</h3>
+        <div class="table-wrapper mb-6">
+          <table>
+            <thead><tr><th>Goi</th><th>So kich ban tu dong</th></tr></thead>
+            <tbody>
+              <tr><td>Starter</td><td>10</td></tr>
+              <tr><td>Standard</td><td>25</td></tr>
+              <tr><td>Professional</td><td>Khong gioi han</td></tr>
+              <tr><td>Enterprise</td><td>Khong gioi han</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="text-sm font-semibold mb-4">Lead Scoring</h3>
+        <ul class="inline-list">
+          <li>Tu dong cham diem theo hanh vi va thuoc tinh lien he</li>
+          <li>Thang diem tuy chinh theo tieu chi DN</li>
+          <li>Ap dung trong workflow: "Khach dat 60 diem → tu dong gui uu dai"</li>
+          <li>Tu dong phan loai va chuyen sang Sales qua AMIS CRM</li>
+        </ul>
+
+        <h3 class="text-sm font-semibold mt-6 mb-4">Tracking Workflow</h3>
+        <div class="feature-strip">
+          <div class="feature-item"><h4>Du dieu kien</h4><p>Lien he vao workflow</p></div>
+          <div class="feature-item"><h4>Dang xu ly</h4><p>Dang trong workflow</p></div>
+          <div class="feature-item"><h4>Hoan thanh</h4><p>Ket thuc workflow</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04. Landing Page & Form -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">04</div>
+      <h2>Landing Page & Form Builder</h2>
+      <p>Tao trang dich nhanh trong 15–30 phut voi 100+ template da nganh. Thu thap lead tu dong.</p>
+    </div>
+
+    <div class="two-col mb-6">
+      <div>
+        <h3 class="text-sm font-semibold mb-4">Landing Page Builder</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Tinh nang</th><th>Chi tiet</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Editor</strong></td><td>Drag-and-drop, khong can code</td></tr>
+              <tr><td><strong>Thoi gian tao</strong></td><td>15–30 phut</td></tr>
+              <tr><td><strong>Template</strong></td><td>100+ mau da nganh: IT, Giao duc, Tai chinh, BDS, Su kien</td></tr>
+              <tr><td><strong>Responsive</strong></td><td>PC, Mobile, Tablet — tu dong can chinh</td></tr>
+              <tr><td><strong>SEO</strong></td><td>Meta title, description, OG image, favicon, URL path tuy chinh</td></tr>
+              <tr><td><strong>Custom domain</strong></td><td>Khong self-service — phai lien he ho tro MISA</td></tr>
+              <tr><td><strong>A/B Testing</strong></td><td>Khong native — thuc hien qua Google Tag Manager</td></tr>
+              <tr><td><strong>Tracking</strong></td><td>Facebook Pixel ID, GA4 Measurement ID, GTM Container ID</td></tr>
+              <tr><td><strong>Custom HTML/CSS</strong></td><td>Ho tro chen widget tuy chinh</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="text-sm font-semibold mt-6 mb-4">Gioi han Landing Page</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Goi</th><th>So trang</th></tr></thead>
+            <tbody>
+              <tr><td>Starter</td><td>20 trang</td></tr>
+              <tr><td>Standard</td><td>50 trang</td></tr>
+              <tr><td>Professional / Enterprise</td><td>Khong gioi han</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4">Form Builder</h3>
+        <ul class="inline-list mb-6">
+          <li>2 loai: Form thuong (inline) va Form pop-up</li>
+          <li>Keo tha truc tiep vao Landing Page</li>
+          <li>Nhung form vao website ngoai (embed code)</li>
+          <li>Tuy chinh: font chu, kich co, mau sac, do rong</li>
+          <li><strong>Khong gioi han so form</strong> (tat ca goi)</li>
+          <li>Analytics tu dong: so lan gui, ty le gui, thong tin thu thap</li>
+        </ul>
+
+        <h3 class="text-sm font-semibold mb-4">Luong Lead tu Form</h3>
+        <div class="flow">
+          <span class="flow-node">Khach submit form</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-node flow-node--active">Tao Contact tu dong</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-node">Vao Workflow</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-node">Lead Scoring</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-node flow-node--active">Dong bo AMIS CRM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05. Integration -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">05</div>
+      <h2>Tich hop Ky thuat & API</h2>
+      <p>REST API, ket noi he sinh thai AMIS, va tracking 3rd party.</p>
+    </div>
+
+    <div class="two-col mb-8">
+      <div>
+        <h3 class="text-sm font-semibold mb-4">REST API</h3>
+        <div class="code-block"><span class="comment">// Endpoint goc</span>
+<span class="keyword">BASE_URL</span> = <span class="url">https://amisapp.misa.vn/crm/gc/api/public/api/v2</span>
+
+<span class="comment">// Xac thuc (OAuth)</span>
+<span class="keyword">POST</span> <span class="url">/api/oauth/actopen/connect</span>
+{
+  <span class="string">"app_id"</span>: <span class="string">"your_app_id"</span>,
+  <span class="string">"access_code"</span>: <span class="string">"from_admin"</span>,
+  <span class="string">"org_company_code"</span>: <span class="string">"company_code"</span>
+}
+<span class="comment">// → access_token (24h validity)</span>
+
+<span class="comment">// Header cho moi request:</span>
+<span class="keyword">X-MISA-AccessToken:</span> {token}</div>
+
+        <h3 class="text-sm font-semibold mt-6 mb-4">Han che API (Beehexa audit)</h3>
+        <div class="callout callout--error">
+          <div class="callout__body">
+            <ul class="inline-list">
+              <li>Khong co API <strong>cap nhat</strong> contact — chi tao moi</li>
+              <li>Khong co API lay contact theo ma — phai query toan bo roi loc</li>
+              <li><strong>Timeout voi >5.000 ban ghi</strong></li>
+              <li>Khong co API nhom khach hang</li>
+              <li>Webhook chi tra success/fail, khong tra ket qua chi tiet</li>
+              <li>Callback URL bi khoa cung — 1 URL cho tat ca cong ty</li>
+              <li><strong>Khong co Zapier/Make connector</strong> chinh thuc</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4">He sinh thai AMIS lien thong</h3>
+        <div class="code-block"><span class="keyword">AMIS aiMarketing</span>
+     ↕  Lead/Contact sync (2 chieu)
+<span class="keyword">AMIS CRM</span>
+     ↕  Khach hang, hang hoa, don hang (2 chieu)
+<span class="keyword">AMIS Ke toan</span>
+     ↕  Nhan vien kinh doanh, tinh cong
+<span class="keyword">AMIS HRM</span></div>
+
+        <h3 class="text-sm font-semibold mt-6 mb-4">Tracking 3rd Party tren Landing Page</h3>
+        <div class="table-wrapper mb-6">
+          <table>
+            <thead><tr><th>Cong cu</th><th>Cach tich hop</th></tr></thead>
+            <tbody>
+              <tr><td>Facebook Pixel</td><td>Nhap Pixel ID</td></tr>
+              <tr><td>Google Analytics 4</td><td>Nhap Measurement ID</td></tr>
+              <tr><td>Google Tag Manager</td><td>Nhap Container ID</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="text-sm font-semibold mb-4">Ket noi Kenh lien lac</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Kenh</th><th>Doi tac / Giao thuc</th></tr></thead>
+            <tbody>
+              <tr><td>SMS Brandname</td><td>8 nha cung cap VN (eSMS, VHT, FPT, CMC...)</td></tr>
+              <tr><td>Zalo ZNS</td><td>Chi qua eSMS</td></tr>
+              <tr><td>Zalo OA</td><td>Quan ly chat, tao lead</td></tr>
+              <tr><td>Facebook Fanpage</td><td>Quan ly binh luan, chat, tao lead</td></tr>
+              <tr><td>Email</td><td>SMTP noi bo, DNS/DKIM/SPF</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06. AI -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">06</div>
+      <h2>Tinh nang AI</h2>
+      <p>Tro ly AVA tich hop san + nen tang AMIS OneAI multi-model (ChatGPT, Gemini, Claude, DeepSeek).</p>
+    </div>
+
+    <div class="card-grid card-grid--3 mb-6">
+      <div class="card">
+        <div class="card__subtitle">Tro ly AI</div>
+        <div class="card__title">AMIS AVA</div>
+        <div class="card__body">Goi y noi dung email, phan tich hanh vi khach hang, de xuat chien luoc marketing. Mien phi tren tat ca goi.</div>
+      </div>
+      <div class="card">
+        <div class="card__subtitle">Multi-model (09/2025)</div>
+        <div class="card__title">AMIS OneAI</div>
+        <div class="card__body">Nen tang AI hop nhat: ChatGPT, Gemini, Grok, Claude, DeepSeek. Hinh anh: DALL-E 3, Stable Diffusion. Viet content SEO, kich ban video, social post.</div>
+      </div>
+      <div class="card">
+        <div class="card__subtitle">Automation</div>
+        <div class="card__title">AI Agents</div>
+        <div class="card__body">Agent tim kiem lead, nhan dien contact, phan tich bao cao email. Lead scoring tu dong theo hanh vi.</div>
+      </div>
+    </div>
+
+    <div class="callout callout--warning">
+      <div class="callout__title">Tinh nang AI chua xac nhan</div>
+      <div class="callout__body"><strong>Send Time Optimization (STO) native</strong> va <strong>Predictive analytics chuyen biet</strong> — chua tim thay bang chung la tinh nang tich hop san. (Mailchimp, Brevo, ActiveCampaign da co STO built-in.)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 07. Pricing -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">07</div>
+      <h2>Gia ca & Licensing</h2>
+      <p>5 goi tu 2,9 trieu/nam. Dung thu mien phi 2.000 email, khong can the tin dung.</p>
+    </div>
+
+    <div class="pricing-grid mb-8">
+      <div class="pricing-card">
+        <div class="pricing-card__name">Email Marketing</div>
+        <div class="pricing-card__price">2.900.000d</div>
+        <div class="pricing-card__period">/nam (~242K/thang)</div>
+        <ul class="pricing-card__features">
+          <li>60.000 email/nam</li>
+          <li>10.000 contacts</li>
+          <li>Chi co email marketing</li>
+          <li>Khong co workflow/LP</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-card__name">Starter</div>
+        <div class="pricing-card__price">8.900.000d</div>
+        <div class="pricing-card__period">/nam (~742K/thang)</div>
+        <ul class="pricing-card__features">
+          <li>60.000 email/nam</li>
+          <li>10.000 contacts</li>
+          <li>10 workflow</li>
+          <li>20 landing page</li>
+          <li>Form, CTA, popup khong gioi han</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card pricing-card--featured">
+        <div class="pricing-card__badge">KHUYEN DUNG</div>
+        <div class="pricing-card__name">Standard</div>
+        <div class="pricing-card__price">15.900.000d</div>
+        <div class="pricing-card__period">/nam (~1,3tr/thang)</div>
+        <ul class="pricing-card__features">
+          <li>200.000 email/nam</li>
+          <li>30.000 contacts</li>
+          <li>25 workflow</li>
+          <li>50 landing page</li>
+          <li>Form, CTA, popup khong gioi han</li>
+          <li>Facebook Pixel, Google Ads</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-card__name">Professional</div>
+        <div class="pricing-card__price">31.900.000d</div>
+        <div class="pricing-card__period">/nam (~2,66tr/thang)</div>
+        <ul class="pricing-card__features">
+          <li>800.000 email/nam</li>
+          <li>80.000 contacts</li>
+          <li>Workflow khong gioi han</li>
+          <li>Landing page khong gioi han</li>
+          <li>Bao cao khong gioi han</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-card__name">Enterprise</div>
+        <div class="pricing-card__price">63.900.000d</div>
+        <div class="pricing-card__period">/nam (~5,3tr/thang)</div>
+        <ul class="pricing-card__features">
+          <li>2.000.000+ email/nam</li>
+          <li>200.000+ contacts</li>
+          <li>Workflow khong gioi han</li>
+          <li>Landing page khong gioi han</li>
+          <li>Tuy chinh theo thoa thuan</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-card__name">Bundle AMIS</div>
+        <div class="pricing-card__price">Tu 3.250.000d</div>
+        <div class="pricing-card__period">/thang (Standard bundle)</div>
+        <ul class="pricing-card__features">
+          <li>Tiet kiem ~20–25%</li>
+          <li>Bao gom nhieu module AMIS</li>
+          <li>Professional bundle: 11,58tr/thang</li>
+          <li>Enterprise: Lien he</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="text-sm font-semibold mb-4">Chi phi ngoai phan mem</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead><tr><th>Kenh</th><th>Chi phi</th><th>Ghi chu</th></tr></thead>
+        <tbody>
+          <tr><td>SMS Brandname</td><td>~650–900 VND/tin</td><td>Tra cho SMS gateway, chi tinh tin thanh cong</td></tr>
+          <tr><td>Zalo ZNS</td><td>120–300 VND/tin + phu phi CTA</td><td>Tra qua eSMS cho Zalo</td></tr>
+          <tr><td>ZNS Follower</td><td>55 VND/tin (sau 1.000 mien phi)</td><td>Thang dau 1.000 tin mien phi</td></tr>
+          <tr><td>Email goi them</td><td>Lien he MISA</td><td>Khi vuot han muc goi</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 08. Comparison -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">08</div>
+      <h2>So sanh voi Doi thu</h2>
+      <p>Ma tran so sanh voi cac cong cu marketing automation quoc te va noi dia.</p>
+    </div>
+
+    <div class="table-wrapper mb-8">
+      <table>
+        <thead>
+          <tr><th>Tieu chi</th><th>MISA aiMKT</th><th>HubSpot</th><th>Mailchimp</th><th>ActiveCampaign</th><th>Getfly</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Gia/thang</strong></td><td>~742K VND</td><td>~1,1tr ($45)</td><td>~330K ($13)</td><td>~475K ($19)</td><td>~583K</td></tr>
+          <tr><td><strong>UI tieng Viet</strong></td><td><span class="tag tag--green">Co</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--green">Co</span></td></tr>
+          <tr><td><strong>Zalo OA/ZNS</strong></td><td><span class="tag tag--green">Native</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--green">Co</span></td></tr>
+          <tr><td><strong>SMS VN</strong></td><td><span class="tag tag--green">8 gateway</span></td><td><span class="tag tag--gray">Han che</span></td><td><span class="tag tag--gray">Han che</span></td><td><span class="tag tag--gray">Han che</span></td><td><span class="tag tag--green">Co</span></td></tr>
+          <tr><td><strong>Automation</strong></td><td><span class="tag tag--cyan">Trung binh</span></td><td><span class="tag tag--green">Rat manh</span></td><td><span class="tag tag--blue">Tot</span></td><td><span class="tag tag--green">Rat manh</span></td><td><span class="tag tag--cyan">TB</span></td></tr>
+          <tr><td><strong>A/B Test</strong></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--green">Co</span></td><td><span class="tag tag--green">Co</span></td><td><span class="tag tag--green">Co</span></td><td><span class="tag tag--red">Khong</span></td></tr>
+          <tr><td><strong>CRM</strong></td><td><span class="tag tag--blue">AMIS CRM</span></td><td><span class="tag tag--green">Rat manh</span></td><td><span class="tag tag--gray">Nhe</span></td><td><span class="tag tag--blue">Manh</span></td><td><span class="tag tag--blue">Co</span></td></tr>
+          <tr><td><strong>Ke toan</strong></td><td><span class="tag tag--green">Rat manh</span></td><td><span class="tag tag--gray">Han che</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td></tr>
+          <tr><td><strong>API/Integrations</strong></td><td><span class="tag tag--red">Yeu</span></td><td><span class="tag tag--green">1.000+</span></td><td><span class="tag tag--blue">150+</span></td><td><span class="tag tag--green">Rat manh</span></td><td><span class="tag tag--cyan">TB</span></td></tr>
+          <tr><td><strong>Ho tro VN</strong></td><td><span class="tag tag--green">24/7</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--red">Khong</span></td><td><span class="tag tag--green">Co</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <h4 style="color:var(--cds-support-success)">Khi nao nen chon MISA aiMarketing</h4>
+        <ul>
+          <li>DN Viet Nam, SME, uu tien ngan sach VND</li>
+          <li>Da dung hoac du dinh dung MISA Ke toan/ERP — tich hop he sinh thai la loi the tuyet doi</li>
+          <li>Can Zalo OA + SMS Viet Nam trong cung nen tang</li>
+          <li>Khong co IT chuyen nghiep, can ho tro tieng Viet</li>
+          <li>Khong can automation qua phuc tap (duoi 25 workflow)</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h4 style="color:var(--cds-support-error)">Khi nao nen chon cong cu khac</h4>
+        <ul>
+          <li>Can A/B testing built-in → Mailchimp, ActiveCampaign</li>
+          <li>Can automation cuc sau voi logic phuc tap → ActiveCampaign, HubSpot</li>
+          <li>Can tich hop API rong voi nhieu he thong ngoai → ActiveCampaign (1.000+)</li>
+          <li>DN >5.000 ban ghi can sync real-time → han che API MISA</li>
+          <li>Can webinar marketing → GetResponse</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09. Pros & Cons -->
+<section>
+  <div class="grid">
+    <div class="section-header">
+      <div class="number">09</div>
+      <h2>Danh gia Tong hop</h2>
+      <p>Uu diem, nhuoc diem va khach hang tieu bieu.</p>
+    </div>
+
+    <div class="two-col mb-8">
+      <div>
+        <h3 class="text-sm font-semibold mb-4" style="color:var(--cds-support-success)">Uu diem</h3>
+        <ul class="inline-list">
+          <li><strong>Ban dia hoa 100%:</strong> Zalo OA + ZNS native, SMS 8 nha mang, phap ly VN, tieng Viet, ho tro 24/7</li>
+          <li><strong>He sinh thai tich hop doc:</strong> aiMarketing → CRM → Ke toan → HRM</li>
+          <li><strong>Gia canh tranh:</strong> Standard ~1,3tr/thang vs HubSpot Pro ~20tr/thang (gap ~15 lan)</li>
+          <li><strong>Smart Fallback:</strong> ZNS that bai → tu dong SMS</li>
+          <li><strong>Drag & Drop:</strong> khong can ky nang thiet ke, tao email/LP trong vai phut</li>
+          <li><strong>Bo loc email thong minh:</strong> inbox rate 90%</li>
+          <li><strong>20+ bao cao marketing:</strong> tu dong dong bo chi phi quang cao tu FB/Google/TikTok Ads</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-sm font-semibold mb-4" style="color:var(--cds-support-error)">Nhuoc diem</h3>
+        <ul class="inline-list">
+          <li><strong>Khong co A/B testing native</strong> trong email hay workflow</li>
+          <li><strong>Gioi han workflow:</strong> chi 25 kich ban o goi Standard</li>
+          <li><strong>API yeu:</strong> khong co update contact, timeout >5.000 ban ghi, khong co Zapier/Make</li>
+          <li><strong>Custom domain LP khong self-service</strong> — phai lien he ho tro</li>
+          <li><strong>ZNS automation chua ra mat</strong> — chi gui thu cong</li>
+          <li><strong>Chi phi leo thang</strong> khi dung nhieu module (moi phan he phi rieng)</li>
+          <li><strong>Phu thuoc internet</strong> hoan toan (cloud-only)</li>
+          <li><strong>Thoi gian trien khai lau</strong> — he sinh thai rong, can dao tao</li>
+          <li>Send Time Optimization va Predictive Analytics chua co built-in</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="text-sm font-semibold mb-4">Khach hang Tieu bieu</h3>
+    <div class="feature-strip">
+      <div class="feature-item"><h4>Prime Land</h4><p>Bat dong san</p></div>
+      <div class="feature-item"><h4>Quantum Healthcare</h4><p>Y te</p></div>
+      <div class="feature-item"><h4>Savico</h4><p>Thuong mai</p></div>
+      <div class="feature-item"><h4>Duoc pham Nhat Nhat</h4><p>Duoc pham</p></div>
+      <div class="feature-item"><h4>Trong Dong Palace</h4><p>Nha hang / Su kien</p></div>
+      <div class="feature-item"><h4>Nhua Tien Phong</h4><p>San xuat</p></div>
+    </div>
+
+    <div class="callout callout--info mt-6">
+      <div class="callout__title">Nhan dinh Chien luoc</div>
+      <div class="callout__body">MISA aiMarketing la lua chon tot nhat cho <strong>SME Viet Nam da dung hoac du dinh dung MISA Ke toan/ERP</strong> — loi the tich hop he sinh thai la khong the thay the. Tuy nhien, doi voi DN can automation chuyen sau, A/B testing, hoac tich hop API rong, nen xem xet ActiveCampaign hoac HubSpot.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="grid">
+    <ul class="footer-links">
+      <li><a href="https://amis.misa.vn/amis-aimarketing/" target="_blank">amis.misa.vn/aimarketing</a></li>
+      <li><a href="https://helpaimarketing.misa.vn/" target="_blank">Help Center</a></li>
+      <li><a href="https://developer.misa.vn" target="_blank">developer.misa.vn</a></li>
+      <li><a href="index.html">< MISA Overview</a></li>
+    </ul>
+    <p>Nghien cuu chuyen sau · Thang 10/2026 · Tong hop tu 15+ nguon: amis.misa.vn, helpaimarketing.misa.vn, helpcrm.misa.vn, developer.misa.vn, beehexa.com, slimcrm.vn, smsthuonghieu.com va cac nguon khac.</p>
+    <p style="margin-top:0.5rem;color:#6f6f6f">Gia va thong tin co the thay doi. Lien he MISA de xac nhan thong tin moi nhat.</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.accordion-btn').forEach(btn => {
+  btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+});
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tabId = btn.dataset.tab;
+    const container = btn.closest('.grid');
+    container.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+    container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    container.querySelector('#' + tabId).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.table-wrapper').forEach(w => {
+  w.addEventListener('scroll', () => {
+    w.classList.toggle('scrolled-end', w.scrollLeft + w.clientWidth >= w.scrollWidth - 2);
+  });
+});
+</script>
+</body>
+</html>

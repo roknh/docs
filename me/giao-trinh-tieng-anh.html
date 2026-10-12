@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiếng Anh Cho Người Lười</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --layer:#f4f4f4; --layer2:#e0e0e0; --layer-hover:#e8e8e8;
+  --text:#161616; --text2:#525252; --text3:#6f6f6f; --border:#c6c6c6; --border-strong:#8d8d8d;
+  --interactive:#0f62fe; --interactive-hover:#0353e9; --link:#0f62fe;
+  --shell:#161616; --shell-text:#f4f4f4; --success:#198038; --tag-bg:#d0e2ff; --tag-text:#0043ce;
+  --focus:#0f62fe; --highlight:#edf5ff;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161616; --layer:#262626; --layer2:#393939; --layer-hover:#333333;
+    --text:#f4f4f4; --text2:#c6c6c6; --text3:#a8a8a8; --border:#525252; --border-strong:#8d8d8d;
+    --link:#78a9ff; --shell:#0b0b0b; --success:#42be65; --tag-bg:#002d9c; --tag-text:#d0e2ff;
+    --focus:#ffffff; --highlight:#001d6c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161616; --layer:#262626; --layer2:#393939; --layer-hover:#333333;
+  --text:#f4f4f4; --text2:#c6c6c6; --text3:#a8a8a8; --border:#525252; --border-strong:#8d8d8d;
+  --link:#78a9ff; --shell:#0b0b0b; --success:#42be65; --tag-bg:#002d9c; --tag-text:#d0e2ff;
+  --focus:#ffffff; --highlight:#001d6c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:16px;line-height:1.5;letter-spacing:.16px}
+a{color:var(--link)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+
+/* UI shell header */
+.shell{position:sticky;top:0;z-index:20;height:48px;background:var(--shell);color:var(--shell-text);display:flex;align-items:center;border-bottom:1px solid #393939}
+.shell .brand{padding:0 16px;font-size:14px;white-space:nowrap}
+.shell .brand b{font-weight:600}
+.shell .spacer{flex:1}
+.shell button{height:48px;min-width:48px;background:transparent;border:0;color:var(--shell-text);font:inherit;font-size:14px;padding:0 16px;cursor:pointer}
+.shell button:hover{background:#353535}
+
+.layout{display:grid;grid-template-columns:256px 1fr;min-height:calc(100vh - 48px)}
+.sidenav{position:sticky;top:48px;height:calc(100vh - 48px);background:var(--layer);border-right:1px solid var(--border);overflow-y:auto;padding:16px 0}
+.sidenav .label{font-size:12px;color:var(--text3);padding:8px 16px;letter-spacing:.32px}
+.sidenav a{display:block;padding:8px 16px 8px 14px;color:var(--text2);text-decoration:none;font-size:14px;border-left:2px solid transparent}
+.sidenav a:hover{background:var(--layer-hover);color:var(--text)}
+.sidenav a.active{border-left-color:var(--interactive);background:var(--layer-hover);color:var(--text);font-weight:600}
+
+main{padding:0 32px 96px;max-width:1120px;width:100%}
+.hero{padding:48px 0 32px;border-bottom:1px solid var(--border)}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text3);letter-spacing:.32px;text-transform:uppercase}
+h1{font-size:42px;font-weight:300;line-height:1.19;margin:8px 0 16px}
+h2{font-size:32px;font-weight:300;line-height:1.25;margin-bottom:8px}
+h3{font-size:20px;font-weight:400;margin:32px 0 12px}
+.lead{font-size:20px;font-weight:300;color:var(--text2);max-width:720px}
+section{padding:48px 0;border-bottom:1px solid var(--border)}
+section > p{max-width:720px;color:var(--text2);margin-bottom:12px}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:24px}
+.tile{background:var(--layer);padding:16px;min-height:140px}
+.tile .num{font-family:"IBM Plex Mono",monospace;color:var(--interactive);font-size:14px}
+.tile h4{font-size:16px;font-weight:600;margin:8px 0 4px}
+.tile p{font-size:14px;color:var(--text2)}
+
+ol.steps{counter-reset:s;list-style:none;max-width:760px}
+ol.steps li{counter-increment:s;position:relative;padding:12px 0 12px 48px;border-bottom:1px solid var(--border)}
+ol.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:12px;font-family:"IBM Plex Mono",monospace;color:var(--interactive);font-size:14px}
+ul.plain{max-width:760px;padding-left:20px;color:var(--text2)}
+ul.plain li{margin:4px 0}
+em.en{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:14px;background:var(--layer);padding:1px 6px}
+
+/* data table */
+.table-wrap{overflow-x:auto;margin-top:12px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+thead th{background:var(--layer2);text-align:left;font-weight:600;padding:12px 16px;height:48px}
+tbody td{padding:12px 16px;border-top:1px solid var(--border);vertical-align:top;background:var(--bg)}
+tbody tr:hover td{background:var(--layer-hover)}
+td:first-child{font-weight:600;white-space:nowrap}
+
+.callout{border-left:3px solid var(--interactive);background:var(--highlight);padding:16px;margin-top:24px;max-width:760px;font-size:14px}
+.callout b{display:block;margin-bottom:4px}
+
+/* core phrase grid */
+.core{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:16px}
+.core h4{font-size:14px;font-weight:600;padding-bottom:8px;border-bottom:1px solid var(--border-strong)}
+.core ol{padding-left:28px;font-size:14px}
+.core li{padding:6px 0;border-bottom:1px solid var(--border)}
+
+/* checklist */
+.check{list-style:none;max-width:760px}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.check input{width:16px;height:16px;margin-top:4px;accent-color:var(--interactive)}
+
+/* phrase bank */
+.toolbar{display:flex;flex-wrap:wrap;gap:1px;margin-top:24px;background:var(--border);border:1px solid var(--border)}
+.search{flex:1 1 260px;display:flex;align-items:center;background:var(--layer)}
+.search input{flex:1;height:48px;border:0;border-bottom:1px solid var(--border-strong);background:transparent;color:var(--text);font:inherit;font-size:14px;padding:0 16px}
+.search input::placeholder{color:var(--text3)}
+.btn{height:48px;padding:0 16px;border:0;font:inherit;font-size:14px;cursor:pointer;background:var(--layer);color:var(--text);white-space:nowrap}
+.btn:hover{background:var(--layer-hover)}
+.btn.primary{background:var(--interactive);color:#fff}
+.btn.primary:hover{background:var(--interactive-hover)}
+.btn[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.tag{border:0;border-radius:24px;padding:4px 12px;font:inherit;font-size:12px;cursor:pointer;background:var(--layer2);color:var(--text)}
+.tag[aria-pressed="true"]{background:var(--tag-bg);color:var(--tag-text);font-weight:600}
+.stats{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text3);margin-bottom:8px}
+.progress{height:4px;background:var(--layer2);margin-bottom:16px}
+.progress div{height:100%;background:var(--success);width:0;transition:width .3s}
+
+.bank-group h3{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.bank-group h3 span{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text3)}
+.rows{border:1px solid var(--border)}
+.row{display:grid;grid-template-columns:1fr 1fr 48px;align-items:stretch;border-top:1px solid var(--border);background:var(--bg)}
+.row:first-child{border-top:0}
+.row:hover{background:var(--layer-hover)}
+.row .en,.row .vi{padding:12px 16px;font-size:14px}
+.row .en{font-weight:600}
+.row .vi{color:var(--text2)}
+.row .mark{border:0;border-left:1px solid var(--border);background:transparent;cursor:pointer;color:var(--text3);font-size:18px}
+.row .mark:hover{background:var(--layer2)}
+.row.learned .mark{color:var(--success)}
+.row.learned .en{color:var(--text3);text-decoration:line-through;text-decoration-color:var(--border-strong)}
+.hide-vi .row .vi,.hide-en .row .en{cursor:pointer}
+.hide-vi .row:not(.reveal) .vi,.hide-en .row:not(.reveal) .en{color:transparent;background:var(--layer2);text-decoration:none;user-select:none}
+.empty{padding:32px 16px;color:var(--text3);font-size:14px}
+
+/* flashcard modal */
+.modal{position:fixed;inset:0;background:rgba(22,22,22,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.open{display:flex}
+.card{background:var(--layer);width:100%;max-width:560px;border-top:3px solid var(--interactive)}
+.card .head{display:flex;justify-content:space-between;align-items:center;padding:16px}
+.card .head span{font-size:12px;color:var(--text3)}
+.card .head button{background:none;border:0;color:var(--text);font-size:20px;cursor:pointer;width:32px;height:32px}
+.card .body{padding:24px 16px 32px;min-height:180px}
+.card .q{font-size:28px;font-weight:300;line-height:1.3}
+.card .a{margin-top:16px;font-size:18px;color:var(--text2);min-height:28px}
+.card .foot{display:flex;gap:1px;background:var(--border)}
+.card .foot .btn{flex:1}
+
+footer{padding:32px 0;font-size:12px;color:var(--text3)}
+
+#menuBtn{display:none}
+.shell button{white-space:nowrap}
+@media (max-width:420px){.shell .btxt{display:none}.shell button{font-size:22px!important;min-width:52px}}
+main{min-width:0}
+em.en,td,.row .en,.row .vi,.core li,.callout{overflow-wrap:anywhere}
+
+@media (max-width:900px){
+  html{scroll-padding-top:64px;-webkit-text-size-adjust:100%}
+  body{font-size:18px;line-height:1.6}
+  .layout{grid-template-columns:1fr}
+  main{padding:0 16px 64px;overflow-x:clip}
+
+  /* menu: collapsed behind a button, no horizontal strip */
+  #menuBtn{display:block}
+  .shell .brand{font-size:16px;overflow:hidden;text-overflow:ellipsis}
+  .shell button{font-size:16px;padding:0 12px}
+  .sidenav{display:none;position:fixed;top:48px;left:0;right:0;height:auto;max-height:calc(100vh - 48px);z-index:30;padding:8px 0;border-right:0;border-bottom:1px solid var(--border);box-shadow:0 8px 16px rgba(0,0,0,.25)}
+  .sidenav.open{display:block}
+  .sidenav a{font-size:18px;padding:14px 16px 14px 14px}
+
+  .hero{padding:32px 0 24px}
+  .eyebrow{font-size:14px}
+  h1{font-size:34px}
+  h2{font-size:28px}
+  h3{font-size:22px;margin-top:28px}
+  .lead{font-size:20px}
+  section{padding:36px 0}
+  section > p{font-size:18px}
+
+  .tiles{grid-template-columns:1fr}
+  .tile{min-height:0}
+  .tile h4{font-size:19px}
+  .tile p,.tile .num{font-size:17px}
+  ol.steps li{padding:14px 0 14px 40px}
+  ol.steps li::before{font-size:16px;top:16px}
+  ul.plain{font-size:18px}
+  em.en{font-size:16px}
+  .callout{font-size:17px}
+
+  /* tables become stacked cards */
+  .table-wrap{overflow:visible;border:0}
+  table{min-width:0;font-size:17px}
+  thead{display:none}
+  table,tbody,tr,td{display:block;width:100%}
+  tbody tr{border:1px solid var(--border);margin-bottom:12px;background:var(--bg)}
+  tbody td{border-top:0;padding:6px 16px;white-space:normal}
+  tbody td:first-child{padding-top:14px;font-size:18px;background:var(--layer);border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:6px}
+  tbody td:last-child{padding-bottom:14px}
+  tbody td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;font-size:13px;color:var(--text3);letter-spacing:.32px;text-transform:uppercase;font-family:"IBM Plex Mono",monospace}
+  tbody tr:hover td{background:inherit}
+  tbody tr:hover td:first-child{background:var(--layer)}
+
+  .core{grid-template-columns:1fr}
+  .core h4{font-size:18px}
+  .core ol{font-size:17px}
+  .check label{font-size:17px}
+  .check input{width:22px;height:22px;flex:none}
+
+  /* phrase bank */
+  .toolbar{display:grid;grid-template-columns:1fr 1fr}
+  .search{grid-column:1/-1}
+  .search input{font-size:17px;height:52px}
+  .btn{font-size:16px;white-space:normal;min-height:52px;height:auto;padding:8px 12px}
+  .toolbar .btn.primary{grid-column:auto}
+  .tag{font-size:15px;padding:8px 14px}
+  .stats{font-size:14px}
+  .bank-group h3 span{font-size:14px}
+  .row{grid-template-columns:1fr 56px}
+  .row .en{font-size:19px;padding-bottom:4px}
+  .row .vi{font-size:17px;grid-column:1;grid-row:2;padding-top:0}
+  .row .mark{grid-column:2;grid-row:1/3;font-size:22px}
+
+  .card .head span{font-size:14px}
+  .card .q{font-size:26px}
+  .card .a{font-size:20px}
+  .card .foot .btn{font-size:16px}
+  footer{font-size:14px}
+}
+</style>
+</head>
+<body>
+<header class="shell">
+  <div class="brand"><b>English</b> / Cho người lười</div>
+  <div class="spacer"></div>
+  <button id="menuBtn" aria-label="Mở mục lục" aria-expanded="false">☰<span class="btxt"> Mục lục</span></button>
+  <button id="themeBtn" aria-label="Đổi giao diện sáng tối">◐<span class="btxt"> Giao diện</span></button>
+</header>
+
+<div class="layout">
+  <nav class="sidenav" aria-label="Mục lục">
+    <div class="label">GIÁO TRÌNH</div>
+    <a href="#tong-quan">Cách dùng</a>
+    <a href="#doc">1. Đọc</a>
+    <a href="#noi">2. Nói</a>
+    <a href="#viet">3. Viết</a>
+    <a href="#phan-xa">4. Phản xạ</a>
+    <a href="#lich">5. Lịch tuần</a>
+    <div class="label">THỰC HÀNH</div>
+    <a href="#ngan-hang">Ngân hàng câu</a>
+  </nav>
+
+  <main>
+    <div class="hero">
+      <div class="eyebrow">Giáo trình 4 kỹ năng · 4 cấp độ</div>
+      <h1>Tiếng Anh cho người lười</h1>
+      <p class="lead">Mỗi ngày chỉ bắt buộc 10 phút. Mục tiêu không phải học nhiều, mà là không bao giờ dừng hẳn.</p>
+    </div>
+
+    <section id="tong-quan">
+      <h2>Cách dùng giáo trình</h2>
+      <p>Mỗi ngày chọn 1 trong 4 kỹ năng, làm 10 phút. Giáo trình chia 4 cấp, mỗi cấp khoảng 6–8 tuần. Chỉ lên cấp khi bài tự kiểm tra cuối cấp thấy "dễ".</p>
+      <div class="tiles">
+        <div class="tile"><div class="num">01</div><h4>Mức sàn 2 phút</h4><p>Ngày tệ nhất vẫn làm 2 phút: đọc 1 đoạn, nói 3 câu, viết 1 câu.</p></div>
+        <div class="tile"><div class="num">02</div><h4>Không bỏ 2 ngày liền</h4><p>Bỏ 1 ngày là bình thường. Chuỗi ngày quan trọng hơn thời lượng.</p></div>
+        <div class="tile"><div class="num">03</div><h4>Học bằng thứ mình thích</h4><p>Phim, tech, kinh doanh, công việc thật. Không dùng giáo trình khô.</p></div>
+        <div class="tile"><div class="num">04</div><h4>Gắn vào thói quen sẵn có</h4><p>Đọc lúc uống cà phê, nói lúc lái xe, viết trước khi tắt máy.</p></div>
+      </div>
+      <h3>Bộ dụng cụ tối thiểu</h3>
+      <ul class="plain">
+        <li>App flashcard (Anki) để lưu câu.</li>
+        <li>AI có voice mode (Claude, ChatGPT) để luyện nói và sửa bài viết.</li>
+        <li>1 file ghi chú "English Log" để viết mỗi ngày.</li>
+        <li>Điện thoại để tự ghi âm.</li>
+      </ul>
+    </section>
+
+    <section id="doc">
+      <div class="eyebrow">Kỹ năng 01</div>
+      <h2>Học Đọc</h2>
+      <p>Mục tiêu cuối: đọc tài liệu, báo, sách chuyên ngành mà không cần dịch trong đầu. Nguyên tắc: đọc nhiều và dễ (hiểu khoảng 90%) tốt hơn đọc ít mà khó.</p>
+      <h3>Bài tập hằng ngày · 10 phút</h3>
+      <ol class="steps">
+        <li>Đọc lướt 1 lần, không tra từ, chỉ nắm ý chính.</li>
+        <li>Đọc lại, gạch tối đa 3 từ mới quan trọng, đoán nghĩa từ ngữ cảnh rồi mới tra.</li>
+        <li>Lưu cả câu chứa từ đó vào Anki, không lưu từ đơn lẻ.</li>
+        <li>Nói hoặc ghi 1 câu tiếng Anh tóm tắt bài vừa đọc.</li>
+      </ol>
+      <h3>Lộ trình theo cấp</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Cấp</th><th>Đọc gì</th><th>Mục tiêu cuối cấp</th></tr></thead>
+        <tbody>
+          <tr><td>1. Làm quen</td><td>Truyện song ngữ, Graded Readers cấp 1–2, phụ đề phim</td><td>Đọc 1 trang không thấy nản</td></tr>
+          <tr><td>2. Thói quen</td><td>News in Levels, BBC Learning English, blog ngắn về tech</td><td>Đọc 1 bài 500 từ trong 10 phút</td></tr>
+          <tr><td>3. Thực dụng</td><td>Tài liệu kỹ thuật, docs, Medium, newsletter kinh doanh</td><td>Đọc tài liệu công việc không cần dịch</td></tr>
+          <tr><td>4. Thành thạo</td><td>Sách gốc business, non-fiction, The Economist, Harvard Business Review</td><td>Đọc hết 1 cuốn sách tiếng Anh</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout"><b>Mẹo cho người lười</b>Chuyển điện thoại và phần mềm hay dùng sang tiếng Anh, theo dõi vài tài khoản tiếng Anh trên mạng xã hội. Bạn đọc tiếng Anh mỗi ngày mà không cần "ngồi học".</div>
+    </section>
+
+    <section id="noi">
+      <div class="eyebrow">Kỹ năng 02</div>
+      <h2>Học Nói</h2>
+      <p>Mục tiêu cuối: nói chuyện công việc 15–30 phút trôi chảy, người nghe hiểu ngay. Người Việt thường mắc ở âm đuôi và ngữ điệu, nên sửa 2 thứ này trước.</p>
+      <h3>Bài tập hằng ngày · 10 phút</h3>
+      <ol class="steps">
+        <li><b>Shadowing (5 phút):</b> chọn đoạn 20–30 giây trong phim hoặc podcast. Nghe 2 lần, rồi nói nhại theo cùng lúc, bắt chước cả nhịp và cảm xúc.</li>
+        <li><b>Nói với AI (5 phút):</b> bật voice mode, nói về một việc thật trong ngày. Cuối buổi yêu cầu: <em class="en">List my 3 biggest mistakes and how to fix them.</em></li>
+      </ol>
+      <h3>Lộ trình theo cấp</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Cấp</th><th>Tập trung</th><th>Bài tập chính</th><th>Mục tiêu cuối cấp</th></tr></thead>
+        <tbody>
+          <tr><td>1. Phát âm</td><td>Âm đuôi (-s, -ed, -t, -k), trọng âm từ</td><td>Shadowing câu ngắn, tự ghi âm so với bản gốc</td><td>Đọc to 1 đoạn, AI nhận diện đúng trên 90%</td></tr>
+          <tr><td>2. Câu ngắn</td><td>Giới thiệu bản thân, công việc, sở thích</td><td>Tự kể 1 phút mỗi ngày về hôm nay</td><td>Nói liền 2 phút không dừng quá 3 giây</td></tr>
+          <tr><td>3. Hội thoại</td><td>Hỏi đáp, đồng ý, phản đối, giải thích</td><td>Đóng vai với AI: họp, phỏng vấn, đàm phán</td><td>Duy trì 10 phút hội thoại với AI</td></tr>
+          <tr><td>4. Trình bày</td><td>Thuyết trình, kể chuyện, thuyết phục</td><td>1 buổi/tuần với gia sư; tự quay video trình bày 3 phút</td><td>Họp hoặc thuyết trình 15 phút với người nước ngoài</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout"><b>Mẹo cho người lười</b>Nói một mình khi lái xe hoặc tắm, kể lại bằng tiếng Anh những gì đang làm. Không ai nghe, không ngại sai.</div>
+    </section>
+
+    <section id="viet">
+      <div class="eyebrow">Kỹ năng 03</div>
+      <h2>Học Viết</h2>
+      <p>Mục tiêu cuối: viết email, tin nhắn, đề xuất công việc rõ ràng và tự nhiên. Viết là kỹ năng dễ duy trì nhất vì làm được bất cứ lúc nào, và AI sửa bài rất tốt.</p>
+      <h3>Bài tập hằng ngày · English Log</h3>
+      <ol class="steps">
+        <li>Viết 3–5 câu về hôm nay vào file English Log.</li>
+        <li>Dán cho AI: <em class="en">Correct this and explain each fix briefly. Then show a more natural version.</em></li>
+        <li>Gõ lại bản đã sửa một lần, không copy-paste.</li>
+        <li>Lỗi nào lặp lại 2 lần thì ghi vào mục "Lỗi hay mắc" ở đầu file.</li>
+      </ol>
+      <h3>Lộ trình theo cấp</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Cấp</th><th>Viết gì</th><th>Độ dài</th><th>Mục tiêu cuối cấp</th></tr></thead>
+        <tbody>
+          <tr><td>1. Câu đơn</td><td>Nhật ký: hôm nay làm gì, cảm thấy thế nào</td><td>3 câu</td><td>Viết đúng thì hiện tại và quá khứ</td></tr>
+          <tr><td>2. Đoạn văn</td><td>Kể một sự việc, mô tả sản phẩm mình làm</td><td>80–100 từ</td><td>Dùng được từ nối (because, however, so)</td></tr>
+          <tr><td>3. Công việc</td><td>Email, tin nhắn Slack, prompt cho AI</td><td>100–200 từ</td><td>Viết email không cần dịch từ tiếng Việt</td></tr>
+          <tr><td>4. Lập luận</td><td>Đề xuất, tóm tắt cuộc họp, bài LinkedIn</td><td>300–500 từ</td><td>Viết đề xuất mà AI chấm "native-like"</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Mẫu câu email nên thuộc</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>English</th><th>Nghĩa</th></tr></thead>
+        <tbody>
+          <tr><td>I'm writing to follow up on…</td><td>Tôi viết thư để theo dõi tiếp về…</td></tr>
+          <tr><td>Could you please clarify…?</td><td>Anh/chị có thể làm rõ… không?</td></tr>
+          <tr><td>I'd suggest that we…</td><td>Tôi đề xuất chúng ta…</td></tr>
+          <tr><td>Please let me know if you have any questions.</td><td>Có gì thắc mắc anh/chị cứ báo.</td></tr>
+          <tr><td>Looking forward to hearing from you.</td><td>Mong sớm nhận phản hồi.</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout"><b>Mẹo cho người lười</b>Mỗi lần nhắn tin, viết prompt hay ghi việc cần làm, hãy viết bằng tiếng Anh. Không cần dành thời gian riêng.</div>
+    </section>
+
+    <section id="phan-xa">
+      <div class="eyebrow">Kỹ năng 04</div>
+      <h2>Học Phản xạ</h2>
+      <p>Mục tiêu cuối: nghe câu hỏi là trả lời ngay, không dịch qua tiếng Việt. Phản xạ đến từ việc lặp lại mẫu câu tới khi chúng tự bật ra, không phải từ việc biết nhiều từ.</p>
+      <div class="callout"><b>Có cần học thuộc không?</b>Có, nhưng thuộc cả câu, không thuộc từ lẻ hay luật ngữ pháp. Thuộc 300–500 câu dùng thật là đủ xoay xở phần lớn tình huống. Mỗi câu thuộc xong hãy biến tấu (đổi chủ ngữ, thì, câu hỏi, phủ định) để ngữ pháp tự ngấm. Tỷ lệ gợi ý: 70% thuộc câu và luyện phản xạ, 30% nghe đọc để mở rộng.</div>
+      <h3>Bài tập hằng ngày · 5–10 phút</h3>
+      <ol class="steps">
+        <li><b>Drill 3 giây:</b> nhờ AI voice mode hỏi nhanh 10 câu, mỗi câu trả lời trong 3 giây. Prompt: <em class="en">Ask me 10 quick everyday questions, one at a time. If I take too long, move on.</em></li>
+        <li><b>Tự hỏi tự đáp:</b> nhìn quanh và hỏi chính mình (<em class="en">What am I doing? Why? What's next?</em>), trả lời ngay.</li>
+        <li><b>Biến hóa mẫu câu:</b> <em class="en">I finished the report.</em> → <em class="en">She didn't finish…</em> / <em class="en">Have you finished…?</em></li>
+      </ol>
+      <h3>Lộ trình theo cấp</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Cấp</th><th>Dạng phản xạ</th><th>Mục tiêu cuối cấp</th></tr></thead>
+        <tbody>
+          <tr><td>1. Câu có sẵn</td><td>Thuộc 30 câu cốt lõi bên dưới</td><td>Bật ra không cần nghĩ</td></tr>
+          <tr><td>2. Hỏi đáp ngắn</td><td>Câu hỏi Yes/No, Wh- về cuộc sống hằng ngày</td><td>Trả lời 10/10 câu trong 3 giây</td></tr>
+          <tr><td>3. Tình huống</td><td>Gọi món, hỏi đường, check-in, gặp đối tác</td><td>Xử lý 5 tình huống không dừng</td></tr>
+          <tr><td>4. Ứng biến</td><td>Câu hỏi bất ngờ, phản biện, small talk</td><td>Small talk 5 phút với người lạ</td></tr>
+        </tbody>
+      </table></div>
+      <h3>30 câu phản xạ cốt lõi</h3>
+      <div class="core">
+        <div><h4>Giao tiếp chung</h4><ol>
+          <li>How's it going? — Not bad, pretty busy actually.</li><li>What do you do? — I run a tech company.</li><li>Nice to meet you. — Nice to meet you too.</li><li>Sorry, could you say that again?</li><li>What do you mean by…?</li><li>Let me think for a second.</li><li>That makes sense.</li><li>I'm not sure, but I think…</li><li>Good point.</li><li>Could you speak a bit slower, please?</li>
+        </ol></div>
+        <div><h4>Công việc</h4><ol start="11">
+          <li>Let's get started.</li><li>Here's what I'm thinking…</li><li>What's the deadline?</li><li>Can we schedule a call?</li><li>I'll get back to you on that.</li><li>That works for me.</li><li>I see your point, but…</li><li>What's the next step?</li><li>Let me check and confirm.</li><li>Thanks for your time.</li>
+        </ol></div>
+        <div><h4>Ứng biến, giữ hội thoại</h4><ol start="21">
+          <li>That's interesting, tell me more.</li><li>Really? How come?</li><li>In my experience…</li><li>To be honest…</li><li>It depends on…</li><li>How about you?</li><li>That's a good question.</li><li>What I'm trying to say is…</li><li>Anyway, back to…</li><li>It was great talking to you.</li>
+        </ol></div>
+      </div>
+      <div class="callout"><b>Mẹo cho người lười</b>Mỗi tuần chỉ "cài" 5 câu. Làm hình nền điện thoại, cố dùng mỗi câu ít nhất 1 lần khi nói với AI. Thêm gần 300 câu ở <a href="#ngan-hang">Ngân hàng câu</a>.</div>
+    </section>
+
+    <section id="lich">
+      <div class="eyebrow">Kế hoạch</div>
+      <h2>Lịch tuần mẫu và tự kiểm tra</h2>
+      <p>Mỗi ngày một kỹ năng chính, tổng khoảng 10–15 phút. Chủ nhật để nghỉ hoặc giải trí bằng tiếng Anh.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Ngày</th><th>Kỹ năng</th><th>Việc làm (10 phút)</th><th>Gắn vào lúc</th></tr></thead>
+        <tbody>
+          <tr><td>Thứ 2</td><td>Đọc</td><td>1 bài ngắn + lưu 3 câu vào Anki</td><td>Uống cà phê sáng</td></tr>
+          <tr><td>Thứ 3</td><td>Nói</td><td>Shadowing 5 phút + nói với AI 5 phút</td><td>Lái xe / đi bộ</td></tr>
+          <tr><td>Thứ 4</td><td>Viết</td><td>English Log 5 câu + AI sửa</td><td>Trước khi tắt máy</td></tr>
+          <tr><td>Thứ 5</td><td>Phản xạ</td><td>Drill 3 giây 10 câu + 5 câu của tuần</td><td>Đi bộ / tắm</td></tr>
+          <tr><td>Thứ 6</td><td>Nói</td><td>Đóng vai tình huống với AI</td><td>Lái xe</td></tr>
+          <tr><td>Thứ 7</td><td>Tự chọn</td><td>Kỹ năng thích nhất, hoặc 1 buổi với gia sư</td><td>Bất kỳ lúc nào</td></tr>
+          <tr><td>Chủ nhật</td><td>Giải trí</td><td>Xem phim, nghe podcast tiếng Anh</td><td>Buổi tối</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Tự kiểm tra mỗi 6–8 tuần · 30 phút</h3>
+      <ul class="check" id="checklist">
+        <li><label><input type="checkbox" data-k="c1"><span><b>Đọc:</b> đọc 1 bài mới cùng cấp, tóm tắt 3 câu bằng tiếng Anh.</span></label></li>
+        <li><label><input type="checkbox" data-k="c2"><span><b>Nói:</b> ghi âm 2 phút kể về công việc, so với bản ghi lần trước.</span></label></li>
+        <li><label><input type="checkbox" data-k="c3"><span><b>Viết:</b> viết 1 email theo đề AI đưa, nhờ AI chấm thang 1–10.</span></label></li>
+        <li><label><input type="checkbox" data-k="c4"><span><b>Phản xạ:</b> drill 20 câu, đếm số câu trả lời được trong 3 giây.</span></label></li>
+      </ul>
+      <p style="margin-top:16px">Đạt mục tiêu cuối cấp thì lên cấp. Chưa đạt thì giữ cấp thêm 2 tuần, không học lại từ đầu. Mỗi kỹ năng có thể ở cấp khác nhau.</p>
+    </section>
+
+    <section id="ngan-hang">
+      <div class="eyebrow">Thực hành</div>
+      <h2>Ngân hàng câu phản xạ</h2>
+      <p>Mỗi tuần chọn 5–10 câu, luyện tới khi bật ra trong 3 giây. Bấm ✓ để đánh dấu câu đã thuộc. Bật chế độ che để tự kiểm tra, bấm vào ô bị che để xem.</p>
+      <div class="toolbar">
+        <div class="search"><input id="q" type="search" placeholder="Tìm câu tiếng Anh hoặc tiếng Việt…" aria-label="Tìm câu"></div>
+        <button class="btn" id="hideVi" aria-pressed="false">Che nghĩa</button>
+        <button class="btn" id="hideEn" aria-pressed="false">Che tiếng Anh</button>
+        <button class="btn" id="unlearned" aria-pressed="false">Chỉ câu chưa thuộc</button>
+        <button class="btn primary" id="flash">Luyện ngẫu nhiên</button>
+      </div>
+      <div class="tags" id="tags"></div>
+      <div class="stats" id="stats"></div>
+      <div class="progress"><div id="bar"></div></div>
+      <div id="bank"></div>
+    </section>
+
+    <footer>Giáo trình tiếng Anh cho người lười · Tiến độ được lưu trên trình duyệt này.</footer>
+  </main>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Luyện flashcard">
+  <div class="card">
+    <div class="head"><span id="cardCat"></span><button id="close" aria-label="Đóng">×</button></div>
+    <div class="body"><div class="q" id="cardQ"></div><div class="a" id="cardA"></div></div>
+    <div class="foot">
+      <button class="btn" id="reveal">Xem đáp án</button>
+      <button class="btn" id="gotIt">Đã thuộc ✓</button>
+      <button class="btn primary" id="next">Câu tiếp →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+ {id:"chao",name:"Chào hỏi, small talk",items:[
+  ["Hey, how's it going?","Chào, dạo này sao rồi?"],["What's up?","Có gì mới không?"],["Long time no see!","Lâu quá không gặp!"],["How have you been?","Dạo này bạn thế nào?"],["Pretty good, thanks. And you?","Khá ổn, cảm ơn. Còn bạn?"],["Can't complain.","Cũng ổn, không có gì phàn nàn."],["Same old, same old.","Vẫn vậy thôi."],["Busy as always.","Bận như mọi khi."],["How was your weekend?","Cuối tuần của bạn thế nào?"],["Did you do anything fun?","Có làm gì vui không?"],["Nice to meet you.","Rất vui được gặp bạn."],["I've heard a lot about you.","Tôi nghe nói về bạn nhiều rồi."],["Where are you from?","Bạn đến từ đâu?"],["I'm from Vietnam, Ho Chi Minh City.","Tôi đến từ Việt Nam, TP.HCM."],["What do you do for a living?","Bạn làm nghề gì?"],["I run a tech company.","Tôi điều hành một công ty công nghệ."],["I work in software / marketing / law.","Tôi làm trong ngành phần mềm / marketing / luật."],["How long have you been doing that?","Bạn làm việc đó bao lâu rồi?"],["What do you do in your free time?","Lúc rảnh bạn làm gì?"],["I'm into movies and tech.","Tôi thích phim và công nghệ."],["The weather is crazy today.","Thời tiết hôm nay kinh khủng thật."],["Have you been here before?","Bạn đến đây lần nào chưa?"],["How do you know [name]?","Bạn quen [tên] thế nào?"],["Let me introduce you to [name].","Để tôi giới thiệu bạn với [tên]."],["It was nice talking to you.","Nói chuyện với bạn vui lắm."],["Let's keep in touch.","Giữ liên lạc nhé."],["See you around.","Hẹn gặp lại."],["Take care!","Giữ gìn sức khỏe nhé!"],["Have a good one!","Chúc một ngày tốt lành!"],["Catch you later.","Gặp sau nhé."]]},
+ {id:"hoilai",name:"Khi không hiểu",items:[
+  ["Sorry, could you say that again?","Xin lỗi, bạn nói lại được không?"],["Sorry, I didn't catch that.","Xin lỗi, tôi nghe chưa rõ."],["Could you speak a bit slower?","Bạn nói chậm lại chút được không?"],["What do you mean by that?","Ý bạn là sao?"],["What does '[word]' mean?","'[từ]' nghĩa là gì?"],["How do you spell that?","Từ đó đánh vần thế nào?"],["Could you give me an example?","Bạn cho ví dụ được không?"],["So you're saying that…?","Vậy ý bạn là…?"],["Let me make sure I understand.","Để tôi chắc là mình hiểu đúng."],["Just to clarify, …","Để làm rõ thêm, …"],["Did you mean A or B?","Ý bạn là A hay B?"],["Is that right?","Đúng vậy không?"],["Got it.","Hiểu rồi."],["I see.","Tôi hiểu."],["Makes sense.","Hợp lý."],["Let me think for a second.","Để tôi nghĩ một chút."],["Give me a moment.","Cho tôi một chút."],["Good question, let me think.","Câu hỏi hay, để tôi nghĩ."],["How do I put this…","Nói thế nào nhỉ…"],["I'm not sure how to say this in English.","Tôi không chắc nói câu này bằng tiếng Anh thế nào."],["What's the word for…?","Từ để chỉ… là gì nhỉ?"],["It's like a…","Nó giống như một…"],["Sorry, my English isn't perfect.","Xin lỗi, tiếng Anh của tôi chưa tốt lắm."],["Could you write it down for me?","Bạn viết ra giúp tôi được không?"],["Can you repeat the last part?","Bạn nhắc lại đoạn cuối được không?"],["I'm not following.","Tôi chưa theo kịp."],["Where were we?","Nãy mình đang nói tới đâu nhỉ?"],["Sorry, I lost my train of thought.","Xin lỗi, tôi quên mất đang nói gì."]]},
+ {id:"ykien",name:"Ý kiến",items:[
+  ["I think…","Tôi nghĩ là…"],["In my opinion, …","Theo ý tôi, …"],["From my point of view, …","Từ góc nhìn của tôi, …"],["If you ask me, …","Nếu hỏi tôi thì…"],["I totally agree.","Tôi hoàn toàn đồng ý."],["Exactly.","Chính xác."],["That's a good point.","Ý đó hay đấy."],["You're right about that.","Bạn nói đúng chỗ đó."],["I couldn't agree more.","Tôi đồng ý cả hai tay."],["Fair enough.","Cũng hợp lý."],["I see your point, but…","Tôi hiểu ý bạn, nhưng…"],["I'm not so sure about that.","Tôi không chắc lắm về chuyện đó."],["I see it differently.","Tôi nhìn khác một chút."],["I don't think that'll work.","Tôi nghĩ cách đó không ổn."],["That's true, but on the other hand…","Đúng, nhưng mặt khác…"],["I agree to some extent.","Tôi đồng ý một phần."],["Let's agree to disagree.","Thôi mỗi người một ý vậy."],["What if we…?","Hay là mình…?"],["How about…?","…thì sao?"],["I'd suggest…","Tôi đề xuất…"],["Why don't we…?","Sao mình không…?"],["Have you considered…?","Bạn đã tính tới… chưa?"],["It might be better to…","Có lẽ sẽ tốt hơn nếu…"],["The main reason is…","Lý do chính là…"],["On top of that, …","Thêm nữa, …"],["To be honest, …","Thật lòng mà nói, …"],["It depends on…","Còn tùy vào…"],["I'm on the fence.","Tôi còn phân vân."],["Either way works for me.","Cách nào tôi cũng được."],["I'm open to ideas.","Tôi sẵn sàng nghe ý kiến."]]},
+ {id:"camxuc",name:"Phản ứng cảm xúc",items:[
+  ["Really?","Thật à?"],["No way!","Không thể nào!"],["Are you serious?","Bạn nói thật đấy à?"],["That's amazing!","Tuyệt quá!"],["Awesome!","Đỉnh!"],["That's great news.","Tin vui quá."],["Good for you!","Mừng cho bạn!"],["Congrats!","Chúc mừng nhé!"],["Well done.","Làm tốt lắm."],["I'm so happy for you.","Mình rất mừng cho bạn."],["That's too bad.","Tiếc quá."],["I'm sorry to hear that.","Nghe vậy tôi buồn thật."],["That must be tough.","Chắc vất vả lắm."],["Don't worry about it.","Đừng lo chuyện đó."],["It happens.","Chuyện thường thôi."],["No problem.","Không sao."],["No worries.","Không có gì đâu."],["My bad.","Lỗi của tôi."],["Oops, sorry about that.","Ối, xin lỗi nhé."],["I didn't mean to.","Tôi không cố ý."],["Thanks a lot.","Cảm ơn nhiều."],["I really appreciate it.","Tôi thật sự cảm kích."],["You're welcome.","Không có gì."],["Anytime.","Lúc nào cũng được."],["That's hilarious!","Buồn cười thật!"],["What a relief!","Nhẹ cả người!"],["I can't believe it.","Không tin nổi."],["That's weird.","Lạ nhỉ."],["I'm so tired.","Mệt quá."],["Whatever you prefer.","Tùy bạn."]]},
+ {id:"congviec",name:"Công việc, họp",items:[
+  ["Let's get started.","Mình bắt đầu nhé."],["Thanks for joining.","Cảm ơn mọi người đã tham gia."],["The purpose of this meeting is…","Mục đích cuộc họp này là…"],["Let's go over the agenda.","Mình điểm qua nội dung họp nhé."],["Can you give us an update?","Bạn cập nhật tình hình được không?"],["Where are we on this?","Việc này tới đâu rồi?"],["We're on track.","Mọi thứ đang đúng tiến độ."],["We're a bit behind schedule.","Mình hơi chậm tiến độ."],["What's blocking you?","Đang vướng ở đâu?"],["What's the deadline?","Hạn chót là khi nào?"],["Can we push it to next week?","Dời sang tuần sau được không?"],["I need it by Friday.","Tôi cần nó trước thứ Sáu."],["Who's in charge of this?","Ai phụ trách việc này?"],["I'll take care of it.","Để tôi lo."],["I'll get back to you on that.","Tôi sẽ phản hồi lại việc đó."],["Let me check and confirm.","Để tôi kiểm tra rồi xác nhận."],["Let's take this offline.","Việc này mình bàn riêng sau nhé."],["Let's stay focused.","Mình tập trung vào vấn đề chính nhé."],["Does anyone have any questions?","Có ai có câu hỏi không?"],["What are the next steps?","Bước tiếp theo là gì?"],["Let's wrap it up.","Mình chốt lại nhé."],["To sum up, …","Tóm lại, …"],["I'll send a follow-up email.","Tôi sẽ gửi email tổng kết."],["Can you keep me in the loop?","Nhớ cập nhật cho tôi nhé."],["That's not my priority right now.","Đó chưa phải ưu tiên của tôi lúc này."],["Let's prioritize…","Mình ưu tiên…"],["What's the budget for this?","Ngân sách cho việc này là bao nhiêu?"],["Good job, team.","Làm tốt lắm, cả đội."],["I need your input on this.","Tôi cần ý kiến của bạn về việc này."],["Let's circle back next week.","Tuần sau mình quay lại chuyện này."]]},
+ {id:"khachhang",name:"Khách hàng, đàm phán",items:[
+  ["What are you looking for?","Anh/chị đang tìm gì?"],["What's your biggest challenge right now?","Khó khăn lớn nhất của anh/chị hiện giờ là gì?"],["Let me walk you through it.","Để tôi hướng dẫn anh/chị qua một lượt."],["This will save you time and money.","Cái này giúp anh/chị tiết kiệm thời gian và tiền."],["Here's how it works.","Nó hoạt động thế này."],["Our clients usually…","Khách hàng của chúng tôi thường…"],["What's your budget?","Ngân sách của anh/chị là bao nhiêu?"],["What's your timeline?","Anh/chị cần trong khoảng thời gian nào?"],["Who else is involved in the decision?","Còn ai tham gia quyết định nữa không?"],["Is that within your budget?","Mức đó có nằm trong ngân sách không?"],["That's a bit over our budget.","Hơi vượt ngân sách của chúng tôi."],["Is there any flexibility on the price?","Giá có linh động được không?"],["What's your best price?","Giá tốt nhất là bao nhiêu?"],["We can offer a discount if…","Chúng tôi có thể giảm giá nếu…"],["That's our final offer.","Đó là đề nghị cuối cùng của chúng tôi."],["Let's meet in the middle.","Mình mỗi bên nhường một chút nhé."],["What would it take to close the deal?","Cần gì để chốt được thỏa thuận?"],["I need to discuss it with my team.","Tôi cần bàn với đội của tôi."],["Can you put that in writing?","Anh/chị gửi bằng văn bản được không?"],["Let's sign the contract.","Mình ký hợp đồng nhé."],["We have a deal.","Vậy là thống nhất."],["I understand your concern.","Tôi hiểu băn khoăn của anh/chị."],["Let me look into it.","Để tôi tìm hiểu."],["We'll fix it right away.","Chúng tôi sẽ xử lý ngay."],["Sorry for the inconvenience.","Xin lỗi vì sự bất tiện."],["Is there anything else I can help with?","Tôi còn giúp được gì nữa không?"],["Thanks for your business.","Cảm ơn anh/chị đã hợp tác."],["We look forward to working with you.","Rất mong được hợp tác với anh/chị."]]},
+ {id:"tech",name:"Tech, sản phẩm",items:[
+  ["What's the tech stack?","Dùng công nghệ gì?"],["We're using Node.js and PostgreSQL.","Chúng tôi dùng Node.js và PostgreSQL."],["It's still in beta.","Nó vẫn đang bản beta."],["We're shipping it next sprint.","Sprint sau mình phát hành."],["It's a bug, not a feature.","Đó là lỗi, không phải tính năng."],["Can you reproduce the issue?","Bạn tái hiện lỗi được không?"],["It works on my machine.","Máy tôi chạy bình thường mà."],["The server is down.","Server sập rồi."],["Let's roll back.","Mình rollback lại nhé."],["Did you push the code?","Bạn push code chưa?"],["Can you review my pull request?","Bạn review PR giúp tôi được không?"],["Let's write a quick prototype.","Mình làm nhanh một prototype."],["What's the MVP?","Bản tối thiểu (MVP) gồm những gì?"],["How does it scale?","Nó mở rộng quy mô thế nào?"],["What's the bottleneck?","Nút thắt nằm ở đâu?"],["It's too slow. We need to optimize it.","Chậm quá, cần tối ưu."],["We should automate this.","Việc này nên tự động hóa."],["Who are the target users?","Người dùng mục tiêu là ai?"],["What problem does it solve?","Nó giải quyết vấn đề gì?"],["Let's test it with real users.","Mình thử với người dùng thật."],["The feedback has been positive.","Phản hồi khá tích cực."],["Users are dropping off at this step.","Người dùng bỏ ngang ở bước này."],["Let's look at the data.","Mình xem số liệu nhé."],["That's out of scope.","Cái đó nằm ngoài phạm vi."],["It's on the roadmap.","Nó có trong lộ trình rồi."],["How long will it take to build?","Làm mất bao lâu?"],["Roughly two weeks.","Khoảng hai tuần."],["Let's keep it simple.","Làm đơn giản thôi."]]},
+ {id:"dienthoai",name:"Điện thoại, hẹn lịch",items:[
+  ["Hi, this is Roy speaking.","Chào, tôi là Roy."],["Is this a good time to talk?","Giờ nói chuyện tiện không?"],["I'm calling about…","Tôi gọi về việc…"],["Can I call you back later?","Tôi gọi lại sau được không?"],["Sorry, you're breaking up.","Xin lỗi, tín hiệu bị chập chờn."],["Can you hear me?","Bạn nghe tôi không?"],["You're on mute.","Bạn đang tắt mic."],["Can you see my screen?","Bạn thấy màn hình tôi không?"],["Let me share my screen.","Để tôi chia sẻ màn hình."],["Sorry, I was on mute.","Xin lỗi, nãy tôi tắt mic."],["I think we lost [name].","Hình như [tên] rớt mạng rồi."],["When are you available?","Khi nào bạn rảnh?"],["Does Tuesday work for you?","Thứ Ba có tiện cho bạn không?"],["How about 3 p.m.?","3 giờ chiều thì sao?"],["That works for me.","Giờ đó được."],["I'm afraid I can't make it.","E là tôi không đến được."],["Can we reschedule?","Mình dời lịch được không?"],["Let's set up a call.","Mình hẹn một cuộc gọi nhé."],["I'll send you a calendar invite.","Tôi sẽ gửi lời mời trên lịch."],["What time zone are you in?","Bạn ở múi giờ nào?"],["I'm running a few minutes late.","Tôi trễ vài phút."],["Sorry to keep you waiting.","Xin lỗi để bạn đợi."],["Could you leave a message?","Bạn để lại lời nhắn được không?"],["I'll text you the details.","Tôi nhắn chi tiết cho bạn."],["Thanks for calling.","Cảm ơn đã gọi."],["Talk to you soon.","Nói chuyện sau nhé."]]},
+ {id:"dulich",name:"Du lịch, ăn uống",items:[
+  ["A table for two, please.","Cho bàn hai người."],["Can I see the menu?","Cho tôi xem thực đơn."],["What do you recommend?","Bạn gợi ý món gì?"],["I'll have the…","Tôi lấy món…"],["Can I get it without…?","Cho tôi món đó không có… được không?"],["Is it spicy?","Có cay không?"],["Could I get the check, please?","Cho tôi tính tiền."],["Can I pay by card?","Trả bằng thẻ được không?"],["Keep the change.","Không cần thối lại."],["How much is this?","Cái này bao nhiêu?"],["Do you have this in a different size?","Có cỡ khác không?"],["Can I try it on?","Tôi thử được không?"],["I'm just looking, thanks.","Tôi chỉ xem thôi, cảm ơn."],["Can I get a refund?","Tôi được hoàn tiền không?"],["I have a reservation under Roy.","Tôi có đặt phòng tên Roy."],["What time is check-out?","Mấy giờ trả phòng?"],["Is breakfast included?","Có bao gồm bữa sáng không?"],["Could I get a late check-out?","Tôi trả phòng muộn được không?"],["The Wi-Fi isn't working.","Wi-Fi không vào được."],["How do I get to…?","Đi đến… thế nào?"],["Is it far from here?","Có xa đây không?"],["Can you call me a taxi?","Gọi giúp tôi taxi được không?"],["Where's the restroom?","Nhà vệ sinh ở đâu?"],["Which gate is my flight?","Chuyến bay của tôi ở cổng nào?"],["My flight was delayed.","Chuyến bay của tôi bị trễ."],["I'd like a window seat.","Tôi muốn ghế cạnh cửa sổ."],["Could you take a photo of us?","Chụp giúp chúng tôi tấm ảnh được không?"],["Excuse me, is this seat taken?","Xin lỗi, ghế này có ai ngồi chưa?"]]},
+ {id:"cauno",name:"Câu nối, giữ hội thoại",items:[
+  ["Well, …","À thì…"],["Actually, …","Thật ra là…"],["You know, …","Bạn biết đấy…"],["I mean, …","Ý tôi là…"],["Basically, …","Về cơ bản thì…"],["Anyway, …","Dù sao thì…"],["By the way, …","Nhân tiện, …"],["Speaking of…,","Nhân nói về…,"],["That reminds me, …","Nhắc mới nhớ, …"],["As I was saying, …","Như tôi đang nói, …"],["Back to what you said, …","Quay lại chuyện bạn nói, …"],["On the other hand, …","Mặt khác, …"],["The thing is, …","Vấn đề là…"],["What I'm trying to say is…","Điều tôi muốn nói là…"],["In other words, …","Nói cách khác, …"],["For example, …","Ví dụ như…"],["In my experience, …","Theo kinh nghiệm của tôi, …"],["Long story short, …","Nói ngắn gọn thì…"],["At the end of the day, …","Rốt cuộc thì…"],["That's interesting, tell me more.","Hay đấy, kể thêm đi."],["How come?","Sao vậy?"],["What happened next?","Rồi sao nữa?"],["How about you?","Còn bạn thì sao?"],["What do you think?","Bạn nghĩ sao?"],["Have you ever…?","Bạn đã từng… chưa?"],["I know what you mean.","Tôi hiểu ý bạn."],["Same here.","Tôi cũng vậy."],["Me neither.","Tôi cũng không."],["Let me put it another way.","Để tôi nói theo cách khác."],["Anyway, I should get going.","Thôi, tôi phải đi đây."]]}
+];
+
+/* storage helpers (fail-safe) */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+const learned = new Set(store.get("en-learned", []));
+const keyOf = (c, i) => c + ":" + i;
+const all = DATA.flatMap(c => c.items.map((it, i) => ({cat:c.id, catName:c.name, en:it[0], vi:it[1], key:keyOf(c.id, i)})));
+
+const state = {q:"", cat:"all", hideVi:false, hideEn:false, onlyNew:false};
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const norm = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d");
+
+function renderTags(){
+  const t = $("#tags");
+  const btns = [{id:"all", name:"Tất cả", n:all.length}].concat(DATA.map(c => ({id:c.id, name:c.name, n:c.items.length})));
+  t.innerHTML = btns.map(b => `<button class="tag" data-cat="${b.id}" aria-pressed="${state.cat===b.id}">${esc(b.name)} · ${b.n}</button>`).join("");
+}
+
+function filtered(){
+  const q = norm(state.q.trim());
+  return all.filter(p => (state.cat === "all" || p.cat === state.cat)
+    && (!state.onlyNew || !learned.has(p.key))
+    && (!q || norm(p.en).includes(q) || norm(p.vi).includes(q)));
+}
+
+function renderBank(){
+  const list = filtered();
+  const bank = $("#bank");
+  bank.className = (state.hideVi ? "hide-vi " : "") + (state.hideEn ? "hide-en" : "");
+  if(!list.length){ bank.innerHTML = '<div class="rows"><div class="empty">Không có câu nào khớp.</div></div>'; }
+  else{
+    bank.innerHTML = DATA.filter(c => state.cat==="all" || c.id===state.cat).map(c => {
+      const rows = list.filter(p => p.cat === c.id);
+      if(!rows.length) return "";
+      return `<div class="bank-group"><h3>${esc(c.name)}<span>${rows.length} câu</span></h3><div class="rows">` +
+        rows.map(p => `<div class="row${learned.has(p.key) ? " learned" : ""}" data-key="${p.key}">
+          <div class="en">${esc(p.en)}</div><div class="vi">${esc(p.vi)}</div>
+          <button class="mark" aria-label="Đánh dấu đã thuộc" title="Đánh dấu đã thuộc">✓</button></div>`).join("") +
+        `</div></div>`;
+    }).join("");
+  }
+  const n = learned.size;
+  $("#stats").textContent = `Đã thuộc ${n}/${all.length} câu · Đang hiển thị ${list.length}`;
+  $("#bar").style.width = (n / all.length * 100) + "%";
+}
+
+$("#tags").addEventListener("click", e => {
+  const b = e.target.closest(".tag"); if(!b) return;
+  state.cat = b.dataset.cat; renderTags(); renderBank();
+});
+$("#q").addEventListener("input", e => { state.q = e.target.value; renderBank(); });
+function toggle(btn, key){
+  $(btn).addEventListener("click", e => {
+    state[key] = !state[key]; e.currentTarget.setAttribute("aria-pressed", state[key]); renderBank();
+  });
+}
+toggle("#hideVi","hideVi"); toggle("#hideEn","hideEn"); toggle("#unlearned","onlyNew");
+
+$("#bank").addEventListener("click", e => {
+  const row = e.target.closest(".row"); if(!row) return;
+  if(e.target.closest(".mark")){
+    const k = row.dataset.key;
+    learned.has(k) ? learned.delete(k) : learned.add(k);
+    store.set("en-learned", [...learned]); renderBank();
+  } else if(state.hideVi || state.hideEn){
+    row.classList.toggle("reveal");
+  }
+});
+
+/* flashcards */
+let current = null, deck = [];
+function nextCard(){
+  if(!deck.length){
+    deck = filtered().filter(p => !learned.has(p.key));
+    if(!deck.length) deck = filtered();
+    deck.sort(() => Math.random() - .5);
+  }
+  current = deck.pop();
+  if(!current){ $("#cardQ").textContent = "Không có câu để luyện."; $("#cardA").textContent = ""; return; }
+  const viFirst = state.hideEn;
+  $("#cardCat").textContent = current.catName + (viFirst ? " · Nói bằng tiếng Anh" : " · Nghĩa là gì?");
+  $("#cardQ").textContent = viFirst ? current.vi : current.en;
+  $("#cardA").textContent = "";
+}
+$("#flash").addEventListener("click", () => { deck = []; nextCard(); $("#modal").classList.add("open"); $("#reveal").focus(); });
+$("#reveal").addEventListener("click", () => { if(current) $("#cardA").textContent = state.hideEn ? current.en : current.vi; });
+$("#next").addEventListener("click", nextCard);
+$("#gotIt").addEventListener("click", () => {
+  if(current){ learned.add(current.key); store.set("en-learned", [...learned]); renderBank(); }
+  nextCard();
+});
+function closeModal(){ $("#modal").classList.remove("open"); }
+$("#close").addEventListener("click", closeModal);
+$("#modal").addEventListener("click", e => { if(e.target.id === "modal") closeModal(); });
+document.addEventListener("keydown", e => {
+  if(!$("#modal").classList.contains("open")) return;
+  if(e.key === "Escape") closeModal();
+  if(e.key === " "){ e.preventDefault(); $("#reveal").click(); }
+  if(e.key === "ArrowRight") nextCard();
+});
+
+/* checklist */
+const checks = store.get("en-checks", {});
+document.querySelectorAll("#checklist input").forEach(cb => {
+  cb.checked = !!checks[cb.dataset.k];
+  cb.addEventListener("change", () => { checks[cb.dataset.k] = cb.checked; store.set("en-checks", checks); });
+});
+
+/* theme */
+const root = document.documentElement;
+const savedTheme = store.get("en-theme", null);
+if(savedTheme) root.setAttribute("data-theme", savedTheme);
+$("#themeBtn").addEventListener("click", () => {
+  const cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next); store.set("en-theme", next);
+});
+
+/* active nav */
+const links = [...document.querySelectorAll(".sidenav a")];
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if(en.isIntersecting){
+      links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id));
+    }
+  });
+}, {rootMargin:"-30% 0px -60% 0px"});
+document.querySelectorAll("main section").forEach(s => obs.observe(s));
+
+/* mobile: label table cells so they can stack as cards */
+document.querySelectorAll("table").forEach(t => {
+  const heads = [...t.querySelectorAll("thead th")].map(th => th.textContent.trim());
+  t.querySelectorAll("tbody tr").forEach(tr => {
+    [...tr.children].forEach((td, i) => { if(heads[i]) td.setAttribute("data-label", heads[i]); });
+  });
+});
+
+/* mobile menu */
+const nav = $(".sidenav"), menuBtn = $("#menuBtn");
+function setMenu(open){ nav.classList.toggle("open", open); menuBtn.setAttribute("aria-expanded", open); }
+menuBtn.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
+links.forEach(a => a.addEventListener("click", () => setMenu(false)));
+document.addEventListener("click", e => { if(!e.target.closest(".sidenav,#menuBtn")) setMenu(false); });
+
+renderTags(); renderBank();
+</script>
+</body>
+</html>
