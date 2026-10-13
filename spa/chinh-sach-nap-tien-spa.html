@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chính sách nạp tiền & Pháp lý — Spa</title>
+<style>
+  :root {
+    --bg: #fbfbfd;
+    --surface: #ffffff;
+    --surface-2: #f5f5f7;
+    --text: #1d1d1f;
+    --text-2: #6e6e73;
+    --text-3: #86868b;
+    --accent: #0071e3;
+    --accent-soft: #e8f1fd;
+    --green: #30a46c;
+    --green-soft: #e7f6ee;
+    --amber: #bb7a00;
+    --amber-soft: #fdf4e3;
+    --red: #d93a44;
+    --red-soft: #fbeaec;
+    --border: #e3e3e6;
+    --shadow: 0 2px 20px rgba(0,0,0,.05), 0 1px 3px rgba(0,0,0,.04);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --surface: #1c1c1e;
+      --surface-2: #2c2c2e;
+      --text: #f5f5f7;
+      --text-2: #a1a1a6;
+      --text-3: #8e8e93;
+      --accent: #2997ff;
+      --accent-soft: #11263b;
+      --green: #3ddc84;
+      --green-soft: #10291c;
+      --amber: #ffca4a;
+      --amber-soft: #2b2310;
+      --red: #ff6b73;
+      --red-soft: #2c1416;
+      --border: #38383a;
+      --shadow: 0 2px 24px rgba(0,0,0,.4);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 0 22px; }
+
+  /* Hero */
+  header.hero {
+    text-align: center;
+    padding: 96px 22px 64px;
+  }
+  .hero .eyebrow {
+    font-size: 15px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 6vw, 56px);
+    font-weight: 700; line-height: 1.07; letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+  .hero p.sub {
+    font-size: clamp(17px, 2.4vw, 21px);
+    color: var(--text-2); max-width: 580px; margin: 0 auto; font-weight: 400;
+  }
+  .hero .meta {
+    margin-top: 26px; font-size: 13px; color: var(--text-3);
+    display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+  }
+  .hero .meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Section */
+  section { padding: 40px 0; }
+  .section-tag {
+    font-size: 13px; font-weight: 600; color: var(--text-3);
+    text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px;
+  }
+  h2 {
+    font-size: clamp(26px, 4vw, 36px); font-weight: 700;
+    letter-spacing: -0.02em; margin-bottom: 10px; line-height: 1.1;
+  }
+  h2 + .lead { font-size: 18px; color: var(--text-2); margin-bottom: 30px; max-width: 640px; }
+  h3 { font-size: 21px; font-weight: 650; margin-bottom: 8px; letter-spacing: -0.015em; }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+  .card p { color: var(--text-2); margin-bottom: 12px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* Verdict banner */
+  .verdict {
+    display: flex; gap: 18px; align-items: flex-start;
+    background: var(--green-soft);
+    border: 1px solid color-mix(in srgb, var(--green) 25%, transparent);
+    border-radius: var(--radius);
+    padding: 26px 28px; margin-bottom: 22px;
+  }
+  .verdict .icon {
+    flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--green); color: #fff; display: grid; place-items: center;
+    font-size: 22px; font-weight: 700;
+  }
+  .verdict h3 { color: var(--green); margin-bottom: 4px; }
+  .verdict p { color: var(--text); margin: 0; font-size: 15px; }
+
+  /* Comparison two-col */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px){ .compare { grid-template-columns: 1fr; } }
+  .compare .col { border-radius: var(--radius-sm); padding: 22px; border: 1px solid var(--border); }
+  .compare .col.open { background: var(--red-soft); border-color: color-mix(in srgb, var(--red) 22%, transparent); }
+  .compare .col.closed { background: var(--green-soft); border-color: color-mix(in srgb, var(--green) 22%, transparent); }
+  .compare .pill {
+    display: inline-block; font-size: 12px; font-weight: 600; padding: 4px 11px;
+    border-radius: 100px; margin-bottom: 12px;
+  }
+  .compare .open .pill { background: var(--red); color: #fff; }
+  .compare .closed .pill { background: var(--green); color: #fff; }
+  .compare h4 { font-size: 17px; margin-bottom: 10px; }
+  .compare ul { list-style: none; }
+  .compare li { font-size: 14px; color: var(--text-2); padding: 5px 0 5px 22px; position: relative; }
+  .compare li::before { position: absolute; left: 0; top: 4px; }
+  .compare .open li::before { content: "✕"; color: var(--red); font-weight: 700; }
+  .compare .closed li::before { content: "✓"; color: var(--green); font-weight: 700; }
+
+  /* Rules grid */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 720px){ .grid-3 { grid-template-columns: 1fr; } }
+  .mini {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 22px; box-shadow: var(--shadow);
+  }
+  .mini .num {
+    width: 32px; height: 32px; border-radius: 9px; background: var(--accent-soft);
+    color: var(--accent); display: grid; place-items: center; font-weight: 700; margin-bottom: 12px;
+  }
+  .mini h4 { font-size: 16px; margin-bottom: 6px; }
+  .mini p { font-size: 13.5px; color: var(--text-2); margin: 0; }
+
+  /* Risk list */
+  .risk { display: flex; gap: 16px; padding: 20px 0; border-top: 1px solid var(--border); }
+  .risk:first-child { border-top: none; }
+  .risk .badge {
+    flex: 0 0 auto; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 8px;
+    height: fit-content; white-space: nowrap;
+  }
+  .risk .badge.hi { background: var(--red-soft); color: var(--red); }
+  .risk .badge.mid { background: var(--amber-soft); color: var(--amber); }
+  .risk h4 { font-size: 16.5px; margin-bottom: 4px; }
+  .risk p { font-size: 14px; color: var(--text-2); margin: 0; }
+
+  /* Policy document styling */
+  .doc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .doc-head { background: var(--surface-2); padding: 26px 30px; border-bottom: 1px solid var(--border); }
+  .doc-head h3 { font-size: 22px; margin: 0; }
+  .doc-head p { font-size: 13px; color: var(--text-3); margin: 6px 0 0; }
+  .doc-body { padding: 10px 30px 30px; }
+  .clause { padding: 22px 0; border-bottom: 1px solid var(--border); }
+  .clause:last-child { border-bottom: none; }
+  .clause-no { font-size: 13px; font-weight: 700; color: var(--accent); letter-spacing: .02em; }
+  .clause h4 { font-size: 17px; margin: 4px 0 10px; }
+  .clause p, .clause li { font-size: 14.5px; color: var(--text-2); }
+  .clause ul { margin: 8px 0 0 2px; list-style: none; }
+  .clause ul li { padding: 5px 0 5px 20px; position: relative; }
+  .clause ul li::before { content: "•"; color: var(--accent); position: absolute; left: 4px; }
+  .clause strong { color: var(--text); font-weight: 600; }
+
+  /* Tier table */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 4px; font-size: 14px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  th { font-weight: 600; color: var(--text); background: var(--surface-2); font-size: 13px; }
+  td { color: var(--text-2); }
+  tbody tr:last-child td { border-bottom: none; }
+  td .ok { color: var(--green); font-weight: 600; }
+
+  .callout {
+    background: var(--accent-soft); border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 16px 18px; margin: 16px 0; font-size: 14px; color: var(--text);
+  }
+  .callout.warn { background: var(--amber-soft); border-left-color: var(--amber); }
+
+  /* Disclaimer / footer */
+  .disclaimer {
+    background: var(--surface-2); border-radius: var(--radius); padding: 24px 26px;
+    font-size: 13.5px; color: var(--text-2); margin: 10px 0 40px;
+  }
+  .disclaimer strong { color: var(--text); }
+  footer { text-align: center; padding: 40px 22px 70px; color: var(--text-3); font-size: 13px; border-top: 1px solid var(--border); margin-top: 20px; }
+  footer a { color: var(--accent); text-decoration: none; }
+  .sources { max-width: 820px; margin: 0 auto; padding: 0 22px; }
+  .sources h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-3); margin-bottom: 10px; }
+  .sources ul { list-style: none; font-size: 13px; }
+  .sources li { padding: 4px 0; }
+  .sources a { color: var(--accent); text-decoration: none; }
+  .sources a:hover { text-decoration: underline; }
+
+  hr.div { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* Stat row (case section) */
+  .statrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 18px 0; }
+  @media (max-width: 600px){ .statrow { grid-template-columns: 1fr; gap: 10px; } }
+  .statrow .stat {
+    background: var(--surface); border: 1px solid color-mix(in srgb, var(--green) 20%, transparent);
+    border-radius: var(--radius-sm); padding: 16px 18px;
+  }
+  .statrow .big { font-size: 26px; font-weight: 700; color: var(--green); letter-spacing: -0.02em; }
+  .statrow .lbl { font-size: 13px; color: var(--text-2); margin-top: 4px; }
+
+  /* ===== Mobile: full-screen + larger typography ===== */
+  @media (max-width: 600px) {
+    .wrap, .sources { padding: 0 16px; }
+
+    /* Hero */
+    header.hero { padding: 64px 18px 44px; }
+    .hero .eyebrow { font-size: 16px; }
+    .hero h1 { font-size: 40px; line-height: 1.08; }
+    .hero p.sub { font-size: 20px; }
+    .hero .meta { font-size: 14px; gap: 10px; }
+
+    /* Section headings */
+    section { padding: 32px 0; }
+    .section-tag { font-size: 14px; }
+    h2 { font-size: 30px; }
+    h2 + .lead { font-size: 19px; }
+    h3 { font-size: 22px; }
+
+    /* Cards go edge-to-edge */
+    .card, .doc, .verdict, .disclaimer {
+      border-radius: 16px;
+      margin-left: -4px; margin-right: -4px;
+    }
+    .card { padding: 22px 20px; }
+    .card p { font-size: 16px; }
+    .verdict { padding: 22px 20px; gap: 14px; }
+    .verdict p { font-size: 16px; }
+    .verdict h3 { font-size: 20px; }
+
+    /* Compare columns */
+    .compare .col { padding: 20px 18px; }
+    .compare .pill { font-size: 13px; }
+    .compare h4 { font-size: 18px; }
+    .compare li { font-size: 15.5px; }
+
+    /* Mini rule cards */
+    .mini { padding: 20px 18px; }
+    .mini h4 { font-size: 17px; }
+    .mini p { font-size: 15px; }
+
+    /* Risk list */
+    .risk { flex-direction: column; gap: 8px; }
+    .risk .badge { font-size: 13px; }
+    .risk h4 { font-size: 18px; }
+    .risk p { font-size: 15.5px; }
+
+    /* Policy document */
+    .doc-head { padding: 22px 20px; }
+    .doc-head h3 { font-size: 20px; }
+    .doc-head p { font-size: 14px; }
+    .doc-body { padding: 6px 20px 24px; }
+    .clause-no { font-size: 14px; }
+    .clause h4 { font-size: 18px; }
+    .clause p, .clause li { font-size: 16px; }
+
+    /* Tables scroll instead of squish */
+    table { font-size: 15px; }
+    th, td { padding: 10px 10px; }
+
+    .callout { font-size: 15.5px; padding: 16px; }
+    .disclaimer { font-size: 15px; padding: 22px 20px; }
+    .sources li, .sources a { font-size: 14.5px; }
+    footer { font-size: 14px; }
+  }
+
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 34px; }
+    h2 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Tư vấn pháp lý & Vận hành</div>
+  <h1>Mô hình nạp tiền trả trước cho Spa</h1>
+  <p class="sub">Tổng hợp pháp lý và bộ chính sách nạp tiền — điều khoản sử dụng chuẩn closed-loop, an toàn giấy phép, hợp lệ khuyến mại.</p>
+  <div class="meta">
+    <span>📅 Cập nhật 13/10/2026</span>
+    <span>🏷️ Phiên bản 1.0</span>
+    <span>⚖️ Tham khảo — không phải tư vấn pháp lý chính thức</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- PHẦN 1: PHÁP LÝ -->
+  <section id="phap-ly">
+    <div class="section-tag">Phần 1 — Tổng hợp pháp lý</div>
+    <h2>Có cần giấy phép ví điện tử không?</h2>
+    <p class="lead">Câu hỏi cốt lõi: khi khách nạp 10tr và được tặng thêm, bạn có đang "giữ tiền hộ" khách như một ví điện tử không?</p>
+
+    <div class="verdict">
+      <div class="icon">✓</div>
+      <div>
+        <h3>Không cần giấy phép trung gian thanh toán</h3>
+        <p>Vì khách nạp tiền chỉ để mua <strong>dịch vụ của chính spa bạn</strong> (mô hình vòng kín — closed-loop), không có dòng tiền chuyển ra bên thứ ba. Đây là hình thức <strong>thu tiền ứng trước</strong>, giống gift card / thẻ thành viên, hoàn toàn hợp pháp.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:16px;">Phân biệt mấu chốt: Vòng mở vs Vòng kín</h3>
+    <div class="compare">
+      <div class="col open">
+        <span class="pill">Open-loop — CẦN giấy phép</span>
+        <h4>Ví điện tử / Trung gian thanh toán</h4>
+        <ul>
+          <li>Đứng giữa chuyển tiền cho bên thứ ba</li>
+          <li>Cho phép rút tiền mặt</li>
+          <li>Cho chuyển tiền giữa người dùng</li>
+          <li>Tiền chạy ra ngoài phạm vi doanh nghiệp</li>
+          <li>Phải được NHNN cấp phép, ký quỹ 1:1</li>
+        </ul>
+      </div>
+      <div class="col closed">
+        <span class="pill">Closed-loop — mô hình của bạn</span>
+        <h4>Trả trước dịch vụ của chính spa</h4>
+        <ul>
+          <li>Chỉ dùng cho dịch vụ của spa bạn</li>
+          <li>Không rút được tiền mặt</li>
+          <li>Không chuyển cho người khác</li>
+          <li>Không trả lãi trên số dư</li>
+          <li>Là "doanh thu nhận trước", không cần giấy phép</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="margin:30px 0 16px;">3 nguyên tắc "vàng" để giữ tính closed-loop hợp pháp</h3>
+    <div class="grid-3">
+      <div class="mini">
+        <div class="num">1</div>
+        <h4>Không rút tiền mặt</h4>
+        <p>Rút được tiền = số dư hoạt động như tiền tệ → rơi vào diện bị NHNN quản lý.</p>
+      </div>
+      <div class="mini">
+        <div class="num">2</div>
+        <h4>Không chuyển nhượng</h4>
+        <p>Không cho chuyển số dư cho người khác. Chuyển tiền giữa các bên = nghiệp vụ thanh toán.</p>
+      </div>
+      <div class="mini">
+        <div class="num">3</div>
+        <h4>Không trả lãi</h4>
+        <p>Trả lãi trên số dư = dấu hiệu huy động vốn / nhận tiền gửi trái phép.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="rui-ro">
+    <div class="section-tag">Phần 1 — Rủi ro thực sự</div>
+    <h2>Rủi ro không nằm ở giấy phép</h2>
+    <p class="lead">Mô hình hợp pháp, nhưng 3 điểm sau mới là nơi dễ bị phạt hoặc kiện tụng.</p>
+
+    <div class="card">
+      <div class="risk">
+        <span class="badge hi">RỦI RO CAO</span>
+        <div>
+          <h4>Khuyến mại "nạp 10 tặng 10" vượt trần 50%</h4>
+          <p>Theo <strong>Nghị định 81/2018/NĐ-CP</strong>, giá trị khuyến mại tối đa <strong>50%</strong> giá dịch vụ. Tặng thêm 100% (nạp 10 → 20) vượt trần, chỉ được phép tới 100% nếu là <strong>chương trình khuyến mại tập trung có thời hạn</strong>, đăng ký/thông báo với Sở Công Thương. Đây là điểm dễ bị phạt nhất.</p>
+        </div>
+      </div>
+      <div class="risk">
+        <span class="badge hi">RỦI RO CAO</span>
+        <div>
+          <h4>Ghi nhận doanh thu & thuế sai</h4>
+          <p>Lúc khách nạp tiền <strong>chưa xuất hóa đơn</strong> (chỉ xuất phiếu thu). Chỉ ghi nhận doanh thu + xuất hóa đơn <strong>khi khách thực sử dụng dịch vụ</strong>. Hạch toán vào <strong>TK 3387 — doanh thu chưa thực hiện</strong>. Ghi nhận hết doanh thu ngay lúc nạp → dễ bị ấn định thuế.</p>
+        </div>
+      </div>
+      <div class="risk">
+        <span class="badge mid">RỦI RO TRUNG BÌNH</span>
+        <div>
+          <h4>Bảo vệ người tiêu dùng khi ngừng hoạt động</h4>
+          <p>Pháp luật chưa bắt ký quỹ, nhưng <strong>Luật Bảo vệ quyền lợi người tiêu dùng 2023</strong> cấm không hoàn/đền bù khi không cung cấp được dịch vụ. Cần điều khoản hoàn tiền minh bạch để tránh kiện tụng và mất uy tín (như làn sóng gym đóng cửa gần đây).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="case">
+    <div class="section-tag">Phần 1 — Case điển hình trong ngành</div>
+    <h2>Mô hình này phổ biến tới mức nào?</h2>
+    <p class="lead">Nạp tiền trước — dùng dịch vụ sau là mô hình kinh doanh kinh điển, từ chuỗi toàn cầu đến spa/gym Việt Nam. Hoàn toàn không mới lạ hay bất thường.</p>
+
+    <div class="card" style="background:var(--green-soft); border-color:color-mix(in srgb, var(--green) 20%, transparent);">
+      <h3 style="color:var(--green); margin-bottom:6px;">☕ Starbucks — "ngân hàng bán cà phê"</h3>
+      <p style="color:var(--text);">Case closed-loop kinh điển nhất thế giới. Khách nạp sẵn tiền vào thẻ/app để mua cà phê sau này — và Starbucks giữ số tiền khổng lồ đó như một khoản vay 0% lãi suất.</p>
+      <div class="statrow">
+        <div class="stat"><div class="big">1,78 tỷ $</div><div class="lbl">Tiền khách nạp sẵn đang giữ (2024)</div></div>
+        <div class="stat"><div class="big">~11 tỷ $</div><div class="lbl">Khách nạp vào thẻ trong năm 2023</div></div>
+        <div class="stat"><div class="big">118 triệu $</div><div class="lbl">Doanh thu/năm từ tiền khách không xài hết</div></div>
+      </div>
+      <p style="font-size:13.5px; margin-top:6px;">Chính vì thẻ <strong>không rút được tiền mặt, không hoàn tiền</strong> (closed-loop) nên Starbucks ít bị quản lý như ngân hàng và không sợ "bank run" — đúng nguyên tắc ở Phần 1.</p>
+    </div>
+
+    <h3 style="margin:26px 0 8px;">🇻🇳 Tại Việt Nam — phổ biến ở hầu hết ngành dịch vụ</h3>
+    <div class="card" style="padding-top:8px; padding-bottom:8px;">
+      <table>
+        <thead>
+          <tr><th>Ngành</th><th>Cách áp dụng điển hình</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Spa / thẩm mỹ</strong></td><td>Thẻ thành viên nạp tiền + tặng thêm; có spa chào gói 87,5 triệu, tặng tới 100%, kèm nâng hạng & quà sinh nhật</td></tr>
+          <tr><td><strong>Gym / phòng tập</strong></td><td>"Mua trước – tập sau": gói 6 tháng PT + thẻ 12 tháng ~30 triệu; có khách mua gói 3 năm 84 triệu</td></tr>
+          <tr><td><strong>F&B / cà phê</strong></td><td>Thẻ trả trước nạp tiền giảm giá mỗi lần dùng (chuỗi cà phê, lẩu, buffet)</td></tr>
+          <tr><td><strong>Rửa xe / chăm sóc xe</strong></td><td>Gói "rửa 10 lần tặng 2 lần", thẻ trả trước theo lượt</td></tr>
+          <tr><td><strong>Nha khoa / nail</strong></td><td>Gói liệu trình trả trước, thẻ tích trữ giá trị</td></tr>
+          <tr><td><strong>Trung tâm ngoại ngữ</strong></td><td>Đóng học phí trọn khóa trước, cam kết số buổi</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <strong>Mặt trái cần tránh:</strong> vụ thẻ làm đẹp 170 triệu thành "giấy lộn" khi spa đóng cửa (tòa án xem là vụ án điển hình), làn sóng gym đóng cửa 2026, rủi ro khi đổi chủ. Chính vì vậy bộ chính sách bên dưới chú trọng <strong>điều khoản hoàn tiền minh bạch</strong> — đây là điểm giúp spa của bạn uy tín hơn đối thủ.
+    </div>
+  </section>
+
+  <hr class="div">
+
+  <!-- PHẦN 2: CHÍNH SÁCH -->
+  <section id="chinh-sach">
+    <div class="section-tag">Phần 2 — Văn bản áp dụng</div>
+    <h2>Chính sách nạp tiền & Điều khoản sử dụng</h2>
+    <p class="lead">Bản mẫu chuẩn closed-loop. Thay <code>[...]</code> bằng thông tin spa của bạn trước khi ban hành.</p>
+
+    <div class="doc">
+      <div class="doc-head">
+        <h3>CHÍNH SÁCH TÀI KHOẢN TRẢ TRƯỚC & ĐIỀU KHOẢN SỬ DỤNG</h3>
+        <p>Áp dụng tại [TÊN SPA] · Hiệu lực từ [NGÀY] · Phiên bản 1.0</p>
+      </div>
+      <div class="doc-body">
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 1</div>
+          <h4>Bản chất tài khoản trả trước</h4>
+          <p>Tài khoản trả trước (sau đây gọi là "Tài khoản") là hình thức khách hàng <strong>thanh toán trước</strong> để sử dụng dịch vụ của [TÊN SPA]. Số dư trong Tài khoản:</p>
+          <ul>
+            <li>Chỉ được dùng để thanh toán <strong>dịch vụ và sản phẩm do [TÊN SPA] cung cấp</strong>.</li>
+            <li><strong>Không phải</strong> tiền gửi, không phải ví điện tử, không phải công cụ thanh toán cho bên thứ ba.</li>
+            <li>Không được quy đổi thành tiền mặt, không được chuyển nhượng, không phát sinh lãi.</li>
+          </ul>
+        </div>
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 2</div>
+          <h4>Mức nạp & ưu đãi tặng thêm</h4>
+          <p>Khách hàng nạp tiền sẽ được cộng giá trị ưu đãi vào Tài khoản theo bảng dưới đây. <strong>Mức tặng tuân thủ trần khuyến mại 50%</strong> theo Nghị định 81/2018/NĐ-CP (áp dụng thường xuyên):</p>
+          <table>
+            <thead>
+              <tr><th>Mức nạp</th><th>Tặng thêm</th><th>Tổng số dư</th><th>% tặng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>5.000.000đ</td><td>1.500.000đ</td><td>6.500.000đ</td><td class="ok">30%</td></tr>
+              <tr><td>10.000.000đ</td><td>4.000.000đ</td><td>14.000.000đ</td><td class="ok">40%</td></tr>
+              <tr><td>20.000.000đ</td><td>10.000.000đ</td><td>30.000.000đ</td><td class="ok">50%</td></tr>
+            </tbody>
+          </table>
+          <div class="callout warn">
+            <strong>Lưu ý vận hành:</strong> Nếu muốn tặng tới 100% ("nạp 10 tặng 10"), bắt buộc triển khai dưới dạng <strong>chương trình khuyến mại tập trung có thời hạn</strong> và thực hiện thủ tục thông báo/đăng ký với Sở Công Thương địa phương. Ngoài khung chương trình đó, mức tặng tối đa là 50%.
+          </div>
+        </div>
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 3</div>
+          <h4>Phạm vi & cách sử dụng số dư</h4>
+          <ul>
+            <li>Số dư được trừ trực tiếp khi khách sử dụng dịch vụ/mua sản phẩm tại [TÊN SPA].</li>
+            <li>Khi thanh toán, hệ thống ưu tiên trừ phần <strong>tiền gốc khách nạp</strong> trước, phần <strong>tiền tặng</strong> sau (hoặc trừ theo tỷ lệ — nêu rõ quy tắc bạn chọn).</li>
+            <li>Số dư không áp dụng đồng thời với một số chương trình giảm giá khác (nêu cụ thể nếu có).</li>
+          </ul>
+        </div>
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 4</div>
+          <h4>Thời hạn sử dụng</h4>
+          <ul>
+            <li>Số dư <strong>tiền gốc khách nạp</strong>: thời hạn [12 / 24 tháng] kể từ lần nạp gần nhất.</li>
+            <li>Số dư <strong>tiền tặng khuyến mại</strong>: thời hạn [__ tháng] theo chương trình.</li>
+            <li>[TÊN SPA] sẽ thông báo cho khách qua [SMS/Zalo/email] trước khi số dư hết hạn [30] ngày.</li>
+          </ul>
+        </div>
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 5</div>
+          <h4>Chính sách hoàn tiền</h4>
+          <p>Nguyên tắc: phần tiền tặng khuyến mại không hoàn; phần tiền gốc được hoàn theo quy định sau.</p>
+          <ul>
+            <li><strong>Khách chủ động yêu cầu hoàn:</strong> hoàn lại phần <strong>tiền gốc chưa sử dụng</strong>, sau khi trừ giá trị dịch vụ đã dùng (tính theo giá niêm yết gốc, không tính theo giá ưu đãi) và phí xử lý [nếu có, nêu rõ %]. Phần tiền tặng khuyến mại không được hoàn.</li>
+            <li><strong>Spa ngừng cung cấp dịch vụ:</strong> [TÊN SPA] cam kết hoàn lại <strong>toàn bộ phần tiền gốc chưa sử dụng</strong> cho khách trong vòng [__] ngày, theo đúng Luật Bảo vệ quyền lợi người tiêu dùng 2023.</li>
+            <li>Thời gian xử lý hoàn tiền: trong vòng [7–15] ngày làm việc, chuyển khoản về tài khoản ngân hàng chính chủ của khách.</li>
+          </ul>
+        </div>
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 6</div>
+          <h4>Hóa đơn & chứng từ</h4>
+          <ul>
+            <li>Khi nạp tiền, khách nhận <strong>phiếu thu</strong> xác nhận số tiền đã nạp.</li>
+            <li><strong>Hóa đơn GTGT</strong> được xuất tại thời điểm khách hoàn tất sử dụng dịch vụ (không xuất tại thời điểm nạp), theo Nghị định 123/2020/NĐ-CP.</li>
+            <li>Khách có thể tra cứu số dư và lịch sử giao dịch tại [quầy lễ tân / app / Zalo OA].</li>
+          </ul>
+        </div>
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 7</div>
+          <h4>Bảo mật & quyền của khách hàng</h4>
+          <ul>
+            <li>Tài khoản gắn với số điện thoại/định danh của khách; khách có trách nhiệm bảo mật thông tin.</li>
+            <li>Khách có quyền yêu cầu sao kê, khiếu nại và được giải quyết trong vòng [__] ngày.</li>
+            <li>Thông tin cá nhân được bảo vệ theo Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân.</li>
+          </ul>
+        </div>
+
+        <div class="clause">
+          <div class="clause-no">ĐIỀU 8</div>
+          <h4>Điều khoản chung</h4>
+          <ul>
+            <li>[TÊN SPA] có quyền điều chỉnh chính sách và thông báo trước cho khách ít nhất [15] ngày; thay đổi không áp dụng hồi tố với số dư đã nạp.</li>
+            <li>Khách nạp tiền được xem là đã đọc, hiểu và đồng ý với toàn bộ điều khoản này.</li>
+            <li>Mọi tranh chấp được giải quyết trên tinh thần thương lượng; nếu không thành, đưa ra Tòa án có thẩm quyền tại [ĐỊA PHƯƠNG].</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Checklist trước khi ban hành:</strong> (1) Điền hết các ô <code>[...]</code> · (2) Chốt mức tặng ≤50% hoặc đăng ký khuyến mại tập trung · (3) Cho kế toán rà phần hóa đơn/TK 3387 · (4) Cho luật sư rà Điều 5 (hoàn tiền) · (5) In & dán tại quầy + đăng công khai.
+    </div>
+  </section>
+
+  <div class="disclaimer">
+    <strong>Miễn trừ trách nhiệm.</strong> Tài liệu này là thông tin tham khảo tổng hợp từ nguồn công khai, <strong>không phải tư vấn pháp lý chính thức</strong>. Mô hình "giữ tiền khách" là vùng nhạy cảm; khung pháp lý (Nghị định 52/2024, 81/2018, 123/2020, Luật BVQLNTD 2023) có thể thay đổi và áp dụng khác nhau tùy trường hợp cụ thể. Trước khi triển khai quy mô lớn, hãy để luật sư chuyên ngân hàng/thương mại và kế toán thuế rà soát chính sách thực tế của spa.
+  </div>
+
+</div>
+
+<div class="sources">
+  <h4>Nguồn tham khảo</h4>
+  <ul>
+    <li><a href="https://thuvienphapluat.vn/van-ban/Tien-te-Ngan-hang/Nghi-dinh-52-2024-ND-CP-thanh-toan-khong-dung-tien-mat-427855.aspx">Nghị định 52/2024/NĐ-CP — thanh toán không dùng tiền mặt</a></li>
+    <li><a href="https://www.mastercard.com/vn/vi/business/payments/merchant-cloud/insights/difference-between-open-closed-loop-payment-systems.html">Thanh toán vòng mở vs vòng kín — Mastercard VN</a></li>
+    <li><a href="https://tuoitre.vn/hang-loat-phong-gym-dong-cua-khach-hang-mua-the-dai-han-duoc-bao-ve-ra-sao-100260925115750174.htm">Phòng gym đóng cửa: khách mua thẻ dài hạn được bảo vệ ra sao — Tuổi Trẻ</a></li>
+    <li><a href="https://vietnambiz.vn/mat-toi-trong-mo-hinh-mua-truoc-tap-sau-tai-cac-phong-gym-2026812154426425.htm">Mặt tối mô hình mua trước - tập sau tại phòng gym — VietnamBiz</a></li>
+    <li><a href="https://dichvuketoannhanh.com/ke-toan-ho-kinh-doanh-phong-tap-gym">Kế toán doanh thu nhận trước, xuất hóa đơn — DVKT Nhanh</a></li>
+    <li><a href="https://thebrandhopper.com/learning-resources/how-starbucks-holds-more-cash-than-most-banks/">How Starbucks Holds More Cash Than Most Banks — The Brand Hopper</a></li>
+    <li><a href="https://hackscoffee.medium.com/the-starbucks-enigma-how-1-64-billion-in-unused-gift-cards-fuels-growth-f43978f1cd30">The Starbucks Enigma: $1.64 Billion in Unused Gift Cards — Medium</a></li>
+    <li><a href="https://vietstock.vn/2026/07/loi-nhuan-tu-nhung-chiec-the-bo-khong-737-1467343.htm">Lợi nhuận từ những chiếc thẻ bỏ không — Vietstock</a></li>
+    <li><a href="https://soha.vn/the-lam-dep-tri-gia-170-trieu-dong-thanh-giay-lon-khi-spa-bat-ngo-dep-tiem-bai-hoc-cho-khach-hang-khi-su-dung-dich-vu-tra-truoc-198240904113244353.htm">Thẻ làm đẹp 170 triệu thành giấy lộn khi spa đóng cửa — Soha</a></li>
+  </ul>
+</div>
+
+<footer>
+  <p>Soạn thảo tham khảo — [TÊN SPA] · Cập nhật 13/10/2026</p>
+</footer>
+
+</body>
+</html>
