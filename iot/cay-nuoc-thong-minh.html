@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Cây Nước Thông Minh — Thiết kế giải pháp đo lượng nước</title>
+<style>
+  :root{
+    --bg:#f5f5f7; --bg2:#ffffff; --card:#ffffff; --text:#1d1d1f; --text2:#6e6e73;
+    --sep:#d2d2d7; --blue:#0071e3; --blue2:#0a84ff; --green:#34c759; --orange:#ff9f0a;
+    --red:#ff3b30; --purple:#af52de; --teal:#30b0c7; --yellow:#ffcc00;
+    --shadow:0 4px 24px rgba(0,0,0,.08); --radius:20px;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#000000; --bg2:#1c1c1e; --card:#1c1c1e; --text:#f5f5f7; --text2:#98989d;
+      --sep:#38383a; --blue:#0a84ff; --shadow:0 4px 24px rgba(0,0,0,.5);
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.5;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(245,245,247,.72); backdrop-filter:saturate(180%) blur(20px);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:.5px solid var(--sep);
+  }
+  @media (prefers-color-scheme:dark){nav{background:rgba(0,0,0,.72)}}
+  .nav-inner{max-width:1080px;margin:0 auto;padding:0 22px;height:52px;display:flex;align-items:center;gap:26px;overflow-x:auto}
+  .nav-inner a{color:var(--text);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap;opacity:.82;transition:opacity .2s}
+  .nav-inner a:hover{opacity:1}
+  .nav-inner .brand{font-weight:600;opacity:1}
+  /* HERO */
+  header.hero{text-align:center;padding:92px 22px 72px;max-width:900px;margin:0 auto}
+  .hero .eyebrow{color:var(--blue);font-weight:600;font-size:19px;letter-spacing:.2px;margin-bottom:12px}
+  .hero h1{font-size:clamp(38px,7vw,72px);font-weight:700;letter-spacing:-.025em;line-height:1.05}
+  .hero p.sub{font-size:clamp(19px,3vw,26px);color:var(--text2);margin-top:20px;font-weight:400;max-width:720px;margin-left:auto;margin-right:auto}
+  .hero .tagbar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .pill{background:var(--bg2);border:.5px solid var(--sep);border-radius:980px;padding:8px 18px;font-size:14px;font-weight:500;box-shadow:var(--shadow)}
+  /* LAYOUT */
+  section{max-width:1080px;margin:0 auto;padding:60px 22px;scroll-margin-top:60px}
+  .sec-eyebrow{color:var(--blue);font-weight:600;font-size:15px;letter-spacing:.3px;text-transform:uppercase;margin-bottom:8px}
+  h2{font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+  h3{font-size:24px;font-weight:600;letter-spacing:-.01em;margin:30px 0 14px}
+  h4{font-size:18px;font-weight:600;margin:20px 0 8px}
+  p{margin-bottom:14px;color:var(--text)}
+  .lead{font-size:21px;color:var(--text2);max-width:760px;margin-bottom:8px}
+  .card{background:var(--card);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow);border:.5px solid var(--sep);margin:18px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:820px){.grid2,.grid3{grid-template-columns:1fr}}
+  .badge{display:inline-block;font-size:12.5px;font-weight:600;padding:4px 12px;border-radius:980px;margin-bottom:10px}
+  .b-green{background:rgba(52,199,89,.15);color:var(--green)}
+  .b-orange{background:rgba(255,159,10,.15);color:var(--orange)}
+  .b-blue{background:rgba(10,132,255,.15);color:var(--blue2)}
+  .b-red{background:rgba(255,59,48,.15);color:var(--red)}
+  .b-purple{background:rgba(175,82,222,.15);color:var(--purple)}
+  ul.clean{list-style:none;margin:10px 0}
+  ul.clean li{padding:8px 0 8px 30px;position:relative;border-bottom:.5px solid var(--sep)}
+  ul.clean li:last-child{border-bottom:none}
+  ul.clean li::before{content:"";position:absolute;left:4px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--blue)}
+  ul.check li::before{content:"✓";background:none;color:var(--green);font-weight:800;left:2px;top:7px;width:auto;height:auto}
+  ul.warn li::before{content:"⚠";background:none;left:0;top:8px;width:auto;height:auto}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:15px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:.5px solid var(--sep);vertical-align:top}
+  th{font-weight:600;color:var(--text2);font-size:13px;text-transform:uppercase;letter-spacing:.3px}
+  tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);white-space:nowrap}
+  code{font-family:var(--mono);background:var(--bg2);padding:2px 7px;border-radius:6px;font-size:.88em;border:.5px solid var(--sep)}
+  pre{background:var(--bg2);border:.5px solid var(--sep);border-radius:14px;padding:18px 20px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.6;margin:14px 0}
+  pre .c{color:var(--green)} pre .k{color:var(--purple)} pre .s{color:var(--orange)} pre .n{color:var(--blue2)}
+  .figure{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:.5px solid var(--sep);margin:22px 0;text-align:center}
+  .figure svg{width:100%;height:auto;max-width:100%}
+  .figcap{color:var(--text2);font-size:14px;margin-top:14px;font-weight:500}
+  .callout{border-left:3px solid var(--blue);background:var(--bg2);border-radius:0 14px 14px 0;padding:16px 20px;margin:18px 0}
+  .callout.warn{border-color:var(--orange)}
+  .callout.good{border-color:var(--green)}
+  .stat{font-size:44px;font-weight:700;letter-spacing:-.02em}
+  .stat-lbl{color:var(--text2);font-size:14px;font-weight:500;margin-top:4px}
+  .recommended{outline:2px solid var(--green);outline-offset:0}
+  footer{text-align:center;padding:60px 22px;color:var(--text2);font-size:13px;border-top:.5px solid var(--sep);margin-top:40px}
+  /* SVG text defaults */
+  .svgbg{fill:var(--bg2)} .svgcard{fill:var(--card)}
+  text{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif}
+  @media print{nav{display:none}section{page-break-inside:avoid}}
+
+  /* ====== MOBILE: font lớn + full màn hình ====== */
+  @media (max-width:640px){
+    body{font-size:18px}
+    /* full-bleed: dùng hết chiều ngang màn hình + safe-area cho máy có tai thỏ */
+    nav .nav-inner{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));gap:20px}
+    .nav-inner a{font-size:16px}
+    header.hero{padding:56px 20px 44px;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+    .hero .eyebrow{font-size:17px}
+    .hero h1{font-size:40px;line-height:1.08}
+    .hero p.sub{font-size:20px}
+    .pill{font-size:15px;padding:9px 18px}
+    section{padding:44px 16px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));scroll-margin-top:56px}
+    h2{font-size:30px;line-height:1.12}
+    h3{font-size:23px}
+    h4{font-size:19px}
+    p,li{font-size:18px}
+    .lead{font-size:20px}
+    /* card tràn sát mép để tận dụng tối đa màn hình nhỏ */
+    .card,.figure,.callout{margin-left:-4px;margin-right:-4px;padding:22px 18px;border-radius:18px}
+    .figure{padding:16px 10px}
+    .figcap{font-size:15px}
+    ul.clean li{font-size:18px;padding:10px 0 10px 30px}
+    table{font-size:16px}
+    th{font-size:13.5px}
+    th,td{padding:12px 10px}
+    td.num{font-size:15px}
+    pre{font-size:14px;padding:16px 14px;border-radius:12px}
+    code{font-size:.92em}
+    .stat{font-size:48px}
+    .stat-lbl{font-size:16px}
+    .badge{font-size:14px;padding:5px 13px}
+    /* SVG bản vẽ: cho phép cao hơn để chữ trong hình không bị bé */
+    .figure svg{min-height:200px}
+  }
+  @media (max-width:400px){
+    body{font-size:19px}
+    .hero h1{font-size:34px}
+    h2{font-size:27px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#top" class="brand">💧 Cây Nước Thông Minh</a>
+    <a href="#hientai">Hiện trạng</a>
+    <a href="#tongquan">Giải pháp</a>
+    <a href="#pa1">PA1 · Chân đế</a>
+    <a href="#pa2">PA2 · Mâm bình</a>
+    <a href="#dien">Điện tử</a>
+    <a href="#firmware">Firmware</a>
+    <a href="#mqtt">MQTT</a>
+    <a href="#sanxuat">Sản xuất</a>
+    <a href="#chiphi">Chi phí</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="eyebrow">Tài liệu thiết kế kỹ thuật · OEM</div>
+  <h1>Cây nước thông minh<br>đo lượng nước tích hợp</h1>
+  <p class="sub">Tích hợp cảm biến cân khối lượng ngay trong thân máy — người dùng chỉ cắm điện, úp bình, không cần đế rời hay hiệu chuẩn.</p>
+  <div class="tagbar">
+    <span class="pill">⚖️ Load cell + HX711</span>
+    <span class="pill">📡 ESP32 · WiFi · MQTT</span>
+    <span class="pill">🎯 ±0.1–0.2 L</span>
+    <span class="pill">🔌 Zero-setup</span>
+  </div>
+</header>
+
+<!-- ============ HIỆN TRẠNG ============ -->
+<section id="hientai">
+  <div class="sec-eyebrow">Phân tích hiện trạng</div>
+  <h2>Giải pháp đang dùng: đo lưu lượng turbine</h2>
+  <p class="lead">Suy ngược từ chính dữ liệu MQTT thiết bị <code>441D6430AAD0</code> bắn lên broker.</p>
+
+  <div class="figure">
+    <svg viewBox="0 0 900 300" role="img" aria-label="Sơ đồ turbine hiện tại">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="var(--text2)"/>
+        </marker>
+      </defs>
+      <!-- bottle -->
+      <path d="M120 40 h60 v20 l14 20 v70 h-88 v-70 l14 -20 Z" fill="none" stroke="var(--blue)" stroke-width="2.5"/>
+      <rect x="120" y="60" width="60" height="55" rx="4" fill="rgba(10,132,255,.12)"/>
+      <text x="150" y="30" text-anchor="middle" font-size="13" fill="var(--text2)">Bình 19L</text>
+      <!-- pipe -->
+      <rect x="150" y="150" width="14" height="60" fill="var(--text2)" opacity=".3"/>
+      <!-- turbine -->
+      <circle cx="157" cy="210" r="30" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+      <g stroke="var(--teal)" stroke-width="2">
+        <line x1="157" y1="190" x2="157" y2="230"/><line x1="137" y1="210" x2="177" y2="210"/>
+        <line x1="143" y1="196" x2="171" y2="224"/><line x1="171" y1="196" x2="143" y2="224"/>
+      </g>
+      <text x="157" y="262" text-anchor="middle" font-size="13" fill="var(--text)" font-weight="600">Turbine Hall</text>
+      <text x="157" y="279" text-anchor="middle" font-size="11.5" fill="var(--text2)">(cảm biến lưu lượng)</text>
+      <!-- pulses -->
+      <path d="M210 210 h10 v-24 h10 v24 h10 v-24 h10 v24 h10 v-24 h10 v24 h12" fill="none" stroke="var(--orange)" stroke-width="2.5"/>
+      <text x="255" y="178" text-anchor="middle" font-size="12" fill="var(--orange)" font-weight="600">xung</text>
+      <!-- esp -->
+      <rect x="330" y="175" width="120" height="70" rx="12" fill="var(--card)" stroke="var(--green)" stroke-width="2"/>
+      <text x="390" y="205" text-anchor="middle" font-size="15" fill="var(--text)" font-weight="600">ESP32</text>
+      <text x="390" y="225" text-anchor="middle" font-size="11.5" fill="var(--text2)">đếm xung + WiFi</text>
+      <line x1="298" y1="210" x2="326" y2="210" stroke="var(--text2)" stroke-width="2" marker-end="url(#arrow)"/>
+      <!-- formula -->
+      <rect x="500" y="100" width="360" height="130" rx="14" fill="var(--bg2)" stroke="var(--sep)"/>
+      <text x="520" y="130" font-size="13" fill="var(--text2)" font-weight="600">HỆ SỐ SUY RA TỪ DỮ LIỆU THẬT</text>
+      <text x="520" y="162" font-size="16" fill="var(--text)" font-family="var(--mono)">da_dung_lit = tong_so_xung / 375</text>
+      <text x="520" y="188" font-size="12.5" fill="var(--text2)" font-family="var(--mono)">378/375=1.008 · 508/375=1.355</text>
+      <text x="520" y="208" font-size="12.5" fill="var(--text2)" font-family="var(--mono)">547/375=1.459 · 329/375=0.877</text>
+      <line x1="458" y1="195" x2="496" y2="160" stroke="var(--text2)" stroke-width="2" marker-end="url(#arrow)"/>
+    </svg>
+    <div class="figcap">Hình 1 — Nguyên lý turbine: nước chảy → cánh quạt quay → sinh xung; firmware chia cho hệ số <b>K ≈ 375 xung/lít</b>.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-green">Ưu điểm</span>
+      <ul class="clean check">
+        <li>Đo tốt lượng nước lấy ra theo từng lần rót</li>
+        <li>Phần cứng rẻ, phổ biến</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge b-red">Hạn chế</span>
+      <ul class="clean warn">
+        <li>Sai số ở lưu lượng thấp (rót chậm / nhỏ giọt → sót xung)</li>
+        <li>Không biết <b>tồn kho thật</b> còn lại trong bình</li>
+        <li>Phụ thuộc hiệu chuẩn K theo từng sensor</li>
+        <li>Chi tiết cơ quay ngâm nước → mòn / đóng cặn, phải cắt vào đường ống</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TỔNG QUAN GIẢI PHÁP ============ -->
+<section id="tongquan">
+  <div class="sec-eyebrow">Giải pháp đề xuất</div>
+  <h2>Cân khối lượng — tích hợp trong thân máy</h2>
+  <p class="lead">1 lít nước ≈ 1 kg. Cân trực tiếp máy để biết chính xác nước còn lại, không đụng đường nước, giấu hoàn toàn bên trong.</p>
+
+  <div class="grid3">
+    <div class="card" style="text-align:center">
+      <div class="stat" style="color:var(--blue)">±0.1–0.2L</div>
+      <div class="stat-lbl">độ chính xác tồn kho</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="stat" style="color:var(--green)">0</div>
+      <div class="stat-lbl">thao tác setup của user</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="stat" style="color:var(--orange)">100%</div>
+      <div class="stat-lbl">tương thích broker &amp; topic cũ</div>
+    </div>
+  </div>
+
+  <h3>Kiến trúc tổng thể</h3>
+  <div class="figure">
+    <svg viewBox="0 0 980 260" role="img" aria-label="Kiến trúc hệ thống">
+      <defs>
+        <marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="var(--text2)"/></marker>
+      </defs>
+      <!-- load cells -->
+      <rect x="20" y="95" width="130" height="70" rx="12" fill="var(--card)" stroke="var(--teal)" stroke-width="2"/>
+      <text x="85" y="122" text-anchor="middle" font-size="14" font-weight="600" fill="var(--text)">4× Load cell</text>
+      <text x="85" y="142" text-anchor="middle" font-size="11.5" fill="var(--text2)">50 kg</text>
+      <!-- combinator+hx711 -->
+      <rect x="200" y="95" width="130" height="70" rx="12" fill="var(--card)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="265" y="118" text-anchor="middle" font-size="14" font-weight="600" fill="var(--text)">Combinator</text>
+      <text x="265" y="138" text-anchor="middle" font-size="12.5" fill="var(--text2)">+ HX711 (24-bit)</text>
+      <!-- esp -->
+      <rect x="380" y="95" width="130" height="70" rx="12" fill="var(--card)" stroke="var(--green)" stroke-width="2"/>
+      <text x="445" y="122" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">ESP32</text>
+      <text x="445" y="142" text-anchor="middle" font-size="11.5" fill="var(--text2)">WiFi + MQTT</text>
+      <!-- broker -->
+      <rect x="560" y="85" width="170" height="90" rx="12" fill="var(--card)" stroke="var(--blue)" stroke-width="2"/>
+      <text x="645" y="112" text-anchor="middle" font-size="14" font-weight="600" fill="var(--text)">Mosquitto</text>
+      <text x="645" y="131" text-anchor="middle" font-size="11" fill="var(--text2)">61.28.233.136:1883</text>
+      <text x="645" y="150" text-anchor="middle" font-size="10.5" font-family="var(--mono)" fill="var(--text2)">cay_nuoc/#</text>
+      <!-- dashboard -->
+      <rect x="780" y="95" width="180" height="70" rx="12" fill="var(--card)" stroke="var(--orange)" stroke-width="2"/>
+      <text x="870" y="122" text-anchor="middle" font-size="14" font-weight="600" fill="var(--text)">App / Dashboard</text>
+      <text x="870" y="142" text-anchor="middle" font-size="11.5" fill="var(--text2)">quản lý fleet</text>
+      <!-- arrows -->
+      <g stroke="var(--text2)" stroke-width="2" marker-end="url(#a2)">
+        <line x1="152" y1="130" x2="196" y2="130"/>
+        <line x1="332" y1="130" x2="376" y2="130"/>
+        <line x1="512" y1="130" x2="556" y2="130"/>
+        <line x1="732" y1="130" x2="776" y2="130"/>
+      </g>
+      <text x="174" y="122" text-anchor="middle" font-size="10" fill="var(--text2)">mV</text>
+      <text x="354" y="122" text-anchor="middle" font-size="10" fill="var(--text2)">GPIO</text>
+      <text x="534" y="122" text-anchor="middle" font-size="10" fill="var(--text2)">WiFi</text>
+      <text x="200" y="40" font-size="13" font-weight="600" fill="var(--text2)">Bên trong thân cây nước</text>
+      <rect x="10" y="55" width="520" height="130" rx="16" fill="none" stroke="var(--sep)" stroke-dasharray="6 5"/>
+    </svg>
+    <div class="figcap">Hình 2 — Toàn bộ phần đo nằm trong thân máy; dữ liệu đẩy lên đúng broker &amp; topic hiện có.</div>
+  </div>
+</section>
+
+<!-- ============ PHƯƠNG ÁN 1 ============ -->
+<section id="pa1">
+  <div class="sec-eyebrow">Phương án 1 · Khuyến nghị</div>
+  <h2>Cân ở chân đế <span class="badge b-green" style="font-size:14px;vertical-align:middle">★ NÊN DÙNG</span></h2>
+  <p class="lead">Thay 4 chân đế bằng 4 "chân load cell" giấu trong đáy tủ — cân toàn bộ khối lượng máy + bình. Không đụng đường nước.</p>
+
+  <div class="figure recommended">
+    <svg viewBox="0 0 900 560" role="img" aria-label="Bản vẽ mặt cắt cây nước cân chân đế">
+      <!-- bottle -->
+      <path d="M355 30 q0 -14 14 -14 h62 q14 0 14 14 v28 l20 26 v34 h-130 v-34 l20 -26 Z" fill="rgba(10,132,255,.12)" stroke="var(--blue)" stroke-width="2.5"/>
+      <text x="400" y="52" text-anchor="middle" font-size="13" fill="var(--blue)" font-weight="600">Bình 19L</text>
+      <text x="400" y="70" text-anchor="middle" font-size="10.5" fill="var(--text2)">(úp ngược)</text>
+      <!-- machine body -->
+      <rect x="300" y="118" width="200" height="360" rx="14" fill="var(--card)" stroke="var(--text2)" stroke-width="2"/>
+      <!-- top: reservoir/hot-cold -->
+      <rect x="320" y="135" width="160" height="70" rx="8" fill="rgba(255,59,48,.08)" stroke="var(--sep)"/>
+      <text x="400" y="165" text-anchor="middle" font-size="12.5" fill="var(--text)" font-weight="600">Khối nóng / lạnh</text>
+      <text x="400" y="183" text-anchor="middle" font-size="11" fill="var(--text2)">+ bồn chứa trong</text>
+      <!-- taps -->
+      <rect x="355" y="225" width="20" height="26" rx="3" fill="var(--red)" opacity=".7"/>
+      <rect x="425" y="225" width="20" height="26" rx="3" fill="var(--blue2)" opacity=".7"/>
+      <text x="400" y="270" text-anchor="middle" font-size="11" fill="var(--text2)">vòi nóng · lạnh</text>
+      <!-- cabinet (lower) with PCB -->
+      <rect x="320" y="300" width="160" height="150" rx="8" fill="var(--bg2)" stroke="var(--sep)"/>
+      <text x="400" y="322" text-anchor="middle" font-size="11.5" fill="var(--text2)">khoang tủ dưới</text>
+      <rect x="345" y="335" width="110" height="60" rx="8" fill="var(--card)" stroke="var(--green)" stroke-width="2"/>
+      <text x="400" y="360" text-anchor="middle" font-size="12" fill="var(--text)" font-weight="600">Bo mạch</text>
+      <text x="400" y="378" text-anchor="middle" font-size="10" fill="var(--text2)">ESP32·HX711·nguồn</text>
+      <!-- base plate -->
+      <rect x="290" y="478" width="220" height="14" rx="3" fill="var(--text2)" opacity=".35"/>
+      <text x="400" y="472" text-anchor="middle" font-size="10.5" fill="var(--text2)">tấm đáy khung máy</text>
+      <!-- load cell feet -->
+      <g>
+        <!-- foot left -->
+        <rect x="312" y="498" width="60" height="18" rx="4" fill="var(--teal)"/>
+        <rect x="320" y="516" width="44" height="16" rx="4" fill="var(--text2)" opacity=".5"/>
+        <text x="342" y="511" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">LC</text>
+        <!-- foot right -->
+        <rect x="428" y="498" width="60" height="18" rx="4" fill="var(--teal)"/>
+        <rect x="436" y="516" width="44" height="16" rx="4" fill="var(--text2)" opacity=".5"/>
+        <text x="458" y="511" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">LC</text>
+      </g>
+      <text x="400" y="548" text-anchor="middle" font-size="11.5" fill="var(--teal)" font-weight="600">4× load cell thay cho 4 chân đế (2 chân khuất phía sau)</text>
+      <!-- floor -->
+      <line x1="280" y1="532" x2="520" y2="532" stroke="var(--text2)" stroke-width="2.5"/>
+      <g stroke="var(--text2)" stroke-width="1.5"><line x1="290" y1="532" x2="284" y2="540"/><line x1="305" y1="532" x2="299" y2="540"/><line x1="320" y1="532" x2="314" y2="540"/><line x1="500" y1="532" x2="494" y2="540"/><line x1="485" y1="532" x2="479" y2="540"/></g>
+
+      <!-- callouts right side -->
+      <g font-size="13" fill="var(--text)">
+        <line x1="500" y1="170" x2="640" y2="170" stroke="var(--sep)" stroke-width="1.5"/>
+        <text x="650" y="166" font-weight="600">Trọng lượng bình</text>
+        <text x="650" y="184" font-size="11.5" fill="var(--text2)">dồn xuống qua thân máy</text>
+        <line x1="500" y1="365" x2="640" y2="365" stroke="var(--sep)" stroke-width="1.5"/>
+        <text x="650" y="361" font-weight="600">Điện tử giấu trong tủ</text>
+        <text x="650" y="379" font-size="11.5" fill="var(--text2)">khoang khô, cách ly ẩm</text>
+        <line x1="500" y1="507" x2="640" y2="507" stroke="var(--sep)" stroke-width="1.5"/>
+        <text x="650" y="503" font-weight="600">Chân = load cell</text>
+        <text x="650" y="521" font-size="11.5" fill="var(--text2)">nhìn như chân cao su thường</text>
+      </g>
+      <!-- force arrows -->
+      <g stroke="var(--orange)" stroke-width="2" opacity=".8">
+        <line x1="342" y1="455" x2="342" y2="495" marker-end="url(#a2)"/>
+        <line x1="458" y1="455" x2="458" y2="495" marker-end="url(#a2)"/>
+      </g>
+    </svg>
+    <div class="figcap">Hình 3 — Mặt cắt cây nước đứng: 4 load cell đặt tại 4 chân đế, bo mạch trong khoang tủ dưới. Toàn bộ trọng lượng đi đúng qua load cell.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-green">Vì sao hợp với cây đứng này</span>
+      <ul class="clean check">
+        <li>Không đụng gì đường nước → không có rủi ro lực bị "ăn" qua ống</li>
+        <li>Giấu hoàn toàn trong đáy máy → bề ngoài y hệt cây thường</li>
+        <li>Dây chuyền chỉ đổi cụm chân + thêm 1 bo mạch</li>
+        <li>Lấy điện ngay từ nguồn 220V của máy — không adapter rời</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge b-orange">Thách thức &amp; cách xử lý</span>
+      <ul class="clean warn">
+        <li>Bì lớn (~35 kg) → dùng 4× load cell 50 kg, HX711 24-bit vẫn phân giải cỡ gram</li>
+        <li>Rung block nén (chế độ lạnh) → lọc số + chốt khi ổn định</li>
+        <li>Trôi nền → tự động zero vào khoảng đứng yên ban đêm</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Chi tiết cơ khí cụm chân load cell</h3>
+  <div class="figure">
+    <svg viewBox="0 0 820 300" role="img" aria-label="Chi tiết chân load cell">
+      <!-- upper plate -->
+      <rect x="180" y="70" width="320" height="22" rx="4" fill="var(--text2)" opacity=".4"/>
+      <text x="340" y="60" text-anchor="middle" font-size="12.5" fill="var(--text)" font-weight="600">Tấm đáy khung máy (cố định đầu A của load cell)</text>
+      <!-- load cell bar -->
+      <rect x="230" y="128" width="220" height="30" rx="6" fill="var(--teal)"/>
+      <text x="340" y="148" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">LOAD CELL 50 kg</text>
+      <!-- bolt A (left up to upper plate) -->
+      <rect x="240" y="92" width="12" height="40" fill="var(--text)"/>
+      <text x="246" y="112" text-anchor="middle" font-size="9" fill="var(--bg2)"></text>
+      <text x="196" y="120" font-size="11" fill="var(--text2)">vít đầu A ↑</text>
+      <!-- bolt B (right down to base foot) -->
+      <rect x="428" y="156" width="12" height="40" fill="var(--text)"/>
+      <text x="470" y="186" font-size="11" fill="var(--text2)">↓ vít đầu B</text>
+      <!-- base foot -->
+      <rect x="180" y="196" width="320" height="22" rx="4" fill="var(--text2)" opacity=".55"/>
+      <rect x="300" y="218" width="80" height="20" rx="8" fill="#555"/>
+      <text x="340" y="252" text-anchor="middle" font-size="12.5" fill="var(--text)" font-weight="600">Đế chân tiếp sàn + chân cao su</text>
+      <!-- gap indicator -->
+      <line x1="540" y1="92" x2="540" y2="196" stroke="var(--orange)" stroke-width="1.5"/>
+      <line x1="535" y1="92" x2="545" y2="92" stroke="var(--orange)" stroke-width="1.5"/>
+      <line x1="535" y1="196" x2="545" y2="196" stroke="var(--orange)" stroke-width="1.5"/>
+      <text x="556" y="140" font-size="12" fill="var(--orange)" font-weight="600">KHE HỞ</text>
+      <text x="556" y="158" font-size="10.5" fill="var(--text2)">để load cell</text>
+      <text x="556" y="172" font-size="10.5" fill="var(--text2)">uốn tự do</text>
+      <!-- overload stop -->
+      <rect x="330" y="100" width="20" height="90" rx="3" fill="none" stroke="var(--red)" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="340" y="285" text-anchor="middle" font-size="11.5" fill="var(--red)" font-weight="600">Gờ chặn quá tải (giới hạn hành trình khi vận chuyển)</text>
+      <!-- note -->
+      <text x="690" y="100" font-size="12" fill="var(--text)" font-weight="600">Nguyên tắc vàng:</text>
+      <text x="690" y="122" font-size="11.5" fill="var(--text2)">Đầu A và đầu B bắt</text>
+      <text x="690" y="138" font-size="11.5" fill="var(--text2)">chéo 2 tấm, giữa</text>
+      <text x="690" y="154" font-size="11.5" fill="var(--text2)">PHẢI có khe hở —</text>
+      <text x="690" y="170" font-size="11.5" fill="var(--text2)">chạm đáy = đo sai.</text>
+    </svg>
+    <div class="figcap">Hình 4 — Chi tiết lắp: load cell bắt chéo 2 tấm, có khe hở để uốn, gờ chặn chống quá tải khi vận chuyển.</div>
+  </div>
+</section>
+
+<!-- ============ PHƯƠNG ÁN 2 ============ -->
+<section id="pa2">
+  <div class="sec-eyebrow">Phương án 2 · Cho model để bàn</div>
+  <h2>Cân ở mâm đỡ bình (trên đỉnh)</h2>
+  <p class="lead">Biến mâm đỡ bình thành "mâm nổi" đặt trên 1 load cell single-point — chỉ cân riêng cái bình. Phù hợp model counter-top không có khoang đáy.</p>
+
+  <div class="figure">
+    <svg viewBox="0 0 900 420" role="img" aria-label="Bản vẽ mâm nổi cân bình">
+      <!-- bottle -->
+      <path d="M345 20 q0 -12 12 -12 h66 q12 0 12 12 v30 l20 26 v40 h-130 v-40 l20 -26 Z" fill="rgba(10,132,255,.12)" stroke="var(--blue)" stroke-width="2.5"/>
+      <text x="400" y="45" text-anchor="middle" font-size="13" fill="var(--blue)" font-weight="600">Bình 19L</text>
+      <!-- floating seat -->
+      <rect x="300" y="118" width="200" height="26" rx="5" fill="var(--teal)" opacity=".85"/>
+      <text x="400" y="136" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">MÂM NỔI (đỡ bình)</text>
+      <!-- load cell single point -->
+      <rect x="360" y="150" width="80" height="26" rx="5" fill="var(--purple)"/>
+      <text x="400" y="168" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="700">Load cell</text>
+      <!-- fixed frame -->
+      <rect x="300" y="182" width="200" height="20" rx="4" fill="var(--text2)" opacity=".4"/>
+      <text x="400" y="222" text-anchor="middle" font-size="11.5" fill="var(--text2)">khung cố định của thân máy</text>
+      <!-- gap labels -->
+      <line x1="300" y1="146" x2="300" y2="150" stroke="var(--orange)"/>
+      <rect x="300" y="144" width="200" height="6" fill="none" stroke="var(--orange)" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="250" y="150" text-anchor="end" font-size="11" fill="var(--orange)" font-weight="600">khe hở ↔</text>
+      <!-- flexible hose -->
+      <path d="M430 100 q40 20 30 60 q-10 40 20 60 q20 14 10 50" fill="none" stroke="var(--green)" stroke-width="3" stroke-dasharray="1 0"/>
+      <circle cx="430" cy="100" r="5" fill="var(--green)"/>
+      <text x="560" y="150" font-size="12.5" fill="var(--green)" font-weight="600">Ống silicon MỀM, ngắn</text>
+      <text x="560" y="168" font-size="11.5" fill="var(--text2)">dẫn nước xuống bồn chứa —</text>
+      <text x="560" y="184" font-size="11.5" fill="var(--text2)">KHÔNG được "bắc cầu" lực.</text>
+      <text x="560" y="206" font-size="11.5" fill="var(--red)" font-weight="600">⚠ Ống cứng = đo sai hoàn toàn</text>
+      <!-- reservoir below -->
+      <rect x="340" y="250" width="120" height="60" rx="8" fill="var(--bg2)" stroke="var(--sep)"/>
+      <text x="400" y="285" text-anchor="middle" font-size="11.5" fill="var(--text2)">bồn chứa trong máy</text>
+      <!-- warning box -->
+      <rect x="120" y="250" width="200" height="120" rx="12" fill="var(--bg2)" stroke="var(--orange)" stroke-width="1.5"/>
+      <text x="140" y="276" font-size="13" fill="var(--orange)" font-weight="700">Chi tiết chết người</text>
+      <text x="140" y="300" font-size="11.5" fill="var(--text)">• Mâm nổi tách khe với</text>
+      <text x="140" y="318" font-size="11.5" fill="var(--text)">  thân, chỉ tì lên load cell</text>
+      <text x="140" y="340" font-size="11.5" fill="var(--text)">• Dây nước + gai cắm nắp</text>
+      <text x="140" y="358" font-size="11.5" fill="var(--text)">  phải mềm, không gánh lực</text>
+    </svg>
+    <div class="figcap">Hình 5 — Mâm nổi trên 1 load cell; đường nước dùng ống silicon mềm để không chia tải. Tải nhỏ (~25kg) → phân giải cao hơn.</div>
+  </div>
+
+  <table>
+    <tr><th>Tiêu chí</th><th>PA1 — Chân đế ★</th><th>PA2 — Mâm bình</th></tr>
+    <tr><td>Rủi ro đường nước</td><td>Không (không đụng nước)</td><td>Cao — cần ống mềm decouple</td></tr>
+    <tr><td>Tải cân</td><td class="num">~35 kg (máy+bình)</td><td class="num">~25 kg (chỉ bình)</td></tr>
+    <tr><td>Phân giải</td><td>Tốt (±0.1–0.2L)</td><td>Cao hơn</td></tr>
+    <tr><td>Độ khó lắp ráp</td><td>Thấp</td><td>Trung bình–cao</td></tr>
+    <tr><td>Phù hợp</td><td><b>Cây đứng (model này)</b></td><td>Model để bàn</td></tr>
+  </table>
+</section>
+
+<!-- ============ ĐIỆN TỬ ============ -->
+<section id="dien">
+  <div class="sec-eyebrow">Thiết kế điện</div>
+  <h2>Điện tử &amp; đấu nối</h2>
+  <p class="lead">Một bo mạch gộp đặt trong khoang khô; lấy điện trực tiếp từ nguồn 220V sẵn có của cây nước.</p>
+
+  <div class="figure">
+    <svg viewBox="0 0 900 360" role="img" aria-label="Sơ đồ đấu nối điện">
+      <!-- 4 load cells -->
+      <g>
+        <circle cx="70" cy="70" r="26" fill="none" stroke="var(--teal)" stroke-width="2.5"/><text x="70" y="75" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="600">LC1</text>
+        <circle cx="70" cy="140" r="26" fill="none" stroke="var(--teal)" stroke-width="2.5"/><text x="70" y="145" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="600">LC2</text>
+        <circle cx="70" cy="210" r="26" fill="none" stroke="var(--teal)" stroke-width="2.5"/><text x="70" y="215" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="600">LC3</text>
+        <circle cx="70" cy="280" r="26" fill="none" stroke="var(--teal)" stroke-width="2.5"/><text x="70" y="285" text-anchor="middle" font-size="11" fill="var(--text)" font-weight="600">LC4</text>
+      </g>
+      <!-- combinator -->
+      <rect x="180" y="110" width="110" height="130" rx="12" fill="var(--card)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="235" y="168" text-anchor="middle" font-size="13" fill="var(--text)" font-weight="600">Combinator</text>
+      <text x="235" y="188" text-anchor="middle" font-size="11" fill="var(--text2)">gộp 4→1</text>
+      <text x="235" y="204" text-anchor="middle" font-size="11" fill="var(--text2)">full bridge</text>
+      <g stroke="var(--teal)" stroke-width="2">
+        <path d="M96 70 H150 V140 H178" fill="none"/>
+        <path d="M96 140 H178" fill="none"/>
+        <path d="M96 210 H150 V175 H178" fill="none"/>
+        <path d="M96 280 H160 V210 H178" fill="none"/>
+      </g>
+      <!-- hx711 -->
+      <rect x="350" y="120" width="120" height="110" rx="12" fill="var(--card)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="410" y="170" text-anchor="middle" font-size="14" fill="var(--text)" font-weight="600">HX711</text>
+      <text x="410" y="190" text-anchor="middle" font-size="11" fill="var(--text2)">ADC 24-bit</text>
+      <path d="M292 175 H346" stroke="var(--purple)" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+      <text x="319" y="167" text-anchor="middle" font-size="9.5" fill="var(--text2)">E+/E-/A+/A-</text>
+      <!-- esp -->
+      <rect x="540" y="105" width="150" height="140" rx="14" fill="var(--card)" stroke="var(--green)" stroke-width="2"/>
+      <text x="615" y="150" text-anchor="middle" font-size="16" fill="var(--text)" font-weight="600">ESP32</text>
+      <text x="615" y="172" text-anchor="middle" font-size="11" fill="var(--text2)">WROOM-32</text>
+      <text x="615" y="192" text-anchor="middle" font-size="11" fill="var(--text2)">WiFi + MQTT</text>
+      <g stroke="var(--green)" stroke-width="2" fill="none">
+        <path d="M472 160 H536" marker-end="url(#a2)"/>
+      </g>
+      <text x="504" y="152" text-anchor="middle" font-size="9.5" fill="var(--text2)">DT→GPIO16</text>
+      <text x="504" y="178" text-anchor="middle" font-size="9.5" fill="var(--text2)">SCK→GPIO4</text>
+      <!-- power -->
+      <rect x="350" y="275" width="150" height="60" rx="12" fill="var(--card)" stroke="var(--orange)" stroke-width="2"/>
+      <text x="425" y="300" text-anchor="middle" font-size="12.5" fill="var(--text)" font-weight="600">AC-DC 220V→5V</text>
+      <text x="425" y="318" text-anchor="middle" font-size="10.5" fill="var(--text2)">Hi-Link · lấy từ nguồn máy</text>
+      <path d="M425 275 V248 H470" stroke="var(--orange)" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+      <path d="M500 305 H690 V247" stroke="var(--orange)" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+      <!-- AC in -->
+      <text x="300" y="305" text-anchor="middle" font-size="11" fill="var(--text2)">220V ⚡</text>
+      <path d="M318 305 H348" stroke="var(--orange)" stroke-width="2" fill="none" marker-end="url(#a2)"/>
+      <!-- antenna -->
+      <path d="M690 130 l24 -20 m-24 30 l30 -26" stroke="var(--blue)" stroke-width="2" fill="none"/>
+      <text x="735" y="118" font-size="11" fill="var(--blue)">WiFi</text>
+    </svg>
+    <div class="figcap">Hình 6 — 4 load cell → combinator → HX711 → ESP32; nguồn 5V lấy qua module AC-DC từ chính điện của cây nước.</div>
+  </div>
+
+  <table>
+    <tr><th>Thành phần</th><th>Thông số</th><th>Vai trò</th></tr>
+    <tr><td>ESP32 DevKit</td><td>WROOM-32, 3.3V</td><td>MCU + WiFi + MQTT</td></tr>
+    <tr><td>4× Load cell</td><td>50 kg, bar type</td><td>Cảm biến khối lượng</td></tr>
+    <tr><td>Combinator</td><td>4→1 full bridge</td><td>Cộng &amp; cân bằng tải</td></tr>
+    <tr><td>HX711</td><td>ADC 24-bit</td><td>Khuếch đại + số hóa mV</td></tr>
+    <tr><td>AC-DC module</td><td>Hi-Link 220V→5V/1A</td><td>Nguồn, lấy từ điện máy</td></tr>
+    <tr><td>RTC DS3231 <span class="badge b-blue">tùy chọn</span></td><td>pin backup</td><td>Giữ thời gian khi mất mạng</td></tr>
+  </table>
+  <div class="callout good"><b>Mẹo tích hợp:</b> HX711 cấp 5V cho load cell nhưng chân DATA/SCK giao tiếp 3.3V hợp với ESP32 → không cần level shifter. Thêm tụ 100nF + 10µF gần HX711 và dùng dây tín hiệu có bọc chống nhiễu.</div>
+</section>
+
+<!-- ============ FIRMWARE ============ -->
+<section id="firmware">
+  <div class="sec-eyebrow">Phần mềm thiết bị</div>
+  <h2>Firmware ESP32 — logic đo</h2>
+  <p class="lead">Tách khối lượng nước khỏi bì máy, lọc nhiễu, nhận diện thay bình, giữ nguyên giao thức MQTT cũ.</p>
+  <pre><span class="c">// 1. Đọc khối lượng + lọc nhiễu</span>
+<span class="k">float</span> kg_raw = hx711.get_units(<span class="n">10</span>);        <span class="c">// trung bình 10 mẫu</span>
+<span class="k">float</span> kg     = median_filter(kg_raw);        <span class="c">// lọc trung vị khử gai</span>
+
+<span class="c">// 2. Chống rung: chỉ chốt số khi ổn định vài giây</span>
+<span class="k">if</span> (on_dinh(kg, <span class="n">3</span>s)) kg_on_dinh = kg;
+
+<span class="c">// 3. Tính nước (bi_may = máy + bồn chứa + bình rỗng, hiệu chuẩn nhà máy)</span>
+<span class="k">float</span> nuoc        = kg_on_dinh - bi_may;
+<span class="k">float</span> con_lai_lit = max(nuoc, <span class="n">0</span>);
+<span class="k">float</span> phan_tram   = con_lai_lit / dung_tich_binh * <span class="n">100</span>;   <span class="c">// 19.0 L</span>
+
+<span class="c">// 4. Nhận diện thay bình: tăng đột ngột ~ +18..19 kg</span>
+<span class="k">if</span> (delta_on_dinh > NGUONG_THAY_BINH) {         <span class="c">// vd > +10 kg</span>
+    ghi_log(<span class="s">"DA_THAY_BINH"</span>);
+    con_lai_lit = do_duoc;                       <span class="c">// đặt mốc bình mới</span>
+}
+<span class="c">// Chỉ cộng "đã dùng" khi khối lượng GIẢM lúc ổn định</span>
+<span class="k">if</span> (delta < <span class="n">0</span>) da_dung_tong += -delta;
+
+<span class="c">// 5. Cảnh báo + đóng gói JSON -> publish "cay_nuoc/du_lieu"</span>
+<span class="k">bool</span> canh_bao = con_lai_lit < nguong_canh_bao_binh;  <span class="c">// < 2.0 L</span>
+</pre>
+  <div class="grid3">
+    <div class="card"><span class="badge b-blue">Chống nhiễu</span><p style="font-size:14px;margin:0">Lọc trung vị + trung bình trượt; phát hiện ổn định bỏ qua lúc đang rót / rung block nén.</p></div>
+    <div class="card"><span class="badge b-purple">Tự zero</span><p style="font-size:14px;margin:0">Bù trôi nền bằng auto-zero vào khoảng đứng yên ban đêm; lưu config vào NVS/flash.</p></div>
+    <div class="card"><span class="badge b-green">Tin cậy</span><p style="font-size:14px;margin:0">Buffer offline khi mất WiFi, gửi bù khi có mạng; OTA update firmware từ xa.</p></div>
+  </div>
+</section>
+
+<!-- ============ MQTT ============ -->
+<section id="mqtt">
+  <div class="sec-eyebrow">Giao thức</div>
+  <h2>MQTT — tương thích ngược 100%</h2>
+  <p class="lead">Giữ nguyên broker, topic và field cũ; chỉ bổ sung field cho phương pháp cân.</p>
+
+  <h3><code>cay_nuoc/du_lieu</code> — thiết bị bắn lên</h3>
+  <pre>{
+  <span class="s">"ma_thiet_bi"</span>: <span class="s">"441D6430AAD0"</span>,
+  <span class="s">"thoi_gian"</span>: <span class="s">"2026-10-14 15:40:00"</span>,
+  <span class="s">"phuong_phap"</span>: <span class="s">"LOAD_CELL"</span>,        <span class="c">// ← mới</span>
+  <span class="s">"khoi_luong_tong_kg"</span>: <span class="n">18.9</span>,        <span class="c">// ← mới</span>
+  <span class="s">"khoi_luong_bi_kg"</span>: <span class="n">0.9</span>,           <span class="c">// ← mới</span>
+  <span class="s">"dung_tich_binh"</span>: <span class="n">19.0</span>,
+  <span class="s">"con_lai_lit"</span>: <span class="n">18.0</span>,
+  <span class="s">"da_dung_lit"</span>: <span class="n">1.0</span>,
+  <span class="s">"phan_tram_con_lai"</span>: <span class="n">94.7</span>,
+  <span class="s">"canh_bao_nuoc"</span>: <span class="k">false</span>,
+  <span class="s">"trang_thai"</span>: <span class="s">"BINH_THUONG"</span>,
+  <span class="s">"on_dinh"</span>: <span class="k">true</span>,                   <span class="c">// ← mới</span>
+  <span class="s">"chu_ky_gio"</span>: <span class="n">0.1</span>
+}</pre>
+
+  <h3><code>cay_nuoc/dieu_khien</code> — lệnh nhận xuống</h3>
+  <table>
+    <tr><th>Lệnh</th><th>Tác dụng</th></tr>
+    <tr><td><code>lay_du_lieu</code></td><td>Lấy số liệu tức thì (giữ như cũ)</td></tr>
+    <tr><td><code>init</code></td><td>Khởi tạo lại (giữ như cũ)</td></tr>
+    <tr><td><code>tare</code> / <code>dat_bi</code></td><td>Đặt mốc bì khi lắp máy/bình rỗng</td></tr>
+    <tr><td><code>{"lenh":"HIEU_CHUAN","khoi_luong_biet":20.0}</code></td><td>Hiệu chuẩn với vật chuẩn đã biết</td></tr>
+    <tr><td><code>{"lenh":"SET","nguong_canh_bao_binh":2.0}</code></td><td>Đổi ngưỡng cảnh báo</td></tr>
+    <tr><td><code>reset_da_dung</code></td><td>Reset bộ đếm đã dùng</td></tr>
+  </table>
+  <div class="callout"><b><code>cay_nuoc/phan_hoi</code></b> giữ nguyên format cũ: <code>lenh</code> / <code>ket_qua</code> / <code>mo_ta</code>.</div>
+</section>
+
+<!-- ============ SẢN XUẤT ============ -->
+<section id="sanxuat">
+  <div class="sec-eyebrow">Sản xuất &amp; vận hành</div>
+  <h2>Hiệu chuẩn tại nhà máy — user không làm gì</h2>
+  <div class="figure">
+    <svg viewBox="0 0 900 180" role="img" aria-label="Quy trình hiệu chuẩn 3 bước">
+      <!-- step1 -->
+      <circle cx="120" cy="60" r="28" fill="var(--blue)"/><text x="120" y="68" text-anchor="middle" font-size="22" fill="#fff" font-weight="700">1</text>
+      <text x="120" y="112" text-anchor="middle" font-size="14" fill="var(--text)" font-weight="600">Tare bì</text>
+      <text x="120" y="132" text-anchor="middle" font-size="11.5" fill="var(--text2)">máy chưa bình</text>
+      <text x="120" y="148" text-anchor="middle" font-size="11.5" fill="var(--text2)">→ lưu bi_may</text>
+      <!-- step2 -->
+      <circle cx="450" cy="60" r="28" fill="var(--purple)"/><text x="450" y="68" text-anchor="middle" font-size="22" fill="#fff" font-weight="700">2</text>
+      <text x="450" y="112" text-anchor="middle" font-size="14" fill="var(--text)" font-weight="600">Vật chuẩn 20kg</text>
+      <text x="450" y="132" text-anchor="middle" font-size="11.5" fill="var(--text2)">tính hệ số quy đổi</text>
+      <text x="450" y="148" text-anchor="middle" font-size="11.5" fill="var(--text2)">→ lưu vào flash</text>
+      <!-- step3 -->
+      <circle cx="780" cy="60" r="28" fill="var(--green)"/><text x="780" y="68" text-anchor="middle" font-size="22" fill="#fff" font-weight="700">3</text>
+      <text x="780" y="112" text-anchor="middle" font-size="14" fill="var(--text)" font-weight="600">Dán QR / serial</text>
+      <text x="780" y="132" text-anchor="middle" font-size="11.5" fill="var(--text2)">gắn với MAC</text>
+      <text x="780" y="148" text-anchor="middle" font-size="11.5" fill="var(--text2)">→ quản lý fleet</text>
+      <!-- arrows -->
+      <path d="M152 60 H418" stroke="var(--text2)" stroke-width="2" marker-end="url(#a2)"/>
+      <path d="M482 60 H748" stroke="var(--text2)" stroke-width="2" marker-end="url(#a2)"/>
+    </svg>
+    <div class="figcap">Hình 7 — Hiệu chuẩn 1 lần cuối dây chuyền; mỗi máy xuất xưởng đã sẵn sàng.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <span class="badge b-green">Trải nghiệm người dùng</span>
+      <ul class="clean check">
+        <li>Cắm điện → úp bình → khai báo WiFi 1 lần trong app</li>
+        <li>Không thảm, không cân ngoài, không hiệu chuẩn</li>
+        <li>App báo tồn kho, cảnh báo sắp hết, lịch sử tiêu thụ</li>
+        <li>Thay bình tự nhận diện — không thao tác thủ công</li>
+      </ul>
+    </div>
+    <div class="card">
+      <span class="badge b-purple">Giá trị cho nhà cung cấp</span>
+      <ul class="clean check">
+        <li>Dashboard theo dõi toàn bộ fleet máy đã bán</li>
+        <li>Biết khách sắp hết → chủ động giao bình (doanh thu lặp lại)</li>
+        <li>Đối soát số bình đã giao qua nhận diện thay bình</li>
+        <li>Cảnh báo máy lỗi qua dữ liệu bất thường</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout warn"><b>Lưu ý khi đưa vào sản phẩm bán ra:</b> module AC-DC phải cách ly tốt + cầu chì, đi dây tách khỏi khoang ẩm (giữ chứng nhận an toàn điện); test EMC/rung khi block nén chạy; gờ chặn bảo vệ load cell khi vận chuyển; chọn load cell chống ẩm (bọc keo) cho độ bền dài hạn.</div>
+</section>
+
+<!-- ============ CHI PHÍ ============ -->
+<section id="chiphi">
+  <div class="sec-eyebrow">Chi phí</div>
+  <h2>Chi phí tăng thêm / máy</h2>
+  <table>
+    <tr><th>Hạng mục</th><th>Khoảng giá (lẻ)</th></tr>
+    <tr><td>4× load cell 50 kg + combinator</td><td class="num">120–200k</td></tr>
+    <tr><td>Bo ESP32 + HX711</td><td class="num">90–150k</td></tr>
+    <tr><td>Nguồn AC-DC 5V (Hi-Link)</td><td class="num">40–70k</td></tr>
+    <tr><td>Chân đế cơ khí + hộp che</td><td class="num">50–150k</td></tr>
+    <tr><td style="font-weight:700">Tổng tăng/máy</td><td class="num" style="font-weight:700;color:var(--blue)">~300–570k VND</td></tr>
+  </table>
+  <div class="callout good">Ở quy mô sản xuất (đặt PCB gộp, mua số lượng lớn), chi phí này giảm đáng kể — thừa sức gộp vào giá bán của dòng "cây nước thông minh" như một điểm khác biệt thương mại.</div>
+</section>
+
+<footer>
+  <p>Tài liệu thiết kế kỹ thuật · Cây nước thông minh đo lượng nước · 2026-10-14</p>
+  <p style="margin-top:6px">Broker tham chiếu: 61.28.233.136:1883 · Thiết bị: 441D6430AAD0 · Phong cách: Apple Human Interface</p>
+</footer>
+
+</body>
+</html>
