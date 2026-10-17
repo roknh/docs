@@ -139,7 +139,10 @@ td:first-child{font-weight:600;white-space:nowrap}
 .card .head button{background:none;border:0;color:var(--text);font-size:20px;cursor:pointer;width:32px;height:32px}
 .card .body{padding:24px 16px 32px;min-height:180px}
 .card .q{font-size:28px;font-weight:300;line-height:1.3}
-.card .a{margin-top:16px;font-size:18px;color:var(--text2);min-height:28px}
+.card .a{margin-top:16px;font-size:18px;color:var(--text2);min-height:28px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card .a .speak-btn{background:none;border:1px solid var(--border);border-radius:4px;width:32px;height:32px;cursor:pointer;color:var(--text2);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.card .a .speak-btn:hover{background:var(--layer-hover);color:var(--text)}
+.card .a .speak-btn.speaking{color:var(--interactive);border-color:var(--interactive)}
 .card .foot{display:flex;gap:1px;background:var(--border)}
 .card .foot .btn{flex:1}
 
@@ -558,7 +561,39 @@ function nextCard(){
   $("#cardA").textContent = "";
 }
 $("#flash").addEventListener("click", () => { deck = []; nextCard(); $("#modal").classList.add("open"); $("#reveal").focus(); });
-$("#reveal").addEventListener("click", () => { if(current) $("#cardA").textContent = state.hideEn ? current.en : current.vi; });
+function speakEN(text){
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US"; u.rate = 0.9;
+  const voices = speechSynthesis.getVoices();
+  const enVoice = voices.find(v => v.lang.startsWith("en") && v.name.includes("Samantha"))
+    || voices.find(v => v.lang.startsWith("en-US"))
+    || voices.find(v => v.lang.startsWith("en"));
+  if(enVoice) u.voice = enVoice;
+  speechSynthesis.speak(u);
+  return u;
+}
+$("#reveal").addEventListener("click", () => {
+  if(!current) return;
+  const isViFirst = state.hideEn;
+  const answer = isViFirst ? current.en : current.vi;
+  if(isViFirst){
+    $("#cardA").innerHTML = "";
+    const span = document.createElement("span");
+    span.textContent = answer;
+    const btn = document.createElement("button");
+    btn.className = "speak-btn";
+    btn.innerHTML = "&#9654;";
+    btn.title = "Phát âm";
+    btn.addEventListener("click", (e) => { e.stopPropagation(); speakEN(answer); });
+    $("#cardA").appendChild(span);
+    $("#cardA").appendChild(btn);
+    speakEN(answer);
+  } else {
+    $("#cardA").textContent = answer;
+  }
+});
 $("#next").addEventListener("click", nextCard);
 $("#gotIt").addEventListener("click", () => {
   if(current){ learned.add(current.key); store.set("en-learned", [...learned]); renderBank(); }
