@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nghiên cứu Thị trường Nam khoa Việt Nam 2026</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-tertiary: #e8e8ed;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --card-bg: #ffffff;
+  --card-border: rgba(0,0,0,0.04);
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.12), 0 16px 40px rgba(0,0,0,0.08);
+  --divider: rgba(0,0,0,0.06);
+  --nav-bg: rgba(255,255,255,0.72);
+  --badge-green: #34c759;
+  --badge-orange: #ff9500;
+  --badge-red: #ff3b30;
+  --badge-blue: #007aff;
+  --badge-purple: #af52de;
+  --badge-teal: #5ac8fa;
+  --gradient-start: #fbfbfd;
+  --gradient-end: #f5f5f7;
+  --hero-gradient: linear-gradient(180deg, #1d1d1f 0%, #2c2c2e 100%);
+  --stat-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --bg-secondary: #1c1c1e;
+    --bg-tertiary: #2c2c2e;
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --text-tertiary: #86868b;
+    --card-bg: #1c1c1e;
+    --card-border: rgba(255,255,255,0.08);
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.2);
+    --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.4), 0 16px 40px rgba(0,0,0,0.3);
+    --divider: rgba(255,255,255,0.08);
+    --nav-bg: rgba(0,0,0,0.72);
+    --gradient-start: #000000;
+    --gradient-end: #1c1c1e;
+    --hero-gradient: linear-gradient(180deg, #000000 0%, #1c1c1e 100%);
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.52;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--nav-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid var(--divider);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav .nav-inner {
+  max-width: 1024px;
+  width: 100%;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+nav .nav-title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
+nav .nav-links {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+nav .nav-links::-webkit-scrollbar { display: none; }
+
+nav .nav-links a {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 980px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+nav .nav-links a:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* Hero */
+.hero {
+  background: var(--hero-gradient);
+  padding: 140px 22px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--divider);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 980px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 24px;
+  backdrop-filter: blur(8px);
+}
+
+.hero-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--badge-green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero h1 {
+  font-size: clamp(40px, 7vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #ffffff;
+  max-width: 800px;
+  margin: 0 auto 20px;
+}
+
+.hero .subtitle {
+  font-size: clamp(17px, 2.5vw, 21px);
+  color: rgba(255,255,255,0.6);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.381;
+  font-weight: 400;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat .number {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #5ac8fa, #007aff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-stat .label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Container */
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+/* Sections */
+section {
+  padding: 80px 0;
+  border-bottom: 0.5px solid var(--divider);
+}
+
+section:last-child { border-bottom: none; }
+
+.section-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 20px;
+  color: var(--text-secondary);
+  line-height: 1.47;
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+/* Cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.card:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.card h3 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.52;
+}
+
+.card .card-stat {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+/* Stat Tiles */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.stat-tile {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+
+.stat-tile .value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.stat-tile .desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  line-height: 1.42;
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  margin: 24px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  font-size: 16px;
+}
+
+thead {
+  background: var(--bg-secondary);
+}
+
+th {
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--divider);
+}
+
+td {
+  padding: 14px 18px;
+  border-bottom: 0.5px solid var(--divider);
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+
+tr:hover { background: var(--bg-secondary); }
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 980px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.badge-green { background: rgba(52,199,89,0.12); color: #34c759; }
+.badge-orange { background: rgba(255,149,0,0.12); color: #ff9500; }
+.badge-red { background: rgba(255,59,48,0.12); color: #ff3b30; }
+.badge-blue { background: rgba(0,122,255,0.12); color: #007aff; }
+.badge-purple { background: rgba(175,82,222,0.12); color: #af52de; }
+.badge-teal { background: rgba(90,200,250,0.12); color: #32ade6; }
+
+/* Score bar */
+.score-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-bar .bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-bar .bar .fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--accent);
+  transition: width 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.score-bar .score-label {
+  font-size: 15px;
+  font-weight: 600;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* Ranking Card */
+.rank-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.rank-card:hover {
+  box-shadow: var(--card-shadow-hover);
+}
+
+.rank-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.rank-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 17px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.rank-1 { background: linear-gradient(135deg, #ffd700, #ffaa00); }
+.rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); }
+.rank-3 { background: linear-gradient(135deg, #cd7f32, #b8690e); }
+.rank-default { background: var(--bg-tertiary); color: var(--text-secondary); }
+
+.rank-info h3 {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+.rank-info .location {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.rank-score {
+  margin-left: auto;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rank-score .total {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.rank-score .max {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.rank-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.rank-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rank-detail-item .label {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.rank-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 0.5px solid var(--divider);
+}
+
+/* Progress Ring */
+.progress-ring {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.progress-ring svg {
+  transform: rotate(-90deg);
+}
+
+.progress-ring .ring-bg {
+  fill: none;
+  stroke: var(--bg-tertiary);
+  stroke-width: 4;
+}
+
+.progress-ring .ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 157;
+  transition: stroke-dashoffset 1.5s ease;
+}
+
+/* Bar Chart */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label {
+  width: 140px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: right;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.bar-track {
+  flex: 1;
+  height: 28px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  transition: width 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+  min-width: fit-content;
+}
+
+/* Opportunity Cards */
+.opp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.opp-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.opp-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.opp-card.priority-1::before { background: linear-gradient(90deg, #ff3b30, #ff9500); }
+.opp-card.priority-2::before { background: linear-gradient(90deg, #ff9500, #ffcc00); }
+.opp-card.priority-3::before { background: linear-gradient(90deg, #34c759, #30d158); }
+.opp-card.priority-4::before { background: linear-gradient(90deg, #007aff, #5ac8fa); }
+.opp-card.priority-5::before { background: linear-gradient(90deg, #af52de, #bf5af2); }
+
+.opp-number {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--bg-tertiary);
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  line-height: 1;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--divider);
+  border-radius: 1px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -25px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--bg);
+}
+
+.timeline-item.active::before {
+  background: var(--accent);
+}
+
+.timeline-item h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.timeline-item p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.47;
+}
+
+/* Comparison Grid */
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.compare-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+}
+
+.compare-card .flag { font-size: 32px; margin-bottom: 8px; }
+.compare-card h4 { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+
+.compare-card .compare-items {
+  text-align: left;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Tech Badge Row */
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 980px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border: 1px solid var(--card-border);
+}
+
+.tech-badge.active {
+  background: rgba(0,122,255,0.08);
+  color: var(--accent);
+  border-color: rgba(0,122,255,0.2);
+}
+
+/* Footer */
+footer {
+  background: var(--bg-secondary);
+  padding: 48px 22px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  line-height: 1.6;
+}
+
+footer .sources {
+  max-width: 640px;
+  margin: 16px auto 0;
+}
+
+/* Content blocks */
+.content-block {
+  margin: 32px 0;
+}
+
+.content-block h4 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.content-block p, .content-block li {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.58;
+}
+
+.content-block ul {
+  padding-left: 20px;
+}
+
+.content-block li {
+  margin-bottom: 6px;
+}
+
+.highlight-box {
+  background: linear-gradient(135deg, rgba(0,122,255,0.04), rgba(90,200,250,0.06));
+  border: 1px solid rgba(0,122,255,0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.highlight-box.warning {
+  background: linear-gradient(135deg, rgba(255,149,0,0.04), rgba(255,204,0,0.06));
+  border-color: rgba(255,149,0,0.15);
+}
+
+.callout {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  line-height: 1.33;
+  margin: 32px 0;
+  padding-left: 20px;
+  border-left: 3px solid var(--accent);
+}
+
+/* Two-col */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Animate on scroll */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive */
+/* ===== TABLET ===== */
+@media (max-width: 734px) {
+  body { font-size: 18px; line-height: 1.55; }
+
+  .hero { padding: 110px 20px 60px; }
+  .hero-stats { gap: 24px; }
+  .hero-stat .label { font-size: 14px; }
+
+  section { padding: 56px 0; }
+  .container { padding: 0 20px; }
+  .section-eyebrow { font-size: 14px; }
+  .section-subtitle { font-size: 18px; margin-bottom: 32px; }
+
+  .card-grid { grid-template-columns: 1fr; gap: 16px; }
+  .card { padding: 24px; }
+  .card h3 { font-size: 20px; }
+  .card p { font-size: 16px; line-height: 1.55; }
+
+  .stat-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .stat-tile .value { font-size: 28px; }
+  .stat-tile .desc { font-size: 14px; }
+
+  .rank-header { flex-wrap: wrap; }
+  .rank-score { margin-left: 56px; }
+  .rank-details { grid-template-columns: repeat(2, 1fr); }
+  .rank-info h3 { font-size: 20px; }
+  .rank-info .location { font-size: 15px; }
+
+  .two-col { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .opp-grid { grid-template-columns: 1fr; }
+  nav .nav-links { display: none; }
+  nav .nav-title { font-size: 16px; }
+
+  .bar-label { width: 100px; font-size: 14px; }
+  .bar-fill { font-size: 14px; }
+
+  table { font-size: 16px; }
+  th { font-size: 13px; padding: 12px 14px; }
+  td { padding: 12px 14px; font-size: 16px; }
+
+  .badge { font-size: 13px; padding: 4px 12px; }
+  .rank-highlights { gap: 8px; }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 480px) {
+  body { font-size: 19px; line-height: 1.58; }
+
+  nav { height: 56px; }
+  nav { height: auto; min-height: 56px; padding: 8px 0; }
+  nav .nav-inner { flex-direction: column; gap: 6px; padding: 0 18px; }
+  nav .nav-title { font-size: 17px; font-weight: 700; }
+  nav .nav-links { display: flex !important; gap: 2px; width: 100%; justify-content: center; }
+  nav .nav-links a { font-size: 13px; padding: 6px 10px; }
+
+  .hero { padding: 120px 18px 48px; }
+  .hero h1 { font-size: 34px; line-height: 1.1; margin-bottom: 16px; }
+  .hero .subtitle { font-size: 18px; line-height: 1.5; margin-bottom: 32px; }
+  .hero-badge { font-size: 14px; padding: 8px 16px; }
+  .hero-stats { gap: 16px; flex-direction: column; align-items: center; }
+  .hero-stat .number { font-size: 32px; }
+  .hero-stat .label { font-size: 15px; letter-spacing: 0.02em; }
+
+  .container { padding: 0 18px; }
+
+  section { padding: 48px 0; }
+  .section-eyebrow { font-size: 15px; margin-bottom: 10px; }
+  .section-title { font-size: 28px; line-height: 1.15; margin-bottom: 12px; }
+  .section-subtitle { font-size: 18px; line-height: 1.5; margin-bottom: 28px; }
+
+  .card-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 24px; }
+  .card { padding: 22px; border-radius: 16px; }
+  .card-icon { width: 48px; height: 48px; font-size: 22px; margin-bottom: 14px; }
+  .card h3 { font-size: 21px; margin-bottom: 8px; }
+  .card p { font-size: 17px; line-height: 1.58; }
+  .card .card-stat { font-size: 30px; }
+
+  .stat-row { grid-template-columns: 1fr; gap: 12px; }
+  .stat-tile { padding: 22px; border-radius: 14px; }
+  .stat-tile .value { font-size: 30px; }
+  .stat-tile .desc { font-size: 15px; margin-top: 6px; line-height: 1.45; }
+
+  .table-wrapper { border-radius: 14px; margin: 20px 0; }
+  table { font-size: 16px; }
+  th { font-size: 13px; padding: 12px 14px; }
+  td { padding: 14px; font-size: 16px; line-height: 1.5; }
+
+  .badge { font-size: 14px; padding: 5px 14px; }
+
+  .rank-card { padding: 20px; border-radius: 16px; margin-bottom: 14px; }
+  .rank-header { flex-direction: column; gap: 12px; margin-bottom: 16px; }
+  .rank-number { width: 44px; height: 44px; font-size: 19px; border-radius: 14px; }
+  .rank-info h3 { font-size: 22px; }
+  .rank-info .location { font-size: 16px; line-height: 1.45; }
+  .rank-score { margin-left: 0; text-align: left; display: flex; align-items: baseline; gap: 4px; }
+  .rank-score .total { font-size: 32px; }
+  .rank-score .max { font-size: 15px; }
+  .rank-details { grid-template-columns: 1fr; gap: 10px; }
+  .rank-detail-item .label { font-size: 14px; }
+  .score-bar .score-label { font-size: 17px; }
+  .score-bar .bar { height: 8px; }
+  .rank-highlights { gap: 8px; margin-top: 14px; padding-top: 14px; }
+
+  .opp-grid { grid-template-columns: 1fr; gap: 14px; }
+  .opp-card { padding: 22px; border-radius: 16px; }
+  .opp-card h3 { font-size: 21px; }
+  .opp-card p { font-size: 17px !important; line-height: 1.55 !important; }
+  .opp-number { font-size: 40px; }
+
+  .compare-grid { grid-template-columns: 1fr; gap: 14px; }
+  .compare-card { padding: 22px; border-radius: 14px; }
+  .compare-card .flag { font-size: 36px; }
+  .compare-card h4 { font-size: 20px; }
+  .compare-card .compare-items { font-size: 16px; line-height: 1.6; }
+
+  .bar-chart { gap: 14px; }
+  .bar-item { flex-direction: column; gap: 6px; }
+  .bar-label { width: 100%; text-align: left; font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .bar-track { height: 34px; border-radius: 10px; }
+  .bar-fill { font-size: 15px; padding-left: 14px; border-radius: 10px; }
+
+  .timeline { padding-left: 28px; }
+  .timeline-item h4 { font-size: 19px; }
+  .timeline-item p { font-size: 17px; line-height: 1.55; }
+  .timeline-item .badge { font-size: 13px; }
+
+  .tech-badges { gap: 8px; }
+  .tech-badge { font-size: 15px; padding: 6px 14px; }
+
+  .highlight-box { padding: 22px; border-radius: 14px; }
+  .highlight-box h4 { font-size: 19px; }
+  .highlight-box p { font-size: 17px !important; line-height: 1.55 !important; }
+
+  .callout { font-size: 20px; line-height: 1.4; padding-left: 16px; margin: 28px 0; }
+  .callout div { font-size: 15px !important; }
+
+  .content-block h4 { font-size: 19px; }
+  .content-block p, .content-block li { font-size: 17px; line-height: 1.58; }
+
+  h3[style] { font-size: 22px !important; }
+  p[style*="font-size:15px"] { font-size: 17px !important; line-height: 1.55 !important; }
+  p[style*="font-size:14px"] { font-size: 16px !important; }
+  ul[style*="font-size:14px"] { font-size: 16px !important; }
+  ul[style*="font-size:14px"] li { font-size: 16px !important; line-height: 1.65 !important; }
+  div[style*="font-size:13px"] { font-size: 15px !important; }
+  div[style*="font-size:21px"] { font-size: 22px !important; }
+  small { font-size: 14px !important; }
+
+  footer { padding: 40px 18px; font-size: 15px; line-height: 1.6; }
+  footer p[style*="font-size:17px"] { font-size: 20px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-title">Nam khoa VN 2026</div>
+    <div class="nav-links">
+      <a href="#market">Thị trường</a>
+      <a href="#demand">Nhu cầu</a>
+      <a href="#opportunity">Cơ hội</a>
+      <a href="#ranking">Top 10</a>
+      <a href="#benchmark">Quốc tế</a>
+      <a href="#blueprint">Blueprint</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    Nghiên cứu thị trường &middot; 70+ nguồn &middot; 10/2026
+  </div>
+  <h1>Thị trường Nam khoa Việt Nam</h1>
+  <p class="subtitle">Phân tích toàn diện: quy mô thị trường, đánh giá Top 10 cơ sở, benchmark quốc tế và blueprint mô hình chuyên nghiệp.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="number">~4 tỷ $</div>
+      <div class="label">Thị trường uropathy VN</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">50 triệu</div>
+      <div class="label">Nam giới Việt Nam</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">70-80%</div>
+      <div class="label">Chưa tiếp cận dịch vụ</div>
+    </div>
+    <div class="hero-stat">
+      <div class="number">10-11%</div>
+      <div class="label">CAGR y tế VN</div>
+    </div>
+  </div>
+</header>
+
+<!-- Section 1: Market Overview -->
+<section id="market">
+  <div class="container">
+    <div class="section-eyebrow">Tổng quan</div>
+    <h2 class="section-title">Quy mô & Tăng trưởng</h2>
+    <p class="section-subtitle">Thị trường y tế Việt Nam đang tăng trưởng đều ~10-11%/năm, với phân khúc tiết niệu-nam khoa là một trong những lĩnh vực tiềm năng nhất.</p>
+
+    <div class="stat-row fade-in">
+      <div class="stat-tile">
+        <div class="value">11,85 tỷ $</div>
+        <div class="desc">Y tế tổng thể VN 2025</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">22,93 tỷ $</div>
+        <div class="desc">Dự báo 2032</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">1,5 triệu</div>
+        <div class="desc">Ca bệnh uropathy/năm</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">400+</div>
+        <div class="desc">Bệnh viện tư nhân</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:48px;margin-bottom:8px;">Thị trường sức khỏe nam giới toàn cầu</h3>
+    <p style="font-size:15px;color:var(--text-secondary);margin-bottom:24px;">Đạt 1,27 nghìn tỷ USD (2023), dự kiến 2,57 nghìn tỷ USD vào 2029 — CAGR 12,44%</p>
+
+    <div class="stat-row fade-in">
+      <div class="stat-tile">
+        <div class="value">>2,3 tỷ $</div>
+        <div class="desc">TRT toàn cầu</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">2,92 tỷ $</div>
+        <div class="desc">Thuốc trị ED (2024)</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">2,35 tỷ $</div>
+        <div class="desc">Hims & Hers (2025)</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">40%</div>
+        <div class="desc">Nam >45t thiếu testosterone<br><small style="color:var(--badge-red)">chỉ ~10% được điều trị</small></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:48px;margin-bottom:24px;">So sánh khu vực</h3>
+    <div class="compare-grid fade-in">
+      <div class="compare-card">
+        <div class="flag">🇸🇬</div>
+        <h4>Singapore</h4>
+        <div class="compare-items">
+          <strong>Thế mạnh:</strong> Robot (90% prostatectomy dùng Da Vinci), ung thư học<br>
+          <strong>Chi phí:</strong> Cao nhất khu vực<br>
+          <strong>Vị thế:</strong> Premium quality center
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="flag">🇰🇷</div>
+        <h4>Hàn Quốc</h4>
+        <div class="compare-items">
+          <strong>Thế mạnh:</strong> Công nghệ dẫn đầu, AI, proton therapy<br>
+          <strong>Chi phí:</strong> Trung bình-cao<br>
+          <strong>Vị thế:</strong> Innovation hub
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="flag">🇹🇭</div>
+        <h4>Thái Lan</h4>
+        <div class="compare-items">
+          <strong>Thế mạnh:</strong> Du lịch y tế, luxury-wellness<br>
+          <strong>Chi phí:</strong> Thấp hơn phương Tây<br>
+          <strong>Vị thế:</strong> Toàn diện + nghỉ dưỡng
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="flag">🇻🇳</div>
+        <h4>Việt Nam</h4>
+        <div class="compare-items">
+          <strong>Thế mạnh:</strong> Chi phí thấp, BS đào tạo quốc tế<br>
+          <strong>Chi phí:</strong> Thấp nhất 4 nước<br>
+          <strong>Vị thế:</strong> <span class="badge badge-green">Tiềm năng lớn</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: Demand Drivers -->
+<section id="demand" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="section-eyebrow">Nhu cầu</div>
+    <h2 class="section-title">Động lực tăng trưởng</h2>
+    <p class="section-subtitle">Dân số già hóa, bệnh lý lối sống, và nhận thức tăng — nhu cầu nam khoa đang bùng nổ nhưng phần lớn chưa được đáp ứng.</p>
+
+    <div class="card-grid fade-in">
+      <div class="card">
+        <div class="card-icon" style="background:rgba(255,59,48,0.1);">👤</div>
+        <div class="card-stat">~50 triệu</div>
+        <h3>Nam giới Việt Nam</h3>
+        <p>>11 triệu người trên 60 tuổi, xu hướng già hóa tăng tốc. Đô thị hóa + bệnh lý lối sống gia tăng.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(255,149,0,0.1);">🔬</div>
+        <div class="card-stat">7,7%</div>
+        <h3>Vô sinh hiếm muộn</h3>
+        <p>~1 triệu cặp/năm. 40-50% nguyên nhân từ nam giới. Tinh trùng toàn cầu giảm 1,1%/năm.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(175,82,222,0.1);">💊</div>
+        <div class="card-stat">50-67%</div>
+        <h3>Rối loạn cương dương</h3>
+        <p>WHO dự báo 322 triệu nam giới mắc ED toàn cầu vào 2025. 68% bệnh nhân cao huyết áp có ED.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(52,199,89,0.1);">🛡️</div>
+        <div class="card-stat">45-70%</div>
+        <h3>Phì đại tuyến tiền liệt</h3>
+        <p>Nam giới VN tuổi 45-75 mắc BPH. >80% ở nhóm >80 tuổi. Bộ Y tế đã ban hành QĐ hướng dẫn điều trị.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(0,122,255,0.1);">⚠️</div>
+        <div class="card-stat">6.248 ca</div>
+        <h3>Ung thư tuyến tiền liệt</h3>
+        <p>Mắc mới/năm (GLOBOCAN 2022). ~80% phát hiện ở giai đoạn muộn. >10.000 ca ung thư tiết niệu/năm.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(255,59,48,0.1);">🦠</div>
+        <div class="card-stat">~1 triệu</div>
+        <h3>STI mỗi năm</h3>
+        <p>Ước tính thực tế (báo cáo chính thức: 300.000). >30% thuộc độ tuổi 16-24. HPV phổ biến nhất.</p>
+      </div>
+    </div>
+
+    <div class="callout fade-in" style="margin-top:48px;">
+      "70-80% nam giới Việt Nam chưa từng được tiếp cận dịch vụ chăm sóc nam khoa đúng nghĩa"
+      <div style="font-size:14px;font-weight:400;color:var(--text-tertiary);margin-top:8px;">— Hội nghị Nam học & Y học Giới tính, BV Đại học Y Hà Nội</div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: Opportunities -->
+<section id="opportunity">
+  <div class="container">
+    <div class="section-eyebrow">Cơ hội</div>
+    <h2 class="section-title">Khoảng trống & Cơ hội chiến lược</h2>
+    <p class="section-subtitle">5 cơ hội lớn chưa có ai khai thác bài bản tại Việt Nam.</p>
+
+    <div class="opp-grid fade-in">
+      <div class="opp-card priority-1">
+        <div class="opp-number">01</div>
+        <div class="card-icon" style="background:rgba(255,59,48,0.1);">📱</div>
+        <h3>Telemedicine / Digital Nam khoa</h3>
+        <p style="font-size:15px;color:var(--text-secondary);margin-top:8px;">Thị trường trắng hoàn toàn. Y tế số VN: 2,4 tỷ USD → 5,66 tỷ USD (2031). Giải quyết trực tiếp rào cản kỳ thị. Internet 98% (2026).</p>
+        <div style="margin-top:12px;"><span class="badge badge-red">Ưu tiên cao nhất</span></div>
+      </div>
+      <div class="opp-card priority-2">
+        <div class="opp-number">02</div>
+        <div class="card-icon" style="background:rgba(255,149,0,0.1);">🏥</div>
+        <h3>Chuỗi phòng khám Privacy-First</h3>
+        <p style="font-size:15px;color:var(--text-secondary);margin-top:8px;">Chưa có đơn vị nào xây dựng bài bản. Định vị: không phán xét, bảo mật, trải nghiệm premium — tạo khác biệt lớn.</p>
+        <div style="margin-top:12px;"><span class="badge badge-orange">Category creation</span></div>
+      </div>
+      <div class="opp-card priority-3">
+        <div class="opp-number">03</div>
+        <div class="card-icon" style="background:rgba(52,199,89,0.1);">🩺</div>
+        <h3>Gói tầm soát định kỳ</h3>
+        <p style="font-size:15px;color:var(--text-secondary);margin-top:8px;">BPH 45-70%, UTTTL 80% phát hiện muộn, ED 50%+ — nhu cầu tầm soát phòng ngừa cực lớn nhưng chưa được chủ động tiếp cận.</p>
+        <div style="margin-top:12px;"><span class="badge badge-green">Recurring revenue</span></div>
+      </div>
+      <div class="opp-card priority-4">
+        <div class="opp-number">04</div>
+        <div class="card-icon" style="background:rgba(0,122,255,0.1);">✈️</div>
+        <h3>Du lịch y tế nam khoa</h3>
+        <p style="font-size:15px;color:var(--text-secondary);margin-top:8px;">Chi phí VN chỉ 1/10 Mỹ, ~50% Thái Lan. ~300.000 khách quốc tế/năm. Thị trường dự báo 4 tỷ USD (2033).</p>
+        <div style="margin-top:12px;"><span class="badge badge-blue">Lợi thế chi phí 10x</span></div>
+      </div>
+      <div class="opp-card priority-5">
+        <div class="opp-number">05</div>
+        <div class="card-icon" style="background:rgba(175,82,222,0.1);">💰</div>
+        <h3>Tài chính điều trị vô sinh</h3>
+        <p style="font-size:15px;color:var(--text-secondary);margin-top:8px;">BHYT không chi trả IVF. ~1 triệu cặp/năm tự chi trả. OOP chiếm ~40% chi tiêu y tế. Gói trả góp = cơ hội lớn.</p>
+        <div style="margin-top:12px;"><span class="badge badge-purple">Khoảng trống BHYT</span></div>
+      </div>
+    </div>
+
+    <div class="highlight-box warning fade-in" style="margin-top:40px;">
+      <h4 style="font-size:17px;font-weight:600;margin-bottom:8px;">⚠️ Rào cản kỳ thị — Điểm đau lớn nhất</h4>
+      <p style="font-size:15px;color:var(--text-secondary);line-height:1.58;">Nam giới mang tâm lý xấu hổ, mặc cảm → ngại đi khám, tự tìm thuốc trên mạng. Nhiều bệnh nhân bị khai thác tại phòng khám tư kém chất lượng — "vẽ" thêm bệnh trên bàn phẫu thuật. Mô hình privacy-first sẽ giải quyết trực tiếp vấn đề này.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Top 10 Ranking -->
+<section id="ranking" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="section-eyebrow">Đánh giá</div>
+    <h2 class="section-title">Top 10 cơ sở nam khoa uy tín nhất</h2>
+    <p class="section-subtitle">Đánh giá theo 8 tiêu chí: Chuyên môn, Cơ sở vật chất, Dịch vụ, Công nghệ, Trải nghiệm, Giá cả, Chứng nhận, Nghiên cứu & Đào tạo.</p>
+
+    <!-- #1 Tam Anh -->
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-1">1</div>
+        <div class="rank-info">
+          <h3>BV Đa khoa Tâm Anh</h3>
+          <div class="location">HCM: 2B Phổ Quang, Tân Bình &middot; HN: 108 Hoàng Như Tiếp, Long Biên</div>
+        </div>
+        <div class="rank-score">
+          <div class="total">72</div>
+          <div class="max">/ 80</div>
+        </div>
+      </div>
+      <div class="rank-details">
+        <div class="rank-detail-item">
+          <div class="label">Chuyên môn</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div>
+        </div>
+        <div class="rank-detail-item">
+          <div class="label">Cơ sở vật chất</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div>
+        </div>
+        <div class="rank-detail-item">
+          <div class="label">Dịch vụ</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div>
+        </div>
+        <div class="rank-detail-item">
+          <div class="label">Công nghệ</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div>
+        </div>
+        <div class="rank-detail-item">
+          <div class="label">Trải nghiệm</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:80%;background:var(--accent);"></div></div><div class="score-label">8</div></div>
+        </div>
+        <div class="rank-detail-item">
+          <div class="label">Giá cả</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:70%;background:var(--accent);"></div></div><div class="score-label">7</div></div>
+        </div>
+        <div class="rank-detail-item">
+          <div class="label">Chứng nhận</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:80%;background:var(--accent);"></div></div><div class="score-label">8</div></div>
+        </div>
+        <div class="rank-detail-item">
+          <div class="label">Nghiên cứu</div>
+          <div class="score-bar"><div class="bar"><div class="fill" style="width:90%;background:var(--accent);"></div></div><div class="score-label">9</div></div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">2x Da Vinci Xi — duy nhất VN</span>
+        <span class="badge badge-blue">Proctor ASEAN duy nhất</span>
+        <span class="badge badge-purple">IVF 78,7% thai tích lũy</span>
+        <span class="badge badge-orange">#1 BYT Hà Nội 2024</span>
+        <span class="badge badge-teal">Kỷ lục 100 ca robot/năm</span>
+      </div>
+    </div>
+
+    <!-- #2 Vinmec -->
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-2">2</div>
+        <div class="rank-info">
+          <h3>Vinmec International Hospital</h3>
+          <div class="location">Times City (HN) &middot; Central Park (HCM) &middot; Smart City &middot; Hải Phòng &middot; Đà Nẵng</div>
+        </div>
+        <div class="rank-score">
+          <div class="total">71</div>
+          <div class="max">/ 80</div>
+        </div>
+      </div>
+      <div class="rank-details">
+        <div class="rank-detail-item"><div class="label">Chuyên môn</div><div class="score-bar"><div class="bar"><div class="fill" style="width:90%;background:var(--accent);"></div></div><div class="score-label">9</div></div></div>
+        <div class="rank-detail-item"><div class="label">Cơ sở vật chất</div><div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div></div>
+        <div class="rank-detail-item"><div class="label">Dịch vụ</div><div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div></div>
+        <div class="rank-detail-item"><div class="label">Công nghệ</div><div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div></div>
+        <div class="rank-detail-item"><div class="label">Trải nghiệm</div><div class="score-bar"><div class="bar"><div class="fill" style="width:80%;background:var(--accent);"></div></div><div class="score-label">8</div></div></div>
+        <div class="rank-detail-item"><div class="label">Giá cả</div><div class="score-bar"><div class="bar"><div class="fill" style="width:60%;background:var(--badge-orange);"></div></div><div class="score-label">6</div></div></div>
+        <div class="rank-detail-item"><div class="label">Chứng nhận</div><div class="score-bar"><div class="bar"><div class="fill" style="width:100%;background:linear-gradient(90deg,#34c759,#30d158);"></div></div><div class="score-label">10</div></div></div>
+        <div class="rank-detail-item"><div class="label">Nghiên cứu</div><div class="score-bar"><div class="bar"><div class="fill" style="width:80%;background:var(--accent);"></div></div><div class="score-label">8</div></div></div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">JCI x4 — đầu tiên tại VN</span>
+        <span class="badge badge-blue">JCI + CAP duy nhất VN</span>
+        <span class="badge badge-purple">CT 640-slice hàng đầu TG</span>
+        <span class="badge badge-teal">5 sao Newsweek 2026</span>
+      </div>
+    </div>
+
+    <!-- #3 DH Y HN -->
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-3">3</div>
+        <div class="rank-info">
+          <h3>BV Đại học Y Hà Nội</h3>
+          <div class="location">1 Tôn Thất Tùng, Đống Đa, Hà Nội</div>
+        </div>
+        <div class="rank-score">
+          <div class="total">69</div>
+          <div class="max">/ 80</div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">Vi phẫu nam học #1 HN</span>
+        <span class="badge badge-blue">Da Vinci Xi (6/2026)</span>
+        <span class="badge badge-purple">70-80% thành công giãn TMTT</span>
+        <span class="badge badge-teal">"Chất lượng tư giá công"</span>
+      </div>
+    </div>
+
+    <!-- #4 FV -->
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-default">4</div>
+        <div class="rank-info">
+          <h3>BV FV Hospital</h3>
+          <div class="location">6 Nguyễn Lương Bằng, Phú Mỹ Hưng, Q.7, TPHCM</div>
+        </div>
+        <div class="rank-score">
+          <div class="total">68</div>
+          <div class="max">/ 80</div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">JCI x4 liên tiếp — duy nhất miền Nam</span>
+        <span class="badge badge-blue">Da Vinci Xi (3/2026)</span>
+        <span class="badge badge-purple">Chuẩn quốc tế, đón khách ngoại</span>
+      </div>
+    </div>
+
+    <!-- #4 DHYD HCM -->
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-default">4</div>
+        <div class="rank-info">
+          <h3>BV Đại học Y Dược TPHCM</h3>
+          <div class="location">215 Hồng Bàng, Q.5, TPHCM</div>
+        </div>
+        <div class="rank-score">
+          <div class="total">68</div>
+          <div class="max">/ 80</div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">Học thuật hàng đầu quốc gia</span>
+        <span class="badge badge-blue">Nội soi 3D tiên phong VN</span>
+        <span class="badge badge-purple">Giải thưởng xuất sắc 2015-2023</span>
+      </div>
+    </div>
+
+    <!-- #6-10 compact -->
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-default">6</div>
+        <div class="rank-info">
+          <h3>BV Bình Dân</h3>
+          <div class="location">326-328 Điện Biên Phủ, Q.10, TPHCM &middot; <strong>Điểm: 66/80</strong></div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">Tiên phong nam khoa VN (1992)</span>
+        <span class="badge badge-blue">4.278 ca robot — kỷ lục VN</span>
+        <span class="badge badge-teal">TT đào tạo robot đầu tiên VN</span>
+      </div>
+    </div>
+
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-default">7</div>
+        <div class="rank-info">
+          <h3>BV Việt Đức</h3>
+          <div class="location">16-18 Phủ Doãn, Hoàn Kiếm, Hà Nội &middot; <strong>Điểm: 65/80</strong></div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">TT Nam học đầu tiên VN (Bộ Y tế)</span>
+        <span class="badge badge-purple">Ca ghép dương vật đầu tiên VN (2026)</span>
+      </div>
+    </div>
+
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-default">8</div>
+        <div class="rank-info">
+          <h3>BV Quân y 108</h3>
+          <div class="location">1 Trần Hưng Đạo, HBT, Hà Nội &middot; <strong>Điểm: 63/80</strong></div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-blue">Hạng đặc biệt quân đội</span>
+        <span class="badge badge-teal">Ít đông, sạch, robot từ 2010</span>
+      </div>
+    </div>
+
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-default">9</div>
+        <div class="rank-info">
+          <h3>BV Bạch Mai</h3>
+          <div class="location">78 Giải Phóng, Đống Đa, Hà Nội &middot; <strong>Điểm: 62/80</strong></div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">Tuyến cuối quốc gia</span>
+        <span class="badge badge-blue">8.000 ca PT / 3 năm</span>
+        <span class="badge badge-purple">Rezum (công nghệ mới)</span>
+      </div>
+    </div>
+
+    <div class="rank-card fade-in">
+      <div class="rank-header">
+        <div class="rank-number rank-default">10</div>
+        <div class="rank-info">
+          <h3>BV Nam học & Hiếm muộn Hà Nội</h3>
+          <div class="location">431 Tam Trinh, Hoàng Mai, Hà Nội &middot; <strong>Điểm: 57/80</strong></div>
+        </div>
+      </div>
+      <div class="rank-highlights">
+        <span class="badge badge-green">RTAC (Úc) 5 năm liên tiếp</span>
+        <span class="badge badge-blue">IVF chuyên sâu, 60-75% thành công</span>
+        <span class="badge badge-teal">Giá cạnh tranh nhất</span>
+      </div>
+    </div>
+
+    <!-- Recommendation by need -->
+    <h3 style="font-size:21px;font-weight:600;margin-top:48px;margin-bottom:24px;">Khuyến nghị theo nhu cầu</h3>
+    <div class="table-wrapper fade-in">
+      <table>
+        <thead><tr><th>Nhu cầu</th><th>#1</th><th>#2</th><th>#3</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Phẫu thuật robot</strong></td><td>Tâm Anh</td><td>Bình Dân</td><td>FV</td></tr>
+          <tr><td><strong>Chuẩn quốc tế / Khách ngoại</strong></td><td>FV</td><td>Vinmec</td><td>—</td></tr>
+          <tr><td><strong>Vô sinh nam / IVF</strong></td><td>Tâm Anh</td><td>AF Hanoi</td><td>Vinmec</td></tr>
+          <tr><td><strong>Vi phẫu giãn TMTT</strong></td><td>ĐH Y HN</td><td>Việt Đức</td><td>—</td></tr>
+          <tr><td><strong>BHYT / Ngân sách hợp lý</strong></td><td>Bình Dân</td><td>ĐH Y HN</td><td>ĐHYD HCM</td></tr>
+          <tr><td><strong>Ung thư phức tạp</strong></td><td>ĐHYD HCM</td><td>Bạch Mai</td><td>Tâm Anh</td></tr>
+          <tr><td><strong>Ít chờ đợi nhất</strong></td><td>Vinmec (7p)</td><td>Quân y 108</td><td>FV</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Section 5: International Benchmarks -->
+<section id="benchmark">
+  <div class="container">
+    <div class="section-eyebrow">Benchmark quốc tế</div>
+    <h2 class="section-title">Mô hình đẳng cấp thế giới</h2>
+    <p class="section-subtitle">Học gì từ Cleveland Clinic, Bumrungrad, Samsung Medical Center và các mô hình kinh doanh đang thắng?</p>
+
+    <div class="card-grid fade-in">
+      <div class="card">
+        <div class="card-icon" style="background:rgba(0,122,255,0.1);">🏆</div>
+        <h3>Cleveland Clinic</h3>
+        <p><span class="badge badge-blue">#1 Thế giới — Urology</span></p>
+        <ul style="margin-top:12px;font-size:14px;color:var(--text-secondary);padding-left:16px;line-height:1.7;">
+          <li>Tái cấu trúc quanh hệ thống cơ quan, không theo chuyên khoa đơn lẻ</li>
+          <li>Men's Health Center tích hợp: tiết niệu + tim mạch + nội tiết + tâm lý</li>
+          <li>One-stop-shop: đầy đủ chuyên gia trong 1 lần khám</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(255,149,0,0.1);">🇹🇭</div>
+        <h3>Bumrungrad</h3>
+        <p><span class="badge badge-orange">#1 Thái Lan — 6 năm liên tiếp</span></p>
+        <ul style="margin-top:12px;font-size:14px;color:var(--text-secondary);padding-left:16px;line-height:1.7;">
+          <li>JCI từ 2002 (đầu tiên châu Á), tái chứng nhận 7 lần</li>
+          <li>22.500+ bệnh nhân ngoại trú/năm tại Urology Centre</li>
+          <li>>95% phẫu thuật xâm lấn tối thiểu</li>
+          <li>Benchmark thực tế nhất cho Việt Nam</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(175,82,222,0.1);">🇰🇷</div>
+        <h3>Samsung & Asan MC</h3>
+        <p><span class="badge badge-purple">Top 6 TG — Urology</span></p>
+        <ul style="margin-top:12px;font-size:14px;color:var(--text-secondary);padding-left:16px;line-height:1.7;">
+          <li>Samsung: dẫn đầu Aquablation (robot waterjet)</li>
+          <li>Asan: BV lớn nhất Hàn Quốc, #6 toàn cầu</li>
+          <li>Hạ tầng kỹ thuật cao + đào tạo BS quốc tế</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:8px;">Mô hình kinh doanh đang thắng</h3>
+    <p style="font-size:15px;color:var(--text-secondary);margin-bottom:24px;">3 mô hình chính đang tạo ra doanh thu lớn trong men's health toàn cầu.</p>
+
+    <div class="card-grid fade-in">
+      <div class="card">
+        <div class="card-stat" style="color:var(--badge-green);">$1,8M</div>
+        <h3>Franchise Clinic</h3>
+        <p><strong>GameDay Men's Health</strong> — 400+ phòng khám, tăng 1.400% YoY (2023). Staffing tinh gọn 4-5 người. Lợi nhuận $627K/năm.</p>
+      </div>
+      <div class="card">
+        <div class="card-stat" style="color:var(--badge-blue);">$2,35B</div>
+        <h3>Telehealth / Digital</h3>
+        <p><strong>Hims & Hers</strong> — $2,35 tỷ doanh thu 2025, lợi nhuận ròng $128M. <strong>Ro</strong> — $598M (tăng 66% YoY). Zero overhead cơ sở vật chất.</p>
+      </div>
+      <div class="card">
+        <div class="card-stat" style="color:var(--badge-purple);">3-5x LTV</div>
+        <h3>Concierge Membership</h3>
+        <p>Cá nhân hóa, membership $99-799/tháng. $299/tháng × 18 tháng = <strong>$5.382 LTV</strong> vs $300-500/năm (one-time visit). Margin cao nhất.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:8px;">Xu hướng công nghệ 2024-2026</h3>
+    <p style="font-size:15px;color:var(--text-secondary);margin-bottom:24px;">Những công nghệ đang thay đổi ngành nam khoa toàn cầu.</p>
+
+    <div class="table-wrapper fade-in">
+      <table>
+        <thead><tr><th>Công nghệ</th><th>Tình trạng</th><th>Tiềm năng</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>AI phân tích tinh trùng</strong><br><small style="color:var(--text-tertiary)">CASA + Deep Learning, 94% accuracy</small></td>
+            <td><span class="badge badge-green">Sẵn sàng</span></td>
+            <td>Home testing, smartphone-based</td>
+          </tr>
+          <tr>
+            <td><strong>Da Vinci 5</strong><br><small style="color:var(--text-tertiary)">Force feedback technology lần đầu tiên</small></td>
+            <td><span class="badge badge-green">Ra mắt 2024</span></td>
+            <td>Phẫu thuật chính xác hơn</td>
+          </tr>
+          <tr>
+            <td><strong>Telesurgery</strong><br><small style="color:var(--text-tertiary)">Rome → Bắc Kinh, 8.000 km thành công</small></td>
+            <td><span class="badge badge-blue">Thử nghiệm</span></td>
+            <td>Chuyên gia hỗ trợ từ xa</td>
+          </tr>
+          <tr>
+            <td><strong>LI-ESWT (Shockwave cho ED)</strong><br><small style="color:var(--text-tertiary)">Tân tạo mạch máu, off-label FDA</small></td>
+            <td><span class="badge badge-orange">Đang phổ biến</span></td>
+            <td>ROI nhanh, chi phí thấp</td>
+          </tr>
+          <tr>
+            <td><strong>PRP (Platelet-Rich Plasma)</strong><br><small style="color:var(--text-tertiary)">Meta-analysis 12 RCT tích cực</small></td>
+            <td><span class="badge badge-orange">Experimental</span></td>
+            <td>Premium add-on dịch vụ</td>
+          </tr>
+          <tr>
+            <td><strong>Aquablation</strong><br><small style="color:var(--text-tertiary)">Robot waterjet, giữ nguyên chức năng tình dục</small></td>
+            <td><span class="badge badge-green">FDA approved</span></td>
+            <td>Thay thế TURP cho BPH</td>
+          </tr>
+          <tr>
+            <td><strong>Penile Prosthesis</strong><br><small style="color:var(--text-tertiary)">No-touch + coated, nhiễm trùng chỉ 0,46%</small></td>
+            <td><span class="badge badge-green">Gold standard</span></td>
+            <td>>90% hài lòng (severe ED)</td>
+          </tr>
+          <tr>
+            <td><strong>AI ung thư tuyến tiền liệt</strong><br><small style="color:var(--text-tertiary)">3D AR + AI giảm margin từ 39% → 22%</small></td>
+            <td><span class="badge badge-blue">Tích hợp robot</span></td>
+            <td>Cải thiện kết quả phẫu thuật</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Section 6: Blueprint -->
+<section id="blueprint" style="background:var(--bg-secondary);">
+  <div class="container">
+    <div class="section-eyebrow">Blueprint</div>
+    <h2 class="section-title">Mô hình cho Việt Nam</h2>
+    <p class="section-subtitle">Vietnam's First Integrated Men's Health Center — Kết hợp DNA của Cleveland Clinic + Bumrungrad + GameDay + Hims & Hers.</p>
+
+    <div class="highlight-box fade-in">
+      <div style="text-align:center;">
+        <h3 style="font-size:24px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px;">Định vị</h3>
+        <p style="font-size:17px;color:var(--text-secondary);max-width:500px;margin:0 auto;line-height:1.47;">Chuyên nghiệp, không phán xét, tuyệt đối bảo mật. Công nghệ AI & robot chuẩn quốc tế. One-stop: từ chẩn đoán đến điều trị.</p>
+        <div style="margin-top:16px;font-size:21px;font-weight:600;letter-spacing:-0.01em;color:var(--accent);">"For men who take their health seriously"</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:48px;margin-bottom:24px;">Dịch vụ cốt lõi</h3>
+    <div class="card-grid fade-in">
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">❤️</div>
+        <h3>Sức khỏe tình dục</h3>
+        <p>ED, xuất tinh sớm, Peyronie's, low libido</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🔬</div>
+        <h3>Sinh sản nam</h3>
+        <p>Tinh dịch đồ, vô sinh, ICSI/IVF, vasectomy reversal</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">💉</div>
+        <h3>Nội tiết nam</h3>
+        <p>Testosterone deficiency, TRT, tiểu đường</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🛡️</div>
+        <h3>Tiết niệu</h3>
+        <p>BPH, sỏi thận, ung thư tuyến tiền liệt</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🧠</div>
+        <h3>Sức khỏe tâm thần</h3>
+        <p>Stress, lo âu, performance anxiety</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:8px;">🔍</div>
+        <h3>Phòng ngừa</h3>
+        <p>Tầm soát ung thư, tim mạch, metabolic</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:24px;">Chiến lược giá</h3>
+    <p style="font-size:15px;color:var(--text-secondary);margin-bottom:16px;">Premium nhưng accessible — đắt hơn công, rẻ hơn đáng kể so với Thái Lan / Singapore / Hàn Quốc.</p>
+    <div class="table-wrapper fade-in">
+      <table>
+        <thead><tr><th>Dịch vụ</th><th>Giá đề xuất (VND)</th></tr></thead>
+        <tbody>
+          <tr><td>Consultation bác sĩ nam khoa</td><td><strong>500.000 — 1.000.000</strong></td></tr>
+          <tr><td>Tinh dịch đồ + AI analysis</td><td><strong>1.500.000 — 2.500.000</strong></td></tr>
+          <tr><td>Hormone panel đầy đủ</td><td><strong>2.000.000 — 3.500.000</strong></td></tr>
+          <tr><td>LI-ESWT (1 session)</td><td><strong>3.000.000 — 5.000.000</strong></td></tr>
+          <tr><td>PRP injection</td><td><strong>5.000.000 — 8.000.000</strong></td></tr>
+          <tr><td>Membership Basic / tháng</td><td><strong>1.500.000 — 2.500.000</strong></td></tr>
+          <tr><td>Membership Premium / tháng</td><td><strong>4.000.000 — 7.000.000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:24px;">Technology Stack</h3>
+    <div class="card-grid fade-in">
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;color:var(--badge-green);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:12px;">Must-have &middot; $100-200K</div>
+        <div class="tech-badges">
+          <span class="tech-badge active">CASA AI</span>
+          <span class="tech-badge active">Duplex Doppler US</span>
+          <span class="tech-badge active">LI-ESWT</span>
+          <span class="tech-badge active">HIS/EHR Cloud</span>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;color:var(--badge-orange);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:12px;">Should-have &middot; $200-500K</div>
+        <div class="tech-badges">
+          <span class="tech-badge">Da Vinci (liên kết)</span>
+          <span class="tech-badge">AI Prostate Screening</span>
+          <span class="tech-badge">Genetic Testing</span>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:600;color:var(--badge-purple);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:12px;">Could-have &middot; $500K+</div>
+        <div class="tech-badges">
+          <span class="tech-badge">IVF/ICSI Lab</span>
+          <span class="tech-badge">Telesurgery</span>
+          <span class="tech-badge">Advanced Genomics</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:24px;">Nguồn doanh thu</h3>
+    <div class="bar-chart fade-in">
+      <div class="bar-item">
+        <div class="bar-label">Procedural</div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#34c759,#30d158);">Rất cao</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Membership</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#007aff,#5ac8fa);">Cao & ổn định</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Telemedicine</div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#af52de,#bf5af2);">Scalable</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Lab Services</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#ff9500,#ffcc00);">Recurring</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Medications</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#ff3b30,#ff6961);">Recurring</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">Consultation</div>
+        <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--bg-tertiary);color:var(--text-secondary);">Core</div></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:24px;">Roadmap 3 giai đoạn</h3>
+    <div class="timeline fade-in">
+      <div class="timeline-item active">
+        <h4>Phase 1 — Establish & Prove <span class="badge badge-green" style="margin-left:8px;">Năm 1-2</span></h4>
+        <p>1 clinic tại TPHCM (~300-500m²). Core services: consultation + diagnosis + LI-ESWT + PRP + TRT + tinh dịch đồ AI. Target: 200-300 bệnh nhân/tháng, 50 memberships. KPI: Google rating ≥4.8, NPS ≥70.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Phase 2 — Scale <span class="badge badge-blue" style="margin-left:8px;">Năm 3-4</span></h4>
+        <p>Clinic thứ 2 tại Hà Nội. Thêm surgical, IVF/ICSI partnership. Launch telehealth/app. Corporate wellness partnerships. Target: 500+ bệnh nhân/tháng, 200+ memberships.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Phase 3 — Lead <span class="badge badge-purple" style="margin-left:8px;">Năm 5+</span></h4>
+        <p>JCI accreditation. Y tế du lịch quốc tế. Mở rộng Đà Nẵng. Training center cho bác sĩ Đông Nam Á. Nghiên cứu lâm sàng, publication quốc tế.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:24px;">Khung pháp lý & Đầu tư</h3>
+    <div class="stat-row fade-in">
+      <div class="stat-tile">
+        <div class="value" style="font-size:24px;">$200K</div>
+        <div class="desc">Specialty Center<br>(phù hợp nhất để bắt đầu)</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value" style="font-size:24px;">$2M</div>
+        <div class="desc">Polyclinic<br>(mở rộng giai đoạn sau)</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value" style="font-size:24px;">$20M</div>
+        <div class="desc">Hospital<br>(long-term vision)</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value" style="font-size:24px;">100%</div>
+        <div class="desc">Foreign ownership<br>được phép tại VN</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:8px;">Marketing — Vượt qua rào cản kỳ thị</h3>
+    <p style="font-size:15px;color:var(--text-secondary);margin-bottom:24px;">3 nguyên tắc cốt lõi cho marketing nam khoa.</p>
+    <div class="card-grid fade-in">
+      <div class="card">
+        <h3 style="font-size:15px;">Speak to Confidence</h3>
+        <p style="margin-top:8px;">
+          <span style="color:var(--badge-red);">✕</span> "Điều trị rối loạn cương dương hiệu quả"<br>
+          <span style="color:var(--badge-green);">✓</span> "Lấy lại sự tự tin trong phòng ngủ — trong 4 tuần"
+        </p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:15px;">Privacy là sản phẩm</h3>
+        <p style="margin-top:8px;">Website, thiết kế phòng khám, cách tiếp đón — tất cả đều phải communicate sự riêng tư. Nam giới nghiên cứu rất kỹ trước khi đặt lịch.</p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:15px;">Search Intent Marketing</h3>
+        <p style="margin-top:8px;">Google Ads theo từ khóa tìm kiếm (high-intent). SEO + Local SEO dài hạn. Bác sĩ KOL trên YouTube/TikTok. Corporate wellness partnerships.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:21px;font-weight:600;margin-top:56px;margin-bottom:24px;">Rủi ro & Giải pháp</h3>
+    <div class="table-wrapper fade-in">
+      <table>
+        <thead><tr><th>Rủi ro</th><th>Mức độ</th><th>Biện pháp</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Thiếu BS chuyên khoa</strong></td><td><span class="badge badge-red">Cao</span></td><td>Fellowship program, equity cho BS founding, visiting professors, lương 2-3x công lập</td></tr>
+          <tr><td><strong>Stigma ngăn bệnh nhân</strong></td><td><span class="badge badge-red">Cao</span></td><td>Privacy-first design, education marketing, phễu digital ẩn danh</td></tr>
+          <tr><td><strong>Cạnh tranh Vinmec/Tâm Anh</strong></td><td><span class="badge badge-orange">TB</span></td><td>Chuyên sâu nam khoa thuần túy, technology, brand khác biệt</td></tr>
+          <tr><td><strong>Quy định thay đổi</strong></td><td><span class="badge badge-orange">TB</span></td><td>Theo dõi Bộ Y tế, compliance-first, cố vấn pháp lý</td></tr>
+          <tr><td><strong>BN không chuyển sang membership</strong></td><td><span class="badge badge-orange">TB</span></td><td>Value proposition rõ ràng, onboarding tốt, kết quả đo lường được</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p style="font-size:17px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Nghiên cứu Thị trường Nam khoa Việt Nam 2026</p>
+    <p>Tổng hợp từ 70+ nguồn: website bệnh viện, BookingCare, YouMed, Bộ Y tế, VnExpress, Tuổi Trẻ, Dân Trí, KenResearch, TechSci, MarkNtel, Newsweek, Healthcare Asia Awards, và các tạp chí khoa học quốc tế.</p>
+    <div class="sources" style="margin-top:16px;">
+      <p>Giá cả có thể thay đổi. Nên xác nhận trực tiếp với cơ sở y tế. Điểm chấm mang tính so sánh tương đối.</p>
+    </div>
+    <p style="margin-top:24px;color:var(--text-tertiary);">18/10/2026</p>
+  </div>
+</footer>
+
+<script>
+// Fade-in on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Smooth scroll for nav
+document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      const offset = 60;
+      const y = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
