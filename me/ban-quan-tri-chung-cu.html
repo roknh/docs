@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ban quản trị chung cư</title>
+<style>
+:root{
+  --bg:#f2f2f7; --card:#ffffff; --label:#000000; --label2:rgba(60,60,67,.6); --label3:rgba(60,60,67,.3);
+  --sep:rgba(60,60,67,.18); --blue:#007aff; --green:#34c759; --orange:#ff9500; --red:#ff3b30; --fill:rgba(120,120,128,.12);
+  --blur:rgba(242,242,247,.8);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --card:#1c1c1e; --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+    --sep:rgba(84,84,88,.6); --blue:#0a84ff; --green:#30d158; --orange:#ff9f0a; --red:#ff453a; --fill:rgba(120,120,128,.24);
+    --blur:rgba(0,0,0,.75);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --card:#1c1c1e; --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+  --sep:rgba(84,84,88,.6); --blue:#0a84ff; --green:#30d158; --orange:#ff9f0a; --red:#ff453a; --fill:rgba(120,120,128,.24);
+  --blur:rgba(0,0,0,.75);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--label);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;line-height:1.4;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
+header.nav{position:sticky;top:0;z-index:10;background:var(--blur);backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:.5px solid var(--sep)}
+header.nav .inner{max-width:760px;margin:0 auto;padding:10px 16px}
+.seg{display:flex;background:var(--fill);border-radius:9px;padding:2px}
+.seg button{flex:1;border:0;background:transparent;color:var(--label);font:inherit;font-size:13px;font-weight:500;
+  padding:6px 8px;border-radius:7px;cursor:pointer}
+.seg button.on{background:var(--card);box-shadow:0 3px 8px rgba(0,0,0,.12),0 3px 1px rgba(0,0,0,.04)}
+h1{font-size:34px;font-weight:700;letter-spacing:.01em;margin:24px 0 4px}
+.sub{color:var(--label2);font-size:15px;margin:0 0 20px}
+h2.sh{font-size:13px;font-weight:400;text-transform:uppercase;color:var(--label2);margin:28px 16px 7px;letter-spacing:0}
+.foot{font-size:13px;color:var(--label2);margin:7px 16px 0}
+.group{background:var(--card);border-radius:10px;overflow:hidden}
+.row{display:flex;gap:12px;align-items:flex-start;padding:11px 16px;position:relative}
+.row+.row::before{content:"";position:absolute;top:0;left:16px;right:0;border-top:.5px solid var(--sep)}
+.row.ic+.row.ic::before{left:58px}
+.icon{flex:0 0 30px;height:30px;border-radius:7px;display:grid;place-items:center;color:#fff;font-size:15px;font-weight:600}
+.row .t{font-weight:600}
+.row .d{color:var(--label2);font-size:15px;margin-top:2px}
+.row ul{margin:6px 0 0;padding-left:18px;color:var(--label2);font-size:15px}
+.row ul li{margin:2px 0}
+.hero{background:var(--card);border-radius:14px;padding:18px;display:flex;gap:16px;align-items:center;margin-top:8px}
+.ring{--p:0;width:64px;height:64px;border-radius:50%;flex:0 0 64px;
+  background:conic-gradient(var(--green) calc(var(--p)*1%),var(--fill) 0);display:grid;place-items:center}
+.ring span{width:52px;height:52px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:600;font-size:15px}
+.hero .t{font-weight:600}.hero .d{color:var(--label2);font-size:15px}
+details.sec{margin-top:24px}
+details.sec>summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 16px 7px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary .h{font-size:20px;font-weight:600}
+details.sec>summary .c{font-size:13px;color:var(--label2);white-space:nowrap}
+details.sec>summary .h::after{content:"›";display:inline-block;margin-left:8px;color:var(--label3);transform:rotate(90deg);transition:transform .2s}
+details.sec:not([open])>summary .h::after{transform:rotate(0)}
+.note{color:var(--label2);font-size:15px;margin:0 16px 10px}
+.sublabel{font-size:13px;text-transform:uppercase;color:var(--label2);margin:16px 16px 7px}
+label.ck{display:flex;gap:12px;align-items:flex-start;padding:11px 16px;position:relative;cursor:pointer}
+label.ck+label.ck::before{content:"";position:absolute;top:0;left:52px;right:0;border-top:.5px solid var(--sep)}
+label.ck input{position:absolute;opacity:0;pointer-events:none}
+label.ck .box{flex:0 0 24px;height:24px;border-radius:50%;border:1.5px solid var(--label3);display:grid;place-items:center;margin-top:-1px;transition:all .15s}
+label.ck input:checked+.box{background:var(--blue);border-color:var(--blue)}
+label.ck input:checked+.box::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+label.ck input:focus-visible+.box{outline:3px solid color-mix(in srgb,var(--blue) 40%,transparent);outline-offset:2px}
+label.ck .txt{flex:1;min-width:0}
+label.ck input:checked~.txt{color:var(--label2)}
+.tbl{background:var(--card);border-radius:10px;overflow:hidden;margin-bottom:12px}
+.tbl .r{padding:11px 16px;position:relative}
+.tbl .r+.r::before{content:"";position:absolute;top:0;left:16px;right:0;border-top:.5px solid var(--sep)}
+.tbl .r b{display:block}
+.tbl .r .k{font-size:13px;color:var(--label2);margin-top:4px}
+.tbl .r .k em{font-style:normal;color:var(--label);opacity:.85}
+.btn{border:0;background:var(--card);color:var(--red);font:inherit;width:100%;padding:12px;border-radius:10px;margin-top:28px;cursor:pointer}
+.pane{display:none}.pane.on{display:block}
+a{color:var(--blue);text-decoration:none}
+@media print{header.nav,.btn{display:none}.pane{display:block!important}details.sec{break-inside:avoid}body{background:#fff}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="inner">
+  <div class="seg" role="tablist">
+    <button class="on" data-pane="skills" role="tab">Kiến thức & kỹ năng</button>
+    <button data-pane="check" role="tab">Checklist bàn giao</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <h1>Ban quản trị chung cư</h1>
+  <p class="sub">Kiến thức vận hành và checklist tiếp nhận bàn giao · cập nhật 24/10/2026</p>
+
+  <!-- PANE 1 -->
+  <section class="pane on" id="skills">
+    <h2 class="sh">Khung pháp lý bắt buộc</h2>
+    <div class="group">
+      <div class="row"><div>
+        <div class="t">Văn bản gốc</div>
+        <div class="d">Luật Nhà ở 2023, Nghị định 95/2024/NĐ-CP và Quy chế quản lý, sử dụng nhà chung cư kèm Thông tư 05/2024/TT-BXD; đọc thêm quy định riêng của UBND tỉnh/thành.</div>
+      </div></div>
+      <div class="row"><div>
+        <div class="t">Chứng nhận nghiệp vụ</div>
+        <div class="d">Thành viên BQT phải hoàn thành khóa đào tạo, bồi dưỡng nghiệp vụ quản lý vận hành nhà chung cư và được cấp giấy chứng nhận.</div>
+      </div></div>
+    </div>
+
+    <h2 class="sh">Kiến thức & kỹ năng cần có</h2>
+    <div class="group" id="skillList"></div>
+
+    <h2 class="sh">Lộ trình chuẩn bị</h2>
+    <div class="group">
+      <div class="row ic"><div class="icon" style="background:var(--blue)">1</div><div class="d" style="margin:4px 0 0">Đọc kỹ Luật Nhà ở 2023 và Thông tư 05/2024/TT-BXD</div></div>
+      <div class="row ic"><div class="icon" style="background:var(--blue)">2</div><div class="d" style="margin:4px 0 0">Học khóa bồi dưỡng nghiệp vụ có cấp chứng nhận</div></div>
+      <div class="row ic"><div class="icon" style="background:var(--blue)">3</div><div class="d" style="margin:4px 0 0">Đọc nội quy, hợp đồng vận hành, báo cáo tài chính hiện tại của tòa nhà</div></div>
+      <div class="row ic"><div class="icon" style="background:var(--blue)">4</div><div class="d" style="margin:4px 0 0">Dự vài buổi họp BQT / hội nghị cư dân để nắm điểm nóng thực tế</div></div>
+    </div>
+  </section>
+
+  <!-- PANE 2 -->
+  <section class="pane" id="check">
+    <div class="hero">
+      <div class="ring" id="ring"><span id="pct">0%</span></div>
+      <div><div class="t">Tiến độ tiếp nhận</div><div class="d" id="cnt">0 / 0 mục</div></div>
+    </div>
+    <h2 class="sh">Cách dùng</h2>
+    <div class="group">
+      <div class="row"><div class="d" style="margin:0">Không ký nhận “đã nhận đủ” khi chưa đối chiếu thực tế — mọi thiếu sót phải ghi vào biên bản.</div></div>
+      <div class="row"><div class="d" style="margin:0">Phần A–F dùng cho cả nhận từ chủ đầu tư lẫn từ BQT cũ; phần G chỉ khi nhận từ BQT cũ.</div></div>
+      <div class="row"><div class="d" style="margin:0">Nhận bản gốc hoặc bản sao chứng thực. Nên có ít nhất 3 người: pháp lý–hồ sơ, tài chính, kỹ thuật.</div></div>
+      <div class="row"><div class="d" style="margin:0">Căn cứ: Luật Nhà ở 2023, NĐ 95/2024, Quy chế kèm TT 05/2024 (Điều 10–12 về lập, tiếp nhận, cưỡng chế bàn giao hồ sơ).</div></div>
+    </div>
+    <div id="sections"></div>
+    <button class="btn" id="reset">Xóa tất cả dấu tích</button>
+  </section>
+</main>
+
+<script>
+const SKILLS=[
+ ["⚖︎","var(--blue)","Pháp lý","Phân định sở hữu chung/riêng, quyền hạn BQT, hội nghị nhà chung cư.",[
+  "Sở hữu riêng / chung: căn hộ, tầng hầm, chỗ để xe, khối thương mại",
+  "BQT không được tự ý xử phạt cư dân khi chưa thông qua ý kiến cư dân (Điều 145 Luật Nhà ở 2023)",
+  "Quy trình hội nghị lần đầu, thường niên, bất thường; tỷ lệ biểu quyết; biên bản hợp lệ",
+  "Nội quy, quy chế hoạt động, quy chế thu chi",
+  "Quyền yêu cầu chủ đầu tư bàn giao hồ sơ và đề nghị cưỡng chế",
+  "Luật hợp đồng; kiểm tra đơn vị vận hành đã có thông báo đủ điều kiện"]],
+ ["₫","var(--green)","Tài chính – kế toán","Quỹ bảo trì 2%, ngân sách, công khai thu chi.",[
+  "Nhận bàn giao, mở tài khoản, kế hoạch sử dụng, dự toán – quyết toán quỹ 2%",
+  "Đọc báo cáo thu chi phí vận hành, so sánh đơn giá",
+  "Lập ngân sách năm, công khai định kỳ; sẵn sàng cho tổ kiểm tra hoặc kiểm toán",
+  "Quản lý doanh thu khai thác phần chung: quảng cáo, mặt bằng, gửi xe"]],
+ ["⚙︎","var(--orange)","Kỹ thuật vận hành","Đủ hiểu để giám sát, không cần là kỹ sư.",[
+  "PCCC, thang máy, điện – máy phát, cấp thoát nước, nước thải, HVAC, camera",
+  "Phân biệt bảo trì định kỳ / sửa chữa / thay thế",
+  "Đọc hồ sơ hoàn công, nhật ký vận hành; biết khi nào thuê kiểm định độc lập"]],
+ ["✎","#5856d6","Nhà cung cấp & hợp đồng","Chọn thầu minh bạch, giám sát bằng KPI.",[
+  "Tiêu chí và quy trình chọn thầu vận hành, bảo vệ, vệ sinh, bảo trì",
+  "KPI/SLA, nghiệm thu, phạt vi phạm, điều khoản chấm dứt",
+  "Giám sát hằng tháng thay vì ký rồi để đó"]],
+ ["☺︎","#ff2d55","Kỹ năng mềm","Thường là phần khó nhất.",[
+  "Giải quyết khiếu nại, hòa giải xung đột giữa cư dân",
+  "Đàm phán với chủ đầu tư về quỹ bảo trì và phần sở hữu chung",
+  "Điều phối họp, biểu quyết, ra quyết định tập thể",
+  "Truyền thông minh bạch: Zalo, app cư dân, bảng tin, xử lý khủng hoảng",
+  "Làm việc với UBND phường, công an PCCC, Sở Xây dựng"]],
+ ["▤","#8e8e93","Quản trị nội bộ & hồ sơ","Lưu trữ, phân vai, tránh xung đột lợi ích.",[
+  "Lưu trữ và số hóa hồ sơ, biên bản, hợp đồng, chứng từ",
+  "Phân công rõ: Trưởng ban, Phó ban, tài chính, kỹ thuật, truyền thông",
+  "Không để thành viên BQT có quan hệ lợi ích với nhà thầu"]]
+];
+
+const SECTIONS=[
+ {id:"A",title:"A. Hồ sơ pháp lý & kỹ thuật",note:"“Giấy khai sinh” của tòa nhà; thiếu hoàn công và nghiệm thu PCCC thì gần như không thể bảo trì đúng chuẩn.",groups:[
+  ["Pháp lý dự án",["Quyết định chủ trương / chấp thuận đầu tư, giấy phép xây dựng và các lần điều chỉnh","Quyết định giao đất / thuê đất, giấy tờ quyền sử dụng đất của dự án","Văn bản chấp thuận kết quả nghiệm thu hoàn thành công trình","Văn bản nghiệm thu PCCC, văn bản thẩm duyệt PCCC","Giấy phép / xác nhận môi trường, giấy phép xả thải (nếu có)","Mẫu hợp đồng mua bán căn hộ đã đăng ký, bản nội quy kèm hợp đồng"]],
+  ["Hồ sơ kỹ thuật",["Bộ bản vẽ hoàn công: kiến trúc, kết cấu, điện, nước, PCCC, HVAC, thang máy (giấy + CAD/PDF)","Bản vẽ phân định phần sở hữu chung / riêng có xác nhận","Hồ sơ thiết bị: catalogue, CO/CQ, bảo hành, hướng dẫn vận hành – bảo trì","Quy trình bảo trì công trình do thiết kế / nhà thầu lập","Biên bản kiểm định còn hiệu lực: thang máy, bình áp lực, chống sét, PCCC","Nhật ký vận hành, lịch sử sự cố và sửa chữa","Danh sách nhà thầu, nhà cung cấp thiết bị kèm đầu mối bảo hành"]]]},
+ {id:"B",title:"B. Kinh phí bảo trì 2% & tài chính",note:"Tranh chấp phổ biến nhất; đối chiếu đến từng căn, không nhận một con số tổng.",groups:[
+  ["Kinh phí bảo trì 2%",["Danh sách từng căn / diện tích: giá trị hợp đồng, số 2% đã nộp, ngày nộp","Phần 2% chủ đầu tư phải đóng cho căn / diện tích chưa bán hoặc giữ lại","Sao kê tài khoản tạm giữ từ ngày mở đến ngày bàn giao, kèm lãi","Chứng từ các khoản đã chi từ quỹ và cơ sở pháp lý","Biên bản quyết toán, số tiền chuyển sang tài khoản BQT","Xác nhận ngân hàng đã chuyển đủ; tài khoản đúng loại, đúng người ký","Nếu không bàn giao: lưu đủ văn bản yêu cầu để đề nghị cưỡng chế"]],
+  ["Phí vận hành & khoản thu khác",["Đơn giá phí quản lý hiện hành và căn cứ phê duyệt","Công nợ phí từng căn","Doanh thu khai thác phần chung: quảng cáo, mặt bằng, BTS, gửi xe","Tiền cọc / ký quỹ của cư dân và nhà thầu","Báo cáo thu chi 12 tháng gần nhất của đơn vị vận hành"]]]},
+ {id:"C",title:"C. Phân định sở hữu chung / riêng",note:"Mục tiêu: một bảng diện tích được cư dân và chủ đầu tư cùng thừa nhận bằng văn bản.",groups:[
+  [null,["Đối chiếu hợp đồng mua bán và bản vẽ: phần chung, phần chủ đầu tư giữ lại","Tầng hầm, chỗ để xe: cơ chế sở hữu, phân bổ, giá gửi xe","Khối đế thương mại, nhà trẻ, sinh hoạt cộng đồng, sân thượng, sảnh, hành lang","Phòng kỹ thuật, máy phát, trạm biến áp, bể nước, khu xử lý rác – nước thải","Diện tích bên thứ ba đang khai thác (ki-ốt, quảng cáo, trạm phát sóng)","Biên bản hiện trạng khu vực tranh chấp (ảnh, video, ngày giờ)","Danh sách điểm còn bất đồng, ghi rõ quan điểm từng bên"]]]},
+ {id:"D",title:"D. Hệ thống kỹ thuật & thiết bị",note:"Kiểm tra tận nơi, chạy thử, chụp ảnh. Thuê kiểm định độc lập nếu tòa lớn hoặc đã dùng trên 5 năm.",table:[
+  ["PCCC","Chạy thử bơm, báo cháy, sprinkler, quạt tăng áp, đèn exit; đếm bình","Nghiệm thu PCCC, kiểm tra định kỳ, phương án chữa cháy"],
+  ["Thang máy","Chạy thử từng thang, cứu hộ tự động, camera, điện thoại khẩn","Kiểm định còn hạn, hợp đồng bảo trì"],
+  ["Điện","Trạm biến áp, tủ tổng, máy phát chạy tải, ATS, chiếu sáng chung","Đo điện trở nối đất, chống sét"],
+  ["Cấp thoát nước","Bể ngầm, bể mái, bơm, ống, thấm dột, ngập hầm","Xét nghiệm nước, lịch súc rửa bể"],
+  ["Nước thải & rác","Vận hành trạm xử lý, khu tập kết rác","Quan trắc, giấy phép môi trường"],
+  ["HVAC & thông gió","Quạt hút hầm, thông gió hành lang, điều hòa khu chung","Lịch bảo dưỡng"],
+  ["An ninh","Camera (số lượng, thời gian lưu), kiểm soát ra vào, thẻ từ, barrier","Sơ đồ camera, quyền quản trị"],
+  ["Kết cấu & hoàn thiện","Nứt, thấm, bong tróc mặt ngoài, lan can, mái","Ảnh hiện trạng có ngày giờ"]],
+  groups:[[null,["Danh sách tài sản, thiết bị chung kèm số lượng và tình trạng","Danh sách lỗi thuộc bảo hành chủ đầu tư, gửi yêu cầu bằng văn bản","Mật khẩu, quyền quản trị hệ thống điện tử (BMS, camera, thẻ từ, phần mềm)","Chìa khóa phòng kỹ thuật, có biên bản đếm số lượng"]]]},
+ {id:"E",title:"E. Hợp đồng & nhà cung cấp",note:"Rà lại mọi hợp đồng: ai ký, nhân danh ai, còn bao lâu, chấm dứt thế nào.",groups:[
+  [null,["Hợp đồng quản lý vận hành: phạm vi, đơn giá, KPI, chấm dứt, thời hạn","Thông báo đơn vị vận hành đủ điều kiện của cơ quan có thẩm quyền","Hợp đồng bảo vệ, vệ sinh, cây xanh, diệt côn trùng","Hợp đồng bảo trì thang máy, PCCC, máy phát, trạm biến áp, nước thải","Bảo hiểm cháy nổ bắt buộc phần sở hữu chung còn hiệu lực","Hợp đồng điện, nước tổng; hóa đơn 3 tháng gần nhất","Hợp đồng cho thuê / khai thác phần sở hữu chung","Phần mềm, app cư dân, thẻ từ — ai là chủ tài khoản và dữ liệu","Bảng tổng hợp: đối tác, giá trị/tháng, ngày hết hạn, người theo dõi"]]]},
+ {id:"F",title:"F. Dữ liệu cư dân & công cụ vận hành",note:"Dữ liệu cá nhân: nhận qua kênh bảo mật, giới hạn người truy cập, có biên bản.",groups:[
+  [null,["Danh sách căn hộ: chủ sở hữu, người ở, điện thoại, tình trạng","Danh sách đăng ký xe, thẻ gửi xe, thẻ thang máy đang phát hành","Bản nội quy đang áp dụng và các quyết định sửa đổi","Quy định thi công sửa chữa, nuôi thú cưng, sử dụng tiện ích","Biên bản các Hội nghị nhà chung cư và kết quả biểu quyết","Sổ tiếp nhận phản ánh, khiếu nại; vụ việc đang xử lý dở","Tài khoản quản trị Zalo / fanpage / app cư dân, email chung","Danh bạ khẩn cấp: công an phường, PCCC, điện lực, cấp nước, bảo trì"]]]},
+ {id:"G",title:"G. Riêng khi nhận từ BQT cũ",note:"Chuyển xong quyền kiểm soát tiền và con dấu trước khi BQT mới ký bất kỳ khoản chi nào.",groups:[
+  ["Pháp nhân, con dấu, tài khoản",["Quyết định công nhận BQT mới; quyết định công nhận BQT cũ để đối chiếu","Con dấu (mô hình có pháp nhân), đăng ký mẫu dấu, mã số thuế","Đổi chữ ký chủ tài khoản ngân hàng; thu hồi token, internet banking người cũ","Quy chế hoạt động, quy chế thu chi nhiệm kỳ trước"]],
+  ["Sổ sách & tài chính",["Sổ quỹ, sổ tiền gửi, chứng từ thu chi toàn nhiệm kỳ","Báo cáo tài chính từng năm và biên bản thông qua tại Hội nghị","Số dư tại thời điểm bàn giao, đối chiếu sao kê đến từng đồng","Hồ sơ hạng mục đã chi từ quỹ 2%: dự toán, chọn thầu, nghiệm thu, thanh toán","Thù lao, phụ cấp đã chi cho thành viên BQT và căn cứ","Quyết toán thuế (nếu phát sinh nghĩa vụ)","Đề xuất tổ kiểm tra hoặc kiểm toán độc lập nếu cần"]],
+  ["Tồn đọng",["Việc dang dở: sửa chữa, tranh chấp với chủ đầu tư, kiện tụng, khiếu nại","Cam kết BQT cũ đã đưa ra với cư dân, nhà thầu","Nợ chưa thanh toán với nhà cung cấp"]]]},
+ {id:"H",title:"H. Biên bản & lộ trình 30-60-90 ngày",note:"Dùng câu “tiếp nhận theo danh mục đính kèm” thay vì “đã nhận đầy đủ” khi còn mục chưa đối chiếu.",groups:[
+  ["Biên bản bàn giao",["Thành phần ký: bên giao, BQT, đơn vị vận hành; mời UBND phường nếu có tranh chấp","Phụ lục danh mục hồ sơ, tài sản, số dư — trạng thái đủ / thiếu / chưa nhận","Danh sách tồn tại, thời hạn bổ sung, người chịu trách nhiệm","Ảnh, video hiện trạng đính kèm"]],
+  ["30 ngày — nắm quyền kiểm soát",["Chuyển xong chữ ký tài khoản, con dấu, mật khẩu hệ thống","Hoàn tất biên bản bàn giao và danh sách tồn tại","Kiểm tra PCCC, thang máy, máy phát trước tiên","Thông báo cư dân: BQT mới, kênh liên lạc, việc đang làm"]],
+  ["60 ngày — rà soát & chuẩn hóa",["Rà soát hợp đồng; xác định hợp đồng cần đàm phán lại hoặc chấm dứt","Ban hành quy chế thu chi, phân công nhiệm vụ trong BQT","Gửi văn bản yêu cầu bổ sung các mục còn thiếu","Lập kế hoạch bảo trì năm từ kết quả kiểm tra hiện trạng"]],
+  ["90 ngày — vận hành ổn định",["Công khai báo cáo tài chính tiếp nhận và tình hình quỹ bảo trì","Đặt KPI cho đơn vị vận hành, họp đánh giá hằng tháng","Tồn tại không được giải quyết: chuẩn bị hồ sơ đề nghị can thiệp / cưỡng chế"]]]}
+];
+
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEY="bqt-checklist-v1";
+let state={};try{state=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){state={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};
+
+document.getElementById("skillList").innerHTML=SKILLS.map(([i,c,t,d,items])=>
+ `<div class="row ic"><div class="icon" style="background:${c}">${i}</div><div><div class="t">${t}</div><div class="d">${d}</div><ul>${items.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div></div>`).join("");
+
+document.getElementById("sections").innerHTML=SECTIONS.map(s=>{
+ let n=0,html="";
+ if(s.table) html+=`<div class="tbl">${s.table.map(r=>`<div class="r"><b>${r[0]}</b><div class="k">Kiểm tra: <em>${esc(r[1])}</em></div><div class="k">Hồ sơ kèm: <em>${esc(r[2])}</em></div></div>`).join("")}</div>`;
+ s.groups.forEach(([label,items])=>{
+  if(label) html+=`<div class="sublabel">${esc(label)}</div>`;
+  html+=`<div class="group">${items.map(x=>{const id=s.id+"-"+(n++);return `<label class="ck"><input type="checkbox" data-id="${id}" ${state[id]?"checked":""}><span class="box"></span><span class="txt">${esc(x)}</span></label>`}).join("")}</div>`;
+ });
+ return `<details class="sec" open data-sec="${s.id}"><summary><span class="h">${s.title}</span><span class="c" data-count="${s.id}"></span></summary><p class="note">${esc(s.note)}</p>${html}</details>`;
+}).join("");
+
+function update(){
+ const all=[...document.querySelectorAll('#sections input')];
+ const done=all.filter(i=>i.checked).length;
+ const p=all.length?Math.round(done/all.length*100):0;
+ document.getElementById("ring").style.setProperty("--p",p);
+ document.getElementById("pct").textContent=p+"%";
+ document.getElementById("cnt").textContent=`${done} / ${all.length} mục đã nhận`;
+ SECTIONS.forEach(s=>{
+  const ins=[...document.querySelectorAll(`details[data-sec="${s.id}"] input`)];
+  document.querySelector(`[data-count="${s.id}"]`).textContent=`${ins.filter(i=>i.checked).length}/${ins.length}`;
+ });
+}
+document.getElementById("sections").addEventListener("change",e=>{
+ if(e.target.matches("input")){state[e.target.dataset.id]=e.target.checked;save();update();}
+});
+document.getElementById("reset").addEventListener("click",()=>{
+ if(!confirm("Xóa tất cả dấu tích?"))return;
+ state={};save();document.querySelectorAll('#sections input').forEach(i=>i.checked=false);update();
+});
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));
+ document.querySelectorAll(".pane").forEach(p=>p.classList.toggle("on",p.id===b.dataset.pane));
+ window.scrollTo({top:0});
+}));
+update();
+</script>
+</body>
+</html>

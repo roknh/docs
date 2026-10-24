@@ -145,6 +145,7 @@
     <a href="#firmware">Firmware</a>
     <a href="#mqtt">MQTT</a>
     <a href="#sanxuat">Sản xuất</a>
+    <a href="#muasam">Mua sắm</a>
     <a href="#chiphi">Chi phí</a>
   </div>
 </nav>
@@ -667,6 +668,52 @@
   </div>
 
   <div class="callout warn"><b>Lưu ý khi đưa vào sản phẩm bán ra:</b> module AC-DC phải cách ly tốt + cầu chì, đi dây tách khỏi khoang ẩm (giữ chứng nhận an toàn điện); test EMC/rung khi block nén chạy; gờ chặn bảo vệ load cell khi vận chuyển; chọn load cell chống ẩm (bọc keo) cho độ bền dài hạn.</div>
+</section>
+
+<!-- ============ MUA SẮM ============ -->
+<section id="muasam">
+  <div class="sec-eyebrow">Mua sắm linh kiện</div>
+  <h2>Danh sách mua — Prototype vs Sản xuất</h2>
+  <p class="lead">Giai đoạn làm mẫu chỉ cần tối thiểu để chạy được; phần nguồn 220V &amp; vỏ chống ẩm để dành cho khi lên sản phẩm.</p>
+
+  <div class="grid2">
+    <div class="card recommended">
+      <span class="badge b-green">① Prototype — làm mẫu chạy thử</span>
+      <table>
+        <tr><th>Món</th><th>Giá</th><th></th></tr>
+        <tr><td>Bộ <b>4× Loadcell 50kg + HX711</b> (loại "Có Đế")</td><td class="num">~54–82k</td><td>✅ cần</td></tr>
+        <tr><td><b>ESP32 DevKit</b> (WROOM-32)</td><td class="num">~70–120k</td><td>✅ cần</td></tr>
+        <tr><td>Dây jumper + breadboard</td><td class="num">~20–40k</td><td>nên có</td></tr>
+        <tr><td>Sạc điện thoại 5V + cáp USB</td><td class="num">có sẵn</td><td>cấp nguồn</td></tr>
+        <tr><td style="font-weight:700">Tổng prototype</td><td class="num" style="font-weight:700;color:var(--green)">~150–240k</td><td></td></tr>
+      </table>
+      <div class="callout good" style="margin-bottom:0"><b>Nguồn lúc test:</b> cắm USB từ sạc 5V vào ESP32; HX711 lấy 5V từ chân VIN/5V của ESP32 → cấp cho load cell. <b>Chưa cần module AC-DC 220V.</b></div>
+    </div>
+
+    <div class="card">
+      <span class="badge b-purple">② Sản xuất — tích hợp vào máy bán ra</span>
+      <table>
+        <tr><th>Món</th><th>Ghi chú</th></tr>
+        <tr><td><b>Load cell 50kg có vỏ chống ẩm (IP)</b></td><td>bền hơn hàng DIY — môi trường ẩm</td></tr>
+        <tr><td>Combinator board (gộp 4→1)</td><td>hoặc đấu cầu đầy đủ trên PCB</td></tr>
+        <tr><td>Bo <b>ESP32 + HX711</b> gộp (PCB riêng)</td><td>gọn, gắn trong khoang tủ</td></tr>
+        <tr><td><b>Module AC-DC 220V→5V</b> (Hi-Link)</td><td>lấy điện từ nguồn cây nước</td></tr>
+        <tr><td>Hộp che chống nước bắn + dây bọc chống nhiễu</td><td>cách ly khoang ẩm</td></tr>
+        <tr><td>RTC DS3231 <span class="badge b-blue">tùy chọn</span></td><td>giữ thời gian khi mất mạng</td></tr>
+      </table>
+      <div class="callout warn" style="margin-bottom:0"><b>Lên số lượng:</b> đặt PCB gộp + mua load cell công nghiệp (Keli/CAS/Zhonghang) theo lô để giảm giá &amp; tăng độ bền.</div>
+    </div>
+  </div>
+
+  <h3>Nguồn mua (Việt Nam)</h3>
+  <table>
+    <tr><th>Kênh</th><th>Phù hợp</th><th>Từ khoá tìm</th></tr>
+    <tr><td><b>Shopee / Lazada / Tiki</b></td><td>Prototype — rẻ, sẵn hàng</td><td><code>bộ load cell 50kg x4 HX711 có đế</code></td></tr>
+    <tr><td><b>Nshop</b> · nshopvn.com</td><td>Linh kiện tốt, tư vấn</td><td><code>HX711</code> · <code>ESP32</code></td></tr>
+    <tr><td><b>Hshop</b> · hshop.vn</td><td>Linh kiện tốt, hoá đơn</td><td><code>load cell 50kg</code> · <code>ESP32 DevKit</code></td></tr>
+    <tr><td><b>AliExpress / Taobao</b></td><td>Mua lô cho sản xuất</td><td><code>50kg load cell HX711 kit</code></td></tr>
+  </table>
+  <div class="callout"><b>Đang có sẵn lựa chọn tốt:</b> bộ Shopee "Cảm biến cân nặng 4 Loadcell 50Kg + HX711 (Có Đế)" — 0–200kg, sai số 0.1%, 5V — <b>đúng chuẩn cho prototype</b>. Chỉ cần mua thêm <b>ESP32 DevKit</b> là đủ chạy.</div>
 </section>
 
 <!-- ============ CHI PHÍ ============ -->
