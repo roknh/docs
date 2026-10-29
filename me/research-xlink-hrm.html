@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XLink HRM — Nghiên cứu tính năng</title>
+<style>
+  :root{
+    --bg:#f5f5f7; --card:#ffffff; --text:#1d1d1f; --text2:#6e6e73; --text3:#86868b;
+    --line:#d2d2d7; --line2:#e8e8ed; --accent:#0a7d6e; --accent2:#0071e3;
+    --amber:#bf5a00; --red:#c6262e; --green:#1d7a3e;
+    --chip:#f0f0f2; --radius:18px; --shadow:0 1px 3px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#000000; --card:#1c1c1e; --text:#f5f5f7; --text2:#aeaeb2; --text3:#8e8e93;
+      --line:#38383a; --line2:#2c2c2e; --accent:#2fd4bb; --accent2:#2997ff;
+      --amber:#ff9f0a; --red:#ff453a; --green:#30d158;
+      --chip:#2c2c2e; --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:90px}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.5;
+    -webkit-font-smoothing:antialiased;letter-spacing:-.01em;
+  }
+  /* Nav */
+  .nav{
+    position:sticky;top:0;z-index:100;
+    background:color-mix(in srgb,var(--bg) 72%,transparent);
+    backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid var(--line2);
+  }
+  .nav-in{max-width:1080px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px;overflow-x:auto}
+  .nav-brand{font-weight:600;font-size:17px;white-space:nowrap}
+  .nav-brand span{color:var(--accent)}
+  .nav a{color:var(--text2);text-decoration:none;font-size:13px;white-space:nowrap;padding:4px 2px;transition:color .2s}
+  .nav a:hover{color:var(--text)}
+  /* Hero */
+  .hero{max-width:1080px;margin:0 auto;padding:80px 24px 48px;text-align:center}
+  .eyebrow{color:var(--accent);font-weight:600;font-size:15px;letter-spacing:.02em;text-transform:uppercase;margin-bottom:12px}
+  .hero h1{font-size:clamp(40px,7vw,68px);font-weight:700;line-height:1.05;letter-spacing:-.03em}
+  .hero .sub{font-size:clamp(19px,3vw,24px);color:var(--text2);margin-top:18px;max-width:640px;margin-left:auto;margin-right:auto;font-weight:400}
+  .hero .meta{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  .pill{background:var(--chip);color:var(--text2);padding:7px 15px;border-radius:980px;font-size:13px;font-weight:500}
+  /* Stat strip */
+  .stats{max-width:1080px;margin:0 auto 20px;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .stat{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);text-align:center}
+  .stat .n{font-size:34px;font-weight:700;letter-spacing:-.02em}
+  .stat .l{color:var(--text3);font-size:13px;margin-top:4px}
+  /* Section */
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  section{padding:56px 0 8px;scroll-margin-top:80px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+  .sec-num{font-size:15px;font-weight:700;color:var(--accent);background:var(--chip);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-variant-numeric:tabular-nums}
+  h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.02em}
+  .sec-sub{color:var(--text2);font-size:17px;margin:-14px 0 24px 54px}
+  h3{font-size:21px;font-weight:600;margin:28px 0 10px;letter-spacing:-.01em}
+  p{color:var(--text2);margin:10px 0}
+  .card{background:var(--card);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
+  .card.tight{padding:20px 24px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  ul{margin:8px 0 8px 2px;list-style:none}
+  li{color:var(--text2);padding:5px 0 5px 22px;position:relative}
+  li::before{content:"";position:absolute;left:2px;top:12px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  li b,p b,td b{color:var(--text);font-weight:600}
+  .lead{color:var(--text);font-size:17px}
+  code{background:var(--chip);padding:2px 7px;border-radius:6px;font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:.88em;color:var(--text)}
+  pre{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:20px;overflow:auto;margin:16px 0;box-shadow:var(--shadow)}
+  pre code{background:none;padding:0;font-size:13px;line-height:1.7;color:var(--text2)}
+  /* Table */
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th{text-align:left;color:var(--text3);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding:10px 14px;border-bottom:1px solid var(--line)}
+  td{padding:12px 14px;border-bottom:1px solid var(--line2);color:var(--text2);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tcard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin:16px 0}
+  .tcard table{margin:0}.tcard th{padding-left:24px}.tcard td{padding-left:24px}
+  .tcard th:last-child,.tcard td:last-child{padding-right:24px}
+  /* flow */
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0}
+  .flow .step{background:var(--chip);padding:8px 14px;border-radius:10px;font-size:14px;color:var(--text);font-weight:500}
+  .flow .arr{color:var(--text3);font-size:16px}
+  /* chips row */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+  .chips .c{background:var(--chip);color:var(--text2);padding:6px 12px;border-radius:980px;font-size:13px}
+  /* callout */
+  .callout{border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,var(--card));padding:14px 18px;border-radius:0 12px 12px 0;margin:14px 0}
+  .callout.amber{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 8%,var(--card))}
+  .callout .t{font-weight:600;color:var(--text);font-size:14px;margin-bottom:2px}
+  .callout p{margin:2px 0;font-size:14px}
+  /* module icon badge */
+  .modhead{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  .modicon{width:30px;height:30px;border-radius:9px;background:var(--accent);opacity:.9;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  /* shots */
+  figure{margin:16px 0}
+  figure img{width:100%;border-radius:14px;border:1px solid var(--line2);box-shadow:var(--shadow);display:block}
+  figcaption{color:var(--text3);font-size:13px;margin-top:8px;text-align:center}
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .gallery figcaption{text-align:left}
+  /* verdict */
+  .pros li::before{background:var(--green)}
+  .cons li::before{background:var(--amber)}
+  footer{text-align:center;color:var(--text3);font-size:13px;padding:60px 24px 80px;max-width:1080px;margin:0 auto;border-top:1px solid var(--line2);margin-top:40px}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--chip);color:var(--accent);margin-left:6px;vertical-align:middle}
+  @media(max-width:820px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .grid2,.grid3,.gallery{grid-template-columns:1fr}
+    .sec-sub{margin-left:0}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <div class="nav-brand">X<span>Link</span> HRM</div>
+    <a href="#overview">Tổng quan</a>
+    <a href="#m1">Dashboard</a>
+    <a href="#m2">Công việc</a>
+    <a href="#m3">Nhân sự</a>
+    <a href="#m4">Chấm công</a>
+    <a href="#m5">Tiền lương</a>
+    <a href="#m6">Tuyển dụng</a>
+    <a href="#m7">KPI & Đào tạo</a>
+    <a href="#m8">Báo cáo</a>
+    <a href="#m9">Thiết lập</a>
+    <a href="#verdict">Nhận định</a>
+    <a href="#shots">Hình ảnh</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Nghiên cứu sản phẩm · 28/10/2026</div>
+  <h1>XLink HRM</h1>
+  <div class="sub">Nền tảng quản trị nhân sự toàn diện — khảo sát tính năng & mô tả hoạt động chi tiết từng module.</div>
+  <div class="meta">
+    <span class="pill">1-Stop HRTech Solution</span>
+    <span class="pill">SaaS · Multi-tenant</span>
+    <span class="pill">9 phân hệ</span>
+    <span class="pill">People · Process · Performance · Data · AI</span>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="n">420</div><div class="l">Nhân viên (demo)</div></div>
+  <div class="stat"><div class="n">9</div><div class="l">Phân hệ chính</div></div>
+  <div class="stat"><div class="n">41</div><div class="l">Đơn vị tổ chức</div></div>
+  <div class="stat"><div class="n">13</div><div class="l">Nhóm quyền mẫu</div></div>
+</div>
+
+<div class="wrap">
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="sec-head"><div class="sec-num">0</div><h2>Tổng quan kiến trúc</h2></div>
+  <p class="lead">XLink là nền tảng HRTech <b>all-in-one</b>, mô hình SaaS, kết nối People – Process – Performance – Data – AI trên một hệ thống duy nhất; giúp HR chuyển từ "vận hành" sang "kiến tạo tổ chức".</p>
+
+  <div class="tcard">
+    <table>
+      <tr><td style="width:190px"><b>Loại sản phẩm</b></td><td>HRM/HRTech toàn diện, mô hình <b>SaaS</b> (có đăng ký dùng thử miễn phí)</td></tr>
+      <tr><td><b>Kiến trúc</b></td><td>Single-Page App (SPA); topbar 9 phân hệ + sidebar phụ</td></tr>
+      <tr><td><b>Multi-tenant</b></td><td>Ô "Mã công ty" khi đăng nhập — để trống = hệ thống chung; có mã = hệ thống riêng</td></tr>
+      <tr><td><b>Đa ngôn ngữ</b></td><td>Tiếng Việt / English</td></tr>
+      <tr><td><b>Phạm vi pháp lý</b></td><td>Bám sát luật lao động VN (kỷ luật, BHXH/C12, Luật ATVSLĐ Đ.34, thuế TNCN)</td></tr>
+      <tr><td><b>AI tích hợp</b></td><td>Trợ lý chat toàn hệ thống + "Hỏi AI" trong Báo cáo (có kiểm soát riêng tư)</td></tr>
+    </table>
+  </div>
+
+  <h3>Bản đồ 9 phân hệ</h3>
+  <pre><code>XLink HRM
+├── 1. Tổng quan        Dashboard điều hành
+├── 2. Công việc        Dự án · Báo cáo công việc · Tờ trình & đề xuất
+├── 3. Nhân sự          Hồ sơ · Tổ chức · Định biên · Hợp đồng · Bảo hiểm
+│                        · Kỷ luật · Thôi việc · Sức khỏe · An toàn lao động
+├── 4. Chấm công        Lịch/Ca · Giờ chấm · Bảng công · Nghỉ phép · Sửa công
+├── 5. Tiền lương       Bảng lương · Thuế TNCN · Chi lương · Chính sách & thưởng
+├── 6. Tuyển dụng (ATS) Tin · CV Inbox · Pipeline · Phỏng vấn · Talent Pool · Offer
+├── 7. KPI & Đào tạo    Hiệu suất · Năng lực · KPI (BSC) · Đào tạo (LMS) · Khảo sát
+├── 8. Báo cáo          BI đa lĩnh vực + "Hỏi AI" + báo cáo lao động định kỳ
+└── 9. Thiết lập        Danh mục · Quản trị (RBAC/SSO/GPS) · Phiếu hỗ trợ</code></pre>
+
+  <h3>5 trụ giá trị quảng bá</h3>
+  <div class="grid3">
+    <div class="card tight"><b>Dữ liệu toàn diện</b><p style="margin:6px 0 0;font-size:14px">Hệ thống dữ liệu đầy đủ, API dễ dàng</p></div>
+    <div class="card tight"><b>Tuân thủ pháp lý</b><p style="margin:6px 0 0;font-size:14px">Tối ưu quy trình, đúng luật lao động</p></div>
+    <div class="card tight"><b>Chuẩn hóa chuyên môn</b><p style="margin:6px 0 0;font-size:14px">Quản trị hiệu quả, khung năng lực</p></div>
+    <div class="card tight"><b>AI thông minh</b><p style="margin:6px 0 0;font-size:14px">Phân tích & hỗ trợ ra quyết định</p></div>
+    <div class="card tight"><b>Linh hoạt</b><p style="margin:6px 0 0;font-size:14px">Đa ngành, đa quy mô, đa pháp nhân</p></div>
+  </div>
+</section>
+
+<!-- M1 -->
+<section id="m1">
+  <div class="sec-head"><div class="sec-num">1</div><h2>Tổng quan</h2></div>
+  <div class="sec-sub">Dashboard điều hành — màn hình chỉ huy cho HR/quản lý.</div>
+  <div class="card">
+    <h3 style="margin-top:0">Cách hoạt động</h3>
+    <ul>
+      <li><b>Thẻ hành động:</b> Đơn chờ duyệt (51), HĐ hết hạn 30 ngày (4), Thử việc kết thúc (0), Đến hạn khám sức khỏe (420) — bấm thẻ nhảy thẳng tới màn xử lý.</li>
+      <li><b>Chỉ số nhân lực:</b> đang làm việc (420), tỷ lệ nghỉ việc 12 tháng (2,5%), thâm niên TB 3,2 năm, tuổi TB 33, chi phí lương kỳ gần nhất (1.515,4 tr), khóa đào tạo (10).</li>
+      <li><b>Biểu đồ:</b> biến động nhân sự 12 tháng; phân bổ theo 28 đơn vị; cơ cấu giới tính / thế hệ / thâm niên.</li>
+      <li><b>Nhắc việc:</b> đơn từ gần đây, sinh nhật 7 ngày tới, HĐ hết hạn kèm nút <b>Tái ký</b>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- M2 -->
+<section id="m2">
+  <div class="sec-head"><div class="sec-num">2</div><h2>Công việc</h2></div>
+  <div class="sec-sub">Giao việc, báo cáo định kỳ (nối KPI), tờ trình & đề xuất có luồng duyệt.</div>
+  <div class="tcard">
+    <table>
+      <tr><th>Chức năng</th><th>Hoạt động</th></tr>
+      <tr><td><b>Công việc & Dự án</b></td><td>Danh sách dự án (mã, tên, bắt đầu, hạn, trạng thái Kế hoạch/Đang xử lý/Hoàn thành)</td></tr>
+      <tr><td><b>Báo cáo công việc</b></td><td>Báo cáo theo tháng — dữ liệu <b>nối vào đánh giá KPI</b></td></tr>
+      <tr><td><b>Tờ trình & đề xuất</b></td><td>Soạn tờ trình với <b>luồng theo dõi người duyệt</b></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- M3 -->
+<section id="m3">
+  <div class="sec-head"><div class="sec-num">3</div><h2>Nhân sự <span class="tag">Phân hệ sâu nhất</span></h2></div>
+  <div class="sec-sub">Core HR trọn vòng đời: hồ sơ, tổ chức, định biên, hợp đồng, bảo hiểm, kỷ luật, thôi việc, sức khỏe, an toàn.</div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">Hồ sơ nhân viên</h3>
+      <p>Lọc đa chiều theo cây 28 đơn vị & trạng thái (Đang làm / Thử việc / Tạm nghỉ / Thai sản / Đã nghỉ / Chấm dứt). Import & Xuất Excel, cấu hình trường, cảnh báo hồ sơ chưa hoàn thiện.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Tổ chức</h3>
+      <p>3 kiểu sơ đồ (nhân viên / phòng ban / chức danh), lọc theo pháp nhân–cơ sở, xuất PNG/PDF/Excel. <b>Tái cơ cấu</b> + <b>snapshot lịch sử & so sánh</b> giữa các thời điểm.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Định biên nhân sự</h3>
+      <p>Kế hoạch quân số 12 tháng theo khối × chức danh.</p>
+      <div class="flow"><span class="step">1. Khối lập & trình</span><span class="arr">→</span><span class="step">2. HR xác nhận</span><span class="arr">→</span><span class="step">3. BGĐ duyệt</span></div>
+      <p style="font-size:14px">Khi duyệt → <b>ngân sách & định biên tuyển dụng dùng chung số này</b> (liên thông ATS).</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Hợp đồng lao động</h3>
+      <p>Trạng thái: Đang hiệu lực (320), Chưa lên HĐ (100), Hết hạn ≤30 ngày (4), Đã hết hạn (103).</p>
+      <div class="chips"><span class="c">Không xác định thời hạn</span><span class="c">36/24/12 tháng</span><span class="c">Thử việc 1-2 tháng</span><span class="c">Cộng tác viên</span></div>
+      <p style="font-size:14px">Luồng: Chưa lên HĐ → Chờ duyệt → Chờ ký → Hiệu lực → Hết hạn. Có mẫu HĐ + <b>Tái ký</b> nhanh.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="modhead"><h3 style="margin:0">Bảo hiểm (BHXH/BHYT)</h3><span class="tag">Đầy đủ nghiệp vụ</span></div>
+    <div class="chips">
+      <span class="c">Báo tăng</span><span class="c">Báo giảm</span><span class="c">Điều chỉnh</span><span class="c">Quá trình đóng</span>
+      <span class="c">Giải quyết chế độ</span><span class="c">Kết nối cổng BHXH</span><span class="c">Đối chiếu C12</span><span class="c">Đổi KCB</span><span class="c">Đối soát</span>
+    </div>
+    <p>Hồ sơ từng NV: số sổ BHXH, thẻ BHYT, nơi KCB, mức đóng (và theo HĐ), trạng thái tham gia.</p>
+  </div>
+
+  <div class="grid3">
+    <div class="card tight">
+      <h3 style="margin-top:0;font-size:18px">Kỷ luật lao động</h3>
+      <p style="font-size:14px">Biên bản → tường trình → tạm đình chỉ → họp xử lý → quyết định.</p>
+      <div class="callout amber"><div class="t">Nhắc pháp lý tích hợp</div><p>Thời hiệu 6 tháng (12 tháng với tài chính/bí mật); tạm đình chỉ ≤15 ngày, ứng 50% lương.</p></div>
+    </div>
+    <div class="card tight">
+      <h3 style="margin-top:0;font-size:18px">Thôi việc</h3>
+      <p style="font-size:14px">Phiếu thôi việc theo loại (tự nguyện, hết HĐ, nghỉ hưu, sa thải, tự ý bỏ việc); bàn giao + thanh toán chế độ; đồng bộ phiếu đến hạn.</p>
+    </div>
+    <div class="card tight">
+      <h3 style="margin-top:0;font-size:18px">Sức khỏe & ATLĐ</h3>
+      <p style="font-size:14px">Đợt khám định kỳ (chi phí ngân sách/thực tế); tai nạn/sự cố/PCCC có cảnh báo hết hạn hồ sơ; nhắc khai báo TNLĐ nặng (Luật ATVSLĐ Đ.34).</p>
+    </div>
+  </div>
+</section>
+
+<!-- M4 -->
+<section id="m4">
+  <div class="sec-head"><div class="sec-num">4</div><h2>Chấm công & Lịch trực</h2></div>
+  <div class="sec-sub">Quản lý ca, chấm công đa phương thức, bảng công liên thông bảng lương.</div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">Tổng quan hôm nay</h3>
+      <p>Có lịch (216/420), đã chấm, đến giờ chưa chấm (204 — gợi ý gọi hỏi), đi trễ, quên chấm vào/ra. <b>Wizard thiết lập 4 bước.</b></p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Lịch làm việc & Ca</h3>
+      <p>Danh mục ca (giờ vào/ra, ca qua đêm/linh hoạt, ân hạn trễ/sớm, nghỉ tối thiểu), phân ca cố định, xếp lịch theo ngày, công bố & duyệt lịch.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Giờ chấm công</h3>
+      <p>Giờ vào/ra từng ngày, nút <b>"Tính công"</b>, ảnh chấm công, <b>chấm công nghi vấn</b>, điện thoại chấm công, <b>điểm ghé thị trường (GPS field)</b>.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Bảng công tháng</h3>
+      <p>Bảng NV × ngày (ký hiệu P, KL, L, V…); "Công hưởng lương" <b>= đúng số ngày bảng lương dùng</b>; bảng tăng ca, NV xác nhận, chốt công, xuất Excel.</p>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card tight">
+      <h3 style="margin-top:0;font-size:18px">Nghỉ phép</h3>
+      <p style="font-size:14px">Số dư phép năm theo tháng, điều chỉnh phép, <b>quy đổi tăng ca → phép bù</b>, báo cáo loại nghỉ, cấu hình ứng phép.</p>
+    </div>
+    <div class="card tight">
+      <div class="modhead"><h3 style="margin:0;font-size:18px">Sửa công & đổi ca</h3></div>
+      <div class="callout"><div class="t">Audit trail</div><p>Giờ chấm gốc <b>không sửa trực tiếp</b> — mọi thay đổi qua phiếu có lưu vết. Kèm đổi ca & bàn giao ca.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- M5 -->
+<section id="m5">
+  <div class="sec-head"><div class="sec-num">5</div><h2>Tiền lương</h2></div>
+  <div class="sec-sub">Payroll có vòng đời khóa/duyệt/công bố, thuế TNCN & BHXH.</div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Quy trình tính lương</h3>
+    <div class="flow"><span class="step">Tạo đợt</span><span class="arr">→</span><span class="step">Tính (wizard 6 bước)</span><span class="arr">→</span><span class="step">Trình duyệt</span><span class="arr">→</span><span class="step">Đã khóa</span><span class="arr">→</span><span class="step">Công bố + NV xác nhận</span></div>
+    <p>Có bảng <b>mẫu kiểm tra công thức</b> tách riêng khỏi bảng lương chính. Demo: bảng chính 71 NV, Gross ~1,26 tỷ, Net ~1,13 tỷ, BH NSDLĐ 231,48 tr/tháng.</p>
+  </div>
+
+  <div class="tcard">
+    <table>
+      <tr><th>Tab</th><th>Nội dung</th></tr>
+      <tr><td><b>Bảng lương</b></td><td>Gross, Net, BH NSDLĐ, Thuế TNCN, trạng thái, thao tác (tính/trình/khóa/ẩn)</td></tr>
+      <tr><td><b>Chi tiết bảng lương</b></td><td>Từng dòng lương theo nhân viên</td></tr>
+      <tr><td><b>Khoản cộng / trừ</b></td><td>Phụ cấp, thưởng, giảm trừ, tạm ứng</td></tr>
+      <tr><td><b>Số liệu nhập kỳ</b></td><td>Biến động nhập tay theo kỳ (OT, thưởng, phạt)</td></tr>
+      <tr><td><b>Thuế TNCN</b></td><td>Tính thuế thu nhập cá nhân</td></tr>
+      <tr><td><b>Chi lương & thôi việc</b></td><td>Chi lương + thanh toán chế độ thôi việc</td></tr>
+      <tr><td><b>Chính sách & thưởng</b></td><td>Thiết lập cơ chế thưởng / chính sách lương</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- M6 -->
+<section id="m6">
+  <div class="sec-head"><div class="sec-num">6</div><h2>Tuyển dụng <span class="tag">ATS</span></h2></div>
+  <div class="sec-sub">Từ nhu cầu tuyển → tin → ứng viên → phỏng vấn → offer → onboarding.</div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Pipeline (Kanban) có theo dõi SLA</h3>
+    <div class="flow"><span class="step">Ứng tuyển</span><span class="arr">→</span><span class="step">Sàng lọc CV</span><span class="arr">→</span><span class="step">PV sơ bộ</span><span class="arr">→</span><span class="step">PV chuyên môn</span><span class="arr">→</span><span class="step">Offer</span></div>
+    <p>Mỗi thẻ ứng viên hiển thị <b>thời gian ở giai đoạn</b> + nhãn <b>Đúng hạn / Sắp quá hạn (&gt;75%) / Quá hạn SLA</b>. Thao tác: lên lịch PV, đánh giá, chuyển bước, từ chối.</p>
+  </div>
+
+  <div class="grid3">
+    <div class="card tight"><h3 style="margin-top:0;font-size:17px">Tin & CV Inbox</h3><p style="font-size:14px">Tin JP-xxxx (JD, kênh, lương, hạn), sao chép link, gia hạn; hộp thư CV tập trung.</p></div>
+    <div class="card tight"><h3 style="margin-top:0;font-size:17px">Phỏng vấn</h3><p style="font-size:14px">Lịch PV theo phạm vi/trạng thái (sắp tới, đổi lịch, hoàn tất, vắng mặt).</p></div>
+    <div class="card tight"><h3 style="margin-top:0;font-size:17px">Talent Pool</h3><p style="font-size:14px">Kho ứng viên tiềm năng, quản lý <b>consent dữ liệu</b> & thời hạn, tái tiếp cận.</p></div>
+  </div>
+  <div class="card tight"><h3 style="margin-top:0;font-size:17px">Offer & Tiếp nhận</h3><p style="font-size:14px">Offer (Nháp → Duyệt → Gửi → Nhận/Từ chối) · <b>Onboarding</b> · <b>Thử việc</b> → chuyển sang hồ sơ nhân viên chính thức.</p></div>
+</section>
+
+<!-- M7 -->
+<section id="m7">
+  <div class="sec-head"><div class="sec-num">7</div><h2>KPI & Đào tạo</h2></div>
+  <div class="sec-sub">Hiệu suất + Năng lực + Mục tiêu BSC + LMS + Khảo sát gắn kết.</div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="modhead"><h3 style="margin:0">Mục tiêu & KPI</h3><span class="tag">BSC</span></div>
+      <p>Cây mục tiêu 3 cấp: Công ty → Đơn vị → Cá nhân (5/10/40). 4 khía cạnh BSC: Tài chính · Khách hàng · Quy trình · Học hỏi. Theo dõi lũy kế T1–T12, cảnh báo đang chậm (&lt;85%), luồng duyệt & xác nhận kết quả.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Đánh giá hiệu suất</h3>
+      <p>Phiếu cần chấm/của tôi/đã chấm; kỳ đánh giá tháng/quý/năm, <b>thử việc, tái ký</b>; kết quả–xếp loại; mẫu phiếu + thư viện tiêu chí.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Quản trị năng lực</h3>
+      <p>Từ điển năng lực (mức <b>1 Cơ bản → 5 Chuyên gia</b>), khung theo vị trí, đánh giá thiếu hụt. <b>Gắn khóa học vào kỹ năng → học xong tự nâng mức</b>; chứng chỉ có thời hạn.</p>
+    </div>
+    <div class="card">
+      <div class="modhead"><h3 style="margin:0">Đào tạo</h3><span class="tag">LMS đầy đủ</span></div>
+      <div class="chips"><span class="c">Kế hoạch & TNA</span><span class="c">Lộ trình học</span><span class="c">Ngân hàng câu hỏi</span><span class="c">Giám sát thi</span><span class="c">Tuân thủ</span><span class="c">Duyệt chứng chỉ</span><span class="c">Cam kết đào tạo</span></div>
+    </div>
+  </div>
+  <div class="card tight">
+    <h3 style="margin-top:0;font-size:18px">Khảo sát (Engagement)</h3>
+    <p style="font-size:14px">Bộ câu hỏi gửi NV qua app (tùy chọn <b>ẩn danh</b>); loại Pulse & Gắn kết; báo cáo <b>eNPS</b>, chỉ số gắn kết theo đơn vị, yếu tố cần cải thiện (demo tham gia 34–77%).</p>
+  </div>
+</section>
+
+<!-- M8 -->
+<section id="m8">
+  <div class="sec-head"><div class="sec-num">8</div><h2>Báo cáo <span class="tag">BI + AI</span></h2></div>
+  <div class="sec-sub">Báo cáo đa lĩnh vực + trợ lý "Hỏi AI" có kiểm soát riêng tư.</div>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="margin-top:0">Thư viện báo cáo</h3>
+      <p>Chi phí nhân sự · báo cáo lao động định kỳ · nhân sự · hợp đồng · chấm công · lương · tuyển dụng. Mẫu sẵn: NV đi trễ ≥3 lần/tháng, xu hướng tuyển/nghỉ 12 tháng, HĐ sắp hết hạn, chi phí lương theo tháng… Lọc & xuất Excel.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Hỏi AI</h3>
+      <p>Đặt câu hỏi ngôn ngữ tự nhiên → AI lập báo cáo, <b>lưu mẫu</b> chạy lại.</p>
+      <div class="callout"><div class="t">Kiểm soát quyền riêng tư</div><p>AI chỉ đọc dữ liệu <b>tổng hợp trong phạm vi quyền</b> của bạn — không xem CCCD, SĐT, tài khoản ngân hàng hay lương từng người.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- M9 -->
+<section id="m9">
+  <div class="sec-head"><div class="sec-num">9</div><h2>Thiết lập</h2></div>
+  <div class="sec-sub">Danh mục, quản trị hệ thống (RBAC/SSO/GPS), phiếu hỗ trợ.</div>
+  <div class="grid3">
+    <div class="card tight">
+      <h3 style="margin-top:0;font-size:18px">Danh mục</h3>
+      <p style="font-size:14px">Cơ cấu tổ chức, pháp nhân, chi nhánh/cơ sở, chức danh, cấp bậc, loại HĐ, loại nghỉ, trung tâm chi phí.</p>
+    </div>
+    <div class="card tight">
+      <h3 style="margin-top:0;font-size:18px">Quản trị hệ thống</h3>
+      <p style="font-size:14px">Tài khoản, <b>nhóm quyền & phân quyền theo chức năng + phạm vi dữ liệu</b> (13 nhóm), giao diện theo vai trò, cấu hình menu, <b>vị trí GPS</b>, chống gian lận, <b>SSO</b>.</p>
+    </div>
+    <div class="card tight">
+      <h3 style="margin-top:0;font-size:18px">Phiếu hỗ trợ</h3>
+      <p style="font-size:14px">Kênh ticket hỗ trợ người dùng nội bộ / tới nhà cung cấp.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CROSS CUTTING -->
+<section id="cross">
+  <div class="sec-head"><div class="sec-num">10</div><h2>Tính năng xuyên suốt</h2></div>
+  <div class="tcard">
+    <table>
+      <tr><th style="width:230px">Tính năng</th><th>Ghi nhận</th></tr>
+      <tr><td><b>AI</b></td><td>Trợ lý chat toàn hệ thống + "Hỏi AI" báo cáo có kiểm soát riêng tư</td></tr>
+      <tr><td><b>Wizard hướng dẫn</b></td><td>Chấm công (4 bước), Tính lương (6 bước), Định biên (3 bước duyệt)</td></tr>
+      <tr><td><b>Phân quyền đa chiều</b></td><td>Chức năng × phạm vi dữ liệu × giao diện; multi-tenant; SSO</td></tr>
+      <tr><td><b>Audit trail</b></td><td>Giờ chấm gốc bất biến; mọi sửa đổi qua phiếu có lưu vết</td></tr>
+      <tr><td><b>Tuân thủ luật VN</b></td><td>Loại HĐ, thời hiệu kỷ luật, BHXH (C12, cổng BHXH), ATVSLĐ Đ.34, thuế TNCN</td></tr>
+      <tr><td><b>Liên thông dữ liệu</b></td><td>Định biên → Tuyển dụng; Chấm công → Lương; Công việc → KPI; ATS → Onboarding → Hồ sơ</td></tr>
+      <tr><td><b>Xuất / nhập</b></td><td>Import Excel; xuất Excel/PNG/PDF ở hầu hết màn hình</td></tr>
+      <tr><td><b>App nhân viên</b></td><td>Chấm công, nhận khảo sát, xác nhận bảng công/phiếu lương</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- VERDICT -->
+<section id="verdict">
+  <div class="sec-head"><div class="sec-num">11</div><h2>Nhận định tổng hợp</h2></div>
+  <p class="lead">XLink HRM là nền tảng HRTech <b>all-in-one trưởng thành</b>, phủ trọn vòng đời nhân sự từ hoạch định → thu hút → tiếp nhận → vận hành → phát triển → gắn kết → rời đi, cộng BI + AI xuyên suốt.</p>
+  <div class="grid2">
+    <div class="card pros">
+      <h3 style="margin-top:0">Điểm mạnh</h3>
+      <ul>
+        <li><b>Payroll + BHXH + Thuế TNCN chín</b>, có vòng đời khóa/duyệt/công bố & bảng kiểm tra công thức.</li>
+        <li><b>Tuân thủ luật lao động VN sâu</b> (kỷ luật, ATVSLĐ, C12) — hiếm ở cùng phân khúc.</li>
+        <li><b>Phân quyền đa chiều + multi-tenant + SSO</b> — sẵn sàng cho DN vừa–lớn, chuỗi, tập đoàn.</li>
+        <li><b>KPI/BSC + Năng lực + LMS (có proctoring) + eNPS</b> — mảng phát triển con người đầy đủ.</li>
+        <li><b>AI thực dụng, có kiểm soát riêng tư</b>; UX dẫn dắt bằng wizard; audit trail chặt.</li>
+      </ul>
+    </div>
+    <div class="card cons">
+      <h3 style="margin-top:0">Cần xác minh thêm</h3>
+      <ul>
+        <li><b>Giá & mô hình license</b> không công khai.</li>
+        <li><b>Tài liệu API</b> mới ở mức quảng cáo — chưa thấy docs/endpoint.</li>
+        <li><b>Tích hợp ngoài</b> (kế toán/ERP, cổng BHXH, ký số HĐ điện tử) cần kiểm thực tế.</li>
+        <li><b>Chứng chỉ bảo mật</b> (ISO 27001/SOC 2) & hiệu năng ở quy mô lớn (demo mới 420 NV).</li>
+        <li><b>App mobile nhân viên</b> cần kiểm thực tế; dữ liệu demo còn lẫn bản ghi thử.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Hành động đề xuất</h3>
+    <div class="tcard" style="margin:8px 0 0">
+      <table>
+        <tr><th style="width:110px">Ưu tiên</th><th>Việc cần làm</th></tr>
+        <tr><td><b style="color:var(--red)">Cao</b></td><td>Liên hệ Toplinks lấy bảng giá + tài liệu API + checklist bảo mật</td></tr>
+        <tr><td><b style="color:var(--red)">Cao</b></td><td>Chạy POC với dữ liệu thật — tập trung Payroll (thuế/BH) + chấm công GPS đúng nghiệp vụ VN</td></tr>
+        <tr><td><b style="color:var(--amber)">TB</b></td><td>So sánh ngang với MISA AMIS, Base HRM+, FastWork (độ phủ / giá / tích hợp)</td></tr>
+        <tr><td><b style="color:var(--amber)">TB</b></td><td>Xác minh app mobile nhân viên — yếu tố quyết định tỷ lệ áp dụng</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SHOTS -->
+<section id="shots">
+  <div class="sec-head"><div class="sec-num">12</div><h2>Hình ảnh khảo sát</h2></div>
+  <div class="sec-sub">Ảnh chụp trực tiếp từ môi trường demo hrm.toplinks.vn.</div>
+  <figure><img src="shots/01-login.png" alt="Login"><figcaption>Trang đăng nhập — branding XLink, trường "Mã công ty" cho multi-tenant</figcaption></figure>
+  <figure><img src="shots/10-T_ng_quan.png" alt="Dashboard"><figcaption>Dashboard Tổng quan — thẻ hành động, biểu đồ biến động & cơ cấu nhân sự</figcaption></figure>
+  <div class="gallery">
+    <figure><img src="shots/21-Nh_n_s_.png" alt="Nhân sự"><figcaption>Nhân sự — hồ sơ + cây 28 đơn vị</figcaption></figure>
+    <figure><img src="shots/22-Ch_m_c_ng.png" alt="Chấm công"><figcaption>Chấm công — tổng quan ngày</figcaption></figure>
+    <figure><img src="shots/23-Ti_n_l__ng.png" alt="Tiền lương"><figcaption>Tiền lương — vòng đời bảng lương</figcaption></figure>
+    <figure><img src="shots/24-Tuy_n_d_ng.png" alt="Tuyển dụng"><figcaption>Tuyển dụng — tin tuyển dụng</figcaption></figure>
+    <figure><img src="shots/25-KPI_____o_t_o.png" alt="KPI"><figcaption>KPI & Đào tạo — mục tiêu BSC</figcaption></figure>
+    <figure><img src="shots/26-B_o_c_o.png" alt="Báo cáo"><figcaption>Báo cáo + Hỏi AI</figcaption></figure>
+    <figure><img src="shots/27-Thi_t_l_p.png" alt="Thiết lập"><figcaption>Thiết lập — danh mục & tổ chức</figcaption></figure>
+    <figure><img src="shots/40-quantri.png" alt="Quản trị"><figcaption>Quản trị hệ thống — tài khoản & nhóm quyền</figcaption></figure>
+    <figure><img src="shots/20-C_ng_vi_c.png" alt="Công việc"><figcaption>Công việc & dự án</figcaption></figure>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  Tài liệu nghiên cứu lập ngày 28/10/2026 dựa trên khảo sát trực tiếp môi trường demo hrm.toplinks.vn.<br>
+  Mọi số liệu là dữ liệu demo, không phản ánh khách hàng thật. · Thiết kế theo Apple Human Interface Guidelines.
+</footer>
+
+</body>
+</html>
