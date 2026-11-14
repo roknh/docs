@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Người Sống Phải Theo Luật Người Chết — Bạch Vô Danh. Từ đêm mùng Hai tháng Bảy âm lịch, mỗi giờ Tý hàng nghìn người bị kéo vào Âm Cảnh, những phó bản dựng từ chuyện ma dân gian, nơi mỗi tờ luật đều có mộ">
+<meta name="author" content="Bạch Vô Danh">
+<title>Người Sống Phải Theo Luật Người Chết — Bạch Vô Danh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+  --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+  --hairline:#e0e0e0; --hairline-strong:#161616;
+  --primary:#0f62fe; --blue-hover:#0050e6; --on-primary:#ffffff;
+  --inverse-canvas:#161616; --inverse-ink:#ffffff;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --measure:42rem; --nav-w:17rem;
+}
+:root[data-theme="dark"]{
+  --canvas:#161616; --surface-1:#262626; --surface-2:#393939;
+  --ink:#f4f4f4; --ink-muted:#c6c6c6; --ink-subtle:#8d8d8d;
+  --hairline:#393939; --hairline-strong:#6f6f6f;
+  --primary:#78a9ff; --blue-hover:#a6c8ff; --on-primary:#161616;
+  --inverse-canvas:#f4f4f4; --inverse-ink:#161616;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:var(--sans); font-size:16px; font-weight:400;
+  line-height:1.5; letter-spacing:0.16px; overflow-x:hidden;
+  overflow-wrap:break-word; word-break:break-word;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color .15s ease, color .15s ease;
+}
+a{color:var(--primary); text-decoration:none;}
+a:hover{color:var(--blue-hover); text-decoration:underline;}
+
+/* reading progress */
+#progress{position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--primary); z-index:60; transition:width .1s linear;}
+
+/* top nav */
+.top-nav{position:sticky; top:0; z-index:50; height:48px;
+  background:var(--canvas); border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; gap:16px; padding:0 16px;}
+.top-nav .brand{font-size:14px; font-weight:600; letter-spacing:0.16px;
+  color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.top-nav .spacer{flex:1;}
+.top-nav .top-meta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px;}
+.menu-btn{display:none; appearance:none; background:transparent; border:0;
+  color:var(--ink); font-family:var(--sans); font-size:14px; cursor:pointer;
+  padding:8px 10px; align-items:center; gap:6px;}
+.menu-btn:hover{background:var(--surface-1);}
+
+/* theme toggle */
+.theme-toggle{appearance:none; background:transparent; border:1px solid var(--hairline);
+  color:var(--ink); cursor:pointer; width:32px; height:32px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.theme-toggle:hover{background:var(--surface-1); border-color:var(--hairline-strong);}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+/* shell */
+.shell{display:block; max-width:1584px; margin:0 auto;}
+.side-nav{display:none;}
+.content{width:100%; min-width:0;}
+@media(min-width:1056px){
+  .shell{display:flex; align-items:flex-start;}
+  .side-nav{display:block; width:var(--nav-w); flex:0 0 var(--nav-w);
+    position:sticky; top:48px; align-self:flex-start;
+    height:calc(100vh - 48px); overflow-y:auto;
+    border-right:1px solid var(--hairline); padding:24px 0 48px;}
+  .content{flex:1 1 0%; min-width:0;}
+  .toc-mobile{display:none !important;}
+  .menu-btn{display:none !important;}
+}
+.inner{max-width:var(--measure); margin:0 auto; padding:0 20px 80px;}
+
+/* toc */
+.toc-wrap .toc-cap{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);
+  padding:0 24px 12px; text-transform:none;}
+.toc-list{list-style:none; margin:0; padding:0;}
+.toc-part{font-size:12px; font-weight:600; letter-spacing:0.16px; color:var(--ink-muted);
+  padding:20px 24px 6px; border-top:1px solid var(--hairline); margin-top:6px;}
+.toc-list li:first-child.toc-part{border-top:0; margin-top:0;}
+.toc-list a{display:flex; gap:10px; padding:7px 24px; color:var(--ink);
+  border-left:3px solid transparent; line-height:1.3;}
+.toc-list a:hover{background:var(--surface-1); text-decoration:none;}
+.toc-list a.active{border-left-color:var(--primary); background:var(--surface-1);
+  font-weight:600;}
+.toc-num{font-size:11px; color:var(--ink-subtle); min-width:58px; letter-spacing:0.16px;
+  padding-top:2px;}
+.toc-title{font-size:13px;}
+
+/* mobile toc panel */
+.toc-mobile{display:block; border-bottom:1px solid var(--hairline);
+  background:var(--canvas);}
+.toc-mobile[open]{padding-bottom:8px;}
+.toc-mobile summary{display:none;}
+@media(max-width:1055px){
+  .menu-btn{display:inline-flex;}
+  .toc-mobile{position:fixed; top:48px; left:0; right:0; bottom:0; z-index:45;
+    overflow-y:auto; transform:translateX(-100%); transition:transform .2s ease;
+    border-bottom:0;}
+  .toc-mobile.show{transform:translateX(0);}
+  .toc-mobile .toc-cap{padding:20px 24px 12px; font-size:12px;}
+}
+
+/* cover hero */
+.cover{padding:40px 20px 8px; border-bottom:1px solid var(--hairline);
+  margin-bottom:8px;}
+.cover-eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px;
+  margin:0 0 12px;}
+.cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
+  letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
+.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
+  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
+.cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
+.cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
+  font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
+.cover-logline{font-size:18px; line-height:1.5; color:var(--ink-muted);
+  border-left:3px solid var(--primary); padding-left:16px; margin:0 0 24px;}
+.cover-stats{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline);
+  margin-bottom:24px;}
+.cover-stats .stat{flex:1; min-width:96px; padding:16px; border-right:1px solid var(--hairline);}
+.cover-stats .stat:last-child{border-right:0;}
+.cover-stats .num{font-size:28px; font-weight:300; line-height:1.1; color:var(--ink);}
+.cover-stats .lab{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:4px;}
+.btn-primary{display:inline-block; background:var(--primary); color:var(--on-primary);
+  font-size:14px; letter-spacing:0.16px; padding:12px 16px; border:0; cursor:pointer;
+  font-family:var(--sans);}
+.btn-primary:hover{background:var(--blue-hover); color:var(--on-primary); text-decoration:none;}
+
+/* characters section */
+.characters{margin:48px 0 0;}
+.section-title{font-size:24px; font-weight:400; margin:0 0 24px; color:var(--ink);
+  border-bottom:1px solid var(--hairline); padding-bottom:12px;}
+.char-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+.char-card{background:var(--surface-1); padding:20px; border:1px solid var(--hairline);}
+.char-name{font-size:16px; font-weight:600; color:var(--ink);}
+.char-role{font-size:13px; color:var(--primary); letter-spacing:0.16px; margin-top:4px;}
+.char-desc{font-size:14px; color:var(--ink-muted); line-height:1.5; margin-top:8px;}
+
+/* chapter */
+.chapter{padding:48px 0 8px; border-bottom:1px solid var(--hairline);}
+.chapter:last-child{border-bottom:0;}
+.eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px; margin:0 0 12px;}
+.ch-title{font-size:clamp(28px,5vw,42px); font-weight:300; line-height:1.18;
+  letter-spacing:0; margin:0 0 28px; color:var(--ink);}
+.chapter p{
+  font-family:var(--serif); font-size:18px; line-height:1.75;
+  margin:0 0 20px; color:var(--ink); letter-spacing:0;
+}
+.chapter strong{font-weight:600;}
+.chapter em{font-style:italic;}
+.chapter blockquote{margin:24px 0; padding:16px 20px; border-left:3px solid var(--primary);
+  background:var(--surface-1); color:var(--ink-muted); font-family:var(--serif);
+  font-size:17px; line-height:1.6;}
+.chapter blockquote p{margin:0 0 12px; color:var(--ink-muted);}
+.chapter blockquote p:last-child{margin:0;}
+
+/* scene break */
+hr.scene-break{border:0; text-align:center; margin:32px 0;}
+hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spacing:8px; font-size:14px;}
+
+/* dialogue & message */
+.dialogue{padding-left:0;}
+.message{font-style:italic; color:var(--ink-muted);}
+
+/* chapter foot */
+.ch-foot{margin:32px 0 8px;}
+.totop{font-size:13px; color:var(--ink-muted); letter-spacing:0.16px;}
+.totop:hover{color:var(--primary);}
+
+/* footer */
+.page-footer{background:var(--surface-1); color:var(--ink-muted); padding:48px 20px; margin-top:0;}
+.page-footer .fin{max-width:var(--measure); margin:0 auto;}
+.page-footer .fbrand{font-size:20px; font-weight:300; color:var(--ink); margin:0 0 8px;}
+.page-footer p{font-size:14px; line-height:1.5; margin:0 0 6px;}
+.page-footer .fmeta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:16px;}
+
+/* selection */
+::selection{background:#0f62fe40; color:var(--ink);}
+
+</style>
+</head>
+<body id="top">
+<div id="progress"></div>
+<header class="top-nav">
+  <button class="menu-btn" id="menuBtn">≡ Mục lục</button>
+  <span class="brand">Người Sống Theo Luật Người Chết</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Bạch Vô Danh · 5 chương</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
+</header>
+<div class="toc-mobile" id="tocMobile"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần I: Tờ Luật Đầu Tiên</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Đêm mùng Hai</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Quan tài không đậy nắp</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Tiếng gọi sau lưng</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Ngủ không dậy</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Chợ Âm Phủ</span></a></li></ul></div></div>
+<div class="shell">
+  <aside class="side-nav"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần I: Tờ Luật Đầu Tiên</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Đêm mùng Hai</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Quan tài không đậy nắp</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Tiếng gọi sau lưng</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Ngủ không dậy</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Chợ Âm Phủ</span></a></li></ul></div></aside>
+  <div class="content">
+    <div class="inner">
+      <section class="cover">
+        <p class="cover-eyebrow">Bạch Vô Danh · 2026</p>
+        <h1 class="cover-title">Người Sống Phải Theo Luật Người Chết</h1>
+        <div class="cover-tags"><span>Kinh dị dân gian</span><span>Quy tắc quái đàm</span><span>Vô hạn lưu</span><span>Tháng cô hồn</span><span>Bí ẩn</span></div>
+        <p class="cover-logline">Từ đêm mùng Hai tháng Bảy âm lịch, mỗi giờ Tý hàng nghìn người bị kéo vào Âm Cảnh, những phó bản dựng từ chuyện ma dân gian, nơi mỗi tờ luật đều có một điều giả. Một người kiểm thử phần mềm phải bắt lỗi luật để sống qua từng đêm và tìm em gái hôn mê từ đêm đầu, mà không biết luật giả do người sống viết, còn luật thật là lời cuối của những người chết đã bị xóa tên.</p>
+        <div class="cover-stats">
+          <div class="stat"><div class="num">5/110</div><div class="lab">Chương</div></div>
+          <div class="stat"><div class="num">~15k</div><div class="lab">Từ</div></div>
+          <div class="stat"><div class="num">5%</div><div class="lab">Tiến độ</div></div>
+        </div>
+        <a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
+      </section>
+      <section class="characters" id="characters">
+        <h2 class="section-title">Nhân vật</h2>
+        <div class="char-grid">
+<div class="char-card"><div class="char-name">Trần Tư Viễn</div><div class="char-role">Nhân vật chính · 26 tuổi</div><div class="char-desc">Người kiểm thử phần mềm ở Hà Nội. Đánh số mọi thứ, đọc mọi thứ hai lần, phản ứng chậm và lạnh trước những điều khủng khiếp.</div></div>
+<div class="char-card"><div class="char-name">Trần Minh Thư</div><div class="char-role">Em gái · 19 tuổi</div><div class="char-desc">Sinh viên năm hai ngành Hán Nôm, bướng và tò mò. Hay vẽ một con mèo nhỏ ở góc vở.</div></div>
+<div class="char-card"><div class="char-name">Bà Phạm Thị Vấn</div><div class="char-role">Bà nội · 81 tuổi</div><div class="char-desc">Sống ở một xã ven sông Đáy, Nam Định. Trí nhớ lúc còn lúc mất. Giữ một cái hòm gỗ mít đầy giấy cũ.</div></div>
+<div class="char-card"><div class="char-name">Trần Văn Hưng</div><div class="char-role">Bố · 53 tuổi</div><div class="char-desc">Đã ly hôn, sống một mình ở Hà Nội, mỗi tháng gọi cho con trai một lần.</div></div>
+<div class="char-card"><div class="char-name">Ngô Văn Lực</div><div class="char-role">Thợ kèn đám ma · 41 tuổi</div><div class="char-desc">Người Hà Nam, hai mươi năm thổi kèn đám. Tin vào lệ của các cụ hơn tin vào chữ.</div></div>
+<div class="char-card"><div class="char-name">Nông Thị Nhàn</div><div class="char-role">Học sinh · 17 tuổi</div><div class="char-desc">Người Tày ở Cao Bằng. Lì, nhanh, đọc luật như đọc đề thi.</div></div>
+        </div>
+      </section>
+<article class="chapter" id="ch01">
+<p class="eyebrow">Chương 01 · Phần I: Tờ Luật Đầu Tiên</p>
+<h2 class="ch-title">Đêm mùng Hai</h2>
+<p>Tro vàng mã bay lên đến tầng mười một.</p>
+<p>Trần Tư Viễn nhìn thấy nó lúc chín giờ bốn mươi tối, khi ngẩng khỏi màn hình để đẩy kính. Một mẩu giấy cháy đen, mép còn viền đỏ, dính bẹp vào ô kính cửa sổ như con bướm đêm bị ép khô. Dưới chân tòa nhà, ai đó đang đốt lễ cúng cô hồn trên vỉa hè Duy Tân, và hơi nóng đã nâng thứ tro ấy qua mười tầng bê tông, qua dải đèn quảng cáo, đến đúng ô kính trước mặt anh. Anh nhìn nó một lúc. Nó không rơi xuống.</p>
+<p>Anh quay lại màn hình.</p>
+<p>Bản phát hành phải lên vào sáng thứ Hai, và bộ kiểm thử hồi quy ba trăm mười hai trường hợp còn mười tám cái chưa chạy. Văn phòng tắt một nửa đèn từ tám giờ. Nửa còn lại sáng một thứ ánh trắng mỏng và phẳng, làm da người trông như giấy can. Máy lạnh thổi ra mùi bụi lưới lọc và mùi cà phê hòa tan đọng trong cốc giấy của ai đó.</p>
+<p>Lỗi anh theo từ chiều là một lỗi nhỏ, loại lỗi chỉ người kiểm thử mới thấy đáng sợ. Trong biểu mẫu đăng ký khách hàng, nếu họ tên có dấu ngã ở âm tiết cuối, sau khi bấm lưu, trường họ tên sẽ trắng trơn. Không báo lỗi, không để lại dấu vết. Bản ghi vẫn được tạo, có số điện thoại, có địa chỉ, có ngày sinh, chỉ không còn tên. Anh tái hiện được mười một lần với mười một cái tên khác nhau. Lần thứ mười hai anh gõ tên mình. Tên anh không có dấu ngã, và nó ở lại.</p>
+<p>Anh viết phiếu lỗi, ghi các bước tái hiện từ một đến bảy. Ở ô mức độ nghiêm trọng, anh chọn "cao", rồi ngồi nhìn chữ ấy một lúc, thấy nó chưa đủ.</p>
+<p class="dialogue">– Ông vẫn chưa về à?</p>
+<p>Anh Khoa, trưởng nhóm, đứng ở đầu dãy bàn, mũ bảo hiểm đội sẵn, quai chưa cài lủng lẳng hai bên má.</p>
+<p class="dialogue">– Còn mười tám cái.</p>
+<p class="dialogue">– Để mai. Thứ Bảy anh em vào chạy nốt.</p>
+<p class="dialogue">– Em chạy nốt luôn cho xong.</p>
+<p>Anh Khoa liếc ra cửa sổ, về phía mẩu tro đen dính trên kính.</p>
+<p class="dialogue">– Tháng cô hồn đấy ông. Qua mười một giờ đừng có lang thang ngoài đường.</p>
+<p class="dialogue">– Vâng.</p>
+<p>Anh ta thở ra bằng mũi, nửa cười nửa không. Tiếng bước chân đi xa dần, rồi chỉ còn tiếng quạt tản nhiệt của hai mươi cái máy tính để chế độ chờ, thở đều như một phòng bệnh.</p>
+<p>Viễn chạy tiếp. Trường hợp hai trăm chín mươi tư. Hai trăm chín mươi lăm. Anh đếm thầm theo thanh tiến độ, và việc đếm làm anh yên theo cách mà không thứ gì khác làm được. Số không nói dối. Số chỉ có thể sai, và cái sai của số thì tìm ra được.</p>
+<p>Mười giờ mười lăm, điện thoại rung.</p>
+<p>Màn hình hiện ảnh đại diện của Minh Thư: một con mèo vẽ bằng bút bi, tai lệch, mắt là hai dấu chấm. Em tự vẽ từ năm lớp sáu và chưa bao giờ đổi. Anh nhận cuộc gọi video, kẹp điện thoại vào giá đỡ cạnh bàn phím.</p>
+<p>Hình ảnh vỡ ra thành những khối vuông xanh xám rồi khép lại thành gương mặt em gái anh, hơi méo. Minh Thư ngồi bệt dưới đất, sau lưng là bức tường vôi vàng đã loang và một cái quạt cây quay chậm. Tóc em buộc vội bằng một sợi dây chun đen, bên thái dương xổ ra mấy lọn.</p>
+<p class="dialogue">– Ông anh còn ở công ty à?</p>
+<p>Giọng em đến chậm hơn môi nửa giây, như một bộ phim lồng tiếng tồi.</p>
+<p class="dialogue">– Ừ.</p>
+<p class="dialogue">– Nhìn mặt ông anh như cá ươn ấy. Mấy giờ rồi?</p>
+<p class="dialogue">– Mười giờ mười sáu.</p>
+<p class="dialogue">– Ông anh lúc nào cũng trả lời đúng câu hỏi, chán thế.</p>
+<p>Em cười. Đúng lúc ấy mạng giật, và trong khoảng một giây rưỡi gương mặt Minh Thư bị giữ nguyên trên màn hình với cái miệng đang mở giữa chừng tiếng cười, răng khểnh lộ ra, mắt nhắm một nửa. Viễn nhìn tấm hình đứng ấy và thấy lạnh ở gáy, như có ai thở nhẹ vào đó. Rồi hình chạy lại, em đã thôi cười và đang nói dở một câu anh không nghe được đầu.</p>
+<p class="dialogue">– ...nên em mới phải về sớm. Bà dạo này lẫn hơn, ông anh ạ. Sáng nay bà hỏi em là con nhà ai.</p>
+<p class="dialogue">– Bố biết chưa?</p>
+<p class="dialogue">– Biết thì làm gì. Bố bảo bà già rồi.</p>
+<p>Từ đâu đó trong nhà, ngoài khung hình, vọng lên một giọng già, khàn, kéo dài cuối câu theo giọng Nam Định:</p>
+<p class="dialogue">– Thư ơi. Đóng cái cửa sổ vào con. Đêm nay đông người về lắm.</p>
+<p>Minh Thư ngoảnh ra phía tiếng gọi.</p>
+<p class="dialogue">– Vâng, con đóng rồi bà ơi.</p>
+<p>Rồi em ghé sát điện thoại đến mức anh chỉ thấy một con mắt, một bên mũi và mấy sợi tóc lòa xòa.</p>
+<p class="dialogue">– Em kể cái này nhưng đừng nói với bố nhé. Hứa đi.</p>
+<p class="dialogue">– Ừ.</p>
+<p class="dialogue">– Ông anh hứa như máy trả lời tự động. Thôi được.</p>
+<p>Em lùi ra, nghiêng điện thoại xuống.</p>
+<p class="dialogue">– Nhìn này.</p>
+<p>Khung hình trượt qua một mảng tối, một nền gạch đỏ, rồi dừng trên một cái hòm gỗ mở nắp. Gỗ mít, anh đoán, vì màu vàng sậm và vì hồi bé anh từng trèo lên cái hòm này để với lên bàn thờ. Trong hòm là giấy, nhiều lớp xếp chồng, ngả vàng, có tờ cuộn tròn, có tờ buộc dây gai. Mùi của chúng không bay qua được điện thoại, nhưng anh vẫn hình dung ra: long não, phân chuột, mùi những thứ lâu rồi không ai chạm vào.</p>
+<p>Tay Minh Thư lọt vào khung hình, cầm lên một tờ giấy mỏng màu ngà, mép xơ như vải.</p>
+<p class="dialogue">– Giấy dó thật đấy. Ông anh nhìn chữ này.</p>
+<p>Màn hình chỉ cho anh những vệt mực đen nhòe thành các khối vuông vì độ phân giải, xếp thành cột, đọc từ phải sang trái. Chúng giống những con côn trùng nhỏ bị ghim thành hàng.</p>
+<p class="dialogue">– Anh không đọc được.</p>
+<p class="dialogue">– Biết là ông anh không đọc được. Chữ Nôm mà.</p>
+<p>Giọng em run lên một chút, cái run của người vừa tìm thấy thứ mình muốn tìm từ lâu.</p>
+<p class="dialogue">– Toàn tên người, ông anh ạ. Hàng hàng lớp lớp tên người. Họ, tên đệm, tên, rồi chỗ này hình như là năm mất. Như sổ hộ khẩu của cả một cái làng. Chữ đẹp lắm, nét chân phương, người viết phải học kỹ lắm mới viết được thế này.</p>
+<p class="dialogue">– Của ai?</p>
+<p class="dialogue">– Em chưa rõ. Bà bảo giấy cũ của nhà, vứt đi cũng được. Nói thế rồi bà lại ra đứng ở cửa buồng nhìn em suốt, như sợ em làm rách nó.</p>
+<p>Viễn ghi nhận: giấy dó, chữ Nôm, danh sách tên người, bà nói một đằng làm một nẻo. Bốn dữ kiện. Anh xếp chúng vào một chỗ trong đầu, cạnh phiếu lỗi về cái trường họ tên bị xóa trắng.</p>
+<p class="dialogue">– Em chụp ảnh gửi ông anh giữ hộ. Mạng ở đây yếu lắm, em sợ mất.</p>
+<p>Khung hình chao đảo, tiếng giấy sột soạt. Trong ô trò chuyện bên cạnh, một ô vuông xám hiện ra kèm dòng chữ nhỏ: <em>Đang gửi...</em> Vòng tròn bên cạnh quay. Quay mãi.</p>
+<p class="dialogue">– Gửi chưa?</p>
+<p class="dialogue">– Đang gửi.</p>
+<p class="dialogue">– Mạng nhà bà như thời đồ đá. Thôi để nó tự gửi.</p>
+<p>Minh Thư đưa camera về mặt mình, ngáp.</p>
+<p class="dialogue">– Ông anh về ngủ đi. Tháng cô hồn ngồi văn phòng một mình đến nửa đêm, có ngày gặp ma đấy.</p>
+<p class="dialogue">– Ma không vào văn phòng được.</p>
+<p class="dialogue">– Sao không?</p>
+<p class="dialogue">– Phải quẹt thẻ.</p>
+<p>Minh Thư bật cười. Tiếng cười rơi vào văn phòng trống như hòn sỏi rơi xuống giếng, và Viễn nghe nó vọng ngược lại từ những dãy bàn tối phía xa, chậm hơn một nhịp, khàn hơn một chút. Anh quay đầu nhìn. Chỉ có đèn chờ của những cái máy tính chớp xanh, chậm và đều.</p>
+<p>Khi anh nhìn lại, cuộc gọi đã kết thúc. Không có tiếng chào. Chỉ còn cái ảnh đại diện mèo bút bi, và dòng chữ xám với vòng tròn quay không ngừng.</p>
+<p>Ba trăm mười hai trên ba trăm mười hai. Hai lỗi mới, một lỗi cũ tái phát. Lỗi trường họ tên, anh gắn thêm nhãn "chặn phát hành", rồi tắt máy.</p>
+<hr class="scene-break">
+<p>Hà Nội tháng Bảy âm lịch có một mùi riêng: giấy cháy, nhựa ghế đẩu đỏ, hương nhang rẻ tiền ngọt gắt như đường thắng quá lửa. Dọc vỉa hè, trên mỗi ghế đẩu là một đĩa cháo trắng loãng, mấy nắm bỏng ngô, một chén nước, để nguyên đó chờ các vong ăn xong. Gió đi qua, những đốm tàn trong chậu tôn đỏ lên rồi lịm xuống, như ai đó dưới đất đang thở.</p>
+<p>Ở ngã tư Trần Duy Hưng đèn đỏ chín mươi giây. Bên kia đường, trên bậc thềm một ngân hàng đã đóng cửa, có một cái ghế đẩu với một đĩa cháo, và ngồi xổm cạnh đó là một đứa trẻ chừng sáu bảy tuổi, cởi trần, đang dùng ngón tay vét cháo ăn. Nó ăn rất chậm, liếm từng ngón tay một như người ta làm khi bữa sau còn xa. Đèn xanh. Xe sau bấm còi. Anh đi.</p>
+<p>Đến ngã tư tiếp theo anh mới nghĩ: đứa trẻ đó không có ai đi cùng. Anh nghĩ điều ấy bình thản, như ghi một dòng "hành vi chưa xác định". Anh không quay xe lại.</p>
+<p>Khu chung cư ở Định Công xây từ cuối những năm chín mươi. Thang máy tòa B kêu như có người rên trong ống thông gió. Trong cabin dán một tờ giấy của ban quản lý, in đậm: <em>Đề nghị các hộ không đốt vàng mã trên hành lang, ban công.</em> Bên dưới, ai đó viết thêm bằng bút bi: <em>Thế đốt ở đâu?</em> Dưới nữa, một nét chữ khác, run hơn: <em>Đốt ở đâu thì họ cũng tìm được.</em></p>
+<p>Viễn đọc ba dòng ấy hai lần trong lúc thang lên tầng bảy. Anh đọc mọi thứ hai lần. Lần đầu để biết nó nói gì, lần hai để biết nó không nói gì.</p>
+<p>Căn hộ ít đồ đến mức người lạ vào có thể tưởng nhà vừa bị trộm. Trên cửa tủ lạnh dán đúng một tờ lịch trực nhật anh tự viết cho chính mình, đánh số từ một đến bảy. Anh ăn một gói mì đứng cạnh bếp. Bên tòa C, ở một căn tầng sáu, có người đang đốt vàng mã trong thùng sắt, cái bóng khom lưng thả từng xấp giấy vào, đứng rất lâu.</p>
+<p>Mười một giờ kém năm, anh nằm xuống. Ô trò chuyện với Minh Thư vẫn vậy. Anh kéo xuống để làm mới. Vòng tròn vẫn quay.</p>
+<p>Anh định nhắn cho em một câu, rồi thôi. Ảnh sẽ đến khi mạng ổn. Một hệ thống đủ đầu vào thì cho ra đầu ra, không cho ra thì là có lỗi, và lỗi thì tìm được.</p>
+<p>Anh đặt điện thoại lên ngực, màn hình úp xuống. Trần nhà có một vết ố hình bầu dục, mùa mưa nào cũng to thêm một chút. Anh đếm những vết nứt chạy ra từ mép nó, đến vết thứ chín thì không còn chắc mình đã đếm vết nào.</p>
+<p>Đồng hồ trên cổ tay kêu một tiếng bíp ngắn như mọi lần tròn giờ.</p>
+<p>Mười một giờ.</p>
+<p>Anh không nghe thấy tiếng bíp tiếp theo.</p>
+<hr class="scene-break">
+<p>Đất dưới lưng anh ấm.</p>
+<p>Viễn nhận ra điều đó trước cả bóng tối, trước cả tiếng kèn. Đất ấm như da người, ấm theo cách của một thân thể vừa thôi nằm ở chỗ đó, và hơi ấm thấm qua lần áo thun vào lưng anh, chậm và đều, như đang đo nhiệt độ của anh.</p>
+<p>Anh mở mắt.</p>
+<p>Không có trần nhà. Trên đầu là một khoảng trời đen kịt không trăng không sao, cái đen mà trời thành phố không bao giờ có được, và ở rìa tầm nhìn, những mái ngói thấp cong lên như những bàn tay úp. Đuốc cắm trên cột tre, đèn dầu đặt dưới đất, tất cả cháy bằng một thứ lửa vàng đục không hề lay động, dù gió đang lùa qua mắt cá chân anh.</p>
+<p>Anh ngồi dậy. Một mảnh vải trượt khỏi trán, rơi xuống lòng.</p>
+<p>Khăn tang. Vải xô thô, sợi to, mép không viền, dài chừng một sải tay. Nó có mùi tro và mùi hồ gạo. Anh cầm nó, nhìn quanh, và việc đầu tiên anh làm là đếm.</p>
+<p>Sân gạch đỏ đã mòn, rêu mọc giữa các kẽ. Một ngôi nhà ba gian cửa mở toang, bên trong tối. Góc sân có một cái chum lớn, miệng đậy nón lá. Giữa sân, trên hai cái mễ gỗ, là một chiếc áo quan sơn đen, nắp dựng nghiêng vào thành, để ngỏ. Trước áo quan là bàn thờ tạm: bát hương, đĩa xôi, một quả trứng luộc bóc vỏ, một tấm bài vị gỗ sơn đỏ. Ở góc xa, dưới mái che bằng rơm, năm người đàn ông ngồi xếp bằng, cúi đầu, đội khăn đóng, ôm kèn và trống. Tiếng kèn bầu đi lên rồi đi xuống, rên rỉ, lạc nhịp một cách có chủ ý. Viễn không thấy được mặt ai trong năm người ấy.</p>
+<p>Và người, rải rác khắp sân, ai cũng có một mảnh khăn trắng trên đầu hoặc trong tay. Một người đàn ông trung niên mặc áo vest, cà vạt nới lỏng. Một chị mặc đồ ngủ lụa in hoa. Một cậu thanh niên mặc áo đồng phục giao hàng, mũ bảo hiểm còn trên đầu, khăn tang quấn đè lên mũ. Một ông già áo may ô quần đùi. Một cô bé chừng mười bốn tuổi ôm gối. Vẻ mặt của tất cả đều giống nhau: vẻ mặt của người vừa tỉnh dậy ở chỗ không phải giường mình, chưa sợ, mới chỉ lạ.</p>
+<p>Ba mươi người, chưa tính anh. Anh đếm lại. Ba mươi mốt, tính cả anh.</p>
+<p>Đồng hồ trên cổ tay hiện 00:00, hai dấu chấm ở giữa không nhấp nháy. Túi quần không có điện thoại, chỉ có một thứ nhỏ, cứng, tròn. Anh rút ra. Một hạt gạo nếp đã chín rồi khô lại, dính vào vải.</p>
+<p class="dialogue">– Đây là đâu? Ai đưa tôi đến đây?</p>
+<p>Người đàn ông áo vest nói to, giọng của người quen được nghe lời. Không ai trả lời. Tiếng kèn bầu không đổi nhịp. Nó không nghe thấy họ, hoặc nghe thấy mà không bận tâm.</p>
+<p class="dialogue">– Mơ à?</p>
+<p>Chị mặc đồ ngủ tự véo vào cánh tay mình, mạnh đến mức để lại vết đỏ.</p>
+<p class="dialogue">– Mơ mà đau thế này à?</p>
+<p class="dialogue">– Điện thoại em đâu rồi? Có ai có điện thoại không?</p>
+<p>Cậu giao hàng hỏi, giọng vỡ ra ở chữ cuối. Không ai có.</p>
+<p>Viễn đứng dậy. Lẽ ra anh phải sợ, và anh ghi nhận việc mình không sợ như một dữ kiện lạ. Cảm giác gần giống những sáng thứ Hai nhận một hệ thống mới để kiểm thử: chưa có tài liệu, chỉ một giao diện lạ và một con trỏ nhấp nháy.</p>
+<p>Anh đội chiếc khăn lên đầu. Cái gì mà mọi người trong một hệ thống đều được cấp sẵn thì thường có lý do.</p>
+<p>Đứng lên rồi, mùi trong sân đậm hơn. Hương trầm. Xôi nếp. Và bên dưới hai thứ ấy, mỏng như sợi chỉ, một mùi ngọt hơi chua của thứ gì đã để quá lâu ngoài trời. Mùi ấy đến từ phía áo quan. Anh không nhìn về phía đó, và cũng không tự hỏi vì sao.</p>
+<p>Rồi anh thấy tờ giấy.</p>
+<p>Nó dán trên cây cột gỗ lớn nhất ở hiên nhà, cái cột sơn son đã tróc gần hết, chỉ còn những mảng đỏ như vảy trên thớ gỗ đen. Một tờ giấy dó khổ lớn, màu ngà, mép xơ như vải, giống hệt tờ Minh Thư cầm trên tay mấy tiếng trước. Chữ viết tay, mực đen, nét bút lông. Chữ quốc ngữ, nghiêng và đều, nét sổ kéo dài theo lối của những người học chữ từ rất lâu rồi.</p>
+<p>Không có tiêu đề. Chỉ có những dòng đánh số.</p>
+<p>Một bà cụ tóc búi củ hành đứng trước cột, đọc to, giọng run:</p>
+<p class="dialogue">– Ai vào đám thì phải đội khăn trắng...</p>
+<p>Viễn đứng sau lưng bà, cao hơn bà một cái đầu, và đọc thầm cùng lúc. Bà dừng lại vì hụt hơi. Anh đọc tiếp, hết một lượt, rồi đọc lại từ đầu, chậm, từng chữ, như đọc một bản đặc tả yêu cầu mà ai đó đã viết vội.</p>
+<blockquote><p>1. Ai vào đám thì phải đội khăn trắng. Khăn rơi thì nhặt mà đội lại, chớ để đầu trần quá một tuần hương.</p><p>2. Có người mời ăn cỗ thì ngồi, nhưng chớ gắp miếng đầu.</p><p>3. Chớ nhìn vào trong áo quan. Nắp để ngỏ là cho người nằm trong nhìn ra, chẳng phải cho người đứng ngoài nhìn vào.</p><p>4. Kèn thổi bài Lưu Thủy thì phải đứng dậy.</p><p>5. Đếm người trong sân. Thấy dư một người thì chớ hỏi người ấy là ai.</p><p>6. Chó trong làng sủa thì cứ để nó sủa. Chó thôi sủa thì vào nhà.</p><p>7. Nghe tiếng gọi tên mình đằng sau, chớ ngoảnh lại. Ngoảnh lại thì ở.</p><p>8. Chớ đọc chữ trên bài vị.</p><p>9. Gà chưa gáy, chớ đi qua cổng làng.</p><p>10. Canh tư phải ra đường đê, đi một mạch mà về, chớ chạy.</p><p>11. Kẻ bị giữ, muốn ra thì phải có người đổi chỗ.</p><p>12. Nếu cảm thấy khát, hãy uống nước trong chum ở góc sân.</p><p>13. Quy tắc số 7 là giả.</p></blockquote>
+<p>Lần thứ hai, Viễn không đọc nội dung nữa. Anh đọc chữ. "Chớ" lặp lại tám lần. "Thì" nhiều đến mức như nhịp thở của người viết. Không có "bạn". Câu ngắn và cụt, cách nói của người nhà quê đọc cho người khác chép, và người chép giữ nguyên cả giọng.</p>
+<p>Anh dừng ở điều 12. Chữ vẫn nghiêng, vẫn đều, cùng một màu mực. Nhưng câu này nói bằng một cái miệng khác. Anh cất điều đó đi, chưa biết dùng vào đâu.</p>
+<p>Rồi mắt anh trượt xuống cuối tờ.</p>
+<p>Anh đọc điều 7, rồi điều 13, rồi lại điều 7. Hai dòng chữ đứng cách nhau năm điều luật như hai người đứng ở hai đầu một căn phòng, không nhìn nhau.</p>
+<p>Sau lưng anh, tiếng kèn bầu đổi điệu. Anh không biết tên bài ấy. Anh chỉ nghe thấy âm thanh của nó có màu xám, cái xám của nước vo gạo để qua đêm, và nó đang chảy dần về phía anh.</p>
+<p>Anh đưa tay lên, chạm vào dòng cuối của tờ luật, chỉ bằng đầu ngón trỏ.</p>
+<p>Mực ở mười hai dòng trên đã khô từ lâu, khô đến mức hằn vào thớ giấy như sẹo.</p>
+<p>Dòng thứ mười ba vẫn còn ướt.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch02">
+<p class="eyebrow">Chương 02 · Phần I: Tờ Luật Đầu Tiên</p>
+<h2 class="ch-title">Quan tài không đậy nắp</h2>
+<p>Một tuần hương cháy hết trong bao lâu, không ai trong sân trả lời được.</p>
+<p>Bà cụ búi củ hành nói chừng nửa giờ. Ông già mặc áo may ô bảo hương bây giờ cháy nhanh, hương ngày xưa mới lâu. Cậu giao hàng hỏi hương nào, hương vòng hay hương que, rồi tự trả lời là chắc hương que vì trên bàn thờ chỉ có hương que. Viễn không tham gia. Anh đứng cách bàn thờ bảy bước, nhìn ba nén hương cắm nghiêng trong bát, và đếm nhịp tàn rơi.</p>
+<p>Tàn không rơi. Ba đốm đỏ trên đầu ba nén hương cháy đều, khói lên thẳng như kẻ chỉ, nhưng phần hương còn lại không ngắn đi. Anh nhìn rất lâu, đủ lâu để thấy mỏi mắt, và vạch ranh giới giữa phần đã cháy với phần chưa cháy vẫn nằm đúng ở chỗ cũ, ngang với một vết xước trên vành bát hương.</p>
+<p>Ở đây thời gian không chảy theo hương, anh nghĩ. Hoặc hương không cháy theo thời gian.</p>
+<p>Anh cất ý nghĩ đó vào cùng chỗ với điều 12.</p>
+<p class="dialogue">– Thôi, các vị.</p>
+<p>Người đàn ông áo vest vỗ tay hai cái, cái vỗ tay của người quen mở đầu cuộc họp. Ông ta ngoài năm mươi, bụng to vừa phải, tóc chải ngược bằng một thứ sáp còn bóng dưới ánh đuốc. Trên ve áo có cài một huy hiệu nhỏ hình cán cân.</p>
+<p class="dialogue">– Tôi là luật sư. Tôi nói các vị nghe. Đây là một kiểu thôi miên tập thể, hoặc một trò đùa có dàn dựng, hoặc chúng ta bị đánh thuốc. Tôi chưa biết là cái nào. Nhưng tôi biết một điều: không có luật nào có hiệu lực nếu không được ban hành bởi chủ thể có thẩm quyền.</p>
+<p>Ông ta chỉ tay lên tờ giấy dó trên cột.</p>
+<p class="dialogue">– Cái này không có chữ ký. Không có con dấu. Không có ngày tháng. Nó là một tờ giấy.</p>
+<p>Không ai nói gì. Tiếng kèn bầu từ góc sân vẫn rên đều, và Viễn để ý thấy ông luật sư phải nói to hơn một chút mỗi câu, như đang bị âm thanh ấy đẩy lùi.</p>
+<p class="dialogue">– Ông định làm gì?</p>
+<p>Chị mặc đồ ngủ lụa hỏi. Chị đã quấn khăn tang thành một vòng chặt quanh đầu, thắt nút sau gáy như người ta buộc khăn khi đi làm đồng.</p>
+<p class="dialogue">– Tôi định chứng minh cho các vị thấy.</p>
+<p>Ông luật sư đi về phía áo quan.</p>
+<p>Viễn không cản. Anh nghĩ đến việc cản, chỉ một thoáng, đủ để tính ra rằng người này là ai anh chưa rõ, điều 3 thật hay giả anh chưa rõ, và nếu điều 3 là thật thì người duy nhất có thể chứng minh nó lúc này đang đi về phía áo quan. Anh nghĩ điều đó rất rõ, từng chữ một, và trong lúc anh nghĩ thì ông ta đã đến nơi.</p>
+<p class="dialogue">– Đừng!</p>
+<p>Bà cụ búi củ hành kêu lên. Tiếng kêu mỏng, cao, như tiếng chim bị giẫm.</p>
+<p>Ông luật sư đặt hai tay lên thành áo quan, cúi đầu xuống, nhìn vào trong.</p>
+<p>Không có gì xảy ra.</p>
+<p>Ông ta đứng như thế, lưng cong, hai tay bám thành gỗ sơn đen, đầu cúi vào khoảng tối hình chữ nhật, lâu đến mức cậu giao hàng bật ra một tiếng cười ngắn, khô, tiếng cười của người vừa được giải tỏa.</p>
+<p class="dialogue">– Thấy chưa. Có gì đâu.</p>
+<p>Ông luật sư từ từ đứng thẳng lên.</p>
+<p>Ông ta quay lại phía mọi người. Mặt ông ta bình thường. Mắt mở, miệng khép, tóc vẫn bóng. Ông ta nhìn về phía họ, rồi nhìn qua họ, về một điểm nào đó trên mái ngói phía sau, và gật đầu nhẹ, một cái gật đầu lịch sự, như chào một người quen vừa bước vào.</p>
+<p>Rồi ông ta đi đến cái chiếu trải cạnh bàn thờ, nơi dành cho khách đến viếng, và ngồi xuống. Ông ta ngồi xếp bằng, hai bàn tay úp lên đầu gối, lưng thẳng. Ông ta ngồi như một người khách đã đến từ sớm và định ở lại đến hết đám.</p>
+<p>Nén hương thứ tư, không ai cắm, tự xuất hiện trong bát hương trước mặt ông ta. Viễn không thấy nó xuất hiện. Anh chỉ thấy nó đã ở đó, cháy, rồi tắt. Khói của nó không bay lên. Khói chảy xuống, chảy dọc thân hương, tràn qua vành bát, đổ xuống mặt bàn thờ như nước.</p>
+<p class="dialogue">– Anh ơi?</p>
+<p>Cậu giao hàng gọi. Ông luật sư không trả lời. Cậu đi lại, dè dặt, chạm vào vai ông ta. Rồi cậu rụt tay lại, chùi bàn tay vào ống quần, chùi mạnh, mấy lần liền.</p>
+<p class="dialogue">– Lạnh. Ông ấy lạnh. Như... như sáp ấy.</p>
+<p>Viễn đứng nguyên chỗ cũ. Anh nhìn người đàn ông ngồi trên chiếu, lưng thẳng, mắt mở, hướng về phía áo quan. Từ góc này anh không thấy mắt ông ta có chớp hay không. Anh cũng không đi lại gần để xem.</p>
+<p>Trong đầu anh, các chữ tự xếp thành hàng: điều 3, đúng, quan sát trực tiếp; hậu quả không ồn, có vẻ không đau, không trở lại.</p>
+<p>Anh đang ghi chép. Anh không thấy gì cả, chỉ thấy cần ghi chép, và anh để ý điều đó như để ý một tiếng động lạ trong máy, rồi để nó qua.</p>
+<hr class="scene-break">
+<p>Sau cái chết ấy, sân đám thay đổi theo một cách khó gọi tên.</p>
+<p>Không ai la hét. Chị mặc đồ ngủ ngồi thụp xuống ôm đầu gối, run, nhưng không khóc. Ông già may ô lẩm bẩm niệm Phật. Cô bé mười bốn tuổi, tên là Diệp, Viễn nghe bà cụ gọi thế, siết chặt cái gối đến mức ngón tay trắng bệch. Những người còn lại tản ra, chậm, và Viễn để ý thấy họ tự động tránh xa áo quan, tránh xa cái chiếu, tránh xa cột hiên nơi dán tờ luật, như những con kiến đi vòng qua một giọt dầu.</p>
+<p>Rồi họ bắt đầu đọc luật.</p>
+<p>Họ đọc to, đọc cho nhau nghe, cãi nhau về nghĩa từng chữ. "Một tuần hương" là bao lâu. "Miếng đầu" là miếng đầu tiên của mình hay miếng đầu tiên của cả mâm. "Canh tư" là mấy giờ. Ông già may ô nói canh tư là từ một đến ba giờ sáng. Một anh thanh niên đeo khuyên tai cãi là từ hai đến bốn. Bà cụ nói ngày xưa không ai đếm giờ, gà gáy lần đầu là hết canh tư.</p>
+<p>Viễn nghe hết, không chen vào. Anh đi một vòng quanh sân, sát mép tường, nhìn. Đất sân vẫn ấm dưới đế dép. Tường gạch không trát, mạch vữa đã mủn, sờ vào thấy ẩm, như tường một căn nhà bị bỏ hoang lâu ngày nhưng có người vừa thở lên nó. Con đường đất chạy ngang trước nhà dẫn về phía tay phải, đến cổng làng, một cái cổng gạch có mái, hai cánh gỗ khép hờ. Sau cổng là bóng tối đặc. Phía tay trái, xa hơn, có một con đê đất chạy dài, cao hơn mặt ruộng chừng một đầu người, lờ mờ dưới một thứ ánh sáng không đến từ đâu cả.</p>
+<p>Anh đếm người. Ba mươi mốt, tính cả ông luật sư đang ngồi trên chiếu.</p>
+<p>Anh đi tiếp. Gió đổi chiều. Một cái khăn tang bay qua trước mặt anh, chậm, như một con cá trắng bơi trong nước đục.</p>
+<p class="dialogue">– Khăn! Khăn tôi!</p>
+<p>Chị mặc đồ ngủ hét lên. Nút thắt sau gáy đã tuột. Chị đứng sững giữa sân, hai tay ôm lấy đầu như thể đầu mình đang bốc cháy.</p>
+<p>Viễn nhìn cái khăn. Nó bay về phía cổng làng, thấp, sát mặt đất, như đang được ai đó kéo đi bằng một sợi chỉ.</p>
+<p>Anh không chạy theo nó. Điều 10 nói chớ chạy, nhưng điều 10 nói về canh tư, về đường đê. Ở đây không điều nào cấm chạy. Anh vẫn không chạy, vì chạy có thể là một vi phạm nằm ở chỗ nào đó anh chưa đọc ra.</p>
+<p>Cậu giao hàng chạy. Cậu đuổi theo cái khăn, vồ hụt một lần, vồ được lần thứ hai ở ngay bậc cổng sân, rồi quay lại, thở hổn hển, dúi cái khăn vào tay chị.</p>
+<p class="dialogue">– Đội vào. Đội vào chị ơi.</p>
+<p>Chị đội vào, tay run đến mức thắt nút ba lần mới được. Viễn nhìn ba nén hương trên bàn thờ. Đầu đỏ vẫn ở đúng chỗ cũ, ngang vết xước trên vành bát. Chưa hết một tuần hương. Có thể không bao giờ hết.</p>
+<p>Anh nhìn cậu giao hàng. Cậu thở dốc, mồ hôi chảy thành hàng xuống thái dương, ướt cả quai mũ bảo hiểm.</p>
+<p class="dialogue">– Khát quá.</p>
+<p>Cậu nói với không ai cả.</p>
+<p>Viễn cũng khát. Anh nhận ra điều đó khi nghe cậu nói, như thể cơn khát đã chờ có người gọi tên nó ra. Cổ họng anh khô, lưỡi dính vào vòm miệng, và không khí trong sân đặc lại, ngòn ngọt, chua chua, như hơi thở của một cái bếp lâu ngày không ai nhóm lửa.</p>
+<p class="dialogue">– Điều mười hai cho uống đấy.</p>
+<p>Cậu giao hàng nói. Cậu đã quay về phía cái chum ở góc sân.</p>
+<p class="dialogue">– Khoan.</p>
+<p>Đây là lần đầu tiên Viễn lên tiếng từ lúc tỉnh dậy. Giọng anh nghe lạ, khàn, như một cái máy lâu không dùng.</p>
+<p class="dialogue">– Sao anh?</p>
+<p>Viễn không trả lời ngay. Anh không có câu trả lời. Anh chỉ có một cảm giác về cách một câu được nói ra, và cảm giác thì không phải bằng chứng.</p>
+<p class="dialogue">– Đọc lại điều mười hai đi.</p>
+<p class="dialogue">– Nếu cảm thấy khát, hãy uống nước trong chum ở góc sân. Thì sao? Nó bảo uống mà.</p>
+<p class="dialogue">– Mười một điều kia không có chữ "hãy".</p>
+<p>Cậu giao hàng nhìn anh. Trong ánh đuốc vàng đục, mắt cậu đỏ và ướt, mắt của người làm ca đêm lâu năm, của người chạy xe từ sáng đến tối mà vẫn không đủ.</p>
+<p class="dialogue">– Anh ơi, em khát lắm.</p>
+<p>Viễn không nói gì nữa. Điều 12 sai hay không, anh chưa chứng minh được. Nó chỉ nói khác.</p>
+<p>Cậu đi đến góc sân, nhấc cái nón lá đậy miệng chum lên. Mặt nước trong chum đen bóng, phẳng như gương, và trong một thoáng Viễn tưởng mình thấy trên mặt nước phản chiếu một bầu trời có trăng, dù trên đầu họ không có trăng. Cậu cúi xuống, vục hai tay vào chum, đưa lên miệng uống.</p>
+<p>Cậu uống một vốc. Rồi một vốc nữa. Rồi cậu bỏ tay ra, cúi hẳn mặt xuống, áp môi vào mặt nước và uống như trâu uống ở bờ ao, ừng ực, không dừng.</p>
+<p>Mực nước trong chum không hạ xuống.</p>
+<p>Cậu uống rất lâu. Lâu đến mức chị mặc đồ ngủ phải kêu lên "Thôi em ơi". Lâu đến mức ông già may ô thôi niệm Phật. Viễn đứng xem, và tim anh đập đều, chậm, không nhanh hơn chút nào. Anh ghi nhận cả điều đó.</p>
+<p>Rồi cậu giao hàng ngẩng lên.</p>
+<p>Nước chảy ra từ khóe miệng cậu, chảy xuống cằm, xuống cổ áo đồng phục. Cậu nhìn quanh, ngơ ngác, như vừa tỉnh một giấc ngủ trưa. Rồi cậu ngồi xuống, lưng dựa vào thành chum, hai chân duỗi ra trên nền gạch.</p>
+<p class="dialogue">– Ngủ tí.</p>
+<p>Cậu nói. Và cậu ngủ.</p>
+<p>Nước vẫn chảy ra từ miệng cậu, đều, không ngừng, chảy thành một dòng nhỏ trên nền gạch đỏ, len theo các mạch rêu, chảy về phía áo quan. Ngực cậu không phập phồng. Chiếc mũ bảo hiểm nghiêng sang một bên, cái khăn tang quấn trên đó vẫn còn nguyên nếp.</p>
+<p>Không ai đến gần cậu. Không ai nói gì nữa.</p>
+<p>Điều 12 sai, Viễn nghĩ, rồi xóa ý ấy đi. Người tin nó đã chết, thế thôi. Có thể điều 12 đúng mà có một điều khác cậu vi phạm. Có thể cậu đã uống quá nhiều. Có thể chum nước chỉ dành cho người khát thật, và cậu khát vì sợ.</p>
+<p>Anh viết lại trong đầu, cẩn thận hơn:</p>
+<p><em>Điều 12. Chưa xác nhận. Người tin điều 12: chết. Điều 12 và điều 13: giọng khác mười một điều còn lại. Cần thêm dữ liệu.</em></p>
+<p>Anh ghét chữ "cần thêm dữ liệu" ngay khi vừa nghĩ ra nó. Dữ liệu ở đây là người.</p>
+<hr class="scene-break">
+<p>Anh đếm lại, và con số ra ba mươi hai.</p>
+<p>Anh đếm lần nữa, chậm, chỉ tay từng người. Ông luật sư trên chiếu. Cậu giao hàng bên chum. Chị đồ ngủ. Bà cụ. Ông già may ô. Diệp. Anh thanh niên đeo khuyên tai. Hai người đàn ông mặc đồng phục bảo vệ. Một người phụ nữ bế một cái túi xách to như bế con. Hai mươi người nữa đứng rải rác. Anh. Ba mươi mốt.</p>
+<p>Và một người nữa. Ba mươi hai.</p>
+<p>Ở mép bàn thờ, quay lưng về phía sân, có một bà già mặc áo nâu ngồi bệt trên đất. Tóc bà bạc trắng, rối, xõa dài xuống lưng. Bà ngồi rất yên. Lúc nãy Viễn đã đi ngang qua chỗ ấy hai lần, và chỗ ấy trống.</p>
+<p>Diệp cũng thấy. Cô bé ngừng siết cái gối và nhìn chằm chằm vào lưng bà già áo nâu. Môi cô bé mấp máy. Anh đọc được khẩu hình của chữ đầu tiên.</p>
+<p><em>Ai...</em></p>
+<p>Viễn đi ba bước dài đến bên Diệp, nắm lấy cổ tay cô bé. Anh nắm không mạnh, nhưng đủ để cô bé giật mình quay sang.</p>
+<p class="dialogue">– Điều năm.</p>
+<p>Anh nói, nhỏ, đều.</p>
+<p class="dialogue">– Đếm. Không hỏi.</p>
+<p>Diệp nhìn anh. Mắt cô bé mở rất to, lòng trắng nhiều hơn lòng đen. Rồi cô bé gật đầu, một cái gật rất nhỏ, và ngậm miệng lại.</p>
+<p>Anh buông tay. Anh không nói thêm gì để trấn an cô bé. Anh không nghĩ ra câu nào. Anh chỉ nghĩ: một biến số vừa được giữ ổn định. Rồi anh nghe thấy chính ý nghĩ ấy trong đầu mình, nghe rõ đến từng chữ, và thấy lạnh, cái lạnh nhẹ như khi bước chân trần lên nền gạch buổi sáng.</p>
+<p>Bà già áo nâu không quay lại. Bà ngồi đó, quay lưng về phía họ, đầu hơi cúi, như đang trông chừng một thứ gì trên bàn thờ. Từ chỗ Viễn đứng, anh thấy hai vai bà gầy nhọn dưới lần áo nâu sờn, nhô lên như hai mỏm đá. Bà không có khăn tang.</p>
+<p>Không ai hỏi bà là ai.</p>
+<hr class="scene-break">
+<p>Kèn đổi điệu lần thứ hai thì có người đi ra từ trong nhà.</p>
+<p>Ngôi nhà ba gian vẫn tối, tối đến mức đuốc ngoài sân không rọi vào được quá ngưỡng cửa. Từ trong bóng tối ấy, một người bước ra, rồi một người nữa. Họ khiêng một cái mâm đồng, đi chậm, chân trần, mặc áo dài the đen đã bạc màu. Đầu họ đội khăn trắng như mọi người. Mặt họ cúi xuống.</p>
+<p>Họ đặt mâm lên một cái chiếu khác, trải giữa sân. Mâm cỗ: một đĩa xôi gấc đỏ, một đĩa thịt luộc thái mỏng, một bát canh măng, một đĩa giò, một đĩa dưa hành. Tất cả bốc khói. Mùi thức ăn bay lên, thơm, đậm, thơm đến mức làm người ta chóng mặt, và Viễn nghe thấy bụng mình réo lên một tiếng, rõ ràng, giữa sân đám im ắng.</p>
+<p>Một trong hai người khiêng mâm giơ tay về phía họ, lòng bàn tay ngửa lên. Cử chỉ mời.</p>
+<p>Không ai nhúc nhích.</p>
+<p>Rồi bà cụ búi củ hành đi tới. Bà đi rất chậm, chân run. Bà ngồi xuống cạnh mâm, xếp chân bằng tròn kiểu các bà các mẹ ngồi ăn cỗ ở quê. Viễn nhớ đến điều 2: <em>Có người mời ăn cỗ thì ngồi.</em> Bà đã ngồi.</p>
+<p>Ông già may ô ngồi theo. Rồi chị đồ ngủ. Rồi Viễn. Anh ngồi đối diện bà cụ, cách mâm cỗ một cánh tay. Hơi nóng từ đĩa xôi phả vào mặt anh.</p>
+<p>Không ai cầm đũa.</p>
+<p>Đũa đặt sẵn, bó thành một bó, buộc bằng một sợi lạt đỏ. Bà cụ nhìn bó đũa rất lâu. Rồi bà gỡ sợi lạt, rút một đôi, gắp một miếng xôi gấc ở chính giữa đĩa, miếng to nhất, đỏ nhất.</p>
+<p>Viễn nín thở.</p>
+<p>Bà không đưa miếng xôi lên miệng. Bà xoay người, đặt nó vào cái đĩa nhỏ trước bát hương trên bàn thờ, cạnh quả trứng luộc bóc vỏ. Rồi bà chắp tay, cúi đầu ba lần, miệng lầm rầm một câu gì đó Viễn không nghe rõ. Hai người áo the đen cúi đầu theo bà, chậm, cùng một nhịp.</p>
+<p>Rồi bà quay lại mâm, gắp một miếng giò, ăn.</p>
+<p>Không có gì xảy ra với bà.</p>
+<p class="dialogue">– Miếng đầu là miếng của người ta.</p>
+<p>Bà cụ nói, không nhìn ai, giọng khàn khàn như đang nói với chính mình.</p>
+<p class="dialogue">– Ngày xưa đám nào cũng thế. Miếng đầu phải mời người nằm đấy trước. Mình ăn trước là ăn cướp của người chết.</p>
+<p>Viễn nhìn bà. Một thứ gì đó dịch chuyển trong cách anh nhìn tờ giấy trên cột, một chút thôi, như cái kim đồng hồ nhích một vạch.</p>
+<p>Anh cầm đũa, gắp một miếng dưa hành, đưa lên miệng. Dưa chua, mặn, giòn, mùi giấm gạo xộc lên mũi. Nó có vị như thật. Nó có vị như những bữa cỗ giỗ ở nhà bà nội hồi anh mười tuổi, khi Minh Thư còn chưa đủ cao để với tới mâm và anh phải gắp hộ em từng miếng.</p>
+<p>Anh đặt đũa xuống. Anh không ăn thêm. Anh không đói nữa.</p>
+<p>Anh ngẩng lên.</p>
+<p>Bên kia sân, ở ngưỡng cửa ngôi nhà tối, có một người con gái vừa bước ra. Áo ngủ cộc tay màu hồng nhạt in hình những con mèo hoạt hình. Tóc buộc vội bằng một sợi dây chun đen, bên thái dương xổ ra mấy lọn. Chân trần. Trên đầu không có khăn trắng; cái khăn được cầm trong tay, buông thõng.</p>
+<p>Minh Thư không nhìn về phía anh. Em đứng ở ngưỡng cửa, quay mặt về phía cột hiên, nhìn tờ giấy dó dán trên đó. Mắt em đi từ dòng này sang dòng khác, chậm, chăm chú, môi mấp máy theo, và trên gương mặt em không có vẻ hoảng sợ của những người khác.</p>
+<p>Em đọc tờ luật như người ta đọc lại một lá thư cũ, viết bằng nét chữ mình đã thấy ở đâu đó rồi.</p>
+<p>Rồi em quay đầu, rất chậm, nhìn về phía bàn thờ.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch03">
+<p class="eyebrow">Chương 03 · Phần I: Tờ Luật Đầu Tiên</p>
+<h2 class="ch-title">Tiếng gọi sau lưng</h2>
+<p>Giữa Viễn và em gái anh là một chiếc áo quan để ngỏ nắp.</p>
+<p>Anh đứng dậy khỏi mâm cỗ. Đôi đũa anh vừa đặt xuống lăn nửa vòng trên mặt chiếu rồi dừng lại, chỉ thẳng về phía bàn thờ. Bà cụ búi củ hành ngẩng lên nhìn anh, miệng còn đang nhai, nhưng không hỏi gì.</p>
+<p>Đường ngắn nhất đến chỗ Minh Thư là đi thẳng qua giữa sân, ngang qua hai cái mễ gỗ. Viễn không đi đường ấy. Anh đi vòng sát chân tường, mắt nhìn xuống nền gạch, đếm từng viên một, để không có lúc nào ánh mắt anh lỡ trượt về phía khoảng tối hình chữ nhật ở giữa sân. Một trăm mười bốn viên. Rêu giữa các kẽ gạch mềm và trơn dưới đế dép, như lưỡi một con vật.</p>
+<p>Khi anh ngẩng lên, ngưỡng cửa đã trống.</p>
+<p>Anh đứng ở chỗ em vừa đứng. Ngôi nhà ba gian há ra trước mặt anh như một cái miệng không có răng, tối đến mức ánh đuốc ngoài sân dừng lại ở bậc thềm, không chịu đi tiếp. Anh nghe thấy từ trong ấy một luồng hơi lạnh và ẩm thổi ra, đều đều, như nhịp thở của một người đang ngủ rất say.</p>
+<p class="dialogue">– Thư.</p>
+<p>Tiếng anh rơi vào bóng tối và không vọng lại. Bóng tối nuốt nó như nước nuốt một hòn đá cuội, không gợn.</p>
+<p class="dialogue">– Minh Thư.</p>
+<p>Không có gì.</p>
+<p>Anh không bước vào. Không điều nào cấm vào nhà trước khi chó thôi sủa, nhưng không điều nào nói vào được, và anh không thấy được một bước trước mặt mình. Anh đứng ở ngưỡng cửa, tính toán. Em ở trong ấy, hoặc em đã đi chỗ khác, hoặc em chưa bao giờ ở đó và anh đã nhìn nhầm một người con gái lạ mặc áo ngủ in mèo. Ba khả năng. Anh không loại được cái nào.</p>
+<p>Anh quay lại, nhìn về phía bàn thờ.</p>
+<p>Trên mép cái chiếu trải trước bàn thờ, cách ông luật sư đang ngồi chừng một sải tay, có một sợi dây chun đen. Loại dây chun buộc tóc bán theo vỉ ở cổng trường, mười nghìn được hai mươi cái. Nó nằm cuộn lại thành một vòng nhỏ, méo, như vừa tuột khỏi một mái tóc bị giật mạnh.</p>
+<p>Anh đi tới, cúi xuống nhặt nó lên. Dây chun còn ấm.</p>
+<p>Khi đứng thẳng dậy, anh để ý thấy bà già áo nâu đã không còn ngồi ở mép bàn thờ nữa. Chỗ bà ngồi lúc nãy chỉ còn một vệt đất nhẵn hơn xung quanh, như chỗ một con mèo vừa nằm.</p>
+<p>Và mắt anh, trong lúc trượt qua mặt bàn thờ, đã chạm vào tấm bài vị.</p>
+<p>Anh không đọc nó. Anh rút mắt về ngay, nhanh như rút tay khỏi một cái nồi đang sôi. Nhưng trong khoảnh khắc ấy anh đã kịp thấy một thứ: một vệt đỏ chạy chéo qua mặt gỗ, từ góc trên xuống góc dưới, đỏ tươi, ướt, như vừa được quệt bằng một ngón tay nhúng son. Những nét chữ bên dưới vệt đỏ đang nhòe ra. Chúng không bị xóa. Chúng đang tan, chậm, như đường tan trong nước, như có thứ gì đó đang ăn dần từng nét.</p>
+<p>Anh quay lưng lại bàn thờ. Anh đứng như thế một lúc, nhìn ra sân, nhìn đám người đang tụ quanh mâm cỗ, nhìn cậu giao hàng ngồi tựa thành chum với dòng nước vẫn chảy ra từ miệng, đã chảy thành một vũng nhỏ lấp lánh dưới ánh đuốc.</p>
+<p>Anh xỏ sợi dây chun vào cổ tay trái, cạnh cái đồng hồ đứng ở 00:00. Nó hơi chật. Nó hằn vào da một vòng mảnh.</p>
+<hr class="scene-break">
+<p>Chó bắt đầu sủa từ lúc nào, Viễn không để ý. Có thể từ đầu. Có thể tiếng chó đã nằm dưới tiếng kèn bầu ngay từ lúc anh tỉnh dậy, như một lớp nền, và anh chỉ nghe ra nó khi nó thay đổi.</p>
+<p>Bây giờ nó đang thay đổi.</p>
+<p>Lúc đầu là cả một làng chó, xa, rải rác, con này đáp con kia từ những ngõ xóm anh không nhìn thấy. Rồi tiếng sủa thưa dần. Một con im. Hai con im. Con cuối cùng sủa thêm ba tiếng, mỗi tiếng cách nhau lâu hơn tiếng trước, tiếng cuối cùng ngắn và cụt như bị ai bóp cổ.</p>
+<p>Rồi không còn con nào sủa.</p>
+<p>Sự yên tĩnh đổ xuống sân đám như một tấm chăn ướt. Ngay cả tiếng kèn bầu cũng nhỏ lại, chùng xuống, như năm người thổi kèn đang cúi đầu thấp hơn.</p>
+<p class="dialogue">– Chó thôi sủa.</p>
+<p>Ông già may ô nói. Giọng ông run.</p>
+<p class="dialogue">– Điều sáu. Vào nhà. Vào nhà đi các bác.</p>
+<p>Họ đi vào, hai mươi chín người, bỏ lại ngoài sân hai người không bao giờ đứng dậy nữa. Họ đi thành một hàng lộn xộn, chen nhau qua ngưỡng cửa hẹp, và bóng tối trong nhà nuốt từng người một. Viễn đi gần cuối. Diệp đi ngay trước anh, vẫn ôm cái gối. Khi đến ngưỡng cửa cô bé dừng lại một giây, và anh đặt tay lên vai cô, đẩy nhẹ. Cô bé bước vào. Anh bước theo.</p>
+<p>Bên trong không có gì để nhìn. Bóng tối dày đến mức mở mắt hay nhắm mắt cũng như nhau. Anh chỉ còn những thứ khác. Mùi cơm thiu, chua và ngái, mùi chiếu cói mục, mùi người, rất nhiều người, mồ hôi và hơi thở và nỗi sợ, cái mùi của nỗi sợ hơi giống mùi sắt. Dưới chân là nền đất nện, mát lạnh, khác hẳn đất ngoài sân. Có người khóc rất khẽ ở đâu đó bên phải anh. Có người thì thầm "Nam mô A Di Đà Phật" lặp đi lặp lại, nhanh dần, cho đến khi các âm tiết dính vào nhau thành một tiếng rì rầm không còn nghĩa.</p>
+<p>Viễn ngồi xuống, lưng dựa vào một cái cột gỗ. Anh đếm theo tiếng thở. Không đếm được. Tiếng thở chồng lên nhau, và có những tiếng thở anh không chắc là của người.</p>
+<p>Một lúc sau, có thứ gì đó chạm vào tay anh.</p>
+<p>Một bàn tay, nhỏ, lạnh, khô như lá chuối phơi. Nó tìm thấy ngón trỏ của anh trong bóng tối và nắm lấy, nắm như trẻ con nắm ngón tay người lớn khi qua đường, không chặt, không lỏng. Viễn không giật tay lại. Anh ngồi yên, để nó nắm, và đếm. Anh đếm được đến bốn mươi thì bàn tay ấy buông ra, rút đi về phía bóng tối bên trái, không một tiếng sột soạt. Ngón trỏ của anh lạnh thêm rất lâu sau đó, lạnh từ bên trong, như vừa nhúng vào nước giếng.</p>
+<p>Anh không hỏi ai vừa nắm tay mình. Điều 5 chỉ nói về sân, nhưng anh không nghĩ cái nhà này khác cái sân.</p>
+<p>Rồi anh nghe thấy một âm thanh khác.</p>
+<p>Nó đến từ phía trong cùng của ngôi nhà, gian bên trái, nơi theo lối nhà quê thường đặt giường thờ. Một giọng con gái, rất nhỏ, đọc thầm. Không phải tiếng Việt anh nghe quen hằng ngày. Từng âm tiết rời rạc, tròn, kéo dài, lên xuống theo một giai điệu lạ, như người ta đọc kinh, hoặc như người ta đánh vần một thứ chữ mình chỉ mới học được một nửa.</p>
+<p>Anh ngồi thẳng dậy. Anh nhìn về phía ấy, vô ích, vì không có gì để nhìn.</p>
+<p>Giọng đọc dừng lại. Có tiếng giấy sột soạt. Rồi giọng ấy tiếp tục, chậm hơn, cẩn thận hơn, như đang dò từng nét.</p>
+<p>Anh không gọi. Anh ngồi đó, dựa lưng vào cột, sợi dây chun hằn vào cổ tay, và nghe cái giọng ấy đọc trong bóng tối cho đến khi nó nhỏ dần, nhỏ dần, rồi tan vào tiếng niệm Phật của người bên cạnh.</p>
+<hr class="scene-break">
+<p>Trống đánh bốn tiếng.</p>
+<p>Bốn tiếng trống canh, trầm, đục, cách nhau đều đặn, từ đâu đó bên ngoài, xa và gần cùng lúc. Bà cụ búi củ hành là người đứng dậy đầu tiên. Viễn nghe tiếng khớp gối bà kêu lục cục trong bóng tối.</p>
+<p class="dialogue">– Canh tư rồi. Ra đê.</p>
+<p>Họ ra. Ngoài sân, đuốc vẫn cháy bằng thứ lửa không lay động. Ông luật sư vẫn ngồi trên chiếu, lưng thẳng, hai tay úp trên đầu gối. Cậu giao hàng vẫn tựa chum. Vũng nước dưới chân cậu đã lan rộng, chảy thành một dòng mảnh qua các kẽ gạch, đến tận chân mễ gỗ dưới áo quan, và dừng lại ở đó, như một con vật nhỏ nằm chờ.</p>
+<p>Anh thanh niên đeo khuyên tai đứng ở cổng sân, nhìn ra đường đất. Bên phải là cổng làng, gần, chỉ chừng năm mươi bước, hai cánh gỗ khép hờ. Bên trái là con đê, xa hơn nhiều, phải đi vòng qua một khúc ruộng.</p>
+<p class="dialogue">– Đi cổng cho nhanh. Ra khỏi làng là được chứ gì.</p>
+<p class="dialogue">– Điều chín.</p>
+<p>Viễn nói. Anh thanh niên quay lại nhìn anh, nhíu mày.</p>
+<p class="dialogue">– Điều chín bảo gà chưa gáy thì đừng qua cổng làng. Điều mười bảo canh tư ra đường đê. Hai điều mâu thuẫn thì phải có một điều sai. Ông kia chết vì điều mười hai, nghĩa là có điều sai thật. Ai bảo cái sai là điều mười?</p>
+<p>Viễn không trả lời ngay. Anh nghĩ về câu hỏi ấy. Nó là một câu hỏi tốt.</p>
+<p class="dialogue">– Hai điều không mâu thuẫn. Đê đi vòng, không qua cổng.</p>
+<p class="dialogue">– Anh chắc không?</p>
+<p class="dialogue">– Không.</p>
+<p>Anh thanh niên nhìn anh thêm một lúc. Rồi cậu ta nhún vai, quay đi. Hai người mặc đồng phục bảo vệ đi theo cậu ta. Rồi người phụ nữ ôm túi xách. Bốn người. Họ đi về phía cổng làng, bước nhanh, gần như chạy, và không ai gọi họ lại.</p>
+<p>Viễn nhìn theo. Anh nhìn bốn cái bóng nhỏ dần trên con đường đất, đến chân cổng gạch, lách qua khe giữa hai cánh gỗ khép hờ, từng người một. Người phụ nữ là người cuối cùng. Cái túi xách của chị vướng vào mép cửa một giây, chị giật mạnh, rồi lọt qua.</p>
+<p>Hai cánh cổng từ từ khép lại sau lưng họ. Không có tiếng gió. Không có ai đẩy. Chúng khép lại chậm và êm, như hai mi mắt.</p>
+<p>Không có tiếng kêu nào vọng ra từ bên kia.</p>
+<p>Viễn đứng nhìn thêm một lúc nữa. Anh chờ một âm thanh, bất kỳ âm thanh nào. Rồi anh quay sang phía đê.</p>
+<hr class="scene-break">
+<p>Con đê cao hơn mặt ruộng chừng một đầu người, mặt đê lát đất nện, rộng vừa đủ cho hai người đi song song. Họ đi một hàng dọc, không ai bảo ai, như thể ai cũng đã đọc điều 10 đến thuộc lòng và sợ chữ "một mạch" đến mức không dám đi cạnh người khác. Hai bên đê là ruộng. Ruộng không có lúa. Chỉ có những gốc rạ đen, ngập trong một thứ nước đục, phẳng, không phản chiếu gì, và từ mặt nước bốc lên một làn sương mỏng, bò sát mặt ruộng, trắng như vải xô.</p>
+<p>Sau lưng họ, làng tắt đèn. Viễn không quay lại nhìn, nhưng anh thấy điều đó qua mặt ruộng: những đốm vàng đục phản chiếu mờ mờ trên mặt nước đen lần lượt lịm đi, từng đốm một, như có người đi dọc các ngõ thổi tắt từng ngọn đuốc. Sương mang theo mùi rơm ướt, mùi bùn, và một mùi khác nằm dưới cùng, nhạt, ngai ngái, như mùi một nồi cám để qua đêm. Không có tiếng ếch nhái. Không có tiếng côn trùng. Mặt ruộng rộng như thế mà im như mặt một tấm kính.</p>
+<p>Diệp đi trước Viễn. Trước Diệp là bà cụ. Sau Viễn là chị đồ ngủ, rồi ông già may ô, rồi những người khác, hai mươi mấy người nối đuôi nhau trên mặt đê như một đám rước không có kiệu.</p>
+<p>Không ai chạy. Viễn đếm bước. Anh không đếm để biết đã đi bao xa, vì ở chỗ này khoảng cách cũng như thời gian, chúng không trôi theo cách anh biết. Anh đếm vì đếm là thứ duy nhất anh còn làm được bằng tay mình.</p>
+<p>Bốn trăm. Bốn trăm năm mươi. Sương dâng lên đến bắp chân. Năm trăm.</p>
+<p>Sau này, mỗi lần nhớ lại đoạn đường ấy, Viễn đều nhớ nó theo cùng một thứ tự.</p>
+<p>Anh nhớ con số năm trăm mười hai. Đó là lúc tiếng gọi bắt đầu.</p>
+<p class="dialogue">– Anh ơi.</p>
+<p>Nó đến từ phía sau, rất gần, gần như sát gáy. Một giọng con gái, trẻ, hơi khàn, như giọng người vừa khóc xong hoặc vừa đọc to rất lâu.</p>
+<p>Viễn không dừng bước. Năm trăm mười ba.</p>
+<p>Anh nhớ mình đã đọc lại điều 7 trong đầu. Từng chữ. <em>Nghe tiếng gọi tên mình đằng sau, chớ ngoảnh lại. Ngoảnh lại thì ở.</em> Anh nhớ mình đã nghĩ: ở chỗ này, có những thứ giống những thứ khác. Một bà già ngồi ở chỗ trống. Một cái chum có trăng. Một tiếng cười vọng ngược lại từ những dãy bàn không người. Anh nhớ mình đã tự nhủ, rất rõ ràng, rằng một thứ muốn mình quay lại thì sẽ gọi bằng giọng mà mình muốn nghe nhất.</p>
+<p class="dialogue">– Anh ơi.</p>
+<p>Năm trăm mười bảy.</p>
+<p>Phía trước, Diệp khựng lại nửa nhịp. Đầu cô bé bắt đầu xoay sang một bên. Viễn bước nhanh lên một bước, đúng một bước, đặt tay lên vai cô bé và giữ chặt, giữ cho cái đầu ấy hướng về phía trước.</p>
+<p class="dialogue">– Không phải gọi em. Đi đi.</p>
+<p>Cô bé đi tiếp. Vai cô bé run dưới bàn tay anh.</p>
+<p>Tiếng gọi ấy gọi "anh". Nó không gọi tên ai, nhưng nó ở ngay sau gáy anh.</p>
+<p>Anh đã đọc điều 7. Anh tin điều 7.</p>
+<p class="dialogue">– Anh.</p>
+<p>Lần này không có chữ "ơi". Chỉ một tiếng, ngắn, thấp, rõ ràng. Không trêu chọc, không nũng nịu. Cái cách người ta gọi khi không còn muốn đùa nữa.</p>
+<p>Năm trăm hai mươi.</p>
+<p>Sợi dây chun trên cổ tay trái anh siết lại. Anh cảm thấy nó, một vòng nóng rát quanh cổ tay, như có ai đó đang kéo đầu kia của nó về phía sau.</p>
+<p>Viễn bước tiếp. Anh nhớ mình đã nghĩ đến rất nhiều điều trong những bước chân ấy, và anh nhớ mình đã chọn nghĩ đến điều 7. Năm trăm hai mươi mốt. Năm trăm hai mươi hai. Mắt anh nhìn thẳng vào gáy của Diệp, vào mấy sợi tóc tơ dính mồ hôi trên cổ cô bé, vào cái vạt áo ngủ nhàu, vào bất cứ thứ gì ở phía trước.</p>
+<p>Sau này anh sẽ kể lại với chính mình rằng lúc ấy anh tưởng đó là bẫy. Rằng anh đã đọc luật, đã phán đoán, và đã phán đoán theo những gì anh đọc được. Anh sẽ kể như thế nhiều lần, đủ nhiều để các chữ mòn đi và khớp vào nhau như những viên gạch đã nằm cạnh nhau lâu ngày.</p>
+<p class="dialogue">– Anh. Em...</p>
+<p>Sương đã dâng đến đầu gối. Phía chân trời, ở nơi đáng lẽ phải là phía đông, trời bắt đầu loang ra một màu xám bạc, mỏng như lớp màng trên mặt sữa nguội.</p>
+<p>Rồi gà gáy.</p>
+<p>Một tiếng gáy duy nhất, khàn, vỡ, kéo dài, như tiếng của một con gà rất già gáy lần cuối. Nó cắt ngang tiếng gọi sau lưng anh, cắt đúng vào giữa một chữ, và nửa còn lại của chữ ấy không bao giờ đến.</p>
+<p>Viễn dừng bước.</p>
+<p>Phía sau anh không còn gì. Không tiếng gọi, không tiếng bước chân, không tiếng thở. Phía trước, Diệp đã khuỵu xuống mặt đê, ôm cái gối, khóc thành tiếng. Bà cụ búi củ hành đứng yên, chắp tay hướng về phía vệt sáng bạc. Không ai quay lại nhìn ai.</p>
+<p>Viễn nhìn xuống cổ tay trái. Sợi dây chun đen vẫn ở đó, hằn sâu vào da, để lại một vòng đỏ như vết dây trói. Nó ướt. Nó ướt như vừa được ai đó nắm chặt trong một bàn tay đẫm sương rất lâu.</p>
+<p>Dưới chân anh, mặt đê bắt đầu mềm ra, chậm rãi, như giấy dó ngấm nước.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch04">
+<p class="eyebrow">Chương 04 · Phần I: Tờ Luật Đầu Tiên</p>
+<h2 class="ch-title">Ngủ không dậy</h2>
+<p>Vết hằn trên cổ tay trái Viễn có hình một sợi dây chun, nhưng sợi dây chun thì không còn ở đó.</p>
+<p>Anh tỉnh dậy lúc bốn giờ năm mươi tám phút sáng thứ Bảy, nằm ngửa trên giường đơn, điện thoại úp trên ngực. Trần nhà vẫn có vết ố hình bầu dục. Ngoài ban công trời đang chuyển từ đen sang xám chì, và đâu đó trong khu tập thể có tiếng một con gà nhà ai nuôi trên sân thượng gáy, ngắn, bình thường, một con gà hoàn toàn bình thường.</p>
+<p>Anh không ngồi dậy ngay. Anh giơ cổ tay trái lên trước mặt. Một vòng đỏ mảnh chạy quanh cổ tay, sát mép dây đồng hồ, hằn sâu vào da như vết lạt buộc bánh chưng để qua đêm. Anh ấn ngón cái vào đó. Không đau. Chỉ hơi tê, như chỗ da ấy đã ngủ quên.</p>
+<p>Đồng hồ điện tử chạy bình thường. 04:58. Rồi 04:59.</p>
+<p>Anh lật điện thoại lên. Ô trò chuyện với Minh Thư vẫn mở. Ô vuông xám. <em>Đang gửi...</em> Vòng tròn vẫn quay, quay suốt sáu tiếng đồng hồ trong lúc anh ngủ, quay như chưa từng biết mệt.</p>
+<p>Anh mở ứng dụng ghi chú.</p>
+<p>Anh không quyết định làm việc đó. Ngón tay anh tự mở nó, như mở mỗi sáng thứ Hai để ghi lại các việc cần làm trong tuần. Màn hình trắng, con trỏ nhấp nháy. Anh nhìn nó một lúc, rồi bắt đầu gõ. Anh gõ nhanh, không sửa, theo thứ tự các điều luật hiện ra trong đầu chứ không theo thứ tự đánh số trên tờ giấy dó, và đồng hồ ở góc màn hình ghi lại thời điểm tạo ghi chú: 05:02.</p>
+<blockquote><p>R7: TRUE (đã xác nhận)</p><p>R3: TRUE. Nhìn vào áo quan -&gt; ngồi xuống chiếu, chết. Không ồn.</p><p>R12: ?? Người uống -&gt; chết. Giọng khác 11 điều kia ("hãy", "nếu cảm thấy").</p><p>R13: ?? Giọng khác. Mực ướt.</p><p>R9: TRUE? 4 người qua cổng, không thấy ra.</p><p>R10: TRUE? Đi đê, không chạy, sống.</p><p>R2: miếng đầu = phần người chết. Bà cụ biết. Mình không biết.</p><p>R5: dư 1 (bà áo nâu). Không hỏi.</p><p>R1: khăn rơi 1 lần, đội lại kịp. Hương không cháy ngắn -&gt; không đo được tuần hương.</p><p>R4: không nhận ra bài Lưu Thủy. Chưa kiểm.</p><p>R6: làm theo. Sống.</p><p>R8, R11: chưa kiểm.</p><p>Thư có ở đó. Áo ngủ mèo. Dây chun.</p></blockquote>
+<p>Anh đọc lại một lượt, như mọi thứ khác anh viết ra. Rồi anh lưu, đặt tên ghi chú là "Đêm 1", và bấm gọi cho Minh Thư.</p>
+<p>Chuông đổ. Đổ rất lâu. Đến hồi thứ mười một thì tắt, chuyển sang hộp thư thoại, giọng tổng đài nữ đều đều mời anh để lại lời nhắn sau tiếng bíp. Anh không để lại gì.</p>
+<p>Anh gọi lại lần nữa. Lần này chuông không đổ. Chỉ có một khoảng im lặng dài, rồi giọng tổng đài báo thuê bao tạm thời không liên lạc được.</p>
+<p>Anh ngồi dậy, đặt hai chân xuống nền gạch lạnh, và ngồi như thế, nhìn cửa ban công đang sáng dần. Anh không nghĩ gì cụ thể. Trong đầu anh chỉ có một thứ âm thanh, rất nhỏ, như tiếng quạt tản nhiệt của một cái máy chạy quá lâu.</p>
+<hr class="scene-break">
+<p>Bố gọi lúc sáu giờ mười hai.</p>
+<p>Từ năm Viễn mười lăm tuổi, bố chưa bao giờ gọi cho anh trước bảy giờ sáng. Bố gọi vào tối Chủ nhật, mỗi tháng một lần, hỏi ba câu: có khỏe không, công việc thế nào, có cần gì không. Anh trả lời ba câu: khỏe, bình thường, không. Hai bố con cúp máy sau chưa đầy hai phút, và cả hai đều nhẹ người.</p>
+<p class="dialogue">– Viễn à.</p>
+<p>Giọng bố khàn, đặc, như giọng của người vừa hút liền mấy điếu thuốc. Sau lưng bố có tiếng xe máy, tiếng ai đó nói to bằng giọng Nam Định, tiếng một cánh cửa sắt kéo xoèn xoẹt.</p>
+<p class="dialogue">– Con nghe.</p>
+<p class="dialogue">– Con bé Thư...</p>
+<p>Bố dừng lại. Viễn nghe thấy bố thở. Một hơi. Hai hơi.</p>
+<p class="dialogue">– Con bé không dậy được. Bà gọi bác Tám hàng xóm từ năm giờ sáng. Bác ấy gọi bố. Bố đang ở dưới quê.</p>
+<p class="dialogue">– Bố về quê lúc nào?</p>
+<p class="dialogue">– Đêm qua. Hai giờ sáng bố đi.</p>
+<p>Viễn không hỏi vì sao bố lại về quê lúc hai giờ sáng, trước cả khi bác Tám gọi. Câu hỏi ấy xuất hiện trong đầu anh, rõ ràng, đầy đủ, rồi anh để nó nằm đó, cạnh những câu hỏi khác.</p>
+<p class="dialogue">– Em còn thở không?</p>
+<p class="dialogue">– Còn. Thở đều. Nằm như ngủ. Lay không dậy, gọi không dậy, cấu không dậy. Bà bảo đêm qua con bé ngồi đọc giấy trong buồng đến khuya, sáng ra thấy nằm gục bên cái hòm. Trạm y tế xã bảo phải chuyển lên tỉnh. Bố gọi lên tỉnh hỏi trước, người ta bảo tỉnh đang có hai chục ca giống thế, chắc phải chuyển tiếp lên Bạch Mai.</p>
+<p class="dialogue">– Hai chục ca.</p>
+<p class="dialogue">– Hai chục ca. Ở mỗi cái tỉnh này thôi đấy.</p>
+<p>Viễn đứng dậy, đi ra ban công. Bên tòa C, cái thùng sắt đốt vàng mã ở căn tầng sáu vẫn còn đó, đã nguội, miệng thùng phủ một lớp tro xám mịn như lông chuột. Cửa căn hộ đóng kín.</p>
+<p class="dialogue">– Con lên Bạch Mai đợi.</p>
+<p class="dialogue">– Ừ. Chiều xe cứu thương mới chở được lên.</p>
+<p>Bố ngừng một chút.</p>
+<p class="dialogue">– Mà này. Anh có biết điện thoại con bé đâu không? Bà tìm không thấy.</p>
+<p class="dialogue">– Không.</p>
+<p class="dialogue">– Chắc rơi đâu ở quê. Bà lẫn rồi, cất đâu cũng chả nhớ.</p>
+<p>Bố cúp máy trước khi anh kịp nói thêm gì. Mà anh cũng không định nói thêm gì.</p>
+<hr class="scene-break">
+<p>Anh không đi làm, cũng không báo anh Khoa. Anh ngồi ở bàn làm việc trong căn hộ, mở máy tính, và đọc.</p>
+<p>Đến tám giờ sáng, mạng xã hội đã đầy những bài viết giống nhau. Ban đầu là những dòng trạng thái lẻ tẻ, viết vội, sai chính tả: <em>Đêm qua mơ thấy đám ma ai giống em không?</em>, <em>Có ai vừa mơ ở cái chợ toàn người cúi mặt không mọi người ơi</em>, <em>Tôi đi đò, có ông lái đò không có mặt</em>. Rồi những bài dài hơn, có người kể từng chi tiết. Rồi những bài viết ngắn ngủn, chỉ vài chữ, đăng từ tài khoản của người nhà: <em>Anh trai mình đêm qua đi ngủ và không dậy nữa. Ai biết chuyện gì xảy ra không?</em></p>
+<p>Anh đọc hết. Anh đọc như đọc nhật ký lỗi của một hệ thống vừa sập, lướt nhanh qua những dòng giống nhau, dừng lại ở những dòng khác biệt.</p>
+<p>Có ít nhất bốn loại cảnh. Đám ma. Chợ. Đò. Một cái đình có hát chèo. Mỗi loại cảnh có hàng trăm người kể lại, và những gì họ kể khớp với nhau đến mức không thể là trùng hợp.</p>
+<p>Lúc chín giờ hai mươi, anh tìm được một bài viết của một người kể về đám ma. Người này nhớ được gần hết tờ luật, gõ lại từng điều. Viễn đặt bài viết cạnh ghi chú của mình và so từng dòng.</p>
+<p>Gần như giống hệt. Gần như. Điều 7 trong bài viết ấy là: <em>Có ai gọi tên mình sau lưng thì chớ ngoảnh. Ngoảnh thì ở lại.</em> Câu chữ khác, nghĩa giống. Điều 3: <em>Chớ nhòm vào áo quan.</em> Chữ "nhòm" thay cho chữ "nhìn". Điều 1 không có câu "chớ để đầu trần quá một tuần hương". Người kể có thể đã nhớ sai. Hoặc tờ luật của họ khác.</p>
+<p>Anh đọc đến điều 12 và điều 13 trong bài viết.</p>
+<p><em>Nếu cảm thấy khát, hãy uống nước trong chum ở góc sân.</em></p>
+<p><em>Quy tắc số 7 là giả.</em></p>
+<p>Giống hệt. Không lệch một chữ.</p>
+<p>Anh tựa lưng vào ghế. Anh nhìn hai dòng ấy rất lâu. Rồi anh mở ghi chú "Đêm 1" và thêm vào cuối một dòng:</p>
+<blockquote><p>Bản khác (người lạ đăng): R1-R11 lệch câu chữ. R12, R13 trùng nguyên văn.</p></blockquote>
+<p>Anh không viết thêm kết luận nào. Anh không có kết luận. Anh chỉ có một sự lệch, và một sự trùng, và cảm giác rằng sự trùng ấy mới là thứ lạ.</p>
+<p>Mười một giờ, một tờ báo điện tử đăng bài đầu tiên với cái tít mà đến chiều tất cả các báo khác đều dùng lại: <em>"Hội chứng tháng Bảy": hàng nghìn người cùng gặp ác mộng, hàng trăm người không tỉnh lại.</em></p>
+<p>Đến năm giờ chiều, Bộ Y tế đưa ra con số đầu tiên. Bốn nghìn một trăm người trên cả nước được ghi nhận có giấc mơ tương tự trong đêm mùng Hai. Sáu trăm mười hai người tử vong trong khi ngủ. Hàng trăm người khác chưa tỉnh lại. Nguyên nhân đang được điều tra. Người dân được khuyến cáo giữ bình tĩnh, không lan truyền thông tin chưa kiểm chứng.</p>
+<p>Viễn đọc con số ấy trên điện thoại khi đang ngồi sau xe ôm công nghệ trên đường Giải Phóng. Bốn nghìn một trăm. Sáu trăm mười hai. Anh nhẩm ra tỉ lệ trước khi kịp ngăn mình lại: gần mười lăm phần trăm. Trong sân đám của anh, ít nhất hai người chết trên ba mươi mốt, có thể là sáu nếu tính bốn người đã đi qua cổng làng. Nếu là sáu thì gần hai mươi phần trăm, và phiên của anh đã tệ hơn mức trung bình.</p>
+<p>Anh nghĩ đến chữ "phiên" ấy, rồi tự hỏi vì sao mình lại dùng chữ ấy.</p>
+<hr class="scene-break">
+<p>Khoa Hồi sức tích cực Bệnh viện Bạch Mai nằm ở tầng ba một tòa nhà cũ, và đến chiều thứ Bảy hôm ấy nó đã không còn đủ giường.</p>
+<p>Giường kê ra cả hành lang. Mỗi giường một người nằm, mắt nhắm, ngực phập phồng đều, gương mặt bình thản đến mức nếu không có dây truyền và máy theo dõi thì người ta sẽ tưởng họ chỉ đang ngủ trưa. Cạnh mỗi giường là người nhà. Họ ngồi trên ghế nhựa, ngồi trên chiếu trải dưới sàn, ngồi tựa vào tường. Một người đàn ông trung niên đang thì thầm gì đó vào tai một cậu thiếu niên nằm bất động, thì thầm liên tục, không ngừng, như đọc kinh. Một bà cụ đang lau tay cho một người phụ nữ trẻ bằng khăn ướt, lau đi lau lại từng ngón. Mùi cồn sát khuẩn, mùi mồ hôi, mùi cơm hộp nguội, và lẩn dưới tất cả là một mùi nữa, mùi Viễn đã ngửi thấy đêm qua, mỏng, ngọt, chua, mùi của thứ gì đã để quá lâu ngoài trời.</p>
+<p>Minh Thư nằm ở giường thứ chín tính từ đầu hành lang.</p>
+<p>Em nằm nghiêng đầu sang một bên, tóc xõa trên gối, không buộc. Mặt em trắng hơn mọi ngày, nhưng môi vẫn hồng. Ngực em lên xuống chậm, đều, và mỗi lần thở ra, hai cánh mũi hơi phập phồng như khi em ngủ say hồi còn bé. Trên mép giường có một cái túi ni lông đựng quần áo. Qua lớp ni lông mờ, Viễn thấy màu hồng nhạt và những hình mèo hoạt hình.</p>
+<p>Anh đứng ở chân giường. Anh không chạm vào em.</p>
+<p>Bố ngồi trên chiếc ghế nhựa cạnh giường, lưng còng, hai khuỷu tay chống lên đầu gối. Bố già hơn lần cuối Viễn gặp, hồi Tết. Tóc hai bên thái dương bạc hẳn, da mặt sạm, và quanh bố là một quầng mùi thuốc lá đặc đến mức người giường bên phải xích ra.</p>
+<p class="dialogue">– Con đến rồi à.</p>
+<p class="dialogue">– Vâng.</p>
+<p>Bố không đứng dậy. Viễn không ngồi xuống. Hai bố con ở nguyên vị trí của mình, như hai quân cờ đã quen chỗ.</p>
+<p>Một bác sĩ nữ đi tới, chừng bốn mươi lăm tuổi, áo blouse nhàu, mắt thâm như người đã thức hai mươi tiếng liền. Bảng tên trên ngực áo ghi: <em>BS. Đoàn Thị Hạnh.</em></p>
+<p class="dialogue">– Người nhà bệnh nhân Trần Minh Thư?</p>
+<p class="dialogue">– Vâng.</p>
+<p class="dialogue">– Tôi nói ngắn vì còn ba mươi giường nữa. Không có chấn thương. Không có ngộ độc, theo các xét nghiệm đến giờ. Điện não cho thấy não đang hoạt động, hoạt động mạnh, giống như người đang mơ. Chỉ là cô ấy không ra khỏi giấc mơ. Chúng tôi chưa biết vì sao. Chúng tôi chưa biết làm thế nào. Chúng tôi đang duy trì dịch truyền, theo dõi hô hấp. Có thay đổi gì tôi sẽ báo. Có câu hỏi gì không?</p>
+<p>Bố mở miệng, rồi khép lại.</p>
+<p class="dialogue">– Có bao nhiêu người như em tôi ở đây?</p>
+<p>Viễn hỏi. Bác sĩ Đoàn nhìn anh, hơi lâu hơn cần thiết.</p>
+<p class="dialogue">– Tính đến ba giờ chiều, khoa tôi nhận một trăm bốn mươi bảy ca. Ngoài kia còn đang chở đến.</p>
+<p class="dialogue">– Có ai tỉnh lại chưa?</p>
+<p class="dialogue">– Chưa.</p>
+<p>Bà quay đi. Bà đi về phía giường thứ mười, rồi thứ mười một, dừng ở mỗi giường đúng chừng ấy thời gian, nói đúng chừng ấy câu.</p>
+<p>Viễn nhìn em gái mình. Anh nghĩ đến giọng nói đã gọi "anh" trên mặt đê. Anh nghĩ đến điều 7 trong ghi chú của mình. Rồi anh nghĩ đến chuyện khác, cố ý, như người ta quay đầu đi khỏi một vệt sáng chói.</p>
+<p class="dialogue">– Điện thoại em ấy đâu hả bố?</p>
+<p class="dialogue">– Bố bảo rồi. Chắc rơi đâu ở quê.</p>
+<p>Bố nói mà không nhìn anh. Bố nhìn vào cái túi ni lông đựng quần áo, nhìn những con mèo hoạt hình mờ mờ sau lớp nhựa.</p>
+<p class="dialogue">– Bà có biết em đọc cái gì đêm qua không?</p>
+<p class="dialogue">– Bà lẫn rồi. Hỏi bà làm gì.</p>
+<p>Bố đứng dậy, móc bao thuốc trong túi áo ngực, rồi nhớ ra đang ở bệnh viện, nhét bao thuốc vào lại.</p>
+<p class="dialogue">– Bố ra ngoài một lát.</p>
+<p>Bố đi. Viễn nhìn theo tấm lưng còng ấy đi dọc hành lang, lách qua những chiếc giường, những chiếc ghế, những người nhà đang ngủ gục, cho đến khi khuất sau cửa cầu thang.</p>
+<p>Anh kéo chiếc ghế nhựa lại gần đầu giường. Anh ngồi xuống. Anh vẫn không chạm vào em.</p>
+<hr class="scene-break">
+<p>Mười giờ đêm, hành lang khoa Hồi sức chìm vào thứ ánh sáng xanh xao của đèn ngủ. Người nhà nằm la liệt. Một số người cố thức. Viễn thấy họ ngồi thẳng lưng, mắt mở trừng trừng, tay cầm cốc cà phê hòa tan hoặc lon nước tăng lực, có người tự tát vào má mình theo nhịp, đều đặn, như một cái máy. Tin tức nói không biết ai sẽ bị gọi đêm nay. Tin tức nói hãy giữ bình tĩnh. Không ai giữ được bình tĩnh.</p>
+<p>Cổ tay trái Viễn bắt đầu ngứa lúc mười giờ mười lăm.</p>
+<p>Anh nhìn xuống. Vòng hằn đỏ hình sợi dây chun đã mờ đi gần hết. Nhưng ở mặt trong cổ tay, nơi da mỏng nhất, ngay chỗ có thể sờ thấy mạch, có một vệt đỏ mới. Nó nóng. Nó nổi lên dưới da như một vết bỏng nhẹ, như chỗ ai đó vừa áp một con dấu sắt nung chưa đủ nóng.</p>
+<p>Anh xoay cổ tay về phía ánh đèn.</p>
+<p>Vệt bỏng có hình. Những nét ngang, nét sổ, nét chấm, xếp với nhau thành một khối vuông vức, chặt chẽ. Một chữ. Chữ Hán, anh đoán, hoặc chữ Nôm. Anh không đọc được. Minh Thư sẽ đọc được. Minh Thư sẽ cười anh vì không đọc được, sẽ cầm cổ tay anh lên, lật qua lật lại, giảng cho anh nghe chữ này gồm bộ gì với bộ gì, nghĩa gốc là gì, người xưa viết nó trong những trường hợp nào.</p>
+<p>Anh nhìn em. Em vẫn nằm nghiêng đầu, tóc xõa, ngực lên xuống đều.</p>
+<p>Ở giường số mười, người phụ nữ đang lau tay cho con gái đã ngừng lau. Bà đang nhìn chằm chằm vào cổ tay mình. Bà xoay nó dưới ánh đèn, chậm, như Viễn vừa xoay. Rồi bà ngẩng lên, và ánh mắt hai người gặp nhau qua khoảng cách hai chiếc giường. Bà mở miệng, rồi khép lại.</p>
+<p>Đồng hồ trên tường hành lang chỉ mười giờ hai mươi bảy. Kim giây nhích từng nấc, mỗi nấc kêu một tiếng tách rất khẽ, như tiếng một con côn trùng nhỏ đang gặm dần mép giờ Tý.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch05">
+<p class="eyebrow">Chương 05 · Phần I: Tờ Luật Đầu Tiên</p>
+<h2 class="ch-title">Chợ Âm Phủ</h2>
+<p>Ở chợ này, không ai ngẩng mặt lên khi bán hàng.</p>
+<p>Viễn nhận ra điều đó trước khi nhận ra mình đã đến. Anh đang đứng giữa một lối đi hẹp, hai bên là những sạp hàng thấp lè tè dựng bằng tre và lá cọ, và trên mỗi sạp, sau một ngọn đèn dầu lạc leo lét, có một người ngồi xếp bằng, đầu cúi gập xuống ngực. Họ cúi thấp đến mức Viễn chỉ thấy đỉnh đầu: những búi tóc quấn khăn mỏ quạ, những cái đầu cạo trọc lởm chởm chân tóc, những mái tóc bạc rối như rơm. Không ai rao. Không ai mời. Hàng bày trên những chiếc mẹt tre, trên lá chuối, trên những tấm bao tải trải đất, và chợ đông, rất đông, người đi lại chen vai nhau trong lối hẹp, nhưng toàn bộ khu chợ chìm trong một thứ âm thanh duy nhất: tiếng bước chân lê trên đất, sột soạt, như hàng nghìn con tằm ăn lá.</p>
+<p>Anh nhớ mình đã nằm xuống chiếc ghế nhựa cạnh giường số chín lúc mười một giờ kém mười. Anh nhớ mình đã quyết định ngủ. Không ai trong hành lang dám ngủ, trừ anh. Anh đã tính: nếu đêm nay anh có tên, cố thức cũng vô ích, và nếu Minh Thư còn ở đâu đó trong những chỗ này, thì đây là chỗ duy nhất anh có thể tìm thấy em.</p>
+<p>Anh nhìn xuống bàn tay phải. Trong lòng bàn tay có một mảnh giấy dó gấp tư, mềm như lụa vì ẩm. Anh mở ra. Năm dòng chữ, mực đen, nét bút lông, viết theo lối người xưa ghi sổ chợ:</p>
+<blockquote><p>Muối hột, một nắm.</p><p>Lược bí, một cái.</p><p>Vải trắng, một vuông.</p><p>Hương, ba nén.</p><p>Gạo, một bát.</p></blockquote>
+<p>Anh đọc hai lần, gấp lại, nhét vào túi áo ngực. Cổ tay trái anh nóng ran. Vết bỏng hình chữ Hán đang hơi phát sáng, một thứ ánh hồng mờ như than dưới tro.</p>
+<p>Rồi anh tìm tờ luật.</p>
+<p>Nó dán trên một cái cột đình đứng trơ trọi ở đầu chợ, cái đình chỉ còn mỗi cái cột, mái và tường đã sụp từ lâu. Đã có hai chục người đứng chen trước cột. Viễn lách vào, đứng sau một người đàn ông thấp đậm có mùi thuốc lào nồng nặc, và đọc.</p>
+<blockquote><p>1. Vào chợ thì cầm lá thăm. Mua đủ các thứ ghi trong thăm thì mới được về.</p><p>2. Chớ hỏi giá. Người bán đòi gì thì đưa nấy.</p><p>3. Chớ nhận tiền thối.</p><p>4. Hàng bày trên lá chuối thì chớ mua.</p><p>5. Người bán không ngẩng mặt thì cứ để thế. Chớ cúi xuống mà nhìn.</p><p>6. Trả bằng thứ mình có trên người. Giấy bạc ở chợ này không ai tiêu.</p><p>7. Chớ đi ngược dòng người.</p><p>8. Có đứa nhỏ xin thì cho, cho gì cũng được.</p><p>9. Thấy sạp nào bán tên người thì đi qua, chớ dừng.</p><p>10. Trống chợ đánh ba hồi là chợ tan.</p><p>11. Không sử dụng điện thoại trong chợ. Nếu nghe chuông điện thoại reo, hãy nghe máy ngay.</p><p>12. Gà gáy rồi mà còn ở trong chợ thì ở luôn.</p></blockquote>
+<p>Mười hai điều. Anh đọc hết một lượt, rồi đọc lại, lần này chỉ để nghe giọng người viết.</p>
+<p>Giọng này khác giọng tờ luật ở đám ma. Già hơn, khô hơn, có chữ "nấy", chữ "đứa nhỏ", chữ "giấy bạc". Nhưng vẫn là giọng của người nói ra cho người khác chép, câu ngắn, ý gọn, không thừa chữ nào.</p>
+<p>Trừ một chỗ.</p>
+<p>Mắt anh dừng ở điều 11, rồi trượt đi, rồi quay lại. Anh chưa nghĩ ra điều gì. Anh chỉ thấy nó như thấy một cái vảy da khô trên mu bàn tay mình, một thứ không đau mà vẫn cứ muốn gãi.</p>
+<p class="dialogue">– Đọc thế đủ rồi chú em. Đứng đây cả đêm à?</p>
+<p>Người đàn ông thấp đậm quay lại. Anh ta chừng bốn mươi, da cháy nắng, môi dày và chai sạn, một bên mép còn dính sợi thuốc lào. Áo ba lỗ, quần âu đã sờn gấu, chân đi dép tổ ong. Trên đầu anh ta không có khăn tang; chợ này không phát khăn. Anh ta nhìn Viễn từ đầu đến chân bằng cặp mắt ti hí, đỏ ngầu, như mắt người vừa uống rượu hoặc vừa khóc.</p>
+<p class="dialogue">– Lần đầu à?</p>
+<p class="dialogue">– Lần thứ hai.</p>
+<p class="dialogue">– Lần thứ hai mà đứng đọc như học sinh đọc bài. Thôi, đi với anh. Cái chợ này anh biết.</p>
+<p>Viễn nhìn anh ta.</p>
+<p class="dialogue">– Anh biết?</p>
+<p class="dialogue">– Chợ âm phủ. Chợ ma. Ở quê anh, Hà Nam, các cụ kể suốt. Mỗi năm một phiên, họp nửa đêm, người sống lạc vào là chết. Anh làm kèn đám ma hai mươi năm, chú em ạ. Đám nào anh cũng nghe các cụ kể chuyện này.</p>
+<p>Anh ta chìa bàn tay ra, bàn tay dày, ngón ngắn, móng đen.</p>
+<p class="dialogue">– Ngô Văn Lực.</p>
+<p>Viễn bắt tay anh ta. Tay Lực ấm và khô, nắm rất chặt, như người quen bắt tay để ký kết.</p>
+<p class="dialogue">– Trần Tư Viễn.</p>
+<p class="dialogue">– Tên gì mà như tên nhà thơ. Thôi, Viễn. Đi.</p>
+<hr class="scene-break">
+<p>Lực đi trước, Viễn đi sau, theo dòng người. Lối chợ cong như ruột gà, rẽ trái rẽ phải không theo một quy luật nào, và mỗi khúc rẽ lại mở ra những dãy sạp giống hệt nhau. Lá cọ. Đèn dầu lạc. Những cái đầu cúi.</p>
+<p>Viễn nhìn hàng hóa. Anh nhìn rất kỹ, vì anh cần biết chợ này bán gì. Có những thứ anh nhận ra: những bó rau muống héo quắt, những rổ khoai lang nhỏ như ngón tay, những cái nồi đất mẻ miệng, những đôi guốc mộc mòn vẹt một bên. Có những thứ anh không nhận ra: những nắm đất sét nặn thành hình người, to bằng đốt ngón tay, xếp thành hàng trên một tấm ván; những túm tóc buộc chỉ đỏ; những cái bát sành đựng một thứ nước đặc quánh, đen, bóng như mắt trâu.</p>
+<p>Không ở đâu có giá. Không ai nói giá.</p>
+<p class="dialogue">– Theo lệ thì...</p>
+<p>Lực nói, không quay đầu lại, giọng hạ thấp như sợ ai nghe thấy.</p>
+<p class="dialogue">– Theo lệ thì chợ ma không ai trả bằng tiền thật, chú em ạ. Tiền dương gian ma không tiêu. Phải trả bằng tiền vàng mã. Ngày xưa người ta đi chợ đêm tháng Bảy, trong túi lúc nào cũng nhét sẵn mấy tờ vàng mã, phòng gặp.</p>
+<p class="dialogue">– Luật nói trả bằng thứ mình có trên người.</p>
+<p class="dialogue">– Thì vàng mã cũng là thứ có trên người, nếu mình mang theo.</p>
+<p class="dialogue">– Anh có mang theo không?</p>
+<p>Lực dừng lại, thọc tay vào túi quần, móc ra, mở bàn tay. Trong lòng bàn tay anh ta là một tờ giấy vàng mã gấp đôi, in hình một đồng tiền vuông, mép đã sờn.</p>
+<p class="dialogue">– Đêm qua anh mơ thấy đi đò. Sáng ra anh biết ngay là chuyện gì. Tối nay trước khi ngủ anh nhét sẵn ba tờ vào túi.</p>
+<p>Lực cười, lộ hàm răng ám khói vàng.</p>
+<p class="dialogue">– Mang vào được đấy. Thấy chưa.</p>
+<p>Viễn nhìn tờ giấy vàng mã. Anh không nói gì. Anh không có câu nào để phản bác, và anh cũng không có câu nào để đồng ý.</p>
+<p>Anh sờ túi mình. Túi quần trái: không có gì. Túi quần phải: một cái cúc áo bằng nhựa trắng, bốn lỗ, không phải cúc áo của anh. Túi áo ngực: lá thăm. Trên người anh còn có kính, đồng hồ, áo thun, quần vải, đôi dép.</p>
+<p>Ở sạp muối, người bán là một bà già. Bà ngồi sau một cái mẹt đầy muối hột, những hạt muối to, đục, xám như sỏi lòng suối. Viễn đứng trước sạp, nhìn đỉnh đầu bà, nhìn búi tóc thưa quấn bằng một sợi khăn nhung đã mục.</p>
+<p>Anh không hỏi giá. Anh đứng đó, im, chờ.</p>
+<p>Bàn tay bà già nhô ra từ dưới vạt áo nâu. Một bàn tay gầy, những đốt ngón nhô lên như đốt tre, da bám sát xương. Bà bốc một nắm muối, đặt lên một mảnh lá sen khô, gói lại, đẩy về phía anh. Rồi bàn tay ấy ngửa ra, chờ.</p>
+<p>Viễn đặt cái cúc áo nhựa trắng vào lòng bàn tay ấy.</p>
+<p>Bàn tay khép lại. Rút vào dưới vạt áo. Bà già không ngẩng lên.</p>
+<p>Anh cầm gói muối, nhét vào túi quần. Một thứ. Anh vừa định quay đi thì bàn tay ấy lại nhô ra, lần này cầm một thứ gì đó, chìa về phía anh. Một đồng xu. Đồng xu đồng, mòn nhẵn, không còn hình hay chữ gì trên mặt.</p>
+<p>Tiền thối.</p>
+<p>Viễn nhìn đồng xu. Anh nhìn nó lâu, lâu đến mức Lực đứng bên cạnh phải huých nhẹ vào khuỷu tay anh.</p>
+<p>Anh lùi lại một bước. Anh không nói gì, không lắc đầu, không cảm ơn. Anh chỉ quay đi, như người không nhìn thấy.</p>
+<p>Sau lưng anh, có tiếng đồng xu rơi lên mặt mẹt muối. Một tiếng "cạch" rất nhỏ, khô, như tiếng một cái răng gãy.</p>
+<hr class="scene-break">
+<p>Đến thứ thứ ba thì Viễn gặp cô bé.</p>
+<p>Anh đã mua được muối và ba nén hương. Hương anh trả bằng cái kính. Người bán hương là một ông già cạo trọc, và bàn tay ông ta khi nhô ra đã chỉ thẳng vào mặt Viễn, vào hai mắt kính, rồi ngửa ra chờ. Viễn đứng đó rất lâu. Rồi anh tháo kính, đặt vào bàn tay ấy. Thế giới nhòe đi thành những mảng màu và những quầng sáng vàng, những ngọn đèn dầu lạc phình to thành những bông hoa lửa mềm oặt. Anh độ cận ba điốp rưỡi. Anh vẫn đi được. Anh chỉ không còn đọc được chữ ở xa quá một gang tay.</p>
+<p>Lực đã mua được hai thứ bằng hai tờ vàng mã. Người bán nhận cả hai lần. Lực quay sang Viễn, nháy mắt, vẻ đắc thắng của người vừa được chứng minh là đúng.</p>
+<p>Viễn ghi nhận. Hai lần chưa thành bằng chứng. Hai lần chỉ là hai lần.</p>
+<p>Họ đang đứng ở một ngã ba trong chợ, Viễn nheo mắt nhìn các sạp xung quanh để tìm lược bí, thì có một giọng con gái vang lên ngay bên cạnh, rõ ràng, cứng, mỗi chữ như được đẽo ra từ gỗ:</p>
+<p class="dialogue">– Anh kia. Anh đứng giữa lối là người ta không đi được.</p>
+<p>Viễn quay sang. Qua làn nhòe, anh thấy một bóng người nhỏ, gầy, tóc cắt ngắn ngang vai, mặc bộ đồ thể dục học sinh màu xanh lam. Anh phải cúi sát xuống mới nhìn rõ mặt: một gương mặt rám nắng, gò má cao, đôi mắt một mí sắc lẹm, và cái miệng đang nhai, nhai đều đều, như nhai kẹo cao su. Nhưng không có kẹo. Cô bé đang nhai đầu móng tay cái của chính mình.</p>
+<p class="dialogue">– Xin lỗi.</p>
+<p>Anh nói, nhích sang một bên. Cô bé không đi. Cô bé đứng đó, nhìn anh, nhìn cái túi quần căng phồng của anh, nhìn đôi mắt không kính đang nheo lại của anh.</p>
+<p class="dialogue">– Anh đổi kính lấy cái gì?</p>
+<p class="dialogue">– Hương.</p>
+<p class="dialogue">– Phí.</p>
+<p>Cô bé nói gọn lỏn. Rồi cô bé chìa ra một bàn tay, mở lòng bàn tay. Trong đó là một cái lược bí bằng gỗ, răng dày, sống lược còn bóng dầu tóc.</p>
+<p class="dialogue">– Em mua hai cái. Em đổi được một cái kẹp tóc lấy hai cái. Bà bán lược không biết đếm.</p>
+<p>Viễn nhìn cái lược. Rồi nhìn cô bé.</p>
+<p class="dialogue">– Sao lại cho tôi?</p>
+<p class="dialogue">– Không cho. Đổi.</p>
+<p>Cô bé hất cằm về phía túi quần anh.</p>
+<p class="dialogue">– Anh có muối không? Em chưa có muối.</p>
+<p>Viễn móc gói muối ra, mở lá sen, chia đôi nắm muối. Anh đổ một nửa vào lòng bàn tay cô bé. Cô bé đổ nó vào túi áo thể dục, rồi đặt cái lược vào tay anh.</p>
+<p class="dialogue">– Lá thăm em có năm thứ, nhưng chỉ cần một nắm muối, không nói nắm to hay nắm nhỏ.</p>
+<p>Cô bé nói, như đọc một bài học thuộc lòng.</p>
+<p class="dialogue">– Luật nói mua đủ các thứ ghi trong thăm. Không nói mua của ai.</p>
+<p>Lực, nãy giờ đứng nghe, bật cười, cái cười khàn của người hút thuốc lào lâu năm.</p>
+<p class="dialogue">– Con bé này ranh thế. Mấy tuổi rồi cháu?</p>
+<p class="dialogue">– Mười bảy. Cháu không phải con bé.</p>
+<p class="dialogue">– Thế cái gì?</p>
+<p class="dialogue">– Nhàn. Nông Thị Nhàn. Cao Bằng.</p>
+<p>Cô bé nhìn Viễn, nhìn thẳng vào mắt anh, dù với đôi mắt cận lòa ấy, anh hẳn trông như đang nhìn vào một điểm nào đó sau tai cô.</p>
+<p class="dialogue">– Anh đọc nhanh lên. Em không chờ được người chậm đâu.</p>
+<hr class="scene-break">
+<p>Ba người đi cùng nhau từ ngã ba ấy, dù không ai mời ai.</p>
+<p>Nhàn đi trước, len lỏi giữa dòng người như con cá đi trong nước, không bao giờ đi ngược chiều. Lực đi giữa, thỉnh thoảng lẩm bẩm "theo lệ thì" rồi kể một chuyện các cụ ở quê anh ta. Viễn đi sau cùng, gần như mù, bám theo cái áo thể dục màu xanh lam và cái lưng áo ba lỗ của Lực như bám theo hai cái phao trôi trên mặt nước đục.</p>
+<p>Anh còn thiếu vải trắng và gạo.</p>
+<p>Anh nghĩ đến gạo. Trong cái chợ này, anh chưa thấy sạp nào bán gạo. Anh đã thấy khoai lang nhỏ như ngón tay, rau muống héo, những nồi cháo loãng đến mức nhìn thấy đáy, những nắm cám. Không có gạo. Như thể gạo là thứ đã hết từ lâu lắm rồi, trước khi cái chợ này họp phiên đầu tiên.</p>
+<p>Anh đi qua một sạp hàng, và khóe mắt anh bắt được một thứ gì đó làm anh khựng lại nửa bước.</p>
+<p>Trên sạp ấy không bày rau hay khoai. Trên sạp ấy bày giấy. Những mảnh giấy dó nhỏ, cắt vuông vức bằng bao diêm, xếp thành hàng ngay ngắn trên một tấm vải điều. Trên mỗi mảnh giấy có một dòng chữ. Viễn không đọc được, vì không có kính, vì quá xa, vì đó là chữ Nôm. Nhưng anh thấy chúng xếp như những dòng trên tờ giấy Minh Thư cầm trong cuộc gọi video. Họ, tên đệm, tên.</p>
+<p>Người bán hàng ở sạp ấy là người duy nhất trong chợ không cúi đầu. Người ấy không có đầu để cúi. Chỗ đáng lẽ là cái đầu chỉ có một cái nón lá, đặt trên vai áo, và bên dưới vành nón là bóng tối.</p>
+<p><em>Thấy sạp nào bán tên người thì đi qua, chớ dừng.</em></p>
+<p>Viễn đi qua. Anh không dừng. Anh đếm bước như đã đếm trên mặt đê, và đến bước thứ mười thì cổ tay trái anh thôi nóng.</p>
+<p>Anh không ngoảnh lại.</p>
+<p>Phía trước, Lực đã dừng lại ở một sạp bán vải. Nhàn đứng cạnh anh ta, đang lục túi áo. Viễn bước đến sau lưng họ, thở ra một hơi dài đã nín từ lúc nào không rõ.</p>
+<p>Và đúng lúc ấy, ở đâu đó sâu trong lòng chợ, giữa tiếng bước chân lê sột soạt của hàng nghìn người cúi mặt, có một tiếng chuông điện thoại reo.</p>
+<p>Một bản nhạc chuông rất quen. Loại nhạc chuông mặc định trên những chiếc điện thoại bán chạy nhất năm nay, vui vẻ, lanh lảnh, lặp đi lặp lại, như một đứa trẻ con đang nhảy chân sáo giữa đám tang.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+    </div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Người Sống Phải Theo Luật Người Chết</p>
+        <p>Bạch Vô Danh — Kinh dị dân gian, quy tắc quái đàm. 5 chương · ~15k từ (14.555 từ). Đang tiếp tục.</p>
+        <p class="fmeta">© 2026 Bạch Vô Danh.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  // theme toggle (mặc định sáng, lưu localStorage)
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
+  }
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile toc toggle
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+
+  // active chapter highlight in side nav
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
+  }
+})();
+
+</script>
+</body>
+</html>
