@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>si_eng_team — Cách hoạt động</title>
+<style>
+:root{--bg:#fff;--bg2:#f4f4f4;--fg:#161616;--fg2:#525252;--line:#e0e0e0;--accent:#0f62fe;--ok:#24a148;--warn:#f1c21b;--bad:#da1e28;--code:#f4f4f4}
+[data-theme=dark]{--bg:#161616;--bg2:#262626;--fg:#f4f4f4;--fg2:#c6c6c6;--line:#393939;--accent:#78a9ff;--code:#262626}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 "IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:.6rem 1.5rem}
+header b{font-size:1rem}
+button{background:var(--bg2);color:var(--fg);border:1px solid var(--line);padding:.35rem .8rem;cursor:pointer;font:inherit;font-size:.85rem}
+.wrap{display:grid;grid-template-columns:240px 1fr;max-width:1200px;margin:0 auto}
+nav{position:sticky;top:3rem;align-self:start;padding:1.5rem 1rem;font-size:.9rem;max-height:calc(100vh - 3rem);overflow:auto}
+nav a{display:block;color:var(--fg2);text-decoration:none;padding:.25rem .5rem;border-left:2px solid transparent}
+nav a:hover{color:var(--accent);border-left-color:var(--accent)}
+main{padding:1.5rem 2rem 4rem;min-width:0}
+h1{font-weight:300;font-size:2.2rem;margin:.2rem 0 .3rem}
+h2{font-weight:400;font-size:1.5rem;border-bottom:1px solid var(--line);padding-bottom:.3rem;margin-top:2.8rem}
+h3{font-weight:600;font-size:1.1rem;margin-top:1.8rem}
+.sub{color:var(--fg2)}
+table{border-collapse:collapse;width:100%;margin:1rem 0;font-size:.93rem;display:block;overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:.5rem .7rem;text-align:left;vertical-align:top}
+th{background:var(--bg2);font-weight:600}
+code{background:var(--code);padding:.1rem .35rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.86em}
+pre{background:var(--code);padding:1rem;overflow:auto;font-size:.85rem;line-height:1.5;border-left:3px solid var(--accent)}
+pre code{background:none;padding:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin:1rem 0}
+.card{background:var(--bg2);padding:1rem 1.1rem;border-top:3px solid var(--accent)}
+.card .e{font-size:2rem;line-height:1}
+.card h4{margin:.4rem 0 .1rem;font-size:1.05rem}
+.card .r{color:var(--fg2);font-size:.85rem;margin-bottom:.5rem}
+.card ul{margin:.3rem 0 0;padding-left:1.1rem;font-size:.9rem}
+.note{background:var(--bg2);border-left:4px solid var(--accent);padding:.8rem 1rem;margin:1rem 0}
+.warn{border-left-color:var(--warn)}
+.flow{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:1rem 0}
+.flow span{background:var(--bg2);border:1px solid var(--line);padding:.35rem .7rem;font-size:.88rem}
+.flow i{color:var(--fg2);font-style:normal}
+.chat{background:var(--bg2);padding:1rem 1.2rem;font-size:.92rem}
+.chat .m{margin:.2rem 0 .9rem}
+.chat .who{font-weight:600}.chat .role{color:var(--fg2);font-style:italic;font-size:.85rem}
+.chat .sys{text-align:center;color:var(--fg2);font-style:italic;font-size:.85rem;margin:.6rem 0}
+.chat .me{text-align:right}
+.ladder{margin:1rem 0}
+.ladder div{padding:.55rem 1rem;margin:.3rem 0;background:var(--bg2);border-left:4px solid var(--accent)}
+.ladder div:nth-child(2){margin-left:1.5rem}.ladder div:nth-child(3){margin-left:3rem}.ladder div:nth-child(4){margin-left:4.5rem}.ladder div:nth-child(5){margin-left:6rem}
+footer{color:var(--fg2);font-size:.85rem;margin-top:3rem;border-top:1px solid var(--line);padding-top:1rem}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}nav{display:none}main{padding:1rem}}
+</style>
+</head>
+<body>
+<header><b>🇬🇧 si_eng_team</b><button id="t" onclick="tg()">🌙 Tối</button></header>
+<div class="wrap">
+<nav>
+<a href="#tong-quan">1. Tổng quan</a>
+<a href="#doi-hinh">2. Đội hình 6 agent</a>
+<a href="#nguyen-tac">3. Nguyên tắc vận hành</a>
+<a href="#lenh">4. Các lệnh</a>
+<a href="#onboarding">5. Bắt đầu (onboarding)</a>
+<a href="#buoi-hoc">6. Một buổi học hằng ngày</a>
+<a href="#nghe">7. Kỹ năng nghe & audio</a>
+<a href="#chat">8. Hiển thị kiểu chat group</a>
+<a href="#muc-tieu">9. Hệ thống mục tiêu</a>
+<a href="#danh-gia">10. Bài đánh giá tuần/tháng/kỳ</a>
+<a href="#ghi-so">11. Ghi sổ: SRS, lỗi, streak, huy hiệu</a>
+<a href="#du-lieu">12. Dữ liệu & file</a>
+<a href="#sua">13. Bảo trì & chỉnh sửa</a>
+</nav>
+<main>
+
+<h1>si_eng_team</h1>
+<p class="sub">Đội 6 agent AI giúp người học tiếng Anh như ngoại ngữ luyện tập mỗi ngày, có mục tiêu rõ ràng và đánh giá định kỳ.<br>Tài liệu mô tả cách hoạt động · cập nhật 16/11/2026</p>
+
+<h2 id="tong-quan">1. Tổng quan</h2>
+<p>Một buổi học giống một <b>lớp học nhỏ trong nhóm chat</b>: mỗi agent là một huấn luyện viên chuyên một kỹ năng. Agent soạn bài, chấm bài và ghi sổ phía sau; Claude (main thread) đứng lớp, trò chuyện trực tiếp với học viên và chuyển bài qua lại giữa các agent.</p>
+<div class="flow"><span>🦅 Lập kế hoạch</span><i>→</i><span>🦜🦫🐰🐬🐝 Soạn bài</span><i>→</i><span>💬 Học tương tác</span><i>→</i><span>🦫🐰🐬🐝 Chấm</span><i>→</i><span>🦅 Tổng kết & ghi sổ</span><i>→</i><span>🎯 Cập nhật mục tiêu</span></div>
+<p>Năm kỹ năng được theo dõi: <b>từ vựng · ngữ pháp · viết · nghe · nói</b> (cộng đọc hiểu trong quiz và bài đánh giá).</p>
+<div class="note">Mặc định giải thích bằng tiếng Việt (đổi được qua <code>explain_language</code> trong hồ sơ). Từ trình độ B2, các agent chuyển sang chat bằng tiếng Anh đơn giản.</div>
+
+<h2 id="doi-hinh">2. Đội hình 6 agent</h2>
+<div class="cards">
+<div class="card"><div class="e">🦅</div><h4>Eagle</h4><div class="r">Huấn luyện viên trưởng · <code>si-eng-eagle</code></div>
+<ul><li>Xếp trình độ CEFR (A1–C1)</li><li>Đặt & quản lý mục tiêu 4 tầng</li><li>Lập plan mỗi buổi, tổng kết, báo cáo</li><li>Xét lên level, trao huy hiệu</li><li><b>Người duy nhất ghi state.json</b></li></ul></div>
+<div class="card"><div class="e">🦜</div><h4>Parrot</h4><div class="r">Từ vựng & phát âm · <code>si-eng-parrot</code></div>
+<ul><li>5–10 từ mới/ngày theo chủ đề</li><li>IPA, collocation, ví dụ gắn đời sống học viên</li><li>Lỗi phát âm hay gặp của người Việt</li><li>Danh sách từ đến hạn ôn (SRS)</li></ul></div>
+<div class="card"><div class="e">🦫</div><h4>Beaver</h4><div class="r">Ngữ pháp & viết · <code>si-eng-beaver</code></div>
+<ul><li>1 điểm ngữ pháp/ngày, nhắm lỗi lặp</li><li>"Ví dụ trước, quy tắc sau"</li><li>Ra đề viết, chữa bài, phân loại lỗi</li><li>Phần Writing của bài đánh giá</li></ul></div>
+<div class="card"><div class="e">🐰</div><h4>Rabbit</h4><div class="r">Luyện nghe · <code>si-eng-rabbit</code></div>
+<ul><li>Bài nghe MP3 nhiều giọng Mỹ/Anh/Úc/Ấn</li><li>Nghe ý chính, chi tiết, chép chính tả</li><li>Phân biệt âm, shadowing</li><li>Chẩn đoán vì sao nghe sai</li></ul></div>
+<div class="card"><div class="e">🐬</div><h4>Dolphin</h4><div class="r">Hội thoại · <code>si-eng-dolphin</code></div>
+<ul><li>Kịch bản roleplay tình huống thật</li><li>Sửa lỗi kiểu recast, không cắt ngang</li><li>Đánh giá fluency, accuracy, tương tác</li><li>Phần Speaking của bài đánh giá</li></ul></div>
+<div class="card"><div class="e">🐝</div><h4>Bee</h4><div class="r">Đọc hiểu & kiểm tra · <code>si-eng-bee</code></div>
+<ul><li>Test xếp lớp</li><li>Bài đọc + quiz cuối buổi</li><li>Kiểm tra lại lỗi cũ trong quiz</li><li><b>Chủ trì</b> bài đánh giá tuần/tháng/kỳ</li></ul></div>
+</div>
+
+<h2 id="nguyen-tac">3. Nguyên tắc vận hành</h2>
+<table>
+<tr><th>Nguyên tắc</th><th>Ý nghĩa</th></tr>
+<tr><td><b>Agent soạn, main thread dạy</b></td><td>Subagent không chat trực tiếp được. Agent ghi file nội dung → Claude dạy tương tác, chờ học viên trả lời → lưu câu trả lời ra file → agent chấm.</td></tr>
+<tr><td><b>Hiển thị đầy đủ, không tóm tắt</b></td><td>Mọi bài học, phản hồi, báo cáo được in nguyên văn cho học viên. Chỉ ẩn khối JSON nội bộ dành cho Eagle.</td></tr>
+<tr><td><b>Giấu đáp án đến khi trả lời</b></td><td>Đáp án, transcript bài nghe chỉ hiện sau khi học viên nộp phần đó.</td></tr>
+<tr><td><b>Một người ghi sổ</b></td><td>Chỉ Eagle ghi <code>state.json</code> và <code>profile.md</code>, tránh các agent ghi đè nhau.</td></tr>
+<tr><td><b>Ít mà đều, i+1</b></td><td>Buổi học vừa với số phút/ngày học viên chọn; nội dung khó hơn trình độ một chút. Quiz TB &gt; 85% → tăng độ khó; &lt; 60% → giảm.</td></tr>
+<tr><td><b>Ưu tiên lỗi lặp</b></td><td>Lỗi xuất hiện ≥ 3 lần là mục tiêu số 1 của buổi kế tiếp.</td></tr>
+<tr><td><b>Số liệu là sự thật</b></td><td>Tiến độ mục tiêu do script <code>progress.py</code> tính, không ước lượng bằng mắt.</td></tr>
+</table>
+
+<h2 id="lenh">4. Các lệnh</h2>
+<table>
+<tr><th>Lệnh</th><th>Việc làm</th><th>Thời lượng</th></tr>
+<tr><td><code>/si-eng start &lt;tên&gt;</code></td><td>Hồ sơ + test xếp lớp + đặt mục tiêu</td><td>~30 phút</td></tr>
+<tr><td><code>/si-eng</code> · <code>/si-eng today</code></td><td>Buổi học đầy đủ hôm nay</td><td>theo hồ sơ (15/20/30')</td></tr>
+<tr><td><code>/si-eng quick</code></td><td>Ôn từ + 3 từ mới + chép chính tả 3 câu + quiz ngắn</td><td>~10 phút</td></tr>
+<tr><td><code>/si-eng review</code></td><td>Chỉ ôn từ đến hạn + lỗi đang active</td><td>~10 phút</td></tr>
+<tr><td><code>/si-eng listen</code></td><td>Buổi chỉ luyện nghe</td><td>~15 phút</td></tr>
+<tr><td><code>/si-eng goals</code></td><td>Xem bảng mục tiêu 4 tầng · <code>goals edit</code> để đổi mục tiêu</td><td>tức thì</td></tr>
+<tr><td><code>/si-eng test week</code></td><td>Kiểm tra tuần (alias <code>/si-eng weekly</code>)</td><td>15–20 phút</td></tr>
+<tr><td><code>/si-eng test month</code></td><td>Kiểm tra tháng</td><td>35–45 phút</td></tr>
+<tr><td><code>/si-eng test term</code></td><td>Thi kỳ 12 tuần + học bạ</td><td>60–75 phút</td></tr>
+<tr><td><code>/si-eng status</code></td><td>Streak, level, từ thuộc, top lỗi, bài đánh giá sắp tới, mục tiêu tuần</td><td>tức thì</td></tr>
+</table>
+<p class="sub">Cũng kích hoạt bằng lời: "học tiếng anh", "bài học hôm nay", "luyện nghe", "kiểm tra tuần", "thi kỳ", "học bạ"…</p>
+
+<h2 id="onboarding">5. Bắt đầu (onboarding)</h2>
+<ol>
+<li>Hỏi học viên: tên, tiếng mẹ đẻ, ngôn ngữ giải thích, <b>mục tiêu</b> (công việc / IELTS / du lịch / phỏng vấn…), hạn, sở thích, số phút/ngày.</li>
+<li>🐝 Bee soạn test xếp lớp 20 câu (A1→C1) và 🐰 Rabbit soạn 3 đoạn nghe tăng dần (song song).</li>
+<li>Học viên làm: từ vựng → ngữ pháp → đọc → nghe → viết. Không xem đáp án, "không biết thì bỏ qua".</li>
+<li>Bee + Rabbit chấm → 🦅 Eagle xếp level 5 kỹ năng, ghi baseline, <b>đặt thang mục tiêu 4 tầng</b> và lộ trình kỳ đầu.</li>
+</ol>
+
+<h2 id="buoi-hoc">6. Một buổi học hằng ngày</h2>
+<h3>Bước 0 — Kiểm tra lịch đánh giá</h3>
+<p>Nếu tuần/tháng/kỳ đã hết hạn mà chưa làm bài đánh giá → đề xuất làm trước. Được hoãn tối đa 2 ngày; bài lớn thay bài nhỏ trùng thời điểm (kỳ &gt; tháng &gt; tuần).</p>
+<h3>Bước 1 — Plan (🦅 Eagle)</h3>
+<p>Eagle đọc hồ sơ, lỗi lặp, từ đến hạn, tiến độ mục tiêu tuần → ra plan: chủ đề, tối đa 3 nhiệm vụ (mỗi nhiệm vụ ghi phục vụ mục tiêu tuần nào, vd "→ W-2"), điểm ngữ pháp, dạng bài nghe, tình huống roleplay, phân bổ thời gian. Mở buổi bằng bảng mục tiêu tuần.</p>
+<h3>Bước 2 — Soạn bài (song song)</h3>
+<div class="flow"><span>🦜 Parrot · vocab</span><span>🦫 Beaver · grammar</span><i>→ rồi →</i><span>🐬 Dolphin · roleplay</span><span>🐰 Rabbit · listening + MP3</span><span>🐝 Bee · quiz</span></div>
+<h3>Bước 3 — Dạy tương tác</h3>
+<table>
+<tr><th>#</th><th>Phần</th><th>Agent</th><th>Nội dung</th></tr>
+<tr><td>a</td><td>Ôn từ</td><td>🦜</td><td>Câu gợi ý cho từ đến hạn SRS, phản hồi đúng/sai ngay</td></tr>
+<tr><td>b</td><td>Từ mới</td><td>🦜</td><td>Thẻ từ đầy đủ + luyện nhanh</td></tr>
+<tr><td>c</td><td>Ngữ pháp</td><td>🦫</td><td>Ví dụ → quy tắc → lỗi người Việt hay mắc → 5 câu luyện</td></tr>
+<tr><td>c2</td><td>Nghe</td><td>🐰</td><td>Gist → chi tiết → chép chính tả → phân biệt âm → shadowing (làm nóng tai trước khi nói)</td></tr>
+<tr><td>d</td><td>Viết</td><td>🦫</td><td>Đề dùng ≥ 3 từ mới + ngữ pháp hôm nay; Beaver chấm nền</td></tr>
+<tr><td>e</td><td>Roleplay</td><td>🐬</td><td>6–10 lượt nhập vai, recast lỗi; Dolphin đánh giá nền</td></tr>
+<tr><td>f</td><td>Quiz</td><td>🐝</td><td>Bài đọc + từ mới + từ ôn + ngữ pháp + kiểm tra lại lỗi cũ</td></tr>
+</table>
+<h3>Bước 4 — Tổng kết (🦅 Eagle)</h3>
+<p>Gộp kết quả, cập nhật SRS/lỗi/streak/điểm/mục tiêu, trao huy hiệu, rồi hiển thị báo cáo: streak · điểm 5 kỹ năng so với TB 7 ngày · làm tốt · cần sửa (sai → đúng → mẹo) · bài tập 2 phút trước khi ngủ · gợi ý ngày mai · bảng mục tiêu tuần.</p>
+<div class="note">Dừng giữa chừng vẫn được tổng kết với phần đã làm; streak tính nếu xong ôn từ + ít nhất 1 phần khác. Nghỉ quá 2 ngày → buổi quay lại ưu tiên ôn tập.</div>
+
+<h2 id="nghe">7. Kỹ năng nghe & audio</h2>
+<p>Rabbit soạn kịch bản JSON; Claude chạy script tạo MP3 rồi gửi file cho học viên nghe ngay trong cuộc trò chuyện.</p>
+<table>
+<tr><th>Level</th><th>Giọng</th><th>Tốc độ</th><th>Độ dài bài chính</th></tr>
+<tr><td>A1</td><td>Mỹ</td><td>−25%</td><td rowspan="2">60–90 từ</td></tr>
+<tr><td>A2</td><td>Mỹ</td><td>−15%</td></tr>
+<tr><td>B1</td><td>Mỹ + Anh</td><td>−5%</td><td>120–180 từ</td></tr>
+<tr><td>B2 / C1</td><td>+ Úc, Ấn, Canada</td><td>0% / +5%</td><td>200–300 từ</td></tr>
+</table>
+<ul>
+<li>Luôn có <b>bản chậm −30%</b> để xin nghe lại (trừ khi đang thi).</li>
+<li>Bài nghe cố ý chứa hiện tượng nói tự nhiên: nối âm, âm yếu, <i>gonna/wanna</i>, flap T.</li>
+<li>Chấm chép chính tả từng từ và chẩn đoán nguyên nhân: âm yếu · nối âm · âm cuối · tốc độ · chưa biết từ → cộng dồn vào <code>listening_weak</code> để Eagle nhắm luyện.</li>
+</ul>
+<pre><code>PY=~/.venvs/eng-tts/bin/python; T=~/.claude/skills/si-eng/scripts/tts.py
+$PY $T $S/listening-main.json      $S/listening-main.mp3
+$PY $T $S/listening-main.json      $S/listening-main-slow.mp3 --rate=-30%
+$PY $T $S/listening-dictation.json $S/listening-dictation.mp3</code></pre>
+<div class="note warn">Dùng <b>edge-tts</b> (dịch vụ online của Microsoft): cần mạng, và nội dung bài nghe được gửi lên máy chủ để đọc → không để tên thật / thông tin cá nhân học viên trong lời thoại. Mất mạng → bài nghe chuyển thành bài đọc nhanh, điểm nghe buổi đó không tính.</div>
+
+<h2 id="chat">8. Hiển thị kiểu chat group</h2>
+<p>Cả buổi học hiển thị như nhóm chat <b>"🇬🇧 English Daily"</b>. Mọi câu chữ gửi học viên đều là tin nhắn của một thành viên.</p>
+<div class="chat">
+<div class="m"><span class="who">🦅 Eagle</span> · <span class="role">HLV trưởng</span><br>Chào Lan! Buổi #12, streak 🔥 5 ngày. Chủ đề hôm nay: <b>Ordering food</b> 🍜<br>Nhiệm vụ: học 6 từ mới (→ W-2) · nghe chép 4 câu (→ M-1)</div>
+<div class="m"><span class="who">🐝 Bee</span> · <span class="role">Quiz</span><br>Hẹn gặp ở quiz nha 😏</div>
+<div class="m"><span class="who">🦅 Eagle</span><br>@Parrot mở màn đi 👋</div>
+<div class="m"><span class="who">🦜 Parrot</span> · <span class="role">Từ vựng</span><br>Ok! Ôn 4 từ cũ trước đã 👇 …</div>
+<div class="m me"><b>👤 Lan</b><br>1. reservation 2. menu …</div>
+<div class="sys">— 🐰 Rabbit đã vào phần Nghe —</div>
+<div class="m"><span class="who">🐰 Rabbit</span> · <span class="role">Luyện nghe</span><br>🎧 Lần 1 — nghe ý chính nha. Nghe kỹ chỗ "want to" nè 👂</div>
+<div class="sys">— 🦫 Beaver đang chấm bài viết… —</div>
+</div>
+<table>
+<tr><th>Thành viên</th><th>Giọng</th></tr>
+<tr><td>🦅 Eagle</td><td>Điềm tĩnh, nói bằng số liệu (🔥📈🎯)</td></tr>
+<tr><td>🦜 Parrot</td><td>Vui, nhanh nhảu, hay đùa về phát âm (🗣️✨)</td></tr>
+<tr><td>🦫 Beaver</td><td>Tỉ mỉ, "xây câu từng viên gạch", sửa không chê (🧱🔧)</td></tr>
+<tr><td>🐰 Rabbit</td><td>Tai thính, mê "bắt" nối âm (👂🎧)</td></tr>
+<tr><td>🐬 Dolphin</td><td>Thân thiện, khen sự dũng cảm khi nói (🌊💬)</td></tr>
+<tr><td>🐝 Bee</td><td>Nghiêm kiểu tinh nghịch, thích thử thách (✅❌)</td></tr>
+</table>
+<ul>
+<li>Chuyển phần bằng <b>@mention</b>; agent khác chen tối đa 1–2 câu mỗi phần, không lộ đáp án.</li>
+<li>Trong roleplay chỉ Dolphin nói (ghi rõ vai). Trong bài đánh giá không ai chen, không gợi ý.</li>
+<li>Toàn bộ cuộc chat lưu ở <code>sessions/&lt;ngày&gt;/chat.md</code>.</li>
+</ul>
+
+<h2 id="muc-tieu">9. Hệ thống mục tiêu</h2>
+<div class="ladder">
+<div>🌟 <b>Mục tiêu lớn</b> — theo hạn của học viên (3–12 tháng) · vd "IELTS 6.0 trước 08/2027" → B2</div>
+<div>🎓 <b>Kỳ</b> — 12 tuần · vd lên nửa bậc CEFR, thuộc 400 từ</div>
+<div>📅 <b>Tháng</b> — 4 tuần · vd 20 buổi, TB nghe ≥ 70</div>
+<div>📆 <b>Tuần</b> — 7 ngày · vd 5 buổi, 30 từ mới, sửa dứt 2 lỗi, test tuần ≥ 70</div>
+<div>✏️ <b>Nhiệm vụ hôm nay</b> — tối đa 3, mỗi cái gắn mã mục tiêu tuần</div>
+</div>
+<h3>Đo bằng gì</h3>
+<table>
+<tr><th>Metric</th><th>Ý nghĩa</th></tr>
+<tr><td><code>sessions</code></td><td>Số buổi học trong kỳ</td></tr>
+<tr><td><code>streak</code></td><td>Số ngày học liên tiếp</td></tr>
+<tr><td><code>words_new</code></td><td>Từ mới thêm trong kỳ</td></tr>
+<tr><td><code>words_mastered</code></td><td>Tổng từ đã thuộc (hộp SRS ≥ 4)</td></tr>
+<tr><td><code>errors_fixed</code></td><td>Lỗi sửa dứt trong kỳ</td></tr>
+<tr><td><code>avg:&lt;skill&gt;</code></td><td>Điểm TB kỹ năng trong kỳ</td></tr>
+<tr><td><code>test:&lt;skill|total&gt;</code></td><td>Điểm bài đánh giá gần nhất</td></tr>
+<tr><td><code>level</code></td><td>Level CEFR</td></tr>
+</table>
+<h3>Nguyên tắc đặt mục tiêu</h3>
+<ul>
+<li>SMART, đo được bằng metric trên; mỗi tầng có ≥ 1 mục tiêu <b>thói quen</b> và ≥ 1 mục tiêu <b>kết quả</b>.</li>
+<li>Khả thi theo thời lượng: ~15'/ngày ≈ +½ bậc CEFR mỗi 12–16 tuần; ~30'/ngày ≈ mỗi 8–12 tuần.</li>
+<li>Mục tiêu lớn không khả thi → Eagle nói thật, đề xuất lùi hạn hoặc hạ đích.</li>
+<li>Tự điều chỉnh: đạt dễ (≥ 120%) → tuần sau tăng 10–20%; trượt 2 tuần liền → giảm và đổi cách tiếp cận.</li>
+</ul>
+<h3>Hiển thị tiến độ</h3>
+<table>
+<tr><th>#</th><th>Mục tiêu</th><th>Tiến độ</th><th>Hiện tại / Đích</th><th>Trạng thái</th></tr>
+<tr><td>W-1</td><td>5 buổi học</td><td><code>▓▓▓▓▓▓▓▓▓▓</code> 100%</td><td>5 / 5</td><td>✅ đạt</td></tr>
+<tr><td>W-2</td><td>30 từ mới</td><td><code>▓▓▓▓▓▓░░░░</code> 60%</td><td>18 / 30</td><td>🟡 hơi chậm</td></tr>
+<tr><td>W-4</td><td>Sửa dứt 2 lỗi</td><td><code>▓▓▓▓▓░░░░░</code> 50%</td><td>1 / 2</td><td>🔴 nguy cơ trễ</td></tr>
+<tr><td>T-1</td><td>Level B1</td><td><code>░░░░░░░░░░</code> 0%</td><td>A2 / B1</td><td>⏳ xét ở bài đánh giá</td></tr>
+</table>
+<p>Trạng thái so tiến độ với thời gian đã trôi qua: 🟢 đúng tiến độ (≥ 85%) · 🟡 hơi chậm (≥ 60%) · 🔴 nguy cơ trễ · ⚪ mới bắt đầu (&lt; 15% thời gian) · ⏳ mục tiêu level/điểm thi chờ bài đánh giá.</p>
+<table>
+<tr><th>Lúc</th><th>Hiển thị</th></tr>
+<tr><td>Mở buổi</td><td>Bảng mục tiêu tuần + nhiệm vụ hôm nay</td></tr>
+<tr><td>Cuối buổi</td><td>Bảng tuần đã cập nhật + huy hiệu mới</td></tr>
+<tr><td>Sau kiểm tra tuần</td><td>Chốt tuần + bảng tháng + mục tiêu tuần mới</td></tr>
+<tr><td>Sau kiểm tra tháng</td><td>Hành trình đầu vào → nay, bảng kỳ + mục tiêu lớn, mục tiêu tháng mới</td></tr>
+<tr><td>Sau thi kỳ</td><td>Học bạ kỳ + toàn bộ 4 tầng</td></tr>
+</table>
+
+<h2 id="danh-gia">10. Bài đánh giá tuần / tháng / kỳ</h2>
+<table>
+<tr><th></th><th>📆 Kiểm tra tuần</th><th>📅 Kiểm tra tháng</th><th>🎓 Thi kỳ</th></tr>
+<tr><td><b>Khi</b></td><td>Cuối mỗi tuần mục tiêu</td><td>Mỗi 4 tuần</td><td>Mỗi 12 tuần</td></tr>
+<tr><td><b>Thời lượng</b></td><td>15–20'</td><td>35–45'</td><td>60–75'</td></tr>
+<tr><td><b>Phạm vi</b></td><td>Nội dung tuần</td><td>Cả tháng; 30% câu <code>[L+1]</code> (level kế tiếp)</td><td>Cả kỳ; format theo mục tiêu: IELTS-style / TOEIC-style / công việc / CEFR</td></tr>
+<tr><td><b>Mục đích</b></td><td>Củng cố, chỉnh mục tiêu tuần sau</td><td>Đo tiến bộ so với đầu vào; xét lên nửa bậc</td><td>Xét level chính thức, học bạ, mục tiêu kỳ sau</td></tr>
+<tr><td><b>Ngưỡng</b></td><td>≥ 70</td><td>≥ 70; <code>[L+1]</code> ≥ 70 ở 4/5 kỹ năng → lên level</td><td>Theo mục tiêu kỳ</td></tr>
+</table>
+<h3>Cấu trúc bài</h3>
+<table>
+<tr><th>Phần</th><th>Agent</th><th>Tuần</th><th>Tháng</th><th>Kỳ (ví dụ IELTS-style)</th></tr>
+<tr><td>1. Vocab + Grammar + Reading</td><td>🐝 Bee (chủ trì)</td><td>10 từ · 5 ngữ pháp · 1 bài đọc</td><td>20 từ · 10 ngữ pháp · 2 bài đọc</td><td>Passage dài, T/F/NG, matching headings</td></tr>
+<tr><td>2. Listening</td><td>🐰 Rabbit</td><td>1 hội thoại + 3 câu chép</td><td>2 bài (1 giọng mới) + 4 câu chép</td><td>4 section tăng dần, nghe 1 lần</td></tr>
+<tr><td>3. Writing</td><td>🦫 Beaver</td><td>1 đoạn, ≥ 5 từ của tuần</td><td>Bài dài 1,5×, 2 điểm ngữ pháp</td><td>Task 1 + Task 2, band ước tính</td></tr>
+<tr><td>4. Speaking</td><td>🐬 Dolphin</td><td>Mini roleplay 5–6 lượt</td><td>Phỏng vấn 4 câu + roleplay [L+1]</td><td>Part 1 / 2 / 3</td></tr>
+</table>
+<h3>Quy trình</h3>
+<ol>
+<li>4 agent ra đề phần mình (song song); Rabbit xong → tạo MP3.</li>
+<li>Bee mở bài bằng tổng quan (cấu trúc, thời gian, cách tính điểm). Không khí phòng thi: không gợi ý, không sửa lỗi, audio nghe tối đa 2 lần.</li>
+<li>Làm lần lượt 4 phần; được nghỉ giữa phần, làm tiếp hôm sau.</li>
+<li>4 agent chấm song song → hiển thị toàn văn kết quả từng phần.</li>
+<li>Eagle tổng kết: chốt mục tiêu, so sánh, đặt mục tiêu mới, huy hiệu. Ngày thi tính là 1 buổi học (giữ streak).</li>
+</ol>
+<div class="note">Học bạ kỳ gồm: bảng điểm 5 kỹ năng đầu kỳ → cuối kỳ, biểu đồ thanh, tổng kết 12 tuần (buổi học, streak dài nhất, từ thuộc, lỗi sửa), nhận xét của từng huấn luyện viên, chốt mục tiêu kỳ và mục tiêu kỳ sau. Band IELTS / điểm TOEIC luôn ghi rõ là <b>ước tính</b>.</div>
+
+<h2 id="ghi-so">11. Ghi sổ: SRS, lỗi, streak, huy hiệu</h2>
+<h3>Ôn từ lặp lại ngắt quãng (Leitner)</h3>
+<table>
+<tr><th>Hộp</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+<tr><td>Ôn lại sau</td><td>1 ngày</td><td>2 ngày</td><td>4 ngày</td><td>7 ngày</td><td>14 ngày</td><td>30 ngày</td></tr>
+</table>
+<p>Đúng → lên 1 hộp; sai ở bất kỳ đâu (quiz, bài nghe, đánh giá) → về hộp 1. Qua hộp 6 đúng → <b>mastered</b>. Từ ở hộp ≥ 4 được tính là "đã thuộc".</p>
+<h3>Sổ lỗi</h3>
+<p>Lỗi từ Beaver/Rabbit/Dolphin/Bee được gom theo <b>pattern</b> (quy luật, không phải câu cụ thể). Trùng pattern → tăng <code>count</code>. Lỗi active 3 lần kiểm tra liền không tái phạm → <b>fixed</b> (ghi ngày sửa).</p>
+<h3>Streak</h3>
+<p>Học hôm qua → +1; học rồi hôm nay → giữ; bỏ ngày → về 1.</p>
+<h3>Huy hiệu</h3>
+<p>🔥 Streak 7 / 30 / 100 · 📚 50 / 200 / 500 / 1000 từ thuộc · 🎧 chép chính tả ≥ 90% · 🗣️ roleplay 10 lượt không cần gợi ý · 🔧 sửa dứt 10 lỗi · ✅ đạt toàn bộ mục tiêu tuần · 🏆 lên level · 🎓 hoàn thành kỳ.</p>
+
+<h2 id="du-lieu">12. Dữ liệu & file</h2>
+<pre><code>/home/sisi/claude/eng/
+├── README.md
+├── si-eng-team-guide.html          ← tài liệu này
+└── learners/&lt;slug&gt;/
+    ├── profile.md                   hồ sơ: level, mục tiêu, sở thích, phút/ngày
+    ├── state.json                   sổ: vocab SRS, errors, streak, scores, goals, assessments, badges
+    ├── goals.md                     bảng mục tiêu (sinh bởi progress.py)
+    ├── sessions/&lt;YYYY-MM-DD&gt;/
+    │   ├── plan.md · report.md · chat.md · notes.md
+    │   ├── vocab.md · grammar.md · writing.md · writing-feedback.md
+    │   ├── listening.md · listening-*.json · listening-*.mp3 · listening-answers.md · listening-result.md
+    │   ├── roleplay.md · roleplay-transcript.md · roleplay-feedback.md
+    │   └── quiz.md · quiz-answers.md · quiz-result.md
+    └── assessments/
+        ├── weekly/&lt;YYYY-Www&gt;/   00-overview · 1-vocab-grammar-reading · 2-listening · 3-writing · 4-speaking
+        ├── monthly/&lt;YYYY-MM&gt;/        · *-answers · *-result · report.md
+        └── term/&lt;T1, T2…&gt;/          report.md = học bạ kỳ</code></pre>
+<h3>Định nghĩa đội (ngoài repo)</h3>
+<table>
+<tr><th>File</th><th>Nội dung</th></tr>
+<tr><td><code>~/.claude/skills/si-eng/SKILL.md</code></td><td>Skill điều phối: lệnh, luồng, chat group, mục tiêu, đánh giá, schema state</td></tr>
+<tr><td><code>~/.claude/agents/si-eng-{eagle,parrot,beaver,rabbit,dolphin,bee}.md</code></td><td>Định nghĩa 6 agent</td></tr>
+<tr><td><code>~/.claude/skills/si-eng/scripts/tts.py</code></td><td>Tạo MP3 nhiều giọng (edge-tts + ffmpeg)</td></tr>
+<tr><td><code>~/.claude/skills/si-eng/scripts/progress.py</code></td><td>Tính & in bảng tiến độ mục tiêu</td></tr>
+<tr><td><code>~/.venvs/eng-tts/</code></td><td>Môi trường Python có edge-tts</td></tr>
+</table>
+
+<h2 id="sua">13. Bảo trì & chỉnh sửa</h2>
+<table>
+<tr><th>Muốn…</th><th>Sửa ở</th></tr>
+<tr><td>Đổi thời lượng kỳ, ngưỡng đạt, cách xét lên level</td><td><code>si-eng-eagle.md</code> mục D–H + bảng đánh giá trong <code>SKILL.md</code></td></tr>
+<tr><td>Đổi số từ mới/ngày</td><td><code>si-eng-eagle.md</code> mục B</td></tr>
+<tr><td>Đổi giọng đọc / tốc độ nghe</td><td><code>si-eng-rabbit.md</code></td></tr>
+<tr><td>Thêm metric mục tiêu mới</td><td>hàm <code>value()</code> trong <code>progress.py</code> + danh sách metric trong Eagle</td></tr>
+<tr><td>Đổi giọng chat / ai nói lúc nào</td><td><code>SKILL.md</code> mục "Hiển thị kiểu chat group"</td></tr>
+<tr><td>Thêm huy hiệu</td><td><code>si-eng-eagle.md</code> mục I</td></tr>
+<tr><td>Cài lại audio</td><td><code>python3 -m venv ~/.venvs/eng-tts &amp;&amp; ~/.venvs/eng-tts/bin/pip install edge-tts</code></td></tr>
+</table>
+
+<footer>si_eng_team · Eagle 🦅 · Parrot 🦜 · Beaver 🦫 · Rabbit 🐰 · Dolphin 🐬 · Bee 🐝</footer>
+</main>
+</div>
+<script>
+function tg(){var r=document.documentElement,d=r.dataset.theme==='dark';r.dataset.theme=d?'light':'dark';document.getElementById('t').textContent=d?'🌙 Tối':'☀️ Sáng';try{localStorage.setItem('sieng-theme',r.dataset.theme)}catch(e){}}
+try{if(localStorage.getItem('sieng-theme')==='dark')tg()}catch(e){}
+</script>
+</body>
+</html>
