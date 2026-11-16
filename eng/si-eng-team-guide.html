@@ -57,6 +57,7 @@ footer{color:var(--fg2);font-size:.85rem;margin-top:3rem;border-top:1px solid va
 <a href="#tong-quan">1. Tổng quan</a>
 <a href="#doi-hinh">2. Đội hình 6 agent</a>
 <a href="#nguyen-tac">3. Nguyên tắc vận hành</a>
+<a href="#ngon-ngu">3b. Ngôn ngữ English-first</a>
 <a href="#lenh">4. Các lệnh</a>
 <a href="#onboarding">5. Bắt đầu (onboarding)</a>
 <a href="#buoi-hoc">6. Một buổi học hằng ngày</a>
@@ -71,13 +72,13 @@ footer{color:var(--fg2);font-size:.85rem;margin-top:3rem;border-top:1px solid va
 <main>
 
 <h1>si_eng_team</h1>
-<p class="sub">Đội 6 agent AI giúp người học tiếng Anh như ngoại ngữ luyện tập mỗi ngày, có mục tiêu rõ ràng và đánh giá định kỳ.<br>Tài liệu mô tả cách hoạt động · cập nhật 16/11/2026</p>
+<p class="sub">Đội 6 agent AI giúp người học tiếng Anh như ngoại ngữ luyện tập mỗi ngày, có mục tiêu rõ ràng và đánh giá định kỳ.<br>Tài liệu mô tả cách hoạt động · cập nhật 16/11/2026 (English-first)</p>
 
 <h2 id="tong-quan">1. Tổng quan</h2>
 <p>Một buổi học giống một <b>lớp học nhỏ trong nhóm chat</b>: mỗi agent là một huấn luyện viên chuyên một kỹ năng. Agent soạn bài, chấm bài và ghi sổ phía sau; Claude (main thread) đứng lớp, trò chuyện trực tiếp với học viên và chuyển bài qua lại giữa các agent.</p>
 <div class="flow"><span>🦅 Lập kế hoạch</span><i>→</i><span>🦜🦫🐰🐬🐝 Soạn bài</span><i>→</i><span>💬 Học tương tác</span><i>→</i><span>🦫🐰🐬🐝 Chấm</span><i>→</i><span>🦅 Tổng kết & ghi sổ</span><i>→</i><span>🎯 Cập nhật mục tiêu</span></div>
 <p>Năm kỹ năng được theo dõi: <b>từ vựng · ngữ pháp · viết · nghe · nói</b> (cộng đọc hiểu trong quiz và bài đánh giá).</p>
-<div class="note">Mặc định giải thích bằng tiếng Việt (đổi được qua <code>explain_language</code> trong hồ sơ). Từ trình độ B2, các agent chuyển sang chat bằng tiếng Anh đơn giản.</div>
+<div class="note"><b>English-first:</b> mọi giao tiếp bằng <b>tiếng Anh đơn giản theo level</b> để học viên quen. Chỗ nào không hiểu, học viên hỏi lại bằng tiếng Việt — xem <a href="#ngon-ngu">mục 3b</a>.</div>
 
 <h2 id="doi-hinh">2. Đội hình 6 agent</h2>
 <div class="cards">
@@ -106,6 +107,23 @@ footer{color:var(--fg2);font-size:.85rem;margin-top:3rem;border-top:1px solid va
 <tr><td><b>Ưu tiên lỗi lặp</b></td><td>Lỗi xuất hiện ≥ 3 lần là mục tiêu số 1 của buổi kế tiếp.</td></tr>
 <tr><td><b>Số liệu là sự thật</b></td><td>Tiến độ mục tiêu do script <code>progress.py</code> tính, không ước lượng bằng mắt.</td></tr>
 </table>
+
+<h3 id="ngon-ngu">3b. Ngôn ngữ: English-first</h3>
+<p>Quy tắc chung nằm ở <code>~/.claude/skills/si-eng/LANGUAGE.md</code>, cả 6 agent đều đọc.</p>
+<table>
+<tr><th>Level</th><th>Cách nói</th></tr>
+<tr><td>A1</td><td>Câu ≤ 8 từ, ~500 từ thông dụng nhất, nhiều ví dụ và ✓ / ✗</td></tr>
+<tr><td>A2</td><td>Câu ≤ 12 từ, ~1000 từ thông dụng, không thành ngữ</td></tr>
+<tr><td>B1</td><td>Câu ≤ 18 từ, từ hiếm thì giải thích trong ngoặc</td></tr>
+<tr><td>B2+</td><td>Tự nhiên nhưng rõ ràng</td></tr>
+</table>
+<ul>
+<li>Ví dụ trước, quy tắc sau; in đậm chỗ quan trọng; không dùng thuật ngữ ngữ pháp ở A1–A2.</li>
+<li>Tiếng Việt chỉ có ở: gloss ngắn trên thẻ từ <code>(VI: đặt chỗ)</code>, và khi trả lời câu học viên hỏi bằng tiếng Việt.</li>
+<li><b>Học viên hỏi bằng tiếng Việt</b> → trả lời đúng chỗ chưa hiểu bằng tiếng Việt 1–3 dòng → nhắc lại bằng tiếng Anh → dạy 1 câu để lần sau hỏi bằng tiếng Anh (<i>"Sorry, what does ___ mean?"</i>) → quay lại tiếng Anh. Không bao giờ trừ điểm.</li>
+<li>Những chỗ hay phải hỏi lại được ghi vào <code>notes.md</code>; Eagle biến chúng thành từ vựng hoặc yêu cầu đội nói đơn giản hơn.</li>
+<li>Roleplay: nhân vật luôn nói tiếng Anh. Lúc thi: chỉ dịch đề, không gợi ý đáp án.</li>
+</ul>
 
 <h2 id="lenh">4. Các lệnh</h2>
 <table>
@@ -176,14 +194,15 @@ $PY $T $S/listening-dictation.json $S/listening-dictation.mp3</code></pre>
 <h2 id="chat">8. Hiển thị kiểu chat group</h2>
 <p>Cả buổi học hiển thị như nhóm chat <b>"🇬🇧 English Daily"</b>. Mọi câu chữ gửi học viên đều là tin nhắn của một thành viên.</p>
 <div class="chat">
-<div class="m"><span class="who">🦅 Eagle</span> · <span class="role">HLV trưởng</span><br>Chào Lan! Buổi #12, streak 🔥 5 ngày. Chủ đề hôm nay: <b>Ordering food</b> 🍜<br>Nhiệm vụ: học 6 từ mới (→ W-2) · nghe chép 4 câu (→ M-1)</div>
-<div class="m"><span class="who">🐝 Bee</span> · <span class="role">Quiz</span><br>Hẹn gặp ở quiz nha 😏</div>
-<div class="m"><span class="who">🦅 Eagle</span><br>@Parrot mở màn đi 👋</div>
-<div class="m"><span class="who">🦜 Parrot</span> · <span class="role">Từ vựng</span><br>Ok! Ôn 4 từ cũ trước đã 👇 …</div>
-<div class="m me"><b>👤 Lan</b><br>1. reservation 2. menu …</div>
-<div class="sys">— 🐰 Rabbit đã vào phần Nghe —</div>
-<div class="m"><span class="who">🐰 Rabbit</span> · <span class="role">Luyện nghe</span><br>🎧 Lần 1 — nghe ý chính nha. Nghe kỹ chỗ "want to" nè 👂</div>
-<div class="sys">— 🦫 Beaver đang chấm bài viết… —</div>
+<div class="m"><span class="who">🦅 Eagle</span> · <span class="role">Head coach</span><br>Hi Lan! Lesson <b>#12</b>. Streak: 🔥 <b>5 days</b>. Great!<br>Topic: <b>Ordering food</b> 🍜<br>Today: learn 6 new words (→ W-2) · write 4 sentences you hear (→ M-1)</div>
+<div class="m"><span class="who">🐝 Bee</span> · <span class="role">Quiz</span><br>See you at the quiz 😏</div>
+<div class="m"><span class="who">🦅 Eagle</span><br>@Parrot your turn! 👋</div>
+<div class="m"><span class="who">🦜 Parrot</span> · <span class="role">Vocabulary</span><br>Me first! Let's <b>review 4 old words</b> 👇 …</div>
+<div class="m me"><b>👤 Lan</b><br>"reservation" là gì vậy?</div>
+<div class="m"><span class="who">🦜 Parrot</span><br>"Reservation" = <b>đặt chỗ trước</b>.<br>In English: <b>a plan to keep a table for you</b>.<br>💡 Next time ask: <i>"Sorry, what does reservation mean?"</i></div>
+<div class="sys">— 🐰 Rabbit joined: Listening —</div>
+<div class="m"><span class="who">🐰 Rabbit</span> · <span class="role">Listening</span><br>🎧 Listen 1: <b>what is it about?</b> Listen carefully to "want to" 👂</div>
+<div class="sys">— 🦫 Beaver is checking your writing… —</div>
 </div>
 <table>
 <tr><th>Thành viên</th><th>Giọng</th></tr>
