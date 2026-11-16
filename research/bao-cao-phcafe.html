@@ -1,0 +1,395 @@
+<title>RANG · Philippines</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Apple HIG — SF system font, systemGroupedBackground, inset-grouped lists, systemBrown tint for a coffee app, semantic green/orange/red for signals */
+:root{
+  --bg:#f2f2f7;                      /* systemGroupedBackground */
+  --elev:#ffffff;                    /* secondarySystemGroupedBackground (cards) */
+  --elev2:#f2f2f7;                   /* nested fill */
+  --label:#1c1c1e;                   /* label */
+  --label2:rgba(60,60,67,.6);        /* secondaryLabel */
+  --label3:rgba(60,60,67,.3);        /* tertiaryLabel */
+  --sep:rgba(60,60,67,.18);          /* separator (hairline) */
+  --fill:rgba(118,118,128,.12);      /* tertiarySystemFill */
+  --tint:#8a6a46;                    /* systemBrown, deepened for contrast */
+  --tint-fill:rgba(162,132,94,.16);
+  --blue:#007aff; --green:#248a3d; --green-fill:rgba(52,199,89,.14);
+  --orange:#b35b00; --orange-fill:rgba(255,149,0,.15);
+  --red:#c42b1c; --red-fill:rgba(255,59,48,.12);
+  --shadow:0 0 0 .5px rgba(0,0,0,.04);
+  --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#000000; --elev:#1c1c1e; --elev2:#2c2c2e;
+  --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+  --sep:rgba(84,84,88,.6); --fill:rgba(118,118,128,.24);
+  --tint:#c8a781; --tint-fill:rgba(172,142,104,.22);
+  --blue:#0a84ff; --green:#30d158; --green-fill:rgba(48,209,88,.18);
+  --orange:#ff9f0a; --orange-fill:rgba(255,159,10,.2);
+  --red:#ff6961; --red-fill:rgba(255,69,58,.18);
+  --shadow:none; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#000000; --elev:#1c1c1e; --elev2:#2c2c2e;
+  --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+  --sep:rgba(84,84,88,.6); --fill:rgba(118,118,128,.24);
+  --tint:#c8a781; --tint-fill:rgba(172,142,104,.22);
+  --blue:#0a84ff; --green:#30d158; --green-fill:rgba(48,209,88,.18);
+  --orange:#ff9f0a; --orange-fill:rgba(255,159,10,.2);
+  --red:#ff6961; --red-fill:rgba(255,69,58,.18);
+  --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--label);font-family:var(--sys);
+  font-size:17px;line-height:1.47;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.wrap{max-width:46rem;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;letter-spacing:-.022em;line-height:1.12;font-weight:700;text-wrap:balance}
+p{margin:.5em 0}
+a{color:var(--tint);text-decoration:none}
+b,strong{font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+
+/* grouped section header — iOS Settings style */
+.ghead{font-size:13px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;
+  color:var(--label2);margin:0 0 8px 4px}
+.note-cap{font-size:13px;color:var(--label2);margin:8px 4px 0}
+
+/* nav bar: translucent, blur, large-title pattern */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.navbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:color-mix(in srgb,var(--bg) 78%,transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:.5px solid var(--sep)}
+.navbar .wrap{display:flex;align-items:center;gap:10px;height:46px}
+.nbrand{font-size:17px;font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+.nbrand .d{color:var(--label2);font-weight:400}
+.seg{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.seg::-webkit-scrollbar{display:none}
+.seg a{font-size:15px;color:var(--tint);padding:5px 10px;border-radius:980px;white-space:nowrap;font-weight:500}
+.seg a:active{background:var(--tint-fill)}
+@media (hover:hover){.seg a:hover{background:var(--tint-fill)}}
+
+/* hero — large title */
+.hero{padding:26px 0 22px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.01em;text-transform:uppercase;color:var(--tint)}
+.hero h1{font-size:clamp(34px,8.5vw,52px);font-weight:700;letter-spacing:-.03em;margin:.18em 0 0}
+.hero .sub{font-size:19px;color:var(--label2);margin-top:.5em;letter-spacing:-.016em;line-height:1.35}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.tag{font-size:13px;font-weight:500;padding:5px 11px;border-radius:980px;background:var(--fill);color:var(--label2)}
+.tag.on{background:var(--tint-fill);color:var(--tint)}
+
+section{padding:14px 0 10px;scroll-margin-top:60px}
+.lead{font-size:17px;color:var(--label);margin-top:0}
+.lead.muted{color:var(--label2)}
+
+/* generic elevated card */
+.card{background:var(--elev);border-radius:16px;box-shadow:var(--shadow);padding:16px 17px;margin:0}
+.card h3{font-size:17px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px}
+.card ul{margin:6px 0 0;padding-left:1.15em}
+.card li{margin:.3em 0;font-size:15px;color:var(--label);line-height:1.4}
+.card li b{font-weight:600}
+.grid{display:grid;gap:12px;margin-top:4px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+
+/* stat tiles */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:12px;margin-top:4px}
+.stat{background:var(--elev);border-radius:16px;box-shadow:var(--shadow);padding:15px 16px}
+.stat .n{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.stat .l{font-size:13px;color:var(--label2);margin-top:8px;line-height:1.35}
+
+/* inset grouped list / table */
+.tw{background:var(--elev);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;margin-top:4px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:30rem}
+th,td{text-align:left;padding:12px 16px;vertical-align:top;border-bottom:.5px solid var(--sep)}
+thead th{font-size:13px;font-weight:600;color:var(--label2);text-transform:none;letter-spacing:0}
+tbody tr:last-child td{border-bottom:none}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td b{font-weight:600}
+
+/* inset list rows (price ladder, decisions) */
+.list{background:var(--elev);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;margin-top:4px}
+.li{display:flex;align-items:center;gap:14px;padding:13px 16px;border-bottom:.5px solid var(--sep)}
+.li:last-child{border-bottom:none}
+.li .px{font-size:15px;font-weight:600;color:var(--tint);min-width:6.8rem;font-variant-numeric:tabular-nums}
+.li .lab{font-size:15px;line-height:1.35}
+.li .lab small{color:var(--label2)}
+.li.hl{background:var(--tint-fill)}
+.li.hl .lab b{color:var(--tint)}
+
+/* decisions as grouped key/value rows */
+.li.kv{align-items:flex-start}
+.li.kv .k{font-size:13px;font-weight:600;color:var(--label2);min-width:6.5rem;padding-top:1px;text-transform:uppercase;letter-spacing:.01em}
+.li.kv .v{font-size:15px;line-height:1.4}
+.li.kv .v b{color:var(--green);font-weight:600}
+
+/* callouts — Apple banner feel */
+.note{border-radius:14px;padding:13px 15px;margin-top:4px;font-size:15px;line-height:1.4;
+  background:var(--tint-fill);color:var(--label)}
+.note.go{background:var(--green-fill)}
+.note.warn{background:var(--red-fill)}
+.note b{font-weight:600}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 7px;border-radius:7px;
+  background:var(--orange-fill);color:var(--orange);white-space:nowrap;vertical-align:middle}
+
+/* positioning statement */
+.pos{font-size:clamp(26px,6vw,38px);font-weight:700;letter-spacing:-.03em;text-align:center;
+  padding:10px 0 2px;line-height:1.1}
+.pos .q{color:var(--tint)}
+.pos-sub{text-align:center;color:var(--label2);font-size:15px;margin-top:6px}
+
+/* roadmap phases */
+.road{display:grid;gap:12px;margin-top:4px;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr))}
+.phase{background:var(--elev);border-radius:16px;box-shadow:var(--shadow);padding:15px 16px}
+.phase .ph{font-size:13px;font-weight:600;color:var(--tint);text-transform:uppercase;letter-spacing:.02em}
+.phase h3{font-size:16px;font-weight:600;margin:3px 0 6px}
+.phase ul{font-size:14px;padding-left:1.1em;margin:0;color:var(--label)}
+.phase li{margin:.3em 0;line-height:1.38}
+
+footer{padding:20px 0 40px}
+.src{font-size:13px;color:var(--label2);line-height:1.5;margin-top:8px}
+.src code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px}
+.footmark{font-size:13px;color:var(--tint);margin-top:16px;font-weight:500}
+.spacer{height:10px}
+@media (prefers-reduced-motion:no-preference){.seg a{transition:background .18s}}
+</style>
+
+<nav class="navbar">
+  <div class="wrap">
+    <span class="nbrand">RANG<span class="d"> · Philippines</span></span>
+    <div class="seg">
+      <a href="#tt">Thị trường</a>
+      <a href="#song">Sóng Việt</a>
+      <a href="#gia">Giá</a>
+      <a href="#kinhte">Kinh tế</a>
+      <a href="#rui">Rủi ro</a>
+      <a href="#hop">Kết luận</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Research thị trường · Báo cáo nội bộ</div>
+    <h1>Vietnam Bold.<br>No Shortcuts.</h1>
+    <div class="sub">Đưa nhãn cà phê Việt vào Philippines — nghiên cứu thị trường & hướng đi đề xuất.</div>
+    <div class="tags">
+      <span class="tag">2026-11-16</span>
+      <span class="tag">slug: phcafe</span>
+      <span class="tag on">Nguồn gốc Việt Nam = USP</span>
+      <span class="tag on">Nhà máy rang xay + đóng gói</span>
+      <span class="tag">Research: Henry</span>
+    </div>
+  </header>
+
+  <!-- 01 EXEC -->
+  <section id="tt">
+    <div class="ghead">01 · Tóm tắt thị trường</div>
+    <p class="lead">Philippines nghiện cà phê nhưng bị <b>instant 3-in-1 thống trị</b>. Cầu kiểu Việt (sữa đá, cà phê muối) đã bùng trên TikTok trước khi chuỗi Việt vào bài bản — nhưng <b>chưa ai chiếm mảng RTD / drip bag cà phê Việt ở bán lẻ & e-commerce</b>. Đó là khoảng trắng.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">$5,2 tỷ</div><div class="l">Quy mô cà phê PH (2024), CAGR ~7%</div></div>
+      <div class="stat"><div class="n">65–90%</div><div class="l">Sản lượng là instant 3-in-1 (Nescafé ~80%)</div></div>
+      <div class="stat"><div class="n">2,5 ly</div><div class="l">80% người lớn uống/ngày; Gen Z +25% từ 2020</div></div>
+      <div class="stat"><div class="n">57–66%</div><div class="l">Thị phần VN trong cà phê PH nhập khẩu</div></div>
+      <div class="stat"><div class="n">17M+</div><div class="l">Views TikTok cho "cà phê muối"</div></div>
+      <div class="stat"><div class="n">0%</div><div class="l">Thuế VN→PH (ATIGA) hạt & chế phẩm</div></div>
+    </div>
+    <div class="note go" style="margin-top:12px"><b>Luận điểm.</b> Không đánh mảng hòa tan (đại dương đỏ của Nestlé), không mở chuỗi quán ngay (capex + Cộng đã cắm cờ). Vào bằng <b>drip bag "phin" + e-commerce</b>, B2B hạt song song, RTD để Phase 2.</div>
+  </section>
+
+  <!-- 02 CONSUMER -->
+  <section>
+    <div class="ghead">02 · Người tiêu dùng & văn hóa</div>
+    <div class="grid g2">
+      <div class="card"><h3>Thu nhập quyết định cách chơi</h3>
+        <ul>
+          <li><b>Class D ~75%</b> dân số (₱13.873–30.000/th) — kinh tế "sachet".</li>
+          <li><b>Class C ~13%</b> (₱30.000–80.000) — trung lưu đang lên, uống cả instant lẫn quán.</li>
+          <li><b>A+B &lt;5%</b> — premium / specialty.</li>
+        </ul></div>
+      <div class="card"><h3>Nhóm & gu đặc thù</h3>
+        <ul>
+          <li><b>1,4 triệu nhân viên BPO</b> ca đêm → robusta đậm, 24/7 (trùng gu Việt).</li>
+          <li>Gu mặc định: ngọt, nhiều sữa, nhiều đá; giới trẻ đô thị chi ₱100+ cho espresso.</li>
+          <li><b>Tự hào cà phê nội địa</b> (Barako, Benguet) — cần tôn trọng khi định vị.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 03 VIETNAMESE WAVE -->
+  <section id="song">
+    <div class="ghead">03 · Làn sóng cà phê Việt</div>
+    <div class="grid g2">
+      <div class="card"><h3>Cầu đã có trước — tự nhiên</h3>
+        <ul>
+          <li><b>Drip Kofi</b> (nhãn PH bán cà phê Việt): <b>18 chi nhánh</b> Luzon, best-seller sữa đá, nhập hạt Việt trực tiếp → <b>warm lead B2B số 1</b>.</li>
+          <li><b>Saigon Brewers</b> (Iloilo): 90% khách là người Philippines.</li>
+          <li>Cà phê muối >17M views; sữa đá top trend TikTok.</li>
+        </ul></div>
+      <div class="card"><h3>Đối thủ Việt đã/đang vào</h3>
+        <ul>
+          <li>Highlands 38–43 quán — same-store <b>−3,7%</b> (2024).</li>
+          <li>Cộng Cà Phê 3 quán (2/2025), ₱170–310/ly.</li>
+          <li>Trung Nguyên G7 đóng gói (nhập 12/2025).</li>
+        </ul>
+        <div class="note" style="margin-top:12px">Chủ yếu ở <b>chuỗi quán</b> và <b>hòa tan</b>. Mảng <b>RTD / drip bag cà phê Việt</b> ở bán lẻ & e-com còn trống.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PRICE -->
+  <section id="gia">
+    <div class="ghead">04 · Đối thủ & thang giá (PHP)</div>
+    <div class="list">
+      <div class="li"><span class="px">₱7–22</span><span class="lab">Sachet hòa tan — Nescafé, Kopiko, Great Taste <small>(sân Nestlé/URC)</small></span></div>
+      <div class="li hl"><span class="px">₱35–80</span><span class="lab"><b>Khoảng trống:</b> drip bag "phin", RTD chai — <b>RANG vào đây</b></span></div>
+      <div class="li"><span class="px">₱50–100</span><span class="lab">Quán bình dân / take-away — PICKUP (300→800 quán)</span></div>
+      <div class="li"><span class="px">₱65–95</span><span class="lab">ZUS Coffee (Malaysia, ~100 quán) — ép từ dưới lên</span></div>
+      <div class="li"><span class="px">₱100–180</span><span class="lab">Mid-tier chuỗi</span></div>
+      <div class="li"><span class="px">₱160–350</span><span class="lab">Premium / specialty — Starbucks ₱175–210, Cộng ₱170–310</span></div>
+    </div>
+    <p class="note-cap">RTD coffee PH ~$28M (2024), +3,6%/năm (chilled +19%). Chưa có RTD cà phê Việt phân phối rộng.</p>
+  </section>
+
+  <!-- 05 UNIT ECON -->
+  <section id="kinhte">
+    <div class="ghead">05 · Kinh tế đơn vị · FOB, biên B2B & phí kênh</div>
+
+    <p class="ghead" style="text-transform:none;font-size:15px;color:var(--label);margin-top:8px">Giá FOB robusta VN → margin B2B tại PH</p>
+    <div class="tw"><div class="scroll"><table>
+      <thead><tr><th>Khâu</th><th class="n">₱/kg</th><th>Ghi chú</th></tr></thead>
+      <tbody>
+      <tr><td>FOB hạt nhân VN (2025)</td><td class="n">~323</td><td>~$5,66/kg · The Investor / CropGPT</td></tr>
+      <tr><td>Landed tại PH (ước)</td><td class="n">~380–405</td><td>+cước <span class="badge">kiểm chứng</span> · ATIGA 0% · VAT 12%</td></tr>
+      <tr><td>Wholesale tham chiếu PH</td><td class="n">~571</td><td>Tridge 2024</td></tr>
+      <tr><td><b>Gross B2B</b></td><td class="n">~29–33%</td><td>biên ròng thực ~10–20% sau phân phối</td></tr>
+      <tr><td>Hạt rang FOB</td><td class="n">~$6,8–7,9</td><td><span class="badge">chưa có nguồn</span> chính thức — chỉ ước</td></tr>
+      </tbody>
+    </table></div></div>
+
+    <p class="ghead" style="text-transform:none;font-size:15px;color:var(--label);margin-top:16px">Phí sàn TMĐT (ngành F&B / FMCG)</p>
+    <div class="tw"><div class="scroll"><table>
+      <thead><tr><th>Sàn</th><th class="n">Take-rate</th><th>Phí khác</th><th>Ưu đãi seller mới</th></tr></thead>
+      <tbody>
+      <tr><td>TikTok Shop PH</td><td class="n">~10–14%</td><td>+₱5/đơn</td><td><b>Miễn commission 90 ngày</b></td></tr>
+      <tr><td>Shopee PH</td><td class="n">~7,5–11,9%</td><td>+1% BIR, +₱5/đơn</td><td>miễn ₱5 cho 50 đơn đầu/tháng</td></tr>
+      </tbody>
+    </table></div></div>
+    <div class="note warn" style="margin-top:12px"><b>Phí lên kệ offline.</b> Siêu thị slotting ~$100–120/SKU <span class="badge">nguồn cũ</span>; 7-Eleven PH <span class="badge">chưa có nguồn</span> — thương mại mật, phải đàm phán. Không hợp giai đoạn thử nghiệm.</div>
+  </section>
+
+  <!-- 06 RTD -->
+  <section>
+    <div class="ghead">06 · RTD — Phase 2</div>
+    <div class="grid g2">
+      <div class="card"><h3>Co-pack tại PH</h3>
+        <p style="font-size:15px"><b>Actron</b> (Laguna) aseptic carton, chạy thương mại <b>Q2/2026</b> — nhưng <b>chưa xác nhận</b> nhận cà phê RTD; chi phí & MOQ <span class="badge">chưa có nguồn</span>.</p></div>
+      <div class="card"><h3>Xuất RTD từ VN</h3>
+        <p style="font-size:15px">ATIGA <b>0%</b>; lon/hộp aseptic <b>shelf-stable 12–24 tháng, không cần cold chain</b>. FDA LTO+CPR qua nhà nhập khẩu PH, 20–30 ngày.</p></div>
+    </div>
+    <div class="note warn" style="margin-top:12px"><b>Rào RTD.</b> SSB tax ₱6/lít (đề xuất tăng ₱20) bào mòn biên; HS code 2101 vs 2202 chưa xác nhận; <b>COGS nội bộ chưa có</b>. → Decision Gate trước khi làm (COGS ≤₱20 + HS code + CPO drip bag ổn).</div>
+  </section>
+
+  <!-- 07 WHITE SPACE + RISK -->
+  <section id="rui">
+    <div class="ghead">07 · Khoảng trắng & rào cản</div>
+    <div class="grid g2">
+      <div class="card"><h3 style="color:var(--green)">White space</h3>
+        <ul>
+          <li>RTD cà phê Việt đóng chai (sữa đá / muối).</li>
+          <li><b>Drip bag "phin trong túi"</b> — ritual + unboxing, logistics nhẹ, ₱35–80.</li>
+          <li>Dòng cho BPO ca đêm (robusta đậm).</li>
+          <li>B2B bán hạt Việt cho roaster/chuỗi PH (PH thiếu cung).</li>
+          <li>Low-sugar — đáp "sợ quá ngọt".</li>
+        </ul></div>
+      <div class="card"><h3 style="color:var(--red)">Rào cản chính</h3>
+        <ul>
+          <li>Hòa tan bị Nestlé/URC/Kopiko khóa kệ.</li>
+          <li>Phí FDA bất định (AO 2024-0016 đình chỉ 2025).</li>
+          <li>SSB tax RTD có thể ₱6→₱20/lít.</li>
+          <li>Cộng đã cắm cờ "cà phê Việt" ở chuỗi quán.</li>
+          <li>Khuếch đại "cà phê Việt" quá mạnh dễ chạm tự hào Barako → kẻ thù chung = instant 3-in-1, dùng gương mặt Filipino.</li>
+          <li>PH đòi brand mạnh + social khỏe.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 08 CONCLUSION -->
+  <section id="hop">
+    <div class="ghead">08 · Kết luận họp · Quyết định M-001</div>
+
+    <div class="card" style="padding:22px 17px">
+      <div class="pos">"Vietnam Bold. <span class="q">No Shortcuts.</span>"</div>
+      <div class="pos-sub">Bold = cảm nhận · nhà máy rang riêng = reason-to-believe · kẻ thù = instant 3-in-1</div>
+    </div>
+
+    <p class="ghead" style="margin-top:18px">Danh mục & thứ tự sản phẩm</p>
+    <div class="road">
+      <div class="phase"><div class="ph">Phase 1 · T1–6</div><h3>Ra mắt consumer</h3>
+        <ul>
+          <li><b>Hero:</b> Drip Bag "phin" (sữa đá) ₱35–45/túi — nhà máy tự làm, TikTok unboxing, đo CPO thật.</li>
+          <li><b>Catalyst:</b> Cà Phê Muối Limited — tạo buzz, bỏ sau 3–6 th nếu yếu.</li>
+          <li>Less Sweet variant từ ngày đầu.</li>
+        </ul></div>
+      <div class="phase"><div class="ph">Song song · từ T2</div><h3>B2B HoReCa</h3>
+        <ul>
+          <li>Tiếp cận Drip Kofi (warm lead) bằng mẫu rang xay.</li>
+          <li>Mục tiêu 2–3 deal trước T6 làm proof-of-quality.</li>
+          <li>Không cần social — quan hệ sales.</li>
+        </ul></div>
+      <div class="phase"><div class="ph">Phase 2 · T7–12</div><h3>RTD Decision Gate</h3>
+        <ul>
+          <li>Chỉ làm khi: COGS ≤₱20 + HS code xác nhận + CPO drip bag &lt;₱80.</li>
+          <li>Thiếu 1 → đẩy sang Year 2.</li>
+          <li>Không làm instant Year 1 (sân Nescafé/G7).</li>
+        </ul></div>
+    </div>
+
+    <p class="ghead" style="margin-top:18px">6 KPI · North Star = CPO</p>
+    <div class="stats">
+      <div class="stat"><div class="n">≤₱80</div><div class="l">K1 · CPO (dừng ads &gt;₱120)</div></div>
+      <div class="stat"><div class="n">≥20%</div><div class="l">K2 · Repeat purchase D30</div></div>
+      <div class="stat"><div class="n">₱2,8–4,0M</div><div class="l">K3 · GMV e-com Year 1 (~$49–70k)</div></div>
+      <div class="stat"><div class="n">30–50</div><div class="l">K4 · Điểm bán B2B active</div></div>
+      <div class="stat"><div class="n">5M</div><div class="l">K5 · TikTok organic views / 6 th</div></div>
+      <div class="stat"><div class="n">≥2,0×</div><div class="l">K6 · ROAS paid (dừng &lt;1,8×)</div></div>
+    </div>
+
+    <p class="ghead" style="margin-top:18px">Roadmap 0–12 tháng</p>
+    <div class="tw"><div class="scroll"><table>
+      <thead><tr><th>Mốc</th><th>Việc chính</th></tr></thead>
+      <tbody>
+      <tr><td class="num"><b>T1–2</b></td><td>Nền tảng: nộp FDA LTO+CPR 2 SKU · chốt distributor · design packaging + nhãn FDA · set up TikTok Shop & Shopee · tiếp cận Drip Kofi · kiểm chứng HS code + COGS nhà máy</td></tr>
+      <tr><td class="num"><b>T3–4</b></td><td>Soft launch: CPR về, nhập lô đầu · mở TikTok Shop (tận dụng 90 ngày miễn commission) · seeding 5–7 micro KOC organic · ký 2–3 B2B · Shopee Ads nhỏ</td></tr>
+      <tr><td class="num"><b>T5–6</b></td><td>Validate: review CPO / repeat / reorder · trigger scale-or-optimize · xác nhận COGS RTD + HS code</td></tr>
+      <tr><td class="num"><b>T7–9</b></td><td>Scale/pivot: tăng Spark Ads · mở rộng KOC · HoReCa ngoài Metro Manila (Cebu) · RTD Decision Gate · thử 1–2 modern trade</td></tr>
+      <tr><td class="num"><b>T10–12</b></td><td>Year-end: RTD limited nếu đủ điều kiện (campaign Noel/Tết) · tổng kết Year 1 · quyết entity vs distributor cho Year 2</td></tr>
+      </tbody>
+    </table></div></div>
+
+    <p class="ghead" style="margin-top:18px">@Sếp đã chốt</p>
+    <div class="list">
+      <div class="li kv"><span class="k">Tên</span><span class="v"><b>RANG</b> — nhãn EN kèm, đủ điều kiện FDA PH. Ngắn, phát âm được, khuếch đại xuất xứ Việt, dễ bảo hộ IP.</span></div>
+      <div class="li kv"><span class="k">Ngân sách</span><span class="v"><b>Base ~$80k</b> — chia H1 $40k (validate) + H2 $40k (scale), trigger review T6.</span></div>
+      <div class="li kv"><span class="k">Phân phối</span><span class="v"><b>Distributor PH</b> Year 1 (giữ FDA LTO, vào nhanh). GMV &gt;$80k → Year 2 xét lập entity.</span></div>
+      <div class="li kv"><span class="k">KOC</span><span class="v"><b>Gifting + affiliate</b> (không retainer); mid-tier chỉ khi duyệt riêng.</span></div>
+      <div class="li kv"><span class="k">Giá RTD</span><span class="v">Hoãn — chờ COGS nhà máy VN thực + HS code trước khi chốt.</span></div>
+    </div>
+
+    <p class="ghead" style="margin-top:18px">Khách hàng thử (Guinness, giả lập)</p>
+    <div class="note"><b>Vòng 1: ⭐ 2,5/5.</b> Đòi hook rõ "vì sao brand NÀY, giá NÀY, ngay HÔM NAY"; sợ quá ngọt, bao bì mập mờ, "không có gì để show bạn bè". <b>Đội đáp:</b> hook craft + caffeine robusta ~90mg + giá lấp gap; Less Sweet + icon độ ngọt; drip bag = unboxing shareable. <i>(Chưa tái test trên concept mới.)</i></div>
+  </section>
+
+  <footer>
+    <div class="ghead">Hạn chế dữ liệu</div>
+    <p class="src"><b>[CHƯA CÓ NGUỒN]</b> slotting fee 7-Eleven/siêu thị · chi phí &amp; MOQ co-pack RTD · giá FOB hạt rang chính thức. <b>[CẦN KIỂM CHỨNG]</b> cước biển Saigon–Manila · HS code RTD (2101/2202) &amp; thuế MFN (Tariff Commission PH) · phí CPR hiện hành sau đình chỉ AO 2024-0016 · số thị trường tổng (đối chiếu Euromonitor/Statista nếu đầu tư lớn).</p>
+    <p class="src" style="margin-top:12px"><b>Nguồn:</b> GlobalData, Statista, IMARC, Kantar, World Coffee Portal, DTI SRP, FDA PH, WTO Center VN, trade.gov, The Investor VN, CropGPT, VietnamNet, Tridge, BigSeller, Duoke, PIDS, USDA, InsiderPH, SIG, Tetra Pak, TripleI Consulting, Emerhub, Tariff Commission PH. Chi tiết URL trong <code>research/A·B·C.md</code> và <code>data/snapshots/2026-11-16-margin-phi-ke.md</code>.</p>
+    <p class="footmark">RANG · phcafe · Biên bản họp 2026-11-16 · Quyết định M-001 · Báo cáo nội bộ — số liệu research từ web công khai.</p>
+  </footer>
+
+  <div class="spacer"></div>
+</div>
