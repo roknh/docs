@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Nghề Của Tôi Là Giúp Nhà Giàu Ly Hôn — Bút Nghiên. Ôn Bảo Trâm kiếm sống bằng cách dọn đường cho những cuộc ly hôn nhà giàu: giấu tài sản, gom thế cờ, để người kia tự tay ký trước khi kịp hiểu mình vừa">
+<meta name="author" content="Bút Nghiên">
+<title>Nghề Của Tôi Là Giúp Nhà Giàu Ly Hôn — Bút Nghiên</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+  --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+  --hairline:#e0e0e0; --hairline-strong:#161616;
+  --primary:#0f62fe; --blue-hover:#0050e6; --on-primary:#ffffff;
+  --inverse-canvas:#161616; --inverse-ink:#ffffff;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --measure:42rem; --nav-w:17rem;
+}
+:root[data-theme="dark"]{
+  --canvas:#161616; --surface-1:#262626; --surface-2:#393939;
+  --ink:#f4f4f4; --ink-muted:#c6c6c6; --ink-subtle:#8d8d8d;
+  --hairline:#393939; --hairline-strong:#6f6f6f;
+  --primary:#78a9ff; --blue-hover:#a6c8ff; --on-primary:#161616;
+  --inverse-canvas:#f4f4f4; --inverse-ink:#161616;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:var(--sans); font-size:16px; font-weight:400;
+  line-height:1.5; letter-spacing:0.16px; overflow-x:hidden;
+  overflow-wrap:break-word; word-break:break-word;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color .15s ease, color .15s ease;
+}
+a{color:var(--primary); text-decoration:none;}
+a:hover{color:var(--blue-hover); text-decoration:underline;}
+
+/* reading progress */
+#progress{position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--primary); z-index:60; transition:width .1s linear;}
+
+/* top nav */
+.top-nav{position:sticky; top:0; z-index:50; height:48px;
+  background:var(--canvas); border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; gap:16px; padding:0 16px;}
+.top-nav .brand{font-size:14px; font-weight:600; letter-spacing:0.16px;
+  color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.top-nav .spacer{flex:1;}
+.top-nav .top-meta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px;}
+.menu-btn{display:none; appearance:none; background:transparent; border:0;
+  color:var(--ink); font-family:var(--sans); font-size:14px; cursor:pointer;
+  padding:8px 10px; align-items:center; gap:6px;}
+.menu-btn:hover{background:var(--surface-1);}
+
+/* theme toggle */
+.theme-toggle{appearance:none; background:transparent; border:1px solid var(--hairline);
+  color:var(--ink); cursor:pointer; width:32px; height:32px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.theme-toggle:hover{background:var(--surface-1); border-color:var(--hairline-strong);}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+/* shell */
+.shell{display:block; max-width:1584px; margin:0 auto;}
+.side-nav{display:none;}
+.content{width:100%; min-width:0;}
+@media(min-width:1056px){
+  .shell{display:flex; align-items:flex-start;}
+  .side-nav{display:block; width:var(--nav-w); flex:0 0 var(--nav-w);
+    position:sticky; top:48px; align-self:flex-start;
+    height:calc(100vh - 48px); overflow-y:auto;
+    border-right:1px solid var(--hairline); padding:24px 0 48px;}
+  .content{flex:1 1 0%; min-width:0;}
+  .toc-mobile{display:none !important;}
+  .menu-btn{display:none !important;}
+}
+.inner{max-width:var(--measure); margin:0 auto; padding:0 20px 80px;}
+
+/* toc */
+.toc-wrap .toc-cap{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);
+  padding:0 24px 12px; text-transform:none;}
+.toc-list{list-style:none; margin:0; padding:0;}
+.toc-part{font-size:12px; font-weight:600; letter-spacing:0.16px; color:var(--ink-muted);
+  padding:20px 24px 6px; border-top:1px solid var(--hairline); margin-top:6px;}
+.toc-list li:first-child.toc-part{border-top:0; margin-top:0;}
+.toc-list a{display:flex; gap:10px; padding:7px 24px; color:var(--ink);
+  border-left:3px solid transparent; line-height:1.3;}
+.toc-list a:hover{background:var(--surface-1); text-decoration:none;}
+.toc-list a.active{border-left-color:var(--primary); background:var(--surface-1);
+  font-weight:600;}
+.toc-num{font-size:11px; color:var(--ink-subtle); min-width:58px; letter-spacing:0.16px;
+  padding-top:2px;}
+.toc-title{font-size:13px;}
+
+/* mobile toc panel */
+.toc-mobile{display:block; border-bottom:1px solid var(--hairline);
+  background:var(--canvas);}
+.toc-mobile[open]{padding-bottom:8px;}
+.toc-mobile summary{display:none;}
+@media(max-width:1055px){
+  .menu-btn{display:inline-flex;}
+  .toc-mobile{position:fixed; top:48px; left:0; right:0; bottom:0; z-index:45;
+    overflow-y:auto; transform:translateX(-100%); transition:transform .2s ease;
+    border-bottom:0;}
+  .toc-mobile.show{transform:translateX(0);}
+  .toc-mobile .toc-cap{padding:20px 24px 12px; font-size:12px;}
+}
+
+/* cover hero */
+.cover{padding:40px 20px 8px; border-bottom:1px solid var(--hairline);
+  margin-bottom:8px;}
+.cover-eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px;
+  margin:0 0 12px;}
+.cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
+  letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
+.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
+  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
+.cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
+.cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
+  font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
+.cover-logline{font-size:18px; line-height:1.5; color:var(--ink-muted);
+  border-left:3px solid var(--primary); padding-left:16px; margin:0 0 24px;}
+.cover-stats{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline);
+  margin-bottom:24px;}
+.cover-stats .stat{flex:1; min-width:96px; padding:16px; border-right:1px solid var(--hairline);}
+.cover-stats .stat:last-child{border-right:0;}
+.cover-stats .num{font-size:28px; font-weight:300; line-height:1.1; color:var(--ink);}
+.cover-stats .lab{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:4px;}
+.btn-primary{display:inline-block; background:var(--primary); color:var(--on-primary);
+  font-size:14px; letter-spacing:0.16px; padding:12px 16px; border:0; cursor:pointer;
+  font-family:var(--sans);}
+.btn-primary:hover{background:var(--blue-hover); color:var(--on-primary); text-decoration:none;}
+
+/* characters section */
+.characters{margin:48px 0 0;}
+.section-title{font-size:24px; font-weight:400; margin:0 0 24px; color:var(--ink);
+  border-bottom:1px solid var(--hairline); padding-bottom:12px;}
+.char-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+.char-card{background:var(--surface-1); padding:20px; border:1px solid var(--hairline);}
+.char-name{font-size:16px; font-weight:600; color:var(--ink);}
+.char-role{font-size:13px; color:var(--primary); letter-spacing:0.16px; margin-top:4px;}
+.char-desc{font-size:14px; color:var(--ink-muted); line-height:1.5; margin-top:8px;}
+
+/* chapter */
+.chapter{padding:48px 0 8px; border-bottom:1px solid var(--hairline);}
+.chapter:last-child{border-bottom:0;}
+.eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px; margin:0 0 12px;}
+.ch-title{font-size:clamp(28px,5vw,42px); font-weight:300; line-height:1.18;
+  letter-spacing:0; margin:0 0 28px; color:var(--ink);}
+.chapter p{
+  font-family:var(--serif); font-size:18px; line-height:1.75;
+  margin:0 0 20px; color:var(--ink); letter-spacing:0;
+}
+.chapter strong{font-weight:600;}
+.chapter em{font-style:italic;}
+.chapter blockquote{margin:24px 0; padding:16px 20px; border-left:3px solid var(--primary);
+  background:var(--surface-1); color:var(--ink-muted); font-family:var(--serif);
+  font-size:17px; line-height:1.6;}
+.chapter blockquote p{margin:0 0 12px; color:var(--ink-muted);}
+.chapter blockquote p:last-child{margin:0;}
+
+/* scene break */
+hr.scene-break{border:0; text-align:center; margin:32px 0;}
+hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spacing:8px; font-size:14px;}
+
+/* dialogue & message */
+.dialogue{padding-left:0;}
+.message{font-style:italic; color:var(--ink-muted);}
+
+/* chapter foot */
+.ch-foot{margin:32px 0 8px;}
+.totop{font-size:13px; color:var(--ink-muted); letter-spacing:0.16px;}
+.totop:hover{color:var(--primary);}
+
+/* footer */
+.page-footer{background:var(--surface-1); color:var(--ink-muted); padding:48px 20px; margin-top:0;}
+.page-footer .fin{max-width:var(--measure); margin:0 auto;}
+.page-footer .fbrand{font-size:20px; font-weight:300; color:var(--ink); margin:0 0 8px;}
+.page-footer p{font-size:14px; line-height:1.5; margin:0 0 6px;}
+.page-footer .fmeta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:16px;}
+
+/* selection */
+::selection{background:#0f62fe40; color:var(--ink);}
+
+</style>
+</head>
+<body id="top">
+<div id="progress"></div>
+<header class="top-nav">
+  <button class="menu-btn" id="menuBtn">≡ Mục lục</button>
+  <span class="brand">Nghề Giúp Nhà Giàu Ly Hôn</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Bút Nghiên · 5 chương</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
+</header>
+<div class="toc-mobile" id="tocMobile"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần I: Trang 14</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Trang 14</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Cà phê với em gái</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Bún bò chợ Bà Chiểu</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Cái bàn nhựa</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Giao dịch giả tạo không có thời hiệu</span></a></li></ul></div></div>
+<div class="shell">
+  <aside class="side-nav"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần I: Trang 14</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Trang 14</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Cà phê với em gái</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Bún bò chợ Bà Chiểu</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Cái bàn nhựa</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Giao dịch giả tạo không có thời hiệu</span></a></li></ul></div></aside>
+  <div class="content">
+    <div class="inner">
+      <section class="cover">
+        <p class="cover-eyebrow">Bút Nghiên · 2026</p>
+        <h1 class="cover-title">Nghề Của Tôi Là Giúp Nhà Giàu Ly Hôn</h1>
+        <div class="cover-tags"><span>Đô thị</span><span>Sảng văn pháp lý</span><span>Đấu trí</span><span>Gia đình</span><span>Sài Gòn</span></div>
+        <p class="cover-logline">Ôn Bảo Trâm kiếm sống bằng cách dọn đường cho những cuộc ly hôn nhà giàu: giấu tài sản, gom thế cờ, để người kia tự tay ký trước khi kịp hiểu mình vừa ký gì. Hồ sơ thứ 31 sếp giao cho cô có tên người vợ là em gái ruột của cô, và chữ ký của em đã nằm sẵn trên một mẫu giấy do chính cô soạn.</p>
+        <div class="cover-stats">
+          <div class="stat"><div class="num">5/40</div><div class="lab">Chương</div></div>
+          <div class="stat"><div class="num">~13k</div><div class="lab">Từ</div></div>
+          <div class="stat"><div class="num">13%</div><div class="lab">Tiến độ</div></div>
+        </div>
+        <a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
+      </section>
+      <section class="characters" id="characters">
+        <h2 class="section-title">Nhân vật</h2>
+        <div class="char-grid">
+<div class="char-card"><div class="char-name">Ôn Bảo Trâm</div><div class="char-role">Nhân vật chính · 31 tuổi</div><div class="char-desc">Trợ lý pháp lý ở một văn phòng luật trên đường Pasteur. Mặc sơ mi trắng mỗi ngày, đọc hợp đồng nhanh đến mức thân chủ sợ.</div></div>
+<div class="char-card"><div class="char-name">Ôn Bảo Khuê</div><div class="char-role">Em gái · 27 tuổi</div><div class="char-desc">Từng là nhà thiết kế giao diện, lấy chồng nhà giàu ở Thảo Điền. Ký chữ K có cái đuôi hình nửa trái tim.</div></div>
+<div class="char-card"><div class="char-name">Tôn Thất Hiển</div><div class="char-role">Luật sư · 58 tuổi</div><div class="char-desc">Sếp và người thầy của Trâm. Lịch sự, hay trích Bộ luật Dân sự như trích kinh. Pha trà bằng ấm đất khi có chuyện lớn.</div></div>
+<div class="char-card"><div class="char-name">Lý My</div><div class="char-role">Trợ lý · 29 tuổi</div><div class="char-desc">Đồng nghiệp năm năm của Trâm. Đánh giá tâm trạng sếp qua dụng cụ pha trà. Mơ một căn phòng có cửa sổ.</div></div>
+<div class="char-card"><div class="char-name">Hà Đoan</div><div class="char-role">Chủ quán bún bò · 44 tuổi</div><div class="char-desc">Bán bún bò ở chợ Bà Chiểu, giọng to nhất chợ. Gọi Trâm là &quot;nhỏ&quot;.</div></div>
+<div class="char-card"><div class="char-name">Nghiêm Tường</div><div class="char-role">Luật sư · 33 tuổi</div><div class="char-desc">Sáng thứ Bảy nào cũng ngồi tư vấn miễn phí ở một cái bàn nhựa. Lấy phí bằng bún bò.</div></div>
+<div class="char-card"><div class="char-name">Bà Mạc Kim Hoa</div><div class="char-role">Chủ chuỗi nha khoa · 61 tuổi</div><div class="char-desc">Mẹ chồng của Khuê. Trồng một trăm hai mươi chậu lan hồ điệp trắng, đọc từng trang giấy không bỏ trang nào.</div></div>
+        </div>
+      </section>
+<article class="chapter" id="ch01">
+<p class="eyebrow">Chương 01 · Phần I: Trang 14</p>
+<h2 class="ch-title">Trang 14</h2>
+<p class="dialogue">– Chị đọc kỹ rồi phải không?</p>
+<p>Công chứng viên Quách Diệu hỏi câu đó lúc chín giờ kém mười lăm sáng thứ Hai, ngón tay cái vẫn còn kẹp giữa xấp giấy dày bằng cuốn đề cương ôn thi đại học. Ông vừa đọc to trang một, chậm rãi, rành mạch như người dẫn chương trình tiệc cưới giới thiệu hai họ. Rồi ông lật nhanh phần giữa, nhanh đến mức giấy kêu phần phật như quạt nan, và dừng lại ở trang cuối để đọc tiếp, vẫn cái giọng chậm rãi ấy.</p>
+<p>Chị Doãn Ân ngồi đối diện ông, tay trái ôm ly Highlands trà sen vàng, tay phải cầm cây bút bi văn phòng phát. Chị ba mươi tám tuổi, móng tay vừa làm hôm qua, màu hồng đất. Chị nhìn xấp giấy, rồi nhìn tôi.</p>
+<p class="dialogue">– Em thấy ổn không em?</p>
+<p class="dialogue">– Dạ ổn chị, tôi nói.</p>
+<p><em>Ổn thật mà. Ổn cho anh nhà chị.</em></p>
+<p>Tôi ngồi bên phải chị, cách nửa cái bàn gỗ ép bóng loáng. Văn phòng công chứng của ông Diệu nằm trên đường Lê Văn Sỹ, kẹp giữa một tiệm điện thoại cũ và một quán bún đậu mắm tôm mở từ bảy giờ sáng, nên căn phòng lúc nào cũng thoang thoảng mùi mắm tôm, như nhắc rằng ngoài kia đời vẫn bình thường, kể cả khi trong này có người đang ký mất nửa phòng khám.</p>
+<p>Chị Ân ký trang một. Rồi trang hai. Rồi trang ba.</p>
+<p>Tôi đếm theo nhịp bút. Đến trang chín, chị bắt đầu ký nhanh hơn. Đến trang mười hai, chị ngáp. Đến trang mười bốn, chị ký mà không nhìn, mắt đang dán vào màn hình điện thoại vừa sáng lên vì tin nhắn của nhóm Zalo phụ huynh lớp Ba.</p>
+<p><em>Tôi đâu có giấu. Tôi chỉ xếp nó ở trang 14.</em></p>
+<p>Trang mười bốn là văn bản chị đồng ý rằng phần vốn góp trong phòng khám thẩm mỹ ở Phú Mỹ Hưng thuộc về riêng chồng chị. Nó nằm giữa hai tờ xác nhận thông tin tài khoản ngân hàng, cùng phông chữ, cùng lề, cùng cái dấu giáp lai đỏ chạy dọc mép giấy. Nó không in đậm. Nó không gạch chân. Nó lịch sự như một người khách biết điều, ngồi im ở góc phòng và không ai để ý đến khi tiệc tan.</p>
+<p>Tôi soạn nó. Tôi soạn nó lúc mười một giờ đêm thứ Năm tuần trước, vừa soạn vừa ăn mì Hảo Hảo tôm chua cay, và tôi tự hào về khoảng cách giữa dòng của nó hơn mức một người tử tế nên tự hào.</p>
+<p>Chị Ân ký trang cuối. Ông Diệu đóng dấu, mỗi nhát dấu đánh xuống mặt bàn một tiếng cộp đều đặn như máy chấm công.</p>
+<p class="dialogue">– Xong rồi đó chị, ông nói. Chị đọc kỹ rồi nha.</p>
+<p>Câu thứ hai không phải câu hỏi. Ông Diệu sáu mươi tư tuổi, làm công chứng gần ba mươi năm, và ông có một năng khiếu mà tôi chưa thấy ai có: ông biến được câu hỏi thành câu khẳng định chỉ bằng cách hạ giọng ở chữ cuối.</p>
+<p>Chị Ân đứng dậy, cầm ly trà sen đã tan hết đá.</p>
+<p class="dialogue">– Cảm ơn em nha. May có em đi cùng, chứ chị đọc mấy cái giấy này là chị nhức đầu lắm.</p>
+<p class="dialogue">– Dạ không có gì chị.</p>
+<p>Chị ôm tôi một cái, thơm mùi nước hoa đắt tiền, rồi vừa đi ra cửa vừa gọi Grab.</p>
+<p>Ông Diệu nhìn theo chị, rồi nhìn tôi, rồi gõ gõ ngón tay lên xấp giấy.</p>
+<p class="dialogue">– Mẫu của em hả?</p>
+<p class="dialogue">– Dạ.</p>
+<p class="dialogue">– Đẹp, ông nói. Gọn.</p>
+<p>Tôi cười. Lời khen của ông Diệu là thứ lời khen bạn không muốn kể với mẹ.</p>
+<hr class="scene-break">
+<p>Grab chở tôi về đường Pasteur lúc mười giờ kém. Tài xế 4,9 sao, mũ bảo hiểm có tai mèo màu hồng, chạy qua ngã tư như thể đèn đỏ là ý kiến tham khảo.</p>
+<p>Văn phòng Luật Tôn Thất Hiển và Cộng sự nằm ở tầng chín một tòa nhà kính màu xanh nước biển. Mặt tiền là phòng tư vấn hôn nhân gia đình với ghế sofa da bò, kệ sách luật bìa cứng, một cây bàng Singapore cao bằng người mà chị lao công lau từng chiếc lá mỗi sáng. Đi qua hành lang, rẽ trái, qua cửa phòng vệ sinh, là "phòng hồ sơ B". Trên cửa không có biển, trong phòng có một cái máy hủy giấy.</p>
+<p>Tôi vừa ngồi xuống thì Lý My ló đầu qua vách ngăn.</p>
+<p class="dialogue">– Chị Trâm, anh Hiển kêu chị qua phòng liền. Ảnh nói "liền" hai lần.</p>
+<p class="dialogue">– Có chuyện gì không em?</p>
+<p class="dialogue">– Em không biết. Ảnh đang uống trà Thái Nguyên, pha bằng ấm đất. Ấm đất là chuyện lớn.</p>
+<p>My hai mươi chín tuổi, làm với tôi năm năm, tóc buộc đuôi gà, áo blazer mua trên Shopee dịp 11.11 mà mặc lên trông như đặt may. My có tài đánh giá tâm trạng sếp qua dụng cụ pha trà chính xác hơn mọi app dự báo thời tiết.</p>
+<p><em>Ấm đất. Được rồi. Hít thở.</em></p>
+<p>Phòng luật sư Hiển ở cuối hành lang, cửa kính mờ, có một kệ gỗ trưng bộ Bộ luật Dân sự in năm 2015 bìa đỏ, cạnh một bức thư pháp chữ "Nhẫn". Ông ngồi sau bàn, áo sơ mi trắng là thẳng, tóc muối tiêu chải ngược, đeo cặp kính gọng mảnh mà ông chỉ đeo khi đọc thứ gì đó ông thích.</p>
+<p>Ông năm mươi tám tuổi. Ông là người đã dạy tôi gần hết những gì tôi biết về nghề này, kể cả câu "Luật không bảo vệ người không đọc", câu mà ông nói nhẹ nhàng như người ta nói "trời hôm nay nắng".</p>
+<p class="dialogue">– Trâm, ngồi đi em.</p>
+<p>Tôi ngồi. Ông rót trà ra hai cái chén nhỏ bằng đốt ngón tay.</p>
+<p class="dialogue">– Vụ chị Ân xong rồi hả?</p>
+<p class="dialogue">– Dạ xong. Ông Diệu đóng dấu rồi.</p>
+<p class="dialogue">– Tốt. Ông đẩy chén trà về phía tôi. Có hồ sơ mới. Khách quan trọng. Anh muốn em làm trực tiếp từ đầu.</p>
+<p>Ông đặt lên bàn một bìa hồ sơ màu xanh rêu. Trên gáy có dán nhãn đánh máy: <em>Hồ sơ 31</em>.</p>
+<p>Ba mươi. Tôi đã làm ba mươi bộ trong tám năm. Tôi không bao giờ đếm, nhưng tủ hồ sơ trong phòng B đếm giùm tôi, với cái nhãn nhỏ dán trên mỗi gáy, như thể ai đó đang chấm điểm một môn thi không có đề.</p>
+<p class="dialogue">– Nhà Kim Hoa, ông Hiển nói. Chuỗi nha khoa. Bà Mạc Kim Hoa là khách lâu năm của anh. Con trai bà, Lâm Gia Huân, muốn ly hôn trước tháng chín.</p>
+<p class="dialogue">– Trước tháng chín ạ?</p>
+<p class="dialogue">– Có thương vụ. Một quỹ nước ngoài mua sáu mươi phần trăm chuỗi, ngày đóng là ba mươi tháng chín. Luật sư của quỹ không muốn thấy chữ "tranh chấp" ở bất kỳ đâu gần cổ phần của cổ đông. Thằng Huân giữ mười lăm phần trăm.</p>
+<p>Ông nói "thằng Huân" bằng cái giọng thân mật mà ông dành cho những khách hàng ông nghĩ mình thông minh hơn.</p>
+<p>Tôi mở bìa hồ sơ.</p>
+<p>Trang đầu tiên là phiếu thông tin thân chủ, chữ đánh máy, phông Times New Roman mười hai. Họ tên thân chủ: Lâm Gia Huân, ba mươi tư tuổi. Tình trạng hôn nhân: đã kết hôn năm 2022. Họ tên vợ:</p>
+<p>Ôn Bảo Khuê.</p>
+<p>Tôi đọc dòng đó hai lần. Lần thứ hai tôi đọc chậm, từng chữ, như ông Diệu đọc trang một.</p>
+<p>Ôn. Bảo. Khuê. Hai mươi bảy tuổi. Sinh năm 1999. Nghề nghiệp: nội trợ (trước đây thiết kế giao diện).</p>
+<p><em>Trước đây thiết kế giao diện. Ai ghi cái ngoặc này vậy. Ai mà biết em tôi từng thiết kế giao diện.</em></p>
+<p class="dialogue">– Trâm?</p>
+<p>Tôi ngẩng lên. Ông Hiển đang nhìn tôi qua cặp kính đọc sách, tay cầm chén trà dừng ở giữa đường lên miệng. Ông không cười. Ông có vẻ chờ, thứ kiên nhẫn của người đã ngồi nhìn hàng nghìn người ký giấy và đã thấy ai cũng có một giây khựng lại trước khi đặt bút.</p>
+<p class="dialogue">– Dạ, tôi nói. Em xem.</p>
+<p class="dialogue">– Có vấn đề gì không em?</p>
+<p>Tôi lật sang trang hai. Tôi cần lật sang trang hai, vì trang một đang nhìn tôi.</p>
+<p class="dialogue">– Không ạ.</p>
+<p class="dialogue">– Tốt. Ông uống ngụm trà. Bà Kim Hoa muốn gọn. Anh nghĩ em là người làm gọn nhất văn phòng này.</p>
+<hr class="scene-break">
+<p>Phòng hồ sơ B không có cửa sổ. Có một cái quạt hộp kêu tạch tạch mỗi vòng quay như đồng hồ báo thức bị hỏng, và một cái đèn tuýp mà My đã ba lần báo bảo trì, ba lần được trả lời "để tuần sau".</p>
+<p>Tôi ngồi đọc hồ sơ 31 từ đầu.</p>
+<p>Năm 2023, Lâm Gia Huân mua lại mười lăm phần trăm cổ phần chuỗi Nha khoa Kim Hoa từ một cổ đông sáng lập rút ra định cư Úc. Giá chuyển nhượng: chín tỷ đồng. Thanh toán bằng ba lần chuyển khoản. Tôi lật đến sao kê và thấy tài khoản chuyển đi là tài khoản đứng tên hai người, Huân và Khuê, mở ở Vietcombank chi nhánh Thủ Thiêm. Trong ba lần chuyển, có một khoản một tỷ hai trăm triệu đi từ sổ tiết kiệm đứng tên Khuê, tất toán trước hạn ba ngày trước đó.</p>
+<p>Một tỷ hai. Khoản đó tôi thuộc lòng. Khuê để dành nó từ hồi làm ở công ty game bên Quận 7 cũ, làm đêm, làm cuối tuần, có tháng ăn mì gói cả tuần để đủ chỉ tiêu tiết kiệm. Em khoe với tôi lúc sổ chạm mốc một tỷ, gửi ảnh chụp màn hình qua Zalo kèm mười hai cái biểu tượng pháo hoa.</p>
+<p>Năm 2026, chuỗi được định giá khoảng bốn trăm tỷ. Mười lăm phần trăm là sáu mươi tỷ.</p>
+<p><em>Sáu mươi tỷ. Đủ mua ba nghìn chiếc xe Wave Alpha. Đủ mua cả con hẻm nhà mẹ. Không, đủ mua cả phường.</em></p>
+<p>Mua bằng tiền chung, không có giấy tặng cho riêng, có dấu vết chuyển khoản rõ như ban ngày. Tôi không cần mở Bộ luật nào cũng thấy số cổ phần ấy là tài sản chung của vợ chồng. Sinh viên luật năm hai cũng thấy. Người khó chịu nhất khi biết điều đó là bà Kim Hoa.</p>
+<p>Tôi lật tiếp.</p>
+<p>Tháng Hai năm 2026, luật sư của quỹ ngoại, một chị tên Phan Nhật Hạ, gửi danh mục giấy tờ cần có từ phía cổ đông để thẩm định. Trong đó có "hồ sơ đồng thuận của vợ hoặc chồng cổ đông". Bộ hồ sơ được ký ngày hai mươi tháng Hai, tại văn phòng công chứng Quách Diệu, đường Lê Văn Sỹ.</p>
+<p>Tôi dừng lại ở cái tên đó, rồi đọc tiếp.</p>
+<p>Bộ hồ sơ dày ba mươi hai trang. Tôi lật từng trang, chậm, đọc như người ta đọc tin nhắn chia tay: trang một, xác nhận thông tin cá nhân. Trang hai đến bảy, đồng ý cho chồng chuyển nhượng, cầm cố, biểu quyết. Trang tám đến mười ba, các mẫu xác nhận tài khoản ngân hàng. Trang mười bốn.</p>
+<p>Trang mười bốn là một văn bản thừa nhận. Người ký thừa nhận rằng mười lăm phần trăm cổ phần chuỗi Nha khoa Kim Hoa do chồng đứng tên là tài sản riêng của chồng, có nguồn gốc từ việc bố mẹ chồng tặng cho, và người ký không có bất kỳ quyền lợi nào đối với phần cổ phần này.</p>
+<p>Nó nằm giữa hai tờ xác nhận tài khoản ngân hàng. Cùng phông chữ, cùng lề. Cùng cái dấu giáp lai đỏ chạy dọc mép giấy. Khoảng cách giữa dòng là một phẩy mười lăm, con số mà tôi đã chọn sau ba buổi tối thử in, vì nó đủ thưa để không ai thấy ngộp và đủ dày để không ai muốn đọc.</p>
+<p>Dưới văn bản là chữ ký.</p>
+<p>Khuê ký chữ K có cái đuôi vòng lên như một nửa trái tim. Em ký như vậy từ năm lớp Sáu, hồi mê một ca sĩ Hàn Quốc ký tên có trái tim, và từ đó không bao giờ đổi lại. Tôi từng chọc em suốt mấy năm cấp hai. Chữ ký trên vở bài tập, trên giấy khen, trên thiệp sinh nhật gửi tôi năm tôi hai mươi tuổi, trên giấy đăng ký kết hôn mà tôi đứng chụp hình giùm.</p>
+<p>Và bây giờ là trên trang mười bốn.</p>
+<p>Tôi để ý thấy tay mình đang đặt phẳng trên mặt bàn, mười ngón xòe ra, như người ta đặt tay lên mặt kính khi tàu điện đột ngột thắng.</p>
+<p>Tôi lấy điện thoại, mở thư mục mẫu văn bản trên Google Drive của văn phòng, gõ tìm "B-7". Mẫu B-7 hiện ra: văn bản thừa nhận tài sản riêng, bản gốc tạo tháng Mười năm 2023, người tạo: Ôn Bảo Trâm. Tôi đặt điện thoại cạnh trang mười bốn. Hai bản giống nhau đến từng dấu phẩy, chỉ khác tên người, tên công ty và con số mười lăm.</p>
+<p>Mẫu của tôi. Chữ ký của em.</p>
+<p><em>Được rồi. Bình tĩnh. Người lớn rồi. Mình là người giỏi giấy tờ nhất cái văn phòng này. Mình có thể... Mình có thể làm gì?</em></p>
+<p>Đầu tôi trả lời nhanh hơn tôi muốn. Rút khỏi hồ sơ thì chữ ký vẫn nằm đó. Báo cho Khuê thì phải giải thích vì sao tôi thuộc lòng mẫu này. Nghỉ việc thì không còn ai trong phòng này biết nhà họ Lâm định làm gì tiếp theo.</p>
+<p>Cửa phòng B kẹt một tiếng. My bước vào, cầm theo hai ổ bánh mì heo quay còn nóng của tiệm đầu hẻm, loại mà người ta xếp hàng từ sáu giờ sáng.</p>
+<p class="dialogue">– Chị ăn đi chị, My nói, chìa một ổ ra. Mặt chị như đang đọc bản án á.</p>
+<p class="dialogue">– Chị đọc hồ sơ.</p>
+<p class="dialogue">– Hồ sơ nào mà mặt chị như vậy?</p>
+<p class="dialogue">– Hồ sơ ba mốt.</p>
+<p>My nhìn bìa hồ sơ màu xanh rêu trên bàn, rồi nhìn tôi, rồi gật đầu như hiểu.</p>
+<p class="dialogue">– À, nhà Kim Hoa. Anh Hiển nói với em hồi tuần trước rồi. Vụ lớn đó chị. Làm xong vụ này ảnh nói văn phòng mình đủ số má để bán giá tốt.</p>
+<p><em>Hồi tuần trước. Tuần trước My đã được dặn. Tuần trước tôi đang ăn mì Hảo Hảo và soạn trang mười bốn cho chị Ân.</em></p>
+<p class="dialogue">– Ừ, tôi nói. Vụ lớn.</p>
+<p>My đặt ổ bánh mì lên mép bàn, cạnh cái quạt hộp, rồi đi ra. Mùi heo quay, đồ chua và pa tê lan khắp căn phòng không có cửa sổ. Đó là mùi ngon nhất tôi từng ngửi thấy trong một buổi sáng mà tôi không nuốt nổi thứ gì.</p>
+<hr class="scene-break">
+<p>Tôi ngồi trong phòng B đến bảy giờ tối.</p>
+<p>Tôi đọc hết ba mươi hai trang, rồi đọc lại. Tôi đọc email của chị Phan Nhật Hạ, đọc danh mục thẩm định, đọc ghi chú tay của My dán trên bìa: <em>"Bên quỹ cần bản gốc trước 15/3. Đã ký đủ 20/2. Chờ anh Hiển duyệt bước 2."</em></p>
+<p>Bước hai. Quy trình bước hai do chính tay tôi viết. Bước hai là hồ sơ thuận tình ly hôn, một khoản hỗ trợ đủ để người vợ thấy mình được đối xử tử tế, và một nụ cười rất nhẹ ở văn phòng công chứng.</p>
+<p>Tôi mở Zalo, kéo xuống cuộc trò chuyện với Khuê. Tin nhắn cuối cùng là hôm Chủ nhật: em gửi tôi một clip TikTok về con mèo cam trèo lên tủ lạnh rồi không biết xuống, kèm dòng chữ "chị y chang".</p>
+<p>Tôi gõ "Em ơi". Rồi xóa.</p>
+<p>Tôi gõ "Em có rảnh không". Rồi xóa.</p>
+<p><em>Viết gì đây. "Em ơi, chị phát hiện ra chị là người soạn cái bẫy em vừa bước vào, em có muốn đi uống trà sữa không?"</em></p>
+<p>Bên ngoài, văn phòng đã tắt gần hết đèn. Chị lao công đang lau lá cây bàng Singapore, từng chiếc một, bằng một cái khăn ẩm màu vàng. Ông Hiển đã về từ năm giờ, cửa kính mờ phòng ông tối om. Trước khi về, ông ghé qua cửa phòng B, gõ hai cái vào khung cửa, nói "Thứ Sáu em gửi anh kế hoạch bước hai nha", rồi đi luôn, không đợi tôi trả lời.</p>
+<p>Tôi xếp lại hồ sơ, bỏ vào ngăn kéo, khóa lại. Tôi bỏ ổ bánh mì nguội vào túi xách, vì tôi lớn lên trong một nhà mà mẹ bán xôi và không ai được bỏ phí đồ ăn.</p>
+<p>Đúng lúc tôi đứng dậy thì điện thoại rung.</p>
+<p>Khuê.</p>
+<p>Em gửi một tấm hình chụp vội, hơi nghiêng, góc trên bị ngón tay che mất một mẩu. Tấm hình chụp một trang giấy đặt trên mặt bàn đá cẩm thạch trắng, loại bàn bếp đảo trong biệt thự Thảo Điền. Ở góc dưới bên phải trang giấy có số trang nhỏ xíu, in nghiêng.</p>
+<p>Mười bốn.</p>
+<p>Rồi một tin nhắn nữa hiện lên, ngay dưới tấm hình.</p>
+<p class="message"><em>"Em ký rồi mà thấy lo, chị đọc lại giùm em."</em></p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch02">
+<p class="eyebrow">Chương 02 · Phần I: Trang 14</p>
+<h2 class="ch-title">Cà phê với em gái</h2>
+<p>Tôi trả lời tin nhắn của Khuê sau bốn mươi bảy phút, ba lần gõ rồi xóa và một ổ bánh mì heo quay ăn nguội trên xe buýt số 19.</p>
+<p class="message"><em>"Chị thấy rồi. Mai trưa chị qua bên em, mình uống cà phê. Em đừng ký thêm gì nha, gì cũng đưa chị coi trước."</em></p>
+<p>Em trả lời gần như ngay lập tức, bằng một sticker con mèo cam giơ ngón cái. Rồi thêm một dòng: <em>"Chị nói vậy làm em lo hơn á."</em></p>
+<p><em>Chị cũng vậy em ơi.</em></p>
+<hr class="scene-break">
+<p>Quán Katinat trên đường Thảo Điền mười hai giờ trưa thứ Ba đông như một buổi họp lớp không ai được mời. Mấy bàn ngoài hiên là dân văn phòng mở laptop, mấy bàn trong máy lạnh là các mẹ bỉm đẩy xe nôi và một anh Tây ngồi đọc sách giấy như diễn viên quảng cáo kính áp tròng.</p>
+<p>Khuê ngồi ở góc trong cùng, cạnh khung cửa kính nhìn ra hàng cây sứ. Em mặc áo thun trắng rộng, tóc kẹp càng cua, không trang điểm, đeo cái kính gọng tròn từ hồi còn làm thiết kế. Trên bàn đã có hai ly. Một ly trà đào cam sả cho em. Một ly cà phê muối cho tôi, ít đá, thêm một phần kem muối.</p>
+<p class="dialogue">– Chị đi từ văn phòng qua hả? Em nhìn tôi từ đầu đến chân. Chị mặc sơ mi trắng y như đi phỏng vấn xin việc vậy.</p>
+<p class="dialogue">– Chị mặc sơ mi trắng mỗi ngày.</p>
+<p class="dialogue">– Thì đó. Mỗi ngày chị đi phỏng vấn xin việc.</p>
+<p>Tôi ngồi xuống. Ly cà phê muối lạnh buốt trong lòng bàn tay. Khuê nhớ tôi uống gì, ít đá, thêm kem, giống như tôi nhớ em ký chữ K có cái đuôi trái tim. Hai chị em mình là thư viện lưu trữ những thứ vô dụng của nhau.</p>
+<p class="dialogue">– Em đem theo rồi nè.</p>
+<p>Em lôi trong túi vải ra một bìa nhựa trong, trong đó là một bản photo của bộ hồ sơ ba mươi hai trang, góc trên đóng ghim lệch.</p>
+<p class="dialogue">– Hôm đó ký xong, em xin chị thư ký bên công chứng photo cho em một bộ. Chị đó nhìn em như em xin mượn thận.</p>
+<p>Tôi cầm bìa nhựa. Tay tôi biết trang mười bốn nằm ở đâu trước khi mắt tôi tìm thấy nó.</p>
+<p>Tôi lật từ trang một. Tôi bắt buộc phải lật từ trang một, vì Khuê đang nhìn, và vì một người đọc giùm em gái thì không ai lật thẳng đến trang mười bốn. Trang một. Trang hai. Tôi đọc lướt, gật đầu, chỉ vào vài chỗ không quan trọng.</p>
+<p class="dialogue">– Cái này là đồng ý cho ảnh chuyển nhượng, cầm cố. Bình thường. Bên quỹ nước ngoài họ cần để thẩm định.</p>
+<p class="dialogue">– Thẩm định là gì chị?</p>
+<p class="dialogue">– Là họ đi kiểm tra coi nhà mình có giấu gì không trước khi bỏ tiền ra mua.</p>
+<p><em>Hỏi đúng người đó em. Chị là chuyên gia giấu.</em></p>
+<p>Tôi lật đến trang mười bốn. Tôi đọc nó lại, lần thứ tư trong hai mươi bốn tiếng, trước mặt người đã ký nó. Văn bản ngắn, lịch sự, gọn gàng, với khoảng cách giữa dòng một phẩy mười lăm.</p>
+<p class="dialogue">– Cái trang này em thấy lạ, Khuê nói, ngón trỏ gõ nhẹ lên mép giấy. Lúc ký em không đọc kỹ. Ông công chứng đọc nhanh quá, em tưởng giấy ngân hàng. Về nhà em mới đọc lại. Nó ghi mười lăm phần trăm là của riêng anh Huân hả chị? Mà tiền mua là tiền chung của tụi em mà. Có cả tiền em nữa.</p>
+<p>Tôi đặt ngón tay lên chữ "tặng cho".</p>
+<p>Có hai cách trả lời câu hỏi đó. Cách thứ nhất là nói thật: em bị lừa ký, văn bản này nói sai sự thật, nó được soạn để em mất phần của mình, và người soạn là chị. Cách thứ hai là câu tôi đã tập trên xe buýt tối qua, câu đủ thật để em không cãi được và đủ giả để mua cho tôi vài ngày.</p>
+<p class="dialogue">– Cái này là giấy thủ tục bình thường, tôi nói. Bên mua hay đòi kiểu vậy để hồ sơ cổ phần sạch đẹp. Nó chưa phải là chia tài sản gì hết. Em để chị xem kỹ thêm, chị hỏi lại vài chỗ.</p>
+<p>Khuê nhìn tôi.</p>
+<p>Em nhìn tôi lâu hơn một giây so với bình thường. Rồi em cúi xuống, khuấy ly trà đào bằng cái ống hút giấy đã mềm nhũn.</p>
+<p class="dialogue">– Vậy hả chị.</p>
+<p class="dialogue">– Ừ.</p>
+<p class="dialogue">– Ờ.</p>
+<p>Em không hỏi thêm. Tôi đáng lẽ phải thấy nhẹ nhõm. Tôi lại thấy như vừa nộp bài thi mà quên ghi tên.</p>
+<hr class="scene-break">
+<p class="dialogue">– Chị nè, Khuê nói, sau khi hút gần hết ly trà đào. Em nghĩ tụi em sắp ly dị.</p>
+<p>Tôi đặt ly cà phê xuống, cẩn thận, như sợ nó vỡ.</p>
+<p><em>Diễn đi Trâm. Diễn như chưa đọc hồ sơ. Diễn như chưa thấy "Tình trạng hôn nhân: đã kết hôn năm 2022" đánh máy phông Times New Roman.</em></p>
+<p class="dialogue">– Sao vậy em?</p>
+<p class="dialogue">– Thì... Em nhún vai. Ba tháng nay ảnh ngủ bên nhà mẹ ảnh nhiều hơn ngủ ở nhà. Nói chuyện với em như nói chuyện với nhân viên chăm sóc khách hàng. "Dạ em cần gì thêm không ạ." Tết vừa rồi mẹ ảnh không cho em đứng chung trong hình gia đình, kêu em cầm máy chụp giùm.</p>
+<p class="dialogue">– Em cầm máy chụp?</p>
+<p class="dialogue">– Em chụp đẹp lắm á. Bố cục chuẩn quy tắc một phần ba. Bà còn khen.</p>
+<p>Em cười. Khuê cười giống mẹ, cười trước khi chuyện kịp buồn, như người ta che miệng nồi trước khi nước sôi trào ra.</p>
+<p class="dialogue">– Em chưa nói với mẹ, em nói. Chị đừng nói với mẹ nha. Mẹ mà biết là mẹ đi chùa Vĩnh Nghiêm cầu ba tháng liền cho coi.</p>
+<p class="dialogue">– Chị không nói.</p>
+<p class="dialogue">– Chị hứa?</p>
+<p class="dialogue">– Chị hứa.</p>
+<p><em>Chị giỏi giữ bí mật lắm. Hỏi ai trong tòa nhà Pasteur cũng biết.</em></p>
+<p>Khuê kéo cái túi vải lại gần, lấy ra một hộp bánh su kem mua ở tiệm Pháp góc đường, mở nắp, đẩy về phía tôi.</p>
+<p class="dialogue">– Ăn đi. Em mua cho chị đó. Chị ốm nhom.</p>
+<p>Tôi ăn một cái. Kem lạnh, ngọt, thơm vani. Khuê ăn hai cái liền, rồi chùi tay vào khăn giấy, rồi nói như sực nhớ ra.</p>
+<p class="dialogue">– À mà chị biết con Thùy Nhiên không? Con bạn đại học em, hồi đó hay qua nhà mình ăn xôi.</p>
+<p>Tôi lục trí nhớ. Một con bé tóc ngắn, đeo niềng răng, ăn hết ba gói xôi gấc của mẹ một lần.</p>
+<p class="dialogue">– Nhớ.</p>
+<p class="dialogue">– Nó ly dị năm ngoái. Chồng nó lột sạch, chị ơi. Căn hộ đứng tên hai đứa, tự nhiên trước khi ly dị một tháng đã sang tên cho em họ ổng, giá rẻ như cho. Nó ra tòa mới biết. Nó còn ký một tờ giấy gì đó ở công chứng mà nó tưởng là giấy vay ngân hàng.</p>
+<p>Tôi nuốt miếng bánh su kem. Nó trôi xuống chậm như viên thuốc không có nước.</p>
+<p class="dialogue">– Nó kể có cả một văn phòng chuyên làm mấy cái đó luôn đó chị. Khuê kéo dài chữ "luôn" ra, giọng ghê tởm như kể về gián. Làm thuê cho nhà giàu, chuyên dọn đường cho mấy ông chồng lột vợ người ta. Có người ngồi soạn giấy, có người ngồi kế bên vợ người ta cười cười, nói "dạ ổn chị". Trời ơi, chị tưởng tượng nổi không? Mấy người đó tối về ngủ được hả ta?</p>
+<p class="dialogue">– Ừ, tôi nói.</p>
+<p class="dialogue">– Loại người đó mà em biết mặt, Khuê nói, mắt nhìn ra hàng cây sứ ngoài cửa kính, giọng nhẹ đi, không còn đùa, là em không bao giờ nhìn mặt.</p>
+<p>Tôi im.</p>
+<p>Tôi khuấy ly cà phê muối. Lớp kem muối đã tan, hòa vào cà phê thành một màu nâu nhạt đục, giống màu nước ở mấy con kênh mà mùa mưa nào báo cũng đăng hình. Tôi khuấy một vòng, hai vòng, ba vòng. Muỗng chạm vào thành ly kêu leng keng, nhỏ thôi, nhưng trong tai tôi to như chuông nhà thờ Đức Bà.</p>
+<p>Câu đó có thể là lúc để nói. Một câu thôi: "Khuê, chị làm ở văn phòng đó." Nói xong em sẽ nhìn tôi, rồi em sẽ không bao giờ nhìn tôi nữa. Và trang mười bốn vẫn nằm đó, với chữ ký trái tim của em, chờ bước hai.</p>
+<p class="dialogue">– Chị? Khuê nghiêng đầu. Chị nghe em nói không đó?</p>
+<p class="dialogue">– Nghe. Tôi đặt muỗng xuống. Chị nghe.</p>
+<p class="dialogue">– Chị làm ở văn phòng luật mà, chị có biết chỗ nào làm mấy trò đó không? Để em tránh.</p>
+<p>Tôi nhìn em. Em gái tôi, hai mươi bảy tuổi, đeo kính gọng tròn, khóe miệng còn dính một vệt kem su, đang hỏi tôi chỉ đường để tránh tôi.</p>
+<p class="dialogue">– Văn phòng nào làm cũng phải lách luật, tôi nói, và nghe giọng mình giống ông Hiển đến mức muốn ói. Em cứ nhớ một nguyên tắc thôi: từ giờ cái gì ký cũng đưa chị đọc trước. Kể cả giấy ly hôn. Nhất là giấy ly hôn.</p>
+<p class="dialogue">– Ờ, Khuê nói. Biết rồi. Đưa chị đọc. Chị là luật sư riêng của em.</p>
+<p class="dialogue">– Chị không phải luật sư.</p>
+<p class="dialogue">– Thì chị là trợ lý luật sư riêng của em. Em trả lương bằng bánh su kem.</p>
+<p>Em đẩy hộp bánh về phía tôi thêm một chút. Còn hai cái.</p>
+<hr class="scene-break">
+<p>Điện thoại tôi rung lúc tôi đang đứng chờ Grab trước cửa quán. Tin nhắn của ông Hiển.</p>
+<p class="message"><em>"Kế hoạch bước 2 hồ sơ 31 em gửi anh trước thứ Sáu nha. Bà Kim Hoa muốn gặp em tuần sau."</em></p>
+<p><em>Bà Kim Hoa muốn gặp em. Tuyệt. Ước gì em có hai cái mặt để đi gặp hai người.</em></p>
+<p>Tôi trả lời "Dạ anh", kèm một sticker gấu gật đầu, vì tám năm nay tôi luôn trả lời ông Hiển bằng sticker gấu gật đầu, và nếu hôm nay tôi đổi sang sticker khác thì ông sẽ đánh hơi được.</p>
+<p>Rồi, trong lúc chiếc Grab còn cách hai trăm mét, tôi làm một việc mà tám năm nay chưa từng làm. Tôi mở thư mục mẫu văn bản của văn phòng trên điện thoại, mở mẫu B-7, bấm vào mục lịch sử phiên bản. Danh sách hiện ra như sao kê ngân hàng: ngày, giờ, tên người sửa. Tháng Mười năm 2023, Ôn Bảo Trâm. Tháng Mười một năm 2023, Ôn Bảo Trâm. Tháng Một năm 2026, Lý My, "cập nhật tên công ty và tỷ lệ". Tôi chụp màn hình từng trang một, rồi gửi những tấm hình đó vào địa chỉ email cá nhân mà tôi lập từ năm lớp Mười, cái địa chỉ có chữ "trambebong" mà tôi chưa bao giờ dám ghi lên hồ sơ xin việc.</p>
+<p><em>Chúc mừng. Mình vừa vi phạm cam kết bảo mật lần đầu trong đời, bằng một cái email tên trambebong.</em></p>
+<p>Chiếc Grab đỗ xịch trước mặt. Tài xế hỏi "Chị Trâm đúng không ạ", và tôi gật đầu như người vừa bị gọi tên ở đồn công an.</p>
+<hr class="scene-break">
+<p>Tôi thuê một căn hộ một phòng ngủ ở chung cư cũ trên đường Phan Xích Long, tầng sáu, không thang máy. Hàng xóm bên trái nuôi hai con chó Phốc hay sủa vào lúc chín giờ tối, đúng giờ chủ chúng đi tập yoga về. Hàng xóm bên phải là một ông giáo về hưu chiều nào cũng mở cải lương.</p>
+<p>Chín giờ tối, chó sủa, cải lương đang đến đoạn vọng cổ. Tôi ngồi xếp bằng trên sàn nhà, trước bàn trà thấp, với một xấp giấy A4 trắng và một cây bút bi.</p>
+<p>Tôi viết ra ba mươi cái tên.</p>
+<p>Tôi không cần mở tủ hồ sơ. Tôi nhớ hết. Tôi nhớ tên người ký, năm, văn phòng công chứng, loại giấy, trang nào là trang cần nhớ. Tôi nhớ chị Doãn Ân với ly trà sen vàng. Tôi nhớ một cô giáo dạy piano có ngón tay dài, ký văn bản mà cô tưởng là giấy bảo hiểm. Tôi nhớ một anh thợ mộc có bàn tay đầy vết chai, ký tên chậm như khắc. Tôi nhớ những thứ đó giống như người ta nhớ số điện thoại nhà cũ: không bao giờ gọi, nhưng không bao giờ quên.</p>
+<p><em>Một người tử tế sẽ quên bớt. Mình không được cái may đó.</em></p>
+<p>Cái tên thứ tư trong danh sách là Hà Đoan. Năm 2019. Bán bún bò ở chợ Bà Chiểu. Chồng cũ là Châu Bền, chủ một tiệm điện máy nhỏ ở Gò Vấp. Một tháng trước khi nộp đơn ly hôn, Châu Bền "bán" căn nhà hai vợ chồng đang ở cho em họ là Hồ Tịnh, giá sáu trăm triệu, công chứng ở văn phòng ông Quách Diệu. Sáu trăm triệu cho một căn nhà mặt hẻm xe hơi ở Bình Thạnh. Giá đó không ai tin, nhưng không ai cần tin. Chỉ cần nó có dấu đỏ.</p>
+<p>Tôi chia tờ giấy làm hai cột.</p>
+<p>Cột bên trái tôi ghi: những vụ nhà cửa, xe cộ, tiền bạc được chuyển cho người thân trên giấy, còn thực chất vẫn của người chuyển. Loại này luật gọi là giao dịch giả tạo. Nó vô hiệu, và người ta có thể kiện đòi tuyên bố vô hiệu bất cứ lúc nào, mười năm sau cũng được. Không có thời hiệu.</p>
+<p>Cột bên phải tôi ghi: những vụ người ta tự tay ký vì tưởng tờ giấy là thứ khác. Loại này là lừa dối. Nó cũng vô hiệu được, nhưng chỉ trong hai năm kể từ ngày người bị lừa biết ra.</p>
+<p>Cột bên phải dài gấp đôi cột bên trái. Tôi nhìn nó một lúc. Đó là cột của câu "tôi chỉ để người ta tự ký". Đó là cột mà tôi đã tự hào.</p>
+<p>Trang mười bốn của Khuê thuộc cột bên phải. Em mới biết được mười một ngày. Còn một năm mười một tháng mười bảy ngày.</p>
+<p><em>Còn nhiều thời gian chán. Chỉ trừ việc ngày đóng thương vụ là ba mươi tháng chín, và bước hai phải nộp trước thứ Sáu.</em></p>
+<p>Một chữ ký đơn lẻ trên một trang giấy thì người ta sẽ nói: người lớn tự ký thì tự chịu. Tôi biết câu đó, vì tôi đã nói câu đó, ở ít nhất bốn phiên hòa giải, bằng cái giọng điềm tĩnh mà ông Hiển dạy. Muốn chứng minh Khuê bị lừa, tôi cần nhiều hơn một chữ ký. Tôi cần cho thấy trang mười bốn không phải tai nạn. Nó là một cách làm, có mẫu, có người, có địa chỉ.</p>
+<p>Mà người, mẫu và địa chỉ đều nằm trong danh sách ba mươi cái tên này.</p>
+<p>Tôi khoanh tròn tên Hà Đoan. Vụ của chị nằm ở cột trái, gỡ được. Công chứng ở văn phòng ông Diệu. Và năm 2019, phía chị Đoan có thuê một luật sư trẻ, cãi hăng đến mức ông Hiển phải nhắc tên anh ta trong buổi họp tổng kết năm. Tôi không nhớ mặt anh ta. Tôi nhớ tên, vì nó nghe như tên một bức tường.</p>
+<p>Nghiêm Tường.</p>
+<p>Ngoài hành lang, hai con chó Phốc ngừng sủa. Bên kia vách, cải lương cũng đã hết, ông giáo chuyển sang thời sự. Tôi lấy điện thoại, mở Google Maps, gõ "bún bò chợ Bà Chiểu", và thấy có mười bảy quán, quán nào cũng được bốn sao trở lên, quán nào cũng có một đánh giá viết "nước dùng như nhà nấu".</p>
+<p><em>Mười bảy quán. Tốt thôi. Coi như mình đi tìm lại công lý bằng đường bao tử.</em></p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch03">
+<p class="eyebrow">Chương 03 · Phần I: Trang 14</p>
+<h2 class="ch-title">Bún bò chợ Bà Chiểu</h2>
+<p class="dialogue">– Nhỏ ăn tái hay chín? Có ăn huyết không? Giò nạc hay giò khoanh?</p>
+<p>Ba câu hỏi bắn ra cùng một hơi, trước khi tôi kịp ngồi xuống cái ghế nhựa đỏ thấp lè tè. Người hỏi là một chị khoảng bốn mươi lăm, tóc búi cao cột bằng thun xanh, tạp dề in logo một hãng nước mắm, tay trái cầm vá, tay phải cầm đôi đũa dài như cây thước kẻ bảng.</p>
+<p>Đây là quán thứ chín trong danh sách mười bảy quán bún bò quanh chợ Bà Chiểu. Tám quán trước, tôi đã ăn ba tô, uống bốn ly trà đá và hỏi tám bà chủ một câu giống nhau: "Chị có phải chị Đoan không ạ?" Tám người trả lời "không", một người hỏi lại "Đoan nào, Đoan bán vé số hả?".</p>
+<p>Quán thứ chín không có biển. Chỉ có một cái sạp sát vách chợ phía đường Bạch Đằng, nồi nước lèo to bằng cái lu, khói bốc lên mù mịt thơm mùi sả, mắm ruốc và xương bò hầm từ ba giờ sáng. Trên vách tôn có dán một tờ giấy A4 viết tay bằng bút lông: "Bún bò Đoan. Hết là nghỉ."</p>
+<p><em>Chín quán. Mình đã ăn bún bò bằng tiền lương ba ngày để tìm một người mà mình từng góp tay lấy nhà.</em></p>
+<p class="dialogue">– Dạ, chín, tôi nói. Có huyết. Giò nạc.</p>
+<p class="dialogue">– Ăn huyết mà ăn chín, chị chủ quán vừa trụng bún vừa nói, như ăn phở mà kêu bỏ bánh. Lạ ghê.</p>
+<p>Chị Hà Đoan bốn mươi bốn tuổi, theo hồ sơ số bốn. Năm 2019 tôi chưa từng gặp chị. Tôi chỉ ngồi phòng bên, cách một bức vách thạch cao, nghe giọng chị qua khe cửa trong phiên làm việc ở văn phòng ông Diệu. Giọng chị lúc đó nhỏ và run. Giọng chị bây giờ to đến mức bà bán trái cây sạp bên cạnh phải la lên "nói nhỏ nhỏ cho người ta nghe điện thoại với Đoan ơi".</p>
+<p>Tô bún đặt xuống trước mặt tôi, nước lèo đỏ au, váng mỡ lấp lánh, một khoanh giò nạc to bằng bàn tay em bé, hai miếng huyết đông, một nắm rau muống bào. Tôi ăn một muỗng nước.</p>
+<p>Nó ngon thật. Ngon theo cách khiến người ta muốn cám ơn ai đó.</p>
+<p class="dialogue">– Ngon không nhỏ?</p>
+<p class="dialogue">– Dạ ngon. Ngon nhất trong chín quán con ăn sáng nay.</p>
+<p>Chị Đoan khựng tay lại, nhìn tôi từ đầu xuống chân, dừng ở cái áo sơ mi trắng.</p>
+<p class="dialogue">– Chín quán? Nhỏ làm bên an toàn thực phẩm hả?</p>
+<p class="dialogue">– Dạ không. Con đi tìm chị.</p>
+<hr class="scene-break">
+<p>Thứ Năm, tôi xin nghỉ phép một ngày, lý do ghi "việc gia đình". Tôi đã tập câu tiếp theo suốt ba ngày. Tôi tập nó trên xe buýt, trong phòng tắm, trong lúc chờ máy in trên văn phòng in bản kế hoạch bước hai cho ông Hiển. Câu đó phải đủ thật để chị tin và đủ giả để tôi còn đi làm được vào sáng mai.</p>
+<p class="dialogue">– Con làm giấy tờ cho một văn phòng luật, tôi nói. Năm 2019, con có thấy hồ sơ căn nhà của chị. Cái vụ anh Bền bán nhà cho anh Tịnh.</p>
+<p>Cái vá trong tay chị Đoan dừng giữa không trung, nước lèo nhỏ từng giọt xuống mặt bàn inox.</p>
+<p class="dialogue">– Nhỏ là người bên nào?</p>
+<p class="dialogue">– Bên kia, tôi nói. Lúc đó.</p>
+<p>Chị đặt cái vá xuống. Chị không la. Tôi đã chuẩn bị cho chuyện chị la, chuyện chị hất tô bún, chuyện chị cầm đôi đũa dài như cây thước kẻ bảng chỉ thẳng ra đường. Chị chỉ kéo một cái ghế nhựa đỏ khác, ngồi xuống đối diện tôi, chùi hai tay vào tạp dề.</p>
+<p class="dialogue">– Bên kia mà giờ đi ăn chín quán bún bò để kiếm tui, chị nói chậm rãi. Nhỏ bị đuổi việc hả?</p>
+<p class="dialogue">– Dạ chưa.</p>
+<p class="dialogue">– Vậy nhỏ bị gì?</p>
+<p><em>Bị em gái. Bị trang mười bốn. Bị một cái chữ K có đuôi trái tim.</em></p>
+<p class="dialogue">– Con bị lương tâm, tôi nói, và nghe nó sến đến nỗi muốn chui xuống gầm bàn.</p>
+<p>Chị Đoan nhìn tôi thêm một lúc. Rồi chị cười. Chị cười to, cười đến chảy nước mắt, cười đến mức bà bán trái cây sạp bên cạnh lại phải la lên "gì vui dữ vậy Đoan".</p>
+<p class="dialogue">– Lương tâm, chị nói, lau mắt bằng mép tạp dề. Trời đất. Bảy năm rồi tui chưa nghe ai nói chữ đó ngoài mấy ông thầy chùa.</p>
+<hr class="scene-break">
+<p>Chị Đoan kể. Chị kể nhanh, gọn, có đầu có đuôi, như người đã kể câu chuyện này cho mình nghe trăm lần lúc nằm không ngủ được.</p>
+<p>Căn nhà mặt hẻm xe hơi trên đường Lê Quang Định, Bình Thạnh, là của hai vợ chồng mua năm 2012, chị góp tiền bán bún mười năm, anh Bền góp tiền tiệm điện máy. Năm 2019, anh Bền nói cần xoay vốn, nhờ chị ra công chứng ký "giấy cho anh Tịnh đứng tên vay ngân hàng giùm". Chị ký. Một tháng sau, anh Bền nộp đơn ly hôn. Ra tòa chị mới biết căn nhà đã "bán" cho Hồ Tịnh, em họ anh Bền, với giá sáu trăm triệu, và sáu trăm triệu đó đã "chia đôi" hết rồi.</p>
+<p class="dialogue">– Ổng đưa tui ba trăm triệu, chị nói. Kêu là tiền bán nhà phần của tui. Căn nhà đó giờ người ta rao ba tỷ tám.</p>
+<p class="dialogue">– Luật sư của chị năm đó...</p>
+<p class="dialogue">– Thằng Tường hả? Chị Đoan bĩu môi, nhưng mắt không có vẻ ghét. Thằng nhỏ đó cãi hăng lắm. Cãi muốn rách cổ họng. Mà thua. Người ta có giấy tờ đóng dấu đỏ chót, mình có cái miệng. Tòa xử cho ly hôn, chia mấy thứ còn lại, còn căn nhà thì người ta nói bán cho người khác rồi, không phải tài sản chung nữa, không tính.</p>
+<p class="dialogue">– Giờ anh Tịnh làm gì với căn nhà?</p>
+<p class="dialogue">– Mở tiệm spa. Tịnh Spa và Nail. Làm móng, gội đầu dưỡng sinh. Năm ngoái tui đi ngang, thấy treo bảng "khai trương giảm ba mươi phần trăm", tui đứng ngoài nhìn một hồi rồi về nấu nồi nước lèo mặn chát, bị khách chửi cả buổi.</p>
+<p>Tôi ăn thêm một miếng giò nạc. Trong đầu tôi, hồ sơ số bốn mở ra từng trang. Tôi nhớ tờ ủy nhiệm chi. Tôi nhớ nó vì tôi đã dặn anh Bền làm đúng như vậy: buổi sáng chuyển sáu trăm triệu từ tài khoản của anh Bền sang tài khoản Hồ Tịnh, buổi chiều Hồ Tịnh chuyển trả lại đủ sáu trăm triệu cho anh Bền. Ba trăm triệu "phần của vợ" thì anh Bền tự rút từ tài khoản mình, đưa chị Đoan bằng tiền mặt trong một bao thư. Trên giấy, Hồ Tịnh là người mua. Trên đời, Hồ Tịnh chưa bỏ ra một đồng.</p>
+<p class="dialogue">– Chị Đoan, tôi nói. Anh Tịnh chưa từng trả tiền mua căn nhà đó.</p>
+<p class="dialogue">– Tui biết. Ai mà không biết. Mà tòa đâu có tin tui.</p>
+<p class="dialogue">– Tòa không cần tin chị, tôi nói. Tòa cần giấy.</p>
+<p>Rồi tôi nói câu mà tôi đã dùng để làm việc ngược chiều suốt tám năm, câu ông Hiển dạy tôi như dạy người ta biết chỗ để tránh. Lần này tôi nói nó theo chiều ngược lại.</p>
+<p class="dialogue">– Mua bán giả thì gọi là giao dịch giả tạo. Giao dịch giả tạo không có thời hiệu. Bảy năm hay mười năm thì vẫn kiện được.</p>
+<p>Chị Đoan nhìn tôi. Bàn tay chị đặt trên đùi, mấy ngón tay đỏ ửng vì nước nóng, có một vết bỏng cũ trên mu bàn tay hình hạt đậu.</p>
+<p class="dialogue">– Nhỏ nói thiệt hả?</p>
+<p class="dialogue">– Dạ thiệt.</p>
+<p class="dialogue">– Vậy năm 2019 sao không ai nói với tui?</p>
+<p><em>Vì năm 2019 người biết rõ nhất đang ngồi phòng bên, sau bức vách thạch cao.</em></p>
+<p class="dialogue">– Tại năm đó, người ta cần chị không biết, tôi nói.</p>
+<p>Chị Đoan đứng dậy, múc thêm một vá nước lèo vào tô của tôi dù tô còn gần đầy, rồi thả thêm một khoanh giò nạc nữa, to hơn khoanh đầu.</p>
+<p class="dialogue">– Nhỏ tên gì?</p>
+<p class="dialogue">– Dạ, Trâm.</p>
+<p class="dialogue">– Trâm. Chị gật đầu như ghi sổ. Ăn đi Trâm. Tô này chị không lấy tiền.</p>
+<p class="dialogue">– Dạ không được chị, con trả...</p>
+<p class="dialogue">– Trả cái gì mà trả. Chị dằn cái vá xuống nồi, nước lèo sóng sánh. Kiện xong rồi tính. Thắng thì chị bao nhỏ ăn cả năm. Thua thì nhỏ rửa chén cho chị một tháng.</p>
+<p><em>Một hợp đồng miệng có điều khoản phạt rõ ràng hơn phân nửa số hợp đồng mình từng soạn.</em></p>
+<p class="dialogue">– Dạ, tôi nói. Chốt.</p>
+<p>Bà bán trái cây sạp bên cạnh nghe lỏm, nói vọng qua "Đoan lại dụ con nít rửa chén nữa hả", và chị Đoan la lại một câu mà tôi không dám chép ra đây.</p>
+<hr class="scene-break">
+<p>Tịnh Spa và Nail có bảng hiệu đèn led màu tím, cửa kính dán decal hình bàn tay sơn móng kim tuyến. Nó nằm đúng ở căn nhà mà ba tiếng trước tôi chỉ thấy qua sổ hồng photo trong trí nhớ. Hai tầng, mặt tiền bốn mét, cửa sắt kéo màu xanh đã được thay bằng cửa kính.</p>
+<p>Tôi đẩy cửa bước vào lúc ba giờ chiều. Chuông gió kêu leng keng. Một bạn nữ trẻ mặc đồng phục hồng chạy ra.</p>
+<p class="dialogue">– Chị làm móng hay gội đầu ạ?</p>
+<p class="dialogue">– Chị muốn gặp anh Tịnh. Chị hỏi chuyện nhà.</p>
+<p>Hồ Tịnh ba mươi lăm tuổi, người gầy, tóc vuốt keo cứng ngắc, áo polo cổ dựng, đeo một sợi dây chuyền vàng to cỡ dây xích xe đạp. Anh ta ngồi ở quầy thu ngân, đang xem một video TikTok ai đó dạy làm giàu từ bất động sản bằng giọng rất to.</p>
+<p>Tôi đã gặp Hồ Tịnh một lần năm 2019, trong mười phút, ở hành lang văn phòng ông Diệu. Anh ta lúc đó lo lắng hỏi tôi có phải đóng thuế thu nhập cá nhân không khi "mua" căn nhà. Tôi trả lời "anh yên tâm, có người lo". Anh ta không nhớ mặt tôi. Người ta không bao giờ nhớ mặt người nói "anh yên tâm".</p>
+<p class="dialogue">– Chị hỏi nhà gì? Hồ Tịnh hỏi, không tắt video.</p>
+<p class="dialogue">– Em đang tìm mua nhà mặt hẻm xe hơi khu này, tôi nói. Có người chỉ em qua đây, nói căn này chủ đang muốn bán. Giá ba tỷ tám thì em lấy liền, em có tiền mặt.</p>
+<p>Hồ Tịnh tắt video.</p>
+<p>Tôi bật ghi âm trong túi áo khoác từ lúc đứng ngoài cửa. Đó là thói quen nghề nghiệp. Tám năm nay tôi chưa từng dùng nó cho mục đích tử tế.</p>
+<p class="dialogue">– Ba tỷ tám, Hồ Tịnh lặp lại, như người ta nhắc lại số trúng thưởng. Chị có thiệt hả?</p>
+<p class="dialogue">– Có. Chủ nhà là anh phải không?</p>
+<p class="dialogue">– Thì... trên giấy là em. Anh ta gãi gáy. Mà nhà này không phải của em. Của anh họ em. Em đứng tên giùm thôi. Muốn bán phải hỏi ổng.</p>
+<p class="dialogue">– Anh đứng tên giùm hả? Tôi làm mặt ngạc nhiên, cái mặt mà tôi đã tập trước gương phòng tắm nhà mình, phiên bản dành cho khách hàng nói rằng họ "không biết gì về khoản tiền đó". Vậy hồi mua anh không bỏ tiền ra hả?</p>
+<p class="dialogue">– Có bỏ đâu chị. Hồ Tịnh cười, một nụ cười của người nghĩ mình đang nói chuyện vô hại với một khách hàng giàu. Ổng chuyển cho em buổi sáng, buổi chiều em chuyển lại, lòng vòng vậy thôi. Ổng nói để vậy cho tiện vụ ly dị. Giờ em mở spa ở đây, tiền nhà em nộp cho ổng mỗi tháng. Chị muốn mua thì em cho số ổng.</p>
+<p class="dialogue">– Dạ, chị xin số.</p>
+<p>Anh ta đọc số điện thoại. Tôi ghi vào điện thoại, chậm rãi, từng số một, để đoạn ghi âm trong túi áo có thêm vài giây im lặng sạch sẽ phía sau câu "ổng nói để vậy cho tiện vụ ly dị".</p>
+<p><em>Năm 2019, mình mất ba tuần để dựng lên căn nhà giả này. Năm 2026, nó sập trong bốn phút vì một video TikTok dạy làm giàu và cái giá ba tỷ tám.</em></p>
+<p>Trên đường ra, bạn nữ đồng phục hồng chạy theo đưa tôi một tờ phiếu giảm giá mười lăm phần trăm cho dịch vụ gội đầu dưỡng sinh. Tôi nhận. Tôi lớn lên trong một nhà mà không ai được bỏ phí phiếu giảm giá.</p>
+<hr class="scene-break">
+<p>Tôi gửi đoạn ghi âm cho chính mình qua email trambebong, rồi ngồi trên một băng ghế đá trong công viên Gia Định nhìn mấy ông cụ đánh cờ tướng. Một ông thua, ông kia đòi đánh thêm ván nữa, ông thua giận dỗi bỏ về rồi năm phút sau quay lại, ngồi xuống, xếp quân.</p>
+<p>Điện thoại rung. Khuê.</p>
+<p>Em gửi một tấm hình. Một chiếc đồng hồ đeo tay cũ, mặt tròn, kim mạ vàng đã xỉn, dây da nâu nứt nẻ, nằm trong một cái hộp giấy bìa cứng ghi chữ "Đồng hồ Cẩn, Long An" bằng bút bi.</p>
+<p class="message"><em>"Em dọn tủ đồ cũ bên nhà mẹ, thấy cái này nè. Đồng hồ bố hả chị? Có ghi tên tiệm. Chị muốn giữ không, không thì em bỏ."</em></p>
+<p>Tôi nhìn tấm hình lâu hơn tôi muốn. Tôi nhớ chiếc đồng hồ đó. Bố đeo nó suốt những năm tôi học tiểu học, mỗi tối tháo ra đặt trên đầu tủ lạnh, và tôi hay lén mở nắp sau ra coi bánh răng chạy, đến khi bố bắt được, cốc đầu tôi một cái rất nhẹ, rồi chỉ tôi cách đóng nắp lại mà không làm xước.</p>
+<p>Mười bảy năm tôi không gọi bố một cuộc. Mẹ nói bố bỏ ba mẹ con. Tôi tin mẹ, vì mẹ là người bán xôi nuôi tôi.</p>
+<p class="message"><em>"Em giữ giùm chị đi,"</em> tôi gõ. Rồi thêm: <em>"Đừng bỏ."</em></p>
+<p class="message"><em>"Ok. Mà chị nè,"</em> em gõ tiếp. <em>"Hồi Tết năm kia em qua nhà chị lấy đồ, em thấy trên bàn chị có một chồng giấy dày cộm, đóng mộc chữ B đỏ chót ở góc. Chị làm gì mà nhiều giấy dữ vậy? Em tưởng chị in nguyên bộ luật."</em></p>
+<p>Tôi nhìn dòng chữ đó. Phòng hồ sơ B không đóng mộc. Nhưng cuối năm 2023, My đặt khắc một con dấu nhỏ hình chữ B để đánh dấu những tập tài liệu mang về nhà làm thêm, đóng ở góc trên bên phải, mực đỏ.</p>
+<p><em>Năm kia. Em thấy. Em không hiểu. Cầu trời em đừng bao giờ hiểu.</em></p>
+<p class="message"><em>"Giấy công ty mà,"</em> tôi gõ. <em>"Chị làm thêm Tết. Chị là nô lệ của tư bản."</em></p>
+<p>Em gửi lại sticker con mèo cam lăn ra cười.</p>
+<p>Tôi tắt màn hình. Trên bàn cờ trước mặt, ông cụ thua lúc nãy vừa ăn được con xe của ông kia, vỗ đùi cười khà khà, giọng to đến mức chim sẻ trên cây sao bay hết.</p>
+<p>Tối hôm đó tôi gửi cho ông Hiển kế hoạch bước hai của hồ sơ 31, đúng hạn, đúng mẫu, đúng mọi thứ ông dạy. Ông trả lời sau ba phút bằng một chữ: <em>"Tốt."</em></p>
+<p>Rồi tôi mở ứng dụng Grab, đặt một chuyến xe đi Bình Thạnh vào chín giờ sáng thứ Bảy. Điểm đến là nhà văn hóa một phường gần chợ Bà Chiểu, nơi theo lời chị Đoan, sáng thứ Bảy nào thằng Tường cũng ngồi cãi miễn phí cho người ta ở một cái bàn nhựa.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch04">
+<p class="eyebrow">Chương 04 · Phần I: Trang 14</p>
+<h2 class="ch-title">Cái bàn nhựa</h2>
+<p class="dialogue">– Bác ơi, lối đi chung không phải muốn xây hàng rào là xây đâu bác. Bác xây là người ta kiện bác, mà người ta thắng.</p>
+<p>Người nói câu đó ngồi sau một cái bàn nhựa màu xanh lá, loại bàn người ta hay kê ở quán nhậu vỉa hè, chân bàn có một chiếc bị mòn nên phải chèn một xấp giấy gấp tư cho khỏi cập kênh. Anh ta mặc áo sơ mi xanh nhạt sờn cổ, tay áo xắn lên, đeo đồng hồ nhựa đen loại người ta mua ở chợ Bến Thành để chạy bộ. Trước mặt anh ta là một bình trà đá, một xấp giấy trắng và một cuốn sổ bìa cứng ghi chữ "Sổ ký tên người đến tư vấn" bằng bút lông dầu.</p>
+<p>Ông cụ ngồi đối diện vò vò cái mũ vải.</p>
+<p class="dialogue">– Nhưng mà nó để xe chắn cửa nhà tui, con.</p>
+<p class="dialogue">– Thì bác lên phường hòa giải. Con viết đơn giùm bác. Bác xây hàng rào là bác thành người sai trước, bác hiểu không? Đừng có biến mình thành người sai trước.</p>
+<p><em>Đừng biến mình thành người sai trước. Câu này mà in lên áo thun, mình mua một cái mặc đi làm.</em></p>
+<p>Nhà văn hóa phường nằm trong một con hẻm gần chợ Bà Chiểu, là một dãy nhà cấp bốn quét vôi vàng, mái tôn, có sân xi măng đủ rộng cho đội cầu lông các cô chú buổi chiều. Sáng thứ Bảy, góc sân dưới gốc cây bàng già có một tấm băng rôn đỏ in chữ vàng: "Điểm tư vấn pháp lý miễn phí. Sáng thứ Bảy, 8 giờ đến 11 giờ." Dưới tấm băng rôn là cái bàn nhựa, cái ghế nhựa, và Nghiêm Tường.</p>
+<p>Tôi đứng ở cuối hàng. Trước tôi có ba người: ông cụ hàng rào, một bạn sinh viên ôm cái balo in hình Doraemon, và một chị bầu khoảng sáu tháng đang ăn bắp luộc.</p>
+<p>Ở văn phòng Pasteur, khách hàng không bao giờ phải xếp hàng. Họ ngồi sofa da bò, uống trà ô long đựng trong chén sứ Bát Tràng, được chị lễ tân hỏi "anh chị dùng nước gì ạ" bằng giọng nhẹ như gió máy lạnh. Một giờ tư vấn với ông Hiển có giá bằng tiền thuê căn hộ của tôi trong hai tháng. Ở đây, người ta đứng dưới gốc bàng, cầm nón lá quạt phành phạch, và cái giá duy nhất phải trả là chờ.</p>
+<p><em>Ở đây không có trà ô long. Có trà đá, uống bao nhiêu cũng được, miễn tự rót.</em></p>
+<p>Một chiếc lá bàng khô rơi trúng vai ông cụ hàng rào. Ông phủi đi mà không quay lại, mắt vẫn dán vào tờ đơn Tường đang viết, như sợ nhìn đi chỗ khác thì chữ sẽ chạy mất.</p>
+<p>Hàng đi chậm. Tường không vội với ai. Anh nghe hết, hỏi lại, viết đơn giùm bằng chữ in hoa rõ từng nét, rồi giải thích cho người ta đơn đó nộp đâu, nộp cho ai, bao lâu thì đi hỏi lại. Đến lượt bạn sinh viên Doraemon, chuyện là chủ nhà trọ giữ mười triệu tiền cọc không trả. Tường đọc hợp đồng thuê nhà, ba trang chữ cỡ mười, rồi cầm bút đỏ khoanh một dòng ở trang ba.</p>
+<p class="dialogue">– Em có đọc dòng này chưa?</p>
+<p class="dialogue">– Dạ chưa anh.</p>
+<p class="dialogue">– Nó ghi là nếu em báo trước dưới ba mươi ngày thì mất cọc. Em báo trước mấy ngày?</p>
+<p class="dialogue">– Dạ... mười lăm.</p>
+<p class="dialogue">– Vậy em sai. Tường đặt bút xuống. Lần sau đọc hết rồi hẵng ký.</p>
+<p>Bạn sinh viên cúi đầu, mặt đỏ. Tường im một lúc, rồi kéo hợp đồng lại, khoanh thêm một dòng ở trang một.</p>
+<p class="dialogue">– Nhưng chủ nhà cũng sai. Họ không ghi rõ số tiền cọc bằng chữ, chỉ ghi bằng số, mà số này bị sửa. Thấy vết bút xóa không? Em đem về, nói chuyện với họ, đòi lại ít nhất một nửa. Không được thì quay lại đây, anh viết đơn cho.</p>
+<p>Bạn sinh viên cảm ơn rối rít, cúi chào ba lần rồi chạy đi, balo Doraemon nhảy tưng tưng trên lưng.</p>
+<p>Tôi đứng nhìn theo. <em>"Đọc hết rồi hẵng ký." Anh ta nói câu đó như người ta nói "nhớ mang áo mưa". Tôi đã sống tám năm bằng việc người ta không mang áo mưa.</em></p>
+<hr class="scene-break">
+<p>Chị bầu ăn bắp xong thì đến lượt chị. Chị hỏi chuyện giấy khai sinh cho con khi cha đứa nhỏ không chịu nhận. Tường hỏi chuyện mười phút, nói chậm lại hẳn, rồi viết cho chị một tờ giấy liệt kê những thứ cần mang theo khi đi làm thủ tục, kèm số điện thoại riêng của anh. Chị bầu đi rồi, anh ngẩng lên nhìn tôi.</p>
+<p class="dialogue">– Chị ký tên vô sổ giùm.</p>
+<p>Cuốn sổ bìa cứng mở ra ở trang đang viết dở. Phần lớn các dòng là chữ in hoa vuông vức của Tường, vì anh ghi giùm người ta; thỉnh thoảng mới có một dòng ai đó tự ký, chữ to như học sinh lớp một hoặc nghiêng như bác sĩ kê đơn. Mỗi dòng có tên, ngày, và mục "nội dung hỏi". Tôi lướt qua trong lúc tìm chỗ trống. "Nguyễn Văn Út, 28/2, chó hàng xóm cắn". "Bảo K., 24/2, giấy tờ tài sản". "Lê Thị Hoa, 21/2, chồng đánh". Dòng "chó hàng xóm cắn" có ai đó vẽ thêm một con chó nhỏ xíu bên cạnh, mặt rất ăn năn.</p>
+<p>Tôi cười, rồi ghi tên mình: "Trâm, 7/3, hỏi giùm người quen."</p>
+<p><em>Hỏi giùm người quen. Mấy chữ này mà luật sư đọc là biết ngay người hỏi đang nói dối.</em></p>
+<p>Tường đọc dòng tôi ghi, rồi nhìn tôi từ đầu đến chân. Ánh mắt anh dừng lại ở cái áo sơ mi trắng, rồi ở đôi giày búp bê da bò, rồi ở cái túi xách mà tôi mua bằng tiền thưởng Tết năm ngoái.</p>
+<p class="dialogue">– Chị làm gì?</p>
+<p class="dialogue">– Tôi làm giấy tờ cho một văn phòng luật.</p>
+<p class="dialogue">– Văn phòng nào?</p>
+<p class="dialogue">– Trên đường Pasteur.</p>
+<p>Tường ngả người ra ghế nhựa. Cái ghế kêu cót két như phản đối.</p>
+<p class="dialogue">– Pasteur, anh lặp lại. Văn phòng Tôn Thất Hiển?</p>
+<p>Tôi không trả lời. Anh không cần tôi trả lời.</p>
+<p class="dialogue">– Người của văn phòng Hiển mà đi ra điểm tư vấn miễn phí, Tường nói, chậm rãi, giọng bằng phẳng như mặt bàn nhựa, thì chỉ có hai khả năng. Một là cô đi do thám. Hai là cô đi hỏi chuyện cho chính mình.</p>
+<p class="dialogue">– Có khả năng thứ ba.</p>
+<p class="dialogue">– Là gì?</p>
+<p class="dialogue">– Tôi đến nhờ anh làm luật sư cho một người.</p>
+<p class="dialogue">– Ai?</p>
+<p class="dialogue">– Chị Hà Đoan. Bán bún bò chợ Bà Chiểu.</p>
+<p>Tường đứng bật dậy. Cái ghế nhựa đổ ngửa ra sau, va vào gốc bàng một tiếng bộp. Mấy cô chú đang tập dưỡng sinh ở góc sân bên kia quay lại nhìn.</p>
+<p class="dialogue">– Cô nói lại coi.</p>
+<hr class="scene-break">
+<p>Tôi kể. Tôi kể có chọn lọc. Tôi kể rằng tôi làm ở văn phòng Hiển từ năm 2018, rằng tôi biết vụ căn nhà của chị Đoan qua công việc, rằng cái giá sáu trăm triệu là giả, rằng tiền đi một vòng trong một ngày rồi quay về túi Châu Bền. Tôi không kể rằng cái vòng đó là tôi vẽ. Tôi mở đoạn ghi âm Hồ Tịnh cho anh nghe.</p>
+<p class="message"><em>"Ổng nói để vậy cho tiện vụ ly dị."</em></p>
+<p>Tường nghe hết. Anh nghe lại lần nữa. Rồi anh dựng cái ghế lên, ngồi xuống, rót một ly trà đá từ cái bình nhựa, uống một hơi hết sạch.</p>
+<p class="dialogue">– Năm 2019 tòa chỉ xử ly hôn, coi căn nhà đã bán cho người khác, anh nói. Chưa ai kiện cái hợp đồng đó. Tôi xin tòa trích xuất sao kê để chứng minh nhà vẫn là tài sản chung, tòa không chấp nhận, nói không có căn cứ nghi ngờ. Tôi có cái miệng. Họ có dấu đỏ.</p>
+<p class="dialogue">– Giờ anh có ghi âm.</p>
+<p class="dialogue">– Ghi âm lén mà không nói rõ hoàn cảnh thì tòa cũng nghi. Tường gõ ngón tay lên bàn. Nhưng có ghi âm thì có căn cứ để xin sao kê. Có sao kê thì có dòng tiền. Có dòng tiền là xong.</p>
+<p>Anh nói "là xong" bằng cái giọng của người đã chờ câu đó bảy năm.</p>
+<p class="dialogue">– Giao dịch giả tạo không có thời hiệu, tôi nói.</p>
+<p class="dialogue">– Tôi biết, Tường nói. Tôi là luật sư. Rồi anh nheo mắt nhìn tôi. Cô biết cả câu đó. Cô là ai?</p>
+<p class="dialogue">– Người làm giấy tờ.</p>
+<p class="dialogue">– Người làm giấy tờ cho Hiển tự nhiên thức dậy một sáng thứ Bảy, muốn giúp người từng thua văn phòng mình. Tường khoanh tay. Tôi không tin.</p>
+<p class="dialogue">– Vậy anh nghe lại cái ghi âm thêm lần nữa.</p>
+<p>Tường mở miệng định nói gì đó thì có một giọng khác chen vào từ phía cổng.</p>
+<p class="dialogue">– Thằng Tường!</p>
+<p>Chị Đoan đi xe máy Wave đỏ thẳng vào sân nhà văn hóa, dừng sát cái bàn nhựa, chân chống xuống đất, nón bảo hiểm còn đội nguyên. Đằng sau yên xe có một cái giỏ nhựa, trong giỏ là ba hộp xốp bún bò đậy nắp, cột dây thun.</p>
+<p class="dialogue">– Chị Đoan? Tường đứng dậy lần thứ hai trong mười phút. Sao chị biết...</p>
+<p class="dialogue">– Nhỏ Trâm nói. Chị Đoan tháo nón bảo hiểm, tóc búi vẫn còn nguyên cọng thun xanh. Nhỏ nói nhỏ đi kiếm em sáng nay. Chị sợ em không chịu nên chị đi theo.</p>
+<p class="dialogue">– Chị Đoan, người này làm cho văn phòng Hiển...</p>
+<p class="dialogue">– Chị biết. Nhỏ nói rồi. Chị Đoan đặt ba hộp bún lên bàn nhựa, đẩy một hộp về phía Tường. Bên kia hay bên này gì thì bảy năm nay có ai đến kiếm chị đâu. Có mình nhỏ. Nhỏ ăn chín quán bún bò để kiếm chị đó em.</p>
+<p class="dialogue">– Chín quán?</p>
+<p class="dialogue">– Chín quán, chị Đoan xác nhận, giơ chín ngón tay. Quán chị ngon nhất.</p>
+<p>Tường nhìn hộp bún bò, nhìn chị Đoan, nhìn tôi. Anh có cái nhìn của người đang tính toán xem một bài toán có bẫy hay không, và quyết định là có, và quyết định vẫn làm.</p>
+<p class="dialogue">– Em nhận, anh nói với chị Đoan. Không phải vì cô này. Vì chị.</p>
+<p class="dialogue">– Ờ, ai mà cần vì nhỏ. Chị Đoan mở nắp hộp bún, mùi sả và mắm ruốc tỏa ra khắp góc sân, làm mấy cô chú dưỡng sinh bên kia ngừng tập. Ăn đi. Ăn rồi tính.</p>
+<hr class="scene-break">
+<p>Chúng tôi ăn bún bò trên cái bàn nhựa, giữa sân nhà văn hóa, dưới tấm băng rôn đỏ. Tường ăn nhanh, cúi sát hộp, như người đã quen ăn trưa trong mười phút giữa hai phiên tòa. Chị Đoan nói liên tục, kể về con trai đang học lớp mười một, về bà bán trái cây sạp bên cạnh hay mách lẻo, về giá xương bò tăng ba lần từ Tết.</p>
+<p>Giữa hai đũa bún, Tường bắt đầu hỏi. Anh hỏi như người ta gõ thử từng viên gạch xem viên nào rỗng.</p>
+<p class="dialogue">– Châu Bền còn đứng tên tài khoản cũ không?</p>
+<p class="dialogue">– Còn, tôi nói. Ngân hàng Á Châu, chi nhánh Gò Vấp. Anh ta lười đổi.</p>
+<p class="dialogue">– Hồ Tịnh nộp tiền thuê nhà cho Châu Bền bằng cách nào?</p>
+<p class="dialogue">– Chuyển khoản, ngày năm mỗi tháng. Nội dung ghi "tiền nhà".</p>
+<p class="dialogue">– Cô nghe Hồ Tịnh nói vậy à?</p>
+<p>Tôi khựng lại một nhịp. Hồ Tịnh không nói ngày năm. Hồ Tịnh cũng không nói nội dung chuyển khoản. Người nói những thứ đó là tôi, năm 2019, khi dặn hai anh em họ cách chuyển tiền nhà cho "tự nhiên".</p>
+<p class="dialogue">– Tôi đoán, tôi nói. Người ta hay trả vào đầu tháng.</p>
+<p>Tường không hỏi thêm. Anh gắp một miếng huyết, nhai chậm, mắt nhìn tôi như nhìn một bản hợp đồng có chỗ tẩy xóa.</p>
+<p class="dialogue">– Cô đoán giỏi, anh nói.</p>
+<p><em>Ăn bún đi Trâm. Ăn bún và ngậm miệng. Cái miệng mình là thứ duy nhất trên đời mình không soạn trước được.</em></p>
+<p>Chị Đoan không để ý gì hết. Chị đang bận kể chuyện bà bán trái cây năm ngoái bán một trái sầu riêng Ri6 cho khách Tây giá bằng ba trái, bị khách đăng lên Facebook, bị cả chợ cười một tuần.</p>
+<p>Giữa chừng, điện thoại tôi rung. Tin nhắn ông Hiển.</p>
+<p class="message"><em>"Thứ Tư 11/3, 3h chiều, gặp bà Kim Hoa ở nhà bà, Thảo Điền. Em mặc gọn gàng nha."</em></p>
+<p><em>Em mặc sơ mi trắng mỗi ngày anh ơi. Em là người gọn gàng nhất cái thành phố này. Chỉ có cuộc đời em là lộn xộn.</em></p>
+<p>Tôi trả lời bằng sticker gấu gật đầu. Ngẩng lên, tôi thấy Tường đang nhìn điện thoại tôi. Màn hình đã tắt, nhưng anh có vẻ đã kịp thấy cái gì đó, hoặc không thấy gì cả và chỉ đang nhìn tôi như người ta nhìn một bức tường có vết nứt.</p>
+<p class="dialogue">– Thứ Hai tôi nộp đơn, anh nói. Kiện tuyên bố hợp đồng mua bán vô hiệu do giả tạo, kèm yêu cầu cấm chuyển dịch căn nhà để Châu Bền không kịp bán thật cho ai. Cô có giấy tờ gì thêm thì gửi tôi.</p>
+<p class="dialogue">– Phí luật sư bao nhiêu? tôi hỏi. Tôi trả.</p>
+<p class="dialogue">– Không cần cô trả.</p>
+<p class="dialogue">– Chị Đoan bán bún, tôi nói. Chị ấy không...</p>
+<p class="dialogue">– Chị Đoan trả rồi. Tường hất cằm về phía ba hộp xốp rỗng. Năm 2019 chị ấy trả bằng bún bò sáu tháng. Lần này tôi tính rẻ hơn.</p>
+<p><em>Một luật sư lấy phí bằng bún bò. Ông Hiển mà nghe được chắc lên cơn đau tim. Mà cũng có thể ông cười, rồi ghi vào sổ "đối thủ không đáng ngại".</em></p>
+<p class="dialogue">– Vậy tôi gửi giấy tờ.</p>
+<p class="dialogue">– Gửi bằng email cá nhân, Tường nói. Không gửi bằng email văn phòng.</p>
+<p><em>Anh ta nghĩ mình ngu. Đáng lẽ mình phải tự ái. Mình lại thấy được tôn trọng.</em></p>
+<p>Chị Đoan ăn xong, đứng dậy đội nón bảo hiểm, nói phải về kẻo bà bán trái cây "bán luôn sạp của chị". Chị vỗ vai tôi một cái mạnh đến mức tôi chúi về phía trước.</p>
+<p class="dialogue">– Thứ Hai nhỏ ghé quán ăn sáng nha. Chị nấu tái cho nhỏ. Ăn chín hoài, ai coi được.</p>
+<p>Chiếc Wave đỏ nổ máy, chạy ra khỏi cổng, bóp còi hai tiếng chào cả sân nhà văn hóa.</p>
+<p>Tường thu dọn ba hộp xốp vào túi nilon. Anh làm việc đó cẩn thận, như làm hồ sơ, gấp nắp hộp lại, buộc túi bằng một cái nút gọn. Rồi anh ngồi xuống, kéo cuốn sổ ký tên lại gần, gạch một đường dưới dòng "Trâm, 7/3, hỏi giùm người quen".</p>
+<p class="dialogue">– Năm 2019, anh nói mà không nhìn tôi, bên kia có một người soạn giấy rất giỏi. Tôi chưa bao giờ thấy mặt. Hiển ra tòa, nhưng giấy là của người khác. Tôi đọc là biết. Hiển viết như ông đi lễ nhà thờ. Người kia viết như người ta gài mìn.</p>
+<p>Tôi cầm ly trà đá. Đá đã tan gần hết.</p>
+<p class="dialogue">– Nếu gặp người đó, Tường nói, tôi chỉ muốn hỏi một câu thôi.</p>
+<p class="dialogue">– Câu gì?</p>
+<p>Anh ngẩng lên. Mắt anh màu nâu nhạt, có quầng thâm của người ngủ ít, và nhìn thẳng.</p>
+<p class="dialogue">– Tối về ngủ được không.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch05">
+<p class="eyebrow">Chương 05 · Phần I: Trang 14</p>
+<h2 class="ch-title">Giao dịch giả tạo không có thời hiệu</h2>
+<p class="dialogue">– Tái nè. Ăn đi. Ăn tái mới biết bò ngọt.</p>
+<p>Sáu giờ rưỡi sáng thứ Hai, chị Đoan đặt trước mặt tôi một tô bún bò mà thịt bò tái còn hồng, nước lèo vừa chan làm mấy lát thịt co lại, cong mép như những chiếc lá khô. Tôi ăn một miếng. Nó ngọt thật. Tôi đã ăn chín suốt hơn hai mươi năm vì một lần hồi lớp hai bị đau bụng, và giờ mới biết mình đã sống thiếu một thứ ngon như vậy.</p>
+<p><em>Có lẽ nên ghi vào danh sách những điều mình đã sai. Danh sách đó dạo này hơi dài.</em></p>
+<p class="dialogue">– Thằng Tường nói chín giờ nó nộp đơn, chị Đoan nói, vừa trụng bún cho một ông xe ôm vừa nói với tôi qua vai. Chín giờ chị đóng sạp nửa tiếng, chị đi theo nó lên tòa.</p>
+<p class="dialogue">– Chị đi chi?</p>
+<p class="dialogue">– Đi coi. Bảy năm nay chị chỉ đi lên đó để thua. Lần này chị đi lên đó để nộp đơn. Chị muốn coi cái cửa đó nhìn từ phía bên này nó ra sao.</p>
+<p>Tôi ăn hết tô bún. Chị Đoan không lấy tiền. Tôi nhét năm chục nghìn vào cái hộp thiếc đựng tiền lẻ khi chị quay lưng, và bà bán trái cây sạp bên cạnh thấy, nháy mắt với tôi như đồng phạm.</p>
+<hr class="scene-break">
+<p>Chín giờ năm phút, Tường nhắn tin vào số cá nhân của tôi.</p>
+<p class="message"><em>"Nộp rồi. Đơn khởi kiện tuyên bố HĐMB vô hiệu do giả tạo + yêu cầu áp dụng biện pháp khẩn cấp tạm thời cấm chuyển dịch. Chị Đoan đứng trước cửa tòa chụp hình tự sướng."</em></p>
+<p>Kèm một tấm hình. Chị Đoan đứng trước cổng tòa án nhân dân, giơ hai ngón tay hình chữ V, cười toe toét, nón bảo hiểm vẫn đội trên đầu. Phía sau chị, Tường đứng lệch khỏi khung hình một nửa, mặt nhăn như người bị ép đi chụp ảnh kỷ yếu.</p>
+<p>Tôi phóng to tấm hình, nhìn mặt Tường, rồi cười một mình trên xe buýt số 19, làm bà cụ ngồi cạnh nhích ra xa một chút.</p>
+<p><em>Lưu hình. Đặt tên "Bằng chứng số 1: luật sư Nghiêm Tường có biết cười, chỉ là không chịu".</em></p>
+<hr class="scene-break">
+<p>Sáng thứ Ba, điện thoại bàn của văn phòng reo lúc tôi đang soạn một bản ghi nhớ cho vụ khác.</p>
+<p>My nghe máy. Tôi nghe My nói "Dạ văn phòng luật sư Tôn Thất Hiển xin nghe", rồi "Dạ anh là ai ạ", rồi "Dạ anh bình tĩnh", rồi im lặng nghe một tràng dài. My bịt ống nghe, quay sang tôi.</p>
+<p class="dialogue">– Chị Trâm, có ông Hồ Tịnh gọi. Nói là năm 2019 văn phòng mình làm vụ nhà cho ổng. Giờ có luật sư gửi thư, nói ổng sắp bị kiện. Ổng hoảng lắm chị. Ổng hỏi có phải ổng sẽ đi tù không.</p>
+<p><em>Không đâu anh Tịnh. Người đi tù trong vụ này, nếu có, là người khác. Anh chỉ là người đứng tên giùm và xem TikTok làm giàu.</em></p>
+<p class="dialogue">– Để chị nghe.</p>
+<p>Tôi cầm máy. Giọng Hồ Tịnh run như giọng chị Đoan năm 2019 qua khe cửa thạch cao. Có những lúc đời tròn như một cái vòng xoay ở công viên Đầm Sen, quay một vòng rồi trả bạn về đúng chỗ cũ, chóng mặt hơn.</p>
+<p class="dialogue">– Chị ơi, chị là bên luật sư hồi đó phải không? Hồi đó chị nói em yên tâm mà. Giờ có ông luật sư nào gửi thư, nói tòa sắp thụ lý, nói em phải ra tòa, nói ghi âm gì đó...</p>
+<p class="dialogue">– Anh bình tĩnh. Anh gửi cho em xem thư đó qua email. Em sẽ báo luật sư Hiển.</p>
+<p>Tôi cúp máy. My nhìn tôi.</p>
+<p class="dialogue">– Vụ cũ hả chị?</p>
+<p class="dialogue">– Ừ. Vụ năm 2019.</p>
+<p class="dialogue">– Vụ của chị hả?</p>
+<p>My hỏi câu đó bằng giọng bình thường, như hỏi "chị ăn cơm chưa". Nhưng My đã làm với tôi năm năm, và My có tài đánh giá tâm trạng người khác qua dụng cụ pha trà, nên tôi không chắc câu hỏi đó bình thường đến đâu.</p>
+<p class="dialogue">– Vụ của văn phòng, tôi nói.</p>
+<hr class="scene-break">
+<p>Ông Hiển đọc lá thư của Tường trong ba phút. Ông đọc nó bằng cặp kính gọng mảnh, cái kính ông chỉ đeo khi đọc thứ gì đó ông thích.</p>
+<p class="dialogue">– Nghiêm Tường, ông nói, đặt lá thư xuống. Thằng nhỏ năm 2019. Vẫn còn hăng. Tốt.</p>
+<p class="dialogue">– Anh muốn xử lý sao ạ?</p>
+<p class="dialogue">– Em xử lý. Vụ của em mà. Ông rót trà, ấm sứ trắng, không phải ấm đất. Ấm sứ nghĩa là chuyện nhỏ. Bảo Hồ Tịnh giữ nguyên lời khai năm 2019: mua thật, trả tiền thật. Ghi âm gì thì cứ nói bị gài, bị dụ, nói đùa với khách. Tòa nào cũng nghi ghi âm lén.</p>
+<p class="dialogue">– Dạ.</p>
+<p class="dialogue">– Còn Châu Bền thì nói anh ta đừng có liên lạc với Hồ Tịnh bằng tin nhắn. Gặp trực tiếp. Mấy đứa này hay chụp màn hình tin nhắn rồi gửi lung tung.</p>
+<p class="dialogue">– Dạ.</p>
+<p>Ông nhìn tôi qua cặp kính.</p>
+<p class="dialogue">– Em sao vậy? Hôm nay "dạ" nhiều hơn mọi khi.</p>
+<p><em>Hai mươi bảy chữ "dạ" trong một buổi sáng. Ông ấy đếm. Tất nhiên là ông ấy đếm.</em></p>
+<p class="dialogue">– Em hơi mệt anh. Hôm qua em ngủ trễ.</p>
+<p class="dialogue">– Ngủ sớm đi. Ông Hiển cười, cái cười hiếm hoi, thật lòng, cái cười làm tôi nhớ vì sao năm 2018 tôi đã ngồi nghe ông giảng về Bộ luật Dân sự đến mười giờ đêm mà không thấy mệt. Thứ Tư gặp bà Kim Hoa. Bà ấy đọc người còn giỏi hơn anh.</p>
+<hr class="scene-break">
+<p>Lúc tôi quay về phòng B, My đang ngồi gác chân lên ghế, ăn hộp cơm gà xối mỡ đặt trên ShopeeFood, mắt dán vào màn hình laptop, trên đó là bảng tính tiến độ hồ sơ 31 với những ô tô màu xanh vàng đỏ như đèn giao thông.</p>
+<p class="dialogue">– Chị nè, My nói mà không ngẩng lên. Chị biết vụ anh Hiển bán văn phòng chưa?</p>
+<p class="dialogue">– Biết sơ sơ.</p>
+<p class="dialogue">– Bên mua là một hãng luật lớn ở Quận 1 cũ. Họ muốn mua thương hiệu với danh sách khách hàng. My gõ đũa lên hộp cơm. Anh Hiển nói khi bán xong, người nào trong văn phòng làm tốt sẽ được đứng tên cộng sự. Đứng tên đó chị. In lên danh thiếp. "Lý My, Cộng sự."</p>
+<p class="dialogue">– Em muốn làm cộng sự à?</p>
+<p class="dialogue">– Ai mà không muốn chị. My cười, gắp một miếng da gà giòn rụm. Năm năm em ngồi phòng không có cửa sổ này rồi. Em muốn có một cái phòng có cửa sổ. Nhìn ra đường Pasteur, thấy người ta chạy xe, thấy trời mưa. Vậy thôi.</p>
+<p><em>Một cái phòng có cửa sổ. Ước mơ của My là một ô kính. Mình thì có ước mơ gì? Hình như mình quên đặt.</em></p>
+<p class="dialogue">– Mà muốn làm cộng sự thì phải làm vụ lớn cho đẹp, My nói tiếp, giọng vẫn nhẹ như hỏi chuyện ăn trưa. Vụ ba mốt là vụ lớn nhất năm. Chị làm chính, em làm phụ. Chị đừng có mệt giữa chừng nha chị.</p>
+<p>My ngẩng lên. Mắt My tròn, sáng, chân thành, và tôi không đọc được gì trong đó ngoài một cái phòng có cửa sổ.</p>
+<p class="dialogue">– Chị không mệt, tôi nói.</p>
+<hr class="scene-break">
+<p>Tôi viết email cho Hồ Tịnh lúc năm giờ chiều. Tôi viết đúng như ông Hiển dặn, từng chữ, vì My được cấp quyền đọc hộp thư đi của tôi. Nhưng có một câu tôi viết thêm, một câu không ai bắt lỗi được vì nó nghe rất giống luật sư:</p>
+<p class="message"><em>"Anh nhớ khai thống nhất: số tiền sáu trăm triệu anh đã thanh toán bằng tiền mặt cho anh Bền tại văn phòng công chứng."</em></p>
+<p>Tiền mặt. Năm 2019 Hồ Tịnh chưa từng cầm một đồng tiền mặt nào. Tiền đi bằng chuyển khoản, sáng đi, chiều về đủ, ngân hàng Á Châu chi nhánh Gò Vấp. Nếu Hồ Tịnh khai "tiền mặt" trước tòa, và tòa trích xuất sao kê, thì lời khai của anh ta sẽ đập vào sao kê như một cái ly thủy tinh rơi xuống nền gạch.</p>
+<p>Tối hôm đó, tôi gửi cho Tường một email từ địa chỉ trambebong. Không có lời chào. Chỉ có một dòng.</p>
+<p class="message"><em>"Nếu Hồ Tịnh khai trả tiền mặt, anh xin sao kê ACB Gò Vấp của Châu Bền ngày ký hợp đồng."</em></p>
+<p>Tường trả lời sau mười một phút.</p>
+<p class="message"><em>"Sao chị biết Hồ Tịnh sẽ khai tiền mặt?"</em></p>
+<p>Tôi không trả lời. Tôi tắt máy tính và đi đánh răng, đánh rất lâu, đánh đến khi nướu chảy máu.</p>
+<hr class="scene-break">
+<p>Trên chiếc Grab qua cầu Sài Gòn, tôi mở Instagram của Khuê. Story mới nhất đăng lúc bảy giờ sáng: một đồi thông mờ sương, một ly ca cao nóng bốc khói, và dòng chữ "Đà Lạt chữa lành, ngày 2". Story trước đó là một tấm hình chụp vội ở chợ Đà Lạt, tay em cầm một hộp dâu tây, móng tay sơn màu xanh bạc hà.</p>
+<p><em>Em ở cách đây ba trăm cây số. Tốt. Ba trăm cây số là khoảng cách an toàn tối thiểu giữa em và chị hôm nay.</em></p>
+<p>Tôi bấm thả tim vào story. Rồi tôi hoảng, bấm bỏ tim. Rồi tôi sực nhớ bỏ tim thì em vẫn thấy thông báo, nên tôi bấm thả tim lại.</p>
+<p><em>Ba mươi mốt tuổi, soạn được văn bản lừa người ký mất sáu mươi tỷ, mà không biết xử lý một cái nút tim trên Instagram.</em></p>
+<p>Biệt thự nhà họ Lâm nằm cuối một con đường nhánh ở Thảo Điền, cổng sắt sơn đen cao gấp rưỡi người, có camera ở hai góc và một ông bảo vệ mặc đồng phục xanh đứng nghiêm như lính canh lăng.</p>
+<p>Ba giờ chiều thứ Tư. Tôi bước qua cổng và cảm thấy dưới chân mình là lớp đá lát mà Khuê đi qua mỗi ngày.</p>
+<p><em>Bình tĩnh. Khuê không có ở nhà. Ông Hiển nói vậy. Bà Kim Hoa sắp xếp vậy. Khuê đi Đà Lạt ba ngày với bạn. Nếu Khuê có ở nhà thì sao? Thì mình sẽ nói gì? "Chào em, chị qua đây để bàn chuyện làm em mất sáu mươi tỷ"?</em></p>
+<p>Sân trước trồng toàn lan hồ điệp trắng, cả trăm chậu, xếp thẳng hàng như học sinh chào cờ. Bà Mạc Kim Hoa ngồi ở bộ bàn ghế mây ngoài hiên, mặc áo dài lụa màu xanh ngọc, tóc búi gọn, đeo một chuỗi ngọc trai không to cũng không nhỏ, đúng cỡ của người không cần chứng minh mình giàu.</p>
+<p>Bà sáu mươi mốt tuổi. Bà nhìn tôi từ lúc tôi bước qua cổng đến lúc tôi ngồi xuống, không chớp mắt, và tôi có cảm giác như mình đang đứng trên bàn cân ở phòng khám sức khỏe định kỳ.</p>
+<p class="dialogue">– Cô là Trâm.</p>
+<p class="dialogue">– Dạ.</p>
+<p class="dialogue">– Luật sư Hiển khen cô làm gọn nhất văn phòng.</p>
+<p class="dialogue">– Dạ, anh Hiển quá khen.</p>
+<p class="dialogue">– Ông ấy không bao giờ quá khen, bà Kim Hoa nói. Ông ấy tính tiền theo giờ.</p>
+<p>Một chị giúp việc mang ra hai tách trà sen và một đĩa bánh pía Sóc Trăng cắt làm tám. Bà Kim Hoa không động vào bánh. Tôi cũng không.</p>
+<p class="dialogue">– Cô thích lan không? bà hỏi, mắt nhìn ra mấy hàng hồ điệp trắng.</p>
+<p class="dialogue">– Dạ con không rành.</p>
+<p class="dialogue">– Tôi trồng lan từ năm hai mươi lăm tuổi, bà nói. Năm đó tôi ra khỏi nhà chồng cũ với một cái va li và một chậu lan rừng xin của bà hàng xóm. Cái va li tôi bỏ lâu rồi. Chậu lan thì giờ thành một trăm hai mươi chậu.</p>
+<p>Bà nói điều đó bằng giọng phẳng lặng, như đọc một dòng trong sổ sách kế toán, không buồn cũng không tự hào. Tôi nhìn những chậu lan thẳng hàng và tự hỏi chậu nào là chậu đầu tiên. Có lẽ không chậu nào. Có lẽ chậu đầu tiên đã chết từ lâu, và bà đã thay nó bằng một chậu giống hệt, rồi một chậu nữa, như người ta thay từng viên gạch trong một bức tường mà bức tường vẫn đứng như chưa từng khác.</p>
+<p>Bà đọc bản kế hoạch bước hai mà tôi soạn. Bà đọc chậm hơn ông Hiển, chậm hơn cả ông Diệu, đọc từng trang không bỏ trang nào, ngón tay trỏ dò theo từng dòng như người già đọc báo. Bà đọc đến trang mười bốn của bộ hồ sơ đồng thuận mà tôi kẹp kèm phía sau làm tài liệu tham khảo, và ngón tay bà dừng lại ở đó, trên chữ ký có cái đuôi hình trái tim.</p>
+<p class="dialogue">– Con bé ký đẹp, bà nói.</p>
+<p>Tôi uống một ngụm trà. Trà nóng đến mức bỏng lưỡi, và tôi cảm ơn nó vì đã cho tôi một lý do để im lặng.</p>
+<p class="dialogue">– Tôi muốn mọi thứ xong trước tháng Tám, bà Kim Hoa nói, đóng tập hồ sơ lại. Không ồn ào, không tòa án, không báo chí. Con bé được năm trăm triệu như cô đề xuất, tôi thấy hợp lý. Năm trăm triệu đủ để một đứa con gái hai mươi bảy tuổi bắt đầu lại.</p>
+<p><em>Năm trăm triệu. Đủ để bắt đầu lại. Một tỷ hai của em nằm trong chín tỷ mua cổ phần, và bà đang trả lại cho em chưa đến một nửa số tiền em bỏ vào.</em></p>
+<p class="dialogue">– Dạ, tôi nói.</p>
+<p>Bà Kim Hoa nhìn tôi lâu thêm một nhịp. Rồi bà hỏi, bằng giọng thản nhiên như hỏi chuyện thời tiết:</p>
+<p class="dialogue">– Cô có anh chị em gì không?</p>
+<p>Tôi đặt tách trà xuống. Tay tôi không run. Tôi đã tập cho tay không run suốt tám năm, ở hàng trăm buổi ký giấy.</p>
+<p class="dialogue">– Dạ, con có một đứa em gái.</p>
+<p class="dialogue">– Thân không?</p>
+<p class="dialogue">– Dạ thân.</p>
+<p class="dialogue">– Vậy thì cô hiểu, bà nói, và lần đầu tiên trong buổi gặp, bà cười, một cái cười mỏng như lớp đường áo trên bánh pía. Người ta làm gì cũng vì người nhà. Tôi cũng vậy. Thằng Huân là con tôi. Tôi làm gì cũng vì nó.</p>
+<p>Bà đứng dậy, ra hiệu buổi gặp kết thúc. Chị giúp việc mang ra một cái hộp giấy kraft buộc nơ đỏ.</p>
+<p class="dialogue">– Cô cầm về. Dâu tây Đà Lạt. Con dâu tôi gửi về sáng nay.</p>
+<p>Tôi cầm cái hộp. Nó nhẹ, lạnh, thơm mùi dâu chín. Qua lớp giấy bóng kính trên nắp, tôi thấy những trái dâu đỏ mọng xếp đều trong khay, và một tấm thiệp nhỏ viết tay kẹp ở góc, nét chữ nghiêng nghiêng mà mắt tôi quen trước khi kịp đọc.</p>
+<p class="message"><em>"Mẹ ăn cho mát nha. Con Khuê."</em></p>
+<p>Chữ K có cái đuôi vòng lên hình nửa trái tim, nghiêng nghiêng trên tấm thiệp.</p>
+<p>Tôi cảm ơn bà, ôm hộp dâu ra cổng, gật đầu chào ông bảo vệ. Suốt quãng đường về qua cầu Sài Gòn, tôi không dám đặt cái hộp xuống ghế xe, cứ ôm nó trên đùi như người ta ôm một món đồ mượn, sợ làm dập.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+    </div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Nghề Của Tôi Là Giúp Nhà Giàu Ly Hôn</p>
+        <p>Bút Nghiên — Kinh dị dân gian, quy tắc quái đàm. 5 chương · ~13k từ (13.332 từ). Đang tiếp tục.</p>
+        <p class="fmeta">© 2026 Bút Nghiên.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  // theme toggle (mặc định sáng, lưu localStorage)
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
+  }
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile toc toggle
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+
+  // active chapter highlight in side nav
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
+  }
+})();
+
+</script>
+</body>
+</html>
