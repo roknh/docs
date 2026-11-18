@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Xóm Bờ Ao — truyện ngụ ngôn hài cho bé 4–6 tuổi. Ở Xóm Bờ Ao có một con ốc chậm rì, một con vịt to mồm, một con sóc hay quên, một con cóc hay cáu và một con heo đen ghét tắm. Mỗi tối một ch">
+<title>Xóm Bờ Ao — Truyện thiếu nhi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+  --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+  --hairline:#e0e0e0; --hairline-strong:#161616;
+  --primary:#0f62fe; --blue-hover:#0050e6; --on-primary:#ffffff;
+  --inverse-canvas:#161616; --inverse-ink:#ffffff;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --measure:42rem; --nav-w:17rem;
+}
+:root[data-theme="dark"]{
+  --canvas:#161616; --surface-1:#262626; --surface-2:#393939;
+  --ink:#f4f4f4; --ink-muted:#c6c6c6; --ink-subtle:#8d8d8d;
+  --hairline:#393939; --hairline-strong:#6f6f6f;
+  --primary:#78a9ff; --blue-hover:#a6c8ff; --on-primary:#161616;
+  --inverse-canvas:#f4f4f4; --inverse-ink:#161616;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:var(--sans); font-size:16px; font-weight:400;
+  line-height:1.5; letter-spacing:0.16px; overflow-x:hidden;
+  overflow-wrap:break-word; word-break:break-word;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color .15s ease, color .15s ease;
+}
+a{color:var(--primary); text-decoration:none;}
+a:hover{color:var(--blue-hover); text-decoration:underline;}
+
+/* reading progress */
+#progress{position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--primary); z-index:60; transition:width .1s linear;}
+
+/* top nav */
+.top-nav{position:sticky; top:0; z-index:50; height:48px;
+  background:var(--canvas); border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; gap:16px; padding:0 16px;}
+.top-nav .brand{font-size:14px; font-weight:600; letter-spacing:0.16px;
+  color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.top-nav .spacer{flex:1;}
+.top-nav .top-meta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px;}
+.menu-btn{display:none; appearance:none; background:transparent; border:0;
+  color:var(--ink); font-family:var(--sans); font-size:14px; cursor:pointer;
+  padding:8px 10px; align-items:center; gap:6px;}
+.menu-btn:hover{background:var(--surface-1);}
+
+/* theme toggle */
+.theme-toggle{appearance:none; background:transparent; border:1px solid var(--hairline);
+  color:var(--ink); cursor:pointer; width:32px; height:32px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.theme-toggle:hover{background:var(--surface-1); border-color:var(--hairline-strong);}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+/* shell */
+.shell{display:block; max-width:1584px; margin:0 auto;}
+.side-nav{display:none;}
+.content{width:100%; min-width:0;}
+@media(min-width:1056px){
+  .shell{display:flex; align-items:flex-start;}
+  .side-nav{display:block; width:var(--nav-w); flex:0 0 var(--nav-w);
+    position:sticky; top:48px; align-self:flex-start;
+    height:calc(100vh - 48px); overflow-y:auto;
+    border-right:1px solid var(--hairline); padding:24px 0 48px;}
+  .content{flex:1 1 0%; min-width:0;}
+  .toc-mobile{display:none !important;}
+  .menu-btn{display:none !important;}
+}
+.inner{max-width:var(--measure); margin:0 auto; padding:0 20px 80px;}
+
+/* toc */
+.toc-wrap .toc-cap{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);
+  padding:0 24px 12px; text-transform:none;}
+.toc-list{list-style:none; margin:0; padding:0;}
+.toc-part{font-size:12px; font-weight:600; letter-spacing:0.16px; color:var(--ink-muted);
+  padding:20px 24px 6px; border-top:1px solid var(--hairline); margin-top:6px;}
+.toc-list li:first-child.toc-part{border-top:0; margin-top:0;}
+.toc-list a{display:flex; gap:10px; padding:7px 24px; color:var(--ink);
+  border-left:3px solid transparent; line-height:1.3;}
+.toc-list a:hover{background:var(--surface-1); text-decoration:none;}
+.toc-list a.active{border-left-color:var(--primary); background:var(--surface-1);
+  font-weight:600;}
+.toc-num{font-size:11px; color:var(--ink-subtle); min-width:58px; letter-spacing:0.16px;
+  padding-top:2px;}
+.toc-title{font-size:13px;}
+
+/* mobile toc panel */
+.toc-mobile{display:block; border-bottom:1px solid var(--hairline);
+  background:var(--canvas);}
+.toc-mobile[open]{padding-bottom:8px;}
+.toc-mobile summary{display:none;}
+@media(max-width:1055px){
+  .menu-btn{display:inline-flex;}
+  .toc-mobile{position:fixed; top:48px; left:0; right:0; bottom:0; z-index:45;
+    overflow-y:auto; transform:translateX(-100%); transition:transform .2s ease;
+    border-bottom:0;}
+  .toc-mobile.show{transform:translateX(0);}
+  .toc-mobile .toc-cap{padding:20px 24px 12px; font-size:12px;}
+}
+
+/* cover hero */
+.cover{padding:40px 20px 8px; border-bottom:1px solid var(--hairline);
+  margin-bottom:8px;}
+.cover-eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px;
+  margin:0 0 12px;}
+.cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
+  letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
+.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
+  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
+.cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
+.cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
+  font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
+.cover-logline{font-size:18px; line-height:1.5; color:var(--ink-muted);
+  border-left:3px solid var(--primary); padding-left:16px; margin:0 0 24px;}
+.cover-stats{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline);
+  margin-bottom:24px;}
+.cover-stats .stat{flex:1; min-width:96px; padding:16px; border-right:1px solid var(--hairline);}
+.cover-stats .stat:last-child{border-right:0;}
+.cover-stats .num{font-size:28px; font-weight:300; line-height:1.1; color:var(--ink);}
+.cover-stats .lab{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:4px;}
+.btn-primary{display:inline-block; background:var(--primary); color:var(--on-primary);
+  font-size:14px; letter-spacing:0.16px; padding:12px 16px; border:0; cursor:pointer;
+  font-family:var(--sans);}
+.btn-primary:hover{background:var(--blue-hover); color:var(--on-primary); text-decoration:none;}
+
+/* characters section */
+.characters{margin:48px 0 0;}
+.section-title{font-size:24px; font-weight:400; margin:0 0 24px; color:var(--ink);
+  border-bottom:1px solid var(--hairline); padding-bottom:12px;}
+.char-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+.char-card{background:var(--surface-1); padding:20px; border:1px solid var(--hairline);}
+.char-name{font-size:16px; font-weight:600; color:var(--ink);}
+.char-role{font-size:13px; color:var(--primary); letter-spacing:0.16px; margin-top:4px;}
+.char-desc{font-size:14px; color:var(--ink-muted); line-height:1.5; margin-top:8px;}
+
+/* chapter */
+.chapter{padding:48px 0 8px; border-bottom:1px solid var(--hairline);}
+.chapter:last-child{border-bottom:0;}
+.eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px; margin:0 0 12px;}
+.ch-title{font-size:clamp(28px,5vw,42px); font-weight:300; line-height:1.18;
+  letter-spacing:0; margin:0 0 28px; color:var(--ink);}
+.chapter p{
+  font-family:var(--serif); font-size:18px; line-height:1.75;
+  margin:0 0 20px; color:var(--ink); letter-spacing:0;
+}
+.chapter strong{font-weight:600;}
+.chapter em{font-style:italic;}
+.chapter blockquote{margin:24px 0; padding:16px 20px; border-left:3px solid var(--primary);
+  background:var(--surface-1); color:var(--ink-muted); font-family:var(--serif);
+  font-size:17px; line-height:1.6;}
+.chapter blockquote p{margin:0 0 12px; color:var(--ink-muted);}
+.chapter blockquote p:last-child{margin:0;}
+
+/* scene break */
+hr.scene-break{border:0; text-align:center; margin:32px 0;}
+hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spacing:8px; font-size:14px;}
+
+/* dialogue & message */
+.dialogue{padding-left:0;}
+.message{font-style:italic; color:var(--ink-muted);}
+
+/* chapter foot */
+.ch-foot{margin:32px 0 8px;}
+.totop{font-size:13px; color:var(--ink-muted); letter-spacing:0.16px;}
+.totop:hover{color:var(--primary);}
+
+/* footer */
+.page-footer{background:var(--surface-1); color:var(--ink-muted); padding:48px 20px; margin-top:0;}
+.page-footer .fin{max-width:var(--measure); margin:0 auto;}
+.page-footer .fbrand{font-size:20px; font-weight:300; color:var(--ink); margin:0 0 8px;}
+.page-footer p{font-size:14px; line-height:1.5; margin:0 0 6px;}
+.page-footer .fmeta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:16px;}
+
+/* selection */
+::selection{background:#0f62fe40; color:var(--ink);}
+
+.chapter p{font-size:19px;}
+.chapter p.dialogue{padding-left:0;}
+.pause{font-family:var(--sans); font-size:12px; color:var(--ink-subtle);
+  border:1px solid var(--hairline); padding:1px 8px; margin-left:6px; white-space:nowrap;
+  letter-spacing:0.32px; vertical-align:middle;}
+.parents{margin:32px 0 8px; padding:16px 20px; background:var(--surface-1);
+  border-left:3px solid var(--primary);}
+.parents p{font-family:var(--sans) !important; font-size:15px !important; margin:0 0 6px !important;
+  color:var(--ink-muted);}
+.parents p.ptitle{font-weight:600; color:var(--ink);}
+.char-role{font-style:italic;}
+
+</style>
+</head>
+<body id="top">
+<div id="progress"></div>
+<header class="top-nav">
+  <button class="menu-btn" id="menuBtn">≡ Mục lục</button>
+  <span class="brand">Xóm Bờ Ao</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Thiếu nhi · 5 tập</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
+</header>
+<div class="toc-mobile" id="tocMobile"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Mùa 1</li>
+<li><a href="#ch01"><span class="toc-num">Tập 01</span><span class="toc-title">Ốc Chậm Rì đi sinh nhật Gà Con</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Tập 02</span><span class="toc-title">Sóc Hay Quên đào hạt</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Tập 03</span><span class="toc-title">Heo Lấm Lem trốn tắm</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Tập 04</span><span class="toc-title">Cóc Cáu Kỉnh và cái nón thủng</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Tập 05</span><span class="toc-title">Vịt Lạch Bạch tập nói nhỏ</span></a></li></ul></div></div>
+<div class="shell">
+  <aside class="side-nav"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Mùa 1</li>
+<li><a href="#ch01"><span class="toc-num">Tập 01</span><span class="toc-title">Ốc Chậm Rì đi sinh nhật Gà Con</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Tập 02</span><span class="toc-title">Sóc Hay Quên đào hạt</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Tập 03</span><span class="toc-title">Heo Lấm Lem trốn tắm</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Tập 04</span><span class="toc-title">Cóc Cáu Kỉnh và cái nón thủng</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Tập 05</span><span class="toc-title">Vịt Lạch Bạch tập nói nhỏ</span></a></li></ul></div></aside>
+  <div class="content">
+    <div class="inner">
+      <section class="cover">
+        <p class="cover-eyebrow">Góc Đọc Truyện · Thiếu nhi · 2026</p>
+        <h1 class="cover-title">Xóm Bờ Ao</h1>
+        <div class="cover-tags"><span>Thiếu nhi 4–6 tuổi</span><span>Ngụ ngôn</span><span>Hài hước</span><span>Truyện trước giờ ngủ</span><span>Đọc to cho bé</span></div>
+        <p class="cover-logline">Ở Xóm Bờ Ao có một con ốc chậm rì, một con vịt to mồm, một con sóc hay quên, một con cóc hay cáu và một con heo đen ghét tắm. Mỗi tối một chuyện nhỏ, đọc to chừng ba bốn phút, cười một trận rồi ngủ ngon.</p>
+        <div class="cover-stats">
+          <div class="stat"><div class="num">5</div><div class="lab">Tập</div></div>
+          <div class="stat"><div class="num">~501</div><div class="lab">Chữ mỗi tập</div></div>
+          <div class="stat"><div class="num">3–4′</div><div class="lab">Đọc to</div></div>
+        </div>
+        <a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
+      </section>
+      <section class="characters" id="characters">
+        <h2 class="section-title">Cư dân Xóm Bờ Ao</h2>
+        <div class="char-grid">
+<div class="char-card"><div class="char-name">Ốc Chậm Rì</div><div class="char-role">“Từ từ thôi, đường đâu có chạy!”</div><div class="char-desc">Con ốc chậm nhất xóm. Đi đâu cũng đi từ sớm.</div></div>
+<div class="char-card"><div class="char-name">Vịt Lạch Bạch</div><div class="char-role">“Quạc! Để tui! Để tui!”</div><div class="char-desc">Giọng to nhất xóm. Nói trước, nghĩ sau.</div></div>
+<div class="char-card"><div class="char-name">Sóc Hay Quên</div><div class="char-role">“Ủa, tui để đâu rồi ta?”</div><div class="char-desc">Sống trên cây dừa. Cái gì cũng giấu, giấu xong là quên.</div></div>
+<div class="char-card"><div class="char-name">Cóc Cáu Kỉnh</div><div class="char-role">“Hứ! Của tui, ộp!”</div><div class="char-desc">Hay cáu, hay giữ của. Là cóc mà ghét ướt đầu.</div></div>
+<div class="char-card"><div class="char-name">Heo Lấm Lem</div><div class="char-role">“Dơ chút, ngủ chút, có sao đâu!”</div><div class="char-desc">Con heo đen nhỏ nhất xóm. Ham ngủ, ngại tắm.</div></div>
+<div class="char-card"><div class="char-name">Gà Mái Mơ</div><div class="char-role">“Cho má năm phút yên coi!”</div><div class="char-desc">Người lớn của xóm, má của Gà Con. Lúc nào cũng bận.</div></div>
+        </div>
+        <p class="cover-logline" style="font-size:15px;margin-top:20px">Mẹo đọc to: thấy ô <span class="pause">bé đọc theo</span> thì ngừng một nhịp để bé hét câu đó cùng bố mẹ.</p>
+      </section>
+<article class="chapter" id="ch01">
+<p class="eyebrow">Tập 01 · khoảng 521 chữ · 3–4 phút đọc</p>
+<h2 class="ch-title">Ốc Chậm Rì đi sinh nhật Gà Con</h2>
+<p>Ở Xóm Bờ Ao, ai cũng biết Ốc Chậm Rì là con ốc chậm nhất xóm.</p>
+<p>Chậm cỡ nào? Ốc ăn sáng xong thì đã tới giờ ăn trưa.</p>
+<p>Hôm đó là sinh nhật Gà Con. Tiệc bắt đầu lúc chiều, ở nhà Gà Mái Mơ, bên kia bụi tre.</p>
+<p>Ốc thức dậy từ lúc trời còn tối. Ốc cài lên vỏ một nụ bông dại nhỏ xíu, để làm quà. Rồi Ốc lên đường.</p>
+<p>Lết… lết… lết…</p>
+<p>Mặt trời vừa mọc thì Vịt Lạch Bạch chạy ngang.</p>
+<p class="dialogue">– Quạc! Ốc ơi, đi đâu đó?</p>
+<p class="dialogue">– Đi sinh nhật Gà Con.</p>
+<p class="dialogue">– Tiệc chiều lận mà! Để tui! Để tui đi trước giành chỗ cho!</p>
+<p>Vịt chạy vèo một cái, mất tiêu.</p>
+<p>Ốc cười:</p>
+<p class="dialogue">– Từ từ thôi, đường đâu có chạy!</p>
+<p>Lết… lết… lết… <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Mặt trời lên tới đỉnh đầu thì Vịt lại chạy ngang. Lần này Vịt chạy về.</p>
+<p class="dialogue">– Quạc! Ốc ơi, đi đâu đó?</p>
+<p class="dialogue">– Thì… đi sinh nhật Gà Con.</p>
+<p class="dialogue">– Tui tới rồi nè! Sớm quá, chưa có ai hết. Tui về ngủ trưa cái đã!</p>
+<p>Vịt chạy vèo, mất tiêu.</p>
+<p>Lết… lết… lết… <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Các bạn đoán xem, lúc đó Ốc đi được tới đâu rồi?</p>
+<p>Tới… cục đá thứ ba. Cục đá thứ ba ngay trước cửa nhà Ốc.</p>
+<p>Mặt trời xuống thấp thì Vịt chạy ngang lần nữa, đi dự tiệc.</p>
+<p class="dialogue">– Quạc! Ốc ơi, còn ở đây hả? Tiệc sắp bắt đầu rồi đó!</p>
+<p class="dialogue">– Tui biết mà. Từ từ thôi, đường đâu có chạy!</p>
+<p>Vịt nhìn trời. Vịt nhìn Ốc. Vịt lại nhìn trời. Rồi Vịt chạy vèo.</p>
+<p>Lết… lết… lết… <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Ốc qua tới bụi tre thì trời đã tối thui. Đom đóm bay ra, chớp chớp.</p>
+<p>Nhà Gà Mái Mơ yên re. Bánh bông lan còn đúng một miếng. Đèn cầy đã tắt. Vịt nằm dưới gầm bàn, ngáy "quạc… khò… quạc… khò…". Gà Con ngồi dụi mắt.</p>
+<p>Ốc nói nhỏ:</p>
+<p class="dialogue">– Tui… tới… rồi… nè…</p>
+<p>Gà Mái Mơ quay lại, tròn mắt:</p>
+<p class="dialogue">– Trời đất, Ốc đi từ hồi sáng tới giờ hả con?</p>
+<p class="dialogue">– Dạ. Tại tui biết mình chậm, nên tui đi sớm.</p>
+<p>Ốc nghiêng vỏ. Nụ bông dại hồi sáng giờ đã nở thành một bông hoa trắng nhỏ xíu, thơm thơm.</p>
+<p class="dialogue">– Hồi sáng nó còn là nụ. Tui đi chậm, nên nó kịp nở.</p>
+<p>Gà Con ôm bông hoa, cười tít mắt.</p>
+<p>Đúng lúc đó, Vịt bật dậy, đụng đầu cái cốp vô mặt bàn:</p>
+<p class="dialogue">– Quạc! Tới giờ tiệc chưa?</p>
+<p>Cả nhà cười rần.</p>
+<p>Gà Mái Mơ thắp lại một cây đèn cầy. Cả nhà hát mừng sinh nhật. Nhưng lần này hát chậm, chậm như Ốc:</p>
+<p class="dialogue">– Mừng… sinh… nhật… Gà… Con…</p>
+<p>Chưa hát hết bài, Gà Con đã ngủ khò trong cánh má.</p>
+<p>Gà Mái Mơ thổi đèn cầy, thở ra:</p>
+<p class="dialogue">– Cũng may là thắp lại đèn cầy thôi. Chớ nướng lại cái bánh chắc má xỉu.</p>
+<p>Tối đó, Ốc ngủ lại nhà Gà Con. Tại vì đi về thì… chắc tới sáng mai mới tới.</p>
+<p>Ngoài bụi tre, đom đóm bay chậm, chậm thiệt chậm.</p>
+<p>Chúc ngủ ngon nghen.</p>
+<div class="parents"><p class="ptitle"><strong>Dành cho bố mẹ</strong></p><p><em>Khi bé làm gì cũng chậm.</em></p><p>- Vì sao Ốc đi từ lúc trời còn tối?</p><p>- Nếu con là Ốc, con sẽ mang quà gì tới tiệc?</p></div>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch02">
+<p class="eyebrow">Tập 02 · khoảng 501 chữ · 3–4 phút đọc</p>
+<h2 class="ch-title">Sóc Hay Quên đào hạt</h2>
+<p>Sóc Hay Quên sống trên cây dừa, ngay giữa Xóm Bờ Ao.</p>
+<p>Sóc có một tật. Cái gì Sóc cũng giấu. Mà giấu xong là Sóc quên.</p>
+<p>Sáng nay, Sóc có ba hạt đậu phộng. Sóc ôm ba hạt đậu, chạy xuống gốc dừa, đào một cái lỗ, giấu vô, lấp lại. Rồi Sóc đi chơi.</p>
+<p>Tới trưa, bụng Sóc kêu ọt ọt.</p>
+<p class="dialogue">– Ủa, tui để đâu rồi ta?</p>
+<p>Sóc chạy ra sân. Đào, đào, đào…</p>
+<p>Sóc lôi lên một chiếc dép.</p>
+<p class="dialogue">– Quạc! Dép tui mà! – Vịt Lạch Bạch la lên. – Tui kiếm nãy giờ!</p>
+<p>Sóc trả dép cho Vịt. Rồi Sóc chạy ra gốc khế. Đào, đào, đào… <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Sóc lôi lên một cái nón lá nhỏ xíu.</p>
+<p class="dialogue">– Hứ! Của tui, ộp! – Cóc Cáu Kỉnh giật lại cái nón. – Ai cho Sóc đào nhà tui?</p>
+<p>Sóc trả nón cho Cóc. Rồi Sóc ngồi xuống bãi cỏ. Đào, đào, đào… <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Sóc kéo lên một cái gì đó dài dài, lông lông, mềm mềm.</p>
+<p>Sóc kéo. Kéo nữa. Kéo mạnh hơn.</p>
+<p class="dialogue">– Á! Đau!</p>
+<p>Là cái đuôi của Sóc.</p>
+<p>Vịt cười ngặt nghẽo. Cóc cười tới rớt nón.</p>
+<p>Sóc đỏ mặt, phủi đuôi:</p>
+<p class="dialogue">– Lần sau tui sẽ vẽ bản đồ!</p>
+<p>Chiều đó, Sóc vẽ một tấm bản đồ thiệt đẹp. Có cây dừa, có gốc khế, có cái ao, có một dấu X thiệt to. Sóc gấp tấm bản đồ lại, nhét vô cái hốc nhỏ trên thân cây dừa. Giấu kỹ lắm.</p>
+<p>Các bạn đoán xem, chuyện gì xảy ra?</p>
+<p>Sáng hôm sau, Sóc thức dậy.</p>
+<p class="dialogue">– Ủa, tui để cái bản đồ đâu rồi ta?</p>
+<p>Tấm bản đồ vẽ đẹp ơi là đẹp. Chỉ thiếu một chỗ: chỗ để tấm bản đồ.</p>
+<p>Sóc ngồi trên cành dừa, ôm bụng. Sóc không muốn hỏi ai hết. Hỏi thì mắc cỡ lắm. Nhưng bụng cứ kêu ọt ọt, ọt ọt.</p>
+<p>Cuối cùng, Sóc leo xuống.</p>
+<p class="dialogue">– Vịt ơi, Cóc ơi… giúp tui với.</p>
+<p class="dialogue">– Quạc! Để tui! Để tui! – Vịt nhảy lên liền.</p>
+<p>Cóc nghĩ một chút, rồi chỉ lên cây dừa:</p>
+<p class="dialogue">– Hôm qua tui thấy Sóc nhét cái gì vô cái hốc kia, ộp.</p>
+<p>Vịt kê vai cho Sóc đứng. Sóc thò tay vô hốc. Tấm bản đồ đây rồi!</p>
+<p>Ba bạn chụm đầu coi bản đồ. Dấu X nằm ở… gốc dừa. Ngay dưới nhà của Sóc. Chỗ duy nhất Sóc chưa đào.</p>
+<p>Đào, đào, đào…</p>
+<p>Ba hạt đậu phộng nằm đó, tròn vo.</p>
+<p>Sóc chia cho Vịt một hạt. Chia cho Cóc một hạt. Còn một hạt, Sóc ăn.</p>
+<p class="dialogue">– Lần sau quên nữa thì sao? – Vịt hỏi.</p>
+<p class="dialogue">– Thì tui kêu mấy bạn. – Sóc cười. – Ba cái đầu nhớ giỏi hơn một cái.</p>
+<p>Tối đó, Sóc ngủ trên cây dừa, bụng no tròn.</p>
+<p>Trước khi ngủ, Sóc giấu một hạt đậu dưới gối. Để mai ăn sáng.</p>
+<p>Mà mai Sóc có nhớ không ta?</p>
+<p>Chắc là không. Nhưng không sao. Sóc biết phải kêu ai rồi.</p>
+<div class="parents"><p class="ptitle"><strong>Dành cho bố mẹ</strong></p><p><em>Khi bé ngại nhờ giúp.</em></p><p>- Vì sao lúc đầu Sóc không muốn hỏi ai?</p><p>- Lần gần nhất con cần ai giúp là khi nào?</p></div>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch03">
+<p class="eyebrow">Tập 03 · khoảng 504 chữ · 3–4 phút đọc</p>
+<h2 class="ch-title">Heo Lấm Lem trốn tắm</h2>
+<p>Heo Lấm Lem là con heo đen nhỏ nhất Xóm Bờ Ao.</p>
+<p>Heo thích chui bụi tre. Heo thích lăn trong đống lá khô. Heo thích nằm ngủ ngoài vườn rau. Heo chỉ không thích một thứ: đi tắm.</p>
+<p>Chiều nào Gà Mái Mơ cũng đổ nước ấm vô cái thau lớn giữa sân, rồi kêu:</p>
+<p class="dialogue">– Heo ơi! Đi tắm nè! <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Và chiều nào Heo cũng trốn.</p>
+<p class="dialogue">– Dơ chút, ngủ chút, có sao đâu!</p>
+<p>Chiều thứ nhất, Heo hái một tàu lá chuối, trùm kín người. Heo đi ngang sân, chậm rì rì.</p>
+<p>Gà Mái Mơ nhìn ra, gãi đầu:</p>
+<p class="dialogue">– Ủa, lá chuối biết đi hả ta?</p>
+<p>Tàu lá chuối đứng im. Nhưng phía sau, một cái đuôi xoắn tít thò ra, ngoe nguẩy.</p>
+<p class="dialogue">– Heo ơi! Đi tắm nè! <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Heo quăng tàu lá, chạy mất.</p>
+<p>Chiều thứ hai, Heo ra vườn rau, nằm im re giữa đống đất. Heo đen thui, đất cũng đen thui. Heo nghĩ: "Giờ mình là cục đất. Dơ chút, ngủ chút, có sao đâu!"</p>
+<p>Gà Mái Mơ đi tìm khắp sân. Đi ngang vườn rau, Gà dừng lại.</p>
+<p>Có một cục đất. Cục đất có hai cái tai. Cục đất còn chớp mắt.</p>
+<p class="dialogue">– Heo ơi! Đi tắm nè! <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Cục đất bật dậy, chạy mất.</p>
+<p>Chiều thứ ba, Heo nằm dưới gốc khế, giả bộ ngủ say thiệt say.</p>
+<p class="dialogue">– Khò… ộc! Khò… ộc!</p>
+<p>Gà Mái Mơ đi ngang, nhìn Heo, rồi đi luôn. Heo mừng thầm. Lần này thắng rồi!</p>
+<p>Nhưng Heo không biết, có một con ruồi bay tới.</p>
+<p>Vo ve. Con ruồi đậu lên mũi Heo.</p>
+<p>Vo ve, vo ve. Con ruồi kêu thêm một con nữa.</p>
+<p>Vo ve, vo ve, vo ve. Hai con ruồi kêu thêm cả nhà tụi nó.</p>
+<p>Ruồi đậu trên tai. Ruồi đậu trên lưng. Ruồi đậu trên cái đuôi xoắn. Ruồi còn mở tiệc trên bụng Heo.</p>
+<p class="dialogue">– Khò… ộc… ộc… Á! Nhột quá!</p>
+<p>Heo nhảy dựng lên, phủi trái, phủi phải. Ruồi bay vòng vòng, không chịu đi.</p>
+<p class="dialogue">– Ruồi ơi, đừng rủ thêm bạn nữa mà!</p>
+<p>Heo chạy một mạch ra giữa sân, nhảy ùm vô cái thau nước ấm.</p>
+<p>Bọt xà phòng bay lên. Bọt bay qua đầu Gà Mái Mơ. Bọt bay qua cây khế. Vịt Lạch Bạch đang đi ngang, bị một cục bọt đậu trúng mỏ, đứng ngơ ngác.</p>
+<p>Bầy ruồi bay đi hết. Tụi nó không thích mùi xà phòng.</p>
+<p>Heo ngồi trong thau, bọt trắng đầy đầu, cười khúc khích.</p>
+<p>Gà Mái Mơ kỳ lưng cho Heo, lau khô cho Heo, xức một chút phấn thơm cho Heo.</p>
+<p>Rồi Gà Mái Mơ nhìn xuống người mình. Lông Gà dính đầy bọt, đầy nước.</p>
+<p class="dialogue">– Tắm cho Heo xong, giờ tới má cũng phải đi tắm.</p>
+<p>Tối đó, Heo nằm trên đống rơm sạch, thơm phức. Heo hít một hơi thiệt dài.</p>
+<p>Thơm ghê.</p>
+<p class="dialogue">– Sạch chút, ngủ chút… cũng sướng ghê.</p>
+<p>Heo nhắm mắt.</p>
+<p>Khò… khò…</p>
+<p>Lần này không có tiếng "ộc". Cũng không có con ruồi nào.</p>
+<div class="parents"><p class="ptitle"><strong>Dành cho bố mẹ</strong></p><p><em>Khi bé ngại tắm.</em></p><p>- Heo đã nghĩ ra những cách trốn tắm nào? Cách nào buồn cười nhất?</p><p>- Tắm xong, Heo thấy sao?</p></div>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch04">
+<p class="eyebrow">Tập 04 · khoảng 506 chữ · 3–4 phút đọc</p>
+<h2 class="ch-title">Cóc Cáu Kỉnh và cái nón thủng</h2>
+<p>Cóc Cáu Kỉnh vừa có một cái nón lá mới.</p>
+<p>Nón nhỏ xíu, vừa khít cái đầu Cóc. Cóc đội nón đi khắp Xóm Bờ Ao, ngực ưỡn ra, bụng phình to.</p>
+<p>Nhưng Cóc không biết, trên đỉnh nón có một cái lỗ. Nhỏ bằng hạt đậu xanh.</p>
+<p>Trưa đó nắng chang chang. Vịt Lạch Bạch chạy tới, mồ hôi nhễ nhại.</p>
+<p class="dialogue">– Quạc! Cóc ơi, cho tui đứng ké cái nón với!</p>
+<p>Cóc ôm chặt cái nón:</p>
+<p class="dialogue">– Hứ! Của tui, ộp!</p>
+<p>Vịt cúi đầu, đi ra núp dưới bụi chuối.</p>
+<p>Một lát sau, Ốc Chậm Rì bò tới. Bò tới rất lâu.</p>
+<p class="dialogue">– Cóc ơi… cho tui… núp ké… với…</p>
+<p class="dialogue">– Hứ! Của tui, ộp!</p>
+<p>Ốc thở dài, bò ra núp dưới bụi chuối với Vịt. Bò ra cũng rất lâu.</p>
+<p>Cóc ngồi một mình dưới cái nón, cười khì. Nón của tui. Mát của tui. Không cho ai hết.</p>
+<p>Rồi trời tối sầm lại. Gió nổi lên. Mây đen kéo tới.</p>
+<p>Ào ào ào! Mưa đổ xuống.</p>
+<p>Cóc ngồi dưới nón, khoái chí. Mưa thì có sao. Có nón rồi mà.</p>
+<p>Tách.</p>
+<p>Một giọt nước rớt trúng đầu Cóc.</p>
+<p>Tách… tách… <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Hai giọt nữa.</p>
+<p>Cóc nhìn lên. Cái lỗ hạt đậu xanh đang nhỏ nước xuống, đúng ngay giữa đầu Cóc.</p>
+<p>Tách… tách… tách… <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Cóc nghiêng nón qua trái. Nước rớt bên trái. Cóc nghiêng nón qua phải. Nước rớt bên phải. Cóc đội nón ngược. Nước rớt vô… mắt.</p>
+<p class="dialogue">– Ộp! Ộp! Ướt hết rồi!</p>
+<p>Cóc là cóc. Mà Cóc ghét ướt đầu nhất trên đời.</p>
+<p>Ở bụi chuối, Vịt và Ốc nhìn qua. Hai bạn nhìn nhau.</p>
+<p class="dialogue">– Quạc! Để tui! Để tui!</p>
+<p>Vịt bẻ một tàu lá môn thiệt to, chạy qua. Ốc bò theo phía sau, chậm rì rì, cõng thêm một chiếc lá môn nhỏ.</p>
+<p>Vịt giơ lá môn che trên đầu Cóc. Hết tách tách.</p>
+<p>Cóc đứng im. Cóc nhìn Vịt. Cóc nhìn Ốc. Mặt Cóc đỏ lên, đỏ như trái ớt.</p>
+<p class="dialogue">– Hồi nãy… tui không cho mấy bạn núp mà.</p>
+<p class="dialogue">– Thì giờ tụi tui cho Cóc núp. – Vịt nói.</p>
+<p>Ốc mất một lúc lâu mới tới nơi.</p>
+<p class="dialogue">– Từ từ thôi, đường đâu có chạy. Tui cũng tới rồi nè.</p>
+<p>Cóc nghĩ một chút. Rồi Cóc gỡ cái nón thủng, úp lên trên tàu lá môn.</p>
+<p>Lá môn che cái lỗ của nón. Nón che phía trên của lá môn. Bên dưới rộng ra, khô ráo, đủ chỗ cho cả ba bạn.</p>
+<p>Ba bạn ngồi sát bên nhau, nghe mưa rơi lộp độp phía trên.</p>
+<p class="dialogue">– Nón của tui đó, ộp. – Cóc nói nhỏ. – Mà… của chung cũng được.</p>
+<p>Mưa tạnh. Cầu vồng hiện ra sau rặng tre.</p>
+<p>Cóc nhìn cái lỗ trên đỉnh nón, lắc đầu:</p>
+<p class="dialogue">– Hèn chi bà bán nón bán rẻ.</p>
+<p>Chiều đó, cái nón thủng được treo ở gốc khế. Ai đi ngang mà trời nắng thì cứ đứng ké.</p>
+<p>Cóc không la nữa. Cóc chỉ nói:</p>
+<p class="dialogue">– Đứng sát vô, cho tui đứng chung với.</p>
+<div class="parents"><p class="ptitle"><strong>Dành cho bố mẹ</strong></p><p><em>Khi bé không chịu chia.</em></p><p>- Lúc mưa, ai đã giúp Cóc? Dù trước đó Cóc không cho họ núp?</p><p>- Con có món đồ nào muốn chơi chung với bạn không?</p></div>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch05">
+<p class="eyebrow">Tập 05 · khoảng 475 chữ · 3–4 phút đọc</p>
+<h2 class="ch-title">Vịt Lạch Bạch tập nói nhỏ</h2>
+<p>Ở Xóm Bờ Ao, ai cũng biết giọng của Vịt Lạch Bạch.</p>
+<p>Vịt chào buổi sáng: "QUẠC!" Cả xóm thức dậy.</p>
+<p>Vịt hỏi giờ: "QUẠC!" Lá dừa rung rinh.</p>
+<p>Vịt hắt xì: "QUẠC!" Sóc trên cây giật mình, rớt luôn hạt đậu.</p>
+<p>Một bữa, Cóc Cáu Kỉnh bịt hai lỗ tai, nhăn mặt:</p>
+<p class="dialogue">– Hứ! Vịt ồn quá, ộp! Vịt nói nhỏ được không?</p>
+<p>Vịt cúi đầu. Vịt buồn. Vịt quyết định tập nói nhỏ.</p>
+<p>Lần thứ nhất, Vịt thấy Sóc đang ngồi ăn trên cây dừa. Vịt rón rén tới gần, hít một hơi, nói thật nhỏ:</p>
+<p class="dialogue">– Suỵt… suỵt… chào Sóc…</p>
+<p>Rồi: "QUẠC!"</p>
+<p>Sóc giật mình, rớt luôn hạt đậu. Lần thứ hai trong ngày.</p>
+<p>Lần thứ hai, Vịt thấy Heo Lấm Lem đang ngủ trưa dưới gốc khế. Vịt rón rén tới gần, nhón chân, nói thật nhỏ:</p>
+<p class="dialogue">– Suỵt… suỵt… ngủ ngon nghen Heo…</p>
+<p>Rồi: "QUẠC!" <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Heo bật dậy, chạy vòng vòng, tưởng tới giờ đi tắm.</p>
+<p>Lần thứ ba, Vịt lấy cánh bịt mỏ lại. Thiệt chặt. Vịt đi ngang nhà Cóc, nói thật thật nhỏ:</p>
+<p class="dialogue">– Suỵt… suỵt… chào Cóc…</p>
+<p>Rồi: "QUẠC!" <span class="pause" title="Ngừng một chút cho bé đọc theo">bé đọc theo</span></p>
+<p>Cái nón của Cóc bay lên, xoay hai vòng, rớt xuống… đúng ngay đầu Vịt.</p>
+<p>Vịt ngồi dưới cái nón, buồn thiu. Tối đó, Vịt không nói câu nào hết.</p>
+<p>Trời chạng vạng. Cơm chín. Cả xóm ngồi quanh mâm. Nhưng còn thiếu một bạn.</p>
+<p class="dialogue">– Ốc đâu rồi, ộp? – Cóc hỏi.</p>
+<p>Không ai biết. Ốc đi dạo từ hồi trưa. Ốc đi chậm, giờ chắc đã qua tới bên kia rặng tre.</p>
+<p>Gà Mái Mơ đứng ở đầu ngõ, kêu Ốc về ăn cơm. Nhưng giọng Gà nhỏ, gió thổi bay mất.</p>
+<p>Cóc nhảy lên cục đá, kêu:</p>
+<p class="dialogue">– Ộp! Ộp!</p>
+<p>Giọng Cóc còn nhỏ hơn.</p>
+<p>Cả xóm im lặng. Rồi tất cả cùng quay qua nhìn… Vịt.</p>
+<p>Cóc gãi đầu, nói nhỏ xíu:</p>
+<p class="dialogue">– Vịt ơi… kêu giùm tui với.</p>
+<p>Vịt đứng dậy. Vịt ưỡn ngực. Vịt hít một hơi thiệt sâu.</p>
+<p class="dialogue">– QUẠC! ỐC ƠI! VỀ ĂN CƠM NÈ!</p>
+<p>Tiếng Vịt bay qua sân. Bay qua cây khế. Bay qua rặng tre. Bay tuốt luốt qua bên kia xóm.</p>
+<p>Cả xóm nín thở, lắng nghe.</p>
+<p>Một lúc lâu… thiệt lâu… có tiếng nhỏ xíu vọng về:</p>
+<p class="dialogue">– Từ… từ… thôi… đường… đâu… có… chạy… Tui… về… liền…</p>
+<p>Cả xóm cười rần.</p>
+<p>Cóc vỗ vai Vịt:</p>
+<p class="dialogue">– Có Vịt trong xóm, khỏi cần mua loa, ộp.</p>
+<p>Tối đó, Ốc về tới nơi lúc mọi người đã ăn xong. Nhưng Vịt có chừa cho Ốc một chén cơm đầy.</p>
+<p>Trước khi đi ngủ, Vịt ghé qua từng nhà. Vịt muốn nói chúc ngủ ngon thật nhỏ.</p>
+<p class="dialogue">– Suỵt… chúc ngủ ngon…</p>
+<p>Rồi: "quạc."</p>
+<p>Lần này chỉ là một tiếng "quạc" nhỏ xíu, nhỏ như tiếng gió.</p>
+<p>Cả xóm mỉm cười, kéo mền lên, ngủ ngon.</p>
+<div class="parents"><p class="ptitle"><strong>Dành cho bố mẹ</strong></p><p><em>Khi bé bị chê.</em></p><p>- Vì sao cuối cùng cả xóm lại cần giọng to của Vịt?</p><p>- Con có điều gì đặc biệt mà chỉ con mới có không?</p></div>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+    </div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Xóm Bờ Ao</p>
+        <p>Ngụ ngôn hài cho bé 4–6 tuổi. 5 tập · 2507 chữ. Đang tiếp tục.</p>
+        <p class="fmeta">© 2026 Góc Đọc Truyện · Thiếu nhi.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  // theme toggle (mặc định sáng, lưu localStorage)
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
+  }
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile toc toggle
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+
+  // active chapter highlight in side nav
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
+  }
+})();
+
+</script>
+</body>
+</html>
