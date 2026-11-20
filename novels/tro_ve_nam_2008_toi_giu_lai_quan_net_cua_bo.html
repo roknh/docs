@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Trở Về Năm 2008, Tôi Giữ Lại Quán Net Của Bố — Bút Nghiên. Hai giờ sáng tháng 4/2026, Lê Hoàng Sang, 35 tuổi, nợ ba thẻ tín dụng, có bố nằm viện vì bệnh phổi, ngủ gục ở quán net cuối cùng còn sáng đèn ở Thủ Dầ">
+<meta name="author" content="Bút Nghiên">
+<title>Trở Về Năm 2008, Tôi Giữ Lại Quán Net Của Bố — Bút Nghiên</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+  --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+  --hairline:#e0e0e0; --hairline-strong:#161616;
+  --primary:#0f62fe; --blue-hover:#0050e6; --on-primary:#ffffff;
+  --inverse-canvas:#161616; --inverse-ink:#ffffff;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --measure:42rem; --nav-w:17rem;
+}
+:root[data-theme="dark"]{
+  --canvas:#161616; --surface-1:#262626; --surface-2:#393939;
+  --ink:#f4f4f4; --ink-muted:#c6c6c6; --ink-subtle:#8d8d8d;
+  --hairline:#393939; --hairline-strong:#6f6f6f;
+  --primary:#78a9ff; --blue-hover:#a6c8ff; --on-primary:#161616;
+  --inverse-canvas:#f4f4f4; --inverse-ink:#161616;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:var(--sans); font-size:16px; font-weight:400;
+  line-height:1.5; letter-spacing:0.16px; overflow-x:hidden;
+  overflow-wrap:break-word; word-break:break-word;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color .15s ease, color .15s ease;
+}
+a{color:var(--primary); text-decoration:none;}
+a:hover{color:var(--blue-hover); text-decoration:underline;}
+
+/* reading progress */
+#progress{position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--primary); z-index:60; transition:width .1s linear;}
+
+/* top nav */
+.top-nav{position:sticky; top:0; z-index:50; height:48px;
+  background:var(--canvas); border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; gap:16px; padding:0 16px;}
+.top-nav .brand{font-size:14px; font-weight:600; letter-spacing:0.16px;
+  color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.top-nav .spacer{flex:1;}
+.top-nav .top-meta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px;}
+.menu-btn{display:none; appearance:none; background:transparent; border:0;
+  color:var(--ink); font-family:var(--sans); font-size:14px; cursor:pointer;
+  padding:8px 10px; align-items:center; gap:6px;}
+.menu-btn:hover{background:var(--surface-1);}
+
+/* theme toggle */
+.theme-toggle{appearance:none; background:transparent; border:1px solid var(--hairline);
+  color:var(--ink); cursor:pointer; width:32px; height:32px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.theme-toggle:hover{background:var(--surface-1); border-color:var(--hairline-strong);}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+/* shell */
+.shell{display:block; max-width:1584px; margin:0 auto;}
+.side-nav{display:none;}
+.content{width:100%; min-width:0;}
+@media(min-width:1056px){
+  .shell{display:flex; align-items:flex-start;}
+  .side-nav{display:block; width:var(--nav-w); flex:0 0 var(--nav-w);
+    position:sticky; top:48px; align-self:flex-start;
+    height:calc(100vh - 48px); overflow-y:auto;
+    border-right:1px solid var(--hairline); padding:24px 0 48px;}
+  .content{flex:1 1 0%; min-width:0;}
+  .toc-mobile{display:none !important;}
+  .menu-btn{display:none !important;}
+}
+.inner{max-width:var(--measure); margin:0 auto; padding:0 20px 80px;}
+
+/* toc */
+.toc-wrap .toc-cap{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);
+  padding:0 24px 12px; text-transform:none;}
+.toc-list{list-style:none; margin:0; padding:0;}
+.toc-part{font-size:12px; font-weight:600; letter-spacing:0.16px; color:var(--ink-muted);
+  padding:20px 24px 6px; border-top:1px solid var(--hairline); margin-top:6px;}
+.toc-list li:first-child.toc-part{border-top:0; margin-top:0;}
+.toc-list a{display:flex; gap:10px; padding:7px 24px; color:var(--ink);
+  border-left:3px solid transparent; line-height:1.3;}
+.toc-list a:hover{background:var(--surface-1); text-decoration:none;}
+.toc-list a.active{border-left-color:var(--primary); background:var(--surface-1);
+  font-weight:600;}
+.toc-num{font-size:11px; color:var(--ink-subtle); min-width:58px; letter-spacing:0.16px;
+  padding-top:2px;}
+.toc-title{font-size:13px;}
+
+/* mobile toc panel */
+.toc-mobile{display:block; border-bottom:1px solid var(--hairline);
+  background:var(--canvas);}
+.toc-mobile[open]{padding-bottom:8px;}
+.toc-mobile summary{display:none;}
+@media(max-width:1055px){
+  .menu-btn{display:inline-flex;}
+  .toc-mobile{position:fixed; top:48px; left:0; right:0; bottom:0; z-index:45;
+    overflow-y:auto; transform:translateX(-100%); transition:transform .2s ease;
+    border-bottom:0;}
+  .toc-mobile.show{transform:translateX(0);}
+  .toc-mobile .toc-cap{padding:20px 24px 12px; font-size:12px;}
+}
+
+/* cover hero */
+.cover{padding:40px 20px 8px; border-bottom:1px solid var(--hairline);
+  margin-bottom:8px;}
+.cover-eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px;
+  margin:0 0 12px;}
+.cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
+  letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
+.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
+  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
+.cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
+.cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
+  font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
+.cover-logline{font-size:18px; line-height:1.5; color:var(--ink-muted);
+  border-left:3px solid var(--primary); padding-left:16px; margin:0 0 24px;}
+.cover-stats{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline);
+  margin-bottom:24px;}
+.cover-stats .stat{flex:1; min-width:96px; padding:16px; border-right:1px solid var(--hairline);}
+.cover-stats .stat:last-child{border-right:0;}
+.cover-stats .num{font-size:28px; font-weight:300; line-height:1.1; color:var(--ink);}
+.cover-stats .lab{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:4px;}
+.btn-primary{display:inline-block; background:var(--primary); color:var(--on-primary);
+  font-size:14px; letter-spacing:0.16px; padding:12px 16px; border:0; cursor:pointer;
+  font-family:var(--sans);}
+.btn-primary:hover{background:var(--blue-hover); color:var(--on-primary); text-decoration:none;}
+
+/* characters section */
+.characters{margin:48px 0 0;}
+.section-title{font-size:24px; font-weight:400; margin:0 0 24px; color:var(--ink);
+  border-bottom:1px solid var(--hairline); padding-bottom:12px;}
+.char-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+.char-card{background:var(--surface-1); padding:20px; border:1px solid var(--hairline);}
+.char-name{font-size:16px; font-weight:600; color:var(--ink);}
+.char-role{font-size:13px; color:var(--primary); letter-spacing:0.16px; margin-top:4px;}
+.char-desc{font-size:14px; color:var(--ink-muted); line-height:1.5; margin-top:8px;}
+
+/* chapter */
+.chapter{padding:48px 0 8px; border-bottom:1px solid var(--hairline);}
+.chapter:last-child{border-bottom:0;}
+.eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px; margin:0 0 12px;}
+.ch-title{font-size:clamp(28px,5vw,42px); font-weight:300; line-height:1.18;
+  letter-spacing:0; margin:0 0 28px; color:var(--ink);}
+.chapter p{
+  font-family:var(--serif); font-size:18px; line-height:1.75;
+  margin:0 0 20px; color:var(--ink); letter-spacing:0;
+}
+.chapter strong{font-weight:600;}
+.chapter em{font-style:italic;}
+.chapter blockquote{margin:24px 0; padding:16px 20px; border-left:3px solid var(--primary);
+  background:var(--surface-1); color:var(--ink-muted); font-family:var(--serif);
+  font-size:17px; line-height:1.6;}
+.chapter blockquote p{margin:0 0 12px; color:var(--ink-muted);}
+.chapter blockquote p:last-child{margin:0;}
+
+/* scene break */
+hr.scene-break{border:0; text-align:center; margin:32px 0;}
+hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spacing:8px; font-size:14px;}
+
+/* dialogue & message */
+.dialogue{padding-left:0;}
+.message{font-style:italic; color:var(--ink-muted);}
+
+/* chapter foot */
+.ch-foot{margin:32px 0 8px;}
+.totop{font-size:13px; color:var(--ink-muted); letter-spacing:0.16px;}
+.totop:hover{color:var(--primary);}
+
+/* footer */
+.page-footer{background:var(--surface-1); color:var(--ink-muted); padding:48px 20px; margin-top:0;}
+.page-footer .fin{max-width:var(--measure); margin:0 auto;}
+.page-footer .fbrand{font-size:20px; font-weight:300; color:var(--ink); margin:0 0 8px;}
+.page-footer p{font-size:14px; line-height:1.5; margin:0 0 6px;}
+.page-footer .fmeta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:16px;}
+
+/* selection */
+::selection{background:#0f62fe40; color:var(--ink);}
+
+</style>
+</head>
+<body id="top">
+<div id="progress"></div>
+<header class="top-nav">
+  <button class="menu-btn" id="menuBtn">≡ Mục lục</button>
+  <span class="brand">Giữ Lại Quán Net Của Bố</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Bút Nghiên · 5 chương</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
+</header>
+<div class="toc-mobile" id="tocMobile"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần I: Máy 12 Hết Giờ</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Máy 12 hết giờ</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Thằng điên lớp 11</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Sổ của má</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Ca tối ôn thi</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Thằng nhóc máy bảy</span></a></li></ul></div></div>
+<div class="shell">
+  <aside class="side-nav"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần I: Máy 12 Hết Giờ</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Máy 12 hết giờ</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Thằng điên lớp 11</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Sổ của má</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Ca tối ôn thi</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Thằng nhóc máy bảy</span></a></li></ul></div></aside>
+  <div class="content">
+    <div class="inner">
+      <section class="cover">
+        <p class="cover-eyebrow">Bút Nghiên · 2026</p>
+        <h1 class="cover-title">Trở Về Năm 2008, Tôi Giữ Lại Quán Net Của Bố</h1>
+        <div class="cover-tags"><span>Trọng sinh đô thị</span><span>Làm giàu</span><span>Cha con</span><span>Hài</span><span>Bình Dương</span></div>
+        <p class="cover-logline">Hai giờ sáng tháng 4/2026, Lê Hoàng Sang, 35 tuổi, nợ ba thẻ tín dụng, có bố nằm viện vì bệnh phổi, ngủ gục ở quán net cuối cùng còn sáng đèn ở Thủ Dầu Một. Tỉnh dậy thì đã là tháng 4/2008: anh 17 tuổi, và bố anh sắp ký tờ giấy vay nặng lãi để mở rộng quán net từ 12 lên 30 máy, đúng quyết định đã làm sập cả nhà ở đời trước. Sang chỉ có trí nhớ, và trí nhớ ấy hết hạn dần khi chính anh làm tương lai lệch đi. Anh còn chưa biết thằng bạn thân đứng sau quầy quán net đêm đó cũng đã quay về.</p>
+        <div class="cover-stats">
+          <div class="stat"><div class="num">5/100</div><div class="lab">Chương</div></div>
+          <div class="stat"><div class="num">~13k</div><div class="lab">Từ</div></div>
+          <div class="stat"><div class="num">5%</div><div class="lab">Tiến độ</div></div>
+        </div>
+        <a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
+      </section>
+      <section class="characters" id="characters">
+        <h2 class="section-title">Nhân vật</h2>
+        <div class="char-grid">
+<div class="char-card"><div class="char-name">Lê Hoàng Sang</div><div class="char-role">Người kể · 17 tuổi (35 bên trong)</div><div class="char-desc">Con trai chủ quán net Máy 12 ở Thủ Dầu Một. Tính nhẩm mọi thứ ra tiền. Quên sạch toán lớp 11.</div></div>
+<div class="char-card"><div class="char-name">Lê Văn Thạch</div><div class="char-role">Ba của Sang · 45 tuổi</div><div class="char-desc">Chủ quán net Máy 12. Cục, lì, tự sửa máy, hút thuốc Hero. Câu cửa miệng: &quot;Chắc chưa?&quot;</div></div>
+<div class="char-card"><div class="char-name">Trần Trọng Nghĩa</div><div class="char-role">Bạn thân của Sang · 17 tuổi</div><div class="char-desc">Hay cười trước khi nói. Mân mê cái bật lửa giả không bao giờ hút.</div></div>
+<div class="char-card"><div class="char-name">Nguyễn Thị Huệ</div><div class="char-role">Má của Sang · 42 tuổi</div><div class="char-desc">Giữ quyển sổ thu chi của quán. Ít nói, nhớ từng con số.</div></div>
+        </div>
+      </section>
+<article class="chapter" id="ch01">
+<p class="eyebrow">Chương 01 · Phần I: Máy 12 Hết Giờ</p>
+<h2 class="ch-title">Máy 12 hết giờ</h2>
+<p>Hai giờ sáng, cái máy quẹt thẻ ở quầy thu ngân bệnh viện kêu "tít" một tiếng rất tươi, như thể nó vừa được ai khen.</p>
+<p class="dialogue">– Được rồi anh. Tạm ứng mười tám triệu, cô thu ngân nói. Bệnh nhân Lê Văn Thạch, giường mười bốn khoa hô hấp. Mà anh đừng ngủ ở hành lang nha, bảo vệ đuổi đó.</p>
+<p>Tôi ký. Chữ ký của tôi năm ba mươi lăm tuổi trông như con giun bị dép tổ ong giẫm qua, nhưng ngân hàng vẫn chấp nhận nó, và đó là vấn đề. Cái thẻ thứ ba vừa còn đúng một triệu bốn hạn mức. Hai cái thẻ kia đã nằm im trong ví từ tháng trước, như hai người lính hy sinh mà chưa ai làm lễ truy điệu.</p>
+<p>Bảo vệ đã đuổi tôi một lần lúc mười một giờ. Nội quy mỗi bệnh nhân một người nuôi, và má tôi đang là người đó, nằm co trên tấm chiếu cói dưới gầm giường ba. Tôi là người thứ hai, tức là người thừa. Trong ví còn hai mươi ba nghìn, không đủ thuê nhà nghỉ, không đáng đổ xăng về nhà trọ ở Gò Vấp.</p>
+<p><em>Thôi. Đi ngồi đâu đó tới sáng.</em></p>
+<p>Đường Yersin lúc hai giờ sáng vắng đến mức tôi nghe được tiếng dép mình. Tôi đi ngang đầu hẻm 27 mà không quay đầu. Thủ Dầu Một giờ là một phường của thành phố, bảng tên đường đã đổi màu, nhưng đêm xuống nó vẫn ngủ sớm như hồi còn là thị xã.</p>
+<p>Chỉ một chỗ còn sáng đèn, ngay đoạn Yersin chạy qua chợ. Bảng hiệu đã tắt. Cửa cuốn kéo xuống tới ngang hông, bên trong lọt ra ánh xanh của màn hình. Luật bây giờ cấm mấy chỗ này mở từ mười giờ tối, nên chủ quán kéo cửa xuống một nửa để chứng tỏ mình có đọc luật, và chừa một nửa cho khách quen chui vào.</p>
+<p>Tôi cúi người chui vào. Nửa dãy máy bên trái tắt nguồn, phủ bạt nhựa. Nửa dãy bên phải có sáu người đang ngủ, một anh công nhân gục trán lên phím G, màn hình trước mặt là một chuỗi "ggggggg" dài vô tận.</p>
+<p>Sau quầy là Nghĩa.</p>
+<p>Nó đang cạo lớp băng keo dính trên một cái bàn phím cũ bằng con dao rọc giấy, cạo từng vệt, rất chậm. Nó mập hơn, tóc mai đã lốm đốm, cái bật lửa giả vẫn đặt cạnh tay.</p>
+<p>Hai đứa tôi không chào.</p>
+<p>Lần cuối tôi với nó nói chuyện là năm 2018, qua một tin nhắn, và tin nhắn đó tôi không muốn nhớ lúc hai giờ sáng. Tôi đặt tờ mười nghìn lên quầy. Nó không ngẩng đầu, viết một con số lên mảnh bìa các tông rồi đẩy qua.</p>
+<p class="dialogue">– Còn mỗi máy đó. À, máy bảy cũng còn, mà máy bảy chuột nó... thôi, mười hai đi, nó nói.</p>
+<p>Mặt sau mảnh bìa có in sẵn tên quán bằng mực đỏ đã phai: <strong>MÁY 12.</strong> Tôi quyết định là mình buồn ngủ quá nên đọc gì cũng thấy liên quan. Ở Bình Dương này có cả ngàn cái quán tên Máy Gì Đó.</p>
+<p>Máy 12 nằm sát tường, cạnh cái quạt đứng gãy một cánh. Tôi không mở máy. Tôi tháo giày, gác chân lên thanh ngang dưới bàn, và nghĩ về câu duy nhất ba nói với tôi tối nay, mắt vẫn nhìn bình oxy:</p>
+<p class="dialogue">– Mày lên chi, mai đi làm sao?</p>
+<p>Tôi không nói với ông là công ty bất động sản đã cắt giảm một phần ba nhân sự hai tuần trước, và tôi nằm ngay dòng đầu danh sách, theo thứ tự chữ cái. Lê. Cái họ của ba tôi lại xếp tôi đứng trước.</p>
+<p>Tôi gục xuống bàn, mùi nhựa của bàn phím lẫn mùi dầu gió của chính tôi. Tôi ngủ.</p>
+<p class="dialogue">– <em>Máy mười hai hết giờ. Máy mười hai hết giờ. Xin mời quý khách...</em></p>
+<p>Cái giọng chị tổng đài ấy chui thẳng vào tai tôi như nước vào tai lúc đi bơi. Nó trong veo, hơi rè, và vui vẻ một cách vô tâm. Tôi đã nghe giọng này hàng ngàn lần. Tôi nghe nó từ năm lớp sáu tới năm lớp mười hai, nghe đến mức có một dạo tôi mơ thấy chị ta đọc số máy trong lúc tôi đang làm bài kiểm tra Sử.</p>
+<p>Tôi bật dậy.</p>
+<p>Nóng. Đó là thứ đầu tiên tôi cảm thấy, cái nóng của một buổi trưa tháng tư ở Bình Dương, đặc và dính, ngồi yên cũng đổ mồ hôi. Không còn mùi nước hoa xịt phòng hương chanh. Chỉ còn mùi khói thuốc lá, mùi mì gói, và mùi nóng của mười mấy cái máy tính thùng đang chạy hết công suất.</p>
+<p>Trước mặt tôi là một cái màn hình CRT to như cái thùng sơn, nền xanh lá với đồi cỏ và trời xanh của Windows XP. Đồng hồ góc dưới bên phải ghi: 12:41, 10/04/2008.</p>
+<p>Tôi nhìn con số đó lâu tới mức mắt chảy nước.</p>
+<p>Rồi tôi nhìn xuống bàn phím. Nó cũ, ngả vàng, phím Space bóng lưỡng vì mòn. Phím W đã mất. Ai đó dán vào chỗ đó một miếng băng keo trong, trên băng keo viết chữ W bằng bút bi xanh, nét run run. Cái miếng băng keo này do chính tay tôi dán. Hôm máy bảy hư chuột, thằng nhóc máy bảy phải ngồi tạm máy mười hai, thua một trận, đập bàn phím, phím W văng mất, và ba tôi không chịu mua bàn phím mới vì "còn xài được mà".</p>
+<p><em>Mình đang mơ. Mơ rất chi tiết. Do đói.</em></p>
+<p>Tôi giơ hai tay lên. Tay tôi năm ba mươi lăm tuổi có một vết sẹo bỏng ống pô ở mu bàn tay trái và một cái nhẫn bạc mua ở Bến Thành mà tôi không dám tháo vì sợ mất may. Còn đôi tay trước mặt tôi gầy nhom, khớp ngón tay to, móng tay cắn nham nhở, cổ tay đeo một sợi dây cao su màu đỏ để cột tóc cho... không, tôi đâu có tóc dài. Sợi dây đó là để búng vào tay mỗi khi lỡ chửi thề, một trò ba tôi đặt ra cho cả quán, mỗi lần chửi phải búng một cái. Thằng con chủ quán phải làm gương.</p>
+<p>Tôi búng thử. Đau thật.</p>
+<p class="dialogue">– Anh Sang ơi! Em xé lịch rồi nha!</p>
+<p>Một thằng nhóc chừng mười hai tuổi, đầu đinh, áo thun trắng ngả vàng có in hình con khủng long, đứng trên cái ghế nhựa cạnh quầy, tay cầm hai tờ lịch vừa xé, mặt tự hào như vừa giải cứu thế giới. Tờ lịch bloc treo trên cột giờ ghi ngày 12 tháng 4. Đồng hồ máy tính ghi ngày 10.</p>
+<p class="dialogue">– Mày xé lố hai ngày rồi, tôi nói.</p>
+<p>Giọng tôi bể. Không phải giọng khàn của một gã ba mươi lăm tuổi hút thuốc chung với khách hàng. Đó là giọng vịt đực của thằng con trai mười bảy, nửa trầm nửa thanh, cứ như hai người đang tranh nhau một cái micro.</p>
+<p class="dialogue">– Đâu có, thằng nhỏ cãi. Em xé hôm nay với ngày mai. Mai em không ra.</p>
+<p class="dialogue">– Sao mai mày không ra?</p>
+<p class="dialogue">– Má em nói mai em mà ra nữa là má em...</p>
+<p>Nó ngưng lại, nghĩ một chút.</p>
+<p class="dialogue">– ...là má em bán cái máy bảy luôn.</p>
+<p class="dialogue">– Máy bảy là của quán tao mà.</p>
+<p class="dialogue">– Thì vậy đó. Má em dữ lắm.</p>
+<p>Thằng nhóc nhảy xuống ghế rồi chạy về máy bảy, bỏ lại hai tờ lịch trên quầy. Tôi chưa kịp nghĩ ra nên nói gì tiếp thì đã đứng dậy, đi vòng qua mấy dãy máy như một người mộng du biết đường.</p>
+<p class="dialogue">– Anh ơi, máy năm đứng hình rồi!</p>
+<p>Một anh thanh niên áo ba lỗ giơ tay vẫy tôi từ máy năm, mặt khổ sở. Chân tôi đi tới trước khi đầu tôi kịp hỏi tại sao. Màn hình máy năm đứng im ở giữa một ván game, con trỏ chuột xoay vòng tròn như con nhện bị lật ngửa. Tôi bấm ba phím cùng lúc. Cái bảng quản lý tác vụ hiện ra, tôi tắt chương trình bị treo, mở lại. Mất chưa tới mười giây.</p>
+<p class="dialogue">– Vậy là được hả anh?</p>
+<p class="dialogue">– Dạ. Anh mất ván đó thôi.</p>
+<p class="dialogue">– Mất ván thì thôi, anh ta thở ra. Bữa trước ông chủ ổng rút điện cái rụp, mất luôn cái bài tiểu luận của em gái tui đang gõ dở.</p>
+<p>Tôi đứng đó, tay còn đặt trên chuột máy năm, và chợt thấy hơi lạnh ở gáy. Cái chuyện rút điện cái rụp đó có thật. Tôi đã đứng đây năm mười bảy tuổi, cười khi ba tôi làm vậy, vì tôi nghĩ người ta lo xa quá. Năm mười bảy tuổi tôi chưa từng mất cái gì đang gõ dở.</p>
+<p>Quán vẫn y như trong trí nhớ, chỉ sáng hơn, ồn hơn, và nhỏ hơn. Mười hai cái máy xếp thành hai dãy dọc theo căn nhà ống, giữa là lối đi vừa đủ một người lách qua. Trên tường dán tấm bảng giá viết tay: <em>Ngày 3.000đ/giờ. Trưa vắng 2.500đ. Không hút thuốc trong quán</em> (dòng cuối bị ai gạch một đường chéo). Cái quầy gỗ ở cửa có ngăn kéo khóa bằng ổ khóa con ó. Phía sau quầy là cầu thang sắt lên tầng hai, chỗ cả nhà tôi ăn ngủ.</p>
+<p>Nhà tôi. Cái nhà mà đầu năm 2010 ba tôi bán đi để trả nợ, với giá thấp hơn thị trường bốn mươi triệu vì cần tiền gấp.</p>
+<p>Tôi tính nhẩm theo phản xạ. Đó là tật của tôi, tật nghề cò nhà đất, nhìn cái gì cũng thấy ra tiền. Căn nhà ống hai tầng mặt tiền hẻm này năm 2008 đáng chừng tám trăm triệu. Năm 2026, cùng con hẻm này, căn kế bên vừa rao bán chín tỷ.</p>
+<p><em>Chín tỷ. Trừ đi... trừ đi tất cả mọi thứ.</em></p>
+<p>Tôi thấy mình phải ngồi xuống. Tôi ngồi xuống cái ghế đẩu nhựa sau quầy, đúng chỗ ba tôi hay ngồi, và lúc đó tôi nghe thấy giọng ông.</p>
+<p class="dialogue">– Ờ, thì tui tính vậy đó. Kèo này chắc.</p>
+<p>Giọng ba từ ngoài vỉa hè vọng vào, qua cánh cửa kính lùa dán đầy giấy quảng cáo thẻ cào. Giọng của ông năm bốn mươi lăm tuổi. Không có tiếng khò khè ở cuối câu. Không có cái nhịp ngừng để lấy hơi giữa hai chữ. Một cái giọng to, chắc, có hơi lên mặt, của một người đàn ông tin rằng mình vừa nghĩ ra một kế hoạch làm ăn rất khôn.</p>
+<p>Tôi đứng lên. Máy chín ở ngay cạnh quầy đang tắt, trên màn hình dán tờ giấy ghi chữ HƯ bằng bút lông, nét chữ của ba. Trong cái màn hình đen bóng ấy có một khuôn mặt nhìn lại tôi: tóc cắt ba phân, cái mụn bọc đỏ ửng trên cằm, cặp kính gọng nhựa trễ xuống mũi. Tôi đã quên mất là mình từng đeo kính. Mổ mắt năm 2015, tốn mười hai triệu, tiền tháng lương thứ mười ba. Thằng nhóc trong màn hình chớp mắt cùng lúc với tôi, và tôi phải đưa tay lên chỉnh cặp kính thì nó mới chịu chỉnh theo.</p>
+<p>Tôi chùi tay vào ống quần. Lòng bàn tay ướt nhẹp, dù cái quạt trần ngay trên đầu đang quay hết số. Ở góc quầy, cái bình trà đá của ba đọng đầy nước bên ngoài, chảy thành một vòng tròn ướt trên mặt gỗ. Tôi rót một ly, uống một hơi, và thấy nó chát hơn mọi ly trà đá tôi từng mua ở Sài Gòn. Ba tôi pha trà bằng một nắm trà khô bốc tay, chưa bao giờ cân.</p>
+<p>Tôi ghé mắt qua một khoảng kính chưa bị giấy quảng cáo che.</p>
+<p>Ngoài vỉa hè có một cái bàn nhựa đỏ, hai cái ghế nhựa xanh. Một bình trà đá. Một gói thuốc Hero đỏ đã bóc. Ba tôi ngồi quay lưng về phía quán, áo sơ mi ca rô xắn tay, tóc còn đen nhánh, gáy rám nắng. Đối diện ông là một người đàn ông bụng phệ, đeo dây chuyền vàng to bằng ngón út, đặt trên đùi một cái cặp da màu nâu sờn quai. Tôi nhận ra ông ta trước khi kịp nhớ tên. Ông cho vay đầu hẻm. Người mà năm 2009, mỗi sáng đều dừng chiếc xe số trước cửa nhà tôi, không xuống xe, chỉ bóp kèn hai tiếng, và ba tôi sẽ đi ra đưa một xấp tiền gói trong tờ báo cũ.</p>
+<p>Trên bàn có một tờ giấy A4 kẻ ô. Tôi không cần đọc chữ cũng biết trên đó viết gì. Tôi đã đọc nó vào năm 2010, khi dọn nhà, thấy nó kẹp trong cuốn sổ hộ khẩu. Một trăm hai mươi triệu. Lãi bốn phần trăm một tháng. Góp ngày. Tài sản bảo đảm: căn nhà số 14, hẻm 27, đường Yersin.</p>
+<p class="dialogue">– Anh Tư ký ở đây, ông cho vay chỉ ngón tay đeo nhẫn vào góc dưới tờ giấy. Còn chỗ này thì chị Tư ký sau cũng được, không gấp.</p>
+<p class="dialogue">– Bả ký liền, ba tôi nói. Bả nghe tui.</p>
+<p><em>Má không nghe ba. Má chỉ không cãi.</em></p>
+<p>Ông cho vay cười, rút trong túi áo ra một cây bút bi xanh, đặt lên tờ giấy. Ba tôi cầm lên. Ông bấm đầu bút hai lần, cạch, cạch, đúng cái thói quen tôi đã quên mất mười mấy năm, cái thói quen mà tôi ghét cay ghét đắng hồi đi học vì ông hay làm vậy trong lúc ký sổ liên lạc, như thể chữ ký của ông là một quyết định quan trọng cần khởi động máy.</p>
+<p>Tôi đẩy cánh cửa kính.</p>
+<p>Cánh cửa kẹt ray. Nó luôn kẹt ray ở đúng chỗ đó, cách khung chừng một gang tay, phải nhấc lên một chút rồi mới kéo tiếp được. Tôi không nhớ. Tôi kéo mạnh. Cả tấm kính rung lên rầm một tiếng, mấy tờ quảng cáo thẻ cào bong ra một góc.</p>
+<p>Ba tôi quay lại. Ông nhìn tôi, nhíu mày, ngòi bút vẫn dừng cách tờ giấy chừng một đốt ngón tay.</p>
+<p class="dialogue">– Gì vậy? Bể kính tao giờ.</p>
+<p>Tôi mở miệng. Trong một giây, tôi có cả trăm câu để nói. Ba đừng ký. Ba ơi năm sau chứng khoán sập. Ba ơi hai năm nữa mình bán nhà. Ba ơi mười tám năm nữa ba nằm giường mười bốn khoa hô hấp và con không còn tiền.</p>
+<p>Tôi không nói được câu nào. Cổ tôi nghẹn một cục, cục đó có mùi khói thuốc và mùi trà đá.</p>
+<p>Ba tôi chờ thêm một giây. Thấy tôi không nói gì, ông khịt mũi, quay lại cái bàn nhựa, và cúi xuống tờ giấy.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch02">
+<p class="eyebrow">Chương 02 · Phần I: Máy 12 Hết Giờ</p>
+<h2 class="ch-title">Thằng điên lớp 11</h2>
+<p class="dialogue">– Ba ký là tháng ba năm 2010 mình bán nhà!</p>
+<p>Tôi nói câu đó to tới mức chị bán chè bưởi đẩy xe ngang qua phải thắng lại. Thằng nhóc máy bảy ló đầu khỏi vách ngăn. Ông cho vay đầu hẻm khựng tay đang rót trà, nước trà tràn ra khỏi miệng ly, chảy xuống mặt bàn nhựa đỏ thành một vũng nhỏ màu nước cống.</p>
+<p>Ba tôi từ từ quay lại. Cây bút bi vẫn nằm trong tay ông, đầu bút đã bấm ra.</p>
+<p class="dialogue">– Mày nói cái gì?</p>
+<p>Tôi đứng đó, hai tay buông thõng, chân đi dép lê, cái kính gọng nhựa trễ xuống mũi. Từ góc nhìn của ba, tôi là một thằng con trai mười bảy tuổi vừa lao ra khỏi quán net lúc mười hai giờ năm mươi trưa thứ Năm, la một câu không đầu không đuôi về năm 2010 trước mặt khách.</p>
+<p><em>Hay lắm. Câu mở màn tệ nhất lịch sử những người du hành thời gian.</em></p>
+<p class="dialogue">– Con nói... con nói là ba đừng ký, tôi sửa lại, giọng nhỏ hơn. Vay cái này lỗ.</p>
+<p class="dialogue">– Lỗ hồi nào?</p>
+<p class="dialogue">– Thì... sau này.</p>
+<p class="dialogue">– Sau này là hồi nào?</p>
+<p>Tôi nhìn ông cho vay. Ông ta đã đặt bình trà xuống, chống cằm nhìn tôi bằng ánh mắt của người đi xem xiếc khỉ miễn phí. Nếu tôi nói tiếp "chứng khoán sẽ sập" hay "quán bên kia sẽ giảm giá", câu chuyện này sẽ được kể lại ở quán cà phê đầu hẻm trước bữa tối, kèm thêm vài chi tiết, và tới sáng mai cả hẻm 27 sẽ đồn thằng con ông Tư bị ma nhập.</p>
+<p class="dialogue">– Sau này, tôi lặp lại, như một con vẹt bị hỏng.</p>
+<p>Ba tôi nhìn tôi thêm hai giây. Rồi ông đặt cây bút xuống bàn, cạnh vũng trà.</p>
+<p class="dialogue">– Mày ngồi máy từ sáng tới giờ hả?</p>
+<p class="dialogue">– Dạ... dạ không.</p>
+<p class="dialogue">– Mắt đỏ như mắt thỏ kìa. Phê game rồi. Vô nhà rửa mặt đi.</p>
+<p>Ông cho vay bật cười. Tiếng cười của ông ta có ba nấc, nấc nào cũng rung cái bụng.</p>
+<p class="dialogue">– Tuổi này tụi nó vậy đó anh Tư. Thằng con tui chơi cái game gì có mấy con rồng, nằm mơ cũng la "chém chém". Bữa nó la giữa đêm, vợ tui tưởng ăn trộm.</p>
+<p class="dialogue">– Thằng này thì la lỗ lỗ, ba tôi nói. Chắc mơ thấy tui làm ăn.</p>
+<p>Hai người đàn ông cười với nhau, cái kiểu cười của người lớn khi muốn cho nhau thấy mình mới là người lớn. Tôi đứng đó, ba mươi lăm tuổi, và cảm thấy y hệt mười bảy tuổi.</p>
+<p>Nhưng có một điều tôi để ý: cây bút vẫn nằm trên bàn. Ba không cầm lên lại.</p>
+<p>Ông cho vay cũng để ý. Ông ta là dân làm ăn, mà dân làm ăn thì đọc được không khí. Ông ta kéo tờ giấy về phía mình, gấp làm đôi, kẹp vào cặp da.</p>
+<p class="dialogue">– Thôi, thứ Bảy em ghé, ông ta nói, đứng dậy phủi quần. Anh Tư với chị Tư ký luôn một lượt cho gọn. Giấy tờ nhà thì chị Tư cũng phải ký mà, đằng nào cũng phải chờ.</p>
+<p class="dialogue">– Ừ, thứ Bảy.</p>
+<p class="dialogue">– Sáng hay chiều anh?</p>
+<p class="dialogue">– Sáng. Mười giờ.</p>
+<p>Ông cho vay leo lên chiếc xe số, nổ máy, bóp kèn hai tiếng. Hai tiếng kèn đó làm sống lưng tôi lạnh toát, dù trời đang ba mươi sáu độ. Năm 2009, sáng nào cũng có hai tiếng kèn đó trước cửa nhà tôi.</p>
+<p>Ba tôi ngồi lại một mình, rót nốt chỗ trà còn trong bình, uống một hơi. Ông không nhìn tôi.</p>
+<p class="dialogue">– Vô đi, ông nói. Đứng đó cho người ta coi hả.</p>
+<hr class="scene-break">
+<p>Tôi vô nhà. Tôi đi thẳng lên cầu thang sắt, mỗi bậc kêu một tiếng "keng" như phím đàn, và đến bậc thứ chín thì tôi dừng lại vì nghe thấy tiếng má.</p>
+<p>Má tôi đang đứng trong cái bếp nhỏ ở tầng hai, lưng quay ra cầu thang, chiên cá. Mùi cá nục chiên với mùi tỏi phi lan khắp tầng lầu. Má mặc bộ đồ bộ màu tím hoa cà, tóc kẹp bằng cái kẹp càng cua màu đỏ, và đang hát theo cái đài nhỏ để trên tủ lạnh một bài vọng cổ mà tôi không nhớ tên.</p>
+<p>Má bốn mươi hai tuổi. Năm 2026, má sáu mươi, tóc bạc gần hết, tay trái run mỗi khi cầm đũa. Má ở trong phòng bệnh với ba, nằm dưới gầm giường. Còn bây giờ má đang lật một con cá nục bằng đôi đũa cả, khéo đến mức con cá không bị tróc một miếng da nào.</p>
+<p class="dialogue">– Sang đó hả? má nói, không quay lại. Xuống kêu ba mày lên ăn cơm. Mà đừng có ngồi máy nữa nghe, chiều mày còn đi học thêm.</p>
+<p class="dialogue">– Dạ.</p>
+<p>Tôi đứng ở bậc thứ chín thêm một lúc. Tôi đã nghĩ ra rất nhiều điều để nói nếu có ngày được gặp lại má lúc còn trẻ. Tôi đã nghĩ tới chúng vào năm 2013, vào cái tuần má nằm viện vì ruột thừa vỡ mà tôi nói qua điện thoại là "con bận quá má ơi, cuối tuần con về". Cuối tuần đó tôi không về. Cuối tuần sau cũng không.</p>
+<p class="dialogue">– Đứng đó chi vậy? Xuống kêu ba đi, cá nguội giờ.</p>
+<p class="dialogue">– Dạ.</p>
+<p>Tôi đi xuống.</p>
+<hr class="scene-break">
+<p>Bữa cơm trưa diễn ra trong nửa tiếng, và suốt nửa tiếng đó không ai nhắc tới tờ giấy vay. Ba tôi ăn ba chén, nói chuyện về giá gạo. Má gắp cho tôi cái đầu cá, như mọi lần, vì từ hồi nhỏ tôi đã nói là tôi thích ăn đầu cá. Tôi đã quên mất là tôi từng nói câu đó. Thật ra tôi không thích. Tôi chỉ nói vậy năm tám tuổi vì thấy má toàn ăn đầu cá.</p>
+<p>Tôi ăn cái đầu cá. Nó ngon hơn tôi nhớ, và nhiều xương hơn tôi nhớ. Tôi mắc xương một lần, ho sặc sụa, má đập lưng tôi ba cái rồi đưa ly nước.</p>
+<p class="dialogue">– Ăn từ từ. Có ai giành đâu.</p>
+<p class="dialogue">– Dạ.</p>
+<p class="dialogue">– Hồi nhỏ mày ăn đầu cá giỏi lắm mà. Lớn rồi lại vụng.</p>
+<p>Ba tôi không quay khỏi màn hình tivi, nơi một bản tin đang nói giá gạo ở chợ lại nhích lên. Ông lẩm bẩm tính tiền gạo cả nhà mỗi tháng, ra một con số, rồi chửi thề nhỏ một tiếng. Má liếc ông. Ông thò tay xuống gầm bàn, búng sợi dây cao su trên cổ tay mình, búng rất khẽ, như sợ con nghe thấy.</p>
+<p class="dialogue">– Bữa nay mày sao vậy? ba hỏi, mắt vẫn nhìn tivi. Lúc nãy la cái gì ngoài kia?</p>
+<p class="dialogue">– Con... con mơ.</p>
+<p class="dialogue">– Mơ giữa trưa?</p>
+<p class="dialogue">– Dạ. Con ngủ gục trên bàn phím.</p>
+<p>Ba khịt mũi, gắp một miếng rau muống luộc.</p>
+<p class="dialogue">– Tao nói rồi, ngồi máy riết khùng. Từ mai mày lo học. Năm sau thi đại học rồi đó.</p>
+<p><em>Năm sau con thi rớt Toán, ba à. Rớt sát nút. Ba không nói gì suốt đường về, rồi bữa đó ba uống rượu với chú tôi tới khuya.</em></p>
+<p>Tôi gật đầu.</p>
+<p>Sau bữa cơm, má rửa chén, ba xuống quán, tôi vào phòng. Phòng tôi là một cái gác lửng ngăn bằng ván ép, cao vừa đủ để ngồi thẳng lưng, rộng vừa đủ để nằm duỗi chân. Trên vách dán một tấm poster cầu thủ Brazil số mười, đã phai màu một nửa vì nắng xiên qua khe ngói. Dưới gối là một cuốn truyện tranh mượn của tiệm cho thuê đầu chợ, quá hạn ba ngày, tiền phạt năm trăm đồng một ngày.</p>
+<p>Tôi nằm xuống và bắt đầu nghĩ như một người lớn.</p>
+<p>Thứ Bảy. Mười giờ sáng. Hôm nay thứ Năm. Tức là tôi còn chiều nay, ngày mai, và sáng thứ Bảy. Ba ngày, nếu tính cả hôm nay.</p>
+<p>Tôi không thể nói thật. Điều đó rõ như ban ngày. Nếu tôi nói "con từ năm 2026 về", trường hợp tốt nhất là ba tôi cười, trường hợp xấu nhất là má tôi dẫn tôi đi gặp ông thầy pháp ở Lái Thiêu mà má vẫn kể là "coi trúng lắm". Đằng nào thì tờ giấy cũng được ký.</p>
+<p>Tôi cũng không thể ăn cắp tờ giấy. Nó nằm trong cặp da của ông cho vay, và ông ta có thể viết một tờ khác trong năm phút.</p>
+<p>Tôi có thể khóc lóc. Ba tôi ghét nhất là con trai khóc.</p>
+<p>Tôi có thể nhờ má. Nhưng đời trước má đã không cản, và tôi không biết tại sao.</p>
+<p>Tôi nằm nhìn trần nhà, cái trần tôn có một vệt rỉ sét hình con cá, và chợt thấy một điều hơi buồn cười: tôi mất mười tám năm để tin rằng ba tôi là người làm sập nhà, nhưng tôi chưa từng hỏi xem lúc đó ông tính toán như thế nào. Ông vay một trăm hai mươi triệu để làm gì, cụ thể. Mỗi tháng ông nghĩ sẽ thu được bao nhiêu. Ông nghĩ bao lâu thì hoàn vốn. Tôi chỉ nhớ kết quả. Kết quả thì cả hẻm đều thuộc.</p>
+<p><em>Muốn cãi ba thì phải có số. Mà số thì phải nằm ở đâu đó trong cái nhà này.</em></p>
+<p>Tôi ngồi dậy, cụng đầu vào trần tôn một cái rõ đau.</p>
+<hr class="scene-break">
+<p>Chiều đó tôi không đi học thêm. Tôi ngồi máy mười hai, giả vờ chơi game, và thử đăng nhập vào mọi thứ của thằng Sang năm 2008.</p>
+<p>Đó là một trải nghiệm nhục nhã.</p>
+<p>Hộp thư Yahoo của tôi có tên đăng nhập là "sang_dep_trai_91". Tôi nhớ được tới đó. Mật khẩu thì tôi không nhớ. Tôi thử ngày sinh, không đúng. Thử tên con chó nhà ngoại, không đúng. Thử "123456", không đúng, và tôi hơi tự hào về thằng nhóc mười bảy tuổi vì nó ít nhất không ngu tới mức đó. Thử "matkhau", không đúng. Đến lần thứ năm, Yahoo hiện một câu hỏi bảo mật:</p>
+<p class="message"><em>"Tên giáo viên bạn yêu thích nhất?"</em></p>
+<p>Tôi ngồi nhìn câu hỏi đó rất lâu. Thằng Sang năm 2008 yêu thích giáo viên nào? Tôi không có ý tưởng gì. Tôi thử tên cô dạy Văn lớp mười, vì cô hay cho tôi điểm bảy. Sai. Tôi thử tên thầy chủ nhiệm. Sai. Tôi thử "không có". Sai.</p>
+<p>Màn hình báo tài khoản bị khóa hai mươi bốn giờ.</p>
+<p class="dialogue">– Anh Sang ơi, anh ghi thêm cho em một tiếng nha, thằng nhóc máy bảy gọi với qua. Em trả sau.</p>
+<p class="dialogue">– Mày nợ bao nhiêu rồi?</p>
+<p>Nó im một chút, đếm ngón tay.</p>
+<p class="dialogue">– Em không nhớ. Ba mươi mấy.</p>
+<p class="dialogue">– Ba mươi mấy nghìn hả?</p>
+<p class="dialogue">– Dạ. Hay bốn mươi. Anh coi trong máy đó.</p>
+<p>Tôi mở phần mềm quản lý quán. Cái phần mềm tên NetKing, giao diện màu xanh dương với logo một con sư tử đội vương miện vẽ rất xấu. Dưới mục "Khách nợ" có đúng một dòng: <em>Thằng máy 7: 41.000đ</em>. Ba tôi không hỏi tên nó, hoặc hỏi rồi mà lười gõ.</p>
+<p>Tôi nhìn con số bốn mươi mốt nghìn và bật cười. Từ trưa tới giờ tôi chưa cười được cái nào. Bốn mươi mốt nghìn là gần mười bốn tiếng chơi game. Thằng nhóc này nợ quán nhà tôi trọn một ngày thức của nó.</p>
+<p class="dialogue">– Ghi thêm một tiếng, tôi nói. Nhưng mày phải về trước năm giờ. Má mày dọa bán máy bảy của tao đó.</p>
+<p class="dialogue">– Dạ!</p>
+<p>Rồi tôi nhìn lại cái phần mềm. Ở thanh menu bên trái, ngay dưới mục "Khách nợ", có một mục khác: <em>Báo cáo doanh thu</em>. Tôi bấm vào. Màn hình hiện ra một bảng số liệu theo ngày, mỗi máy chạy bao nhiêu giờ, tổng thu bao nhiêu. Bảng chỉ lưu được ba mươi ngày gần nhất.</p>
+<p>Ba mươi ngày. Tôi kéo xuống dòng tổng.</p>
+<p>Mười một triệu tám trăm nghìn tiền giờ máy, trong ba mươi ngày. Chưa tính nước ngọt, mì gói, thẻ cào.</p>
+<p>Tôi chụp lại con số đó bằng mắt, như người ta chụp biển số xe của kẻ vừa tông mình rồi bỏ chạy. Rồi tôi tự hỏi tiền nước ngọt, mì gói, thẻ cào được ghi ở đâu. Không phải trong máy. Ba tôi không tin máy để giữ tiền mặt.</p>
+<p>Cái đó thì tôi nhớ.</p>
+<hr class="scene-break">
+<p>Tối đó, mười một giờ kém năm, ba tôi đi một vòng quán, gõ vào vai từng người khách đang chơi.</p>
+<p class="dialogue">– Mười một giờ rồi nha, tắt game nha. Phường đi bắt đó.</p>
+<p class="dialogue">– Chú ơi cho con năm phút, con đang đánh boss!</p>
+<p class="dialogue">– Boss nó chờ được. Phường không chờ.</p>
+<p>Đúng mười một giờ, ông bước ra quầy, kéo cái cầu dao nhỏ phía sau. Mười một cái màn hình tắt phụt cùng lúc. Máy chín vốn đã tắt sẵn. Trong quán vang lên một tràng tiếng than như sân vận động vừa bị gỡ hòa phút bù giờ. Đám thanh niên lục tục kéo nhau ra, có đứa đá vào chân ghế, có đứa chửi thề rồi tự giác búng dây cao su vào cổ tay trước mặt ba tôi, búng thật kêu để chứng minh.</p>
+<p>Ba tôi kéo cửa cuốn xuống hết. Ông khóa ổ con ó ở quầy, cất chìa vào túi áo, rồi lên lầu, đi ngang qua tôi mà không nói gì.</p>
+<p>Tôi ngồi lại trên bậc cầu thang. Dưới chân tôi, quán net tối om, chỉ còn ánh đèn ngủ màu đỏ của cái bàn thờ ông địa đặt dưới gầm quầy.</p>
+<p>Mười một giờ hai mươi, tiếng dép của má đi ngang qua cầu thang. Má không đi ngủ. Má xuống quầy, bật cái đèn bàn nhỏ, lấy trong ngăn tủ dưới gầm ra một cuốn sổ bìa nhựa màu xanh lá, gáy sổ dán băng keo đen để khỏi bung. Má lật tới trang có kẹp cây viết, rồi bắt đầu ghi.</p>
+<p>Tôi ngồi im trên cầu thang, nhìn qua song sắt.</p>
+<p>Má ghi chậm, từng dòng một, thỉnh thoảng dừng lại bấm cái máy tính Casio nhỏ bằng bàn tay. Ánh đèn bàn chiếu lên mặt má, lên mấy sợi tóc lòa xòa ngoài cái kẹp càng cua. Má ghi gần nửa tiếng. Rồi má đóng sổ, nhìn cuốn sổ một lúc, như người ta nhìn một đứa con không nghe lời, và cất lại vào ngăn tủ.</p>
+<p>Má tắt đèn. Má đi lên, ngang qua chỗ tôi ngồi.</p>
+<p class="dialogue">– Chưa ngủ hả?</p>
+<p class="dialogue">– Dạ chưa.</p>
+<p class="dialogue">– Ngủ đi. Mai còn đi học.</p>
+<p>Tôi gật đầu. Má lên lầu. Tôi nghe tiếng cửa phòng má khép lại, tiếng ba ho một tiếng trong đó, khan và ngắn.</p>
+<p>Tôi móc trong túi quần ra hai tờ lịch mà thằng nhóc máy bảy xé lố hồi trưa. Tờ ngày mười và tờ ngày mười một. Tờ lịch còn treo trên cột dưới kia là ngày mười hai, chữ in to <em>THỨ BẢY</em>, cái ngày mà thằng nhóc đã vô tình xé tới trước tôi.</p>
+<p>Ngăn tủ dưới gầm quầy không có khóa.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch03">
+<p class="eyebrow">Chương 03 · Phần I: Máy 12 Hết Giờ</p>
+<h2 class="ch-title">Sổ của má</h2>
+<p>Một giờ sáng, tôi rút cuốn sổ ra khỏi ngăn tủ bằng hai ngón tay, chậm như người rút một lá bài khỏi chồng bài mà không muốn cả chồng đổ.</p>
+<p>Ngăn tủ kêu "két" một tiếng. Trên lầu, ba tôi trở mình, cái giường gỗ kêu theo. Tôi đứng im dưới gầm quầy, tay cầm cuốn sổ, tim đập như vừa ăn trộm. Theo một nghĩa nào đó thì đúng là tôi đang ăn trộm. Một gã ba mươi lăm tuổi, nợ ba thẻ tín dụng, đang ăn trộm sổ thu chi của má mình lúc nửa đêm.</p>
+<p><em>Ít ra lần này mình trộm để trả nợ trước khi nó có.</em></p>
+<p>Tôi không dám bật đèn. Tôi mang cuốn sổ tới máy mười hai, mở cái công tắc nguồn riêng của nó ở phía sau ổ điện, chỗ mà chỉ con chủ quán mới biết là có. Cái máy khởi động với một tiếng rè như người già hắng giọng, quạt tản nhiệt kêu ro ro, rồi màn hình bừng sáng đồi cỏ xanh. Tôi vội vặn độ sáng xuống thấp nhất. Cả quán chìm trong bóng tối, chỉ còn một ô vuông xanh lờ mờ và cái đèn đỏ trên bàn thờ ông địa.</p>
+<p>Tôi mở cuốn sổ ra.</p>
+<p>Má tôi ghi sổ như người ta chép kinh. Mỗi trang một ngày, ngày tháng viết ở góc trên bên phải, gạch chân hai lần. Bên trái là cột thu, bên phải là cột chi. Thu có ba dòng cố định: <em>Giờ máy</em> (chép lại từ máy tính, má không tin máy nhưng vẫn chép số của nó), <em>Nước + mì</em>, <em>Thẻ cào</em>. Chi thì lung tung hơn: <em>Điện</em>, <em>Mạng</em>, <em>Gạo</em>, <em>Học thêm Sang</em>, <em>Thuốc ho ông Tư</em>, <em>Đám cưới con bà xóm trên 200</em>, <em>Sửa máy 9 (không được)</em>.</p>
+<p>Cái dòng cuối làm tôi suýt bật cười. <em>Sửa máy 9 (không được).</em> Má ghi cả những khoản tiêu mà chẳng được gì, ghi đàng hoàng, có ngoặc đơn.</p>
+<p>Tôi lật từng trang, ngược về ba tháng trước. Tôi cộng bằng cái máy tính Casio của má, bấm khẽ từng phím một. Mỗi lần bấm, cái máy kêu "tịch" rất nhỏ, và tôi lại liếc lên cầu thang.</p>
+<p>Hai tiếng sau, tôi có được bức tranh.</p>
+<p>Tháng ba vừa rồi, quán thu tổng cộng mười lăm triệu ba trăm nghìn.</p>
+<p>Rồi tới phần trừ. Tiền điện, tịch. Tiền mạng, tịch. Tiền nhập nước nhập mì nhập thẻ, tịch. Tiền sửa chuột thay bàn phím, tịch. Cái máy Casio kêu bốn tiếng nhỏ như bốn con muỗi bị đập.</p>
+<p>Còn lại sáu triệu tám. Đó là tiền lời của cả một tháng. Đó là tiền gạo, tiền học thêm của tôi, tiền thuốc ho của ba, tiền đám cưới con bà xóm trên.</p>
+<p>Tôi mở Excel. Biểu tượng chữ X màu xanh lá của bản 2003 hiện ra, và trong một giây tôi lạc đường hoàn toàn vì không thấy cái thanh công cụ dạng dải băng quen thuộc. Mười mấy năm làm sale, tôi lập bảng tính nhanh hơn ăn cơm. Ở đây tôi mất năm phút chỉ để tìm nút kẻ khung.</p>
+<p><em>Công nghệ tiến bộ thật. Tiến bộ tới mức người già không xài được đồ cũ.</em></p>
+<p>Tôi lập một bảng hai cột. Cột trái là "12 máy như bây giờ". Cột phải là "30 máy, vay 120 triệu".</p>
+<p>Rồi tôi ngồi điền số vào cột phải, và càng điền, tay tôi càng lạnh.</p>
+<p>Ba tôi định mua thêm mười tám máy. Giả sử mười tám máy đó chạy kín gần nửa thời gian, mỗi ngày mười sáu tiếng, ba nghìn một giờ. Mười hai triệu một tháng. Nghe rất đẹp. Đó chắc chắn là con số ba tôi đã nghĩ trong đầu khi ngồi uống trà với ông cho vay.</p>
+<p>Nhưng mười tám cái máy thì ăn điện. Thêm khoảng bốn triệu một tháng, chưa kể phải kéo lại đường dây vì cái đồng hồ điện của nhà tôi không gánh nổi. Mạng phải nâng gói, thêm một triệu. Và tờ giấy vay.</p>
+<p>Một trăm hai mươi triệu. Bốn phần trăm một tháng. Góp ngày.</p>
+<p>Tôi biết cách tính góp ngày, vì năm 2009 tôi đã ngồi xem ba tôi tính nó mỗi tối bằng cây bút chì sau lưng tờ lịch. Góp trong một năm thì mỗi tháng trả gốc mười triệu, cộng lãi bốn triệu tám. Mười bốn triệu tám trăm nghìn mỗi tháng. Chia ra ba mươi ngày.</p>
+<p>Bốn trăm chín mươi ba nghìn ba trăm ba mươi ba đồng, mỗi ngày, kể cả chủ nhật.</p>
+<p>Tôi nhìn con số đó trên màn hình. Rồi tôi tính tổng cột phải. Thêm mười hai triệu, trừ bốn triệu điện, trừ một triệu mạng, trừ mười bốn triệu tám tiền góp.</p>
+<p>Âm bảy triệu tám trăm nghìn. Mỗi tháng.</p>
+<p>Tức là, nếu ba tôi vay, mỗi tháng ông sẽ phải lấy hết sáu triệu tám tiền lời của mười hai cái máy cũ ra để lấp, mà vẫn còn thiếu một triệu. Và đó là trường hợp mười tám cái máy mới kín gần nửa thời gian. Nếu ít khách hơn, cái lỗ sâu hơn. Nếu quán bên kia giảm giá, cái lỗ sâu hơn nữa.</p>
+<p>Đời trước, quán bên kia đã giảm giá.</p>
+<p>Tôi ngồi im rất lâu, mắt nhìn vào ô số âm tô đỏ.</p>
+<p>Từ năm 2010 tới giờ tôi nghĩ ba tôi làm sập nhà vì ham. Giờ tôi nhìn bảng tính và thấy một chuyện khác: ông đã cộng sai. Ông tính phần thu thêm mà quên tính phần chi thêm. Ông nhìn mười tám cái máy mới như mười tám cái máy in tiền, và không thấy cái đồng hồ điện, cái gói mạng, cái chiếc xe số đậu trước cửa mỗi sáng với hai tiếng kèn.</p>
+<p>Đó là lỗi mà thằng nhân viên bán hàng năm nhất nào cũng mắc, và bị trưởng phòng mắng cho tới khi bỏ.</p>
+<p>Tôi lật cuốn sổ lại để cất. Từ giữa hai trang tháng hai, một mảnh giấy xé từ lề báo rơi ra, nhỏ bằng bao diêm. Trên đó có mấy con số viết bút chì: <em>18 x ... 4.000.000 ... 500/ngày ...</em>, rồi một dấu bằng, rồi một con số bị gạch nhiều lần tới rách giấy, không đọc được.</p>
+<p>Nét chữ của má.</p>
+<p>Tôi cầm mảnh giấy dưới ánh màn hình. Rồi tôi kẹp nó lại vào đúng chỗ cũ, giữa hai trang tháng hai, và cất cuốn sổ vào ngăn tủ.</p>
+<p>Lúc đó là bốn giờ kém mười lăm. Ngoài đường có tiếng xe rác.</p>
+<hr class="scene-break">
+<p>Thứ Sáu tôi đi học. Ít ra là thân xác tôi đi học.</p>
+<p>Trường cách nhà ba trăm mét, đi bộ năm phút. Cổng trường sơn vàng, có một cây phượng già mà năm nào cũng có đứa leo lên hái hoa ép vào lưu bút. Tôi đi qua cổng như đi vào một bộ phim mà mình là diễn viên quên thoại. Mọi người gọi tôi. Tôi gật đầu với tất cả. Tôi không nhớ tên một nửa trong số họ.</p>
+<p>Tiết một là Toán. Thầy giảng về đạo hàm. Tôi nhìn lên bảng, nơi thầy viết một hàm số có chữ <em>x</em> mũ ba, và tôi nhận ra một sự thật đáng sợ: từ hồi ra trường tới giờ, tôi chưa từng cần tính đạo hàm một lần nào. Không một lần nào. Kiến thức đó đã rời khỏi đầu tôi lặng lẽ như một người thuê trọ dọn đi giữa đêm, không để lại địa chỉ.</p>
+<p><em>Không sao. Mình có việc quan trọng hơn đạo hàm.</em></p>
+<p>Tôi lấy tập ra, lật ra trang cuối, và viết lại bảng tính đêm qua bằng tay, gọn hơn, chỉ năm dòng. Thầy Toán đi ngang qua bàn tôi, liếc xuống, thấy một cột số có ký hiệu "tr" và "ngày", nhíu mày.</p>
+<p class="dialogue">– Lê Hoàng Sang. Em đang làm bài gì đó?</p>
+<p class="dialogue">– Dạ... bài toán thực tế thầy.</p>
+<p class="dialogue">– Thực tế gì?</p>
+<p class="dialogue">– Lãi kép thầy.</p>
+<p>Thầy nhìn tôi một lúc, nhìn cột số, rồi gật gù, có vẻ hài lòng một cách đáng ngờ.</p>
+<p class="dialogue">– Tốt. Lãi kép là ứng dụng của hàm mũ. Nhưng tiết này học đạo hàm. Cất đi.</p>
+<p>Tôi cất đi. Phía bàn trên, một đứa con gái tóc buộc đuôi ngựa quay xuống nhìn tôi, nhìn tờ giấy, rồi quay lên mà không nói gì.</p>
+<hr class="scene-break">
+<p>Tôi chọn tối thứ Sáu, sau giờ đóng quán.</p>
+<p>Không thể là sáng thứ Bảy, lúc ông cho vay đã ngồi chờ ngoài vỉa hè. Ba tôi là người sĩ diện. Cãi với ông trước mặt người ngoài là cách chắc chắn nhất để ông ký cho bằng được. Phải là lúc chỉ có hai cha con, lúc quán đã tắt máy, lúc ông đang mệt và đang muốn đi ngủ.</p>
+<p>Mười một giờ mười lăm. Ba tôi vừa kéo cửa cuốn xuống, đang đếm tiền trong ngăn kéo quầy. Ông đếm tiền bằng ngón cái liếm nước miếng, đếm hai lần, bó lại bằng sợi thun.</p>
+<p>Tôi đặt tờ giấy lên quầy, ngay cạnh xấp tiền.</p>
+<p class="dialogue">– Ba coi giùm con cái này.</p>
+<p>Ba tôi liếc xuống. Ông đọc chậm, môi mấp máy như người già đọc báo. Tôi nhìn mặt ông thay đổi. Đầu tiên là khó chịu, vì bị làm phiền. Rồi nghi ngờ, vì thấy chữ "vay 120 triệu". Rồi một thứ gì đó khác, khi mắt ông dừng lại ở dòng cuối cùng.</p>
+<p class="dialogue">– Mấy số này ở đâu ra?</p>
+<p class="dialogue">– Con tính.</p>
+<p class="dialogue">– Tính từ đâu?</p>
+<p>Tôi nuốt nước bọt.</p>
+<p class="dialogue">– Từ sổ của má.</p>
+<p>Ba tôi ngẩng lên. Năm 2026, mắt ông đục và chậm, nhìn đâu cũng như đang nhìn qua lớp kính mờ. Bây giờ thì mắt ông như hai cái đinh.</p>
+<p class="dialogue">– Mày lục đồ của má mày?</p>
+<p class="dialogue">– Con mượn. Con trả lại rồi.</p>
+<p class="dialogue">– Ai chỉ mày tính vầy?</p>
+<p class="dialogue">– Thầy dạy Tin, tôi nói. Bài thực hành Excel.</p>
+<p><em>Xin lỗi thầy dạy Tin. Thầy chưa bao giờ dạy tôi cái gì ngoài cách gõ mười ngón.</em></p>
+<p>Ba tôi nhìn tờ giấy lần nữa. Ông chỉ ngón tay vào dòng tiền điện.</p>
+<p class="dialogue">– Bốn triệu? Đâu tới bốn triệu.</p>
+<p class="dialogue">– Một máy chạy cả ngày ăn hết chừng bảy, tám chục nghìn tiền điện một tháng, chưa tính máy lạnh. Thêm mười tám máy là gần một triệu rưỡi. Rồi phải kéo đường dây mới, phải gắn thêm quạt, phải gắn máy lạnh vì ba mươi máy chạy trong cái nhà ống này là nóng như lò bánh mì. Tháng ba nhà mình xài điện ba triệu sáu. Ba lật sổ của má là thấy.</p>
+<p>Ba tôi không lật sổ. Ông gõ ngón tay xuống dòng tiền góp.</p>
+<p class="dialogue">– Còn cái này. Bốn trăm chín mươi mấy nghìn một ngày.</p>
+<p class="dialogue">– Dạ. Mỗi sáng ba phải đưa ông đó năm trăm nghìn. Kể cả ngày mưa. Kể cả ngày quán cúp điện. Kể cả bữa Tết.</p>
+<p class="dialogue">– Thì quán thu được mà.</p>
+<p class="dialogue">– Mười hai cái máy cũ mỗi ngày lời chừng hai trăm hai chục nghìn. Mười tám cái máy mới, trừ điện trừ mạng, mỗi ngày còn chừng hai trăm nghìn. Cộng lại chưa tới năm trăm. Ba sẽ phải lấy tiền gạo ra bù.</p>
+<p>Ba tôi im lặng. Ông nhìn tờ giấy rất lâu. Bên ngoài, một chiếc xe máy chạy ngang, đèn pha quét qua khe cửa cuốn thành một vệt sáng trên trần.</p>
+<p class="dialogue">– Hè đông, ông nói. Hè gấp đôi.</p>
+<p class="dialogue">– Hè ba tháng. Còn chín tháng kia. Mà tiền góp thì mười hai tháng.</p>
+<p class="dialogue">– Mày nói như mày làm chủ quán mười năm rồi.</p>
+<p><em>Không, ba. Con làm chủ cái nợ mười năm rồi.</em></p>
+<p class="dialogue">– Con chỉ tính thôi ba.</p>
+<p>Ba tôi đẩy tờ giấy về phía tôi. Tôi tưởng ông sẽ vò nó lại, hoặc chửi, hoặc đi lên lầu. Ông không làm gì cả. Ông chỉ ngồi đó, nhìn xấp tiền vừa bó, và tôi biết mình chỉ còn một nước.</p>
+<p class="dialogue">– Ba cho con một tháng, tôi nói. Một tháng thôi. Con làm cho mười hai cái máy này lời thêm hai triệu so với tháng ba. Không được thì ba ký. Con không nói gì nữa.</p>
+<p class="dialogue">– Hai triệu?</p>
+<p class="dialogue">– Dạ. Hai triệu một tháng.</p>
+<p class="dialogue">– Làm sao mày làm được hai triệu?</p>
+<p>Đó là câu hỏi hay. Tôi chưa có câu trả lời hoàn chỉnh. Tôi có vài ý tưởng: gói giờ ôn thi cho sinh viên trọ, bán thêm thẻ cào, sửa điện thoại. Những ý tưởng mà một gã ba mươi lăm tuổi từng thấy người khác làm giàu. Tôi không chắc cái nào chạy được ở hẻm 27 năm 2008.</p>
+<p class="dialogue">– Con làm được, tôi nói.</p>
+<p>Ba tôi nhìn tôi. Rồi ông đưa tay lên, đặt hai ngón tay trỏ và giữa lên mặt quầy gỗ, và gõ. Cộc. Cộc. Hai tiếng, chậm.</p>
+<p>Tay tôi giật nhẹ theo tiếng cộc thứ hai, như tay đứa học trò nghe thước gõ bàn. Đó là cách ba tôi suy nghĩ về những chuyện lớn. Năm tôi tám tuổi, ông gõ như vậy trước khi quyết định mua chiếc Wave cũ. Năm tôi mười hai tuổi, ông gõ như vậy trước khi mở quán net. Đời trước, trưa thứ Năm ông có gõ như vậy hay không, tôi không biết. Tôi không có mặt. Tôi đang ngồi máy mười hai, đánh game.</p>
+<p class="dialogue">– Chắc chưa? ba hỏi.</p>
+<p class="dialogue">– Chắc.</p>
+<p>Ông gõ thêm một cái. Cộc.</p>
+<p class="dialogue">– Một tháng, ông nói. Tính từ mai.</p>
+<p>Rồi ông đứng dậy, cầm xấp tiền, bỏ vào túi quần, và đi lên lầu. Bậc thang sắt kêu "keng" dưới chân ông, từng bậc, đều như đồng hồ. Tới bậc thứ chín ông dừng lại, không quay xuống.</p>
+<p class="dialogue">– Trả cái sổ cho má mày đàng hoàng. Lần sau mượn thì hỏi.</p>
+<p class="dialogue">– Dạ.</p>
+<hr class="scene-break">
+<p>Mười giờ sáng thứ Bảy, chiếc xe số đậu trước cửa đúng giờ. Ông cho vay không bóp kèn. Ông xuống xe, cầm cặp da, ngồi vào cái ghế nhựa xanh ngoài vỉa hè như đã ngồi đó từ đời ông cố.</p>
+<p>Tôi đứng sau quầy, giả vờ lau màn hình máy chín. Tôi nghe được hết.</p>
+<p class="dialogue">– Anh Tư, chị Tư đâu anh?</p>
+<p class="dialogue">– Bả đi chợ.</p>
+<p class="dialogue">– Ủa? Hẹn mười giờ mà.</p>
+<p class="dialogue">– Ờ, tui tính lại rồi. Để tháng sau đi.</p>
+<p>Ông cho vay ngồi im một chút. Tôi không nhìn được mặt ông ta, chỉ thấy cái gáy đỏ au và sợi dây chuyền vàng.</p>
+<p class="dialogue">– Tháng sau thì lãi khác à nghen anh Tư. Bây giờ em để bốn phần là vì anh em quen biết.</p>
+<p class="dialogue">– Ờ, khác thì khác.</p>
+<p class="dialogue">– Hay thằng con anh nó nói gì? Bữa trước nó la quá trời.</p>
+<p>Ba tôi cười một tiếng, khô khốc.</p>
+<p class="dialogue">– Nó con nít, nó biết gì. Tui tính thôi.</p>
+<p>Ông cho vay rút tờ giấy trong cặp ra, đặt lên bàn, vuốt phẳng bằng lòng bàn tay.</p>
+<p class="dialogue">– Vậy anh giữ cái này đi. Khi nào anh tính xong thì ký đưa em. Em không chờ lâu đâu nha.</p>
+<p>Ông ta đi. Chiếc xe số nổ máy, quay đầu, lần này bóp kèn một tiếng, ngắn và cụt, như một cái tặc lưỡi.</p>
+<p>Ba tôi ngồi lại ngoài vỉa hè. Ông cầm tờ giấy lên, đọc lại từ đầu đến cuối, rồi gấp làm tư, nhét vào túi áo ngực, và cài nút lại.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch04">
+<p class="eyebrow">Chương 04 · Phần I: Máy 12 Hết Giờ</p>
+<h2 class="ch-title">Ca tối ôn thi</h2>
+<p><em>ÔN THI CẤP TỐC. 5.000Đ HAI TIẾNG. CÓ CÀI PHÔNG. HỌC TỚI KHUYA.</em></p>
+<p>Tôi viết tấm băng rôn đó bằng sơn dầu màu đỏ trên một khúc vải bố xin của tiệm may đầu chợ, quỳ trên nền xi măng sân thượng từ năm giờ chiều Chủ nhật tới gần bảy giờ tối. Chữ của tôi xấu, nhưng to. Trong nghề bán nhà người ta dạy câu đầu tiên của mọi tấm biển phải là thứ khách đang sợ nhất. Tháng tư, sinh viên sợ nhất là thi.</p>
+<p>Có một điều tôi không tính tới: năm 2026 người ta treo biển trên mạng, còn năm 2008 người ta treo biển trên cột điện, và cột điện thì có chủ.</p>
+<hr class="scene-break">
+<p>Ý tưởng bắt đầu từ một câu hỏi rất đơn giản. Mười hai cái máy của nhà tôi chạy kín vào buổi chiều, khi học sinh tan trường, và chạy kín vào cuối tuần. Nhưng từ chín giờ tới mười một giờ tối thì lưng chừng. Học sinh cấp ba đã bị má gọi về. Đám thanh niên chơi game thì còn đang ăn nhậu. Mỗi tối có chừng năm, sáu cái máy ngồi chơi không.</p>
+<p>Năm, sáu cái máy, hai tiếng, ba mươi ngày. Ba nghìn một giờ. Gần một triệu tiền giờ bị bỏ không mỗi tháng.</p>
+<p>Đó là một nửa cái mục tiêu hai triệu, nằm sẵn trong khung giờ tối, chỉ chờ có người ngồi vào.</p>
+<p>Cách hẻm 27 chừng một cây số có một trường cao đẳng kỹ thuật, quanh đó là cả một xóm nhà trọ cho sinh viên. Tôi nhớ cái xóm đó. Đời trước, mùa thu năm 2009, khi nhà còn đang gồng nợ, tôi thuê một phòng ở đó trong đúng một học kỳ trước khi bỏ học. Phòng trọ không có mạng. Muốn gõ bài, muốn tải tài liệu, muốn gửi bài cho thầy qua thư điện tử thì phải ra tiệm. Mà tiệm net quanh trường toàn là tiệm game, ồn như chợ cá, khói thuốc mù mịt, mười giờ tối là chủ đuổi về.</p>
+<p>Và còn một chuyện nữa, chuyện mà chỉ người từng ngồi gõ tiểu luận năm 2008 mới nhớ.</p>
+<p>Phông chữ.</p>
+<p>Sinh viên gõ bài ở nhà bạn bằng một kiểu phông, mang qua tiệm net mở ra thì chữ "Nguyễn" biến thành một chuỗi ký tự như mật mã người ngoài hành tinh. Mười tiệm net thì chín tiệm không thèm cài phông. Đời trước tôi đã đứng khóc ở một tiệm như vậy lúc mười giờ rưỡi đêm vì bài tiểu luận Triết hạn nộp tám giờ sáng hôm sau hiện ra toàn ô vuông.</p>
+<p><em>Thằng Sang năm 2009 ơi. Anh không cứu được em, nhưng anh bán được cái này cho người khác.</em></p>
+<p>Tối Chủ nhật, tôi xin ba cho mượn cái máy chín đang hư để làm "máy cài phông". Ba nhìn tôi như nhìn một đứa xin tiền mua gió.</p>
+<p class="dialogue">– Máy đó hư.</p>
+<p class="dialogue">– Con biết. Con không cần nó chạy. Con cần cái màn hình của nó.</p>
+<p class="dialogue">– Để làm gì?</p>
+<p class="dialogue">– Để dán giấy lên.</p>
+<p>Ba tôi không hỏi thêm. Ông đã quyết định từ tối thứ Sáu là trong một tháng ông sẽ không hỏi thêm, và tôi thấy ông đang cố hết sức để giữ quyết định đó. Mỗi lần tôi làm gì kỳ cục, ông mím môi lại, quay đi, gõ một ngón tay lên quầy.</p>
+<p>Tôi dán lên màn hình máy chín một tờ giấy A4: <em>CÀI PHÔNG MIỄN PHÍ CHO BÀI TIỂU LUẬN CỦA BẠN. HỎI ANH Ở QUẦY.</em> Rồi tôi cài sẵn vào cả mười một cái máy còn lại bốn bộ phông phổ biến nhất năm đó, cài tới một giờ sáng, mỗi máy khởi động lại hai lần.</p>
+<p>Sáng thứ Hai, trước khi đi học, tôi vác tấm băng rôn đỏ ra đầu hẻm, đứng trên ghế nhựa, cột nó vào cột điện bằng dây kẽm. Gió thổi tấm vải căng phồng như cánh buồm. Cô Út bán xôi đầu hẻm ngó lên, đọc to:</p>
+<p class="dialogue">– Ôn thi cấp tốc... năm nghìn hai tiếng... cài phông... học tới khuya. Khuya là mấy giờ con?</p>
+<p class="dialogue">– Dạ tới mười một giờ cô.</p>
+<p class="dialogue">– Mười một giờ đâu có khuya. Khuya là hai, ba giờ sáng.</p>
+<p class="dialogue">– Dạ, khuya của sinh viên cô.</p>
+<p>Cô cười, múc cho tôi một gói xôi bắp, không lấy tiền.</p>
+<hr class="scene-break">
+<p>Tối thứ Hai, ba sinh viên tới.</p>
+<p>Tôi nhớ rõ từng người vì họ là ba khách hàng đầu tiên của tôi ở kiếp này. Một anh cao gầy, mang theo cái USB móc vào chùm chìa khóa, cần gõ báo cáo thực tập. Một chị tóc ngắn cần tải đề cương môn Kinh tế vi mô từ trang của trường. Một anh đeo kính dày hơn kính tôi, ngồi xuống máy ba, mở bài tiểu luận ra, và kêu lên một tiếng thảm thiết khi thấy toàn ô vuông.</p>
+<p>Tôi đi tới, cúi xuống, bấm ba cái, đổi phông. Chữ hiện ra. <em>"Phân tích vai trò của..."</em></p>
+<p>Anh đeo kính nhìn tôi như nhìn Đức Phật.</p>
+<p class="dialogue">– Ủa, sao em làm được?</p>
+<p class="dialogue">– Quán có cài sẵn anh.</p>
+<p class="dialogue">– Mấy tiệm kia nói phải mang qua tiệm photo nhờ người ta chuyển. Chuyển một bài năm nghìn.</p>
+<p class="dialogue">– Ở đây miễn phí. Anh chỉ trả tiền giờ.</p>
+<p>Anh ta trả mười nghìn cho gói bốn tiếng, mặc dù gói chỉ có hai tiếng và quán đóng lúc mười một giờ. Anh ta nói "để dành lần sau", rồi xin số điện thoại quán.</p>
+<p>Tối thứ Ba, bảy người. Anh đeo kính dẫn theo bốn đứa cùng phòng trọ. Tối thứ Tư, mười một người, và lúc mười giờ kém mười lăm, quán đã kín hết mười một cái máy chạy được. Một chị sinh viên đứng chờ ở cửa, tay cầm xấp đề cương, hỏi "có máy nào trống chưa em".</p>
+<p>Tôi đứng ở quầy, tính nhẩm. Mười một suất, năm nghìn một suất, năm mươi lăm nghìn một tối. Thấp hơn giá lẻ một chút, nhưng đó là năm mươi lăm nghìn từ những cái máy mà tuần trước còn ngồi chơi không. Nếu giữ được như vậy ba mươi ngày, cộng thêm tiền nước ngọt mà sinh viên ôn thi uống như uống nước lã...</p>
+<p>Ba tôi đứng sau lưng tôi. Ông không nói gì, nhưng tôi thấy ông nhìn dãy máy kín người, nhìn cái tờ giấy dán trên màn hình máy chín, rồi đi ra ngoài châm điếu thuốc. Lúc ông quay vào, ông mang theo hai thùng nước ngọt từ kho, xếp vào cái tủ mát cạnh quầy mà không ai bảo.</p>
+<p><em>Không khen. Nhưng nhập thêm nước ngọt. Ba tôi khen bằng hàng tồn kho.</em></p>
+<p>Mười giờ tối hôm đó, má đi xuống cầu thang, tay bưng một nồi chè đậu xanh bột báng còn bốc hơi, đặt lên đầu quầy cùng một chồng chén nhựa và một xấp muỗng.</p>
+<p class="dialogue">– Má làm chi vậy má?</p>
+<p class="dialogue">– Bán.</p>
+<p class="dialogue">– Bán cho ai?</p>
+<p class="dialogue">– Cho tụi nó, má hất cằm về phía dãy máy. Học khuya thì đói. Ba nghìn một chén.</p>
+<p>Má không hỏi ba. Má không hỏi tôi. Má đứng đó, múc chè, thối tiền lẻ từ cái túi vải đeo trước bụng, và nói chuyện với mấy đứa sinh viên bằng cái giọng mà tôi chưa từng nghe má dùng với khách quán net: giọng của người bán chè ở chợ, nhanh, ngọt, có chút trêu chọc. Một chị sinh viên ăn hai chén, xin thêm nước cốt dừa, má cho mà không tính tiền. Nồi chè hết lúc mười giờ bốn mươi.</p>
+<p>Má lật cuốn sổ, ghi vào một góc riêng, ngoài cột thu: <em>Chè 42</em>. Rồi má khoanh tròn con số lại.</p>
+<p class="dialogue">– Cái này tiền của má, má nói, liếc tôi. Không tính vô hai triệu của mày.</p>
+<p class="dialogue">– Dạ.</p>
+<p class="dialogue">– Mà mai má nấu chè đậu đen.</p>
+<p>Ba tôi đứng ở cửa hút thuốc, nghe hết, không quay lại. Nhưng điếu thuốc của ông cháy hết mà ông không rít hơi nào, tàn rơi dài một đốt trên ngón tay.</p>
+<hr class="scene-break">
+<p>Hai đêm thức tới một giờ sáng, tôi trả giá ngay vào sáng thứ Năm. Tiết hai môn Lý, tôi ngủ gục lúc thầy đang giảng về dòng điện xoay chiều. Tôi mơ thấy cái đồng hồ điện của nhà mình quay vù vù như chong chóng. Thầy Lý ném một viên phấn trúng ngay giữa trán tôi, chính xác như lính bắn tỉa.</p>
+<p class="dialogue">– Lê Hoàng Sang. Đêm qua em làm gì?</p>
+<p class="dialogue">– Dạ, em trực quán.</p>
+<p>Cả lớp cười. Thầy Lý không cười.</p>
+<p class="dialogue">– Trực quán net hả? Năm sau thi đại học rồi đó em. Ba em có biết không?</p>
+<p class="dialogue">– Dạ, ba em... ba em là người giao việc.</p>
+<p>Cả lớp cười to hơn. Ở bàn trên, đứa con gái tóc đuôi ngựa không cười. Nó quay xuống nhìn tôi một cái, nhìn cái vết sơn đỏ còn dính ở móng tay tôi, rồi quay lên chép bài tiếp.</p>
+<hr class="scene-break">
+<p>Tối thứ Năm, đoàn kiểm tra tới.</p>
+<p>Họ tới lúc chín giờ hai mươi, ba người. Một anh mặc áo sơ mi xanh dương bỏ trong quần, kẹp nách một cuốn sổ bìa cứng. Một anh công an khu vực mặc quân phục, đội nón kết, mặt trẻ măng. Và một chú lớn tuổi đeo băng đỏ, tôi đoán là tổ trưởng dân phố, đi sau cùng với vẻ mặt của người bị kéo đi xem phim không muốn xem.</p>
+<p>Anh áo xanh dương đứng ở cửa, nhìn vào quán.</p>
+<p class="dialogue">– Chủ quán đâu?</p>
+<p>Ba tôi từ trên lầu đi xuống. Tôi thấy rõ cách vai ông khựng lại ở bậc thứ năm, rồi thả lỏng, rồi bước tiếp. Ông đã từng bị kiểm tra. Ông đã quen cái cảm giác này.</p>
+<p class="dialogue">– Dạ, tui. Mấy anh vô uống nước.</p>
+<p class="dialogue">– Thôi khỏi anh. Cái băng rôn ngoài đầu hẻm là của quán anh phải không?</p>
+<p>Ba tôi nhìn tôi. Tôi nhìn xuống chân.</p>
+<p class="dialogue">– Dạ phải.</p>
+<p>Anh áo xanh dương mở cuốn sổ bìa cứng, lật tới một trang có kẹp tờ giấy, và đọc to, chậm rãi, như đọc bản án:</p>
+<p class="dialogue">– Ôn thi cấp tốc. Năm nghìn đồng hai tiếng. Có cài phông. Học tới khuya.</p>
+<p>Anh ta ngưng lại, nhìn ba tôi.</p>
+<p class="dialogue">– Khuya là mấy giờ anh?</p>
+<p class="dialogue">– Dạ... mười một giờ.</p>
+<p class="dialogue">– Vậy sao ghi "khuya"? Quán anh có trò chơi trực tuyến, quá mười một giờ là không được cung cấp. Anh ghi "khuya" là người ta hiểu sao? Người ta hiểu quán anh mở thâu đêm.</p>
+<p class="dialogue">– Dạ đâu có, quán tui tắt đúng mười một giờ. Mấy anh hỏi ai trong hẻm cũng biết.</p>
+<p class="dialogue">– Cái đó tụi tui sẽ kiểm tra sau. Còn cái băng rôn, anh treo trên cột điện, có xin phép phường chưa?</p>
+<p>Ba tôi im lặng.</p>
+<p>Tôi bước lên một bước.</p>
+<p class="dialogue">– Dạ, cái đó con treo. Ba con không biết.</p>
+<p>Anh áo xanh dương nhìn tôi từ đầu đến chân. Cái kính gọng nhựa, cái áo đồng phục còn chưa thay, đôi dép lê.</p>
+<p class="dialogue">– Em bao nhiêu tuổi?</p>
+<p class="dialogue">– Dạ, mười bảy.</p>
+<p class="dialogue">– Mười bảy thì chưa đứng tên được cái gì hết em. Ba em là chủ hộ kinh doanh thì ba em chịu.</p>
+<p>Anh công an trẻ ghé mắt nhìn vào dãy máy. Mười một sinh viên đang cắm cúi gõ bài, có đứa còn đeo tai nghe, không ai ngẩng đầu. Không có ai chơi game. Không có ai hút thuốc. Trên màn hình máy chín là tờ giấy <em>CÀI PHÔNG MIỄN PHÍ</em>.</p>
+<p class="dialogue">– Toàn sinh viên hả anh? anh công an hỏi, giọng có vẻ hơi bất ngờ.</p>
+<p class="dialogue">– Dạ. Mấy đứa ôn thi.</p>
+<p>Anh công an quay sang anh áo xanh dương, nói nhỏ gì đó. Anh áo xanh dương gật, rồi lắc, rồi lại gật. Chú tổ trưởng dân phố nhìn đồng hồ đeo tay.</p>
+<p>Cuối cùng, anh áo xanh dương rút một tờ biên bản ra khỏi cuốn sổ.</p>
+<p class="dialogue">– Treo quảng cáo không phép trên cột điện. Lập biên bản. Anh gỡ cái băng rôn xuống trong tối nay. Nộp phạt ở phường, năm trăm nghìn.</p>
+<p>Năm trăm nghìn.</p>
+<p>Tôi đứng đó, và cái máy tính trong đầu tôi chạy trước khi tôi kịp ngăn nó. Năm trăm nghìn là chín tối ôn thi kín máy. Là một phần tư cái mục tiêu hai triệu. Là gần đúng số tiền mỗi sáng ba tôi sẽ phải đưa cho ông cho vay nếu ông ký tờ giấy đang nằm trong túi áo ngực.</p>
+<p>Ba tôi ký vào biên bản. Ông ký nhanh, không bấm bút hai lần, không đọc lại. Ký xong, ông đưa trả cây bút, nói "cảm ơn mấy anh", giọng đều đều như đang cảm ơn người giao gas.</p>
+<p>Đoàn kiểm tra đi. Chú tổ trưởng dân phố đi cuối, lúc ngang qua tôi thì dừng lại, vỗ vai tôi hai cái.</p>
+<p class="dialogue">– Ghi "tới mười một giờ" là được rồi con. Ai mượn ghi "khuya".</p>
+<p class="dialogue">– Dạ.</p>
+<p class="dialogue">– Mà cái vụ cài phông là hay đó. Con tui học trường đó, nó than hoài.</p>
+<p>Rồi chú đi.</p>
+<hr class="scene-break">
+<p>Tôi gỡ tấm băng rôn lúc mười giờ rưỡi tối. Gió đã tắt. Tấm vải bố nặng trịch, sơn đỏ còn chưa khô hẳn ở chữ "KHUYA", dính ra tay tôi thành một vệt như máu. Tôi cuộn nó lại, vác về, ném vào góc kho cạnh mấy thùng nước ngọt.</p>
+<p>Khi tôi vào, ba tôi đang ngồi ở quầy. Trước mặt ông là tờ biên bản, và cuốn sổ bìa xanh của má đang mở.</p>
+<p>Ông không nhìn tôi. Ông cầm cây bút bi của má, viết vào cột chi của ngày hôm nay, bằng nét chữ to và vụng hơn nét của má rất nhiều:</p>
+<p><em>Phạt băng rôn (thằng Sang) 500.</em></p>
+<p>Rồi ông gạch chân hai lần, đúng như má vẫn làm.</p>
+<p class="dialogue">– Ba...</p>
+<p class="dialogue">– Tháng này mày còn hai mươi lăm ngày, ông nói, vẫn không ngẩng đầu. Mục tiêu giờ là hai triệu rưỡi.</p>
+<p class="dialogue">– Dạ.</p>
+<p class="dialogue">– Cái vụ phông chữ, ông nói thêm, và lần này ông dừng lại hơi lâu, như đang tìm chữ. Cái vụ phông chữ, mai mày chỉ tao cách cài. Lỡ mày đi học, sinh viên tới hỏi, tao không biết làm.</p>
+<p>Tôi đứng đó, tay còn dính sơn đỏ.</p>
+<p class="dialogue">– Dạ. Sáng mai con chỉ.</p>
+<p>Ba tôi gập cuốn sổ, cất vào ngăn tủ, tắt đèn bàn, và đi lên lầu.</p>
+<p>Tôi ngồi xuống ghế đẩu, mở NetKing, cộng lại. Bốn tối ôn thi, ba mươi hai suất, một trăm sáu mươi nghìn. Tiền nước ngọt bán thêm cho sinh viên, chừng tám mươi nghìn. Trừ tiền vải, tiền sơn, tiền dây kẽm hết bốn mươi lăm nghìn.</p>
+<p>Sau sáu ngày, kế hoạch của tôi lời được một trăm chín mươi lăm nghìn. Còn cái đích thì vừa bị ba tôi dời ra xa thêm năm trăm nghìn, bằng một nét bút bi.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch05">
+<p class="eyebrow">Chương 05 · Phần I: Máy 12 Hết Giờ</p>
+<h2 class="ch-title">Thằng nhóc máy bảy</h2>
+<p class="dialogue">– Bấm chuột phải. Phải. Bên phải ba.</p>
+<p class="dialogue">– Thì tao đang bấm bên phải đây!</p>
+<p class="dialogue">– Đó là bên phải của con. Ba ngồi đối diện con mà.</p>
+<p>Sáu giờ rưỡi sáng thứ Sáu, ba tôi ngồi trước máy ba, cầm con chuột bi như cầm một con chuột thật đang định cắn ông. Tôi đứng bên cạnh, tay cầm cái USB đựng bốn bộ phông chữ, giảng giải lần thứ ba trong vòng mười phút.</p>
+<p>Ba tôi sửa máy rất giỏi. Ông tháo được cái nguồn máy tính ra, hàn lại tụ điện, ráp vô, chạy ngon lành. Ông thay được dây mạng, bấm đầu dây bằng kìm, nhớ thứ tự tám sợi màu không cần nhìn. Nhưng mọi thứ nằm bên trong màn hình thì với ông là một thế giới khác, một thế giới mà ông bước vào với thái độ của người lần đầu đi máy bay: nghi ngờ, căng thẳng, và sẵn sàng đổ lỗi cho phi công.</p>
+<p class="dialogue">– Rồi. Hiện cái bảng rồi đó. Giờ ba bấm vô chữ "Cài đặt".</p>
+<p class="dialogue">– Chữ nào?</p>
+<p class="dialogue">– Chữ "Install". Chữ thứ hai từ trên xuống.</p>
+<p class="dialogue">– Sao nó ghi tiếng Anh?</p>
+<p class="dialogue">– Tại người ta làm vậy ba.</p>
+<p class="dialogue">– Mấy cái này để cho sinh viên xài mà ghi tiếng Anh, ba lầm bầm, nhưng ngón trỏ vẫn ấn xuống. Một tiếng "tạch". Màn hình chạy một thanh màu xanh. Ông nhìn thanh màu xanh chạy như nhìn đồng hồ đếm ngược bom.</p>
+<p>Thanh màu xanh chạy hết. Ông thở ra một hơi dài, nhẹ nhõm, rồi quay qua nhìn tôi, mặt hơi đắc thắng.</p>
+<p class="dialogue">– Vậy thôi hả?</p>
+<p class="dialogue">– Dạ. Ba làm thêm ba bộ nữa là xong.</p>
+<p class="dialogue">– Ba bộ nữa?</p>
+<p class="dialogue">– Dạ. Mỗi trường gõ một kiểu ba.</p>
+<p>Ông chửi thề một tiếng, nhỏ. Rồi ông nhìn sợi dây cao su trên cổ tay, búng một cái, và quay lại màn hình.</p>
+<p>Tôi đứng sau lưng ông, nhìn cái gáy rám nắng của ông cúi sát vào màn hình, đọc từng chữ tiếng Anh bằng cách đánh vần thầm. <em>I-n-s-ta-ll.</em> Năm 2026, cũng cái gáy đó, nằm nghiêng trên gối bệnh viện, có một sợi dây oxy vắt ngang. Tôi quay mặt đi chỗ khác, giả vờ kiểm tra máy bảy.</p>
+<hr class="scene-break">
+<p>Máy bảy là lãnh địa của thằng nhóc.</p>
+<p>Nó tới lúc mười một giờ trưa thứ Bảy, đúng giờ như nhân viên ngân hàng. Nó mặc áo thun con khủng long, cái túi vải đeo chéo đựng một bịch bánh tráng trộn và một chai nước lọc bơm lại từ vòi. Nó không hỏi máy nào trống. Nó đi thẳng tới máy bảy, ngồi xuống, đeo cái tai nghe có micro màu đen đã quấn băng keo ở khớp nối, và mở game.</p>
+<p>"Thành Cổ Online" là trò chiến thuật xây thành đang làm mưa làm gió ở mọi tiệm net năm đó. Người chơi lập liên minh, xây thành, cướp tài nguyên của nhau, và chửi nhau qua micro bằng một vốn từ mà tôi tin là các nhà ngôn ngữ học nên nghiên cứu. Thằng nhóc máy bảy là một trong những đứa chửi giỏi nhất quán.</p>
+<p class="dialogue">– Đ... đứa nào cướp mỏ của tao! Thằng "SatThuBongDem" phải không? Mày đứng đó, tao qua liền!</p>
+<p>Cả quán quay lại nhìn. Thằng nhóc giật mình, nhìn xuống sợi dây cao su màu xanh lá trên cổ tay nó, cái sợi mà ba tôi phát cho từng khách quen như phát thẻ thành viên. Nó búng một cái. Rồi nó tiếp tục chửi, lần này nuốt mất chữ đầu.</p>
+<p>Tôi mở NetKing. Dòng nợ của nó đã nhích lên.</p>
+<p><em>Thằng máy 7: 47.000đ.</em></p>
+<p>Bốn mươi bảy nghìn. Hơn mười lăm tiếng chơi game. Tôi tính sơ ra thì nếu cứ giữ nhịp này, đến hết tháng tư thằng nhóc sẽ nợ quán tôi vài ký gạo.</p>
+<p>Tôi đi tới, gõ vào vai nó. Nó tháo một bên tai nghe ra, mặt cảnh giác như chú chó con bị bắt quả tang cắn dép.</p>
+<p class="dialogue">– Mày nợ bốn mươi bảy nghìn rồi đó.</p>
+<p class="dialogue">– Dạ, em biết.</p>
+<p class="dialogue">– Biết mà vẫn chơi?</p>
+<p class="dialogue">– Thì... em trả mà. Từ từ em trả.</p>
+<p class="dialogue">– Mày lấy tiền đâu trả?</p>
+<p>Nó ngập ngừng. Ngón tay nó vẫn bấm chuột liên tục, vì trên màn hình cái thằng "SatThuBongDem" đang đưa quân tới cổng thành.</p>
+<p class="dialogue">– Má em bán vé số. Tối má em về em xin.</p>
+<p>Tôi nhìn nó. Nó mười hai tuổi, gầy như cây sậy, móng tay đen vì nghịch đất. Cái áo khủng long kia, nếu tôi nhớ không lầm, nó mặc hết năm ngày trong tuần, và hai ngày còn lại mặc một cái áo khủng long khác, đỏ hơn.</p>
+<p class="dialogue">– Mày tên gì?</p>
+<p>Nó hơi khựng lại, mắt liếc lên quầy chỗ ba tôi ngồi.</p>
+<p class="dialogue">– Anh gọi em máy bảy được rồi.</p>
+<p class="dialogue">– Tên gì mà phải giấu?</p>
+<p class="dialogue">– Thì... em không thích tên em. Tên kỳ lắm.</p>
+<p class="dialogue">– Kỳ cỡ nào?</p>
+<p class="dialogue">– Kỳ lắm. Anh nghe xong anh cười.</p>
+<p class="dialogue">– Tao hứa không cười.</p>
+<p>Nó nhìn tôi với vẻ của người đã nghe lời hứa đó quá nhiều lần.</p>
+<p class="dialogue">– Để mai em nói.</p>
+<p>Tôi để yên. Thằng "SatThuBongDem" đang phá cổng thành. Thằng nhóc chụp tai nghe lại, chửi một tràng không có chữ đầu.</p>
+<hr class="scene-break">
+<p>Trên đường đi học chiều thứ Sáu, tôi đã ghé tiệm photo gần chợ, in ba trăm tờ rơi trên giấy A5 màu vàng chanh, một trăm đồng một tờ. Tổng cộng ba mươi nghìn. Lần này không có chữ "khuya". Lần này tôi viết như một người vừa bị phạt năm trăm nghìn:</p>
+<p><em>QUÁN NET MÁY 12. HẺM 27 YERSIN.</em> <em>Ca ôn thi 21h đến 23h: 5.000đ/2 tiếng.</em> <em>Cài phông chữ miễn phí. Mở cửa 8h đến 23h.</em> <em>(Tắt game đúng 23h theo quy định.)</em></p>
+<p>Dòng cuối là tôi viết để dành cho anh áo xanh dương, nếu một ngày nào đó anh ta cầm được tờ này trên tay.</p>
+<p>Vấn đề là ai đi phát. Tôi học sáng. Chiều học thêm. Tối trực quán. Còn ba thì tôi không tưởng tượng nổi cảnh ông đứng ở đầu xóm trọ nhét giấy vào tay sinh viên, cái mặt cau có của ông sẽ làm người ta tưởng ông đi đòi nợ.</p>
+<p>Tôi quay lại máy bảy.</p>
+<p class="dialogue">– Ê. Mày muốn trừ nợ không?</p>
+<p>Thằng nhóc tháo tai nghe nhanh hơn lần trước.</p>
+<p class="dialogue">– Trừ sao anh?</p>
+<p>Tôi đặt xấp tờ rơi vàng chanh lên bàn phím của nó.</p>
+<p class="dialogue">– Ba trăm tờ. Mày mang tới xóm trọ chỗ trường cao đẳng, nhét vô khe cửa từng phòng, mỗi phòng một tờ. Không nhét vô hộp thư, không dán lên cột điện, không thả xuống đất. Phát hết, tao trừ cho mày ba chục nghìn.</p>
+<p>Nó nhìn xấp giấy, rồi nhìn tôi, mắt sáng lên như vừa thấy rương báu.</p>
+<p class="dialogue">– Ba chục nghìn là mười tiếng chơi hả anh?</p>
+<p class="dialogue">– Mười tiếng.</p>
+<p class="dialogue">– Phát hết luôn hả?</p>
+<p class="dialogue">– Hết. Tao sẽ đi kiểm tra.</p>
+<p><em>Tao sẽ không đi kiểm tra. Tao không có thời gian. Nhưng mày không cần biết điều đó.</em></p>
+<p>Thằng nhóc nhét xấp tờ rơi vào túi vải, đè lên bịch bánh tráng trộn. Nó đứng dậy, lưỡng lự nhìn màn hình, nơi thằng "SatThuBongDem" đã chiếm được nửa thành của nó.</p>
+<p class="dialogue">– Anh ơi, máy em...</p>
+<p class="dialogue">– Tao trông cho.</p>
+<p class="dialogue">– Anh biết chơi không?</p>
+<p>Tôi ngồi vào máy bảy. Tôi chưa chơi "Thành Cổ Online" từ năm 2010.</p>
+<p class="dialogue">– Đi đi, tôi nói. Về là thành mày còn nguyên.</p>
+<p>Thằng nhóc chạy ra khỏi quán, cái túi vải đập vào hông bôm bốp.</p>
+<hr class="scene-break">
+<p>Mười lăm phút sau, thành của nó vẫn còn. Ba mươi phút sau, tôi đã đẩy được thằng "SatThuBongDem" ra khỏi cổng, cướp ngược lại hai mỏ đá của nó, và đang cân nhắc có nên chửi nó qua micro không.</p>
+<p class="dialogue">– Mày chơi kiểu đó mà má mày tưởng mày lo học.</p>
+<p>Giọng nói đó vang lên sau lưng tôi, và tôi đông cứng.</p>
+<p>Tôi không quay lại ngay. Tôi nhìn màn hình, nhìn cái thành của thằng nhóc, nhìn bàn tay tôi đang đặt trên chuột, và tôi đếm thầm một, hai, ba, như người ta đếm trước khi lặn xuống nước lạnh.</p>
+<p>Rồi tôi quay lại.</p>
+<p>Nghĩa đứng đó, tay đút túi quần, áo thun xám cổ tròn đã giãn, đeo cái ba lô đi học có một bên quai đứt được nối lại bằng dây dù. Nó mười bảy tuổi. Gầy hơn tôi, đen hơn tôi, cái răng khểnh bên trái chưa bị mẻ như năm 2026. Nó cười, và nó cười trước khi nói, đúng thói quen của nó từ hồi mẫu giáo.</p>
+<p class="dialogue">– Gì nhìn tao như thấy ma vậy?</p>
+<p>Tôi mở miệng. Tôi đóng lại.</p>
+<p>Đời này nó chưa làm gì tôi. Đời này nó mười bảy tuổi, chưa từng góp vốn với ai, chưa từng có tài khoản ngân hàng, chưa từng nhắn cho tôi tin nhắn nào mà tôi không muốn nhớ. Tôi nói câu đó với chính mình ba lần trong đầu. Lần thứ ba thì tôi gần tin.</p>
+<p class="dialogue">– Tuần rồi mày đi đâu? tôi hỏi.</p>
+<p>Câu hỏi bật ra trước khi tôi kịp kiểm tra nó. Một tuần nay tôi đã không thấy Nghĩa. Năm 2008, Nghĩa ghé quán nhà tôi gần như mỗi ngày. Nó ngồi máy mười một, cạnh tôi, buôn thẻ game cho đám học sinh cấp hai, lời được vài chục nghìn một tuần.</p>
+<p class="dialogue">– Đi phụ má tao ở xưởng, nó nói. Xưởng giày tăng ca, thiếu người dán đế. Mười lăm nghìn một ca.</p>
+<p class="dialogue">– Má mày cực ha.</p>
+<p class="dialogue">– Ờ. Có đơn hàng gấp.</p>
+<p>Nó đặt ba lô xuống ghế máy mười một, như mọi lần, rồi nhìn quanh quán.</p>
+<p class="dialogue">– Mấy cái quạt dơ dữ vậy. Chú Tư không chùi hả?</p>
+<p class="dialogue">– Ba tao bận.</p>
+<p class="dialogue">– Để tao chùi cho.</p>
+<p>Và nó chùi. Không ai nhờ. Nó lấy cái thang nhôm trong kho ra, leo lên tháo từng cái quạt trần, mang ra sau rửa dưới vòi, lau từng cánh bằng giẻ, rồi gắn lại. Nó làm trong một tiếng đồng hồ, mồ hôi ướt lưng áo. Ba tôi từ quầy nhìn sang, gật đầu với nó một cái, cái gật đầu mà tôi chưa từng nhận được trong tuần này.</p>
+<p>Tôi đứng dưới chân thang giữ cho nó. Từ trên cao, nó nói vọng xuống, giọng lẫn trong tiếng cánh quạt va lạch cạch.</p>
+<p class="dialogue">– Nghe nói mày la ba mày ngoài đường hả?</p>
+<p class="dialogue">– Ai nói?</p>
+<p class="dialogue">– Cô Út bán xôi. Cổ nói cả hẻm đồn mày bị ma nhập. Mà ma nào nhập cũng được, cổ nói, miễn là con ma biết học bài.</p>
+<p class="dialogue">– Con ma này không biết đạo hàm.</p>
+<p class="dialogue">– Vậy là ma thật rồi. Mày hồi trước cũng đâu biết.</p>
+<p>Nó cười, cái cười làm cái thang nhôm rung nhẹ. Tôi cười theo, chậm hơn nó nửa nhịp. Đã tám năm tôi không cười một câu đùa của Nghĩa. Cả hai thứ đó quay lại cùng lúc, và tôi không biết đặt tay vào đâu ngoài cái thang.</p>
+<p class="dialogue">– Còn vụ ôn thi, nó nói, tháo xong cánh quạt cuối cùng, đưa xuống cho tôi. Ai bày mày vậy?</p>
+<p class="dialogue">– Tự nghĩ.</p>
+<p class="dialogue">– Tự nghĩ, nó lặp lại, như nếm thử chữ đó. Ờ. Hay đó.</p>
+<p>Khi nó xuống thang lần cuối, tôi đưa nó tờ hai mươi nghìn.</p>
+<p class="dialogue">– Gì đây?</p>
+<p class="dialogue">– Tiền công.</p>
+<p>Nghĩa nhìn tờ tiền. Rồi nó nhìn tôi, nụ cười hơi lệch đi một chút, như cái khung ảnh bị ai chạm vào.</p>
+<p class="dialogue">– Tiền gì mày. Khùng hả. Tao chùi quạt nhà mày từ năm lớp sáu.</p>
+<p class="dialogue">– Thì lấy đi.</p>
+<p class="dialogue">– Không lấy.</p>
+<p>Nó đẩy tay tôi lại. Rồi nó đi ra quầy, rót một ly trà đá từ cái bình của ba tôi, uống một hơi. Đặt ly xuống, nó liếc lên tờ lịch bloc treo trên cột, cái tờ lịch mà thằng nhóc máy bảy đã xé lố từ tuần trước và giờ đã khớp lại với ngày thật.</p>
+<p class="dialogue">– Hôm nay mười mấy rồi mày?</p>
+<p class="dialogue">– Mười chín.</p>
+<p class="dialogue">– Mười chín, nó lặp lại. Ờ, mười chín.</p>
+<p>Ngón tay nó miết mép tờ lịch một cái, như vuốt cho thẳng. Rồi nó cười, quay đi, kéo ghế ngồi vào máy mười một.</p>
+<hr class="scene-break">
+<p>Thằng nhóc máy bảy về lúc năm giờ chiều, tóc bết mồ hôi, hai bàn chân lấm đầy đất đỏ. Cái túi vải của nó lép xẹp. Nó đưa tôi tờ rơi cuối cùng, nhàu nát, dính một vệt nước mắm từ bịch bánh tráng.</p>
+<p class="dialogue">– Hết rồi anh. Phòng nào cũng có. Có phòng không ai ở em cũng nhét.</p>
+<p class="dialogue">– Có ai hỏi gì mày không?</p>
+<p class="dialogue">– Có một chị hỏi em có phải con chủ quán không. Em nói phải.</p>
+<p class="dialogue">– Mày đâu phải con chủ quán.</p>
+<p class="dialogue">– Thì nói vậy người ta mới tin.</p>
+<p>Tôi không cãi được với logic đó. Tôi mở NetKing, sửa dòng nợ.</p>
+<p><em>Thằng máy 7: 17.000đ.</em></p>
+<p>Thằng nhóc nhìn con số, mặt rạng rỡ như vừa trúng số. Nó chạy về máy bảy, đeo tai nghe vào, và phát hiện ra thành của nó không những còn nguyên mà còn rộng thêm hai mỏ đá.</p>
+<p class="dialogue">– Anh ơi! Anh đánh thằng "SatThuBongDem" hả? Trời ơi anh đỉnh quá!</p>
+<p class="dialogue">– Ừ.</p>
+<p class="dialogue">– Anh chửi nó không?</p>
+<p class="dialogue">– Không.</p>
+<p>Nó nhìn tôi với ánh mắt vừa nể vừa thất vọng.</p>
+<p>Tối đó, ca ôn thi kín cả mười cái máy còn trống. Bốn người trong số đó cầm theo tờ giấy vàng chanh. Tôi cộng lại từ đầu tháng thử thách: tiền giờ ôn thi, tiền nước ngọt, trừ tờ rơi. Gần ba trăm nghìn, trên cái đích hai triệu rưỡi. Còn hai mươi ba ngày.</p>
+<p>Mười giờ năm mươi lăm, khi tôi đang đi một vòng nhắc sinh viên lưu bài, Nghĩa đứng dậy, đeo ba lô lên vai. Nó đi ngang qua quầy, chào ba tôi một tiếng, rồi dừng lại ở cửa.</p>
+<p>Nó móc trong túi quần ra cái bật lửa, cái bật lửa giả Zippo bằng kim loại mạ bạc đã tróc sơn ở góc mà nó mua ngoài vỉa hè năm lớp mười. Nó bật nắp ra, đóng lại. Bật ra, đóng lại. Tiếng "tách" nhỏ và đều, nghe như tiếng đồng hồ.</p>
+<p>Năm 2026, cái bật lửa đó nằm cạnh tay nó sau quầy một quán net khác. Nó vẫn chưa từng hút một điếu thuốc nào.</p>
+<p class="dialogue">– Về nha, Nghĩa nói, không quay lại.</p>
+<p>Ba tôi ngẩng lên khỏi cuốn sổ.</p>
+<p class="dialogue">– Nghĩa. Mai ghé ăn cơm nha con. Má thằng Sang kho cá.</p>
+<p>Nghĩa đứng khựng ở cửa, lưng vẫn quay vào trong. Cái bật lửa trong tay nó ngưng giữa chừng, nắp mở.</p>
+<p class="dialogue">– Dạ, nó nói. Để con coi.</p>
+<p>Rồi nó cúi người chui qua cánh cửa cuốn mà ba tôi vừa kéo xuống tới ngang hông. Ngoài hẻm, tiếng bật lửa tách thêm hai lần, xa dần, rồi thôi.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+    </div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Trở Về Năm 2008, Tôi Giữ Lại Quán Net Của Bố</p>
+        <p>Bút Nghiên — Kinh dị dân gian, quy tắc quái đàm. 5 chương · ~13k từ (12.675 từ). Đang tiếp tục.</p>
+        <p class="fmeta">© 2026 Bút Nghiên.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  // theme toggle (mặc định sáng, lưu localStorage)
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
+  }
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile toc toggle
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+
+  // active chapter highlight in side nav
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
+  }
+})();
+
+</script>
+</body>
+</html>
