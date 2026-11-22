@@ -60,6 +60,9 @@ section{padding:16px 0 12px;scroll-margin-top:64px}
 .card h3{font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
 .card ul{margin:8px 0 0;padding-left:1.2em} .card li{margin:.42em 0;font-size:17px;line-height:1.45}
 .card li b{font-weight:600}
+.card h3.red{color:var(--red)} .card h3.green{color:var(--green)} .card h3.orange{color:var(--orange)}
+.card ol{margin:8px 0 0;padding-left:1.35em} .card ol li{margin:.5em 0;font-size:17px;line-height:1.45}
+.rate{display:inline-block;font-size:14px;font-weight:700;padding:2px 10px;border-radius:980px;margin-left:8px;vertical-align:middle;background:var(--green-fill);color:var(--green)}
 .grid{display:grid;gap:14px;margin-top:4px} .g2{grid-template-columns:1fr}
 .pill{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:980px;margin-left:8px;vertical-align:middle;
   background:var(--fill);color:var(--label2)}
@@ -114,6 +117,8 @@ footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:
     <span class="nbrand">Audit<span class="d"> · tmp.vn</span></span>
     <div class="seg">
       <a href="#sum">Tổng quan</a>
+      <a href="#look">Thẩm mỹ</a>
+      <a href="#model">Mô hình</a>
       <a href="#ui">UI</a>
       <a href="#ux">UX</a>
       <a href="#seo">SEO</a>
@@ -174,6 +179,81 @@ footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:
           <li>Làm dày &amp; chuẩn <b>SEO on-page trang danh mục</b> (1 H1, thêm H2 + mô tả danh mục).</li>
         </ul></div>
     </div>
+  </section>
+
+  <!-- SYNTHESIS A: THẨM MỸ & DỄ DÙNG -->
+  <section id="look">
+    <div class="ghead">Góc nhìn · Thẩm mỹ &amp; Dễ dùng</div>
+    <p class="lead">Về <b>đẹp/xấu</b>: site <b>khá đẹp &amp; chỉn chu <span class="rate">~8.5/10</span></b> — thẩm mỹ chuyên nghiệp, đúng chất thương hiệu dược. Về <b>dễ dùng</b>: luồng mua rõ ràng, trang sản phẩm xuất sắc, nhưng <b>hiệu năng kéo trải nghiệm thực tế xuống</b>.</p>
+    <div class="grid g2">
+      <div class="card"><h3 class="green">Đẹp ở đâu</h3>
+        <ul>
+          <li>Nhận diện nhất quán, sạch: tông <b>xanh dược phẩm</b>, hệ card/nút/footer đồng bộ tuyệt đối mọi trang.</li>
+          <li>Ảnh sản phẩm <b>nền trắng kiểu studio</b>, đều tăm tắp — nhìn cao cấp.</li>
+          <li><b>Trust signal mạnh</b> (hợp ngành dược): cúp "Thương hiệu Quốc gia" ở hero, badge "Đã thông báo Bộ Công Thương", pháp nhân đầy đủ ở footer.</li>
+          <li>Trang sản phẩm bố cục cân đối: gallery trái — giá/CTA/thông tin phải, tabs gọn.</li>
+        </ul></div>
+      <div class="card"><h3 class="red">Sạn / phá chỉn chu</h3>
+        <ul>
+          <li>🔴 Chuỗi rác <code>s:3198"s:3198""";</code> <b>lòi ra góc trên-trái</b> trang chủ + mọi trang danh mục — một "sạn" rất lộ, phá cảm giác chuyên nghiệp.</li>
+          <li>Hero hơi "đặc", nhiều hiệu ứng ánh sáng/sao — hoành tráng nhưng hơi nặng mắt.</li>
+          <li>Trang danh mục trống phần đầu (chủ yếu lưới sản phẩm, thiếu dẫn dắt).</li>
+        </ul></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3 class="green">Dễ dùng ở đâu</h3>
+        <ul>
+          <li><b>Trang sản phẩm xuất sắc</b>: CTA "Thêm vào giỏ hàng" nổi bật, chọn số lượng, phí ship &amp; thời gian giao minh bạch, <b>social proof thật</b> ("12 người thêm giỏ · 24 đang xem").</li>
+          <li>Tabs Thành phần/Công dụng/Cách dùng, FAQ, và <b>đánh giá thật của khách đã mua — có ảnh, lọc được</b>. Vừa mua vừa tra cứu đều dễ.</li>
+          <li>Menu rõ, <b>breadcrumb đầy đủ</b>, 0 link gãy / 187 link.</li>
+        </ul></div>
+      <div class="card"><h3 class="red">Khó dùng / cần sửa</h3>
+        <ul>
+          <li>🔴 <b>Trang SP tải 18.4s (LCP) trên mobile</b> — "dễ dùng" tệ nhất: khách chờ quá lâu, dễ bỏ đi trước khi thấy nút mua. Đẹp mấy cũng vô nghĩa nếu không hiện kịp.</li>
+          <li>Ô tìm kiếm không nhãn, 11 nút không tên → khó cho screen reader; chức năng tìm kiếm chưa kiểm được.</li>
+          <li>Trên mobile phải <b>cuộn rất xa</b> (qua tin tức + danh sách video) mới tới sản phẩm — xem mục Mô hình.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- SYNTHESIS B: MÔ HÌNH CONTENT-COMMERCE -->
+  <section id="model">
+    <div class="ghead">Góc nhìn · Mô hình "vừa bán hàng vừa làm tin tức"</div>
+    <p class="lead">Về <b>chiến lược thì ĐÚNG</b>: ngành TPCN/dược sống bằng <i>niềm tin + thông tin</i>, nên mô hình <b>content + commerce</b> là hợp lý — và ở cấp <b>trang sản phẩm họ làm rất chuẩn</b> (nội dung khoa học + nút mua nằm chung, bổ trợ nhau).</p>
+    <div class="note go"><b>Không phải lỗi kỹ thuật.</b> Cùng nền tảng, cùng component, 0 link gãy, SEO technical tốt. Vấn đề nằm ở <b>ưu tiên &amp; kiến trúc trang chủ (IA)</b>, không phải ở hạ tầng.</div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3 class="orange">3 vấn đề ở trang chủ</h3>
+        <ul>
+          <li><b>Tin tức đặt LÊN TRÊN sản phẩm.</b> Sau hero là nguyên khối "Tin tức cập nhật" + video chiếm trọn màn đầu; "Sản phẩm nổi bật" bị đẩy xuống. Site có nhiệm vụ bán hàng mà đặt sai trọng tâm → khách mua phải tìm lâu, rụng chuyển đổi (nặng nhất trên mobile).</li>
+          <li><b>Lẫn 2 "giọng": PR doanh nghiệp vs bán hàng.</b> Nhiều tin là PR nội bộ (cộng đồng, hiến máu, ISG, tin nội bộ) — tốt cho uy tín nhưng không phục vụ trực tiếp người mua, khiến homepage giống trang <i>corporate</i> hơn <i>shop</i>.</li>
+          <li><b>Loãng search intent &amp; khó đo.</b> Trang tin (intent tìm hiểu) và trang sản phẩm (intent giao dịch) phục vụ 2 nhóm khác nhau; trộn chung homepage khiến khó tối ưu &amp; khó biết trang chủ đang đo mục tiêu gì.</li>
+        </ul></div>
+      <div class="card"><h3 class="green">Hướng xử lý (giữ mô hình, chỉnh ưu tiên)</h3>
+        <ul>
+          <li><b>Đảo thứ tự homepage</b>: đưa <i>Sản phẩm nổi bật / Danh mục sức khỏe</i> lên cao hơn, <i>Tin tức</i> thu gọn xuống dưới.</li>
+          <li><b>Tách 2 dòng nội dung</b>: "Góc sức khỏe / cẩm nang bệnh" (phục vụ mua, kéo SEO, link thẳng tới sản phẩm) cho nổi bật — "Tin doanh nghiệp/PR" gom vào mục riêng.</li>
+          <li><b>Biến content → đơn hàng</b>: mỗi bài viết gắn box "sản phẩm liên quan" + CTA → phễu content-to-commerce.</li>
+        </ul></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3 class="red">Thứ tự homepage — Hiện tại</h3>
+        <ol>
+          <li>Hero thương hiệu quốc gia</li>
+          <li><b>Tin tức cập nhật</b> (3 tab)</li>
+          <li><b>Video</b> (danh sách dài)</li>
+          <li>Sản phẩm nổi bật ⟵ <i>bị đẩy xuống</i></li>
+          <li>Danh mục sức khỏe</li>
+        </ol></div>
+      <div class="card"><h3 class="green">Thứ tự đề xuất</h3>
+        <ol>
+          <li>Hero (có thể kèm CTA mua/ưu đãi)</li>
+          <li><b>Sản phẩm nổi bật</b> ⟵ <i>đưa lên</i></li>
+          <li><b>Danh mục sức khỏe</b></li>
+          <li>Góc sức khỏe / cẩm nang (link tới SP)</li>
+          <li>Tin doanh nghiệp + video (thu gọn)</li>
+        </ol></div>
+    </div>
+    <div class="note warn" style="margin-top:14px"><b>Lưu ý phạm vi.</b> Các trang <b>tin tức/bài viết chưa được crawl &amp; đo</b> trong audit này (mới phủ home + danh mục + sản phẩm). Nhận định phần tin tức dựa trên vị trí/vai trò trên homepage, chưa đo tốc độ &amp; SEO từng bài. Nên chạy thêm một lượt audit riêng cho khu tin tức (và kiểm luồng checkout thực tế) để chắc chắn.</div>
   </section>
 
   <!-- 01 UI -->
