@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Audit · tmp.vn</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="color-scheme" content="light">
 <meta name="description" content="Đánh giá toàn diện website tmp.vn (Dược phẩm Thái Minh) — 7 trục, dữ liệu E2E thật (Playwright + Lighthouse).">
 <style>
 :root{
@@ -19,27 +20,9 @@
   --gutter:max(16px,env(safe-area-inset-left,0px));
   --gutter-r:max(16px,env(safe-area-inset-right,0px));
   --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#000000; --elev:#1c1c1e; --elev2:#2c2c2e;
-  --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
-  --sep:rgba(84,84,88,.65); --fill:rgba(118,118,128,.24);
-  --tint:#0a84ff; --tint-fill:rgba(10,132,255,.22);
-  --blue:#0a84ff; --green:#30d158; --green-fill:rgba(48,209,88,.18);
-  --orange:#ff9f0a; --orange-fill:rgba(255,159,10,.2);
-  --red:#ff6961; --red-fill:rgba(255,69,58,.18);
-  --shadow:none; color-scheme:dark;
-}}
-:root[data-theme="dark"]{
-  --bg:#000000; --elev:#1c1c1e; --elev2:#2c2c2e;
-  --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
-  --sep:rgba(84,84,88,.65); --fill:rgba(118,118,128,.24);
-  --tint:#0a84ff; --tint-fill:rgba(10,132,255,.22);
-  --blue:#0a84ff; --green:#30d158; --green-fill:rgba(48,209,88,.18);
-  --orange:#ff9f0a; --orange-fill:rgba(255,159,10,.2);
-  --red:#ff6961; --red-fill:rgba(255,69,58,.18);
-  --shadow:none; color-scheme:dark;
-}
+/* Luôn sáng — không có chế độ tối. */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--label);font-family:var(--sys);
@@ -101,7 +84,27 @@ td.red{color:var(--red);font-weight:700} td.ok{color:var(--green);font-weight:60
 .imp{font-weight:700} .imp.h{color:var(--red)} .imp.m{color:var(--orange)} .imp.l{color:var(--label2)}
 footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:1.7;margin-top:10px}
 .src code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px}
-@media (min-width:720px){ body{font-size:17px} .g2{grid-template-columns:1fr 1fr} .stats{grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr))} .stat.big{grid-column:auto} }
+/* Desktop / web: dùng gần hết bề ngang màn hình + chữ to hơn cho dễ đọc */
+@media (min-width:720px){
+  body{font-size:20px}
+  .wrap{max-width:min(1680px,100%);padding-left:max(48px,env(safe-area-inset-left,0px));padding-right:max(48px,env(safe-area-inset-right,0px))}
+  .g2{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:repeat(auto-fit,minmax(12rem,1fr))}
+  .stat.big{grid-column:auto}
+  .hero{padding:40px 0 30px}
+  .hero h1{font-size:clamp(56px,6vw,80px)}
+  .hero .sub{font-size:24px;max-width:46rem}
+  .lead{font-size:22px}
+  .card h3{font-size:21px}
+  .card li{font-size:18.5px}
+  .stat .n{font-size:38px} .stat.big .n{font-size:60px}
+  .note{font-size:18.5px}
+  table{font-size:17px} th,td{padding:15px 18px}
+  .ghead{font-size:16px}
+}
+@media (min-width:1200px){
+  .g3{grid-template-columns:repeat(3,1fr)}
+}
 </style>
 </head>
 <body>
