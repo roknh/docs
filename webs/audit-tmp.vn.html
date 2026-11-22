@@ -391,6 +391,32 @@ footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:
           <li>Sitemap 107 URL, canonical + JSON-LD toàn site.</li>
         </ul></div>
     </div>
+
+    <div class="card" style="margin-top:14px"><h3 class="orange">Nền tảng &amp; Source code — FleetCart (Laravel), KHÔNG phải WordPress</h3>
+      <p style="margin:0 0 10px">Site chạy trên <b>FleetCart</b> — bộ mã thương mại e-commerce viết bằng <b>Laravel (PHP)</b>, bán sẵn trên CodeCanyon. Nhận diện bằng bằng chứng thật (header HTTP + cookie + asset), không đoán:</p>
+      <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Dấu hiệu</th><th>Giá trị quan sát</th><th>Kết luận</th></tr></thead>
+        <tbody>
+          <tr><td>Cookie phiên</td><td><code>fleetcart_session=eyJpdiI…</code></td><td><b>FleetCart</b> — tên cookie chính là tên script</td></tr>
+          <tr><td>Cookie CSRF</td><td><code>XSRF-TOKEN</code> dạng <code>{iv,value,mac,tag}</code></td><td>Cookie mã hoá đặc trưng <b>Laravel</b></td></tr>
+          <tr><td>Asset theme</td><td><code>/themes/storefront/public/…?v=3.1.34</code></td><td>Theme mặc định "storefront", <b>bản 3.1.34</b></td></tr>
+          <tr><td>Front-end libs</td><td>jQuery · slick · lightgallery · lazysizes</td><td>Stack <b>jQuery render phía server</b>, không React/Vue/Next</td></tr>
+          <tr><td><code>/wp-login.php</code></td><td>HTTP <b>404</b></td><td>Không phải WordPress</td></tr>
+          <tr><td><code>/admin</code></td><td>302 → <code>/login</code></td><td>Admin panel kiểu Laravel</td></tr>
+          <tr><td>Chuỗi rác trang chủ</td><td><code>s:3198"s:3198""";</code></td><td>Giá trị <code>serialize()</code> của PHP lòi ra — bug dữ liệu</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <ul style="margin-top:12px">
+        <li><b>Mã mua sẵn, không build riêng:</b> giao diện gần như storefront mặc định của FleetCart — đây chính là lý do kỹ thuật cho cảm giác "template, hơi cũ" ở mục Thẩm mỹ. Nó <i>đúng là</i> template thật.</li>
+        <li><b>Backend Laravel = nền khá ổn:</b> framework PHP hiện đại (MVC, CSRF sẵn), chạy nginx, ẩn <code>X-Powered-By</code>, có security header cơ bản — "xương" tốt hơn một WordPress chắp vá plugin.</li>
+        <li><b>Front-end mới là chỗ cũ &amp; nặng:</b> toàn jQuery đời cũ, tải đồng bộ, không bundler/code-split, ảnh chỉ lazyload chứ không có pipeline ảnh hiện đại → <b>gốc rễ của LCP 18.4s</b> ở trang sản phẩm.</li>
+        <li><b>Đang chạy bản cũ:</b> app/theme gắn <code>v3.1.34</code> trong khi FleetCart đã phát triển tới đời 5 → lỡ nhiều cải tiến perf/bảo mật. Nhưng nâng cấp script CodeCanyon đã custom <b>rủi ro vỡ phần tuỳ biến</b> — cần cân nhắc kỹ.</li>
+        <li><b>Lỗi <code>s:3198</code> là bug dữ liệu:</b> một setting bị serialize sai rồi echo thô ra layout — sửa trong admin/DB, không cần đụng core.</li>
+      </ul>
+      <div class="note" style="margin-top:10px"><b>Hệ quả:</b> "cũ" không chỉ ở thẩm mỹ mà ở cả <b>thế hệ công nghệ</b>. Hiệu năng khó tối ưu triệt để vì bị khung FleetCart ràng (chỉ "vá" được: ảnh/cache/defer JS); mở rộng tính năng lệ thuộc vendor. Nền backend vẫn đủ tốt để <b>Optimize</b> thay vì Rebuild.</div>
+    </div>
   </section>
 
   <!-- 07 RECOMMENDATIONS -->
