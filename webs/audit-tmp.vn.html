@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Audit · tmp.vn</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Đánh giá toàn diện website tmp.vn (Dược phẩm Thái Minh) — 7 trục, dữ liệu E2E thật (Playwright + Lighthouse).">
+<style>
+:root{
+  --bg:#f2f2f7; --elev:#ffffff; --elev2:#f2f2f7;
+  --label:#1c1c1e; --label2:rgba(60,60,67,.6); --label3:rgba(60,60,67,.3);
+  --sep:rgba(60,60,67,.2); --fill:rgba(118,118,128,.12);
+  --tint:#007aff; --tint-fill:rgba(0,122,255,.12);
+  --blue:#007aff; --green:#248a3d; --green-fill:rgba(52,199,89,.14);
+  --orange:#b35b00; --orange-fill:rgba(255,149,0,.15);
+  --red:#c42b1c; --red-fill:rgba(255,59,48,.12);
+  --shadow:0 0 0 .5px rgba(0,0,0,.04);
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --gutter-r:max(16px,env(safe-area-inset-right,0px));
+  --sys:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#000000; --elev:#1c1c1e; --elev2:#2c2c2e;
+  --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+  --sep:rgba(84,84,88,.65); --fill:rgba(118,118,128,.24);
+  --tint:#0a84ff; --tint-fill:rgba(10,132,255,.22);
+  --blue:#0a84ff; --green:#30d158; --green-fill:rgba(48,209,88,.18);
+  --orange:#ff9f0a; --orange-fill:rgba(255,159,10,.2);
+  --red:#ff6961; --red-fill:rgba(255,69,58,.18);
+  --shadow:none; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#000000; --elev:#1c1c1e; --elev2:#2c2c2e;
+  --label:#ffffff; --label2:rgba(235,235,245,.6); --label3:rgba(235,235,245,.3);
+  --sep:rgba(84,84,88,.65); --fill:rgba(118,118,128,.24);
+  --tint:#0a84ff; --tint-fill:rgba(10,132,255,.22);
+  --blue:#0a84ff; --green:#30d158; --green-fill:rgba(48,209,88,.18);
+  --orange:#ff9f0a; --orange-fill:rgba(255,159,10,.2);
+  --red:#ff6961; --red-fill:rgba(255,69,58,.18);
+  --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--label);font-family:var(--sys);
+  font-size:18px;line-height:1.5;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;overflow-x:hidden}
+.wrap{max-width:48rem;margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+h1,h2,h3{margin:0;letter-spacing:-.022em;line-height:1.14;font-weight:700;text-wrap:balance}
+p{margin:.5em 0} a{color:var(--tint);text-decoration:none} b,strong{font-weight:600}
+.ghead{font-size:15px;font-weight:600;letter-spacing:.01em;text-transform:uppercase;color:var(--label2);margin:0 0 10px 2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.navbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:color-mix(in srgb,var(--bg) 80%,transparent);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:.5px solid var(--sep)}
+.navbar .wrap{display:flex;align-items:center;gap:10px;height:50px}
+.nbrand{font-size:18px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.nbrand .d{color:var(--label2);font-weight:400}
+.seg{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none;
+  margin-right:calc(-1 * var(--gutter-r));padding-right:var(--gutter-r)}
+.seg::-webkit-scrollbar{display:none}
+.seg a{font-size:16px;color:var(--tint);padding:6px 11px;border-radius:980px;white-space:nowrap;font-weight:500}
+@media (hover:hover){.seg a:hover{background:var(--tint-fill)}}
+.hero{padding:28px 0 24px}
+.eyebrow{font-size:15px;font-weight:600;letter-spacing:.01em;text-transform:uppercase;color:var(--tint)}
+.hero h1{font-size:clamp(40px,11vw,56px);font-weight:700;letter-spacing:-.03em;margin:.16em 0 0}
+.hero .sub{font-size:21px;color:var(--label2);margin-top:.55em;letter-spacing:-.016em;line-height:1.4}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.tag{font-size:15px;font-weight:500;padding:7px 13px;border-radius:980px;background:var(--fill);color:var(--label2)}
+.tag.on{background:var(--tint-fill);color:var(--tint)}
+.tag.ok{background:var(--green-fill);color:var(--green)}
+.tag.bad{background:var(--red-fill);color:var(--red)}
+section{padding:16px 0 12px;scroll-margin-top:64px}
+.lead{font-size:19px;color:var(--label);margin-top:0;line-height:1.5}
+.card{background:var(--elev);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+.card h3{font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.card ul{margin:8px 0 0;padding-left:1.2em} .card li{margin:.42em 0;font-size:17px;line-height:1.45}
+.card li b{font-weight:600}
+.grid{display:grid;gap:14px;margin-top:4px} .g2{grid-template-columns:1fr}
+.pill{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:980px;margin-left:8px;vertical-align:middle;
+  background:var(--fill);color:var(--label2)}
+.pill.good{background:var(--green-fill);color:var(--green)} .pill.warn{background:var(--orange-fill);color:var(--orange)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
+.stat{background:var(--elev);border-radius:18px;box-shadow:var(--shadow);padding:16px 17px}
+.stat .n{font-size:clamp(28px,8vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.02}
+.stat .l{font-size:15px;color:var(--label2);margin-top:9px;line-height:1.4}
+.stat.good .n{color:var(--green)} .stat.warn .n{color:var(--orange)} .stat.bad .n{color:var(--red)}
+.stat.big{grid-column:1/-1;background:var(--tint-fill)}
+.stat.big .n{color:var(--tint);font-size:clamp(40px,12vw,52px)}
+.tw{background:var(--elev);border-radius:18px;box-shadow:var(--shadow);overflow-x:auto;margin-top:4px}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th,td{text-align:left;padding:13px 14px;vertical-align:top;border-bottom:.5px solid var(--sep);line-height:1.4}
+thead th{font-size:14px;font-weight:600;color:var(--label2)}
+tbody tr:last-child td{border-bottom:none}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.red{color:var(--red);font-weight:700} td.ok{color:var(--green);font-weight:600}
+.note{border-radius:16px;padding:15px 16px;margin-top:4px;font-size:17px;line-height:1.45;background:var(--tint-fill);color:var(--label)}
+.note.go{background:var(--green-fill)} .note.warn{background:var(--red-fill)} .note b{font-weight:600}
+.badge{display:inline-block;font-size:14px;font-weight:600;padding:2px 8px;border-radius:7px;background:var(--orange-fill);color:var(--orange);white-space:nowrap}
+.imp{font-weight:700} .imp.h{color:var(--red)} .imp.m{color:var(--orange)} .imp.l{color:var(--label2)}
+footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:1.7;margin-top:10px}
+.src code{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px}
+@media (min-width:720px){ body{font-size:17px} .g2{grid-template-columns:1fr 1fr} .stats{grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr))} .stat.big{grid-column:auto} }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="wrap">
+    <span class="nbrand">Audit<span class="d"> · tmp.vn</span></span>
+    <div class="seg">
+      <a href="#sum">Tổng quan</a>
+      <a href="#ui">UI</a>
+      <a href="#ux">UX</a>
+      <a href="#seo">SEO</a>
+      <a href="#perf">Perf</a>
+      <a href="#feat">Chức năng</a>
+      <a href="#a11y">A11y</a>
+      <a href="#rec">Khuyến nghị</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Website Audit · Báo cáo nội bộ</div>
+    <h1>tmp.vn</h1>
+    <div class="sub">Dược phẩm Thái Minh — e-commerce thực phẩm bảo vệ sức khỏe. Đánh giá toàn diện trên 7 trục bằng dữ liệu E2E thật.</div>
+    <div class="tags">
+      <span class="tag">2026-11-22</span>
+      <span class="tag">slug: tmp.vn</span>
+      <span class="tag on">Tổng 78/100</span>
+      <span class="tag ok">Khuyến nghị: Optimize</span>
+      <span class="tag bad">🔴 LCP trang SP 18.4s</span>
+    </div>
+  </header>
+
+  <!-- 00 SCORECARD -->
+  <section id="sum">
+    <div class="ghead">Scorecard · 7 trục</div>
+    <div class="stats">
+      <div class="stat big"><div class="n">78</div><div class="l">Điểm tổng có trọng số — nền tảng tốt, một lỗ hổng chí mạng ở Performance trang sản phẩm</div></div>
+      <div class="stat good"><div class="n">88</div><div class="l">UI — Giao diện</div></div>
+      <div class="stat good"><div class="n">85</div><div class="l">UX — Trải nghiệm</div></div>
+      <div class="stat"><div class="n">82</div><div class="l">SEO</div></div>
+      <div class="stat warn"><div class="n">62</div><div class="l">Performance</div></div>
+      <div class="stat"><div class="n">80</div><div class="l">Features / Chức năng</div></div>
+      <div class="stat"><div class="n">72</div><div class="l">Accessibility + Tech</div></div>
+    </div>
+    <p class="lead" style="margin-top:16px"><b>tmp.vn</b> là website TMĐT của Công ty CP Dược phẩm Thái Minh, bán TPCN (xương khớp, tiêu hóa, vitamin, mẹ &amp; bé…). Nền tảng kỹ thuật vững: <b>SEO technical gần như hoàn hảo</b>, <b>0 link gãy / 187 link nội bộ</b>, trang sản phẩm cấu trúc chuẩn mực. Điểm trừ lớn &amp; nghiêm trọng duy nhất: <b>hiệu năng trang sản phẩm rất tệ</b> — mà đây chính là trang tạo doanh thu.</p>
+    <div class="note warn"><b>🔴 Việc PHẢI ưu tiên #1.</b> Tối ưu hiệu năng <b>trang sản phẩm</b> (LCP 18.4s → mục tiêu &lt;2.5s). Người dùng mobile vào trang sản phẩm gần như chắc chắn rời đi trước khi thấy nội dung.</div>
+    <p class="src" style="margin-top:14px">Trọng số: SEO 22 · Perf 20 · UX 18 · UI 15 · Features 15 · A11y/Tech 10. Thang màu tile: <b style="color:var(--green)">≥85 tốt</b> · 70–84 khá · <b style="color:var(--orange)">55–69 cần cải thiện</b>.</p>
+  </section>
+
+  <!-- QUICK WINS -->
+  <section>
+    <div class="ghead">Hành động nhanh</div>
+    <div class="grid g2">
+      <div class="card"><h3>Top 3 quick win <span class="pill good">impact cao · effort thấp</span></h3>
+        <ul>
+          <li>Bổ sung <b>meta description</b> cho 2 trang thiếu (<code>/danh-muc/me-va-be</code>, <code>/san-pham/tpbvsk-bo-gan-thai-minh</code>).</li>
+          <li>Xóa chuỗi rác <b><code>s:3198"s:3198""";</code></b> rò ở đầu HTML trang chủ + trang danh mục (lỗi PHP serialize lọt template).</li>
+          <li>Thêm <b>alt</b> cho ảnh sản phẩm ở trang danh mục (hiện ~26/31 ảnh thiếu alt).</li>
+        </ul></div>
+      <div class="card"><h3>Top 3 chiến lược</h3>
+        <ul>
+          <li>Chuẩn hóa <b>pipeline ảnh</b> (nén/WebP/lazyload + kích thước đúng) toàn site → giải quyết gốc rễ Performance.</li>
+          <li>Chuẩn hóa <b>accessibility</b> (nhãn nút/input, contrast, heading order) — vừa a11y vừa SEO.</li>
+          <li>Làm dày &amp; chuẩn <b>SEO on-page trang danh mục</b> (1 H1, thêm H2 + mô tả danh mục).</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 01 UI -->
+  <section id="ui">
+    <div class="ghead">01 · UI — Giao diện &amp; thiết kế <span class="pill good">88</span></div>
+    <div class="grid g2">
+      <div class="card"><h3>Điểm mạnh</h3>
+        <ul>
+          <li>Nhận diện thương hiệu nhất quán (xanh dương chủ đạo, hệ component đồng bộ header/footer/card trên mọi trang).</li>
+          <li>Hệ tin cậy mạnh cho ngành dược: giải "Thương hiệu Quốc gia", badge "Đã thông báo Bộ Công Thương", pháp nhân đầy đủ ở footer, hotline nổi bật.</li>
+          <li>Trang sản phẩm bố cục đẹp: gallery + thumbnail + zoom, giá rõ, CTA cam nổi bật, tab thông tin, bảng dinh dưỡng, FAQ.</li>
+          <li><b>Responsive tốt</b>: mobile gọn, hamburger, lưới SP 2 cột, không vỡ layout.</li>
+        </ul></div>
+      <div class="card"><h3>Cần cải thiện</h3>
+        <ul>
+          <li>Chuỗi rác <code>s:3198"s:3198""";</code> hiện ở <b>góc trên-trái</b> trang chủ + danh mục — xấu, thiếu chuyên nghiệp.</li>
+          <li>Trang danh mục khá "trống" phần trên (chủ yếu lưới sản phẩm, ít nội dung dẫn dắt).</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 02 UX -->
+  <section id="ux">
+    <div class="ghead">02 · UX — Trải nghiệm &amp; luồng <span class="pill good">85</span></div>
+    <div class="grid g2">
+      <div class="card"><h3>Điểm mạnh</h3>
+        <ul>
+          <li>IA rõ: menu chính + danh mục sức khỏe theo bệnh lý — hợp mental model người mua TPCN.</li>
+          <li><b>Breadcrumb</b> đầy đủ trên trang sản phẩm → định hướng tốt.</li>
+          <li>Trang SP là điểm sáng: chọn số lượng, thêm giỏ, phí ship &amp; thời gian giao minh bạch, <b>social proof</b> ("13 người thêm giỏ · 26 người đang xem"), FAQ accordion, sản phẩm liên quan.</li>
+          <li>CTA "Xem ngay" / "Thêm vào giỏ hàng" rõ ràng, tương phản tốt.</li>
+        </ul></div>
+      <div class="card"><h3>Cần cải thiện</h3>
+        <ul>
+          <li>Trang danh mục nội dung mỏng (274–517 từ), thiếu mô tả/điều hướng giúp chọn đúng sản phẩm.</li>
+          <li>Ô tìm kiếm không có nhãn (ảnh hưởng cả UX lẫn a11y).</li>
+          <li>Chưa kiểm được luồng checkout/thanh toán thực tế — nên kiểm riêng.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 03 SEO -->
+  <section id="seo">
+    <div class="ghead">03 · SEO <span class="pill good">82</span></div>
+    <div class="grid g2">
+      <div class="card"><h3>Điểm mạnh</h3>
+        <ul>
+          <li><b>Technical SEO gần như hoàn hảo</b>: 100% trang có <code>canonical</code> + <b>JSON-LD</b>, <code>lang=vi</code>, viewport đủ; <b>sitemap.xml 107 URL</b>; HTTPS.</li>
+          <li>Lighthouse SEO: homepage 100, danh mục 92–100, sản phẩm 100.</li>
+          <li>Title phần lớn tốt (50–68 ký tự); nội dung trang SP dày (700–1.222 từ).</li>
+        </ul></div>
+      <div class="card"><h3>Cần cải thiện</h3>
+        <ul>
+          <li><b>Thiếu meta description</b>: <code>/danh-muc/me-va-be</code> (SEO tụt còn 92) và <code>/san-pham/tpbvsk-bo-gan</code>.</li>
+          <li><b>Title sơ sài</b>: "Mẹ và bé" chỉ 8 ký tự — lạc nhịp các danh mục khác (50–58).</li>
+          <li>Meta description &lt;100 ký tự ở vài trang SP (kem-boi-vein 75, hồng sâm 76, trà sâm 81) — nên 140–160.</li>
+          <li><b>Heading</b>: trang danh mục có <b>2×H1</b> &amp; <b>0 H2</b> → cấu trúc chưa chuẩn.</li>
+          <li><b>Thiếu alt nghiêm trọng</b>: danh mục ~26/31 ảnh, homepage 19/110.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 04 PERF -->
+  <section id="perf">
+    <div class="ghead">04 · Performance <span class="pill warn">62</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Trang</th><th class="n">Perf</th><th class="n">LCP</th><th class="n">FCP</th><th class="n">CLS</th><th class="n">TBT</th><th class="n">Dung lượng</th></tr></thead>
+        <tbody>
+          <tr><td>/danh-muc/cham-soc-toc-da-dau</td><td class="n ok">96</td><td class="n">2.6s</td><td class="n">1.7s</td><td class="n">0</td><td class="n">0ms</td><td class="n">387 KiB</td></tr>
+          <tr><td>/danh-muc/me-va-be</td><td class="n ok">93</td><td class="n">3.1s</td><td class="n">1.8s</td><td class="n">0.003</td><td class="n">0ms</td><td class="n">422 KiB</td></tr>
+          <tr><td>/ (homepage)</td><td class="n">89</td><td class="n">3.6s</td><td class="n">1.8s</td><td class="n">0</td><td class="n">30ms</td><td class="n">4.957 KiB</td></tr>
+          <tr><td>/san-pham/tpbs-fitmeal</td><td class="n">69</td><td class="n red">18.4s 🔴</td><td class="n">1.8s</td><td class="n">0.005</td><td class="n">20ms</td><td class="n">3.803 KiB</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3>Điểm sáng</h3>
+        <ul>
+          <li><b>CLS ~0 toàn site</b> — bố cục ổn định, rất tốt.</li>
+          <li>TBT thấp (JS không chặn nhiều); trang danh mục nhẹ (~400KB) &amp; nhanh.</li>
+        </ul></div>
+      <div class="card"><h3>🔴 Vấn đề nghiêm trọng</h3>
+        <ul>
+          <li><b>Trang SP LCP 18.4s</b> (gấp ~7× ngưỡng 2.5s) — trang chuyển đổi, nguy cơ mất khách &amp; doanh số lớn nhất. Nguyên nhân: nhiều ảnh lớn không tối ưu (fitmeal 48 ảnh 3.8MB), ảnh LCP không preload đúng, thiếu nén/WebP/responsive.</li>
+          <li><b>Homepage ~5MB</b> (110 ảnh), LCP 3.6s trên ngưỡng.</li>
+          <li>Cảnh báo site-wide: <code>&lt;link rel=preload&gt;</code> thiếu <code>as</code> (2×/trang) → preload vô hiệu, lãng phí.</li>
+        </ul></div>
+    </div>
+    <p class="src" style="margin-top:12px">Ngưỡng Core Web Vitals (Google): LCP ≤2.5s tốt / ≤4s cần cải thiện · CLS ≤0.1 · TBT (proxy INP) ≤200ms. Lighthouse chạy mobile + throttling (sát 4G thực tế); điểm desktop sẽ cao hơn.</p>
+  </section>
+
+  <!-- 05 FEATURES -->
+  <section id="feat">
+    <div class="ghead">05 · Features &amp; chức năng <span class="pill good">80</span></div>
+    <div class="grid g2">
+      <div class="card"><h3>Hoạt động tốt</h3>
+        <ul>
+          <li><b>0 link gãy / 187 link nội bộ</b> — vệ sinh liên kết xuất sắc.</li>
+          <li>Chức năng TMĐT đầy đủ ở trang SP: chọn số lượng, thêm giỏ, giá/phí ship, FAQ, sản phẩm liên quan, data dinh dưỡng.</li>
+          <li>Không lỗi JS nghiêm trọng (<code>pageErrors = 0</code> mọi trang).</li>
+        </ul></div>
+      <div class="card"><h3>Lỗi / khiếm khuyết</h3>
+        <ul>
+          <li><b>Rò chuỗi <code>s:3198"s:3198""";</code></b> ra đầu HTML trang chủ + toàn bộ trang danh mục — gần như chắc là <code>var_dump</code>/serialize PHP lọt template. Cần xóa (xấu + có thể rò thông tin nội bộ).</li>
+          <li>2 cảnh báo console <code>&lt;link rel=preload&gt;</code> sai <code>as</code> mỗi trang.</li>
+          <li>Vài trang có 1 request thất bại (<code>failedRequests=1</code>) — nên rà ảnh/asset 404 ngầm.</li>
+          <li>Chưa kiểm luồng <b>checkout thực tế</b> → nên chạy script Playwright riêng.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 06 A11Y -->
+  <section id="a11y">
+    <div class="ghead">06 · Accessibility &amp; Tech health <span class="pill">72</span></div>
+    <div class="grid g2">
+      <div class="card"><h3>Accessibility</h3>
+        <ul>
+          <li>Điểm a11y Lighthouse: home 92, danh mục 88, <b>sản phẩm 77</b> (thấp nhất).</li>
+          <li><code>color-contrast</code>: vài cặp màu chữ/nền chưa đủ tương phản.</li>
+          <li><code>heading-order</code>: thứ tự heading không giảm tuần tự (2×H1 ở danh mục).</li>
+          <li><code>link-name</code>: link icon mạng xã hội không có tên cho screen reader.</li>
+          <li><b>11 nút không tên</b> trên mọi trang SP; <b>2–4 input không nhãn</b> (tìm kiếm, chọn số lượng); nhiều ảnh thiếu alt.</li>
+        </ul></div>
+      <div class="card"><h3>Tech health — ổn</h3>
+        <ul>
+          <li>HTTPS; <code>viewport</code> + <code>lang=vi</code> đủ mọi trang.</li>
+          <li>Không lỗi JS chặn; trang danh mục/SP nhẹ về JS (TBT thấp).</li>
+          <li>Sitemap 107 URL, canonical + JSON-LD toàn site.</li>
+        </ul></div>
+    </div>
+  </section>
+
+  <!-- 07 RECOMMENDATIONS -->
+  <section id="rec">
+    <div class="ghead">07 · Khuyến nghị — hai hướng song song</div>
+    <div class="note go"><b>Khuyến nghị tổng: OPTIMIZE (không Rebuild).</b> Nền tảng hiện tại tốt; một đợt tối ưu ảnh/performance + dọn lỗi nhanh nâng điểm tổng từ ~78 lên <b>~88+</b>. Quyết định cuối thuộc PO / Tech Lead.</div>
+    <div class="tw" style="margin-top:14px">
+      <table>
+        <thead><tr><th>#</th><th>Phát hiện</th><th>Trục</th><th class="n">Impact</th><th class="n">Effort</th><th>Track B — OPTIMIZE (khuyến nghị)</th></tr></thead>
+        <tbody>
+          <tr><td class="n">1</td><td><b>Trang SP LCP 18.4s</b></td><td>Perf</td><td class="n"><span class="imp h">H</span></td><td class="n">M</td><td>Nén + WebP/AVIF, đặt <code>width/height</code>, <code>loading=lazy</code> dưới fold, <code>fetchpriority=high</code> + preload đúng ảnh LCP; CDN ảnh.</td></tr>
+          <tr><td class="n">2</td><td>Chuỗi rác <code>s:3198</code> rò HTML</td><td>Feat/Tech</td><td class="n"><span class="imp h">H</span></td><td class="n"><b>L</b></td><td>Tìm &amp; xóa lệnh debug/serialize lọt template trang chủ + danh mục.</td></tr>
+          <tr><td class="n">3</td><td>Homepage ~5MB (110 ảnh)</td><td>Perf</td><td class="n"><span class="imp h">H</span></td><td class="n">M</td><td>Nén ảnh, lazyload dưới fold, tách ảnh banner nặng.</td></tr>
+          <tr><td class="n">4</td><td>2 trang thiếu meta desc + title "Mẹ và bé"</td><td>SEO</td><td class="n"><span class="imp m">M</span></td><td class="n"><b>L</b></td><td>Thêm description + viết lại title danh mục mẹ &amp; bé.</td></tr>
+          <tr><td class="n">5</td><td>Alt ảnh thiếu (danh mục ~26/31)</td><td>SEO+A11y</td><td class="n"><span class="imp m">M</span></td><td class="n"><b>L</b></td><td>Sinh alt theo tên sản phẩm cho ảnh listing &amp; banner.</td></tr>
+          <tr><td class="n">6</td><td>11 nút không tên + input không nhãn</td><td>A11y</td><td class="n"><span class="imp m">M</span></td><td class="n">L–M</td><td>Thêm <code>aria-label</code>/<code>&lt;label&gt;</code> cho nút icon, ô tìm kiếm, chọn số lượng.</td></tr>
+          <tr><td class="n">7</td><td>Contrast + heading-order (2×H1)</td><td>A11y+SEO</td><td class="n"><span class="imp m">M</span></td><td class="n">L</td><td>Sửa cặp màu chưa đạt; để 1 H1 + thêm H2 ở danh mục.</td></tr>
+          <tr><td class="n">8</td><td>Meta desc vài trang SP quá ngắn</td><td>SEO</td><td class="n"><span class="imp l">L</span></td><td class="n"><b>L</b></td><td>Viết lại 140–160 ký tự.</td></tr>
+          <tr><td class="n">9</td><td><code>&lt;link rel=preload&gt;</code> thiếu <code>as</code></td><td>Perf</td><td class="n"><span class="imp l">L</span></td><td class="n"><b>L</b></td><td>Bổ sung <code>as</code> đúng hoặc bỏ preload thừa.</td></tr>
+          <tr><td class="n">10</td><td>Trang danh mục nội dung mỏng</td><td>SEO+UX</td><td class="n"><span class="imp m">M</span></td><td class="n">M</td><td>Thêm mô tả danh mục 150–300 từ + liên kết nội bộ.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src" style="margin-top:10px"><b>Track A — Rebuild</b> (chỉ cân nhắc nếu nền tảng PHP/CMS khó tối ưu): chuyển front-end sang Next.js/Nuxt + <code>next/image</code> để tối ưu ảnh tự động. Không khuyến nghị toàn bộ ngay.</p>
+  </section>
+
+  <!-- 08 APPENDIX -->
+  <section>
+    <div class="ghead">Phụ lục · Bảng per-page (trích)</div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>URL</th><th class="n">Status</th><th class="n">Title</th><th class="n">Meta</th><th class="n">H1</th><th class="n">Alt thiếu</th><th class="n">LCP</th><th class="n">a11y</th></tr></thead>
+        <tbody>
+          <tr><td>/</td><td class="n">200</td><td class="n">61</td><td class="n ok">✔</td><td class="n">1</td><td class="n">19/110</td><td class="n">3.6s</td><td class="n">92</td></tr>
+          <tr><td>/danh-muc/me-va-be</td><td class="n">200</td><td class="n red">8 ⚠</td><td class="n red">✘</td><td class="n red">2 ⚠</td><td class="n">26/31</td><td class="n">3.1s</td><td class="n">88</td></tr>
+          <tr><td>/danh-muc/cham-soc-toc-da-dau</td><td class="n">200</td><td class="n">58</td><td class="n ok">✔</td><td class="n red">2 ⚠</td><td class="n">26/30</td><td class="n">2.6s</td><td class="n">88</td></tr>
+          <tr><td>/san-pham/tpbs-fitmeal</td><td class="n">200</td><td class="n">63</td><td class="n ok">✔</td><td class="n">1</td><td class="n">3/48</td><td class="n red">18.4s 🔴</td><td class="n">77</td></tr>
+          <tr><td>/san-pham/tpbvsk-bo-gan</td><td class="n">200</td><td class="n">59</td><td class="n red">✘</td><td class="n">1</td><td class="n">3/43</td><td class="n">—</td><td class="n">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ghead">Phương pháp &amp; nguồn</div>
+    <p class="src">
+      Ngày: 2026-11-22 · Trang crawl: <b>25/107</b> (sitemap-first + BFS nội bộ) · Công cụ: <b>Playwright</b> (điều khiển Chrome thật) + <b>Lighthouse</b> (mobile + throttling, 4 trang đại diện).<br>
+      Bằng chứng thô trong thư mục audit: <code>raw/crawl-summary.json</code> (25 trang) · <code>raw/links.json</code> (187 link, 0 gãy) · <code>raw/screenshots/</code> (50 ảnh desktop+mobile) · <code>raw/html/</code> (25 HTML) · <code>raw/console/</code> · <code>raw/lighthouse/</code> (JSON+HTML).<br>
+      Site là e-commerce dược phẩm; trọng số nghiêng SEO/Perf/UX. Mục tiêu kinh doanh chưa được PO xác nhận — nên hỏi lại để tinh chỉnh trọng số.
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
