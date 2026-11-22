@@ -120,6 +120,7 @@ footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:
       <a href="#sum">Tổng quan</a>
       <a href="#look">Thẩm mỹ</a>
       <a href="#model">Mô hình</a>
+      <a href="#ecom">E-commerce</a>
       <a href="#ui">UI</a>
       <a href="#ux">UX</a>
       <a href="#seo">SEO</a>
@@ -141,8 +142,10 @@ footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:
       <span class="tag">2026-11-22</span>
       <span class="tag">slug: tmp.vn</span>
       <span class="tag on">Tổng 78/100</span>
+      <span class="tag on">E-commerce 74/100</span>
       <span class="tag ok">Khuyến nghị: Optimize</span>
       <span class="tag bad">🔴 LCP trang SP 18.4s</span>
+      <span class="tag bad">🔴 Chỉ thanh toán COD</span>
     </div>
   </header>
 
@@ -259,6 +262,79 @@ footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:
         </ol></div>
     </div>
     <div class="note warn" style="margin-top:14px"><b>Lưu ý phạm vi.</b> Các trang <b>tin tức/bài viết chưa được crawl &amp; đo</b> trong audit này (mới phủ home + danh mục + sản phẩm). Nhận định phần tin tức dựa trên vị trí/vai trò trên homepage, chưa đo tốc độ &amp; SEO từng bài. Nên chạy thêm một lượt audit riêng cho khu tin tức (và kiểm luồng checkout thực tế) để chắc chắn.</div>
+  </section>
+
+  <!-- SYNTHESIS C: E-COMMERCE DEEP-DIVE -->
+  <section id="ecom">
+    <div class="ghead">Góc nhìn · Đánh giá chuyên biệt E-COMMERCE <span class="pill">conversion-first</span></div>
+    <p class="lead">Chạy <b>luồng mua hàng thật end-to-end trên mobile</b> (Playwright/iPhone 13): <code>/san-pham</code> → chi tiết SP → <b>thêm vào giỏ</b> (<code>POST /cart/items</code> ⟶ 200) → giỏ hàng → checkout. Kết luận: luồng mua <b>được xây tốt, chuẩn FleetCart, chạy trơn tru và rất thân thiện mobile</b> — phần khó (cart/checkout) đã ổn. Điểm e-commerce <b>~74/100</b> bị kéo xuống bởi <b>2 nút thắt chuyển đổi sửa được mà không cần rebuild</b>.</p>
+
+    <div class="stats" style="margin-top:4px">
+      <div class="stat big"><div class="n">74</div><div class="l">Điểm E-commerce (conversion-readiness) — flow tốt, 2 nút thắt: tốc độ trang SP &amp; chỉ COD</div></div>
+      <div class="stat"><div class="n">77</div><div class="l">Khám phá SP (listing/lọc)</div></div>
+      <div class="stat"><div class="n">80</div><div class="l">Trang chi tiết SP (PDP)</div></div>
+      <div class="stat good"><div class="n">84</div><div class="l">Giỏ hàng</div></div>
+      <div class="stat good"><div class="n">85</div><div class="l">Checkout</div></div>
+      <div class="stat bad"><div class="n">55</div><div class="l">Thanh toán &amp; Giao vận</div></div>
+      <div class="stat"><div class="n">78</div><div class="l">Trust &amp; Social proof</div></div>
+      <div class="stat warn"><div class="n">60</div><div class="l">Mobile commerce &amp; tốc độ</div></div>
+    </div>
+
+    <div class="note warn" style="margin-top:14px"><b>2 nút thắt chuyển đổi mang tính cấu trúc:</b> (1) 🔴 <b>Trang sản phẩm LCP 18.4s</b> — trang tạo doanh thu lại tải chậm nhất. (2) 🔴 <b>Chỉ thanh toán COD</b> — không có chuyển khoản/ví/thẻ, mất khách trả trước &amp; cao rủi ro bom hàng. Giải quyết 2 điểm này là đòn bẩy doanh thu lớn nhất.</div>
+
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h3 class="green">Luồng mua — làm TỐT (đã verify)</h3>
+        <ul>
+          <li><b>Checkout 1 trang, guest checkout — KHÔNG bắt đăng nhập.</b> Ít field đúng mức tối thiểu (Họ tên · SĐT · Tỉnh→Quận→Phường · địa chỉ · ghi chú), breakdown chi phí rõ, CTA "Hoàn tất đặt hàng" nổi bật. Giảm bỏ giỏ rất tốt ở VN.</li>
+          <li><b>Giỏ hàng</b>: sửa số lượng/variant/xóa item; <b>ngưỡng freeship ≥500k</b> (kích AOV); phí ship 15k + thời gian giao (HN/HCM 1-2 ngày · tỉnh 2-5 ngày) minh bạch.</li>
+          <li><b>PDP bán hàng tốt</b>: chọn variant + số lượng, social proof, FAQ, bảng dinh dưỡng, 5 SP liên quan, JSON-LD <code>Product</code> (price/InStock).</li>
+          <li><b>Nền tảng FleetCart</b> (Laravel) — cart/checkout là code vendor ổn định ⟶ củng cố hướng <b>Optimize, không Rebuild</b>.</li>
+        </ul></div>
+      <div class="card"><h3 class="red">Nút thắt &amp; cơ hội bỏ ngỏ</h3>
+        <ul>
+          <li>🔴 <b>Chỉ COD</b> — không VNPay/MoMo/chuyển khoản. Mất khách trả trước (SP tới 830k–990k), rủi ro hoàn/bom hàng cao, không dùng được ưu đãi trả trước.</li>
+          <li>🔴 <b>PDP LCP 18.4s</b> — bóp nghẹt chuyển đổi mobile (chi tiết mục Performance).</li>
+          <li><b>Review/rating gần như trống</b>: schema thiếu <code>aggregateRating</code>, UI không có sao — mất social proof mạnh nhất của TPCN &amp; không có sao vàng trên Google (route <code>products/{id}/reviews</code> có sẵn).</li>
+          <li><b>Không cross-sell ở giỏ</b> dù route <code>cart/cross-sell-products</code> tồn tại — bỏ lỡ tăng AOV ngay điểm nóng.</li>
+          <li><b>Listing CTA chỉ "Xem ngay"</b> (không quick-add); vài ảnh thumbnail listing lỗi/lazyload; checkout thiếu <code>&lt;label&gt;</code> + terms tick sẵn; urgency "26 người đang xem" trông giả.</li>
+        </ul></div>
+    </div>
+
+    <div class="card" style="margin-top:14px"><h3>Bản đồ flow mua hàng — route thật (FleetCart/Ziggy)</h3>
+      <div style="overflow-x:auto;margin-top:8px">
+      <table>
+        <thead><tr><th>Bước</th><th>Route</th><th class="n">Test</th></tr></thead>
+        <tbody>
+          <tr><td>Listing tất cả SP</td><td><code>GET /san-pham</code></td><td class="n ok">✔ 200</td></tr>
+          <tr><td>Danh mục (11 nhóm bệnh lý)</td><td><code>GET /danh-muc/{slug}</code></td><td class="n ok">✔</td></tr>
+          <tr><td>Chi tiết SP</td><td><code>GET /san-pham/{slug}</code></td><td class="n ok">✔ 200</td></tr>
+          <tr><td><b>Thêm vào giỏ</b></td><td><code>POST /cart/items</code></td><td class="n ok">✔ 200</td></tr>
+          <tr><td>Giỏ hàng</td><td><code>GET /gio-hang</code></td><td class="n ok">✔</td></tr>
+          <tr><td>Checkout 1 trang</td><td><code>GET/POST /gio-hang/thanh-toan</code></td><td class="n ok">✔ (không login)</td></tr>
+          <tr><td>Thanh toán</td><td><code>payment_method = cod</code> (duy nhất)</td><td class="n red">⚠ chỉ COD</td></tr>
+          <tr><td>Có sẵn nhưng chưa dùng ở UI</td><td><code>cart/cross-sell</code> · <code>cart/coupon</code> · <code>compare/*</code> · <code>products/{id}/reviews</code></td><td class="n">—</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <div class="tw" style="margin-top:14px">
+      <table>
+        <thead><tr><th>#</th><th>Phát hiện e-commerce</th><th class="n">Impact</th><th class="n">Effort</th><th>Hành động (Optimize)</th></tr></thead>
+        <tbody>
+          <tr><td class="n">1</td><td><b>PDP LCP 18.4s</b></td><td class="n"><span class="imp h">H</span></td><td class="n">M</td><td>Nén WebP/AVIF, <code>width/height</code>, lazyload dưới fold, <code>fetchpriority=high</code>+preload ảnh LCP, CDN.</td></tr>
+          <tr><td class="n">2</td><td><b>Chỉ thanh toán COD</b></td><td class="n"><span class="imp h">H</span></td><td class="n">M</td><td>Bật ≥1 cổng online (VNPay/MoMo) + ưu đãi nhỏ khi trả trước để giảm phụ thuộc COD.</td></tr>
+          <tr><td class="n">3</td><td>Thiếu review/rating</td><td class="n"><span class="imp h">H</span></td><td class="n">M</td><td>Kích hoạt &amp; hiển thị review (route có sẵn) + thêm <code>aggregateRating</code> vào schema.</td></tr>
+          <tr><td class="n">4</td><td>Ảnh listing lỗi/lazyload</td><td class="n"><span class="imp h">H</span></td><td class="n">L–M</td><td>Kiểm thumbnail <code>/san-pham</code>, sửa lazyload/ảnh 404.</td></tr>
+          <tr><td class="n">5</td><td>Không cross-sell ở giỏ</td><td class="n"><span class="imp m">M</span></td><td class="n"><b>L</b></td><td>Bật khối cross-sell + thanh tiến độ freeship ("mua thêm X để freeship").</td></tr>
+          <tr><td class="n">6</td><td>Checkout thiếu label · terms tick sẵn · SĐT thiếu <code>required</code></td><td class="n"><span class="imp m">M</span></td><td class="n"><b>L</b></td><td>Thêm <code>&lt;label&gt;</code>, bỏ pre-check điều khoản, thêm validate <code>required</code>.</td></tr>
+          <tr><td class="n">7</td><td>Listing CTA chỉ "Xem ngay"</td><td class="n"><span class="imp m">M</span></td><td class="n"><b>L</b></td><td>Thêm nút "Mua ngay/Thêm giỏ" trên card.</td></tr>
+          <tr><td class="n">8</td><td>Urgency "ảo" trên PDP</td><td class="n"><span class="imp m">M</span></td><td class="n"><b>L</b></td><td>Dùng số thật hoặc gỡ — bảo vệ uy tín thương hiệu dược.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note go" style="margin-top:12px"><b>Kết luận e-commerce:</b> phần khó nhất (cart/checkout) đã tốt. Sửa <b>2 nút thắt</b> (tốc độ PDP + thanh toán online) + <b>kích hoạt review</b> + <b>cross-sell/AOV</b> ⟶ khả năng chuyển đổi hoàn toàn có thể lên <b>~85+</b> mà không cần rebuild.</div>
+    <p class="src" style="margin-top:10px">Bằng chứng: <code>raw/flows/01-listing…05-checkout.mobile.png</code> (5 screenshot từng bước) · <code>raw/flows/flow-log.json</code> (nút/field/network, console errors=0) · <code>raw/flows/html/</code>. Chạy iPhone 13 (Playwright/Chrome), vi-VN, 22/11. SP test: <i>TPBVSK Lohha Trí Não</i> (270k) — chưa bấm "Hoàn tất đặt hàng" (không tạo đơn thật).</p>
   </section>
 
   <!-- 01 UI -->
@@ -463,6 +539,7 @@ footer{padding:24px 0 48px} .src{font-size:15px;color:var(--label2);line-height:
     <div class="ghead">Phương pháp &amp; nguồn</div>
     <p class="src">
       Ngày: 2026-11-22 · Trang crawl: <b>25/107</b> (sitemap-first + BFS nội bộ) · Công cụ: <b>Playwright</b> (điều khiển Chrome thật) + <b>Lighthouse</b> (mobile + throttling, 4 trang đại diện).<br>
+      Bổ sung: <b>đánh giá chuyên biệt E-commerce</b> chạy luồng mua hàng thật end-to-end (Playwright/iPhone 13) — bằng chứng trong <code>raw/flows/</code> (5 screenshot từng bước + <code>flow-log.json</code> + HTML listing/cart/checkout). Bản markdown đầy đủ: <code>report-ecommerce.md</code>.<br>
       Bằng chứng thô trong thư mục audit: <code>raw/crawl-summary.json</code> (25 trang) · <code>raw/links.json</code> (187 link, 0 gãy) · <code>raw/screenshots/</code> (50 ảnh desktop+mobile) · <code>raw/html/</code> (25 HTML) · <code>raw/console/</code> · <code>raw/lighthouse/</code> (JSON+HTML).<br>
       Site là e-commerce dược phẩm; trọng số nghiêng SEO/Perf/UX. Mục tiêu kinh doanh chưa được PO xác nhận — nên hỏi lại để tinh chỉnh trọng số.
     </p>
