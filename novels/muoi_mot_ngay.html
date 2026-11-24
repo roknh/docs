@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Mười Một Ngày — Phi hư cấu. Tối 11/11/2026, hội đồng quản trị Nvidia chấp nhận đơn từ chức của Jensen Huang, người sáng lập đã dẫn công ty suốt 33 năm. Trong 11 ngày sau đó, cổ p">
+<meta name="author" content="Phi hư cấu">
+<title>Mười Một Ngày — Phi hư cấu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+  --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+  --hairline:#e0e0e0; --hairline-strong:#161616;
+  --primary:#0f62fe; --blue-hover:#0050e6; --on-primary:#ffffff;
+  --inverse-canvas:#161616; --inverse-ink:#ffffff;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --measure:42rem; --nav-w:17rem;
+}
+:root[data-theme="dark"]{
+  --canvas:#161616; --surface-1:#262626; --surface-2:#393939;
+  --ink:#f4f4f4; --ink-muted:#c6c6c6; --ink-subtle:#8d8d8d;
+  --hairline:#393939; --hairline-strong:#6f6f6f;
+  --primary:#78a9ff; --blue-hover:#a6c8ff; --on-primary:#161616;
+  --inverse-canvas:#f4f4f4; --inverse-ink:#161616;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:var(--sans); font-size:16px; font-weight:400;
+  line-height:1.5; letter-spacing:0.16px; overflow-x:hidden;
+  overflow-wrap:break-word; word-break:break-word;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color .15s ease, color .15s ease;
+}
+a{color:var(--primary); text-decoration:none;}
+a:hover{color:var(--blue-hover); text-decoration:underline;}
+
+/* reading progress */
+#progress{position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--primary); z-index:60; transition:width .1s linear;}
+
+/* top nav */
+.top-nav{position:sticky; top:0; z-index:50; height:48px;
+  background:var(--canvas); border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; gap:16px; padding:0 16px;}
+.top-nav .brand{font-size:14px; font-weight:600; letter-spacing:0.16px;
+  color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.top-nav .spacer{flex:1;}
+.top-nav .top-meta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px;}
+.menu-btn{display:none; appearance:none; background:transparent; border:0;
+  color:var(--ink); font-family:var(--sans); font-size:14px; cursor:pointer;
+  padding:8px 10px; align-items:center; gap:6px;}
+.menu-btn:hover{background:var(--surface-1);}
+
+/* theme toggle */
+.theme-toggle{appearance:none; background:transparent; border:1px solid var(--hairline);
+  color:var(--ink); cursor:pointer; width:32px; height:32px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.theme-toggle:hover{background:var(--surface-1); border-color:var(--hairline-strong);}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+/* shell */
+.shell{display:block; max-width:1584px; margin:0 auto;}
+.side-nav{display:none;}
+.content{width:100%; min-width:0;}
+@media(min-width:1056px){
+  .shell{display:flex; align-items:flex-start;}
+  .side-nav{display:block; width:var(--nav-w); flex:0 0 var(--nav-w);
+    position:sticky; top:48px; align-self:flex-start;
+    height:calc(100vh - 48px); overflow-y:auto;
+    border-right:1px solid var(--hairline); padding:24px 0 48px;}
+  .content{flex:1 1 0%; min-width:0;}
+  .toc-mobile{display:none !important;}
+  .menu-btn{display:none !important;}
+}
+.inner{max-width:var(--measure); margin:0 auto; padding:0 20px 80px;}
+
+/* toc */
+.toc-wrap .toc-cap{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);
+  padding:0 24px 12px; text-transform:none;}
+.toc-list{list-style:none; margin:0; padding:0;}
+.toc-part{font-size:12px; font-weight:600; letter-spacing:0.16px; color:var(--ink-muted);
+  padding:20px 24px 6px; border-top:1px solid var(--hairline); margin-top:6px;}
+.toc-list li:first-child.toc-part{border-top:0; margin-top:0;}
+.toc-list a{display:flex; gap:10px; padding:7px 24px; color:var(--ink);
+  border-left:3px solid transparent; line-height:1.3;}
+.toc-list a:hover{background:var(--surface-1); text-decoration:none;}
+.toc-list a.active{border-left-color:var(--primary); background:var(--surface-1);
+  font-weight:600;}
+.toc-num{font-size:11px; color:var(--ink-subtle); min-width:58px; letter-spacing:0.16px;
+  padding-top:2px;}
+.toc-title{font-size:13px;}
+
+/* mobile toc panel */
+.toc-mobile{display:block; border-bottom:1px solid var(--hairline);
+  background:var(--canvas);}
+.toc-mobile[open]{padding-bottom:8px;}
+.toc-mobile summary{display:none;}
+@media(max-width:1055px){
+  .menu-btn{display:inline-flex;}
+  .toc-mobile{position:fixed; top:48px; left:0; right:0; bottom:0; z-index:45;
+    overflow-y:auto; transform:translateX(-100%); transition:transform .2s ease;
+    border-bottom:0;}
+  .toc-mobile.show{transform:translateX(0);}
+  .toc-mobile .toc-cap{padding:20px 24px 12px; font-size:12px;}
+}
+
+/* cover hero */
+.cover{padding:40px 20px 8px; border-bottom:1px solid var(--hairline);
+  margin-bottom:8px;}
+.cover-eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px;
+  margin:0 0 12px;}
+.cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
+  letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
+.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
+  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
+.cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
+.cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
+  font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
+.cover-logline{font-size:18px; line-height:1.5; color:var(--ink-muted);
+  border-left:3px solid var(--primary); padding-left:16px; margin:0 0 24px;}
+.cover-stats{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline);
+  margin-bottom:24px;}
+.cover-stats .stat{flex:1; min-width:96px; padding:16px; border-right:1px solid var(--hairline);}
+.cover-stats .stat:last-child{border-right:0;}
+.cover-stats .num{font-size:28px; font-weight:300; line-height:1.1; color:var(--ink);}
+.cover-stats .lab{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:4px;}
+.btn-primary{display:inline-block; background:var(--primary); color:var(--on-primary);
+  font-size:14px; letter-spacing:0.16px; padding:12px 16px; border:0; cursor:pointer;
+  font-family:var(--sans);}
+.btn-primary:hover{background:var(--blue-hover); color:var(--on-primary); text-decoration:none;}
+
+/* characters section */
+.characters{margin:48px 0 0;}
+.section-title{font-size:24px; font-weight:400; margin:0 0 24px; color:var(--ink);
+  border-bottom:1px solid var(--hairline); padding-bottom:12px;}
+.char-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+.char-card{background:var(--surface-1); padding:20px; border:1px solid var(--hairline);}
+.char-name{font-size:16px; font-weight:600; color:var(--ink);}
+.char-role{font-size:13px; color:var(--primary); letter-spacing:0.16px; margin-top:4px;}
+.char-desc{font-size:14px; color:var(--ink-muted); line-height:1.5; margin-top:8px;}
+
+/* chapter */
+.chapter{padding:48px 0 8px; border-bottom:1px solid var(--hairline);}
+.chapter:last-child{border-bottom:0;}
+.eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px; margin:0 0 12px;}
+.ch-title{font-size:clamp(28px,5vw,42px); font-weight:300; line-height:1.18;
+  letter-spacing:0; margin:0 0 28px; color:var(--ink);}
+.chapter p{
+  font-family:var(--serif); font-size:18px; line-height:1.75;
+  margin:0 0 20px; color:var(--ink); letter-spacing:0;
+}
+.chapter strong{font-weight:600;}
+.chapter em{font-style:italic;}
+.chapter blockquote{margin:24px 0; padding:16px 20px; border-left:3px solid var(--primary);
+  background:var(--surface-1); color:var(--ink-muted); font-family:var(--serif);
+  font-size:17px; line-height:1.6;}
+.chapter blockquote p{margin:0 0 12px; color:var(--ink-muted);}
+.chapter blockquote p:last-child{margin:0;}
+
+/* scene break */
+hr.scene-break{border:0; text-align:center; margin:32px 0;}
+hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spacing:8px; font-size:14px;}
+
+/* dialogue & message */
+.dialogue{padding-left:0;}
+.message{font-style:italic; color:var(--ink-muted);}
+
+/* chapter foot */
+.ch-foot{margin:32px 0 8px;}
+.totop{font-size:13px; color:var(--ink-muted); letter-spacing:0.16px;}
+.totop:hover{color:var(--primary);}
+
+/* footer */
+.page-footer{background:var(--surface-1); color:var(--ink-muted); padding:48px 20px; margin-top:0;}
+.page-footer .fin{max-width:var(--measure); margin:0 auto;}
+.page-footer .fbrand{font-size:20px; font-weight:300; color:var(--ink); margin:0 0 8px;}
+.page-footer p{font-size:14px; line-height:1.5; margin:0 0 6px;}
+.page-footer .fmeta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:16px;}
+
+/* selection */
+::selection{background:#0f62fe40; color:var(--ink);}
+
+/* nonfiction extras */
+.chapter h3.sec{font-family:var(--sans); font-size:20px; font-weight:600; margin:36px 0 14px; color:var(--ink);}
+.chapter ul{font-family:var(--serif); font-size:17px; line-height:1.65; margin:0 0 20px; padding-left:22px;}
+.chapter li{margin:0 0 8px;}
+.chapter p.src{font-family:var(--sans); font-size:13px; line-height:1.5; color:var(--ink-muted); margin:0 0 8px; letter-spacing:0.16px;}
+.chapter p.src a{word-break:break-all;}
+.draft-note{font-size:13px; color:var(--ink-muted); border:1px solid var(--hairline); background:var(--surface-1); padding:8px 12px; margin:0 0 16px;}
+pre.board{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:13px;line-height:1.55;color:var(--ink);background:var(--surface-1);border-left:3px solid var(--primary);padding:12px 14px;overflow-x:auto;white-space:pre;margin:16px 0}
+
+</style>
+</head>
+<body id="top">
+<div id="progress"></div>
+<header class="top-nav">
+  <button class="menu-btn" id="menuBtn">≡ Mục lục</button>
+  <span class="brand">Mười Một Ngày</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Phi hư cấu · 5 chương</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
+</header>
+<div class="toc-mobile" id="tocMobile"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần Một: Trước giờ G</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Đêm thứ Tư</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Bài báo ngày 29 tháng 10</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Lá thư</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Sáu mươi giờ</span></a></li>
+<li class="toc-part">Phần Hai: Rơi</li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Tấm biển ở quán Denny&#x27;s</span></a></li></ul></div></div>
+<div class="shell">
+  <aside class="side-nav"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Phần Một: Trước giờ G</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Đêm thứ Tư</span></a></li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Bài báo ngày 29 tháng 10</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Lá thư</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Sáu mươi giờ</span></a></li>
+<li class="toc-part">Phần Hai: Rơi</li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Tấm biển ở quán Denny&#x27;s</span></a></li></ul></div></aside>
+  <div class="content">
+    <div class="inner">
+      <section class="cover">
+        <p class="cover-eyebrow">Phi hư cấu · 2026</p>
+        <p class="draft-note">Bản thảo, chưa qua kiểm chứng độc lập. Mọi cáo buộc được ghi rõ là cáo buộc. Soạn với sự hỗ trợ của Claude (Anthropic, một khách hàng của Nvidia).</p>
+        <h1 class="cover-title">Mười Một Ngày</h1>
+        <div class="cover-tags"><span>Phi hư cấu tự sự</span><span>Nvidia</span><span>Jensen Huang</span><span>Phố Wall</span><span>Quyền lực</span></div>
+        <p class="cover-logline">Tối 11/11/2026, hội đồng quản trị Nvidia chấp nhận đơn từ chức của Jensen Huang, người sáng lập đã dẫn công ty suốt 33 năm. Trong 11 ngày sau đó, cổ phiếu rơi từ 173,73 xuống 125,53 đô la, 200.000 người ký kiến nghị, Elon Musk ký tên, và Tổng thống Mỹ tự nhận đã chốt thương vụ đưa ông trở lại. Cuốn sách dựng lại từng ngày bằng số liệu và lời nguyên văn.</p>
+        <div class="cover-stats">
+          <div class="stat"><div class="num">5/22</div><div class="lab">Chương</div></div>
+          <div class="stat"><div class="num">~22k</div><div class="lab">Từ</div></div>
+          <div class="stat"><div class="num">23%</div><div class="lab">Tiến độ</div></div>
+        </div>
+        <a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
+      </section>
+      <section class="characters" id="characters">
+        <h2 class="section-title">Nhân vật</h2>
+        <div class="char-grid">
+<div class="char-card"><div class="char-name">Jensen Huang</div><div class="char-role">Người sáng lập, CEO · 63 tuổi</div><div class="char-desc">Sinh ở Đài Loan, sang Mỹ năm 9 tuổi. Lập Nvidia năm 1993 tại một quán Denny&#x27;s ở San Jose.</div></div>
+<div class="char-card"><div class="char-name">Colette Kress</div><div class="char-role">CFO, CEO tạm quyền 12–23/11</div><div class="char-desc">Người giữ con tàu trong 11 ngày không có người sáng lập.</div></div>
+<div class="char-card"><div class="char-name">Harvey C. Jones</div><div class="char-role">Chủ tịch HĐQT từ 11/11</div><div class="char-desc">Ngồi HĐQT Nvidia từ năm 1993, nguyên CEO Synopsys.</div></div>
+<div class="char-card"><div class="char-name">Donald Trump</div><div class="char-role">Tổng thống Mỹ</div><div class="char-desc">Người tự nhận đã &quot;chốt thương vụ&quot; đưa Huang trở lại.</div></div>
+<div class="char-card"><div class="char-name">Scott Bessent</div><div class="char-role">Bộ trưởng Tài chính</div><div class="char-desc">Tiếng nói chất vấn từ bên trong chính quyền: Nvidia có biết khách hàng của mình không?</div></div>
+<div class="char-card"><div class="char-name">Elon Musk</div><div class="char-role">CEO Tesla</div><div class="char-desc">Ký kiến nghị đòi đưa Huang trở lại.</div></div>
+        </div>
+      </section>
+<article class="chapter" id="ch01">
+<p class="eyebrow">Chương 01 · Phần Một: Trước giờ G</p>
+<h2 class="ch-title">Đêm thứ Tư</h2>
+<pre class="board">ĐÊM THỨ TƯ · 11/11/2026
+NVDA      172,80 → 173,73 USD   +2,87%   (339,2 triệu cổ phiếu)
+Sau giờ   khoảng −8% sau bản tin của WSJ (báo chí đưa tin)
+S&amp;P 500   7.619,38  +1,3%   | Nasdaq 25.466,19  +1,6%
+Đỉnh cũ   239,24 USD (đóng cửa 6/10/2026)
+Tài sản Huang  ~148 tỷ USD, hạng 12 (Bloomberg, khoảng 10/11)
+Kiến nghị  chưa có</pre>
+<p>Trong hồ sơ mà Nvidia nộp cho Ủy ban Chứng khoán Mỹ (SEC) sáng hôm sau, cả một buổi tối được nén vào một mệnh đề: "Ngày 11 tháng 11 năm 2026, Hội đồng Quản trị... đã chấp nhận đơn từ chức" của Jensen Huang [1]. Văn bản không ghi giờ, không ghi ai đề nghị, ai phản đối, cuộc họp kéo dài bao lâu. Sau này, chủ tịch hội đồng nói với các nhà đầu tư rằng quyết định được đưa ra "nhất trí" [2].</p>
+<p>Người đàn ông vừa rời ghế đã sáng lập công ty 33 năm trước, đã làm giám đốc điều hành từ ngày đầu tiên, và vào đúng buổi sáng hôm đó vẫn là người đứng đầu doanh nghiệp có giá trị thị trường thuộc hàng lớn nhất hành tinh. Ông 63 tuổi. Thông cáo báo chí phát đi vài giờ sau không có một câu nào của ông [3].</p>
+<p>Ngày thứ Tư ấy có thể dựng lại theo đúng thứ tự công chúng được hay tin: từ một phiên giao dịch bình thường đến mức gần như tẻ nhạt, qua một cuộc điện thoại chỉ kéo dài vài câu, đến một cuộc họp khẩn mà một số thành viên tham dự từ xa.</p>
+<h3 class="sec">Một phiên tăng điểm</h3>
+<p>Ở góc độ thị trường, ngày 11 tháng 11 là một ngày tốt.</p>
+<p>Cổ phiếu Nvidia mở cửa ở 172,80 đô la và đóng cửa ở 173,73 đô la, tăng 2,87% [4]. Chỉ số S&amp;P 500 tăng 1,3%, Nasdaq tăng 1,6% [5]. Sau hai phiên giảm liên tiếp, giới giao dịch có lý do để tin rằng đợt bán tháo của tuần đó đã chạm đáy. Phiên thứ Hai 9 tháng 11 giảm 4,27%, phiên thứ Ba giảm thêm 5,47% [4]. Hai phiên ấy đến sau một sự kiện cuối tuần: ngày Chủ nhật 8 tháng 11, Jensen Huang gửi thư cho toàn thể nhân viên thừa nhận ông đã không chung thủy với vợ [6].</p>
+<p>Đến chiều thứ Tư, cổ phiếu đã lấy lại một phần. Mức 173,73 đô la vẫn thấp hơn hơn một phần tư (khoảng 27,4%, theo tính toán của sách) so với đỉnh đóng cửa 239,24 đô la mà cổ phiếu lập được ngày 6 tháng 10, năm tuần trước đó [7]. Nhưng trên biểu đồ, cây nến xanh ngày 11 tháng 11 trông giống một lời trấn an.</p>
+<p>Theo dữ liệu giá lịch sử, đó là phiên tăng điểm cuối cùng của Nvidia trong bảy phiên tiếp theo. Cổ phiếu chỉ tăng trở lại vào ngày 23 tháng 11 [4].</p>
+<p>Phần lớn giới đầu tư hôm đó vẫn nhìn câu chuyện của Huang như một chuyện riêng tư đáng tiếc: một vị CEO đã xin lỗi, một hội đồng quản trị đã thuê luật sư điều tra, một công ty vẫn bán chip nhanh hơn khả năng sản xuất.</p>
+<h3 class="sec">Một công ty cỡ nào</h3>
+<p>Muốn đo một cú rơi, trước hết phải đo độ cao.</p>
+<p>Ngày 30 tháng 5 năm 2023, Nvidia lần đầu chạm mốc vốn hóa 1.000 tỷ đô la. Ngày 9 tháng 7 năm 2025, công ty trở thành doanh nghiệp đầu tiên trên thế giới đạt 4.000 tỷ đô la. Ngày 29 tháng 10 năm 2025, cũng là công ty đầu tiên chạm mốc 5.000 tỷ [26]. Trong vòng chưa đầy hai năm rưỡi, giá trị thị trường của một nhà sản xuất chip đồ họa tăng gấp năm lần, chủ yếu nhờ một sản phẩm mà mười năm trước gần như không ai trên Phố Wall quan tâm: bộ xử lý dùng để huấn luyện và vận hành các mô hình trí tuệ nhân tạo.</p>
+<p>Cú rơi của mùa thu năm 2026 cũng không bắt đầu từ chuyện riêng của Jensen Huang. Ngày 5 tháng 11, ba ngày trước bức thư thừa nhận ngoại tình, Bloomberg ghi nhận tài sản của Huang giảm 15,1 tỷ đô la trong một ngày, còn 150,9 tỷ, và ông rời khỏi nhóm mười người giàu nhất thế giới. Nguyên nhân khi đó được ghi là một đợt bán tháo cổ phiếu chip [27]. Theo CNBC, tuần kết thúc ngày 13 tháng 11 sẽ là tuần giảm thứ sáu liên tiếp của Nvidia, chuỗi dài nhất kể từ năm 2012 [28]. Nói cách khác, khi bài báo đầu tiên về Huang và Singapore xuất hiện cuối tháng 10, thị trường đã sẵn tâm lý lo âu về định giá của cả ngành.</p>
+<p>Điều đó quan trọng cho cách đọc những con số trong các chương sau. Không thể quy mọi đồng đô la mất đi trong tháng 11 cho Jensen Huang. Sách sẽ cố tách hai thứ này ra ở mỗi chỗ có thể: phần nào của cú rơi gắn với tin tức về ông, theo chính các bản tin thị trường, và phần nào thuộc về một đợt điều chỉnh lớn hơn của cổ phiếu trí tuệ nhân tạo. Ở nhiều chỗ, chính các bản tin cũng không tách được, và điều đó sẽ được nói rõ.</p>
+<p>Thêm một con số để hình dung tầm ảnh hưởng. Theo CNBC ngày 12 tháng 11, phần cổ phần Nvidia của Huang trị giá khoảng 140 tỷ đô la, phần lớn được nắm qua các quỹ tín thác mà ông đứng tên cùng vợ [11]. Cổ phần ấy chưa tới 4% công ty. Phần còn lại nằm trong tay các quỹ hưu trí, quỹ chỉ số, quỹ đầu tư và hàng triệu nhà đầu tư cá nhân, từ Mỹ đến châu Á, những người không có tiếng nói nào trong cuộc họp tối 11 tháng 11 nhưng sẽ là người đầu tiên chịu kết quả của nó khi thị trường mở cửa.</p>
+<h3 class="sec">Cuộc gọi</h3>
+<p>Cùng ngày, tờ New York Times đăng một bài của ba phóng viên Ryan Mac, Tripp Mickle và Georgia Gee. Tiêu đề viết rằng Jensen Huang "được cho là đã có quan hệ với một giám đốc Nvidia báo cáo trực tiếp cho ông" [8].</p>
+<p>Người được nêu tên là Kimberly Powell, phó chủ tịch phụ trách mảng y tế của Nvidia. Theo bài báo, nguồn tin là năm nhân viên của công ty. Tờ báo viết rằng hai người từng bị quay lại cảnh "tỏ ra thân mật" tại một khách sạn trong một hội nghị, và theo bộ quy tắc ứng xử của Nvidia, quan hệ như vậy giữa cấp trên và cấp dưới trực tiếp bị cấm [8]. Đến ngày 24 tháng 11, Jensen Huang, Kimberly Powell và Nvidia đều chưa xác nhận thông tin này. Bà Powell không trả lời đề nghị bình luận của tờ báo, và không đưa ra bất kỳ tuyên bố công khai nào [8]. Đây là một cáo buộc, và sách sẽ gọi nó như vậy ở mọi chỗ nó xuất hiện.</p>
+<p>Theo TechCrunch dẫn lại New York Times, khi phóng viên gọi điện cho Huang để hỏi về bài báo, ông nói một câu rồi cúp máy: "Tôi không nghĩ anh nên nói chuyện trực tiếp với tôi" [9].</p>
+<p>Câu ấy ngắn, nhưng nó đáng được đặt cạnh những gì Huang đã nói công khai trong suốt hai tuần trước đó. Ngày 29 tháng 10, khi tờ báo này lần đầu viết rằng các quan chức Mỹ coi ông là mục tiêu của một chiến dịch tình báo, Huang nói với Bloomberg rằng quan hệ làm ăn giữa Nvidia và công ty có liên quan là "bình thường và không có gì khác thường" [10]. Ngày 8 tháng 11, ông viết thư xin lỗi gia đình và đồng nghiệp. Bức thư ấy thừa nhận chuyện ngoại tình nhưng không nêu tên ai [6]. Đến tối 11 tháng 11, khi một cái tên khác xuất hiện trên báo, ông không bình luận gì thêm.</p>
+<p>Bài báo về Kimberly Powell làm câu chuyện đổi tính chất. Cho đến hôm đó, tâm điểm là quan hệ giữa Huang và một người ngoài công ty, một doanh nhân điều hành khách hàng của Nvidia ở Singapore. Bài ngày 11 tháng 11 kéo câu chuyện vào bên trong Nvidia, đặt ra câu hỏi quản trị mà hội đồng không thể giao cho luật sư bên ngoài trả lời thay: người đứng đầu công ty có tuân thủ chính bộ quy tắc mà ông yêu cầu nhân viên tuân thủ không?</p>
+<p>Theo CNBC, sau bài báo về "một quan hệ bị cáo buộc thứ hai", tâm lý trong hội đồng quản trị "đổi chiều nhanh chóng" [11].</p>
+<h3 class="sec">Sau giờ đóng cửa</h3>
+<p>Thị trường chứng khoán New York đóng cửa lúc 4 giờ chiều. Những gì xảy ra sau đó diễn ra trên các sàn giao dịch điện tử ngoài giờ, nơi khối lượng mỏng và giá có thể biến động mạnh chỉ vì một dòng tin.</p>
+<p>Tối hôm đó, tờ Wall Street Journal đăng một bài với tiêu đề ban đầu nói rằng hội đồng quản trị Nvidia đang chuẩn bị phế truất Jensen Huang. Về sau, tiêu đề được sửa thành "Jensen Huang đã bị phế truất khỏi ghế CEO Nvidia" [12]. Theo các bản tin thị trường, cổ phiếu giảm khoảng 8% trong giao dịch ngoài giờ [12].</p>
+<p>Tám phần trăm của một công ty cỡ Nvidia là một con số khó hình dung. Ở mức giá đóng cửa hôm đó, vốn hóa của Nvidia vào khoảng hơn 4.000 tỷ đô la. Ngày hôm sau, các hãng tin đều ghi nhận rằng sau phiên 12 tháng 11, vốn hóa còn "nhỉnh hơn" 4.000 tỷ một chút [7]. Tám phần trăm, vì thế, tương đương vài trăm tỷ đô la: lớn hơn giá trị thị trường của phần lớn các công ty niêm yết trên thế giới, mất đi trong vài giờ buổi tối, trên những sàn mà phần đông nhà đầu tư cá nhân thậm chí không thể tham gia.</p>
+<p>Muộn tối thứ Tư, theo CNBC, một tài khoản tin tài chính nổi tiếng trên mạng X đăng một dòng ngắn: "Elon làm ơn tuyển Jensen đi." Elon Musk trả lời: "Đó sẽ là một vinh dự" [13].</p>
+<p>Đó là lần đầu tiên trong cuộc khủng hoảng người giàu nhất thế giới đứng hẳn về một phía, và sẽ còn nhiều lần nữa. Trong mười hai ngày sau đó, Musk sẽ đăng thêm ba lần nữa về Huang, và mỗi lần trùng với một bước ngoặt của câu chuyện. Bài đăng tối 11 tháng 11 có giọng nửa đùa. Ba bài sau thì không.</p>
+<h3 class="sec">Cuộc họp khẩn</h3>
+<p>Không có bản ghi công khai nào về cuộc họp của hội đồng quản trị Nvidia tối hôm đó. Những gì công chúng có được gồm ba thứ: hồ sơ 8-K, những gì chủ tịch hội đồng nói sáu ngày sau trong cuộc gọi với nhà đầu tư, và những gì các phóng viên thu thập được từ nguồn tin giấu tên.</p>
+<p>Theo CNBC, hội đồng họp khẩn trong đêm, một số thành viên tham dự từ xa [11]. Theo hồ sơ 8-K, hội đồng chấp nhận đơn từ chức của Huang khỏi ba vị trí: chủ tịch công ty, giám đốc điều hành, và thành viên hội đồng quản trị, có hiệu lực ngay lập tức [1]. Cũng trong quyết định ấy, giám đốc tài chính Colette Kress được giao làm giám đốc điều hành tạm quyền, đồng thời vẫn giữ chức giám đốc tài chính [3].</p>
+<p>Văn bản không trả lời câu hỏi mà nhiều người đặt ra ngay sáng hôm sau: Huang tự nguyện từ chức, hay bị yêu cầu từ chức. Ngôn ngữ pháp lý viết "chấp nhận đơn từ chức". Tiêu đề sửa lại của Wall Street Journal viết "bị phế truất". Hai cách diễn đạt này không nhất thiết mâu thuẫn. Trong quản trị doanh nghiệp Mỹ, một lá đơn từ chức thường là cách một hội đồng và một giám đốc điều hành thỏa thuận để tránh một cuộc bỏ phiếu bãi nhiệm. Nhưng không tài liệu công khai nào ghi lại điều gì đã thực sự diễn ra trong căn phòng, hay những màn hình, tối hôm đó.</p>
+<p>Sáu ngày sau, ngày 17 tháng 11, chủ tịch hội đồng Harvey Jones nói với các nhà đầu tư: "Hội đồng quản trị Nvidia đã nhất trí chấp nhận đơn từ chức của ông ấy và không có ý định đưa Jensen trở lại vị trí CEO" [2]. Sáng 18 tháng 11, trong buổi họp toàn công ty, ông nói thêm rằng lý do là hành vi cá nhân của Huang và việc ông "thiếu thẳng thắn" [14]. Cả hai câu này sẽ được nhắc lại nhiều lần trong sách, vì năm ngày sau đó, cũng chính hội đồng này sẽ bỏ phiếu nhất trí theo hướng ngược lại.</p>
+<h3 class="sec">Người chủ tịch đầu tiên</h3>
+<p>Trong thông cáo sáng 12 tháng 11 có một chi tiết dễ bị bỏ qua giữa những dòng tít lớn: Harvey C. Jones được bổ nhiệm làm "Chủ tịch đầu tiên trong lịch sử" của hội đồng quản trị [3].</p>
+<p>Suốt 33 năm, Nvidia chưa từng có chức danh này. Theo CNBC, hội đồng có 11 thành viên kể cả Huang, với nhiệm kỳ trung bình khoảng 15 năm [11]. Harvey Jones là người ngồi lâu nhất: ông có mặt trong hội đồng từ năm 1993, năm công ty ra đời [14]. Trước khi đến Nvidia, ông từng là giám đốc điều hành của Synopsys, một công ty phần mềm thiết kế chip [14].</p>
+<p>Một hội đồng không có chủ tịch riêng, trong đó người sáng lập vừa là giám đốc điều hành vừa là thành viên có ảnh hưởng nhất, là cấu trúc không hiếm ở các công ty công nghệ do người sáng lập điều hành. Cấu trúc ấy có lợi thế về tốc độ ra quyết định. Nó cũng có một điểm yếu mà giới nghiên cứu quản trị đã chỉ ra từ lâu: khi người cần bị giám sát cũng là người quan trọng nhất trong phòng, câu hỏi ai giám sát ai trở nên mờ đi.</p>
+<p>Jeffrey Sonnenfeld, giáo sư quản trị ở Đại học Yale, mô tả thái độ của nhiều người quanh Huang bằng một cụm từ nặng nề: "Họ mê đắm vị CEO; gần như một sự sùng bái" [15]. Chương 4 sẽ trở lại với nhận xét ấy. Ở đây chỉ cần ghi lại: tối 11 tháng 11, lần đầu tiên trong lịch sử công ty, hội đồng quản trị Nvidia nói "không" với người sáng lập, và để làm điều đó, họ phải tạo ra một chức danh chưa từng tồn tại.</p>
+<h3 class="sec">Những người lên tiếng trước khi trời sáng</h3>
+<p>Nhiều người không đợi đến thông cáo chính thức.</p>
+<p>Cùng ngày 11 tháng 11, thượng nghị sĩ Cộng hòa Kevin Cramer của bang North Dakota nói rằng "vì lương tâm của chính ông ấy, ông ấy nên từ chức" [16]. Cramer thuộc cùng đảng với Tổng thống Donald Trump, người ba ngày trước đã gọi Huang là "một người tử tế" và "một người đáng kính" [17].</p>
+<p>Cũng hôm đó, hai thượng nghị sĩ Dân chủ Elizabeth Warren và Chris Coons gửi thư cho Bộ trưởng Thương mại Howard Lutnick, Ngoại trưởng Marco Rubio và cố vấn Nhà Trắng Stephen Miller, yêu cầu chính quyền "bảo quản mọi hồ sơ và tài liệu liên quan cụ thể đến chiến dịch tình báo được đưa tin này", và xác nhận bằng văn bản trước ngày 17 tháng 11 rằng lệnh bảo quản đã được ban hành [18]. Một yêu cầu bảo quản hồ sơ thường đi trước một cuộc điều tra. Bốn ngày trước, chính Coons đã tuyên bố sẽ điều tra cái ông gọi là "mối quan hệ điên rồ giữa chính quyền Trump, gián điệp Trung Quốc và các tỷ phú AI" [19]. Đây là lời của một chính trị gia đối lập, mang tính luận chiến, và cụm từ "gián điệp Trung Quốc" trong đó là cách ông gọi, không phải một kết luận đã được xác lập. Ngày 12 tháng 11, Bộ trưởng Tư pháp Todd Blanche nói Bộ Tư pháp chưa có kết luận về người phụ nữ ở trung tâm câu chuyện [20].</p>
+<p>Hạ nghị sĩ Dân chủ Jim Himes, thành viên cấp cao của Ủy ban Tình báo Hạ viện, đặt câu hỏi theo cách thận trọng hơn: "Quan hệ với Alice Huang và phía Trung Quốc là gì, và chúng ta biết gì về những ảnh hưởng hay thông tin đã được trao đổi? Bởi vì hôm nay, ít nhất là tôi, tôi không biết" [21].</p>
+<p>Câu "tôi không biết" của Himes đáng được ghi nhớ, vì trong mười một ngày tiếp theo, rất nhiều người sẽ nói như thể họ đã nắm chắc.</p>
+<h3 class="sec">Ba mươi ba năm trước, cũng ở San Jose</h3>
+<p>Để hiểu vì sao một quyết định của hội đồng quản trị lại khiến hàng trăm nghìn người, trong đó có Elon Musk, ký tên đòi đảo ngược nó, cần quay lại một quán ăn bình dân ở phía đông thành phố San Jose.</p>
+<p>Theo blog chính thức của Nvidia và lời kể của các nhà đồng sáng lập với tạp chí IEEE Spectrum, đầu năm 1993, ba kỹ sư thường gặp nhau ở quán Denny's trên đường Berryessa số 2484, khu East San Jose [22]. Jensen Huang khi đó 30 tuổi, đang làm ở công ty bán dẫn LSI Logic. Chris Malachowsky và Curtis Priem là hai kỹ sư thiết kế chip đồ họa. Họ ngồi ở một gian bàn trong quán và bàn về ý tưởng làm một con chip chuyên xử lý đồ họa ba chiều cho máy tính cá nhân.</p>
+<p>Tháng 4 năm 1993, Nvidia được đăng ký thành lập. Huang làm giám đốc điều hành ngay từ đầu [22].</p>
+<p>Huang không xa lạ với chuỗi nhà hàng này: thời thiếu niên, ông từng làm ở một quán Denny's [23]. Chương 5 sẽ trở lại với cậu thiếu niên ấy, vì đến sáng 12 tháng 11, một tấm biển gắn trên tường quán Denny's ở Berryessa đã không còn ở đó.</p>
+<p>Có một điều mà câu chuyện khởi nghiệp ở quán Denny's thường không nói rõ: ba người sáng lập ban đầu chia nhau vai trò, nhưng chỉ có một người ở lại ghế điều hành suốt 33 năm. Curtis Priem rời công ty từ lâu. Chris Malachowsky vẫn ở lại Nvidia, và một tuần sau sẽ là người nói câu trấn an nhân viên: "Chúng ta sẽ ổn thôi" [14]. Còn Harvey Jones, người có mặt trong hội đồng từ năm đầu tiên ấy, đêm 11 tháng 11 là chủ tịch của hội đồng đã chấp nhận đơn từ chức của người mà ông đã làm việc cùng từ khi công ty chỉ là một ý tưởng bàn ở quán ăn.</p>
+<p>Không có nguồn công khai nào ghi lại Jones nghĩ gì khi làm điều đó, và sách này sẽ không đoán. Chỉ có hai câu nói của chính ông, cách nhau sáu ngày, đã được ghi lại: câu "không có ý định đưa Jensen trở lại" ngày 17 tháng 11, và câu "Hội đồng tin rằng Jensen là người phù hợp để lãnh đạo Nvidia" ngày 23 tháng 11 [2][24].</p>
+<h3 class="sec">Lời của người vắng mặt</h3>
+<p>Từ tối 11 tháng 11 đến sáng 17 tháng 11, Jensen Huang không phát biểu công khai một lời nào.</p>
+<p>Ông có những lời được thuật lại. Theo Bloomberg, trong những giờ cuối cùng trên cương vị giám đốc điều hành, ông nói những câu như "sao cũng được", "tôi không quan tâm", tự gọi mình bằng một từ tục tĩu, và nói rằng điều ông lo nhất là vợ mình, bà Lori, và việc không "hủy hoại cuộc đời" của những người phụ nữ có liên quan [25]. Những lời này đến từ nguồn tin giấu tên, được một tờ báo thuật lại, và không được chính Huang xác nhận. Chúng được ghi lại ở đây đúng như thế: một bản tường thuật chứ chưa phải lời khai.</p>
+<p>Điều chắc chắn hơn là những gì không có. Thông cáo sáng 12 tháng 11 có lời của Colette Kress và lời của Harvey Jones, nhưng không có lời của Jensen Huang [3]. Ba ngày trước đó, ngày 8 tháng 11, chính ông đã viết trong thư gửi nhân viên: "Lãnh đạo Nvidia là đặc ân của cuộc đời tôi" [6]. Bức thư ấy là văn bản cuối cùng ông ký với tư cách giám đốc điều hành. Văn bản tiếp theo mang chữ ký của ông, một bài đăng trên mạng X ngày 17 tháng 11, ông ký với tư cách một người đã rời công ty.</p>
+<p>Ở thời điểm 4 giờ sáng ngày 12 tháng 11 theo giờ miền Đông, khi CNBC đăng bản tin đầu tiên về việc Jensen Huang từ chức [7], thị trường chứng khoán New York còn năm tiếng rưỡi nữa mới mở cửa.</p>
+<h3 class="sec">Hồ sơ, chương 1</h3>
+<p><strong>Ai đã nói</strong></p>
+<ul><li>"Hội đồng quản trị Nvidia đã nhất trí chấp nhận đơn từ chức của ông ấy và không có ý định đưa Jensen trở lại vị trí CEO" (Harvey Jones, chủ tịch hội đồng, cuộc gọi báo cáo quý ngày 17/11/2026) [2].</li><li>"Đó sẽ là một vinh dự" (Elon Musk, trả lời bài đăng "Elon làm ơn tuyển Jensen đi", tối 11/11/2026) [13].</li></ul>
+<p><strong>Ai đã làm</strong></p>
+<ul><li>Hội đồng quản trị chấp nhận đơn từ chức của Huang khỏi cả ba vị trí, có hiệu lực ngay lập tức; bổ nhiệm Colette Kress làm CEO tạm quyền; lần đầu tiên lập chức chủ tịch hội đồng và giao cho Harvey Jones [1][3].</li><li>Hai thượng nghị sĩ Warren và Coons yêu cầu chính quyền bảo quản hồ sơ liên quan [18].</li></ul>
+<p><strong>Người phản biện nói</strong></p>
+<ul><li>"Vì lương tâm của chính ông ấy, ông ấy nên từ chức" (TNS Kevin Cramer, Cộng hòa, 11/11/2026) [16].</li><li>"Bởi vì hôm nay, ít nhất là tôi, tôi không biết" (HNS Jim Himes, Dân chủ, Ủy ban Tình báo Hạ viện) [21]: một lời nhắc rằng ở thời điểm ấy, điều duy nhất được xác nhận là chuyện ngoại tình, còn mọi câu hỏi an ninh vẫn để ngỏ.</li></ul>
+<hr class="scene-break">
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] Nvidia, Form 8-K, mục 5.02. Nguyên văn: "On November 11, 2026, the Board of Directors, or the Board, of NVIDIA Corporation accepted the resignation of Jen-Hsun Huang, as NVIDIA's President, Chief Executive Officer and member of the Board, effective immediately." Hồ sơ do Colette Kress ký ngày 12/11/2026. <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000082/nvda-20261111.htm" rel="noopener">https://www.sec.gov/Archives/edgar/data/1045810/000104581026000082/nvda-20261111.htm</a></p>
+<p class="src">[2] Harvey Jones, cuộc gọi báo cáo kết quả quý 3 tài khóa 2027, 17/11/2026, theo CNBC. Nguyên văn: "The Nvidia board unanimously accepted his resignation and does not intend to reinstate Jensen as CEO." <a href="https://www.cnbc.com/2026/11/17/nvidia-nvda-earnings-report-q3-2027.html" rel="noopener">https://www.cnbc.com/2026/11/17/nvidia-nvda-earnings-report-q3-2027.html</a></p>
+<p class="src">[3] Nvidia, thông cáo "NVIDIA Announces CEO Transition", 12/11/2026 (Phụ lục 99.1 của 8-K): Colette Kress làm CEO tạm quyền, Harvey C. Jones là "first-ever Chair". <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm" rel="noopener">https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm</a></p>
+<p class="src">[4] Giá lịch sử NVDA, StockAnalysis và Investing.com (hai nguồn khớp nhau), truy cập 24/11/2026. <a href="https://stockanalysis.com/stocks/nvda/history/" rel="noopener">https://stockanalysis.com/stocks/nvda/history/</a> ; <a href="https://www.investing.com/equities/nvidia-corp-historical-data" rel="noopener">https://www.investing.com/equities/nvidia-corp-historical-data</a></p>
+<p class="src">[5] AP, "How major US stock indexes fared", 11/11/2026 (đăng lại trên La Nacion). <a href="https://www.lanacion.com.ar/usa/how-major-us-stock-indexes-fared-wednesday-11112026-nid11112026/" rel="noopener">https://www.lanacion.com.ar/usa/how-major-us-stock-indexes-fared-wednesday-11112026-nid11112026/</a></p>
+<p class="src">[6] Jensen Huang, "A Message to Our Company", Nvidia Newsroom, 8/11/2026. Nguyên văn: "I was unfaithful to my wife."; "Leading NVIDIA is the privilege of my life." <a href="https://nvidianews.nvidia.com/news/a-message-to-our-company" rel="noopener">https://nvidianews.nvidia.com/news/a-message-to-our-company</a></p>
+<p class="src">[7] CNBC, trang tin trực tiếp 12/11/2026 (đỉnh đóng cửa 239,24 USD; bản tin 4:02 sáng; vốn hóa "slightly above" 4.000 tỷ USD); Admiral Markets, 23/11/2026 (Bernstein hạ khuyến nghị ngày 11/11; CNBC đưa tin ngày 12/11, hai nguồn lệch ngày). <a href="https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html" rel="noopener">https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html</a> ; <a href="https://admiralmarkets.com/analytics/traders-blog/why-is-nvidia-stock-down-november-2026" rel="noopener">https://admiralmarkets.com/analytics/traders-blog/why-is-nvidia-stock-down-november-2026</a></p>
+<p class="src">[8] Ryan Mac, Tripp Mickle, Georgia Gee, "Jensen Huang Said to Have Had Relationship With Nvidia Executive Who Reports to Him", The New York Times, 11/11/2026. Cáo buộc, dựa trên năm nhân viên; nguyên văn mô tả: "being affectionate". <a href="https://www.nytimes.com/2026/11/11/technology/jensen-huang-nvidia-affair.html" rel="noopener">https://www.nytimes.com/2026/11/11/technology/jensen-huang-nvidia-affair.html</a></p>
+<p class="src">[9] TechCrunch, dòng thời gian, 13/11/2026, dẫn NYT. Nguyên văn: "I don't think you should be talking to me directly." <a href="https://techcrunch.com/2026/11/13/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/" rel="noopener">https://techcrunch.com/2026/11/13/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/</a></p>
+<p class="src">[10] Bloomberg, 29/10/2026. Nguyên văn theo bản Reuters/AFP đăng lại (The Standard HK): "normal and not unusual". <a href="https://www.bloomberg.com/news/articles/2026-10-29/nvidia-ceo-says-ties-to-company-under-spying-probe-were-normal" rel="noopener">https://www.bloomberg.com/news/articles/2026-10-29/nvidia-ceo-says-ties-to-company-under-spying-probe-were-normal</a></p>
+<p class="src">[11] CNBC, 12/11/2026. Nguyên văn: "Nvidia's board decided last night to oust longtime CEO Jensen Huang… sentiment quickly turned after the report of a second alleged affair." Hội đồng 11 người, nhiệm kỳ trung bình khoảng 15 năm. <a href="https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html" rel="noopener">https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html</a></p>
+<p class="src">[12] The Wall Street Journal, "Jensen Huang Has Been Ousted as Nvidia CEO" (tiêu đề ban đầu nói hội đồng "preparing to oust"), 11/11/2026; mức giảm khoảng 8% ngoài giờ theo các bản tin thị trường (báo chí đưa tin). <a href="https://www.wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad" rel="noopener">https://www.wsj.com/business/nvidia-is-preparing-to-oust-nvidia-ceo-jensen-huang-30f421ad</a></p>
+<p class="src">[13] CNBC, 12/11/2026. Bài đăng của Elon Musk trên X, "late Wednesday" 11/11 (CNBC không ghi giờ đăng; 10:25 tối là giờ CNBC đăng bài, theo fact-check). Nguyên văn: "Elon please hire Jensen" / "That would be an honor". <a href="https://www.cnbc.com/2026/11/12/elon-musk-jensen-huang-nvidia-tesla.html" rel="noopener">https://www.cnbc.com/2026/11/12/elon-musk-jensen-huang-nvidia-tesla.html</a></p>
+<p class="src">[14] WIRED, "Inside Nvidia's First All-Hands Without Jensen Huang as CEO", 18/11/2026 ("lack of candor"; Malachowsky: "We're going to be fine."). Tiểu sử Harvey Jones (thành viên hội đồng từ 1993, nguyên CEO Synopsys): Nvidia, trang Board of Directors. <a href="https://www.wired.com/story/inside-nvidias-first-all-hands-without-jensen-huang-as-ceo/" rel="noopener">https://www.wired.com/story/inside-nvidias-first-all-hands-without-jensen-huang-as-ceo/</a></p>
+<p class="src">[15] Jeffrey Sonnenfeld, Yale, 11/2026 (báo chí đưa tin; xem sources.md, mục Investors and analysts). Nguyên văn: "They're smitten by the CEO; kind of idolatry."</p>
+<p class="src">[16] TNS Kevin Cramer, 11/11/2026. Nguyên văn: "As a matter of his own conscience, he should resign." (CNN)</p>
+<p class="src">[17] Donald Trump, 8/11/2026. Theo TechCrunch: "I just know he's a fine person, but you never know what's going on." Theo CNN: "I think he's an honorable guy." <a href="https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang" rel="noopener">https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang</a></p>
+<p class="src">[18] Thư của TNS Elizabeth Warren và Chris Coons, 11/11/2026, theo Anadolu. Nguyên văn: "preserve all records and materials specifically related to this reported intelligence operation, confirm in writing by November 17 that preservation directives have been issued". <a href="https://www.aa.com.tr/en/americas/us-senators-demand-trump-administration-preserve-nvidia-records-amid-china-spy-allegations/4121608" rel="noopener">https://www.aa.com.tr/en/americas/us-senators-demand-trump-administration-preserve-nvidia-records-amid-china-spy-allegations/4121608</a></p>
+<p class="src">[19] TNS Chris Coons, 7/11/2026, theo Financial Times. Nguyên văn: "insane relationship between the Trump Administration, Chinese spies, and AI billionaires". <a href="https://www.ft.com/content/a55a2a22-4479-4f93-a445-6147a5c6d790" rel="noopener">https://www.ft.com/content/a55a2a22-4479-4f93-a445-6147a5c6d790</a></p>
+<p class="src">[20] Bộ trưởng Tư pháp Todd Blanche, 12/11/2026. Nguyên văn: "There's no conclusions reached by the Department of Justice or by me or by [FBI] Director Patel around who she is or is not." (CNN; FT/Reuters)</p>
+<p class="src">[21] HNS Jim Himes, 11–12/11/2026, theo CNN/Politico. Nguyên văn: "What's the relationship with Alice Huang and the Chinese, and what do we know about what influence or information was traded? Because today, at least, I don't know."</p>
+<p class="src">[22] Nvidia Blog, 26/9/2023, về quán Denny's ở 2484 Berryessa Rd; IEEE Spectrum, lời kể của các nhà đồng sáng lập. <a href="https://blogs.nvidia.com/blog/2023/09/26/nvidia-dennys-trillion" rel="noopener">https://blogs.nvidia.com/blog/2023/09/26/nvidia-dennys-trillion</a> ; <a href="https://spectrum.ieee.org/amp/nvidia-cofounders-remember-their-startup-roller-coaster-ride-2650276905" rel="noopener">https://spectrum.ieee.org/amp/nvidia-cofounders-remember-their-startup-roller-coaster-ride-2650276905</a></p>
+<p class="src">[23] Nvidia Blog, 26/9/2023 (chi tiết ở chương 5). <a href="https://blogs.nvidia.com/blog/nvidia-dennys-trillion/" rel="noopener">https://blogs.nvidia.com/blog/nvidia-dennys-trillion/</a></p>
+<p class="src">[24] Nvidia, thông cáo "NVIDIA Board Reinstates Jensen Huang as President, CEO and Board Director", 23/11/2026. Nguyên văn: "The Board believes Jensen is the right person to lead NVIDIA". <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000090/nov23pressrelease.htm" rel="noopener">https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000090/nov23pressrelease.htm</a></p>
+<p class="src">[25] Bloomberg, "Inside Jensen Huang's Final Hours as the CEO of Nvidia", 13/11/2026 (nguồn giấu tên; báo chí đưa tin). Nguyên văn các cụm: "whatever", "I don't care", "ruining the lives". <a href="https://www.bloomberg.com/news/articles/2026-11-13/inside-jensen-huang-s-final-hours-as-the-ceo-of-nvidia" rel="noopener">https://www.bloomberg.com/news/articles/2026-11-13/inside-jensen-huang-s-final-hours-as-the-ceo-of-nvidia</a></p>
+<p class="src">[26] Các mốc vốn hóa: 1.000 tỷ USD (30/5/2023), 4.000 tỷ USD (9/7/2025), 5.000 tỷ USD (29/10/2025), theo các bản tin tài chính tổng hợp trong sources.md (mục Near-death moments and milestones).</p>
+<p class="src">[27] Bloomberg, 5/11/2026 (đoạn trích tìm kiếm, báo chí đưa tin): tài sản Huang giảm 15,1 tỷ USD còn 150,9 tỷ, từ hạng 9 xuống hạng 13. <a href="https://www.bloomberg.com/news/articles/2026-11-05/huang-drops-from-world-s-top-10-richest-after-chips-selloff" rel="noopener">https://www.bloomberg.com/news/articles/2026-11-05/huang-drops-from-world-s-top-10-richest-after-chips-selloff</a></p>
+<p class="src">[28] CNBC, 13/11/2026: tuần giảm thứ sáu liên tiếp, chuỗi dài nhất từ 2012. <a href="https://www.cnbc.com/2026/11/13/nvidia-nvda-stock-jensen-huang-transition.html" rel="noopener">https://www.cnbc.com/2026/11/13/nvidia-nvda-stock-jensen-huang-transition.html</a></p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch02">
+<p class="eyebrow">Chương 02 · Phần Một: Trước giờ G</p>
+<h2 class="ch-title">Bài báo ngày 29 tháng 10</h2>
+<pre class="board">29/10 → 6/11/2026
+NVDA      đỉnh đóng cửa 239,24 USD (6/10) → 186,64 USD (6/11)
+          tức −22% sau một tháng (theo tính toán của sách)
+6/11      +2,78%, phiên cuối trước bức thư thừa nhận ngoại tình
+Tài sản Huang  150,9 tỷ USD, rơi khỏi top 10 (Bloomberg, 5/11)
+Megaspeed trong danh sách &quot;không bán&quot; của Nvidia từ 6/2025
+Kiến nghị  chưa có</pre>
+<p>Tiêu đề xuất hiện trên trang web của New York Times ngày 29 tháng 10 năm 2026 chỉ có chín chữ tiếng Anh: "Nvidia Chief Seen as Target of Chinese Spy Plot", tức "Lãnh đạo Nvidia được cho là mục tiêu của một âm mưu gián điệp Trung Quốc" [1].</p>
+<p>Bài báo có sáu người đứng tên, gồm Jonathan Swan, Maggie Haberman, Ana Swanson, Paul Mozur, Tripp Mickle và Julian Barnes. Chỉ riêng danh sách sáu cái tên ấy đã cho thấy câu chuyện chạm vào bao nhiêu lĩnh vực cùng lúc.</p>
+<p>Theo bài báo, các quan chức Mỹ đã đi đến kết luận rằng một nữ doanh nhân tên Alice Huang là tài sản của tình báo Trung Quốc. Bà là người từng điều hành Megaspeed, một khách hàng lớn của Nvidia ở Đông Nam Á. Cũng theo bài báo, Jensen Huang được xác định danh tính trong các tài liệu tình báo thông qua một thủ tục gọi là "bóc tên" (unmasking), và ông chưa bao giờ được chính phủ thông báo phòng ngừa về mối nguy này. Bài báo cũng viết rằng khi Tổng thống Trump được báo cáo lần đầu, khoảng một năm trước đó, ông "đã chọn không làm gì với thông tin", và rằng các quan chức Mỹ khi ấy "không tin rằng vị lãnh đạo Nvidia biết" Alice Huang đang thu thập thông tin cho phía Trung Quốc [1].</p>
+<p>Ba điều trên là những gì tờ báo đưa tin, dựa trên nguồn giấu tên trong chính quyền. Chúng là cáo buộc, chưa được chứng minh. Hai tuần sau, Bộ trưởng Tư pháp Mỹ Todd Blanche nói công khai rằng Bộ Tư pháp, cá nhân ông và Giám đốc FBI đều "chưa đưa ra kết luận nào" về việc người phụ nữ ấy "là ai hay không là ai" [2]. Bộ Ngoại giao Trung Quốc phủ nhận ngay từ ngày hôm sau. Bà Alice Huang chưa từng phát biểu công khai. Hai người cùng họ Huang nhưng không có quan hệ họ hàng [3].</p>
+<p>Chương này kể lại những gì đã được công bố trước ngày 29 tháng 10 và trong tuần lễ sau đó: một câu chuyện dài hơn ba năm về một công ty ở Singapore, những con chip đắt nhất thế giới, và những cơ quan chính phủ ở ba quốc gia lần lượt đặt câu hỏi về chúng.</p>
+<h3 class="sec">"Bình thường"</h3>
+<p>Ngay trong ngày bài báo xuất hiện, Jensen Huang trả lời phỏng vấn Bloomberg. Ông nói quan hệ làm ăn giữa Nvidia và Megaspeed là "bình thường và không có gì khác thường", và thêm: "Chúng tôi đã nghiên cứu mọi nơi họ triển khai GPU của chúng tôi và đếm từng chiếc một" [4]. Theo Reuters, ông cũng nói chính phủ Mỹ chưa từng thông báo cho ông về những nghi ngờ của họ [4].</p>
+<p>Người phát ngôn của Nvidia, John Rizzo, đưa ra một tuyên bố dài hơn. Ông viết: "Những lần Jensen gặp bà Huang không có gì bất thường hay bất ngờ. Gặp gỡ khách hàng là một phần công việc của một CEO; mỗi năm Jensen nói chuyện với hàng nghìn lãnh đạo của các khách hàng." Công ty cũng nói những khách hàng như Megaspeed chỉ nhận "thông tin kinh doanh thông thường, không phải bí mật thương mại nhạy cảm của Nvidia, và không có thông tin nào liên quan đến an ninh quốc gia". Một câu khác, trong phiên bản Nvidia gửi cho đài ABC, sẽ được trích lại nhiều lần trong những tuần sau đó: "Chúng tôi tin chắc rằng nếu chính phủ Mỹ tin một người nào đó là mối đe dọa đối với công nghiệp Mỹ, họ sẽ cho chúng tôi biết" [5].</p>
+<p>Câu ấy chứa một giả định. Nó cho rằng giữa một tập đoàn bán dẫn và các cơ quan an ninh Mỹ có một kênh thông tin vận hành trơn tru: nếu có nguy cơ, công ty sẽ được báo. Bài báo của New York Times viết điều ngược lại, rằng Huang không nhận được lời cảnh báo phòng ngừa nào [1]. Các tài liệu được công bố về sau còn cho thấy một bức tranh phức tạp hơn cả hai phía: có những cơ quan của chính phủ Mỹ đã hỏi Nvidia về Megaspeed từ hơn một năm trước, và Nvidia đã hành động theo một cách nào đó.</p>
+<h3 class="sec">Một công ty đổi tên</h3>
+<p>Theo Reuters, Megaspeed được đăng ký ở Singapore năm 2015 dưới tên 7Road International [6]. Fortune mô tả công ty khi đó là một nhánh của hãng trò chơi điện tử Trung Quốc 7Road, một hãng có nhà đầu tư liên quan đến nhà nước [7]. Tháng 3 năm 2023, công ty đổi tên thành Megaspeed International. Cũng thời điểm ấy, theo hồ sơ doanh nghiệp Singapore mà tạp chí Open dẫn lại, Alice Huang, tên tiếng Trung là Huang Le, về làm giám đốc điều hành [7].</p>
+<p>Thời điểm ấy đáng chú ý. Từ năm 2022, chính phủ Mỹ bắt đầu hạn chế xuất khẩu những con chip trí tuệ nhân tạo mạnh nhất của Nvidia sang Trung Quốc, và siết chặt dần qua từng năm. Một công ty có trụ sở ở Singapore, mua chip để vận hành trung tâm dữ liệu cho thuê, về nguyên tắc không bị cấm mua. Câu hỏi mà các cơ quan quản lý về sau đặt ra là: ai đang thực sự dùng những con chip ấy, và chúng nằm ở đâu.</p>
+<p>Cuối năm 2023, Megaspeed đổi chủ: theo Reuters, tháng 10, công ty được bán cho một doanh nghiệp của doanh nhân Tan Yong Pong; theo Fortune, người mua là Swiftdata, vào tháng 11, và sau thương vụ Alice Huang thôi chức giám đốc điều hành [7]. Theo Reuters, bốn ngày sau thương vụ, Megaspeed trở thành đối tác điện toán đám mây chính thức của Nvidia, gọi là Nvidia Cloud Partner [8]. Đến cuối năm 2025, theo Bloomberg, Megaspeed đã là khách hàng lớn nhất của Nvidia ở Đông Nam Á [8].</p>
+<p>Năm 2024, Cục Công nghiệp và An ninh (BIS) thuộc Bộ Thương mại Mỹ, cơ quan quản lý kiểm soát xuất khẩu, mở cuộc điều tra về Megaspeed. Thông tin này về sau được xác nhận trong một tuyên bố chung của Bộ Tư pháp và Bộ Thương mại [9]. Theo New York Times, tháng 9 năm 2024, một quan chức của BIS đến thăm trung tâm dữ liệu của Megaspeed ở Malaysia và thấy thiết bị Nvidia vẫn còn nằm nguyên trong thùng [10].</p>
+<p>Tháng 2 năm 2025, cảnh sát và hải quan Singapore mở cuộc điều tra Megaspeed cùng những người điều hành công ty, nghi vấn khai báo sai trong các giao dịch mua máy chủ. Đây là thông tin do chính Bộ Nội vụ Singapore công bố [11].</p>
+<h3 class="sec">Danh sách "không bán"</h3>
+<p>Mốc quan trọng nhất trong chuỗi sự kiện, xét từ góc độ trách nhiệm của Nvidia, nằm ở giữa năm 2025.</p>
+<p>Theo tuyên bố chung của Bộ Tư pháp và Bộ Thương mại Mỹ, tháng 5 năm 2025, Bộ Thương mại yêu cầu Nvidia cung cấp hồ sơ bán hàng cho Megaspeed. Tháng 6 năm 2025, Nvidia đưa Megaspeed vào danh sách "không bán" của mình [9].</p>
+<p>Ngày 24 tháng 6 năm 2025, theo Bộ Nội vụ Singapore, BIS tiến hành một đợt kiểm tra sau giao hàng tại Megaspeed, có mặt Alice Huang. Cùng ngày, cảnh sát Singapore thẩm vấn bà và tạm giữ hộ chiếu của bà [11].</p>
+<p>Ngày 30 tháng 8 năm 2025, theo tuyên bố của chính Megaspeed, Alice Huang "chính thức rời Megaspeed" và từ đó "không còn vai trò gì" ở công ty [12].</p>
+<p>Như vậy, hơn một năm trước khi câu chuyện bùng nổ, ba điều đã xảy ra. Một cơ quan của chính phủ Mỹ đã hỏi Nvidia về khách hàng này. Nvidia đã ngừng bán cho khách hàng này. Và người phụ nữ từng điều hành khách hàng này đã bị cảnh sát Singapore thẩm vấn. Những sự kiện ấy có trong hồ sơ công khai. Điều chưa có trong hồ sơ công khai là ai trong ban lãnh đạo Nvidia được báo về chúng, và vào lúc nào.</p>
+<p>Câu hỏi ấy sẽ trở thành trọng tâm của một phát biểu của Bộ trưởng Tài chính Scott Bessent hai tuần sau đó. Ông nói câu chuyện thật sự "lẽ ra phải là: Nvidia có biết khách hàng của mình không" [13]. Ở thời điểm cuối tháng 10, câu hỏi ấy chưa được ai đặt ra công khai.</p>
+<h3 class="sec">Bài báo năm 2025</h3>
+<p>Bài báo ngày 29 tháng 10 năm 2026 có một bài báo đi trước.</p>
+<p>Ngày 9 tháng 10 năm 2025, New York Times đăng bài với tiêu đề: "Một CEO bí ẩn và hàng tỷ đô la doanh số: Phải chăng Trung Quốc đang mua chip Nvidia bị cấm?" [10]. Bài viết đưa tin Bộ Thương mại đang điều tra Megaspeed, và rằng Alice Huang từng giao du với Jensen Huang. Theo trang Tom's Hardware, hình ảnh mở đầu bài báo là Alice Huang đứng cạnh Jensen Huang [14]. Một ngày sau, cảnh sát Singapore xác nhận Megaspeed đang bị điều tra [15].</p>
+<p>Hai tháng sau, ngày 22 tháng 12 năm 2025, Bloomberg đăng một bài điều tra dài với tiêu đề: "Đối tác Đông Nam Á lớn nhất của Nvidia vướng nghi vấn buôn lậu chip sang Trung Quốc" [8]. Bài báo chỉ ra khoảng cách giữa công suất mà Megaspeed khai báo và lượng thiết bị công ty nhập về. Nvidia nói với Bloomberg rằng công ty đã "nhiều lần đến thăm" các cơ sở của Megaspeed [16].</p>
+<p>Vào tháng 10 năm 2025, Nvidia mô tả Megaspeed là đơn vị vận hành "một dịch vụ đám mây thương mại nhỏ... được phép theo quy định kiểm soát xuất khẩu của Mỹ" [17]. Megaspeed, về phần mình, luôn khẳng định công ty "kinh doanh hợp pháp và đúng luật" [18].</p>
+<p>Hai bài báo ấy không gây ra khủng hoảng. Cổ phiếu Nvidia tiếp tục tăng, và chỉ ba tuần sau bài báo đầu tiên, ngày 29 tháng 10 năm 2025, công ty trở thành doanh nghiệp đầu tiên đạt vốn hóa 5.000 tỷ đô la [19]. Câu chuyện về Megaspeed khi đó vẫn là chuyện kiểm soát xuất khẩu: một câu chuyện kỹ thuật, nặng thủ tục, của các luật sư thương mại và cơ quan quản lý. Phải đến khi nó trở thành chuyện về một con người cụ thể, nó mới làm rung chuyển thị trường.</p>
+<h3 class="sec">Singapore khép hồ sơ một người</h3>
+<p>Tháng 2 năm 2026, Singapore đưa ra kết luận về phần mình. Theo Bộ Nội vụ Singapore, cơ quan điều tra không tìm thấy đủ bằng chứng để kết luận Alice Huang phạm tội. Bà bị cảnh cáo nghiêm khắc vì đã cố ý cung cấp cho cảnh sát thông tin không chính xác, bị cấm nhập cảnh trở lại, được trả hộ chiếu ngày 26 tháng 2 năm 2026 và rời Singapore ngay trong ngày [11].</p>
+<p>Cuộc điều tra đối với Megaspeed và sáu cá nhân khác vẫn tiếp tục. Ngày 12 tháng 11 năm 2026, Bộ Nội vụ Singapore thông báo không ai trong số họ có mặt ở Singapore kể từ tháng 2 năm 2025. Singapore cũng phủ nhận việc từng điều tra Alice Huang về tội gián điệp [20].</p>
+<h3 class="sec">Những gì được kể sau</h3>
+<p>Phần lớn những gì công chúng được nghe về mối quan tâm của tình báo Mỹ đối với Alice Huang đến từ các bài báo dựa trên nguồn giấu tên, xuất hiện sau ngày 29 tháng 10. Sách kể lại chúng ở đây theo thứ tự thời gian của sự việc, kèm đúng mức độ chắc chắn của từng thông tin.</p>
+<p>Theo New York Times, ngày 30 tháng 3 năm 2026, Ngoại trưởng Marco Rubio ký một bản ghi nhớ mật về mối quan hệ của Jensen Huang [21]. Theo CNN, mùa xuân năm 2026, các cuộc liên lạc bị nghe lén cho thấy một lãnh đạo của Megaspeed có quan hệ tình cảm với một "công dân Mỹ", và người này sau đó được bóc tên là Jensen Huang [22]. Theo New York Times và CNN, tháng 5 năm 2026, Rubio báo cáo với Tổng thống Trump về Huang trên chuyên cơ Không lực Một trong chuyến bay tới Alaska, sau đó Huang tham gia đoàn tháp tùng Trump sang Trung Quốc. Nhà Trắng phản bác thông tin này [23].</p>
+<p>Cũng theo New York Times, Trump đã được báo cáo về thông tin tình báo liên quan đến Alice Huang từ khoảng tháng 10 năm 2025 [24]. Khi được hỏi, Trump nói ông "không nghe về chuyện đó khi ấy", và thêm: "Có thể đã được nhắc đến... Chắc chắn là nó không gây nhiều ấn tượng với tôi" [25].</p>
+<p>Tất cả những thông tin trên đều thuộc loại báo chí đưa tin, dựa trên nguồn giấu tên, và một phần bị phía bị nêu tên phản bác. Không thông tin nào trong số đó cho thấy Jensen Huang đã tiết lộ bí mật của Nvidia hay của nước Mỹ. Ngày 8 tháng 11, chính hội đồng quản trị Nvidia tuyên bố họ "không có lý do để tin rằng an ninh quốc gia hay bí mật của Nvidia đã bị xâm phạm" [26]. Các quan chức thân cận với Giám đốc Tình báo Quốc gia Jay Clayton, theo CNN, coi nhãn "gián điệp" là "không hoàn toàn chính xác và bị thổi phồng" [27].</p>
+<h3 class="sec">Phản ứng tuần đầu</h3>
+<p>Bắc Kinh phản ứng nhanh nhất. Ngày 30 tháng 10, người phát ngôn Bộ Ngoại giao Trung Quốc Quách Gia Côn (Guo Jiakun) nói bài báo của New York Times "dựa trên suy đoán vô căn cứ và chẳng qua là một nỗ lực bôi nhọ Trung Quốc" [28]. Mười ngày sau, phát ngôn của bộ này dùng lời lẽ mạnh hơn: "hoàn toàn bịa đặt từ hư không" [29].</p>
+<p>Cùng ngày 30 tháng 10, Wall Street Journal đưa tin chính quyền Singapore và Đài Loan đã điều tra quan hệ của Alice Huang với Trung Quốc [30]. Ngày 31 tháng 10, Bộ Nội vụ Singapore ra tuyên bố đính chính, khẳng định không có cuộc điều tra nào như vậy đối với Alice Huang [31]. Đây là một chi tiết nhỏ nhưng có ý nghĩa: ngay trong tuần đầu, ít nhất một thông tin cụ thể trong dòng tin về Alice Huang đã bị một chính phủ phủ nhận chính thức. Những ai đọc báo tháng 11 năm 2026 cần nhớ rằng mỗi dòng tin đứng vững ở một mức khác nhau.</p>
+<p>Thị trường phản ứng chậm hơn. Cổ phiếu Nvidia đã giảm từ đỉnh đầu tháng 10, trong một đợt bán tháo cổ phiếu chip rộng hơn. Ngày 5 tháng 11, theo Bloomberg, tài sản của Huang giảm 15,1 tỷ đô la trong một ngày và ông rời khỏi nhóm mười người giàu nhất thế giới. Bản tin ghi nguyên nhân là đợt bán tháo cổ phiếu chip, không gắn với câu chuyện Megaspeed [32]. Ngày 6 tháng 11, cổ phiếu Nvidia còn tăng 2,78%, đóng cửa ở 186,64 đô la [33]. Đó là phiên cuối cùng trước khi câu chuyện chuyển từ chuyện tình báo sang chuyện hôn nhân.</p>
+<h3 class="sec">Một thị trường đã mất</h3>
+<p>Để hiểu vì sao các quan chức Mỹ quan tâm đến Megaspeed đến vậy, và vì sao Jensen Huang lại gặp những người như Alice Huang, cần nhìn lại ba năm Nvidia vật lộn với thị trường Trung Quốc.</p>
+<p>Ngày 9 tháng 4 năm 2025, Nvidia thông báo trong một hồ sơ 8-K rằng chính phủ Mỹ yêu cầu giấy phép xuất khẩu đối với chip H20, con chip được thiết kế riêng cho thị trường Trung Quốc để nằm dưới ngưỡng kiểm soát, và yêu cầu này có hiệu lực "vô thời hạn". Công ty dự kiến ghi nhận khoản chi phí khoảng 5,5 tỷ đô la [34]. Theo NPR, dẫn nguồn giấu tên, ít ngày trước đó Huang đã dự một bữa tối giá một triệu đô la mỗi người tại khu nghỉ dưỡng Mar-a-Lago của Trump, và Nhà Trắng đã tạm gác kế hoạch hạn chế H20 trong một thời gian ngắn [35]. Đây là thông tin báo chí đưa tin, không được Nhà Trắng hay Nvidia xác nhận.</p>
+<p>Mùa hè năm đó, sau các cuộc gặp giữa Huang và Trump, giấy phép bán H20 được nối lại. Ngày 11 tháng 8 năm 2025, Trump công bố Nvidia và AMD sẽ nộp 15% doanh thu bán chip sang Trung Quốc cho chính phủ Mỹ. Theo lời Trump thuật lại, ông đòi 20%, và Huang thương lượng xuống còn 15% [36]. Nvidia nói công ty tuân theo "các quy định mà chính phủ Mỹ đặt ra cho sự tham gia của chúng tôi vào các thị trường toàn cầu" [36]. Giới luật học đặt câu hỏi về tính hợp hiến của thỏa thuận, vì Hiến pháp Mỹ cấm đánh thuế xuất khẩu.</p>
+<p>Phía Bắc Kinh, từ tháng 8 đến tháng 9 năm 2025, chính quyền khuyến cáo các doanh nghiệp trong nước không mua H20 [37]. Ngày 15 tháng 9 năm 2025, Tổng cục Quản lý Thị trường Nhà nước Trung Quốc đưa ra kết luận sơ bộ rằng Nvidia vi phạm luật chống độc quyền liên quan đến các điều kiện của thương vụ mua Mellanox năm 2020 [38].</p>
+<p>Đầu tháng 10 năm 2025, tại một sự kiện của Citadel Securities, Huang nói một câu được trích lại khắp nơi: "Hiện tại chúng tôi đã hoàn toàn ra khỏi Trung Quốc... Chúng tôi đi từ 95% thị phần xuống 0%." Ông nói thêm rằng ông không thể tưởng tượng có nhà hoạch định chính sách nào nghĩ đó là một ý hay, khi chính sách của Mỹ khiến nước Mỹ mất một trong những thị trường lớn nhất thế giới [39].</p>
+<p>Ngày 8 tháng 12 năm 2025, Trump thông báo trên Truth Social cho phép bán chip H200 cho những khách hàng Trung Quốc được phê duyệt, với chính phủ Mỹ nhận 25%. Các dòng chip Blackwell và Rubin vẫn bị loại trừ [40].</p>
+<p>Đặt cạnh nhau, những mốc này cho thấy một điều: suốt ba năm, việc Nvidia được bán gì cho ai ở Trung Quốc không còn là quyết định của riêng công ty. Nó là kết quả của các cuộc đàm phán giữa người đứng đầu công ty và người đứng đầu nước Mỹ. Một CEO ở vị trí ấy gặp gỡ rất nhiều người, ở Washington, ở Bắc Kinh, ở Đài Bắc, ở Singapore. Vài người trong số đó, như các cơ quan Mỹ về sau nghi ngờ, có thể có lý do riêng để muốn gặp ông.</p>
+<p>Trong những bức ảnh được Reuters xác minh, Jensen Huang và Alice Huang xuất hiện cùng nhau sớm nhất từ tháng 12 năm 2023, ở Singapore [41]. Theo Wall Street Journal, người giới thiệu hai người với nhau là chồng của Alice Huang, doanh nhân Kang Wei [42]. Đây là thông tin báo chí đưa tin.</p>
+<h3 class="sec">Người không được báo</h3>
+<p>Đến đây, có thể đặt hai văn bản cạnh nhau.</p>
+<p>Văn bản thứ nhất là tuyên bố của Nvidia ngày 29 tháng 10 năm 2026: nếu chính phủ Mỹ tin ai đó là mối đe dọa, "họ sẽ cho chúng tôi biết" [5].</p>
+<p>Văn bản thứ hai là tuyên bố chung của Bộ Tư pháp và Bộ Thương mại Mỹ, được công bố giữa tháng 11: Bộ Thương mại đã yêu cầu Nvidia cung cấp hồ sơ về Megaspeed từ tháng 5 năm 2025, và Nvidia đã ngừng bán cho Megaspeed từ tháng 6 năm 2025 [9].</p>
+<p>Hai văn bản không mâu thuẫn trực tiếp. Văn bản thứ nhất nói về một con người, Alice Huang. Văn bản thứ hai nói về một công ty, Megaspeed. Nhưng khoảng cách giữa con người và công ty ấy chính là nơi câu chuyện tháng 11 năm 2026 diễn ra. Nếu Nvidia đã đủ lo ngại về Megaspeed để ngừng bán cho họ từ giữa năm 2025, thì người đứng đầu Nvidia biết gì về người từng điều hành Megaspeed, và từ lúc nào?</p>
+<p>Ở thời điểm cuối tháng 10, Huang trả lời câu hỏi đó bằng hai chữ "bình thường". Mười ngày sau, ông sẽ phải trả lời một câu hỏi khác, riêng tư hơn nhiều, và lần này bằng văn bản ký tên.</p>
+<h3 class="sec">Hồ sơ, chương 2</h3>
+<p><strong>Ai đã nói</strong></p>
+<ul><li>Quan hệ giữa Nvidia và Megaspeed là "bình thường và không có gì khác thường" (Jensen Huang, với Bloomberg, 29/10/2026) [4].</li><li>"Chúng tôi tin chắc rằng nếu chính phủ Mỹ tin một người nào đó là mối đe dọa đối với công nghiệp Mỹ, họ sẽ cho chúng tôi biết" (Nvidia, bản gửi ABC; người phát ngôn John Rizzo, người phát ngôn Nvidia, 29/10/2026) [5].</li><li>Bài báo là "suy đoán vô căn cứ" nhằm "bôi nhọ Trung Quốc" (Quách Gia Côn, Bộ Ngoại giao Trung Quốc, 30/10/2026) [28].</li></ul>
+<p><strong>Ai đã làm</strong></p>
+<ul><li>Nvidia đưa Megaspeed vào danh sách "không bán" từ tháng 6/2025, sau khi Bộ Thương mại yêu cầu hồ sơ bán hàng tháng 5/2025 [9].</li><li>Singapore thẩm vấn Alice Huang và giữ hộ chiếu của bà (6/2025); tháng 2/2026 kết luận không đủ bằng chứng buộc tội, cảnh cáo bà vì khai báo không chính xác [11].</li><li>Bộ Nội vụ Singapore đính chính một bản tin của WSJ về việc điều tra Alice Huang (31/10/2026) [31].</li></ul>
+<p><strong>Người phản biện nói</strong></p>
+<ul><li>Câu chuyện thật sự "lẽ ra phải là: Nvidia có biết khách hàng của mình không" (Scott Bessent, Bộ trưởng Tài chính, 13/11/2026) [13]. Đây là lời phản biện mạnh nhất với tuyên bố "bình thường", vì nó đến từ chính chính quyền mà Huang có quan hệ thân thiết.</li><li>"Tại sao phải mất hai năm điều đó mới xảy ra? Tôi không rõ, nhưng tôi mừng là họ đang đi theo hướng đó" (Gina Raimondo, cựu Bộ trưởng Thương mại, về việc đưa Megaspeed vào danh sách hạn chế, 17/11/2026) [43]. Đây là phản biện nhắm vào chính phủ: nếu Megaspeed đáng ngờ từ 2024, các cơ quan Mỹ đã chậm ở đâu?</li></ul>
+<hr class="scene-break">
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] Jonathan Swan, Maggie Haberman, Ana Swanson, Paul Mozur, Tripp Mickle, Julian E. Barnes, "Nvidia Chief Seen as Target of Chinese Spy Plot", The New York Times, 29/10/2026 (báo chí đưa tin, nguồn giấu tên; đọc qua bản đăng lại của The Nightly). Nguyên văn: "had concluded that she was a Chinese intelligence asset"; "Jensen Huang has not received a defensive briefing"; "the unmasking process identified Jensen Huang as the US citizen"; "chose not to do anything with the information"; "US officials did not believe the Nvidia executive knew that Alice Huang was gathering information for the Chinese." <a href="https://www.nytimes.com/2026/10/29/us/politics/nvidia-china-jensen-huang-trump.html" rel="noopener">https://www.nytimes.com/2026/10/29/us/politics/nvidia-china-jensen-huang-trump.html</a> ; <a href="https://thenightly.com.au/politics/world/the-new-york-times-nvidia-chief-jensen-huang-seen-as-target-of-chinese-spy-plot-c-23091245" rel="noopener">https://thenightly.com.au/politics/world/the-new-york-times-nvidia-chief-jensen-huang-seen-as-target-of-chinese-spy-plot-c-23091245</a></p>
+<p class="src">[2] Todd Blanche, 12/11/2026 (CNN; FT/Reuters). Nguyên văn: "There's no conclusions reached by the Department of Justice or by me or by [FBI] Director Patel around who she is or is not."</p>
+<p class="src">[3] TIME, 23/11/2026. Nguyên văn: "The two Huangs are not related." <a href="https://time.com/article/2026/11/23/jensen-huang-return-nvidia-trump/" rel="noopener">https://time.com/article/2026/11/23/jensen-huang-return-nvidia-trump/</a></p>
+<p class="src">[4] Bloomberg, 29/10/2026, theo bản Reuters/AFP đăng lại (The Standard HK). Nguyên văn: "normal and not unusual"; "We've studied all their deployments of our GPUs and counted every one." Về việc chính phủ chưa thông báo cho ông: theo Reuters. <a href="https://www.bloomberg.com/news/articles/2026-10-29/nvidia-ceo-says-ties-to-company-under-spying-probe-were-normal" rel="noopener">https://www.bloomberg.com/news/articles/2026-10-29/nvidia-ceo-says-ties-to-company-under-spying-probe-were-normal</a></p>
+<p class="src">[5] John Rizzo, Nvidia, 29/10/2026, theo NYT/The Nightly và TechCrunch (các câu riêng rẽ). Nguyên văn: "Jensen's interactions with Ms. Huang are not unusual or unexpected. Meetings with customers are part of a CEO's job; Jensen talks with thousands of customer executives every year." / "receive ordinary business information — not sensitive Nvidia trade secrets — and zero information relevant to national security." Bản gửi ABC: "We're confident that if the U.S. government believes that any person is a threat to American industry, it would let us know." <a href="https://abc7news.com/story/nvidia-denies-report-ceo-was-allegedly-targeted-chinese-spy-plot/20000206/" rel="noopener">https://abc7news.com/story/nvidia-denies-report-ceo-was-allegedly-targeted-chinese-spy-plot/20000206/</a></p>
+<p class="src">[6] Reuters, "What we know about Megaspeed", 10/11/2026 (theo Wikipedia). <a href="https://www.reuters.com/world/china/what-we-know-about-megaspeed-singapore-based-customer-nvidia-2026-11-10/" rel="noopener">https://www.reuters.com/world/china/what-we-know-about-megaspeed-singapore-based-customer-nvidia-2026-11-10/</a></p>
+<p class="src">[7] Fortune, 11/11/2026. <a href="https://fortune.com/2026/11/11/megaspeed-nvidia-chips-china-singapore-malaysia/" rel="noopener">https://fortune.com/2026/11/11/megaspeed-nvidia-chips-china-singapore-malaysia/</a> ; Open Magazine (hồ sơ doanh nghiệp Singapore). <a href="https://openthemagazine.com/business/quick-take-what-is-megaspeed-seven-things-to-know-about-the-nvidia-chip-buyer-" rel="noopener">https://openthemagazine.com/business/quick-take-what-is-megaspeed-seven-things-to-know-about-the-nvidia-chip-buyer-</a></p>
+<p class="src">[8] Bloomberg, "Nvidia's Biggest Southeast Asian Partner Dogged by China Chip Smuggling Questions", 22/12/2025. <a href="https://www.bloomberg.com/news/features/2025-12-22/nvidia-partner-megaspeed-draws-china-chip-smuggling-concerns-in-us" rel="noopener">https://www.bloomberg.com/news/features/2025-12-22/nvidia-partner-megaspeed-draws-china-chip-smuggling-concerns-in-us</a></p>
+<p class="src">[9] Bộ Tư pháp và Bộ Thương mại Mỹ, tuyên bố chung về Megaspeed (16 hoặc 17/11/2026, hai nguồn lệch ngày). <a href="https://www.justice.gov/opa/media/1472536/dl" rel="noopener">https://www.justice.gov/opa/media/1472536/dl</a></p>
+<p class="src">[10] The New York Times, "A Mystery C.E.O. and Billions in Sales: Is China Buying Banned Nvidia Chips?", 9/10/2025. <a href="https://www.nytimes.com/2025/10/09/technology/nvidia-chips-china-megaspeed.html" rel="noopener">https://www.nytimes.com/2025/10/09/technology/nvidia-chips-china-megaspeed.html</a></p>
+<p class="src">[11] Bộ Nội vụ Singapore (MHA), "Singapore investigations into Alice Huang (Huang Le) and Megaspeed International Pte Ltd". <a href="https://www.mha.gov.sg/media-room/newsroom/singapore-investigations-into-alice-huang-huang-le-and-megaspeed-international-pte-ltd/" rel="noopener">https://www.mha.gov.sg/media-room/newsroom/singapore-investigations-into-alice-huang-huang-le-and-megaspeed-international-pte-ltd/</a></p>
+<p class="src">[12] Megaspeed, tuyên bố với CNBC, 15/11/2026. Nguyên văn: "Ms. Alice Huang officially left Megaspeed effective August 30, 2025 and currently has no role with the Company." <a href="https://www.cnbc.com/2026/11/15/megaspeed-alice-huang-probe-nvidia-scandal.html" rel="noopener">https://www.cnbc.com/2026/11/15/megaspeed-alice-huang-probe-nvidia-scandal.html</a></p>
+<p class="src">[13] Scott Bessent, CNBC Squawk Box, 13/11/2026. Nguyên văn: "The real story here should be: Did NVIDIA know their client". <a href="https://www.cnbc.com/2026/11/13/cnbc-excerpts-us-treasury-secretary-scott-bessent-speaks-with-cnbcs-squawk-box-today.html" rel="noopener">https://www.cnbc.com/2026/11/13/cnbc-excerpts-us-treasury-secretary-scott-bessent-speaks-with-cnbcs-squawk-box-today.html</a></p>
+<p class="src">[14] Tom's Hardware, về hình ảnh mở đầu bài NYT 10/2025 (sources.md, mục Background).</p>
+<p class="src">[15] CNBC, 10/10/2025. <a href="https://www.cnbc.com/2025/10/10/singapore-us-investigate-nvidia-client-megaspeed-export-controls-violation.html" rel="noopener">https://www.cnbc.com/2025/10/10/singapore-us-investigate-nvidia-client-megaspeed-export-controls-violation.html</a></p>
+<p class="src">[16] Bloomberg, 22/12/2025. Nguyên văn: "repeatedly visited". (Như [8].)</p>
+<p class="src">[17] Nvidia, 10/2025, theo sources.md (mục Allegations). Nguyên văn: "a small commercial cloud… as allowed by U.S. export control rules".</p>
+<p class="src">[18] Megaspeed, theo các bản tin. Nguyên văn: "conducts legitimate and lawful business".</p>
+<p class="src">[19] Mốc 5.000 tỷ USD ngày 29/10/2025, xem sources.md (mục Near-death moments and milestones).</p>
+<p class="src">[20] Bộ Nội vụ Singapore, 12/11/2026, theo Fortune. <a href="https://fortune.com/2026/11/11/megaspeed-nvidia-chips-china-singapore-malaysia/" rel="noopener">https://fortune.com/2026/11/11/megaspeed-nvidia-chips-china-singapore-malaysia/</a></p>
+<p class="src">[21] The New York Times, 13/11/2026 (báo chí đưa tin). <a href="https://www.nytimes.com/2026/11/13/us/politics/nvidia-alice-huang-spy-china.html" rel="noopener">https://www.nytimes.com/2026/11/13/us/politics/nvidia-alice-huang-spy-china.html</a></p>
+<p class="src">[22] CNN, 13/11/2026 (báo chí đưa tin). Nguyên văn: "US person". <a href="https://edition.cnn.com/2026/11/13/politics/jensen-huang-us-intelligence" rel="noopener">https://edition.cnn.com/2026/11/13/politics/jensen-huang-us-intelligence</a></p>
+<p class="src">[23] The New York Times, 10/11/2026; CNN 12–13/11/2026 (báo chí đưa tin; Nhà Trắng phản bác). <a href="https://www.nytimes.com/2026/11/10/us/politics/trump-china-trip-nvidia.html" rel="noopener">https://www.nytimes.com/2026/11/10/us/politics/trump-china-trip-nvidia.html</a></p>
+<p class="src">[24] The New York Times, 9/11/2026 (báo chí đưa tin). <a href="https://www.nytimes.com/2026/11/09/business/economy/nvidia-megaspeed-investigation-huang.html" rel="noopener">https://www.nytimes.com/2026/11/09/business/economy/nvidia-megaspeed-investigation-huang.html</a></p>
+<p class="src">[25] Donald Trump, theo NBC, khoảng 9–10/11/2026. Nguyên văn: "I didn't hear about it then… They could have been mentioned… Certainly, it didn't make much of an impact on me."</p>
+<p class="src">[26] "Statement from NVIDIA Board of Directors", 8/11/2026. Nguyên văn: "no reason to believe that either national security or NVIDIA secrets were compromised." <a href="https://nvidianews.nvidia.com/news/statement-from-nvidia-board-of-directors" rel="noopener">https://nvidianews.nvidia.com/news/statement-from-nvidia-board-of-directors</a></p>
+<p class="src">[27] CNN, 12/11/2026 (báo chí đưa tin). Nguyên văn: "not entirely accurate and over-torqued". <a href="https://www.cnn.com/2026/11/12/politics/alice-huang-us-intel-jensen-huang-nvidia" rel="noopener">https://www.cnn.com/2026/11/12/politics/alice-huang-us-intel-jensen-huang-nvidia</a></p>
+<p class="src">[28] Quách Gia Côn (Guo Jiakun), 30/10/2026, bản dịch của AFP (ABC và CNN dịch khác). Nguyên văn: "based on groundless speculation and is nothing more than an attempt to smear China". <a href="https://www.bbc.com/news/articles/ckgj9plnlxdeo" rel="noopener">https://www.bbc.com/news/articles/ckgj9plnlxdeo</a></p>
+<p class="src">[29] Bộ Ngoại giao Trung Quốc, 9/11/2026, theo NYT. Nguyên văn: "pure fabrication out of thin air".</p>
+<p class="src">[30] The Wall Street Journal, 30/10/2026 (báo chí đưa tin). <a href="https://www.wsj.com/tech/chinese-executive-close-to-nvidia-ceo-suspected-of-giving-china-information-798eb6a1" rel="noopener">https://www.wsj.com/tech/chinese-executive-close-to-nvidia-ceo-suspected-of-giving-china-information-798eb6a1</a></p>
+<p class="src">[31] Bộ Nội vụ Singapore, "Clarification statement on Wall Street Journal's article", 31/10/2026. <a href="https://www.mha.gov.sg/media-room/newsroom/clarification-statement-on-wall-street-journals-article/" rel="noopener">https://www.mha.gov.sg/media-room/newsroom/clarification-statement-on-wall-street-journals-article/</a></p>
+<p class="src">[32] Bloomberg, 5/11/2026 (đoạn trích, báo chí đưa tin). <a href="https://www.bloomberg.com/news/articles/2026-11-05/huang-drops-from-world-s-top-10-richest-after-chips-selloff" rel="noopener">https://www.bloomberg.com/news/articles/2026-11-05/huang-drops-from-world-s-top-10-richest-after-chips-selloff</a></p>
+<p class="src">[33] Giá lịch sử NVDA, StockAnalysis và Investing.com. <a href="https://stockanalysis.com/stocks/nvda/history/" rel="noopener">https://stockanalysis.com/stocks/nvda/history/</a></p>
+<p class="src">[34] Nvidia, Form 8-K, 9/4/2025. <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581025000082/nvda-20250409.htm" rel="noopener">https://www.sec.gov/Archives/edgar/data/1045810/000104581025000082/nvda-20250409.htm</a></p>
+<p class="src">[35] NPR, theo The Register và Tom's Hardware, 4/2025 (báo chí đưa tin). <a href="https://www.theregister.com/2025/04/09/nvidia_us_export_ban_change/" rel="noopener">https://www.theregister.com/2025/04/09/nvidia_us_export_ban_change/</a></p>
+<p class="src">[36] Thỏa thuận 15%, 11/8/2025; phát ngôn của Nvidia. Nguyên văn: "rules the U.S. government sets for our participation in worldwide markets". Xem sources.md, mục Politics and China.</p>
+<p class="src">[37] Fortune, 19/10/2025. <a href="https://fortune.com/2025/10/19/jensen-huang-nvidia-china-market-share-ai-chips-trump-trade-war/" rel="noopener">https://fortune.com/2025/10/19/jensen-huang-nvidia-china-market-share-ai-chips-trump-trade-war/</a></p>
+<p class="src">[38] Fortune, 15/9/2025. <a href="https://fortune.com/2025/09/15/china-nvidia-mellanox-antitrust-trade-trump-tariffs-talks-beijing-washington" rel="noopener">https://fortune.com/2025/09/15/china-nvidia-mellanox-antitrust-trade-trump-tariffs-talks-beijing-washington</a></p>
+<p class="src">[39] Jensen Huang, sự kiện Citadel Securities, khoảng 6/10/2025, theo Tom's Hardware. Sự kiện "Future of Global Markets 2025", New York, 6/10/2025. Nguyên văn: "At the moment, we are 100% out of China… We went from 95% market share to 0%." / "I can't imagine any policymaker thinking that's a good idea, that whatever policy we implemented caused America to lose one of the largest markets in the world to 0%." <a href="https://www.tomshardware.com/tech-industry/jensen-huang-says-nvidia-china-market-share-has-fallen-to-zero" rel="noopener">https://www.tomshardware.com/tech-industry/jensen-huang-says-nvidia-china-market-share-has-fallen-to-zero</a></p>
+<p class="src">[40] Donald Trump, Truth Social, 8/12/2025, theo The Register. Xem sources.md, mục Politics and China.</p>
+<p class="src">[41] Reuters; Straits Times (báo chí đưa tin). <a href="https://www.straitstimes.com/life/food/jensen-huang-met-alice-huang-as-early-as-dec-2023-at-ristorante-da-valentino-in-singapore" rel="noopener">https://www.straitstimes.com/life/food/jensen-huang-met-alice-huang-as-early-as-dec-2023-at-ristorante-da-valentino-in-singapore</a></p>
+<p class="src">[42] The Wall Street Journal, 12/11/2026 (báo chí đưa tin). <a href="https://www.wsj.com/tech/ai/a-mystery-businessman-introduced-jensen-huang-to-his-paramourher-husband-1ec3b581" rel="noopener">https://www.wsj.com/tech/ai/a-mystery-businessman-introduced-jensen-huang-to-his-paramourher-husband-1ec3b581</a></p>
+<p class="src">[43] Gina Raimondo, 17/11/2026, theo AP. Nguyên văn: "Why did it take two years for that to happen? I don't know, but I'm glad they're moving in that direction." <a href="https://abcnews.com/Technology/wireStory/tech-ceos-saga-jensen-huangs-exit-nvidia-138230541" rel="noopener">https://abcnews.com/Technology/wireStory/tech-ceos-saga-jensen-huangs-exit-nvidia-138230541</a></p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch03">
+<p class="eyebrow">Chương 03 · Phần Một: Trước giờ G</p>
+<h2 class="ch-title">Lá thư</h2>
+<pre class="board">5/11 → 9/11/2026
+NVDA 6/11   186,64 USD   +2,78%   (180,2 triệu cổ phiếu)
+NVDA 9/11   mở 173,07 (−7,3%) → đóng 178,67 USD   −4,27%
+            khối lượng 462,7 triệu, gấp 2,6 lần phiên thứ Sáu
+Tài sản Huang  150,9 tỷ USD (Bloomberg, 5/11)
+Thư gửi nhân viên  Chủ nhật 8/11, ký &quot;Jensen&quot;
+Kiến nghị  chưa có</pre>
+<p>Bức thư được gửi vào một ngày Chủ nhật, qua email nội bộ, cho toàn thể nhân viên Nvidia. Cùng lúc, nó được đăng lên trang tin chính thức của công ty dưới tiêu đề "A Message to Our Company", tức "Thông điệp gửi công ty chúng ta" [1].</p>
+<p>Câu đầu tiên là một lời xin lỗi gửi đến hai đối tượng: "Tôi nợ gia đình tôi và tất cả các bạn một lời xin lỗi." Câu thứ hai là một lời thú nhận: "Tôi đã không chung thủy với vợ mình" [1].</p>
+<p>Từ ngày 8 tháng 11 năm 2026 trở đi, câu thứ hai ấy là dữ kiện duy nhất về đời tư của Jensen Huang mà chính ông xác nhận công khai. Mọi chi tiết khác về những mối quan hệ của ông xuất hiện trên báo chí trong các tuần sau đều đến từ nguồn tin giấu tên, và chưa được ông xác nhận hay phủ nhận. Cuốn sách lấy câu ấy làm ranh giới: những gì ông tự nói thì được kể như dữ kiện; những gì người khác nói về ông thì được kể kèm tên người nói.</p>
+<p>Nhưng để hiểu vì sao bức thư được viết vào đúng ngày Chủ nhật ấy, cần lùi lại bốn ngày.</p>
+<h3 class="sec">Thứ Năm, 5 tháng 11: lá thư của Quốc hội</h3>
+<p>Một tuần sau bài báo của New York Times, ba chủ tịch ủy ban thuộc Hạ viện Mỹ cùng ký một lá thư gửi Jensen Huang. Đó là Brian Mast của Ủy ban Đối ngoại, John Moolenaar của Ủy ban Đặc biệt về Trung Quốc, và Rick Crawford của Ủy ban Tình báo, cả ba đều thuộc đảng Cộng hòa [2].</p>
+<p>Lá thư viết: "Các bản tin gần đây làm dấy lên những lo ngại nghiêm trọng về an ninh quốc gia liên quan đến việc Cộng hòa Nhân dân Trung Hoa tiếp cận công nghệ và thông tin nhạy cảm của Mỹ" [2]. Các chủ tịch đề nghị Huang dự một buổi giải trình kín.</p>
+<p>Ba cái tên này đáng chú ý ở chỗ họ cùng đảng với Tổng thống. Trong suốt năm 2025, Jensen Huang được xem là một trong những lãnh đạo doanh nghiệp có quan hệ tốt nhất với chính quyền Trump, người thương lượng trực tiếp với Tổng thống về chuyện bán chip sang Trung Quốc. Lá thư ngày 5 tháng 11 cho thấy ít nhất trong Quốc hội, quan hệ ấy không đủ để làm im các câu hỏi.</p>
+<p>Cùng ngày, theo New York Times, Bộ trưởng Tài chính Scott Bessent chất vấn Bộ trưởng Thương mại Howard Lutnick ngay tại Nhà Trắng về lý do Megaspeed vẫn chưa bị đưa vào danh sách hạn chế xuất khẩu [3]. Bộ Thương mại phủ nhận cuộc trao đổi ấy từng diễn ra [3]. Axios đưa tin cũng trong ngày 5 tháng 11 có một cuộc họp ở Phòng Bầu dục liên quan đến chủ đề này [4]. Tất cả đều là thông tin báo chí đưa tin dựa trên nguồn giấu tên, nhưng chúng cho thấy câu chuyện đã lên đến tầng cao nhất của chính phủ Mỹ trước khi phần đời tư của nó lên mặt báo.</p>
+<h3 class="sec">Thứ Sáu, 6 tháng 11: bản ghi nhớ</h3>
+<p>Ngày 6 tháng 11, New York Times đăng một bài mới, nói rằng một bản ghi nhớ lưu hành giữa các quan chức cấp cao đã mô tả Alice Huang là gián điệp của Bộ An ninh Quốc gia Trung Quốc [5]. Đây là cáo buộc, dựa trên nguồn giấu tên, về nội dung của một văn bản mật mà công chúng chưa được xem.</p>
+<p>Cũng trong ngày, cổ phiếu Nvidia tăng 2,78%, đóng cửa ở 186,64 đô la [6]. Thị trường, ít nhất là trong phiên giao dịch thứ Sáu ấy, vẫn đọc câu chuyện như một rủi ro về chính sách xuất khẩu: nghiêm trọng, nhưng là loại rủi ro mà Nvidia đã sống chung suốt ba năm.</p>
+<h3 class="sec">Thứ Bảy, 7 tháng 11: câu hỏi của luật sư</h3>
+<p>Thứ Bảy, tờ Financial Times đưa tin rằng phía Mỹ tin mối quan hệ giữa Jensen Huang và Alice Huang mang tính tình cảm [7].</p>
+<p>Theo The Information, được các báo khác dẫn lại về sau, tối hôm đó, tổng cố vấn pháp lý của Nvidia, Tim Teter, đến nhà Huang và hỏi thẳng ông rằng bài báo có đúng không. Huang trả lời là đúng [8]. Đây là thông tin báo chí đưa tin, không có xác nhận từ Huang hay Teter.</p>
+<p>Chi tiết ấy quan trọng vì vai trò của người hỏi. Tổng cố vấn pháp lý là người chịu trách nhiệm bảo vệ công ty trước rủi ro pháp lý, không phải luật sư riêng của giám đốc điều hành. Khi một tổng cố vấn pháp lý phải đến tận nhà để hỏi CEO một câu như vậy, câu hỏi ấy đã thôi là chuyện riêng. Một tuần sau, Reuters sẽ đưa tin rằng trước đó, Huang từng hai lần nói với Teter và một lãnh đạo khác rằng quan hệ của ông với Alice Huang chỉ là giao dịch khách hàng thông thường [9]. Tin ấy sẽ được kể đầy đủ ở chương 7.</p>
+<p>Cũng theo The Information, sau khi bài báo của Financial Times xuất hiện, con gái ông, Madison Huang, giám đốc cấp cao về tiếp thị sản phẩm robot tại Nvidia, quay về từ Hàn Quốc, nơi bà vừa đến, để ở bên cha. Bà khuyên ông có lẽ cần thuê một người phát ngôn riêng, tách khỏi bộ phận truyền thông của Nvidia [10]. Đây là chi tiết duy nhất về hành động của các thành viên gia đình Huang trong cuộc khủng hoảng mà báo chí đưa tin. Không ai trong gia đình phát biểu công khai.</p>
+<p>Cùng ngày thứ Bảy, thượng nghị sĩ Dân chủ Chris Coons tuyên bố sẽ mở điều tra [11]. Bức thư của Huang được gửi đi chưa đầy một ngày sau đó.</p>
+<h3 class="sec">Chủ nhật, 8 tháng 11: bức thư</h3>
+<p>Dưới đây là bản dịch toàn văn bức thư, vì đây là văn bản quan trọng nhất mà Jensen Huang tự viết trong cả cuộc khủng hoảng, và vì người đọc nên được đọc nó trước khi đọc bất kỳ lời bình nào về nó [1].</p>
+<p><em>"Tôi nợ gia đình tôi và tất cả các bạn một lời xin lỗi.</em></p>
+<p><em>Tôi đã không chung thủy với vợ mình. Hành động của tôi đã làm tổn thương bà ấy và các con chúng tôi. Không có lời bào chữa nào cho những gì tôi đã làm. Tôi vô cùng hối lỗi.</em></p>
+<p><em>Suốt cuộc đời tôi, gia đình đã dành cho tôi tình yêu và sự ủng hộ. Họ xứng đáng nhận được sự trung thực và lòng chung thủy của tôi. Thay vào đó, tôi đã làm họ thất vọng và làm tổn hại cuộc sống mà chúng tôi cùng xây dựng. Tôi nhận hoàn toàn trách nhiệm về những gì mình đã làm và nỗi đau mình đã gây ra, và tôi chấp nhận những lời chỉ trích đi kèm.</em></p>
+<p><em>Gửi vợ và gia đình tôi: tôi yêu mọi người. Tôi hiểu một lời xin lỗi không thể xóa đi những gì tôi đã làm. Tôi mong gia đình chúng tôi sẽ lành lại, và theo thời gian, tôi có thể lấy lại niềm tin của mọi người.</em></p>
+<p><em>Gửi các đồng nghiệp tại Nvidia, kể cả những người tôi đã làm việc cùng hàng chục năm, gửi hội đồng quản trị, các đối tác và cổ đông trên toàn thế giới: các bạn xứng đáng có được điều tốt hơn từ tôi. Lãnh đạo Nvidia là đặc ân của cuộc đời tôi. Trách nhiệm của tôi là phục vụ các bạn và xứng đáng với niềm tin của các bạn. Tôi đã không làm tròn trách nhiệm ấy. Tôi hoàn toàn gắn bó với Nvidia và sẽ nỗ lực để lấy lại sự tin tưởng của các bạn.</em></p>
+<p><em>Về những lo ngại an ninh quốc gia được nêu trên báo chí, Hội đồng Quản trị Nvidia đã mở một cuộc điều tra độc lập. Tôi ủng hộ cuộc điều tra và sẽ hợp tác đầy đủ. Tôi yêu đất nước và công ty của chúng ta. Tôi cam kết bảo vệ Nvidia và ủng hộ an ninh quốc gia của nước Mỹ. Tôi tự hào và biết ơn vì là một người Mỹ.</em></p>
+<p><em>Gia đình tôi không chịu trách nhiệm gì về những lựa chọn của tôi. Tôi chịu. Xin hãy để họ được yên.</em></p>
+<p><em>Jensen"</em></p>
+<h3 class="sec">Đọc một lá thư</h3>
+<p>Bức thư làm một số việc, và không làm một số việc khác.</p>
+<p>Nó thừa nhận ngoại tình, nhưng không nói với ai. Tên Alice Huang không xuất hiện. Từ "Megaspeed" không xuất hiện. Những lo ngại về an ninh được nhắc đến như "những lo ngại an ninh quốc gia được nêu trên báo chí", tức là được đặt vào miệng báo chí, và được giao cho cuộc điều tra độc lập của hội đồng xử lý.</p>
+<p>Nó tách hai câu chuyện ra làm hai: một câu chuyện về hôn nhân, mà ông nhận toàn bộ trách nhiệm; và một câu chuyện về an ninh, mà ông cam kết hợp tác. Cách tách ấy có thể là chân thành, có thể là sự cẩn trọng của luật sư, có thể là cả hai. Không có nguồn nào cho phép kết luận.</p>
+<p>Nó dùng ngôn ngữ của lòng yêu nước. Ba câu liên tiếp trong đoạn nói về an ninh đều nhắc đến nước Mỹ: "Tôi yêu đất nước", "ủng hộ an ninh quốc gia của nước Mỹ", "tự hào và biết ơn vì là một người Mỹ". Với một người nhập cư sinh ra ở Đài Loan, đang bị đặt vào trung tâm một câu chuyện về tình báo Trung Quốc, sự nhấn mạnh ấy dễ hiểu. Chín ngày sau, trong bài đăng đầu tiên sau khi rời ghế, ông sẽ trở lại chủ đề này còn rõ hơn.</p>
+<p>Và nó kết thúc bằng một lời đề nghị: "Xin hãy để họ được yên." Cuốn sách này tôn trọng lời đề nghị ấy. Vợ ông, bà Lori Huang, và hai người con chưa từng phát biểu công khai trong suốt cuộc khủng hoảng. Theo Forbes ngày 23 tháng 11, bà Lori "chưa phản hồi công khai" về chuyện ngoại tình của chồng, cũng chưa cho thấy dấu hiệu nào về việc hai người có tiếp tục cuộc hôn nhân hay không [12]. Sách sẽ không viết thay bà.</p>
+<h3 class="sec">Hội đồng lên tiếng</h3>
+<p>Cùng ngày Chủ nhật, hội đồng quản trị Nvidia ra tuyên bố. Trong một thông cáo riêng, tách khỏi bức thư của Huang, hội đồng mở một cuộc điều tra độc lập về việc liệu Jensen Huang có phải là mục tiêu của "một hoạt động tình báo nước ngoài" hay không [13]. Tuyên bố viết: "Hội đồng đặt an ninh quốc gia và an ninh kinh tế của nước Mỹ lên hàng đầu, điều tối quan trọng đối với lợi ích của Nvidia và cổ đông", và hội đồng "không có lý do để tin rằng an ninh quốc gia hay bí mật của Nvidia đã bị xâm phạm" [13].</p>
+<p>Đọc lại sau mười ngày, tuyên bố ấy có một điểm đáng chú ý: nó coi Huang là mục tiêu, tức là nạn nhân tiềm năng, của một chiến dịch tình báo. Nó không đặt câu hỏi về hành vi của ông với tư cách giám đốc điều hành. Đến ngày 18 tháng 11, chủ tịch hội đồng sẽ nói lý do chấp nhận đơn từ chức là hành vi cá nhân và việc "thiếu thẳng thắn" [14]. Giữa hai tuyên bố, cách hội đồng nhìn người sáng lập đã đổi.</p>
+<p>Theo New York Times cùng ngày, Ngoại trưởng Marco Rubio đã cảnh báo các quan chức khác qua một bản ghi nhớ [15]. Rubio không bình luận công khai về câu chuyện trong suốt tháng 11 [16].</p>
+<p>Cũng ngày Chủ nhật, một người phát ngôn của Nvidia nói với CNN: "Tin tức hôm nay sẽ không làm Nvidia chậm lại. Jensen cam kết tiếp tục lãnh đạo Nvidia trên cương vị CEO, không gián đoạn" [28]. Câu ấy có hiệu lực chưa đầy bốn ngày.</p>
+<h3 class="sec">Tổng thống nói gì</h3>
+<p>Tối Chủ nhật, trước ống kính, Tổng thống Donald Trump được hỏi về Jensen Huang.</p>
+<p>"Tôi chưa nói chuyện với ông ấy về việc này," Trump nói. "Tôi chỉ biết ông ấy là một người tử tế, nhưng ai mà biết được chuyện gì đang diễn ra." Khi được hỏi Huang có nên ở lại ghế CEO không, ông đáp: "Tôi nghĩ vậy. Ồ, chắc chắn rồi" [17]. Khi được hỏi ông có tiếc vì đã không hành động sau bản báo cáo tình báo năm trước hay không, theo CNN, ông đáp: "Không, tôi không nghĩ vậy. Tôi nghĩ ông ấy là một người đáng kính. Tôi nghĩ có lẽ ông ấy có lời bào chữa cho chuyện đó" [18].</p>
+<p>Câu "có lẽ ông ấy có lời bào chữa cho chuyện đó" sẽ bị giới phê bình nhắc lại, như một ví dụ cho việc Tổng thống xem nhẹ chuyện ngoại tình. Phe ủng hộ Huang đọc nó theo cách khác: một lời nhắc rằng chuyện hôn nhân của một người khó dùng làm thước đo năng lực điều hành.</p>
+<p>Dan Ives, nhà phân tích nổi tiếng với các dự báo lạc quan về cổ phiếu công nghệ, gọi đây là "một vết bầm cho Jensen" [19]. Từ "vết bầm" cho thấy cách nhìn phổ biến trên Phố Wall tối Chủ nhật ấy: đáng xấu hổ, nhưng sẽ lành.</p>
+<h3 class="sec">Một người bạn cùng phòng thí nghiệm</h3>
+<p>Trong bức thư ngày 8 tháng 11, Huang viết về "cuộc sống mà chúng tôi cùng xây dựng". Những gì công chúng được nghe về cuộc sống ấy chủ yếu đến từ chính ông, qua các bài phát biểu trong nhiều năm.</p>
+<p>Theo trang tin của Trường Kỹ thuật Đại học bang Oregon, Huang gặp Lori Mills khi hai người được xếp làm bạn cùng nhóm trong phòng thí nghiệm. Trong lớp kỹ thuật điện khoảng 80 sinh viên năm ấy, bà là một trong ba sinh viên nữ [20]. Năm 2024, trong một bài phát biểu nhận bằng danh dự, Huang kể câu đầu tiên ông dùng để làm quen: "Bạn có muốn xem bài tập về nhà của tôi không?" [21]. Ông tốt nghiệp kỹ sư điện năm 1984, loại xuất sắc. Năm 1985, hai người kết hôn [22].</p>
+<p>Sau Oregon State, Huang làm thiết kế vi xử lý ở AMD, rồi chuyển sang LSI Logic, nơi ông làm đến năm 1993. Trong thời gian ấy, ông học bán thời gian và lấy bằng thạc sĩ kỹ thuật điện ở Stanford năm 1992 [23]. Một năm sau là quán Denny's, là Nvidia.</p>
+<p>Năm 2007, hai vợ chồng lập Quỹ Jen-Hsun và Lori Huang bằng 330 triệu đô la cổ phiếu Nvidia. Đến cuối năm 2025, tài sản của quỹ đã vượt 12 tỷ đô la [24]. Theo Forbes, bà Lori là đồng ủy thác của các quỹ tín thác nắm phần lớn cổ phần Nvidia của gia đình [12]. Nói cách khác, về mặt pháp lý, cổ phần đã đưa Jensen Huang vào hàng giàu nhất thế giới phần lớn được nắm chung với người vợ mà ông vừa viết thư xin lỗi.</p>
+<p>Đó là những dữ kiện công khai. Sách dừng lại ở đó.</p>
+<h3 class="sec">Bên trong và bên ngoài</h3>
+<p>Những phản ứng đầu tiên từ giới công nghệ và đầu tư không chia hai phe rõ rệt như những ngày sau.</p>
+<p>Shaun Maguire, đối tác của quỹ đầu tư mạo hiểm Sequoia, viết: "Ông ấy đã phạm những sai lầm rất lớn với chuyện ngoại tình, điều đó là bi kịch cho gia đình ông và cho Nvidia. Nhưng đồng thời, ông ấy sẽ để lại một khoảng trống rất lớn" [25]. Sarah Guo, nhà sáng lập quỹ Conviction, viết ngắn hơn: "Buồn thay, sự vĩ đại không bảo đảm sự tốt đẹp. Thật đáng thất vọng" [26].</p>
+<p>Hai câu nói ấy đại diện cho hai cách đọc lá thư mà cả cuộc khủng hoảng sẽ xoay quanh. Cách thứ nhất tách người khỏi công việc: chuyện hôn nhân là bi kịch riêng, còn Nvidia cần ông. Cách thứ hai từ chối tách: một người đứng đầu công ty bốn nghìn tỷ đô la phải được đánh giá bằng cả hai.</p>
+<p>Cũng theo WIRED, ngay từ năm 2025, Huang đã thuê một công ty truyền thông xử lý khủng hoảng cho các vấn đề cá nhân [27]. Đây là thông tin báo chí đưa tin.</p>
+<h3 class="sec">Hai câu chuyện trong một tuần</h3>
+<p>Nhìn lại bốn ngày từ 5 đến 8 tháng 11, có thể thấy hai dòng sự kiện chạy song song và gần như không chạm nhau trên mặt báo.</p>
+<p>Dòng thứ nhất diễn ra ở Washington: ba chủ tịch ủy ban Hạ viện gửi thư, một bộ trưởng được cho là chất vấn một bộ trưởng khác, một bản ghi nhớ mật được nhắc đến, một thượng nghị sĩ tuyên bố điều tra. Câu hỏi của dòng này là an ninh quốc gia: chip Mỹ có lọt sang Trung Quốc không, và người phụ nữ ở trung tâm câu chuyện phục vụ ai.</p>
+<p>Dòng thứ hai diễn ra trong một ngôi nhà ở California: một tổng cố vấn pháp lý đến hỏi, một người con gái bay về, một lá thư được soạn. Câu hỏi của dòng này là hôn nhân và lòng tin.</p>
+<p>Bức thư ngày 8 tháng 11 là chỗ hai dòng gặp nhau lần đầu. Nó trả lời dòng thứ hai bằng một lời thú nhận đầy đủ, và trả lời dòng thứ nhất bằng một lời cam kết hợp tác. Với thị trường, sự kết hợp ấy tạo ra một bài toán khó định giá: một CEO đã thừa nhận hành vi cá nhân sai trái, nhưng chưa ai chứng minh được hành vi ấy gây hại cho công ty. Những ngày sau đó, các nhà đầu tư sẽ lần lượt đặt cược vào hai cách trả lời bài toán ấy, và giá cổ phiếu sẽ dao động theo từng bản tin.</p>
+<p>Có một điều bức thư không giải quyết được. Nó được viết khi công chúng chưa hề nghe đến những lớp khác của câu chuyện. Ba ngày sau, một bài báo mới sẽ khiến chính câu "Tôi đã không chung thủy với vợ mình" bị đọc lại theo một cách khác.</p>
+<h3 class="sec">Sáng thứ Hai</h3>
+<p>Thị trường chứng khoán New York mở cửa lúc 9 giờ 30 sáng thứ Hai, 9 tháng 11. Đây là phiên giao dịch đầu tiên sau bức thư.</p>
+<p>Cổ phiếu Nvidia mở cửa ở 173,07 đô la, thấp hơn khoảng 7,3% so với giá đóng cửa thứ Sáu. Trong phiên, giá dao động từ 170,24 đến 179,92 đô la. Cuối ngày, cổ phiếu đóng cửa ở 178,67 đô la, giảm 4,27%. Khối lượng giao dịch là 462,7 triệu cổ phiếu, gấp khoảng 2,6 lần phiên thứ Sáu, theo tính toán của sách [6].</p>
+<p>Một lá thư ký một chữ "Jensen", đã khiến lượng cổ phiếu Nvidia đổi chủ trong một ngày tăng gấp hơn hai lần rưỡi. Và đó mới chỉ là ngày đầu.</p>
+<h3 class="sec">Hồ sơ, chương 3</h3>
+<p><strong>Ai đã nói</strong></p>
+<ul><li>"Tôi đã không chung thủy với vợ mình... Không có lời bào chữa nào cho những gì tôi đã làm" (Jensen Huang, thư gửi nhân viên, 8/11/2026) [1].</li><li>Hội đồng "không có lý do để tin rằng an ninh quốc gia hay bí mật của Nvidia đã bị xâm phạm" (Hội đồng quản trị Nvidia, 8/11/2026) [13].</li><li>"Tôi nghĩ ông ấy là một người đáng kính. Tôi nghĩ có lẽ ông ấy có lời bào chữa cho chuyện đó" (Donald Trump, 8/11/2026, theo CNN) [18].</li></ul>
+<p><strong>Ai đã làm</strong></p>
+<ul><li>Ba chủ tịch ủy ban Hạ viện (Mast, Moolenaar, Crawford) đề nghị Huang giải trình kín (5/11) [2].</li><li>Hội đồng quản trị mở điều tra độc lập về khả năng Huang là mục tiêu của hoạt động tình báo nước ngoài (8/11) [13].</li><li>Theo báo chí, tổng cố vấn pháp lý Tim Teter đến nhà Huang hỏi trực tiếp (7/11) [8].</li></ul>
+<p><strong>Người phản biện nói</strong></p>
+<ul><li>"Buồn thay, sự vĩ đại không bảo đảm sự tốt đẹp" (Sarah Guo, Conviction) [26]: phản biện cách đọc "tách người khỏi công việc".</li><li>"Ông ấy sẽ để lại một khoảng trống rất lớn" (Shaun Maguire, Sequoia) [25]: phản biện chiều ngược lại, rằng giá trị của Huang với Nvidia là một dữ kiện mà hội đồng không thể bỏ qua.</li></ul>
+<hr class="scene-break">
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] Jensen Huang, "A Message to Our Company", Nvidia Newsroom, 8/11/2026. Nguyên văn toàn bộ: "I owe my family and all of you an apology. / I was unfaithful to my wife. My actions hurt her and our children. There is no excuse for what I did. I am deeply sorry. / Throughout my life, my family has given me love and support. They deserve my honesty and loyalty. Instead, I let them down and damaged the life we built together. I take full responsibility for what I did and the hurt I caused, and I accept the criticism that comes with it. / To my wife and family: I love you. I know an apology cannot undo what I have done. I hope our family will heal and that, over time, I can earn back your trust. / To my colleagues at NVIDIA, including those I have worked alongside for decades, and to our board, partners, and shareholders around the world: you deserve better from me. Leading NVIDIA is the privilege of my life. My responsibility is to serve you and be worthy of your trust. I have fallen short of that responsibility. I am fully committed to NVIDIA and will work to earn back your confidence. / Regarding the national security concerns raised in news reports, NVIDIA's Board of Directors has initiated an independent investigation. I support the investigation and will cooperate fully. I love our country and our company. I am committed to protecting NVIDIA and supporting America's national security. I am proud and grateful to be an American. / My family bears no responsibility for my choices. I do. Please give them privacy. / Jensen" <a href="https://nvidianews.nvidia.com/news/a-message-to-our-company" rel="noopener">https://nvidianews.nvidia.com/news/a-message-to-our-company</a></p>
+<p class="src">[2] Thư của các chủ tịch Mast, Moolenaar, Crawford, 5/11/2026, theo NYT. Nguyên văn: "Recent reports raise significant national security concerns regarding the PRC's access to sensitive US technology and information…" <a href="https://www.nytimes.com/2026/11/05/technology/house-republicans-nvidia-jensen-huang-china.html" rel="noopener">https://www.nytimes.com/2026/11/05/technology/house-republicans-nvidia-jensen-huang-china.html</a></p>
+<p class="src">[3] The New York Times, 11/11/2026 (báo chí đưa tin; Bộ Thương mại phủ nhận). <a href="https://www.nytimes.com/2026/11/11/business/economy/nvidia-affair-spy-bessent-lutnick.html" rel="noopener">https://www.nytimes.com/2026/11/11/business/economy/nvidia-affair-spy-bessent-lutnick.html</a></p>
+<p class="src">[4] Axios, 11/11/2026 (báo chí đưa tin). <a href="https://www.axios.com/2026/11/11/trump-lutnick-nvidia-china-chip-export-controls" rel="noopener">https://www.axios.com/2026/11/11/trump-lutnick-nvidia-china-chip-export-controls</a></p>
+<p class="src">[5] The New York Times, 6/11/2026 (cáo buộc, nguồn giấu tên). <a href="https://www.nytimes.com/2026/11/06/us/politics/chinese-spy-agency-nvidia-jensen-huang.html" rel="noopener">https://www.nytimes.com/2026/11/06/us/politics/chinese-spy-agency-nvidia-jensen-huang.html</a></p>
+<p class="src">[6] Giá lịch sử NVDA, StockAnalysis và Investing.com (hai nguồn khớp nhau). Mức −7,3% lúc mở cửa ngày 9/11 theo tính toán của sách (173,07 so với 186,64). <a href="https://stockanalysis.com/stocks/nvda/history/" rel="noopener">https://stockanalysis.com/stocks/nvda/history/</a></p>
+<p class="src">[7] Financial Times, 7/11/2026 (báo chí đưa tin). <a href="https://www.ft.com/content/a55a2a22-4479-4f93-a445-6147a5c6d790" rel="noopener">https://www.ft.com/content/a55a2a22-4479-4f93-a445-6147a5c6d790</a></p>
+<p class="src">[8] The Information, 13/11/2026 ("Sex, Lies and AI Chips"), qua trích dẫn thứ cấp; The New York Times, 14/11/2026. Báo chí đưa tin; fact-check chưa đọc được bản gốc do tường phí. <a href="https://www.nytimes.com/2026/11/14/technology/jensen-huang-nvidia-board.html" rel="noopener">https://www.nytimes.com/2026/11/14/technology/jensen-huang-nvidia-board.html</a></p>
+<p class="src">[9] Reuters, độc quyền, 13/11/2026 (báo chí đưa tin). <a href="https://finance.yahoo.com/markets/stocks/articles/exclusive-ex-nvidia-ceo-misled-002638424.html" rel="noopener">https://finance.yahoo.com/markets/stocks/articles/exclusive-ex-nvidia-ceo-misled-002638424.html</a></p>
+<p class="src">[10] The Information, 13/11/2026, theo Wikipedia (báo chí đưa tin).</p>
+<p class="src">[11] TNS Chris Coons, 7/11/2026, theo Financial Times.</p>
+<p class="src">[12] Forbes, 23/11/2026 (đăng lại trên Yahoo). Nguyên văn: "Lori Huang has not yet responded publicly to her husband's extramarital affair or given any indication of if she intends for them to remain married." <a href="https://finance.yahoo.com/markets/stocks/articles/jensen-huang-scandal-sparks-divorce-215532801.html" rel="noopener">https://finance.yahoo.com/markets/stocks/articles/jensen-huang-scandal-sparks-divorce-215532801.html</a></p>
+<p class="src">[13] "Statement from NVIDIA Board of Directors", 8/11/2026, <a href="https://nvidianews.nvidia.com/news/statement-from-nvidia-board-of-directors" rel="noopener">https://nvidianews.nvidia.com/news/statement-from-nvidia-board-of-directors</a> ; theo CNN. Nguyên văn: "The Board prioritizes US national and economic security, which is paramount to the interests of NVIDIA and its shareholders… [the board] has no reason to believe that either national security or NVIDIA secrets were compromised." Về phạm vi điều tra: "has been the target of a foreign intelligence effort". <a href="https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang" rel="noopener">https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang</a></p>
+<p class="src">[14] WIRED, 18/11/2026. Nguyên văn: "lack of candor". <a href="https://www.wired.com/story/inside-nvidias-first-all-hands-without-jensen-huang-as-ceo/" rel="noopener">https://www.wired.com/story/inside-nvidias-first-all-hands-without-jensen-huang-as-ceo/</a></p>
+<p class="src">[15] The New York Times, 8/11/2026 (báo chí đưa tin). <a href="https://www.nytimes.com/2026/11/08/us/politics/rubio-nvidia-ceo-chinese-spy.html" rel="noopener">https://www.nytimes.com/2026/11/08/us/politics/rubio-nvidia-ceo-chinese-spy.html</a></p>
+<p class="src">[16] C-SPAN, 23/11/2026. <a href="https://www.c-span.org/clip/public-affairs-event/secy-of-state-rubio-declines-comment-on-jensen-huangs-reinstatement-as-nvidia-ceo/5211374" rel="noopener">https://www.c-span.org/clip/public-affairs-event/secy-of-state-rubio-declines-comment-on-jensen-huangs-reinstatement-as-nvidia-ceo/5211374</a></p>
+<p class="src">[17] Donald Trump, 8/11/2026, theo TechCrunch. Nguyên văn: "I have not spoken to him about it. I just know he's a fine person, but you never know what's going on." / "I think so. Oh yeah, sure."</p>
+<p class="src">[18] Donald Trump, 8/11/2026, theo CNN. Nguyên văn: "No I don't think so. I think he's an honorable guy. I think he probably has an excuse for it." <a href="https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang" rel="noopener">https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang</a></p>
+<p class="src">[19] Dan Ives, 8/11/2026, theo CNN. Nguyên văn: "a black eye moment for Jensen".</p>
+<p class="src">[20] Oregon State University, College of Engineering. <a href="https://engineering.oregonstate.edu/all-stories/serendipity-and-hard-work" rel="noopener">https://engineering.oregonstate.edu/all-stories/serendipity-and-hard-work</a></p>
+<p class="src">[21] Fortune, 30/11/2024, về bài phát biểu tại HKUST. Nguyên văn: "Do you wanna see my homework?" <a href="https://fortune.com/2024/11/30/jensen-huang-nvidia-ceo-pick-up-line-freshman-college-wife-lori/" rel="noopener">https://fortune.com/2024/11/30/jensen-huang-nvidia-ceo-pick-up-line-freshman-college-wife-lori/</a></p>
+<p class="src">[22] Năm kết hôn 1985 và bằng kỹ sư 1984: nhiều nguồn, xem sources.md (mục Biography).</p>
+<p class="src">[23] Nvidia, tiểu sử Jensen Huang; Stanford Engineering. <a href="https://www.nvidia.com/en-us/about-nvidia/board-of-directors/jensen-huang/" rel="noopener">https://www.nvidia.com/en-us/about-nvidia/board-of-directors/jensen-huang/</a></p>
+<p class="src">[24] Quỹ Jen-Hsun và Lori Huang (báo chí đưa tin, theo Wikipedia). Xem sources.md, mục Family.</p>
+<p class="src">[25] Shaun Maguire, Sequoia, theo CNN và SF Standard. Nguyên văn: "He made huge mistakes with his infidelity, which is tragic for his family and NVDA. But simultaneously he will leave a huge void…"</p>
+<p class="src">[26] Sarah Guo, Conviction, theo SF Standard. Nguyên văn: "Sadly, greatness doesn't guarantee goodness. It's disappointing."</p>
+<p class="src">[27] WIRED, khoảng 9–10/11/2026 (báo chí đưa tin).</p>
+<p class="src">[28] Người phát ngôn Nvidia, 8/11/2026, theo CNN. Nguyên văn: "Today's news will not slow NVIDIA. Jensen is committed to continuing to lead NVIDIA as CEO without interruption." <a href="https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang" rel="noopener">https://edition.cnn.com/2026/11/08/business/nvidia-investigation-ceo-jensen-huang</a></p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch04">
+<p class="eyebrow">Chương 04 · Phần Một: Trước giờ G</p>
+<h2 class="ch-title">Sáu mươi giờ</h2>
+<pre class="board">9/11 → 11/11/2026
+NVDA 9/11   178,67 USD   −4,27%   (462,7 triệu cổ phiếu)
+NVDA 10/11  173,97 → 168,89 USD   −5,47%   (429,3 triệu)
+NVDA 11/11  173,73 USD   +2,87%
+Hai phiên đầu tuần  mất gần 500 tỷ USD vốn hóa (NBC)
+S&amp;P 500 10/11  7.520,93  −0,4%  | Nasdaq −0,7%
+Tài sản Huang  ~148 tỷ USD, hạng 12 (Bloomberg)</pre>
+<p>Từ sáng thứ Hai 9 tháng 11 đến tối thứ Tư 11 tháng 11, Jensen Huang vẫn là giám đốc điều hành của Nvidia. Đó là khoảng thời gian ông còn giữ ghế sau bức thư thừa nhận ngoại tình: khoảng hai ngày rưỡi, tức hơn sáu mươi giờ, trong đó có ba phiên giao dịch trọn vẹn.</p>
+<p>Trong hơn sáu mươi giờ ấy, năm thứ đã thay đổi. Một vụ kiện được nộp. Tổng thống gọi điện cho ông hai lần. Hội đồng quản trị thuê một cựu công tố viên. Lịch xuất hiện công khai của ông bị xóa. Và một bài báo mới đến từ bên trong chính công ty.</p>
+<p>Chương này đi qua từng ngày, rồi lùi lại để nhìn cấu trúc quyền lực mà Huang đã xây dựng ở Nvidia trong ba thập kỷ: một cấu trúc vận hành rất tốt khi ông đúng, và đặt ra câu hỏi khó khi ông sai.</p>
+<h3 class="sec">Thứ Hai: vụ kiện</h3>
+<p>Ngày 9 tháng 11, một nhà đầu tư nộp đơn khởi kiện tập thể về chứng khoán lên Tòa án Liên bang Quận Bắc California. Vụ kiện mang tên <em>Kistenmacher kiện Nvidia Corp. và Jen-Hsun Huang</em>, do hãng luật Rosen đứng tên [1]. Theo Reuters, đơn kiện cáo buộc Nvidia và Huang đã che giấu mối quan hệ của ông với Alice Huang [2].</p>
+<p>Chi tiết đáng chú ý nhất trong đơn kiện là khoảng thời gian mà nó bao trùm. Những người được coi là thành viên của nhóm khởi kiện là các nhà đầu tư đã mua cổ phiếu Nvidia từ ngày 9 tháng 10 năm 2025 đến ngày 8 tháng 11 năm 2026 [1]. Ngày bắt đầu trùng với ngày New York Times đăng bài báo đầu tiên về Megaspeed. Ngày kết thúc trùng với ngày Huang gửi thư thừa nhận ngoại tình. Lập luận ngầm của đơn kiện rất rõ: trong suốt hơn một năm ấy, theo nguyên đơn, thông tin mà nhà đầu tư cần để định giá rủi ro của công ty đã không được công bố đầy đủ.</p>
+<p>Đây là cáo buộc của nguyên đơn, chưa được tòa xem xét. Kiện tập thể về chứng khoán là chuyện thường xảy ra sau mỗi cú giảm giá lớn của một cổ phiếu lớn ở Mỹ, và phần lớn những vụ như vậy kết thúc bằng hòa giải hoặc bị bác. Hạn chót để các nhà đầu tư đăng ký làm nguyên đơn đại diện là ngày 8 tháng 1 năm 2027 [1]. Nhưng vụ kiện là văn bản pháp lý đầu tiên chính thức đặt câu hỏi mà sau này các nhà lập pháp, một bộ trưởng và cơ quan giám sát chứng khoán sẽ hỏi lại theo những cách khác nhau: công ty đã nói với nhà đầu tư những gì, và lẽ ra phải nói những gì.</p>
+<p>Cùng ngày, cổ phiếu Nvidia giảm 4,27% [3].</p>
+<h3 class="sec">Thứ Hai: cuộc gọi thứ nhất</h3>
+<p>Chiều thứ Hai, tại Nhà Trắng, Tổng thống Trump nói với báo chí rằng ông vừa nói chuyện với Jensen Huang.</p>
+<p>"Tôi hỏi ông ấy câu đó: 'Ông có biết gì về việc bà ấy là gián điệp không?' Ông ấy nói 'Tôi hoàn toàn không biết bà ấy là gián điệp', và tôi thực sự tin ông ấy," Trump nói, theo Reuters [4].</p>
+<p>Câu nói này cần được đọc kỹ. Trong đó, Tổng thống dùng chữ "gián điệp" như một tiền đề, điều mà Bộ trưởng Tư pháp của chính ông, ba ngày sau, sẽ nói là chưa có kết luận [5]. Đồng thời, câu nói đặt Huang vào vị trí một người không hay biết, tức là nạn nhân nếu có một chiến dịch tình báo, hơn là người tham gia. Cũng trong những ngày đầu tuần, theo các bản tin, Trump nói FBI cũng đang xem xét chuyện ngoại tình [6].</p>
+<p>Cũng trong những ngày ấy, Trump nói với NBC rằng bản báo cáo tình báo năm trước "không gây nhiều ấn tượng" với ông [7].</p>
+<h3 class="sec">Thứ Hai: phòng họp kín và lịch trình trống</h3>
+<p>Cũng ngày 9 tháng 11, theo New York Times và AP, Giám đốc CIA John Ratcliffe và Giám đốc Tình báo Quốc gia Jay Clayton thuyết trình trong một phiên họp mật với các lãnh đạo Quốc hội [8]. Nội dung phiên họp không được công bố.</p>
+<p>Cùng ngày, theo TechCrunch, Huang rút khỏi hai sự kiện sắp tới mà ông đã nhận lời phát biểu: Hội nghị ElevenLabs và Diễn đàn CEO của Anthropic [9]. Thông tin này chỉ có một nguồn. Sách ghi lại nó vì một lý do riêng: Anthropic, công ty đứng sau Claude, công cụ được dùng để hỗ trợ soạn bản thảo này, là một trong những khách hàng lớn của Nvidia. Lời tác giả ở đầu sách đã nói rõ mối liên hệ ấy.</p>
+<p>Đối với một người mà lịch công khai thường kín đặc, với những bài phát biểu chính kéo dài hai tiếng ở các hội nghị công nghệ từ San Jose đến Đài Bắc, việc rút khỏi các sự kiện là dấu hiệu đầu tiên mà người ngoài có thể nhìn thấy: Jensen Huang đang biến mất khỏi đời sống công cộng.</p>
+<p>Cũng ngày 9 tháng 11, New York Times đăng một bài khác, ít được chú ý hơn nhưng về sau sẽ quan trọng hơn. Theo bài báo, tháng 8 năm 2025, tổng cố vấn pháp lý Tim Teter của Nvidia đã gửi email cho các nhân viên điều tra của Cục Công nghiệp và An ninh, nói rằng Thứ trưởng Jeffrey Kessler đã cho phép Nvidia liên hệ về vụ việc Megaspeed. Các nhân viên điều tra từ chối gặp, và vụ việc sau đó được chuyển sang Bộ Tư pháp [10]. Đây là thông tin báo chí đưa tin. Nếu đúng, nó cho thấy Nvidia đã chủ động tìm cách tiếp xúc với cơ quan điều tra từ hơn một năm trước, và các nhân viên điều tra đã giữ khoảng cách.</p>
+<h3 class="sec">Thứ Ba: cựu công tố viên</h3>
+<p>Thứ Ba 10 tháng 11, cổ phiếu Nvidia giảm thêm 5,47%, đóng cửa ở 168,89 đô la [3]. Theo NBC, tính cả hai phiên đầu tuần, công ty đã mất gần 500 tỷ đô la giá trị thị trường [11].</p>
+<p>Lúc gần 4 giờ chiều, theo dấu thời gian của NBC, các thành viên độc lập của hội đồng quản trị Nvidia ra tuyên bố: "Các thành viên độc lập của Hội đồng Quản trị Nvidia đã thuê cựu Quyền Chưởng lý Liên bang Quận Nam New York Joon H. Kim và hãng luật của ông, Wachtell, Lipton, Rosen &amp; Katz, để tiến hành một cuộc điều tra kỹ lưỡng và độc lập như đã thông báo hôm Chủ nhật" [12].</p>
+<p>Lựa chọn ấy có ý nghĩa riêng. Quận Nam New York, gọi tắt là SDNY, là văn phòng công tố liên bang nổi tiếng nhất nước Mỹ trong các vụ án tài chính và tham nhũng. Wachtell, Lipton là một trong những hãng luật doanh nghiệp danh tiếng nhất Phố Wall. Khi một hội đồng quản trị thuê một cựu công tố viên cấp cao thay vì một hãng luật quen thuộc của công ty, đó là tín hiệu rằng họ muốn cuộc điều tra được nhìn nhận là độc lập thực sự, kể cả với chính người sáng lập.</p>
+<p>Tuyên bố ngày thứ Ba còn có một chi tiết đáng đọc kỹ: cụm từ "như đã thông báo hôm Chủ nhật". Cuộc điều tra mà Joon H. Kim được thuê để tiến hành là cuộc điều tra hội đồng công bố ngày 8 tháng 11, với phạm vi là liệu Huang có phải mục tiêu của một hoạt động tình báo nước ngoài hay không [12]. Nói cách khác, đến chiều thứ Ba, câu hỏi chính thức trước mặt hội đồng vẫn là câu hỏi về an ninh, và Huang vẫn được đặt ở vị trí người có thể là nạn nhân. Chưa đầy ba mươi giờ sau, một bài báo về chuyện bên trong công ty sẽ thêm vào đó một câu hỏi thứ hai, mà không cần đến cựu công tố viên nào để trả lời.</p>
+<p>Cũng hôm đó, chương trình phát thanh <em>The Daily</em> của New York Times phát một tập về câu chuyện, với tiêu đề "Bí mật, chip và nghề gián điệp" [13]. Và theo New York Times, dẫn hai nguồn tin, Trump gọi cho Huang lần thứ hai và khuyến khích ông tiếp tục chiến đấu để giữ ghế [14]. Thông tin về cuộc gọi thứ hai này được tờ báo đăng hai ngày sau, ngày 12 tháng 11, khi Huang đã rời ghế. Cuộc gọi ngày thứ Hai và cuộc gọi ngày thứ Ba là hai cuộc gọi khác nhau.</p>
+<h3 class="sec">Ai bán, ai mua</h3>
+<p>Hai phiên đầu tuần cho thấy thị trường chia làm hai nhóm, với hai cách đọc trái ngược về cùng một lá thư.</p>
+<p>Phiên thứ Hai, cổ phiếu mở cửa ở 173,07 đô la, giảm khoảng 7% so với thứ Sáu, rồi hồi lên tới 179,92 đô la trong phiên trước khi đóng cửa ở 178,67 đô la [3]. Biên độ ấy, gần bảy đô la trong một ngày, cho thấy cả người bán và người mua đều hành động mạnh tay. Phiên thứ Ba, cổ phiếu mở ở 173,97 đô la, trượt xuống thấp nhất 165,89 đô la, và đóng cửa ở 168,89 đô la [3].</p>
+<p>Theo CNBC, trong ba ngày từ 9 đến 11 tháng 11, các quỹ ETF đòn bẩy đặt cược gấp đôi vào đà tăng của Nvidia đã hút vào 42,5 triệu đô la từ nhà đầu tư cá nhân [22]. Đó là dòng tiền của những người tin rằng cú giảm là cơ hội: Nvidia vẫn là Nvidia, chip vẫn bán chạy, chuyện riêng của người sáng lập rồi sẽ qua. Cùng lúc, khối lượng giao dịch tăng gấp hai đến hai lần rưỡi so với một phiên bình thường [3]. Những người bán ra có lý do riêng: một công ty mà giá trị gắn chặt với một con người sẽ chịu rủi ro lớn khi con người ấy trở thành tâm điểm của các cuộc điều tra.</p>
+<p>Giới phân tích gọi loại rủi ro này là rủi ro nhân sự chủ chốt. Ở hầu hết các tập đoàn lớn, rủi ro ấy được kiểm soát bằng kế hoạch kế nhiệm, bằng một đội ngũ lãnh đạo đủ mạnh để công ty vận hành trơn tru khi người đứng đầu ra đi. Nvidia có một đội ngũ lãnh đạo dày dạn: giám đốc tài chính Colette Kress đã đồng hành cùng công ty qua giai đoạn tăng trưởng nhanh nhất lịch sử của nó. Nhưng cho đến tháng 11 năm 2026, công ty chưa từng công bố người kế nhiệm Huang, và với cấu trúc quản trị mà ông xây dựng, khó có ai được chuẩn bị để thay ông.</p>
+<p>Trong ngày 11 hoặc 12 tháng 11, theo hai nguồn ghi lệch ngày nhau, một nhà phân tích của Bernstein hạ khuyến nghị cổ phiếu Nvidia và cắt giá mục tiêu từ 400 xuống 200 đô la [23]. Mức cắt một nửa giá mục tiêu, đối với một công ty mà doanh thu chưa giảm một đô la nào, là cách giới phân tích định giá lại rủi ro nhân sự chủ chốt bằng con số.</p>
+<p>Chiều thứ Tư, những người mua quỹ ETF đòn bẩy có vẻ đã đúng: cổ phiếu tăng 2,87%. Tối thứ Tư, họ phát hiện ra mình đã sai thời điểm.</p>
+<h3 class="sec">Thứ Tư: một cái tên khác</h3>
+<p>Ngày 11 tháng 11 đã được kể ở chương 1: phiên tăng điểm, bài báo về Kimberly Powell dựa trên lời năm nhân viên, cuộc điện thoại Huang cúp máy với phóng viên, bản tin của Wall Street Journal, bài đăng của Elon Musk, cuộc họp khẩn của hội đồng.</p>
+<p>Đặt ba ngày cạnh nhau, có thể thấy một trình tự. Thứ Hai, áp lực đến từ bên ngoài: một vụ kiện, những câu hỏi của Quốc hội, một phiên họp mật. Thứ Ba, hội đồng quản trị trả lời bằng một cuộc điều tra độc lập, đúng như những gì một hội đồng cẩn trọng sẽ làm. Thứ Tư, áp lực đến từ bên trong: một bài báo dựa trên lời của chính nhân viên Nvidia, về một người báo cáo trực tiếp cho Huang.</p>
+<p>Ở hai ngày đầu, hội đồng có thể nói rằng họ đang điều tra, và chờ kết quả. Ở ngày thứ ba, câu hỏi đã khác. Đó là câu hỏi về việc tuân thủ bộ quy tắc ứng xử của chính công ty, thứ mà hội đồng có nghĩa vụ thực thi và không thể giao toàn bộ cho một luật sư bên ngoài. Theo CNBC, chính bài báo này làm tâm lý trong hội đồng đổi chiều [15].</p>
+<h3 class="sec">Sáu mươi người báo cáo trực tiếp</h3>
+<p>Để hiểu vì sao bài báo ngày thứ Tư lại chạm đúng vào chỗ đau của hội đồng, cần nhìn vào cách Jensen Huang điều hành Nvidia.</p>
+<p>Theo chính lời ông, Huang có khoảng sáu mươi người báo cáo trực tiếp [16]. Con số được các nguồn khác nhau ghi khác nhau: Fortune ngày 12 tháng 11 năm 2026 viết "khoảng 36" [16]. Dù con số chính xác là bao nhiêu, đó là một cấu trúc rất phẳng so với các tập đoàn cùng quy mô, nơi giám đốc điều hành thường chỉ có khoảng mười người báo cáo trực tiếp. Huang giải thích lựa chọn ấy: "Một CEO càng có nhiều người báo cáo trực tiếp thì công ty càng ít tầng lớp. Điều đó giúp thông tin lưu chuyển liên tục" [17].</p>
+<p>Ông cũng nói ông không họp riêng từng người: "Tôi không họp một đối một với bất kỳ ai trong số họ" [18]. Mọi trao đổi quan trọng diễn ra trong các cuộc họp nhóm, nơi tất cả cùng nghe một thông tin.</p>
+<p>Những người viết về Nvidia trước năm 2026 thường mô tả cấu trúc này như một lợi thế cạnh tranh. Nó cho phép một công ty có hàng chục nghìn nhân viên ra quyết định với tốc độ của một công ty khởi nghiệp. Nó giải thích một phần vì sao Nvidia có thể đặt cược toàn bộ vào trí tuệ nhân tạo nhanh hơn các đối thủ. Theo các bài điểm sách về cuốn <em>The Thinking Machine</em> của Stephen Witt, nhân viên mô tả những cơn bùng nổ của Huang trong các cuộc họp là "đáng sợ nhưng giải tỏa" [19].</p>
+<p>Nhưng cấu trúc ấy cũng có một hệ quả mà tháng 11 năm 2026 làm lộ ra. Khi giám đốc điều hành là đầu mối của gần như mọi luồng thông tin, và khi phần lớn lãnh đạo cấp cao báo cáo thẳng cho ông, thì một quan hệ cá nhân giữa ông và một người trong số đó không chỉ là chuyện riêng của hai người. Nó tác động lên chính kênh mà công ty dùng để vận hành. Bộ quy tắc ứng xử cấm quan hệ tình cảm giữa cấp trên và cấp dưới trực tiếp vì lý do ấy: người cấp dưới không thể nói "không" một cách tự do, và những người còn lại không thể chắc chắn rằng thông tin và cơ hội được phân bổ công bằng.</p>
+<p>Bài báo ngày 11 tháng 11 cáo buộc rằng Huang đã có quan hệ như thế với một người trong số những người báo cáo trực tiếp cho ông [20]. Cáo buộc ấy chưa được xác nhận. Nhưng nó đủ để biến câu hỏi trước mặt hội đồng từ "ông ấy có bị lợi dụng không" thành "ông ấy có tuân thủ luật của chính công ty không".</p>
+<h3 class="sec">Những người bảo vệ cấu trúc</h3>
+<p>Nhiều người đọc cấu trúc ấy theo hướng ngược lại, và lập luận của họ đáng được trình bày ở dạng mạnh nhất.</p>
+<p>Phe ủng hộ Huang cho rằng chính mô hình quản trị ấy đã tạo ra Nvidia. Một công ty mà người sáng lập trực tiếp nắm từng mảng là công ty có thể chuyển hướng toàn bộ trong vài tháng, như Nvidia đã làm khi đặt cược vào điện toán tăng tốc cho trí tuệ nhân tạo. Theo lập luận này, việc thay người sáng lập bằng một CEO chuyên nghiệp sẽ buộc công ty phải xây thêm nhiều tầng quản lý, làm chậm tốc độ ra quyết định, và đó là cái giá lớn hơn bất kỳ rủi ro nào từ đời tư của ông.</p>
+<p>Garry Tan, chủ tịch vườn ươm khởi nghiệp Y Combinator, đưa ra phiên bản pháp lý của lập luận ấy: "Jensen xứng đáng được hưởng thủ tục tố tụng đúng đắn, chứ không phải bất cứ điều gì đang diễn ra lúc này" [21]. Theo lập luận này, một người không nên mất vị trí chỉ vì những bài báo dựa trên nguồn giấu tên, trước khi cuộc điều tra mà chính hội đồng khởi xướng có kết quả.</p>
+<p>Jeffrey Sonnenfeld, giáo sư quản trị ở Đại học Yale, nhìn cùng hiện tượng ấy từ phía ngược lại. Theo ông, những người quanh Huang "mê đắm vị CEO", "gần như một sự sùng bái" [24]. Lời phê bình của Sonnenfeld nhắm đúng vào chỗ mà mô hình quản trị phẳng dễ tổn thương nhất: khi mọi đường dây dẫn về một người, và người ấy được ngưỡng mộ đến mức ấy, thì ai đủ vị thế để chất vấn ông?</p>
+<p>Lập luận phản bác cũng rõ ràng. Hội đồng quản trị khác một tòa án: tiêu chuẩn của họ là "điều gì có lợi nhất cho công ty và cổ đông", thay cho "có tội hay không có tội". Một hội đồng chờ có bằng chứng như ở tòa mới hành động có thể chờ quá lâu. Và chính các nhà đầu tư, những người mà hội đồng đại diện, đã bắt đầu bỏ phiếu bằng cách bán ra: gần 500 tỷ đô la trong hai phiên.</p>
+<h3 class="sec">Ba mươi ba năm và một đêm</h3>
+<p>Đặt lại vào chuỗi ngày này, buổi tối 11 tháng 11 có một ý nghĩa khác với những gì thị trường thấy.</p>
+<p>Suốt 33 năm, từ quán Denny's ở San Jose đến khi công ty trở thành doanh nghiệp đầu tiên chạm mốc 5.000 tỷ đô la, Jensen Huang chưa từng phải đối mặt với một hội đồng quản trị nói "không" với ông theo cách công khai. Mô hình sáu mươi người báo cáo trực tiếp, không họp riêng, quyết định nhanh, đã giúp công ty đi qua nhiều lần suýt phá sản. Mô hình ấy dựa trên một giả định ngầm: người ở trung tâm là người đáng tin nhất.</p>
+<p>Trong vòng hơn sáu mươi giờ, giả định ấy bị thử thách từ ba hướng cùng lúc: từ tòa án, qua vụ kiện; từ Washington, qua các phiên họp mật và lá thư của Quốc hội; và từ bên trong, qua lời của năm nhân viên.</p>
+<p>Tối 11 tháng 11, khi phóng viên New York Times gọi điện hỏi về Kimberly Powell, Huang nói một câu rồi cúp máy. Vài giờ sau, hội đồng mà ông đã ngồi cùng suốt ba thập kỷ họp mà không có ông với tư cách người điều khiển cuộc họp, và quyết định chấp nhận đơn từ chức của ông.</p>
+<p>Hai cuộc điện thoại của Tổng thống trong hai ngày trước đó, một để hỏi, một để động viên, không thay đổi được kết quả của cuộc họp ấy. Mười hai ngày sau, chính Tổng thống sẽ tự nhận rằng những cuộc gọi khác của ông đã làm được điều đó.</p>
+<h3 class="sec">Hồ sơ, chương 4</h3>
+<p><strong>Ai đã nói</strong></p>
+<ul><li>"Ông ấy nói 'Tôi hoàn toàn không biết bà ấy là gián điệp', và tôi thực sự tin ông ấy" (Donald Trump, 9/11/2026, theo Reuters) [4].</li><li>"Một CEO càng có nhiều người báo cáo trực tiếp thì công ty càng ít tầng lớp. Điều đó giúp thông tin lưu chuyển liên tục" (Jensen Huang, về mô hình quản trị của mình) [17].</li></ul>
+<p><strong>Ai đã làm</strong></p>
+<ul><li>Đơn kiện tập thể <em>Kistenmacher kiện Nvidia và Jen-Hsun Huang</em> được nộp ngày 9/11, với giai đoạn bao trùm từ 9/10/2025 đến 8/11/2026 [1].</li><li>Hội đồng quản trị thuê cựu Quyền Chưởng lý SDNY Joon H. Kim và hãng Wachtell, Lipton, Rosen &amp; Katz (10/11) [12].</li><li>Theo báo chí, Trump gọi cho Huang ngày 10/11 và khuyên ông tiếp tục chiến đấu giữ ghế [14].</li></ul>
+<p><strong>Người phản biện nói</strong></p>
+<ul><li>"Jensen xứng đáng được hưởng thủ tục tố tụng đúng đắn, chứ không phải bất cứ điều gì đang diễn ra lúc này" (Garry Tan, Y Combinator) [21]: lập luận rằng hội đồng đã hành động trước khi có kết quả điều tra.</li><li>Lập luận ngược lại đến từ chính thị trường và từ đơn kiện: theo nguyên đơn, rủi ro đã tồn tại từ tháng 10/2025 nhưng không được công bố đầy đủ [1][2].</li></ul>
+<hr class="scene-break">
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] <em>Kistenmacher v. NVIDIA Corp. and Jen-Hsun Huang</em>, Tòa án Liên bang Quận Bắc California, đóng dấu ngày 9/11/2026; giai đoạn khởi kiện từ 9/10/2025 đến 8/11/2026; hạn đăng ký nguyên đơn đại diện 8/1/2027. Theo bản đơn trên classaction.org và dandodiary.com (fact-check, sources.md).</p>
+<p class="src">[2] Reuters, 9/11/2026 (báo chí đưa tin). <a href="https://www.reuters.com/world/nvidia-ceo-huang-sued-over-disclosures-related-suspected-chinese-spy-2026-11-09/" rel="noopener">https://www.reuters.com/world/nvidia-ceo-huang-sued-over-disclosures-related-suspected-chinese-spy-2026-11-09/</a></p>
+<p class="src">[3] Giá lịch sử NVDA, StockAnalysis và Investing.com. <a href="https://stockanalysis.com/stocks/nvda/history/" rel="noopener">https://stockanalysis.com/stocks/nvda/history/</a></p>
+<p class="src">[4] Donald Trump, 9/11/2026, theo Reuters (đăng lại trên BusinessDay). Nguyên văn: "I asked him that question 'Did you have any idea that she was a spy?' He said 'I had no idea that she was a spy' and I really believe him."</p>
+<p class="src">[5] Todd Blanche, 12/11/2026. Nguyên văn: "There's no conclusions reached by the Department of Justice or by me or by [FBI] Director Patel around who she is or is not."</p>
+<p class="src">[6] Phát biểu của Trump về FBI (các nguồn ghi ngày 8 hoặc 9/11, báo chí đưa tin). Xem sources.md, mục Timeline.</p>
+<p class="src">[7] Donald Trump, theo NBC, khoảng 10/11/2026. Nguyên văn: "I didn't hear about it then… They could have been mentioned… Certainly, it didn't make much of an impact on me."</p>
+<p class="src">[8] The New York Times và AP, 9/11/2026 (báo chí đưa tin). <a href="https://apnews.com/article/china-denies-spy-jensen-huang-nvidia-3345b9f05c54d58909e88f6dcb9c1cd8" rel="noopener">https://apnews.com/article/china-denies-spy-jensen-huang-nvidia-3345b9f05c54d58909e88f6dcb9c1cd8</a></p>
+<p class="src">[9] TechCrunch, dòng thời gian, mục ngày 9/11 (một nguồn duy nhất). Nguyên văn: "The Nvidia CEO pulled out of upcoming speaking engagements at the ElevenLabs Summit and Anthropic CEO Forum." <a href="https://techcrunch.com/2026/11/13/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/" rel="noopener">https://techcrunch.com/2026/11/13/nvidia-ceo-jensen-huangs-affair-with-alleged-chinese-spy-a-timeline/</a></p>
+<p class="src">[10] The New York Times, 9/11/2026 (báo chí đưa tin). <a href="https://www.nytimes.com/2026/11/09/business/economy/nvidia-megaspeed-investigation-huang.html" rel="noopener">https://www.nytimes.com/2026/11/09/business/economy/nvidia-megaspeed-investigation-huang.html</a></p>
+<p class="src">[11] NBC, 10/11/2026. Nguyên văn: "almost $500 billion" (tính cho hai phiên thứ Hai và thứ Ba).</p>
+<p class="src">[12] Tuyên bố của các thành viên độc lập hội đồng quản trị Nvidia, theo NBC, 10/11/2026, 15:51 EST. Nguyên văn: "The independent members of the NVIDIA Board have retained former acting U.S. Attorney of the Southern District of New York Joon H. Kim and his firm Wachtell, Lipton, Rosen &amp; Katz to conduct a thorough and independent investigation as was announced on Sunday." <a href="https://www.nbcnews.com/business/corporations/ex-prosecutor-probe-jensen-huang-chinese-spy-affair-nvidia-rcna608628" rel="noopener">https://www.nbcnews.com/business/corporations/ex-prosecutor-probe-jensen-huang-chinese-spy-affair-nvidia-rcna608628</a></p>
+<p class="src">[13] The New York Times, <em>The Daily</em>, "Secrets, Chips and Spycraft", 10/11/2026.</p>
+<p class="src">[14] The New York Times, 12/11/2026, dẫn hai nguồn tin (báo chí đưa tin; đọc qua Jerusalem Post). <a href="https://jpost.com/international/article-914857" rel="noopener">https://jpost.com/international/article-914857</a></p>
+<p class="src">[15] CNBC, 12/11/2026. Nguyên văn: "sentiment quickly turned after the report of a second alleged affair." <a href="https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html" rel="noopener">https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html</a></p>
+<p class="src">[16] Con số người báo cáo trực tiếp: "about 60 direct reports, he has said" (TechCrunch); "reportedly had some 36 direct reports" (Fortune, 12/11/2026). Theo fact-check, sources.md.</p>
+<p class="src">[17] Jensen Huang, nguyên văn: "The more direct reports a CEO has, the less layers are in the company. It allows us to keep information fluid." Xem sources.md, mục Leadership style.</p>
+<p class="src">[18] Jensen Huang, theo Fortune. Nguyên văn: "I don't do one-on-ones with any of them".</p>
+<p class="src">[19] Các bài điểm sách <em>The Thinking Machine</em> (Stephen Witt, 4/2025), theo Publishers Weekly và The Week (báo chí đưa tin). Nguyên văn: "terrifying but cathartic".</p>
+<p class="src">[20] The New York Times, 11/11/2026 (cáo buộc). <a href="https://www.nytimes.com/2026/11/11/technology/jensen-huang-nvidia-affair.html" rel="noopener">https://www.nytimes.com/2026/11/11/technology/jensen-huang-nvidia-affair.html</a></p>
+<p class="src">[21] Garry Tan, Y Combinator, theo CNBC. Nguyên văn: "Jensen deserves due process, not whatever is happening right now."</p>
+<p class="src">[22] CNBC, trang tin trực tiếp 12/11/2026: các quỹ ETF đòn bẩy 2x mua Nvidia hút 42,5 triệu USD trong các ngày 9–11/11. <a href="https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html" rel="noopener">https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html</a></p>
+<p class="src">[23] Bernstein hạ khuyến nghị từ "Outperform" xuống "Market Perform", giá mục tiêu từ 400 xuống 200 USD: Admiral Markets ghi ngày 11/11, CNBC đưa tin ngày 12/11 (xung đột nguồn về ngày). <a href="https://admiralmarkets.com/analytics/traders-blog/why-is-nvidia-stock-down-november-2026" rel="noopener">https://admiralmarkets.com/analytics/traders-blog/why-is-nvidia-stock-down-november-2026</a></p>
+<p class="src">[24] Jeffrey Sonnenfeld, Yale (báo chí đưa tin; xem sources.md). Nguyên văn: "They're smitten by the CEO; kind of idolatry."</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch05">
+<p class="eyebrow">Chương 05 · Phần Hai: Rơi</p>
+<h2 class="ch-title">Tấm biển ở quán Denny&#x27;s</h2>
+<pre class="board">NGÀY 1 · THỨ NĂM 12/11/2026 · BUỔI SÁNG
+NVDA      mở 151,01 USD (−13,08%) · đáy 148,80 (−14,35%)
+          đóng 166,19 USD  −4,34%  · 747,7 triệu cổ phiếu
+Từ thứ Sáu  mất hơn 740 tỷ USD vốn hóa (CNBC, lúc mở cửa)
+S&amp;P 500   7.592,40  −0,4% (có lúc −1% đầu phiên) | SOX −0,5%
+Nhỏ lẻ    mua ròng 111 triệu USD trong 30 phút đầu (Vanda)
+Vốn hóa   nhỉnh hơn 4.000 tỷ USD lúc đóng cửa</pre>
+<p>Bản tin đầu tiên của CNBC về việc Jensen Huang từ chức được đăng lúc 4 giờ 02 sáng thứ Năm, 12 tháng 11, theo giờ miền Đông nước Mỹ [1]. Ở San Jose khi đó là 1 giờ sáng. Ở Đài Bắc là 5 giờ chiều, và thị trường chứng khoán Đài Loan đã đóng cửa từ hơn ba tiếng trước.</p>
+<p>Chi tiết về múi giờ ấy quan trọng hơn vẻ ngoài của nó. Theo các bản tin tài chính châu Á, chỉ số TAIEX của Đài Loan đóng cửa ngày 12 tháng 11 giảm 2,63%, cổ phiếu TSMC giảm 2,3% [2]. Nhiều người sẽ đọc con số ấy như phản ứng của châu Á trước tin Huang ra đi. Thực tế phức tạp hơn: sàn Đài Bắc đóng cửa trước khi thông cáo chính thức được phát đi, nhưng sau bản tin của Wall Street Journal và cú giảm ngoài giờ tối 11 tháng 11 giờ New York, tức sáng 12 tháng 11 giờ Đài Bắc. Các bản tin châu Á mà sách tiếp cận được không nói rõ cú giảm hôm ấy gắn với tin nào. Cú sốc thật sự với thị trường châu Á sẽ đến bốn ngày sau, vào phiên thứ Hai đầu tiên.</p>
+<p>Thông cáo chính thức của Nvidia mang tiêu đề "NVIDIA Announces CEO Transition", tức "Nvidia công bố chuyển giao vị trí CEO" [3]. Từ "chuyển giao" là ngôn ngữ của những cuộc thay đổi có kế hoạch, của một vị CEO nghỉ hưu sau khi đã chọn người kế nhiệm. Lần này, người kế nhiệm là CEO tạm quyền, và người ra đi không có một câu nào trong văn bản.</p>
+<h3 class="sec">Hai câu trong thông cáo</h3>
+<p>Thông cáo có hai lời trích dẫn.</p>
+<p>Lời thứ nhất là của Colette Kress, giám đốc tài chính vừa được giao làm CEO tạm quyền: "Sức mạnh của Nvidia luôn đến từ con người, và cùng với đội ngũ lãnh đạo, tôi cam kết tiếp tục xây dựng trên nền tảng phi thường mà Jensen đã tạo ra trong 33 năm qua. Chúng tôi sẽ tiếp tục đẩy mạnh công việc đã đưa Nvidia trở thành công ty dẫn đầu về điện toán tăng tốc và trí tuệ nhân tạo, và thực hiện các cơ hội phía trước. Trọng tâm của chúng tôi vẫn là phục vụ khách hàng, đối tác, nhà phát triển và cổ đông" [3].</p>
+<p>Lời thứ hai là của Harvey Jones, người vừa trở thành chủ tịch hội đồng quản trị: "Colette đã góp phần dẫn dắt Nvidia qua một giai đoạn tăng trưởng phi thường và hiểu sâu sắc hoạt động kinh doanh, khách hàng, vận hành và tình hình tài chính của chúng tôi... Hội đồng hoàn toàn tin tưởng Colette và đội ngũ lãnh đạo, và chúng tôi kỳ vọng hoạt động của công ty, các cam kết với khách hàng và lộ trình sản phẩm sẽ tiếp tục không gián đoạn" [3].</p>
+<p>Cả hai lời đều nói về tính liên tục. Lời của Kress nhắc tên Jensen một lần, như người đã tạo ra nền tảng. Lời của Jones không nhắc tên ông. Cụm từ quan trọng nhất trong văn bản, nếu đọc bằng mắt của một nhà đầu tư, là "không gián đoạn": hội đồng muốn thị trường tin rằng một công ty bốn nghìn tỷ đô la có thể thay người đứng đầu chỉ sau một đêm mà vẫn giao hàng đúng hẹn.</p>
+<p>Năm tiếng sau, thị trường mở cửa và đưa ra câu trả lời đầu tiên.</p>
+<h3 class="sec">Người giữ ghế</h3>
+<p>Theo hồ sơ 8-K, Colette Kress năm nay 59 tuổi [3]. Bà nhận chức CEO tạm quyền trong khi vẫn giữ nguyên vai trò giám đốc tài chính [3]. Nói cách khác, từ sáng 12 tháng 11, cùng một người phải trả lời hai loại câu hỏi mà bình thường thuộc về hai chiếc ghế khác nhau: câu hỏi về con số, từ các nhà phân tích; và câu hỏi về phương hướng, từ khách hàng, nhân viên và chính phủ.</p>
+<p>Lựa chọn ấy có lý do thực tế. Năm ngày nữa là cuộc gọi báo cáo kết quả quý, và giám đốc tài chính là người nắm rõ nhất những con số sẽ được công bố. Một CEO từ bên ngoài không thể được tìm, phỏng vấn và bổ nhiệm trong năm ngày. Hội đồng cũng chưa công bố người kế nhiệm lâu dài; theo những gì chủ tịch hội đồng nói về sau, việc tìm kiếm ấy sẽ được giao cho một công ty săn nhân sự cấp cao.</p>
+<p>Nhưng việc giao cả hai chiếc ghế cho một người cũng là một tín hiệu: hội đồng chưa có kế hoạch kế nhiệm sẵn sàng để triển khai. Đối với một công ty mà người sáng lập đã ngồi ghế điều hành suốt 33 năm, đó là điều dễ hiểu. Đối với một công ty bốn nghìn tỷ đô la, đó là một khoảng trống mà thị trường sẽ định giá ngay khi phiên giao dịch bắt đầu.</p>
+<h3 class="sec">Chín giờ ba mươi</h3>
+<p>Cổ phiếu Nvidia mở cửa phiên thường ở 151,01 đô la, thấp hơn 13,08% so với giá đóng cửa hôm trước. Trong những phút đầu, giá trượt xuống mức thấp nhất trong ngày là 148,80 đô la, tức giảm 14,35% [4]. Theo CNBC, tính từ giá đóng cửa thứ Sáu tuần trước, Nvidia đã mất hơn 740 tỷ đô la giá trị thị trường [1]. Một số bản tin, như của NBC, ghi mức giảm tối đa trong phiên là 16%, nhưng giá thấp nhất mà sàn ghi nhận ứng với mức khoảng 14% [5].</p>
+<p>Để hình dung con số 740 tỷ đô la: đó là nhiều hơn giá trị thị trường của hầu hết các công ty niêm yết trên thế giới, và mất đi trong bốn phiên giao dịch mà tin tức về một con người chiếm trọn các bản tin.</p>
+<p>Chỉ số S&amp;P 500 có lúc giảm gần 1% đầu phiên. Chỉ số bán dẫn Philadelphia, gọi tắt là SOX, giảm nhẹ hơn nhiều so với Nvidia [6]. Sự chênh lệch ấy là dấu hiệu đầu tiên cho thấy thị trường đang tách câu chuyện của Huang khỏi câu chuyện của ngành: buổi sáng 12 tháng 11, nhà đầu tư bán Nvidia, nhưng chưa bán tháo cả ngành chip.</p>
+<h3 class="sec">Một trăm mười một triệu đô la trong ba mươi phút</h3>
+<p>Trong khi giá lao dốc, một nhóm nhà đầu tư lại đổ tiền vào.</p>
+<p>Theo công ty nghiên cứu Vanda, được CNBC dẫn lại, trong 30 phút đầu tiên của phiên giao dịch, nhà đầu tư cá nhân mua ròng 111 triệu đô la cổ phiếu Nvidia. Con số ấy gấp hơn 40 lần mức mua ròng trong nửa giờ đầu của một phiên bình thường [1].</p>
+<p>Dữ liệu của Vanda chỉ cho biết ai đứng ở phía mua. Phía mua là hàng chục nghìn nhà đầu tư cá nhân, nhiều người trong số đó đã kiếm được rất nhiều tiền từ Nvidia trong ba năm qua, và đọc cú giảm như một đợt giảm giá.</p>
+<p>Cuối phiên, những người mua đầu giờ có lý do để hài lòng. Cổ phiếu hồi phục dần trong ngày, đóng cửa ở 166,19 đô la, chỉ còn giảm 4,34% [4]. Từ đáy 148,80 đô la lên giá đóng cửa, cổ phiếu tăng gần 12% trong phiên, theo tính toán của sách. Khối lượng giao dịch là 747,7 triệu cổ phiếu, nhiều nhất trong chuỗi ngày từ 6 đến 20 tháng 11 [4]. Theo CNBC và NBC, vốn hóa của Nvidia lúc đóng cửa vẫn nhỉnh hơn 4.000 tỷ đô la một chút [1][5].</p>
+<p>Một số người sẽ dùng phiên hồi phục này làm bằng chứng rằng thị trường đã "tiêu hóa" xong tin từ chức. Các phiên sau sẽ cho thấy điều ngược lại.</p>
+<h3 class="sec">Ai được, ai mất</h3>
+<p>Sáng 12 tháng 11, theo trang tin trực tiếp của CNBC, cổ phiếu của các đối thủ lại tăng [1].</p>
+<p>Lúc 9 giờ 58, cổ phiếu AMD tăng 3% và Broadcom tăng hơn 5%. Lúc 10 giờ 35, AMD đã tăng gần 17% kể từ thứ Hai. Lập luận của những người mua rất đơn giản: nếu Nvidia mất người sáng lập, các khách hàng lớn có thể tìm đến những nhà cung cấp khác. Cổ phiếu Intel và Marvell thì giảm hơn 4% vào giữa buổi sáng [1].</p>
+<p>Có những cổ phiếu giảm mạnh vì lý do gắn trực tiếp với câu chuyện Megaspeed. Lúc 12 giờ 43, cổ phiếu Super Micro, nhà sản xuất máy chủ dùng chip Nvidia, giảm 12% sau khi trang tin Semafor đưa tin về một cuộc điều tra của Mỹ đối với việc phần cứng của công ty bị chuyển hướng, có liên quan đến Alice Huang [1]. Ở Hồng Kông, cổ phiếu Alibaba giảm khoảng 7% sau các bản tin cho rằng tập đoàn này là khách hàng của Megaspeed [1]. Đây là thông tin báo chí đưa tin, chưa được Alibaba xác nhận.</p>
+<p>Hai cổ phiếu khác giảm mạnh trong ngày, nhưng vì lý do riêng. Nebius, công ty cho thuê hạ tầng điện toán đám mây cho trí tuệ nhân tạo, giảm từ 17 đến 19% tùy nguồn sau khi công bố kết quả kinh doanh. CoreWeave, một công ty cùng ngành, đóng cửa giảm 7% [5]. Ở những trường hợp như vậy, sách không tính chúng vào hiệu ứng Huang, vì chính các bản tin không gắn chúng với ông.</p>
+<h3 class="sec">Năm ngày trước báo cáo quý</h3>
+<p>Thời điểm Huang ra đi khiến bài toán của giới đầu tư khó hơn. Năm ngày sau, chiều thứ Ba 17 tháng 11, Nvidia sẽ công bố kết quả kinh doanh quý ba của năm tài chính 2027, quý kết thúc ngày 25 tháng 10 [18]. Từ khi Nvidia niêm yết năm 1999, Huang luôn là giám đốc điều hành, nên đây sẽ là cuộc gọi báo cáo kết quả đầu tiên của công ty mà ông không còn giữ ghế.</p>
+<p>Theo LSEG, trước khi kết quả được công bố, giới phân tích kỳ vọng doanh thu toàn công ty trong quý vào khoảng 109,1 tỷ đô la [18].</p>
+<p>Nhà đầu tư vì thế đứng trước hai câu hỏi cùng lúc. Câu hỏi thứ nhất thuộc về hiện tại: những con chip đã được đặt hàng, đã được giao, đã được ghi nhận doanh thu trong quý vừa qua, có bị ảnh hưởng gì không. Câu trả lời gần như chắc chắn là không, vì quý ấy đã kết thúc từ hai tuần trước. Câu hỏi thứ hai thuộc về tương lai: các khách hàng lớn có tiếp tục đặt hàng với cùng tốc độ khi người đã thương lượng với họ suốt nhiều năm không còn ở đó, và chính phủ Mỹ sẽ đối xử ra sao với một công ty đang bị đặt câu hỏi về kiểm soát xuất khẩu.</p>
+<p>Phiên hồi phục chiều 12 tháng 11 cho thấy một phần thị trường đặt cược vào câu trả lời thứ nhất. Năm ngày sau, khi kết quả quý được công bố, thị trường sẽ phải chọn giữa hai câu trả lời. Lựa chọn ấy sẽ bất ngờ với nhiều người.</p>
+<h3 class="sec">Những người phân tích</h3>
+<p>Ngay trong buổi sáng, các nhà phân tích trên Phố Wall lần lượt đưa ra nhận định. Ba trong số đó tóm tắt ba cách nhìn khác nhau.</p>
+<p>Stacy Rasgon của Bernstein, một trong những nhà phân tích ngành bán dẫn được trích dẫn nhiều nhất, dùng một hình ảnh từ đời sống: "Nếu bạn thấy hai con kiến trong bếp, thì ước tính tốt nhất về tổng số kiến trong bếp không phải là hai" [7]. Ý của ông là sau hai cáo buộc về các mối quan hệ, nhà đầu tư nên chuẩn bị cho khả năng còn những thông tin khác chưa được công bố. Chưa đầy sáu tiếng sau, Reuters sẽ đưa tin về một người thứ ba.</p>
+<p>CJ Muse của Cantor Fitzgerald đưa ra nhận định mang tính địa chính trị: "Theo quan điểm của tôi, chúng ta đang trao vị trí dẫn đầu về AI cho Trung Quốc." Ông hạ giá mục tiêu của cổ phiếu Nvidia từ 350 xuống 250 đô la [7]. Lập luận của ông xem Huang như một tài sản chiến lược của nước Mỹ, và việc mất ông là một thất bại quốc gia, nhiều hơn là chuyện của riêng một công ty.</p>
+<p>John Vinh của KeyBanc chọn ngôn ngữ của báo cáo phân tích: việc Huang ra đi là "một sự gia tăng đáng kể về rủi ro chiến lược, tổ chức và thực thi" [7]. Ba chữ ấy tương ứng với ba câu hỏi mà giới đầu tư sẽ đặt ra trong những ngày sau: ai sẽ định hướng sản phẩm, ai sẽ giữ chân đội ngũ, và ai sẽ đàm phán với các khách hàng lớn nhất, từ Microsoft đến chính phủ Mỹ.</p>
+<h3 class="sec">Tấm biển</h3>
+<p>Cách trụ sở Nvidia ở Santa Clara khoảng hai mươi phút lái xe, ở số 2484 đường Berryessa, phía đông thành phố San Jose, có một quán Denny's. Trên tường cạnh một gian bàn của quán, từ tháng 9 năm 2023, có một tấm biển ghi rằng đây là "gian bàn đã khởi đầu một công ty nghìn tỷ đô la" [8].</p>
+<p>Sáng thứ Năm 12 tháng 11, tấm biển ấy không còn trên tường. Theo IBTimes, một nhân viên của quán nói tấm biển được gỡ xuống từ "tối hôm trước", tức có thể ngay trong đêm 11 tháng 11, khi hội đồng quản trị Nvidia đang họp [8].</p>
+<p>Không có tuyên bố nào của Denny's giải thích vì sao tấm biển bị gỡ. Hành động ấy có thể đọc theo nhiều cách: một doanh nghiệp không muốn thương hiệu của mình gắn với một vụ bê bối; một quyết định thận trọng trong lúc chưa rõ chuyện gì đang diễn ra; hay đơn giản là một phản xạ trước làn sóng tin tức. Ngày hôm sau, chuỗi nhà hàng sẽ thông báo một quyết định ngược lại, và chương 7 sẽ kể điều đó.</p>
+<p>Nhưng buổi sáng 12 tháng 11, trên bức tường nơi ba kỹ sư từng ngồi uống cà phê và vẽ ra một công ty, chỉ còn chỗ trống.</p>
+<h3 class="sec">Cậu bé rửa bát ở Portland</h3>
+<p>Huang có một mối gắn bó riêng với chuỗi nhà hàng này.</p>
+<p>Theo blog chính thức của Nvidia, công việc đầu tiên của Huang là ở một quán Denny's tại Portland, bang Oregon, năm ông 15 tuổi. Khi được hỏi lại về những năm ấy, ông kể ngắn gọn: "Tôi rửa bát, tôi dọn bàn, tôi chạy bàn" [9].</p>
+<p>Những năm ấy, gia đình ông đã đoàn tụ ở Oregon sau một quãng xa cách mà chương sau sẽ kể. Cậu thiếu niên gốc Đài Loan học ở trường trung học Aloha, gần Beaverton, nhảy hai lớp và tốt nghiệp năm 16 tuổi [10]. Công việc ở Denny's là công việc đầu tiên của ông trong một xã hội mà ông chỉ mới đến được vài năm.</p>
+<p>Nhiều năm sau, khi đã là một trong những doanh nhân giàu nhất thế giới, Huang thường nhắc đến những năm làm ở nhà hàng như một nguồn gốc của sự khiêm tốn và chịu khó. Trong một buổi nói chuyện với sinh viên Trường Kinh doanh Stanford, ông nói: "Hãy nhớ rằng tôi từng rửa bát, và ý tôi là tôi từng cọ nhà vệ sinh. Tôi đã cọ rất nhiều nhà vệ sinh. Tôi đã cọ nhiều nhà vệ sinh hơn tất cả các bạn cộng lại" [11].</p>
+<p>Năm 2023, khi Nvidia vượt mốc vốn hóa nghìn tỷ đô la, Huang quay lại chính quán Denny's ở Berryessa để gắn tấm biển kỷ niệm. Tấm biển ấy, sau khoảng 38 tháng trên tường (theo tính toán của sách), đã được gỡ xuống trước khi thị trường kịp mở cửa ngày 12 tháng 11.</p>
+<h3 class="sec">Những người bên trong</h3>
+<p>Theo CNBC, sáng 12 tháng 11, tâm trạng trong Nvidia là "phức tạp". Có nhân viên đã khóc [1].</p>
+<p>Những người lên tiếng công khai trên mạng xã hội cho thấy sự phức tạp ấy. Edward Liu, một nhân viên Nvidia, gọi đó là "một ngày đau lòng" [12]. Bryan Catanzaro, phó chủ tịch phụ trách nghiên cứu học sâu ứng dụng, viết một đoạn đáng chú ý vì nó nói cả hai điều cùng lúc: "Tôi đau buồn khi Jensen không còn ở Nvidia. Đồng thời, tôi hoàn toàn ủng hộ hội đồng quản trị của Nvidia... [Colette] có sự ủng hộ trọn vẹn của tôi" [12]. Một nhân viên khác, Darrell Dai, tuyên bố sẽ rời công ty [13].</p>
+<p>Ba phản ứng ấy, đau buồn, chấp nhận và bỏ đi, đại diện cho những lựa chọn mà hàng chục nghìn nhân viên Nvidia sẽ phải cân nhắc trong tuần tiếp theo. Phần lớn họ không lên tiếng công khai. Theo những gì WIRED thuật lại sau buổi họp toàn công ty ngày 18 tháng 11, câu hỏi họ gửi lên nhiều nhất không liên quan đến đạo đức hay an ninh quốc gia, mà liên quan đến lương thưởng [14].</p>
+<h3 class="sec">Những người bên ngoài</h3>
+<p>Giới lãnh đạo công nghệ phản ứng nhanh hơn và gay gắt hơn.</p>
+<p>Elon Musk, người đêm trước còn nói việc tuyển Huang "sẽ là một vinh dự", trả lời một bài đăng cho rằng không nên thay thế những người sáng lập bằng hai chữ: "Đúng vậy" [15]. Tim Sweeney, CEO hãng trò chơi Epic Games, viết: "Một ngày buồn cho Nvidia, cho giới phát triển phần mềm, cho nước Mỹ và cho cả nhân loại" [15]. Tobi Lütke, CEO Shopify, gọi đó là "một sai lầm mang tầm thế hệ" [16]. Clément Delangue, CEO Hugging Face, viết giọng mềm hơn: "Toàn bộ chuyện này thật tệ, và tôi ước gì nó chưa từng xảy ra... Một ngày thật buồn!" [15].</p>
+<p>Ở phía bên kia, những tiếng nói chỉ trích Huang không tập trung vào chuyện ông đã làm gì, mà vào những câu hỏi còn bỏ ngỏ. Lãnh đạo phe thiểu số Hạ viện Hakeem Jeffries nói việc Huang từ chức "là điều đúng đắn" [17]. Lãnh đạo phe thiểu số Thượng viện Chuck Schumer nói: "Dù Jensen Huang đã từ chức, Quốc hội vẫn phải yêu cầu câu trả lời" [17].</p>
+<p>Lúc 1 giờ 41 chiều, theo CNBC và ảnh của Getty, hoa và nến bắt đầu xuất hiện trước tấm biển hiệu Nvidia ở trụ sở Santa Clara [1]. Ở thời điểm ấy, phiên giao dịch còn hơn hai tiếng nữa mới đóng cửa. Và một tiếng sau, lúc 2 giờ 41 chiều, CNBC đăng lại một bản tin độc quyền của Reuters, mở đầu buổi chiều thứ Năm theo một hướng khác hẳn.</p>
+<h3 class="sec">Hồ sơ, chương 5</h3>
+<p><strong>Ai đã nói</strong></p>
+<ul><li>"Tôi cam kết tiếp tục xây dựng trên nền tảng phi thường mà Jensen đã tạo ra trong 33 năm qua" (Colette Kress, CEO tạm quyền, 12/11/2026) [3].</li><li>"Chúng tôi kỳ vọng hoạt động của công ty, các cam kết với khách hàng và lộ trình sản phẩm sẽ tiếp tục không gián đoạn" (Harvey Jones, chủ tịch hội đồng quản trị, 12/11/2026) [3].</li></ul>
+<p><strong>Ai đã làm</strong></p>
+<ul><li>Nhà đầu tư cá nhân mua ròng 111 triệu USD cổ phiếu Nvidia trong 30 phút đầu phiên, gấp hơn 40 lần bình thường [1].</li><li>Quán Denny's ở 2484 Berryessa gỡ tấm biển kỷ niệm nơi Nvidia ra đời [8].</li><li>Cantor Fitzgerald hạ giá mục tiêu từ 350 xuống 250 USD [7].</li></ul>
+<p><strong>Người phản biện nói</strong></p>
+<ul><li>"Nếu bạn thấy hai con kiến trong bếp, thì ước tính tốt nhất về tổng số kiến trong bếp không phải là hai" (Stacy Rasgon, Bernstein, 12/11/2026) [7]: lập luận rằng nhà đầu tư nên chờ thêm thông tin xấu trước khi bắt đáy.</li><li>"Dù Jensen Huang đã từ chức, Quốc hội vẫn phải yêu cầu câu trả lời" (Chuck Schumer, 12/11/2026) [17]: việc từ chức không khép lại các câu hỏi về an ninh quốc gia.</li></ul>
+<hr class="scene-break">
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] CNBC, trang tin trực tiếp 12/11/2026 (bản tin 4:02 sáng; "more than $740 billion" từ giá đóng cửa thứ Sáu; Vanda: nhỏ lẻ mua ròng 111 triệu USD trong 30 phút đầu, gấp hơn 40 lần; AMD "rose 3%" lúc 9:58 và "up nearly 17% since Monday" lúc 10:35; Broadcom "jumped more than 5%"; Intel, Marvell giảm hơn 4% lúc 10:44; Super Micro "fell 12%" lúc 12:43; Alibaba Hồng Kông khoảng −7%; nhân viên "in tears", tâm trạng "complicated"; hoa và nến lúc 1:41 chiều; bài Reuters đăng lại lúc 2:41 chiều; vốn hóa "slightly above" 4.000 tỷ USD). <a href="https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html" rel="noopener">https://www.cnbc.com/2026/11/12/nvidia-jensen-huang-ceo-live-updates.html</a></p>
+<p class="src">[2] TAIEX −2,63% còn 43.091,87; TSMC −2,3% còn 2.340 Đài tệ (đoạn trích tìm kiếm từ storm.mg và mlq.ai, chưa đọc toàn văn; sàn Đài Loan đóng cửa trước khi tin được công bố). Xem sources.md, mục Asia.</p>
+<p class="src">[3] Nvidia, "NVIDIA Announces CEO Transition", 12/11/2026 (Phụ lục 99.1, Form 8-K). Nguyên văn: "NVIDIA's strength has always come from its people, and together with our leadership team, I am committed to building on the extraordinary foundation Jensen created over the last 33 years. We will continue advancing the work that has made NVIDIA a leader in accelerated computing and AI, and execute on the opportunities ahead. Our focus remains on serving our customers, partners, developers and shareholders." / "Colette has helped lead NVIDIA through a period of extraordinary growth and has a deep understanding of our business, customers, operations and financial position… The Board has full confidence in Colette and the leadership team, and we expect the company's operations, customer commitments and product roadmap to continue without interruption." <a href="https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm" rel="noopener">https://www.sec.gov/Archives/edgar/data/0001045810/000104581026000082/nvidiaannouncesceotransiti.htm</a></p>
+<p class="src">[4] Giá lịch sử NVDA, StockAnalysis và Investing.com (hai nguồn khớp nhau). Mức −13,08% lúc mở cửa và −14,35% tại đáy, so với 173,73 USD, theo fact-check. <a href="https://stockanalysis.com/stocks/nvda/history/" rel="noopener">https://stockanalysis.com/stocks/nvda/history/</a></p>
+<p class="src">[5] NBC, 12/11/2026 ("as much as 16%", xung đột với giá thấp nhất của sàn; Nebius −17%; CoreWeave −7% lúc đóng cửa; vốn hóa "barely above" 4.000 tỷ USD). <a href="https://www.nbcnews.com/business/markets/nvidia-stock-huang-resigns-rcna608958" rel="noopener">https://www.nbcnews.com/business/markets/nvidia-stock-huang-resigns-rcna608958</a></p>
+<p class="src">[6] AP, "How major US stock indexes fared", 12/11/2026 (S&amp;P 500 7.592,40, −0,4%); SOX −0,5% theo NBC. <a href="https://www.lanacion.com.ar/usa/how-major-us-stock-indexes-fared-thursday-11122026-nid12112026/" rel="noopener">https://www.lanacion.com.ar/usa/how-major-us-stock-indexes-fared-thursday-11122026-nid12112026/</a></p>
+<p class="src">[7] CNBC, 12/11/2026. Nguyên văn Rasgon: "…if you find two ants in your kitchen the best estimate of the total number of ants in your kitchen is not two..."; CJ Muse: "We are giving up the lead in AI in my view to China." (giá mục tiêu 350 → 250 USD); John Vinh, KeyBanc: "material increase in strategic, organizational, and execution risk".</p>
+<p class="src">[8] IBTimes UK (tấm biển đã bị gỡ vào thứ Năm 12/11; nhân viên nói gỡ từ "the previous evening"; địa chỉ 2484 Berryessa Rd). Nội dung tấm biển: "the booth that launched a $1 trillion company" (Nvidia Blog, 26/9/2023). <a href="https://www.ibtimes.co.uk/dennys-reinstates-jensen-huang-nvidia-plaque-1832448" rel="noopener">https://www.ibtimes.co.uk/dennys-reinstates-jensen-huang-nvidia-plaque-1832448</a></p>
+<p class="src">[9] Nvidia Blog, 26/9/2023. Nguyên văn: "Huang got his first job at Denny's in Portland when he was 15."; "I was a dishwasher, I was a busboy, I waited tables." <a href="https://blogs.nvidia.com/blog/nvidia-dennys-trillion/" rel="noopener">https://blogs.nvidia.com/blog/nvidia-dennys-trillion/</a></p>
+<p class="src">[10] Trường trung học Aloha, nhảy hai lớp, tốt nghiệp năm 16 tuổi: Fortune, 22/2/2024; Wikipedia. <a href="https://fortune.com/2024/02/22/who-is-jensen-huang-nvidia-net-worth-biography-success/" rel="noopener">https://fortune.com/2024/02/22/who-is-jensen-huang-nvidia-net-worth-biography-success/</a></p>
+<p class="src">[11] Jensen Huang, Stanford GSB, theo Fortune (fact-check, sources.md). Nguyên văn: "Because remember I used to wash dishes, and I mean I used to clean toilets. I cleaned a lot of toilets. I've cleaned more toilets than all of you combined."</p>
+<p class="src">[12] CNN, 12/11/2026. Nguyên văn Edward Liu: "a heartbreaking day"; Bryan Catanzaro: "I am grief-stricken that Jensen is no longer with NVIDIA. At the same time, I fully support NVIDIA's board… [Colette] has my full support."</p>
+<p class="src">[13] CNBC, 12/11/2026 (Darrell Dai).</p>
+<p class="src">[14] WIRED, 18/11/2026: khoảng 700 câu hỏi gửi trước buổi họp toàn công ty, nhiều nhất về lương thưởng. <a href="https://www.wired.com/story/inside-nvidias-first-all-hands-without-jensen-huang-as-ceo/" rel="noopener">https://www.wired.com/story/inside-nvidias-first-all-hands-without-jensen-huang-as-ceo/</a></p>
+<p class="src">[15] The Verge và CNBC, 12/11/2026. Nguyên văn Musk: "True words."; Sweeney: "A sad day for NVIDIA, developers, America, and all humanity…"; Delangue: "This whole thing sucks, and I wish none of it had happened… It's a really sad day!"</p>
+<p class="src">[16] Business Insider, 11/2026. Nguyên văn Lütke: "generational blunder". <a href="https://www.businessinsider.com/shopify-ceo-says-jensen-huangs-ouster-looked-choreographed-2026-11" rel="noopener">https://www.businessinsider.com/shopify-ceo-says-jensen-huangs-ouster-looked-choreographed-2026-11</a></p>
+<p class="src">[17] Hakeem Jeffries, 12/11/2026: "was the right thing to do"; Chuck Schumer, 12/11/2026: "Despite Jensen Huang's resignation, Congress must demand answers…" (CNN).</p>
+<p class="src">[18] CNBC, 17/11/2026 (kỳ vọng doanh thu của LSEG 109,10 tỷ USD; quý kết thúc 25/10). <a href="https://www.cnbc.com/2026/11/17/nvidia-nvda-earnings-report-q3-2027.html" rel="noopener">https://www.cnbc.com/2026/11/17/nvidia-nvda-earnings-report-q3-2027.html</a></p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+    </div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Mười Một Ngày</p>
+        <p>Phi hư cấu — Kinh dị dân gian, quy tắc quái đàm. 5 chương · ~22k từ (22.008 từ). Đang tiếp tục.</p>
+        <p class="fmeta">© 2026 Phi hư cấu.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  // theme toggle (mặc định sáng, lưu localStorage)
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
+  }
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile toc toggle
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+
+  // active chapter highlight in side nav
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
+  }
+})();
+
+</script>
+</body>
+</html>
