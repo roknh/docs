@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Muốn Thắng, Hãy Hỏi Cách Thua — Sách tư duy ứng dụng. Tiêu hết lương, con lười học, quán vắng khách, kế hoạch năm mới bỏ dở. Thay vì hỏi làm sao cho tốt hơn, cuốn sách này dạy bạn hỏi ngược: làm sao để ch">
+<meta name="author" content="Sách tư duy ứng dụng">
+<title>Muốn Thắng, Hãy Hỏi Cách Thua — Sách tư duy ứng dụng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+  --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+  --hairline:#e0e0e0; --hairline-strong:#161616;
+  --primary:#0f62fe; --blue-hover:#0050e6; --on-primary:#ffffff;
+  --inverse-canvas:#161616; --inverse-ink:#ffffff;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --measure:42rem; --nav-w:17rem;
+}
+:root[data-theme="dark"]{
+  --canvas:#161616; --surface-1:#262626; --surface-2:#393939;
+  --ink:#f4f4f4; --ink-muted:#c6c6c6; --ink-subtle:#8d8d8d;
+  --hairline:#393939; --hairline-strong:#6f6f6f;
+  --primary:#78a9ff; --blue-hover:#a6c8ff; --on-primary:#161616;
+  --inverse-canvas:#f4f4f4; --inverse-ink:#161616;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:var(--sans); font-size:16px; font-weight:400;
+  line-height:1.5; letter-spacing:0.16px; overflow-x:hidden;
+  overflow-wrap:break-word; word-break:break-word;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color .15s ease, color .15s ease;
+}
+a{color:var(--primary); text-decoration:none;}
+a:hover{color:var(--blue-hover); text-decoration:underline;}
+
+/* reading progress */
+#progress{position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--primary); z-index:60; transition:width .1s linear;}
+
+/* top nav */
+.top-nav{position:sticky; top:0; z-index:50; height:48px;
+  background:var(--canvas); border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; gap:16px; padding:0 16px;}
+.top-nav .brand{font-size:14px; font-weight:600; letter-spacing:0.16px;
+  color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.top-nav .spacer{flex:1;}
+.top-nav .top-meta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px;}
+.menu-btn{display:none; appearance:none; background:transparent; border:0;
+  color:var(--ink); font-family:var(--sans); font-size:14px; cursor:pointer;
+  padding:8px 10px; align-items:center; gap:6px;}
+.menu-btn:hover{background:var(--surface-1);}
+
+/* theme toggle */
+.theme-toggle{appearance:none; background:transparent; border:1px solid var(--hairline);
+  color:var(--ink); cursor:pointer; width:32px; height:32px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.theme-toggle:hover{background:var(--surface-1); border-color:var(--hairline-strong);}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+/* shell */
+.shell{display:block; max-width:1584px; margin:0 auto;}
+.side-nav{display:none;}
+.content{width:100%; min-width:0;}
+@media(min-width:1056px){
+  .shell{display:flex; align-items:flex-start;}
+  .side-nav{display:block; width:var(--nav-w); flex:0 0 var(--nav-w);
+    position:sticky; top:48px; align-self:flex-start;
+    height:calc(100vh - 48px); overflow-y:auto;
+    border-right:1px solid var(--hairline); padding:24px 0 48px;}
+  .content{flex:1 1 0%; min-width:0;}
+  .toc-mobile{display:none !important;}
+  .menu-btn{display:none !important;}
+}
+.inner{max-width:var(--measure); margin:0 auto; padding:0 20px 80px;}
+
+/* toc */
+.toc-wrap .toc-cap{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);
+  padding:0 24px 12px; text-transform:none;}
+.toc-list{list-style:none; margin:0; padding:0;}
+.toc-part{font-size:12px; font-weight:600; letter-spacing:0.16px; color:var(--ink-muted);
+  padding:20px 24px 6px; border-top:1px solid var(--hairline); margin-top:6px;}
+.toc-list li:first-child.toc-part{border-top:0; margin-top:0;}
+.toc-list a{display:flex; gap:10px; padding:7px 24px; color:var(--ink);
+  border-left:3px solid transparent; line-height:1.3;}
+.toc-list a:hover{background:var(--surface-1); text-decoration:none;}
+.toc-list a.active{border-left-color:var(--primary); background:var(--surface-1);
+  font-weight:600;}
+.toc-num{font-size:11px; color:var(--ink-subtle); min-width:58px; letter-spacing:0.16px;
+  padding-top:2px;}
+.toc-title{font-size:13px;}
+
+/* mobile toc panel */
+.toc-mobile{display:block; border-bottom:1px solid var(--hairline);
+  background:var(--canvas);}
+.toc-mobile[open]{padding-bottom:8px;}
+.toc-mobile summary{display:none;}
+@media(max-width:1055px){
+  .menu-btn{display:inline-flex;}
+  .toc-mobile{position:fixed; top:48px; left:0; right:0; bottom:0; z-index:45;
+    overflow-y:auto; transform:translateX(-100%); transition:transform .2s ease;
+    border-bottom:0;}
+  .toc-mobile.show{transform:translateX(0);}
+  .toc-mobile .toc-cap{padding:20px 24px 12px; font-size:12px;}
+}
+
+/* cover hero */
+.cover{padding:40px 20px 8px; border-bottom:1px solid var(--hairline);
+  margin-bottom:8px;}
+.cover-eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px;
+  margin:0 0 12px;}
+.cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
+  letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
+.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
+  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
+.cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
+.cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
+  font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
+.cover-logline{font-size:18px; line-height:1.5; color:var(--ink-muted);
+  border-left:3px solid var(--primary); padding-left:16px; margin:0 0 24px;}
+.cover-stats{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline);
+  margin-bottom:24px;}
+.cover-stats .stat{flex:1; min-width:96px; padding:16px; border-right:1px solid var(--hairline);}
+.cover-stats .stat:last-child{border-right:0;}
+.cover-stats .num{font-size:28px; font-weight:300; line-height:1.1; color:var(--ink);}
+.cover-stats .lab{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:4px;}
+.btn-primary{display:inline-block; background:var(--primary); color:var(--on-primary);
+  font-size:14px; letter-spacing:0.16px; padding:12px 16px; border:0; cursor:pointer;
+  font-family:var(--sans);}
+.btn-primary:hover{background:var(--blue-hover); color:var(--on-primary); text-decoration:none;}
+
+/* characters section */
+.characters{margin:48px 0 0;}
+.section-title{font-size:24px; font-weight:400; margin:0 0 24px; color:var(--ink);
+  border-bottom:1px solid var(--hairline); padding-bottom:12px;}
+.char-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+.char-card{background:var(--surface-1); padding:20px; border:1px solid var(--hairline);}
+.char-name{font-size:16px; font-weight:600; color:var(--ink);}
+.char-role{font-size:13px; color:var(--primary); letter-spacing:0.16px; margin-top:4px;}
+.char-desc{font-size:14px; color:var(--ink-muted); line-height:1.5; margin-top:8px;}
+
+/* chapter */
+.chapter{padding:48px 0 8px; border-bottom:1px solid var(--hairline);}
+.chapter:last-child{border-bottom:0;}
+.eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px; margin:0 0 12px;}
+.ch-title{font-size:clamp(28px,5vw,42px); font-weight:300; line-height:1.18;
+  letter-spacing:0; margin:0 0 28px; color:var(--ink);}
+.chapter p{
+  font-family:var(--serif); font-size:18px; line-height:1.75;
+  margin:0 0 20px; color:var(--ink); letter-spacing:0;
+}
+.chapter strong{font-weight:600;}
+.chapter em{font-style:italic;}
+.chapter blockquote{margin:24px 0; padding:16px 20px; border-left:3px solid var(--primary);
+  background:var(--surface-1); color:var(--ink-muted); font-family:var(--serif);
+  font-size:17px; line-height:1.6;}
+.chapter blockquote p{margin:0 0 12px; color:var(--ink-muted);}
+.chapter blockquote p:last-child{margin:0;}
+
+/* scene break */
+hr.scene-break{border:0; text-align:center; margin:32px 0;}
+hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spacing:8px; font-size:14px;}
+
+/* dialogue & message */
+.dialogue{padding-left:0;}
+.message{font-style:italic; color:var(--ink-muted);}
+
+/* chapter foot */
+.ch-foot{margin:32px 0 8px;}
+.totop{font-size:13px; color:var(--ink-muted); letter-spacing:0.16px;}
+.totop:hover{color:var(--primary);}
+
+/* footer */
+.page-footer{background:var(--surface-1); color:var(--ink-muted); padding:48px 20px; margin-top:0;}
+.page-footer .fin{max-width:var(--measure); margin:0 auto;}
+.page-footer .fbrand{font-size:20px; font-weight:300; color:var(--ink); margin:0 0 8px;}
+.page-footer p{font-size:14px; line-height:1.5; margin:0 0 6px;}
+.page-footer .fmeta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:16px;}
+
+/* selection */
+::selection{background:#0f62fe40; color:var(--ink);}
+
+/* nonfiction extras */
+.chapter h3.sec{font-family:var(--sans); font-size:20px; font-weight:600; margin:36px 0 14px; color:var(--ink);}
+.chapter ul{font-family:var(--serif); font-size:17px; line-height:1.65; margin:0 0 20px; padding-left:22px;}
+.chapter li{margin:0 0 8px;}
+.chapter p.src{font-family:var(--sans); font-size:13px; line-height:1.5; color:var(--ink-muted); margin:0 0 8px; letter-spacing:0.16px;}
+.chapter p.src a{word-break:break-all;}
+.draft-note{font-size:13px; color:var(--ink-muted); border:1px solid var(--hairline); background:var(--surface-1); padding:8px 12px; margin:0 0 16px;}
+pre.board{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:13px;line-height:1.55;color:var(--ink);background:var(--surface-1);border-left:3px solid var(--primary);padding:12px 14px;overflow-x:auto;white-space:pre;margin:16px 0}
+
+.tbl{overflow-x:auto;margin:1em 0} .tbl table{border-collapse:collapse;width:100%;font-size:.95em} .tbl th,.tbl td{border:1px solid rgba(128,128,128,.35);padding:.45em .6em;text-align:left;vertical-align:top} .tbl th{font-weight:600}
+</style>
+</head>
+<body id="top">
+<div id="progress"></div>
+<header class="top-nav">
+  <button class="menu-btn" id="menuBtn">≡ Mục lục</button>
+  <span class="brand">Muốn Thắng, Hãy Hỏi Cách Thua</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Sách tư duy ứng dụng · 5 chương</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
+</header>
+<div class="toc-mobile" id="tocMobile"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Mở đầu</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Năm Câu Hỏi Ngược</span></a></li>
+<li class="toc-part">I. Tiền bạc</li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Tiền Bạc</span></a></li>
+<li class="toc-part">II. Công việc</li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Công Việc</span></a></li>
+<li class="toc-part">III. Học tập</li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Học Tập</span></a></li>
+<li class="toc-part">IV. Gia đình</li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Gia Đình</span></a></li></ul></div></div>
+<div class="shell">
+  <aside class="side-nav"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Mở đầu</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Năm Câu Hỏi Ngược</span></a></li>
+<li class="toc-part">I. Tiền bạc</li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Tiền Bạc</span></a></li>
+<li class="toc-part">II. Công việc</li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Công Việc</span></a></li>
+<li class="toc-part">III. Học tập</li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Học Tập</span></a></li>
+<li class="toc-part">IV. Gia đình</li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Gia Đình</span></a></li></ul></div></aside>
+  <div class="content">
+    <div class="inner">
+      <section class="cover">
+        <p class="cover-eyebrow">Sách tư duy ứng dụng · 2026</p>
+        <h1 class="cover-title">Muốn Thắng, Hãy Hỏi Cách Thua</h1>
+        <div class="cover-tags"><span>Tư duy ngược</span><span>5 câu hỏi</span><span>35 tình huống</span><span>Thực hành</span></div>
+        <p class="cover-logline">Tiêu hết lương, con lười học, quán vắng khách, kế hoạch năm mới bỏ dở. Thay vì hỏi làm sao cho tốt hơn, cuốn sách này dạy bạn hỏi ngược: làm sao để chắc chắn hỏng? Năm câu hỏi, ba mươi lăm tình huống đời thường, mỗi tình huống có cách làm mẫu và chỗ để bạn tự điền.</p>
+        <div class="cover-stats">
+          <div class="stat"><div class="num">5/9</div><div class="lab">Chương</div></div>
+          <div class="stat"><div class="num">~8k</div><div class="lab">Từ</div></div>
+          <div class="stat"><div class="num">48%</div><div class="lab">Tiến độ</div></div>
+        </div>
+        <a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
+      </section>
+<article class="chapter" id="ch01">
+<p class="eyebrow">Chương 01 · Mở đầu</p>
+<h2 class="ch-title">Năm Câu Hỏi Ngược</h2>
+<p>Bạn thử trả lời ngay hai câu hỏi này, mỗi câu trong mười giây.</p>
+<p>Câu thứ nhất: <strong>Làm sao để sáng mai dậy sớm?</strong></p>
+<p>Có lẽ bạn nghĩ ra: đặt báo thức, ngủ sớm, quyết tâm hơn.</p>
+<p>Câu thứ hai: <strong>Làm sao để sáng mai chắc chắn ngủ quên?</strong></p>
+<p>Lần này câu trả lời đến nhanh hơn nhiều, và cụ thể hơn nhiều. Nằm lướt điện thoại đến một giờ sáng. Để điện thoại báo thức ngay đầu giường, tắt đi mà không cần mở mắt. Uống cà phê lúc chín giờ tối. Đóng kín rèm cho phòng tối om. Không biết mai mấy giờ phải dậy để làm gì.</p>
+<p>Nhìn lại danh sách thứ hai, bạn sẽ thấy vài dòng mình đang làm mỗi tối. Và bạn biết ngay tối nay phải làm gì khác: không uống cà phê sau bữa trưa, và viết sẵn ra giấy sáng mai dậy để làm gì.</p>
+<p>Đó là toàn bộ ý tưởng của cuốn sách này. <strong>Khi câu hỏi xuôi không cho ra câu trả lời dùng được, hãy hỏi ngược lại.</strong></p>
+<h3 class="sec">Vì sao hỏi ngược lại dễ ra câu trả lời</h3>
+<p>Có ba lý do.</p>
+<p><strong>Thứ nhất, cái sai thì cụ thể, cái đúng thì chung chung.</strong> Hỏi "làm sao để quán đông khách", ta nghĩ ra những chữ to: phục vụ tốt, đồ uống ngon, giá hợp lý. Hỏi "làm sao để khách đến một lần rồi thôi", ta nghĩ ngay ra những việc rất rõ: bắt khách chờ lâu, mở nhạc quá to, nhân viên cắm mặt vào điện thoại khi khách bước vào. Những việc rõ ràng như vậy thì sửa được. Những chữ to thì không.</p>
+<p><strong>Thứ hai, ta bớt phòng thủ.</strong> Không ai thích bị chê là lười, là tiêu hoang, là nóng tính. Nhưng ai cũng thấy vui khi được bày cách phá hỏng một việc. Vì vui nên ta chịu nói thật, kể cả về chính mình.</p>
+<p><strong>Thứ ba, đứng ở cuối nhìn về đầu thì ít ngả đường hơn.</strong> Từ chỗ đang đứng, có trăm cách đi. Từ chỗ phải đến, nhìn ngược lại, thường chỉ vài cách là hợp lý.</p>
+<h3 class="sec">Thẻ 5 câu hỏi ngược</h3>
+<p>Bạn có thể chép năm câu này ra một tờ giấy nhỏ, gấp lại để trong ví hoặc chụp làm hình nền điện thoại. Cả cuốn sách chỉ xoay quanh năm câu này.</p>
+<blockquote><p><strong>1. Muốn chắc chắn hỏng việc này thì tôi sẽ làm gì?</strong></p><p>Dùng khi bạn cứ cố mãi mà không tiến bộ. Viết ra mọi cách để hỏng, rồi đánh dấu những cách mình đang làm.</p><p><strong>2. Giả sử việc này đã hỏng rồi, vì sao nó hỏng?</strong></p><p>Dùng trước một việc quan trọng sắp làm: buổi phỏng vấn, kỳ thi, khoản đầu tư, quyết định nghỉ việc. Tưởng tượng nó đã thất bại, rồi viết lý do. Mỗi lý do là một việc cần chuẩn bị.</p><p><strong>3. Đến ngày cuối, mọi thứ phải trông thế nào? Bước ngay trước đó là gì?</strong></p><p>Dùng khi có hạn chót hoặc mục tiêu xa. Bắt đầu từ ngày phải xong, đếm ngược về hôm nay.</p><p><strong>4. Bỏ cái gì thì mọi thứ tốt lên?</strong></p><p>Dùng khi bạn quá bận, quá nhiều việc, quá nhiều thứ. Thay vì tìm thêm cách mới, tìm thứ nên bỏ.</p><p><strong>5. Người kia đang thấy gì mà tôi không thấy?</strong></p><p>Dùng khi có người khác trong cuộc: sếp, vợ chồng, con cái, khách hàng, bố mẹ. Đứng vào chỗ họ mà nhìn lại.</p></blockquote>
+<p>Năm câu nghe đơn giản, và đúng là đơn giản. Cái khó là nhớ hỏi chúng đúng lúc. Đó là lý do sách có ba mươi lăm tình huống: để bạn thấy mỗi câu được dùng thế nào trong những việc rất bình thường.</p>
+<h3 class="sec">Đây là một kỹ năng, không phải năng khiếu</h3>
+<p>Có người nghe đến "tư duy ngược" thì nghĩ đó là chuyện của người thông minh, người làm kinh doanh, người giỏi toán. Không phải vậy. Bà bán xôi muốn tới chợ đúng giờ, cậu học sinh sắp thi, anh thợ sửa xe muốn khách quay lại đều dùng được năm câu hỏi này, và nhiều người đã dùng từ lâu mà không gọi nó bằng cái tên nào.</p>
+<p>Cuốn sách này cũng không hứa làm bạn thông minh hơn hay giàu lên nhanh. Nó chỉ hứa một điều nhỏ hơn: lần tới bạn bị tắc ở một việc, bạn sẽ có một câu hỏi khác để thử.</p>
+<p>Lần đầu dùng, bạn sẽ thấy hơi lạ và chậm, như lần đầu cầm đũa tay trái. Sau năm sáu tình huống, bạn sẽ bắt đầu tự hỏi mà không cần nhìn thẻ. Đến lúc ấy, cuốn sách đã làm xong việc của nó.</p>
+<h3 class="sec">Cách dùng cuốn sách này</h3>
+<p><strong>Bạn không cần đọc theo thứ tự.</strong> Sách chia làm bảy phần theo lĩnh vực: tiền bạc, công việc, học tập, gia đình, kinh doanh nhỏ, sức khỏe và thói quen, quyết định lớn và các mối quan hệ. Hãy mở đúng phần có vấn đề bạn đang gặp.</p>
+<p><strong>Mỗi tình huống có bảy phần, đọc trong hai phút:</strong></p>
+<ul><li><strong>Tình huống:</strong> một người cụ thể đang gặp một vấn đề cụ thể.</li><li><strong>Cách nghĩ thường gặp:</strong> cách hầu hết chúng ta nghĩ, và vì sao nó tắc.</li><li><strong>Câu hỏi ngược:</strong> câu hỏi trên thẻ, viết lại cho đúng tình huống ấy.</li><li><strong>Làm mẫu:</strong> người trong tình huống trả lời câu hỏi đó ra sao.</li><li><strong>Kết quả:</strong> chuyện gì đã thay đổi. Thường chỉ thay đổi vừa phải, vì đời thật là như thế.</li><li><strong>Đến lượt bạn:</strong> ba dòng để bạn tự điền.</li><li><strong>Cái bẫy:</strong> khi nào cách này dễ dùng sai.</li></ul>
+<p><strong>Hãy cầm bút khi đọc.</strong> Phần "Đến lượt bạn" là phần quan trọng nhất. Đọc xong mà không viết gì, bạn sẽ gật gù rồi quên. Viết ra ba dòng, bạn có ngay một việc để làm từ ngày mai.</p>
+<p><strong>Mỗi lần chỉ chọn một hai việc.</strong> Danh sách cách hỏng thường dài. Đừng cố sửa hết một lúc. Chọn việc dễ nhất, làm trong hai tuần, rồi quay lại chọn việc tiếp theo.</p>
+<p>Cuối sách có một bảng tra nhanh: gặp loại vấn đề nào thì dùng câu hỏi nào. Và có một chương ngắn nói về điều ít sách nào nói: <strong>khi nào chính câu hỏi ngược làm hại bạn</strong>. Vì nó có thể làm hại thật, nếu bạn chỉ lo tránh mọi cách hỏng mà quên mất mình định đi đâu.</p>
+<p>Bây giờ, hãy lấy bút, và lật đến phần bạn đang cần nhất.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch02">
+<p class="eyebrow">Chương 02 · I. Tiền bạc</p>
+<h2 class="ch-title">Tiền Bạc</h2>
+<p>Chuyện tiền là chỗ câu hỏi xuôi hay cho ra câu trả lời chung chung nhất: chi tiêu hợp lý, tiết kiệm đều đặn, đầu tư khôn ngoan. Ai cũng biết, ít ai làm được. Năm tình huống dưới đây hỏi theo cách khác.</p>
+<h3 class="sec">Tình huống 1: Tiêu hết lương trước cuối tháng</h3>
+<p><strong>Tình huống.</strong> Ngày 25. Tài khoản của Linh còn 87 nghìn đồng. Linh 26 tuổi, nhân viên văn phòng ở Hà Nội, lương 14 triệu, nhận vào mùng 5, và tháng nào đến ngày này cũng hết sạch. Linh đã thử ứng dụng ghi chép chi tiêu, rồi thử chia tiền vào phong bì. Cách nào cũng bỏ sau hai tuần.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> Linh hỏi "làm sao để tiết kiệm?" và nhận được những câu trả lời chung chung: chi tiêu hợp lý, bớt mua sắm. Nghe thì đúng, nhưng sáng mai vẫn không biết phải làm gì khác.</p>
+<p><strong>Câu hỏi ngược (câu số 1):</strong></p>
+<blockquote><p><strong>Nếu muốn chắc chắn hết sạch tiền trước ngày 25, tôi sẽ làm gì?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Linh viết ra sáu cách, rồi đánh dấu ✓ những cách mình đang làm:</p>
+<ul><li>✓ Lương về là tiêu thoải mái, vì "mới có lương".</li><li>✓ Bữa trưa nào cũng đặt đồ ăn giao tận nơi.</li><li>✓ Trước khi ngủ nằm lướt sàn mua sắm trên mạng.</li><li>✓ Lưu sẵn thẻ ngân hàng trong ứng dụng mua sắm, bấm một cái là trả tiền.</li><li>Không biết tháng này đã tiêu bao nhiêu.</li><li>Đi chơi cuối tuần không đặt giới hạn.</li></ul>
+<p>Linh chọn bỏ hai cách dễ nhất: <strong>xóa thẻ đã lưu trong ứng dụng mua sắm</strong>, và <strong>ngày nhận lương chuyển ngay 1,5 triệu sang một tài khoản khác</strong>.</p>
+<p><strong>Kết quả.</strong> Tháng đầu, Linh hết tiền vào ngày 28 thay vì ngày 25. Trong tài khoản kia có 1,5 triệu.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Câu hỏi ngược của tôi: ……………………</li><li>Ba cách tôi đang làm: ……………………</li><li>Việc tôi bỏ từ tuần này: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Cắt hết mọi niềm vui nhỏ thì kế hoạch sẽ sụp sau vài tuần. Chỉ cắt những khoản không đem lại thứ bạn thật sự muốn.</p>
+<h3 class="sec">Tình huống 2: Muốn để dành tiền mua nhà trong 5 năm</h3>
+<p><strong>Tình huống.</strong> "Năm năm nữa mình mua nhà." Anh Phúc, thợ điện 33 tuổi, và chị Thủy, giáo viên mầm non 31 tuổi, nói với nhau câu ấy từ ba năm trước. Họ vẫn đang thuê nhà ở Đà Nẵng. Họ có 120 triệu, mỗi tháng để dành được chừng 5 triệu, tháng nào có đám cưới thì không được đồng nào.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Cố gắng tiết kiệm nhiều hơn." Câu ấy không có con số, nên tháng nào cũng có lý do để cố gắng vào tháng sau.</p>
+<p><strong>Câu hỏi ngược (câu số 3):</strong></p>
+<blockquote><p><strong>Đến ngày ký mua nhà, chúng tôi phải có bao nhiêu tiền trong tay? Mỗi tháng từ giờ đến đó phải để dành bao nhiêu?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Hai vợ chồng đếm ngược từ ngày cuối:</p>
+<ul><li>Căn hộ họ nhắm giá chừng 1,8 tỷ. Ngân hàng cho vay tối đa 60%, vậy phải tự có 40%, tức 720 triệu, cộng chừng 40 triệu phí và sửa sang: <strong>760 triệu</strong>.</li><li>Đang có 120 triệu, còn thiếu <strong>640 triệu</strong>.</li><li>Năm năm là 60 tháng: mỗi tháng phải để dành chừng <strong>10,7 triệu</strong>. Họ đang để dành 5 triệu.</li></ul>
+<p>Con số làm cả hai im lặng một lúc. Rồi họ ngồi tìm cách lấp khoảng cách: anh Phúc nhận thêm việc sửa điện cuối tuần, chừng 3 triệu mỗi tháng; cắt bớt ăn ngoài, thêm 1,5 triệu; và đổi mục tiêu sang căn rẻ hơn, chừng 1,5 tỷ. Căn này cần tự có 640 triệu, còn thiếu 520 triệu, tức chừng 8,7 triệu mỗi tháng.</p>
+<p><strong>Kết quả.</strong> Kế hoạch mới là 9,5 triệu mỗi tháng. Sáu tháng đầu họ để dành được 52 triệu, ít hơn kế hoạch 5 triệu, vì một đám cưới và một lần sửa xe.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Ngày cuối của tôi là: …… Cần có: ……</li><li>Còn thiếu: …… Chia cho số tháng: ……</li><li>Cách lấp khoảng cách: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Con số ở ngày cuối hay được đặt theo mơ ước. Hãy kiểm tra thêm tiền trả góp ngân hàng mỗi tháng sau khi mua: nếu nó quá sức, ngày cuối cần lùi lại, hoặc căn nhà cần nhỏ đi.</p>
+<h3 class="sec">Tình huống 3: Bạn thân rủ góp vốn làm ăn</h3>
+<p><strong>Tình huống.</strong> "Mỗi đứa trăm triệu, mở tiệm trà sữa gần trường, chắc ăn." Người nói là bạn thân từ hồi cấp ba của chị Nhung, 35 tuổi, chủ một tiệm tạp hóa nhỏ ở Cần Thơ. Bạn chị đã xem mặt bằng, đã có tên tiệm, chỉ chờ chị gật đầu.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Bạn thân mà, tin nhau là được." Hoặc ngược lại, sợ quá nên từ chối mà không nói rõ vì sao. Cả hai cách đều có thể mất bạn.</p>
+<p><strong>Câu hỏi ngược (câu số 2):</strong></p>
+<blockquote><p><strong>Giả sử một năm nữa tiệm đóng cửa và hai đứa không còn nhìn mặt nhau. Chuyện gì đã xảy ra?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Chị Nhung viết ra những lý do, rồi biến mỗi lý do thành một điều cần nói rõ trước khi góp tiền:</p>
+<div class="tbl"><table><thead><tr><th>Lý do có thể xảy ra</th><th>Điều cần thỏa thuận trước</th></tr></thead><tbody><tr><td>Không có giấy tờ, ai góp bao nhiêu chỉ nói miệng</td><td>Viết giấy góp vốn, hai người ký</td></tr><tr><td>Hai người cùng quyết mọi việc, cãi nhau từ chọn ly đến chọn giá</td><td>Chia rõ ai quyết việc gì</td></tr><tr><td>Tiền thuê mặt bằng ăn hết lãi</td><td>Tính trước mỗi ngày phải bán bao nhiêu ly mới hòa vốn</td></tr><tr><td>Không ai đứng quán, thuê người thì lỗ</td><td>Ai đứng quán, có được trả lương không</td></tr><tr><td>Lỗ mãi mà không ai dám nói dừng</td><td>Lỗ đến mức nào thì đóng cửa</td></tr><tr><td>Một người muốn rút vốn giữa chừng</td><td>Rút thì báo trước bao lâu, lấy lại bao nhiêu</td></tr></tbody></table></div>
+<p><strong>Kết quả.</strong> Chị mang tờ giấy đến gặp bạn. Bốn điều đầu bàn xong trong một buổi tối. Đến điều thứ năm, "lỗ đến mức nào thì đóng", bạn chị cáu: chưa mở đã nói chuyện đóng. Hai người quyết định hoãn lại. Tiệm trà sữa chưa mở. Tháng sau, hai người vẫn đi ăn sinh nhật nhau.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Việc tôi đang định góp tiền: ……………………</li><li>Ba lý do nó có thể đổ vỡ: ……………………</li><li>Điều cần nói rõ trước: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Đừng dùng danh sách này để từ chối khéo. Nếu trong lòng bạn đã không muốn, hãy nói thẳng. Bạn bè thường giận câu từ chối vòng vo hơn câu từ chối thật.</p>
+<h3 class="sec">Tình huống 4: Nợ thẻ tín dụng mãi không trả hết</h3>
+<p><strong>Tình huống.</strong> Ba cái thẻ tín dụng, tổng nợ 48 triệu. Đó là món nợ của anh Sơn, 29 tuổi, bán điện thoại ở Biên Hòa. Tháng nào anh cũng trả đúng mức tối thiểu, chừng 1,5 triệu, mà sao kê tháng sau nợ vẫn gần như cũ.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Làm sao kiếm thêm tiền để trả nợ?" Kiếm thêm thì khó và chậm, trong khi ba cái thẻ vẫn nằm trong ví.</p>
+<p><strong>Câu hỏi ngược (câu số 4):</strong></p>
+<blockquote><p><strong>Bỏ cái gì thì món nợ này bắt đầu nhỏ lại?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Anh Sơn chia tờ giấy làm hai cột:</p>
+<div class="tbl"><table><thead><tr><th>Bỏ</th><th>Giữ</th></tr></thead><tbody><tr><td>Hai trong ba cái thẻ: cắt đôi, chỉ giữ thẻ lãi thấp nhất</td><td>Một thẻ, để ở nhà, chỉ dùng khi ốm đau</td></tr><tr><td>Thói quen trả mức tối thiểu</td><td>Tiền ăn trưa, không cắt</td></tr><tr><td>Mua điện thoại mới trả góp, dù "lãi 0%"</td><td>Điện thoại đang dùng, còn tốt</td></tr><tr><td>Trả tiền cả bàn mỗi lần đi nhậu cuối tuần</td><td>Một buổi cà phê với bạn mỗi tuần</td></tr></tbody></table></div>
+<p><strong>Kết quả.</strong> Không còn tiêu thêm qua thẻ, anh Sơn trả được 4 triệu mỗi tháng thay vì 1,5 triệu. Nếu giữ được như vậy, món nợ 48 triệu sẽ hết sau chừng mười bốn tháng, tính cả tiền lãi. Tháng thứ ba anh suýt quẹt thẻ mua tai nghe mới. Muốn quẹt thì phải về nhà lấy thẻ. Về đến nhà thì anh hết muốn mua.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Khoản nợ hoặc chi tiêu đang đè nặng: ……………………</li><li>Ba thứ tôi sẽ bỏ: ……………………</li><li>Thứ tôi giữ lại để kế hoạch không gãy: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Cắt hết thẻ mà không có chút tiền dự phòng nào thì lần đầu ốm đau là quẹt lại ngay. Hãy để riêng một khoản nhỏ cho chuyện bất ngờ, trước khi cắt.</p>
+<h3 class="sec">Tình huống 5: Được rủ đầu tư "lãi 5% một tháng"</h3>
+<p><strong>Tình huống.</strong> Bà Tư 58 tuổi, bán rau ở một chợ xã tại Thanh Hóa, có 300 triệu tiết kiệm cả đời. Đứa cháu họ đến chơi, kể về một "dự án" lãi 5% mỗi tháng, tháng nào cũng trả lãi đều. Cháu bảo mấy người trong xóm đã góp, tháng trước nhận lãi rồi, bà cứ góp thử 100 triệu xem sao.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Dự án này có tốt không?" Câu hỏi ấy khó trả lời, vì người rủ lúc nào cũng có giấy tờ, có hình ảnh, có người đã nhận lãi.</p>
+<p><strong>Câu hỏi ngược (câu số 1):</strong></p>
+<blockquote><p><strong>Nếu muốn chắc chắn mất trắng số tiền này, tôi sẽ làm gì?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Con gái bà Tư giúp mẹ viết ra, và hai mẹ con đánh dấu ✓ những điều đang xảy ra:</p>
+<ul><li>✓ Tin vì người rủ là người quen.</li><li>✓ Không hỏi tiền lãi lấy từ đâu ra.</li><li>✓ Thấy người khác nhận lãi tháng đầu nên yên tâm.</li><li>✓ Được dặn "đừng nói với ai, kẻo người ta tranh suất".</li><li>✓ Bị giục quyết trong tuần này.</li><li>Không có giấy tờ gì, hoặc giấy tờ mang tên một công ty chưa nghe bao giờ.</li></ul>
+<p>Năm trên sáu. Bà Tư chỉ làm một việc: hỏi cháu một câu, tiền lãi 5% mỗi tháng ấy lấy từ đâu ra.</p>
+<p><strong>Kết quả.</strong> Đứa cháu nói vòng vo về "đầu tư quốc tế", rồi bảo để về hỏi lại. Bà không góp. Tám tháng sau, nghe người trong xóm kể nhóm ấy ngừng trả lãi, mấy nhà đã đi trình báo.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Lời mời đầu tư tôi đang cân nhắc: ……………………</li><li>Mấy dấu hiệu "chắc chắn mất" đang xảy ra: ……………………</li><li>Câu tôi sẽ hỏi người rủ: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Danh sách này chỉ dùng được nếu bạn đánh dấu thật lòng. Nếu thấy mình đang cố gỡ dấu ✓ vì nể người quen, đó là thêm một dấu ✓.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch03">
+<p class="eyebrow">Chương 03 · II. Công việc</p>
+<h2 class="ch-title">Công Việc</h2>
+<p>Ở chỗ làm, ta thường hỏi "làm sao để làm tốt hơn", rồi làm nhiều hơn, về muộn hơn. Có những việc không cần làm nhiều hơn. Chúng cần được nhìn từ một phía khác.</p>
+<h3 class="sec">Tình huống 6: Sắp đi phỏng vấn xin việc</h3>
+<p><strong>Tình huống.</strong> Minh 23 tuổi, mới ra trường, ở trọ tại Hà Nội, thứ Năm này phỏng vấn vị trí nhân viên kinh doanh. Minh chuẩn bị bằng cách học thuộc "50 câu hỏi phỏng vấn thường gặp" trên mạng.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Làm sao để đỗ?", rồi học thuộc văn mẫu. Vào phòng phỏng vấn, câu nào cũng trả lời như đọc bài, và giống hệt mười người vào trước.</p>
+<p><strong>Câu hỏi ngược (câu số 2):</strong></p>
+<blockquote><p><strong>Giả sử thứ Sáu tôi nhận thư báo trượt. Vì sao tôi trượt?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Minh viết ra sáu lý do, và biến mỗi lý do thành một việc chuẩn bị:</p>
+<div class="tbl"><table><thead><tr><th>Lý do có thể trượt</th><th>Việc chuẩn bị</th></tr></thead><tbody><tr><td>Đến muộn vì không biết đường, không biết tầng</td><td>Hôm trước đi thử đường</td></tr><tr><td>Không trả lời được câu "Em biết gì về công ty?"</td><td>Đọc trang của công ty và ba bài báo gần nhất về họ</td></tr><tr><td>Trả lời giống văn mẫu, không có ví dụ thật</td><td>Chuẩn bị ba chuyện thật, như lần đi bán hàng hội chợ hồi sinh viên</td></tr><tr><td>Không hỏi lại nhà tuyển dụng câu nào</td><td>Chuẩn bị sẵn hai câu hỏi</td></tr><tr><td>Nói mức lương mong muốn mà không biết mặt bằng chung</td><td>Tra mức lương vị trí này trên các trang tuyển dụng</td></tr><tr><td>Run, nói lan man khi bị hỏi về điểm yếu</td><td>Tập trả lời trước gương ba lần</td></tr></tbody></table></div>
+<p><strong>Kết quả.</strong> Hôm phỏng vấn Minh vẫn run. Khi được hỏi "Em biết gì về công ty?", Minh kể được thương vụ công ty vừa lên báo tuần trước. Minh được gọi vào vòng hai.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Việc sắp tới của tôi: ……………………</li><li>Ba lý do nó có thể hỏng: ……………………</li><li>Việc chuẩn bị cho từng lý do: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Danh sách dài quá thì càng đọc càng lo. Chỉ giữ những lý do mình chuẩn bị được. Thứ ngoài tầm tay, như gặp người phỏng vấn khó tính, thì bỏ qua.</p>
+<h3 class="sec">Tình huống 7: Làm nhiều mà sếp không ghi nhận</h3>
+<p><strong>Tình huống.</strong> Cuối năm, người được khen ở phòng kế toán là cô đồng nghiệp ngồi bàn bên, tối nào cũng về đúng năm giờ. Người ở lại muộn nhất phòng là chị Ngân, 30 tuổi, kế toán một công ty xây dựng ở Hải Phòng, chuyên gỡ giúp những rắc rối giấy tờ mà phòng khác để lại.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải làm nhiều hơn nữa thì sếp mới thấy." Chị làm nhiều hơn, về muộn hơn, và sếp vẫn không thấy.</p>
+<p><strong>Câu hỏi ngược (câu số 5):</strong></p>
+<blockquote><p><strong>Mỗi tuần, sếp thật sự nhìn thấy gì về công việc của tôi?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Chị Ngân kẻ hai cột: một bên là việc chị làm, một bên là thứ sếp thấy được.</p>
+<div class="tbl"><table><thead><tr><th>Việc tôi làm</th><th>Sếp thấy gì</th></tr></thead><tbody><tr><td>Gỡ hồ sơ thanh toán bị trả về cho phòng dự án</td><td>Không thấy, vì phòng dự án tự nộp lại</td></tr><tr><td>Đối chiếu công nợ đến tối thứ Sáu</td><td>Thấy một báo cáo gửi lúc mười một giờ đêm, có vẻ vội</td></tr><tr><td>Phát hiện hai hóa đơn trùng, chặn được 60 triệu</td><td>Không biết, vì chị chỉ báo miệng cho đồng nghiệp</td></tr><tr><td>Không bao giờ phàn nàn</td><td>Thấy một người im lặng, không có gì để nói</td></tr></tbody></table></div>
+<p>Cột bên phải toàn là "không thấy", hoặc thấy sai. Đồng nghiệp bàn bên làm ít hơn, nhưng sáng thứ Hai nào cũng gửi sếp vài dòng: tuần trước xong gì, đang vướng gì.</p>
+<p>Chị Ngân bắt đầu làm đúng việc đó: chiều thứ Sáu, năm dòng, gửi trước năm giờ.</p>
+<p><strong>Kết quả.</strong> Ba tuần đầu không thấy sếp trả lời. Tuần thứ tư, trong cuộc họp phòng, sếp nhắc đến chuyện hai hóa đơn trùng và hỏi phòng dự án vì sao hồ sơ hay bị trả về. Chị chưa được tăng lương.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Ba việc tôi làm mà người kia không thấy: ……………………</li><li>Người kia đang nhìn thấy gì thay vào đó: ……………………</li><li>Cách tôi cho họ thấy, mỗi tuần: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Cho sếp thấy việc mình làm khác với kể công. Năm dòng sự thật là đủ. Ba trang tự khen thì phản tác dụng.</p>
+<h3 class="sec">Tình huống 8: Dự án sắp trễ hạn</h3>
+<p><strong>Tình huống.</strong> Hai mươi nghìn hộp quà Tết, giao ngày 15 tháng 1. Anh Tâm 38 tuổi, quản lý một xưởng in bao bì ở Bắc Ninh, nhận đơn hàng ấy từ đầu tháng 12. Hôm nay là ngày 28 tháng 12, anh thấy cả xưởng đang bận rộn mà trong lòng vẫn lo.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Cố gắng làm nhanh hơn." Cả xưởng tăng ca, nhưng không ai biết việc nào đang thực sự chậm.</p>
+<p><strong>Câu hỏi ngược (câu số 3):</strong></p>
+<blockquote><p><strong>Ngày 15 tháng 1, hàng phải lên xe. Vậy ngày nào từng khâu phải xong?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Anh Tâm đếm ngược từ ngày giao:</p>
+<ul><li>15/1: hàng lên xe.</li><li>13/1: đóng gói xong.</li><li>10/1: in và cắt xong.</li><li>5/1: phải bắt đầu in.</li><li>30/12: phải có bản mẫu khách đã duyệt, vì làm khuôn in mất năm ngày.</li></ul>
+<p>Đến dòng cuối thì anh dừng lại. Bản mẫu đã gửi khách từ tuần trước, và khách chưa trả lời. Xưởng có tăng ca bao nhiêu cũng vô ích, vì cái chậm nhất không nằm trong xưởng.</p>
+<p>Anh gọi cho khách ngay chiều hôm ấy, nói rõ: nếu ngày 30 chưa có mẫu duyệt, ngày 15 sẽ không kịp giao.</p>
+<p><strong>Kết quả.</strong> Khách duyệt mẫu ngày 31, muộn một ngày. Hàng giao ngày 16, trễ một ngày. Anh đã báo trước từ hôm 28, nên khách không phạt, và năm sau vẫn đặt hàng.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Hạn chót của tôi: ……………………</li><li>Đếm ngược các mốc: ……………………</li><li>Mốc nào đang phụ thuộc vào người khác: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Đếm ngược mà không cộng thêm thời gian dự phòng thì kế hoạch nào cũng đẹp trên giấy. Hãy chừa ra vài ngày cho chuyện không lường trước.</p>
+<h3 class="sec">Tình huống 9: Họp nhiều, không còn thời gian làm việc chính</h3>
+<p><strong>Tình huống.</strong> Chị Diệu 34 tuổi, trưởng nhóm ở một công ty phần mềm tại Đà Nẵng. Lịch tuần của chị có 19 cuộc họp, tổng cộng chừng 14 tiếng. Việc chính của chị phải làm vào buổi tối, ở nhà.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải sắp xếp thời gian tốt hơn." Chị thử dậy sớm, làm nhanh hơn, nhưng lịch họp không ngắn lại.</p>
+<p><strong>Câu hỏi ngược (câu số 4):</strong></p>
+<blockquote><p><strong>Bỏ cuộc họp nào thì công việc tốt lên, hoặc ít nhất không tệ đi?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Chị in lịch tuần ra, và với từng cuộc họp, chị hỏi đúng một câu: nếu tuần này không họp, chuyện gì sẽ xảy ra?</p>
+<ul><li>Họp đầu ngày, 15 phút, mỗi sáng: nếu bỏ, cả nhóm không biết ai đang vướng gì. <strong>Giữ.</strong></li><li>Họp cập nhật tiến độ với phòng khác, thứ Ba: chỉ đọc lại những gì đã có trong bảng theo dõi. <strong>Bỏ, thay bằng một tin nhắn tóm tắt.</strong></li><li>Họp chung các nhóm thứ Năm: chị chỉ ngồi nghe, chẳng ai hỏi chị câu nào. <strong>Bỏ, nhờ một bạn trong nhóm đi thay.</strong></li><li>Nói chuyện riêng với từng thành viên, mỗi tuần: <strong>giữ, nhưng rút từ 60 xuống 30 phút.</strong></li></ul>
+<p>Cộng cả tuần: bỏ sáu cuộc họp loại như trên, bớt được 4 tiếng; rút ngắn bốn buổi nói chuyện riêng, bớt thêm 2 tiếng.</p>
+<p><strong>Kết quả.</strong> Chị bỏ sáu cuộc họp, rút ngắn bốn cuộc. Lịch họp còn chừng 8 tiếng mỗi tuần. Hai tuần đầu có một lần chị bỏ lỡ một quyết định quan trọng ở cuộc họp đã bỏ, nên chị xin được nhận biên bản họp qua tin nhắn.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Ba việc đang chiếm thời gian của tôi: ……………………</li><li>Nếu bỏ từng việc, chuyện gì xảy ra: ……………………</li><li>Việc tôi bỏ, và thứ thay thế: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Bỏ một cuộc họp mà không có gì thay thế thì mình mất thông tin, người khác mất kiên nhẫn. Luôn có một cách khác để giữ người khác trong cuộc.</p>
+<h3 class="sec">Tình huống 10: Muốn xin tăng lương</h3>
+<p><strong>Tình huống.</strong> "Không tăng thì em nghỉ." Anh Hải định vào phòng giám đốc nói đúng câu ấy. Anh 31 tuổi, kỹ thuật viên bảo trì ở một nhà máy tại Tây Ninh, ba năm nay chưa được tăng lương.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Mình xứng đáng được tăng." Đúng là anh xứng đáng. Nhưng giám đốc không quyết định dựa trên việc anh thấy mình xứng đáng.</p>
+<p><strong>Câu hỏi ngược (câu số 5):</strong></p>
+<blockquote><p><strong>Nếu tôi là giám đốc, tôi cần nghe gì thì mới đồng ý tăng lương cho một người?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Anh Hải ngồi viết như thể mình là giám đốc:</p>
+<ul><li><em>"Tôi cần một lý do để báo cáo lên trên, không phải chỉ một lời xin."</em></li><li><em>"Ngân sách năm sau tôi chốt vào tháng Mười Một. Sau đó thì khó."</em></li><li><em>"Tôi sợ mất người giỏi, nhưng tôi ghét bị dọa."</em></li><li><em>"Tôi cần một con số cụ thể để tính, không phải 'anh xem tăng giúp em'."</em></li></ul>
+<p>Từ đó anh chuẩn bị lại. Anh mang theo một con số: từ khi anh lập lịch bảo trì định kỳ, số lần máy dừng đột xuất giảm từ 12 lần mỗi quý xuống còn 5. Anh xin gặp vào đầu tháng Mười Một. Anh đề nghị một mức cụ thể, 10%. Và anh không nhắc đến chuyện nghỉ việc.</p>
+<p><strong>Kết quả.</strong> Giám đốc đồng ý tăng 7%, hẹn xét lại sau sáu tháng nếu số lần máy dừng tiếp tục giảm.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Người tôi cần thuyết phục: ……………………</li><li>Họ cần nghe gì để đồng ý: ……………………</li><li>Con số hoặc bằng chứng tôi có: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Đứng vào chỗ người kia không có nghĩa là chỉ xin những gì họ dễ cho. Nếu thị trường trả cao hơn hẳn, đi tìm chỗ khác cũng là một câu trả lời đúng.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch04">
+<p class="eyebrow">Chương 04 · III. Học tập</p>
+<h2 class="ch-title">Học Tập</h2>
+<p>Học thường bị coi là chuyện chăm hay lười. Nhưng có rất nhiều người chăm mà vẫn không tiến bộ, vì họ đang chăm vào đúng những việc khiến mình đứng yên.</p>
+<h3 class="sec">Tình huống 11: Còn 3 tháng nữa là thi</h3>
+<p><strong>Tình huống.</strong> 6,2. Ba lần thi thử môn Toán, điểm của Ánh lần nào cũng quanh con số ấy. Ánh 17 tuổi, học lớp 12 ở Nghệ An, còn ba tháng nữa là thi tốt nghiệp. Tối nào Ánh cũng ngồi ôn đến mười hai giờ, hết chương này sang chương khác.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải học nhiều hơn nữa." Ánh đã học nhiều nhất có thể. Học thêm nữa chỉ có nghĩa là thức khuya hơn.</p>
+<p><strong>Câu hỏi ngược (câu số 3):</strong></p>
+<blockquote><p><strong>Tuần cuối trước ngày thi, mình phải đang làm gì? Tuần trước đó nữa thì sao?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Ánh đếm ngược từng tuần trên một tờ lịch:</p>
+<div class="tbl"><table><thead><tr><th>Thời điểm</th><th>Phải đang làm gì</th></tr></thead><tbody><tr><td>Tuần cuối</td><td>Chỉ làm lại đề cũ, ngủ đủ, không học thêm chương mới</td></tr><tr><td>2 đến 3 tuần trước</td><td>Mỗi tuần làm 3 đề trọn vẹn, bấm giờ như thi thật</td></tr><tr><td>4 đến 11 tuần trước</td><td>Lấp những phần hay sai nhất trong đề</td></tr><tr><td>Tuần này</td><td>Làm một đề thật để biết mình hay sai ở đâu</td></tr></tbody></table></div>
+<p>Nhìn lại, Ánh thấy cả tháng qua mình chưa làm một đề nào trọn vẹn có bấm giờ. Ánh chỉ ôn lý thuyết, nên không biết mình đang mất điểm ở đâu.</p>
+<p>Tối hôm đó, Ánh làm đề đầu tiên trong 90 phút. Ánh sa vào một câu khó ở giữa đề gần 25 phút. Hết giờ còn bảy câu chưa làm, trong đó bốn câu Ánh làm được.</p>
+<p><strong>Kết quả.</strong> Sau ba tuần luyện đề bấm giờ, Ánh tập gặp câu khó thì đánh dấu, làm hết những câu mình làm được rồi mới quay lại. Lần thi thử thứ tư, Ánh được 7.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Ngày thi hoặc hạn chót của tôi: ……………………</li><li>Tuần cuối tôi phải đang làm gì: ……………………</li><li>Việc tuần này: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Kế hoạch đếm ngược quá dày sẽ lấy mất giấc ngủ. Tuần cuối mà mệt rũ thì mọi tuần trước đều phí.</p>
+<h3 class="sec">Tình huống 12: Học tiếng Anh mãi mà không nói được</h3>
+<p><strong>Tình huống.</strong> Anh Quang 27 tuổi, bán đồ lưu niệm ở phố cổ Hội An. Anh đã học tiếng Anh từ lớp 3, đã qua hai trung tâm, có ba ứng dụng học trên điện thoại. Vậy mà mỗi khi khách nước ngoài hỏi chuyện dài hơn ba câu, anh chỉ biết cười và chỉ vào bảng giá.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải học thêm từ vựng, thêm ngữ pháp." Anh học thêm, và vẫn không nói được.</p>
+<p><strong>Câu hỏi ngược (câu số 1):</strong></p>
+<blockquote><p><strong>Nếu muốn học thêm mười năm nữa mà vẫn không nói được, tôi sẽ làm gì?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Anh Quang viết, và cười khi thấy mình đang làm gần như tất cả:</p>
+<ul><li>✓ Chỉ học một mình với ứng dụng, không bao giờ mở miệng.</li><li>✓ Chờ đến khi giỏi rồi mới bắt đầu nói.</li><li>✓ Sợ sai nên gặp khách là im.</li><li>✓ Xem phim tiếng Anh nhưng bật phụ đề tiếng Việt.</li><li>✓ Chưa bao giờ nghe lại giọng mình nói.</li><li>Không bao giờ học.</li></ul>
+<p>Anh chỉ không làm dòng cuối. Năm dòng còn lại, anh làm đều đặn suốt nhiều năm.</p>
+<p>Anh đặt cho mình một luật nhỏ: mỗi ngày chủ động nói chuyện năm phút với một vị khách, dù sai. Tối về, anh ghi âm lại một câu mình đã nói và nghe lại.</p>
+<p><strong>Kết quả.</strong> Hai tháng sau, anh vẫn nói sai rất nhiều. Anh đã tự hỏi được khách từ đâu đến, ở Hội An mấy ngày. Một vị khách người Úc mua thêm hai cái đèn lồng sau mười phút nói chuyện với anh.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Kỹ năng tôi học mãi chưa giỏi: ……………………</li><li>Những việc tôi đang làm để mãi không giỏi: ……………………</li><li>Luật nhỏ tôi đặt ra từ mai: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Luật nhỏ chỉ sống được khi nó nhỏ thật. Năm phút mỗi ngày làm được lâu. Một tiếng mỗi ngày thường chỉ làm được một tuần.</p>
+<h3 class="sec">Tình huống 13: Đọc sách xong quên sạch</h3>
+<p><strong>Tình huống.</strong> "Năm ngoái chị đọc cuốn nào hay nhất?" Cô Vân, giáo viên 41 tuổi ở Huế, năm ngoái đọc được 20 cuốn sách. Nghe hỏi, cô ngồi nhớ mãi mà không kể lại được nội dung của cuốn nào cho ra đầu ra đuôi.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải đọc nhiều hơn." Đọc nhiều hơn mà quên hết thì chỉ là quên nhiều hơn.</p>
+<p><strong>Câu hỏi ngược (câu số 4):</strong></p>
+<blockquote><p><strong>Bỏ cái gì trong cách đọc thì mình nhớ được nhiều hơn?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Cô Vân viết ra những thói quen đọc của mình, và với từng cái, hỏi bỏ nó thì sao:</p>
+<div class="tbl"><table><thead><tr><th>Thói quen</th><th>Nếu bỏ</th></tr></thead><tbody><tr><td>Đặt mục tiêu 20 cuốn một năm</td><td>Không phải đọc vội cho đủ số</td></tr><tr><td>Đọc một mạch, không dừng</td><td>Có lúc để ngẫm lại vừa đọc gì</td></tr><tr><td>Đọc xong cuốn này mở ngay cuốn khác</td><td>Cuốn cũ có thời gian ngấm</td></tr><tr><td>Đọc trên điện thoại lúc nằm</td><td>Ít bị ngắt quãng bởi tin nhắn</td></tr></tbody></table></div>
+<p>Cô chọn bỏ hai thứ đầu: thôi đặt mục tiêu số cuốn, và hết mỗi chương thì dừng lại viết một dòng.</p>
+<p><strong>Kết quả.</strong> Năm nay cô đọc 12 cuốn, kể lại được 9. Có một cuốn về nuôi dạy con, cô thử đúng một việc sách gợi ý là hỏi con "hôm nay ở lớp có chuyện gì buồn cười không", và bữa tối nhà cô dài thêm được mười phút.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Thứ tôi hay học xong lại quên: ……………………</li><li>Thói quen tôi có thể bỏ: ……………………</li><li>Bỏ nó thì được gì: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Đừng biến việc đọc sách thành bài tập nặng nề. Có những cuốn đọc chỉ để vui, quên cũng chẳng sao.</p>
+<h3 class="sec">Tình huống 14: Ngồi vào bàn là cầm điện thoại</h3>
+<p><strong>Tình huống.</strong> Tám giờ tối, Tùng ngồi vào bàn học. Mười giờ, cậu nhận ra mình đã xem xong ba mươi đoạn video ngắn và chưa đọc xong một trang. Tùng 20 tuổi, sinh viên năm hai ở Thành phố Hồ Chí Minh, và tối nào cũng như tối nào.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải có ý chí hơn." Ý chí thì có hạn, còn điện thoại thì có vô hạn thứ để xem.</p>
+<p><strong>Câu hỏi ngược (câu số 4):</strong></p>
+<blockquote><p><strong>Bỏ thứ gì khỏi bàn học thì mình không cầm điện thoại nữa?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Tùng làm thử ba tối, mỗi tối bỏ thêm một thứ:</p>
+<ul><li><em>Tối thứ nhất:</em> tắt hết thông báo, điện thoại vẫn để trên bàn. Kết quả: không có thông báo, nhưng vẫn tự mở điện thoại sau mười phút. Chưa được.</li><li><em>Tối thứ hai:</em> để điện thoại úp mặt ở góc bàn. Kết quả: hai mươi phút mới cầm lên. Khá hơn.</li><li><em>Tối thứ ba:</em> để điện thoại ở ngoài phòng khách, cắm sạc. Kết quả: học được một tiếng liền. Có một lần đứng dậy định ra lấy, nhưng ngại đi nên thôi.</li></ul>
+<p><strong>Kết quả.</strong> Tùng giữ cách thứ ba. Thời gian học thật sự mỗi tối tăng từ chừng 30 phút lên chừng một tiếng.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Thứ hay làm tôi xao nhãng: ……………………</li><li>Ba cách bỏ nó, từ nhẹ đến mạnh: ……………………</li><li>Tôi thử cách nào trước: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Đừng chọn ngay cách mạnh nhất. Thử từ nhẹ đến mạnh, để biết cách nào vừa đủ với mình. Cách quá mạnh thường làm được vài ngày rồi bỏ.</p>
+<h3 class="sec">Tình huống 15: Sợ một môn học</h3>
+<p><strong>Tình huống.</strong> Trâm 16 tuổi, học lớp 11 ở Quảng Ngãi, sợ môn Hóa. Hễ có tiết Hóa là Trâm thấy nặng đầu. Điểm kiểm tra mười lăm phút gần nhất là 4.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Mình không có đầu óc học Hóa." Nghĩ thế thì càng học càng sợ, càng sợ càng không học.</p>
+<p><strong>Câu hỏi ngược (câu số 2):</strong></p>
+<blockquote><p><strong>Giả sử cuối năm mình bị điểm kém môn Hóa. Vì sao?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Trâm viết ra các lý do, rồi thử hỏi thêm "vì sao" cho từng lý do:</p>
+<ul><li>Không làm được bài tập → vì không hiểu cách tính.</li><li>Không hiểu cách tính → vì không hiểu "mol" là gì.</li><li>Không hỏi cô → vì ngại, sợ các bạn nghĩ mình kém.</li><li>Chỉ chép lời giải → vì không hiểu "mol" nên không tự làm được.</li></ul>
+<p>Hỏi đến tầng thứ hai, gần như mọi lý do đều dẫn về cùng một chỗ: Trâm chưa bao giờ hiểu khái niệm mol, thứ được dạy từ năm lớp 8. Mọi bài sau đều xây trên nó.</p>
+<p>Trâm nhờ anh họ học năm nhất đại học dạy lại riêng phần mol, mỗi tối hai mươi phút, trong hai tuần.</p>
+<p><strong>Kết quả.</strong> Bài kiểm tra mười lăm phút tiếp theo, Trâm được 6,5. Trâm vẫn chưa thích Hóa.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Thứ tôi sợ học: ……………………</li><li>Lý do tôi có thể thất bại, và hỏi thêm "vì sao": ……………………</li><li>Chỗ gốc mà mọi lý do dẫn về: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Không phải môn nào sợ cũng chỉ vì một lỗ hổng. Nếu hỏi mãi vẫn không ra chỗ gốc, hãy nhờ thầy cô chỉ giúp, thay vì tự đoán.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch05">
+<p class="eyebrow">Chương 05 · IV. Gia đình</p>
+<h2 class="ch-title">Gia Đình</h2>
+<p>Trong nhà, ta hay nói cùng một câu nhiều lần, mỗi lần to hơn một chút. "Học bài đi." "Đi khám đi." "Sao không nói với bố mẹ?" Năm tình huống dưới đây thử nói câu khác.</p>
+<h3 class="sec">Tình huống 16: Con không chịu dọn phòng</h3>
+<p><strong>Tình huống.</strong> "Bảo, dọn phòng đi con." Chị Hà, thợ may 38 tuổi ở Vĩnh Long, nói câu ấy với con trai mười tuổi tối nào cũng như tối nào. Bảo luôn dạ, luôn vào phòng, và mười lăm phút sau phòng vẫn như cũ. Chị đã thử thưởng, thử phạt, thử dọn cùng con. Cách nào cũng chạy được một tuần.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải nghiêm hơn với con." Nghiêm hơn thì con sợ hơn, nhưng phòng vẫn không gọn hơn.</p>
+<p><strong>Câu hỏi ngược (câu số 1):</strong></p>
+<blockquote><p><strong>Muốn phòng này bừa nhất có thể thì con phải làm gì?</strong></p></blockquote>
+<p>Chị không tự trả lời. Chị đưa tờ giấy cho con viết.</p>
+<p><strong>Làm mẫu.</strong> Bảo cười toe và viết nhanh hơn mọi bài tập làm văn trong năm. Viết đến đâu, cậu giải thích đến đó:</p>
+<ul><li>Cởi tất thì đá xuống gầm giường, <em>"vì giỏ đồ bẩn ở tận ngoài nhà tắm, xa lắm mẹ ạ"</em>.</li><li>Quăng cặp xuống đất, <em>"vì phòng không có chỗ treo"</em>.</li><li>Nhét giấy kiểm tra vào ngăn bàn, <em>"mà ngăn bàn thì đầy từ lớp 3 rồi"</em>.</li><li>Đọc truyện xong để đâu cũng được.</li></ul>
+<p>Chị nhận ra mỗi cái bừa đều có lý do, và lý do nằm ở đồ đạc trong phòng.</p>
+<p>Tuần đó, chị mua một cái móc dán tường giá ba mươi nghìn, đặt một cái giỏ nhựa ở chân giường, và dán một cái kẹp giấy to sau cánh cửa.</p>
+<p><strong>Kết quả.</strong> Phòng vẫn bừa, áo vẫn vắt trên ghế. Gầm giường thì không còn chiếc tất nào, cái cặp treo trên móc, và trên cánh cửa có bảy tờ giấy kiểm tra, trong đó có một bài Toán chín điểm chị không biết là có.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Việc con (hoặc người thân) mãi không làm: ……………………</li><li>Câu hỏi ngược tôi sẽ để chính người đó trả lời: ……………………</li><li>Một thay đổi nhỏ trong nhà: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Trò chơi này hỏng ngay khi nó thành một buổi kiểm điểm. Nếu con viết rồi bị mắng vì những gì đã viết, lần sau con sẽ không viết thật nữa.</p>
+<h3 class="sec">Tình huống 17: Vợ chồng hay cãi nhau về tiền</h3>
+<p><strong>Tình huống.</strong> "Anh chẳng bao giờ hiểu em." Trận cãi nhau nào về tiền của anh Đạt, lái xe tải 36 tuổi, và chị Duyên, bán hàng ở chợ 34 tuổi, cũng kết thúc bằng câu ấy. Họ sống ở Thái Nguyên. Anh thấy chị tiêu hoang. Chị thấy anh keo kiệt.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải nói cho người kia hiểu mình đúng." Cả hai đều đang làm đúng việc đó, và đó là lý do cãi nhau mãi không xong.</p>
+<p><strong>Câu hỏi ngược (câu số 5):</strong></p>
+<blockquote><p><strong>Khi nhìn vào đồng tiền, người kia đang lo điều gì mà mình không thấy?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Hai người ngồi viết riêng, mỗi người viết câu trả lời <em>thay cho người kia</em>, rồi đổi giấy cho nhau đọc.</p>
+<p>Anh Đạt viết thay vợ: <em>"Cô ấy sợ con thua bạn bè."</em> Chị Duyên gạch đi, sửa lại: <em>"Em sợ lúc con cần mà nhà không có. Hồi bé em phải nghỉ học một năm vì nhà không có tiền đóng học."</em></p>
+<p>Chị Duyên viết thay chồng: <em>"Anh ấy tiếc tiền."</em> Anh Đạt sửa lại: <em>"Anh chạy xe đường dài. Anh sợ một hôm anh bị làm sao, mà nhà không có đồng nào để dành."</em></p>
+<p>Hai người cùng sợ một chuyện: nhà không có tiền khi cần. Chỉ là mỗi người phòng nó theo một cách.</p>
+<p><strong>Kết quả.</strong> Họ chia tiền làm ba phần: một phần chi tiêu, một phần cho học hành của con, một phần để dành phòng khi có chuyện. Họ vẫn cãi nhau, giờ là về chuyện mỗi phần chia bao nhiêu.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Chuyện tôi và người thân hay cãi: ……………………</li><li>Tôi đoán họ đang lo điều gì: ……………………</li><li>Câu tôi sẽ hỏi để kiểm tra lại: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Đoán thay người kia chỉ là bước đầu. Phải để họ sửa lại câu đoán của mình. Ở tình huống này, cả hai người đều đoán sai.</p>
+<h3 class="sec">Tình huống 18: Bố mẹ già không chịu đi khám bệnh</h3>
+<p><strong>Tình huống.</strong> Chị Uyên 45 tuổi, sống ở Hà Nội. Bố chị 74 tuổi ở quê Ninh Bình, ho hơn một tháng nay. Lần nào gọi về chị cũng giục bố đi khám, và lần nào bố cũng bảo "không sao, mai kia khỏi".</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Phải nói mạnh hơn thì bố mới nghe." Chị nói mạnh hơn, bố chị càng giấu bệnh hơn.</p>
+<p><strong>Câu hỏi ngược (câu số 2):</strong></p>
+<blockquote><p><strong>Giả sử ba tháng nữa bố phải nhập viện vì để bệnh lâu. Vì sao bố đã không chịu đi khám sớm?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Chị Uyên viết ra những lý do có thể, rồi gọi điện cho cô em gái ở gần bố để kiểm tra:</p>
+<ul><li>Sợ tốn tiền của con. <em>Cô em bảo đúng, bố hay hỏi khám một lần mất bao nhiêu.</em></li><li>Sợ khám ra bệnh nặng. <em>Cô em bảo bố hay nhắc ông hàng xóm, đi khám xong ba tháng thì mất.</em></li><li>Ngại ngồi chờ cả buổi ở bệnh viện tỉnh. <em>Đúng.</em></li><li>Không muốn làm phiền con cái. <em>Đúng.</em></li></ul>
+<p>Lý do nào cũng là bố đang lo cho con theo cách của bố.</p>
+<p>Chị đổi cách nói. Chị không giục bố đi khám nữa. Chị bảo cuối tuần chị về, nhờ bố đi cùng chị đi khám sức khỏe định kỳ, vì chị "sợ đi một mình". Chị đặt lịch trước để không phải chờ, trả tiền trước qua mạng, và nói với bố rằng tiền đã đóng rồi, không đi thì mất.</p>
+<p><strong>Kết quả.</strong> Bố chị đi. Kết quả là viêm phế quản, uống thuốc hai tuần thì đỡ. Chị không biết lần sau còn dùng được cách này không, nhưng lần này thì được.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Việc tôi muốn người thân làm: ……………………</li><li>Vì sao họ có thể không làm: ……………………</li><li>Cách nói mới: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Hiểu nỗi sợ của bố mẹ không có nghĩa là chiều theo nó. Với chuyện sức khỏe, đôi khi vẫn phải cứng rắn. Hiểu họ giúp mình cứng rắn đúng chỗ.</p>
+<h3 class="sec">Tình huống 19: Con lớn dần, ít nói chuyện với mình</h3>
+<p><strong>Tình huống.</strong> "Bình thường." Đó là câu trả lời của con gái anh Thắng mỗi khi anh hỏi hôm nay đi học thế nào. Anh 44 tuổi, thợ mộc ở Quy Nhơn, Gia Lai. Con gái anh học lớp 9, ngày trước đi học về là kể đủ chuyện, năm nay về là vào phòng đóng cửa.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Con tuổi này là thế." Có thể đúng. Nhưng câu ấy làm anh không còn tìm cách nào khác.</p>
+<p><strong>Câu hỏi ngược (câu số 1):</strong></p>
+<blockquote><p><strong>Nếu muốn con không bao giờ kể chuyện với mình nữa, mình sẽ làm gì?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Anh Thắng viết, rồi nhờ vợ đánh dấu ✓ những gì vợ thấy anh đang làm. Vợ anh đánh dấu nhiều hơn anh nghĩ:</p>
+<ul><li>✓ Con kể được nửa câu đã khuyên.</li><li>✓ Hỏi "sao không học bài" ngay khi con vừa về.</li><li>✓ Đem chuyện con kể đi kể lại với họ hàng.</li><li>✓ Vừa nghe con nói vừa xem điện thoại.</li><li>Mắng khi con kể chuyện bị điểm kém.</li></ul>
+<p>Anh Thắng cãi vợ về dòng thứ ba. Vợ anh nhắc lại chuyện Tết năm ngoái, anh kể với cả nhà chuyện con thích một bạn cùng lớp. Anh im.</p>
+<p>Anh chọn bỏ dòng đầu tiên: khi con kể, anh chỉ hỏi đúng một câu, "rồi sao nữa?", và không khuyên gì cả.</p>
+<p><strong>Kết quả.</strong> Hai tuần đầu, con vẫn ít nói. Tuần thứ ba, một tối anh đang bào gỗ ngoài hiên, con ra ngồi cạnh, kể chuyện một đứa bạn bị cô giáo phạt oan. Anh nghe hết, chỉ hỏi "rồi sao nữa". Con kể đến lúc mẹ gọi vào ăn cơm.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Người tôi muốn họ kể chuyện với mình: ……………………</li><li>Những gì tôi đang làm để họ im lặng: ……………………</li><li>Nhờ ai đánh dấu giúp: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Đừng vội kể với con rằng bố đang "áp dụng phương pháp mới". Cứ làm khác đi, con sẽ tự nhận ra.</p>
+<h3 class="sec">Tình huống 20: Tết về quê lần nào cũng mệt</h3>
+<p><strong>Tình huống.</strong> Mười tám tiếng chạy xe, hai mươi nhà chúc Tết, một trận cãi nhau ở nhà nội, và về lại thành phố thì cả nhà ốm. Đó là cái Tết năm nào cũng lặp lại của anh Khoa, 39 tuổi, và vợ, sống ở Thành phố Hồ Chí Minh, quê ở Quảng Trị.</p>
+<p><strong>Cách nghĩ thường gặp.</strong> "Tết thì phải thế." Năm nào cũng nói vậy, rồi năm nào cũng mệt như vậy.</p>
+<p><strong>Câu hỏi ngược (câu số 2):</strong></p>
+<blockquote><p><strong>Giả sử Tết năm nay lại là một cái Tết mệt mỏi nhất. Chuyện gì đã xảy ra?</strong></p></blockquote>
+<p><strong>Làm mẫu.</strong> Hai vợ chồng ngồi viết từ tháng Mười, trước Tết ba tháng:</p>
+<div class="tbl"><table><thead><tr><th>Chuyện có thể xảy ra</th><th>Việc làm trước</th></tr></thead><tbody><tr><td>Chạy xe đêm, buồn ngủ, cãi nhau trên đường</td><td>Đặt vé tàu từ bây giờ, khi còn vé</td></tr><tr><td>Đi chúc Tết cả hai mươi nhà, nhà nào cũng ngồi</td><td>Hỏi mẹ năm nhà nào nhất định phải đến, còn lại gặp ở đám giỗ tổ</td></tr><tr><td>Cãi nhau ở nhà nội về chuyện ở bên nội hay bên ngoại lâu hơn</td><td>Chốt trước ngày nào ở đâu, cả hai bên đều biết</td></tr><tr><td>Con ốm vì ăn uống thất thường</td><td>Mang theo thuốc và đồ ăn sáng cho con</td></tr><tr><td>Về lại thành phố là phải đi làm ngay</td><td>Xin nghỉ thêm một ngày sau Tết</td></tr></tbody></table></div>
+<p><strong>Kết quả.</strong> Tết năm ấy không có trận cãi nào ở nhà nội. Mẹ anh Khoa đòi thêm hai nhà, thành bảy nhà thay vì năm. Về lại thành phố, chỉ có đứa con út bị sổ mũi.</p>
+<p><strong>Đến lượt bạn.</strong></p>
+<ul><li>Dịp mà năm nào tôi cũng mệt: ……………………</li><li>Chuyện gì sẽ khiến nó lại mệt: ……………………</li><li>Việc làm trước từ bây giờ: ……………………</li></ul>
+<p><strong>Cái bẫy.</strong> Danh sách một mình làm ra rồi bắt cả nhà theo thì thường hỏng ngay từ ngày đầu. Chuyện Tết là chuyện của nhiều người. Hãy hỏi người trong nhà cùng viết.</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+    </div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Muốn Thắng, Hãy Hỏi Cách Thua</p>
+        <p>Sách tư duy ứng dụng. 5 chương · ~8k từ (8.165 từ). Đang tiếp tục.</p>
+        <p class="fmeta">© 2026 Sách tư duy ứng dụng.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  // theme toggle (mặc định sáng, lưu localStorage)
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
+  }
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile toc toggle
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+
+  // active chapter highlight in side nav
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
+  }
+})();
+
+</script>
+</body>
+</html>
