@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Muốn Thắng, Hãy Hỏi Cách Thua — Sách tư duy ứng dụng. Quán cà phê của Vũ còn 90 ngày trước khi người góp vốn rút tiền và hợp đồng thuê nhà hết hạn. Người duy nhất chịu giúp là ông thợ sửa đồng hồ bên kia ">
+<meta name="author" content="Sách tư duy ứng dụng">
+<title>Muốn Thắng, Hãy Hỏi Cách Thua — Sách tư duy ứng dụng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Serif:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#ffffff; --surface-1:#f4f4f4; --surface-2:#e0e0e0;
+  --ink:#161616; --ink-muted:#525252; --ink-subtle:#8c8c8c;
+  --hairline:#e0e0e0; --hairline-strong:#161616;
+  --primary:#0f62fe; --blue-hover:#0050e6; --on-primary:#ffffff;
+  --inverse-canvas:#161616; --inverse-ink:#ffffff;
+  --sans:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --measure:42rem; --nav-w:17rem;
+}
+:root[data-theme="dark"]{
+  --canvas:#161616; --surface-1:#262626; --surface-2:#393939;
+  --ink:#f4f4f4; --ink-muted:#c6c6c6; --ink-subtle:#8d8d8d;
+  --hairline:#393939; --hairline-strong:#6f6f6f;
+  --primary:#78a9ff; --blue-hover:#a6c8ff; --on-primary:#161616;
+  --inverse-canvas:#f4f4f4; --inverse-ink:#161616;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--canvas); color:var(--ink);
+  font-family:var(--sans); font-size:16px; font-weight:400;
+  line-height:1.5; letter-spacing:0.16px; overflow-x:hidden;
+  overflow-wrap:break-word; word-break:break-word;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color .15s ease, color .15s ease;
+}
+a{color:var(--primary); text-decoration:none;}
+a:hover{color:var(--blue-hover); text-decoration:underline;}
+
+/* reading progress */
+#progress{position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--primary); z-index:60; transition:width .1s linear;}
+
+/* top nav */
+.top-nav{position:sticky; top:0; z-index:50; height:48px;
+  background:var(--canvas); border-bottom:1px solid var(--hairline);
+  display:flex; align-items:center; gap:16px; padding:0 16px;}
+.top-nav .brand{font-size:14px; font-weight:600; letter-spacing:0.16px;
+  color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0;}
+.top-nav .spacer{flex:1;}
+.top-nav .top-meta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px;}
+.menu-btn{display:none; appearance:none; background:transparent; border:0;
+  color:var(--ink); font-family:var(--sans); font-size:14px; cursor:pointer;
+  padding:8px 10px; align-items:center; gap:6px;}
+.menu-btn:hover{background:var(--surface-1);}
+
+/* theme toggle */
+.theme-toggle{appearance:none; background:transparent; border:1px solid var(--hairline);
+  color:var(--ink); cursor:pointer; width:32px; height:32px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+.theme-toggle:hover{background:var(--surface-1); border-color:var(--hairline-strong);}
+.theme-toggle .icon-moon{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:block;}
+
+/* shell */
+.shell{display:block; max-width:1584px; margin:0 auto;}
+.side-nav{display:none;}
+.content{width:100%; min-width:0;}
+@media(min-width:1056px){
+  .shell{display:flex; align-items:flex-start;}
+  .side-nav{display:block; width:var(--nav-w); flex:0 0 var(--nav-w);
+    position:sticky; top:48px; align-self:flex-start;
+    height:calc(100vh - 48px); overflow-y:auto;
+    border-right:1px solid var(--hairline); padding:24px 0 48px;}
+  .content{flex:1 1 0%; min-width:0;}
+  .toc-mobile{display:none !important;}
+  .menu-btn{display:none !important;}
+}
+.inner{max-width:var(--measure); margin:0 auto; padding:0 20px 80px;}
+
+/* toc */
+.toc-wrap .toc-cap{font-size:12px; letter-spacing:0.32px; color:var(--ink-subtle);
+  padding:0 24px 12px; text-transform:none;}
+.toc-list{list-style:none; margin:0; padding:0;}
+.toc-part{font-size:12px; font-weight:600; letter-spacing:0.16px; color:var(--ink-muted);
+  padding:20px 24px 6px; border-top:1px solid var(--hairline); margin-top:6px;}
+.toc-list li:first-child.toc-part{border-top:0; margin-top:0;}
+.toc-list a{display:flex; gap:10px; padding:7px 24px; color:var(--ink);
+  border-left:3px solid transparent; line-height:1.3;}
+.toc-list a:hover{background:var(--surface-1); text-decoration:none;}
+.toc-list a.active{border-left-color:var(--primary); background:var(--surface-1);
+  font-weight:600;}
+.toc-num{font-size:11px; color:var(--ink-subtle); min-width:58px; letter-spacing:0.16px;
+  padding-top:2px;}
+.toc-title{font-size:13px;}
+
+/* mobile toc panel */
+.toc-mobile{display:block; border-bottom:1px solid var(--hairline);
+  background:var(--canvas);}
+.toc-mobile[open]{padding-bottom:8px;}
+.toc-mobile summary{display:none;}
+@media(max-width:1055px){
+  .menu-btn{display:inline-flex;}
+  .toc-mobile{position:fixed; top:48px; left:0; right:0; bottom:0; z-index:45;
+    overflow-y:auto; transform:translateX(-100%); transition:transform .2s ease;
+    border-bottom:0;}
+  .toc-mobile.show{transform:translateX(0);}
+  .toc-mobile .toc-cap{padding:20px 24px 12px; font-size:12px;}
+}
+
+/* cover hero */
+.cover{padding:40px 20px 8px; border-bottom:1px solid var(--hairline);
+  margin-bottom:8px;}
+.cover-eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px;
+  margin:0 0 12px;}
+.cover-title{font-size:clamp(30px,6.2vw,52px); font-weight:300; line-height:1.12;
+  letter-spacing:-0.4px; margin:0 0 12px; color:var(--ink); overflow-wrap:break-word;}
+.cover-img{border:1px solid var(--hairline); background:var(--surface-1);
+  display:block; width:100%; max-width:360px; margin:0 auto 24px;}
+.cover-tags{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 20px;}
+.cover-tags span{border:1px solid var(--hairline); padding:4px 12px;
+  font-size:12px; letter-spacing:0.32px; color:var(--ink-muted);}
+.cover-logline{font-size:18px; line-height:1.5; color:var(--ink-muted);
+  border-left:3px solid var(--primary); padding-left:16px; margin:0 0 24px;}
+.cover-stats{display:flex; flex-wrap:wrap; gap:0; border:1px solid var(--hairline);
+  margin-bottom:24px;}
+.cover-stats .stat{flex:1; min-width:96px; padding:16px; border-right:1px solid var(--hairline);}
+.cover-stats .stat:last-child{border-right:0;}
+.cover-stats .num{font-size:28px; font-weight:300; line-height:1.1; color:var(--ink);}
+.cover-stats .lab{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:4px;}
+.btn-primary{display:inline-block; background:var(--primary); color:var(--on-primary);
+  font-size:14px; letter-spacing:0.16px; padding:12px 16px; border:0; cursor:pointer;
+  font-family:var(--sans);}
+.btn-primary:hover{background:var(--blue-hover); color:var(--on-primary); text-decoration:none;}
+
+/* characters section */
+.characters{margin:48px 0 0;}
+.section-title{font-size:24px; font-weight:400; margin:0 0 24px; color:var(--ink);
+  border-bottom:1px solid var(--hairline); padding-bottom:12px;}
+.char-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:16px;}
+.char-card{background:var(--surface-1); padding:20px; border:1px solid var(--hairline);}
+.char-name{font-size:16px; font-weight:600; color:var(--ink);}
+.char-role{font-size:13px; color:var(--primary); letter-spacing:0.16px; margin-top:4px;}
+.char-desc{font-size:14px; color:var(--ink-muted); line-height:1.5; margin-top:8px;}
+
+/* chapter */
+.chapter{padding:48px 0 8px; border-bottom:1px solid var(--hairline);}
+.chapter:last-child{border-bottom:0;}
+.eyebrow{font-size:14px; color:var(--ink-muted); letter-spacing:0.16px; margin:0 0 12px;}
+.ch-title{font-size:clamp(28px,5vw,42px); font-weight:300; line-height:1.18;
+  letter-spacing:0; margin:0 0 28px; color:var(--ink);}
+.chapter p{
+  font-family:var(--serif); font-size:18px; line-height:1.75;
+  margin:0 0 20px; color:var(--ink); letter-spacing:0;
+}
+.chapter strong{font-weight:600;}
+.chapter em{font-style:italic;}
+.chapter blockquote{margin:24px 0; padding:16px 20px; border-left:3px solid var(--primary);
+  background:var(--surface-1); color:var(--ink-muted); font-family:var(--serif);
+  font-size:17px; line-height:1.6;}
+.chapter blockquote p{margin:0 0 12px; color:var(--ink-muted);}
+.chapter blockquote p:last-child{margin:0;}
+
+/* scene break */
+hr.scene-break{border:0; text-align:center; margin:32px 0;}
+hr.scene-break::before{content:"· · ·"; color:var(--ink-subtle); letter-spacing:8px; font-size:14px;}
+
+/* dialogue & message */
+.dialogue{padding-left:0;}
+.message{font-style:italic; color:var(--ink-muted);}
+
+/* chapter foot */
+.ch-foot{margin:32px 0 8px;}
+.totop{font-size:13px; color:var(--ink-muted); letter-spacing:0.16px;}
+.totop:hover{color:var(--primary);}
+
+/* footer */
+.page-footer{background:var(--surface-1); color:var(--ink-muted); padding:48px 20px; margin-top:0;}
+.page-footer .fin{max-width:var(--measure); margin:0 auto;}
+.page-footer .fbrand{font-size:20px; font-weight:300; color:var(--ink); margin:0 0 8px;}
+.page-footer p{font-size:14px; line-height:1.5; margin:0 0 6px;}
+.page-footer .fmeta{font-size:12px; color:var(--ink-subtle); letter-spacing:0.32px; margin-top:16px;}
+
+/* selection */
+::selection{background:#0f62fe40; color:var(--ink);}
+
+/* nonfiction extras */
+.chapter h3.sec{font-family:var(--sans); font-size:20px; font-weight:600; margin:36px 0 14px; color:var(--ink);}
+.chapter ul{font-family:var(--serif); font-size:17px; line-height:1.65; margin:0 0 20px; padding-left:22px;}
+.chapter li{margin:0 0 8px;}
+.chapter p.src{font-family:var(--sans); font-size:13px; line-height:1.5; color:var(--ink-muted); margin:0 0 8px; letter-spacing:0.16px;}
+.chapter p.src a{word-break:break-all;}
+.draft-note{font-size:13px; color:var(--ink-muted); border:1px solid var(--hairline); background:var(--surface-1); padding:8px 12px; margin:0 0 16px;}
+pre.board{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-size:13px;line-height:1.55;color:var(--ink);background:var(--surface-1);border-left:3px solid var(--primary);padding:12px 14px;overflow-x:auto;white-space:pre;margin:16px 0}
+
+</style>
+</head>
+<body id="top">
+<div id="progress"></div>
+<header class="top-nav">
+  <button class="menu-btn" id="menuBtn">≡ Mục lục</button>
+  <span class="brand">Muốn Thắng, Hãy Hỏi Cách Thua</span>
+  <span class="spacer"></span>
+  <span class="top-meta">Sách tư duy ứng dụng · 5 chương</span>
+  <button class="theme-toggle" id="themeToggle" aria-label="Chuyển giao diện sáng/tối" title="Chuyển giao diện sáng/tối">
+    <svg class="icon-sun" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><circle cx="8" cy="8" r="3.2"/><path d="M8 .8v2M8 13.2v2M15.2 8h-2M2.8 8h-2M13.14 2.86l-1.41 1.41M4.27 11.73l-1.41 1.41M13.14 13.14l-1.41-1.41M4.27 4.27L2.86 2.86"/></svg>
+    <svg class="icon-moon" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 9.28A5.7 5.7 0 1 1 6.72 2.5a4.5 4.5 0 0 0 6.78 6.78z"/></svg>
+  </button>
+</header>
+<div class="toc-mobile" id="tocMobile"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Mở đầu</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Vì Sao Hỏi Ngược Lại Có Ích</span></a></li>
+<li class="toc-part">Phần I: Đảo mục tiêu</li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Làm Sao Để Khách Không Bao Giờ Quay Lại</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Làm Sao Để Nghèo Mãi</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Làm Sao Để Bị Ghét Ở Công Ty</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Làm Sao Để Sống Khổ</span></a></li></ul></div></div>
+<div class="shell">
+  <aside class="side-nav"><div class="toc-wrap"><p class="toc-cap">Mục lục</p><ul class="toc-list"><li class="toc-part">Mở đầu</li>
+<li><a href="#ch01"><span class="toc-num">Chương 01</span><span class="toc-title">Vì Sao Hỏi Ngược Lại Có Ích</span></a></li>
+<li class="toc-part">Phần I: Đảo mục tiêu</li>
+<li><a href="#ch02"><span class="toc-num">Chương 02</span><span class="toc-title">Làm Sao Để Khách Không Bao Giờ Quay Lại</span></a></li>
+<li><a href="#ch03"><span class="toc-num">Chương 03</span><span class="toc-title">Làm Sao Để Nghèo Mãi</span></a></li>
+<li><a href="#ch04"><span class="toc-num">Chương 04</span><span class="toc-title">Làm Sao Để Bị Ghét Ở Công Ty</span></a></li>
+<li><a href="#ch05"><span class="toc-num">Chương 05</span><span class="toc-title">Làm Sao Để Sống Khổ</span></a></li></ul></div></aside>
+  <div class="content">
+    <div class="inner">
+      <section class="cover">
+        <p class="cover-eyebrow">Sách tư duy ứng dụng · 2026</p>
+        <p class="draft-note">Bản thảo. Truyện khung ở ngõ Đội Cấn và các chuyện đời thường là hư cấu; chuyện có thật dẫn nguồn cuối mỗi chương. Soạn với sự hỗ trợ của Claude (Anthropic).</p>
+        <h1 class="cover-title">Muốn Thắng, Hãy Hỏi Cách Thua</h1>
+        <div class="cover-tags"><span>Tư duy ngược</span><span>Chuyện ngắn có thật</span><span>Chuyện đời thường</span><span>Câu đố</span><span>Bài tập</span></div>
+        <p class="cover-logline">Quán cà phê của Vũ còn 90 ngày trước khi người góp vốn rút tiền và hợp đồng thuê nhà hết hạn. Người duy nhất chịu giúp là ông thợ sửa đồng hồ bên kia ngõ, người không bao giờ cho lời khuyên mà chỉ hỏi ngược. Mỗi chương một chủ đề, nhiều câu chuyện ngắn có thật và đời thường, những ô dừng để bạn tự nghĩ, và một bài tập để bạn lật ngược đời mình.</p>
+        <div class="cover-stats">
+          <div class="stat"><div class="num">5/30</div><div class="lab">Chương</div></div>
+          <div class="stat"><div class="num">~18k</div><div class="lab">Từ</div></div>
+          <div class="stat"><div class="num">17%</div><div class="lab">Tiến độ</div></div>
+        </div>
+        <a class="btn-primary" href="#ch01">Bắt đầu đọc ↓</a>
+      </section>
+      <section class="characters" id="characters">
+        <h2 class="section-title">Nhân vật</h2>
+        <div class="char-grid">
+<div class="char-card"><div class="char-name">Nguyễn Hoàng Vũ</div><div class="char-role">Chủ quán Ga Cũ · 28 tuổi</div><div class="char-desc">Bỏ ngân hàng mở quán, gặp vấn đề nào cũng giải bằng cách làm thêm.</div></div>
+<div class="char-card"><div class="char-name">Tạ Văn Khiêm</div><div class="char-role">Thợ sửa đồng hồ vỉa hè · 71 tuổi</div><div class="char-desc">Không cho lời khuyên, chỉ hỏi ngược. Tìm cái làm đồng hồ chết, không tìm cái làm nó chạy.</div></div>
+<div class="char-card"><div class="char-name">Nguyễn Hoàng Mai</div><div class="char-role">Em gái Vũ · lớp 12</div><div class="char-desc">Ngủ trên gác xép sau quán, nói trống không, hay bắt bẻ người lớn.</div></div>
+<div class="char-card"><div class="char-name">Lê Thu Trang</div><div class="char-role">Bạn góp vốn · 28 tuổi</div><div class="char-desc">Góp 40% vốn, sẽ rút 360 triệu vào 30/11.</div></div>
+<div class="char-card"><div class="char-name">Đỗ Thị Hằng</div><div class="char-role">Chủ quán phở đầu ngõ · 46 tuổi</div><div class="char-desc">Bán phở từ 2006, tin bản năng hơn lý thuyết.</div></div>
+<div class="char-card"><div class="char-name">Trần Quang Huy</div><div class="char-role">Khách quen · 34 tuổi</div><div class="char-desc">Trưởng phòng vận hành, mang từng công cụ vào công sở.</div></div>
+        </div>
+      </section>
+<article class="chapter" id="ch01">
+<p class="eyebrow">Chương 01 · Mở đầu</p>
+<h2 class="ch-title">Vì Sao Hỏi Ngược Lại Có Ích</h2>
+<p><em>Còn 90 ngày · Tiền mặt của quán: 74 triệu đồng</em></p>
+<h3 class="sec">Ở ngõ Đội Cấn</h3>
+<p>Trang đặt cốc trà đá xuống quầy, xoay cái cốc nửa vòng rồi mới nói.</p>
+<p class="dialogue">– Tớ rút vốn, Vũ ạ. Ba mươi tháng Mười Một.</p>
+<p>Lúc đó là chín giờ sáng ngày 1/9. Quán "Ga Cũ" mở cửa từ tám giờ mà máy xay chưa phải chạy mẻ nào, bốn cái quạt trần quay cho một bàn khách duy nhất. Vũ đang lau quầy. Anh lau tiếp thêm một đường dài, gần chạm tới cốc trà của Trang, rồi dừng.</p>
+<p class="dialogue">– Ba trăm sáu mươi triệu?</p>
+<p class="dialogue">– Ba trăm sáu mươi triệu. Tớ nhận việc trong Sài Gòn từ tháng Một. Tớ cần tiền thật, không phải tiền trên sổ.</p>
+<p class="dialogue">– Sổ đang lỗ thì tiền trên sổ cũng có đâu.</p>
+<p>Trang không cười. Cô lấy trong túi ra một tờ giấy gập tư, trên đó là bảng tính cô tự làm: từ đầu năm đến giờ không tháng nào có lãi, lỗ trung bình ba mươi tám triệu mỗi tháng, tiền mặt còn bảy mươi tư triệu.</p>
+<p class="dialogue">– Tớ không bảo cậu đóng quán. Tớ bảo tớ không theo được nữa.</p>
+<p class="dialogue">– Cho tớ ba tháng.</p>
+<p class="dialogue">– Thì đấy, đến ba mươi tháng Mười Một là ba tháng.</p>
+<p>Trang uống nốt cốc trà, để lại hai mươi nghìn dưới đáy cốc dù Vũ đã xua tay, rồi đi. Cô đi bộ ra đầu ngõ, qua quán phở của chị Hằng, và không quay lại nhìn. Hồi hai đứa còn học đại học, mỗi lần cãi nhau xong Trang đều quay lại nhìn một lần. Vũ đứng nhìn theo đến khi cô khuất hẳn mới nhận ra mình đang cầm cái giẻ lau, siết chặt đến mức nước nhỏ xuống giày.</p>
+<p>Mai từ trên gác xép đi xuống, tóc buộc vội, cặp đeo một bên vai. Con bé học lớp 12 ở trường cách ngõ mười phút đi bộ, ngủ nhờ trên gác xép sau quán từ đầu năm học trước để khỏi phải đi xe khách từ Nam Định mỗi tuần.</p>
+<p class="dialogue">– Chị Trang nói gì mà mặt anh như vừa bị trừ điểm thi đua thế?</p>
+<p class="dialogue">– Đi học đi.</p>
+<p class="dialogue">– Em hỏi thật.</p>
+<p class="dialogue">– Chị ấy rút vốn. Ba mươi tháng Mười Một.</p>
+<p>Mai đứng im một lúc. Con bé mười bảy tuổi, nói trống không với cả thế giới, nhưng con bé biết ba trăm sáu mươi triệu là bao nhiêu. Nó lấy một cái bánh bông lan trong tủ kính, thứ bánh làm theo công thức của mẹ hai anh em, bỏ vào túi áo khoác, rồi đi ra cửa.</p>
+<p class="dialogue">– Thế thì anh bán hết cái đống ghế gỗ kia đi. Ngồi đau đít lắm.</p>
+<p>Vũ không trả lời. Lúc đó anh nghĩ đó là câu nói của một đứa trẻ con.</p>
+<p>Chiều cùng ngày, bà Liên chủ nhà gọi điện. Giọng bà nhẹ nhàng, như đang hỏi thăm sức khỏe: hợp đồng thuê hết hạn ba mươi tháng Mười Một, muốn gia hạn thì giá tăng hai mươi phần trăm, cháu suy nghĩ rồi báo bà trước giữa tháng Mười.</p>
+<p>Vũ dạ vâng, dạ cháu biết rồi ạ, dạ cháu sẽ báo bà sớm. Đặt máy xuống, anh tính nhẩm: tiền thuê ba mươi lăm triệu một tháng, tăng hai mươi phần trăm là bốn mươi hai triệu. Bảy triệu mỗi tháng nữa, cho một cái quán đang lỗ ba mươi tám triệu mỗi tháng.</p>
+<p>Hai cái hạn chót rơi trúng một ngày. Vũ ghi con số 90 lên tấm bảng đen sau quầy, chỗ vẫn viết món của ngày, rồi xóa đi, vì nhân viên sẽ hỏi.</p>
+<p>Tối hôm ấy quán bán được bảy mươi hai ly. Đêm nhạc thứ Ba có năm người nghe, ba người là bạn của ca sĩ. Tú, cậu pha chế, về sớm vì "đau đầu", lần thứ ba trong một tuần. Hai nhân viên phục vụ còn lại ngồi lướt điện thoại ở hai góc quán, mỗi người một góc, không ai nói với ai.</p>
+<p>Mười một giờ đêm, quán đóng cửa. Vũ ngồi trên bậc thềm với cuốn sổ chi tiêu và cái máy tính bỏ túi. Bên kia ngõ, ông Khiêm đang dọn sạp sửa đồng hồ. Ông làm việc ấy rất chậm: lau cái hộp kính, xếp từng con vít vào hộp thiếc, gập ô, buộc dây. Hai năm nay Vũ thấy ông mỗi ngày mà chưa nói với nhau quá mười câu.</p>
+<p>Vũ bấm máy tính lần thứ ba, ra đúng con số của hai lần trước, và lẩm bẩm thành tiếng:</p>
+<p class="dialogue">– Làm sao cho quán đông khách bây giờ...</p>
+<p>Câu đó làm anh nhớ một câu khác. Năm 2024, khi anh báo bỏ việc ngân hàng để mở quán, bố anh ở Nam Định chỉ hỏi qua điện thoại đúng một câu: <em>"Nếu lỗ thì con sống bằng gì?"</em> Hai năm nay anh vẫn nghe câu đó như một lời mỉa.</p>
+<p>Anh biết mình không thiếu ý tưởng. Cuốn sổ có cả mấy trang ý tưởng cứu quán anh viết tuần trước, trang nào cũng kín. Cái anh thiếu là một ý tưởng đúng, và anh không biết phải tìm nó ở đâu ngoài việc nghĩ thêm, làm thêm, thử thêm.</p>
+<p>Ông Khiêm buộc xong dây ô, đi ngang qua bậc thềm. Ông dừng lại, nhìn cuốn sổ, nhìn Vũ.</p>
+<p class="dialogue">– Cậu muốn đông khách à?</p>
+<p class="dialogue">– Vâng.</p>
+<p class="dialogue">– Thế cậu kể tôi nghe. Muốn khách đến một lần rồi không bao giờ quay lại nữa thì phải làm những gì?</p>
+<p>Vũ tưởng ông nói đùa. Ông Khiêm không cười, ông đứng chờ, hai tay chắp sau lưng, như đang chờ một chiếc đồng hồ chạy lại sau khi lên dây.</p>
+<h3 class="sec">Một câu của nhà toán học, qua miệng một nhà đầu tư</h3>
+<p><em>Chuyện có thật</em></p>
+<p>Năm 1986, tại lễ tốt nghiệp của Harvard School, một trường trung học ở Los Angeles (nay là Harvard-Westlake, không liên quan gì tới Đại học Harvard), một người đàn ông đã ngoài sáu mươi đứng lên phát biểu. Đó là Charlie Munger, cộng sự lâu năm của nhà đầu tư Warren Buffett. Các bài diễn văn tốt nghiệp thường dạy học trò cách sống hạnh phúc. Munger làm ngược lại: ông đưa ra những "công thức chắc chắn để sống khổ" [1].</p>
+<p>Trước khi vào bài, ông giải thích vì sao mình làm thế. Ông kể về một nhà toán học người Đức thế kỷ 19, Carl Gustav Jacob Jacobi, người mà theo lời Munger nổi tiếng vì cứ lặp đi lặp lại một câu: <em>"Đảo ngược, luôn luôn đảo ngược."</em> Munger rút ra từ đó một ý mà ông giữ suốt đời: nhiều bài toán khó chỉ được giải tốt nhất khi ta tiếp cận chúng từ phía ngược lại [1].</p>
+<p>Jacobi là người có thật, và rất lớn. Ông sinh năm 1804 ở Potsdam, mất năm 1851 ở Berlin, để lại công trình nền móng về hàm elliptic [2]. Điều thú vị là chính công trình ấy đến từ một cú đảo ngược. Các nhà toán học trước ông vật lộn với một loại tích phân rất khó gọi là tích phân elliptic. Jacobi không cố giải thẳng bài toán đó. Theo cách Van Vleck mô tả, ông "lộn trái" tích phân ấy ra. Ông lật nó lại, nghiên cứu hàm ngược của nó, và một vùng toán học mới mở ra từ chỗ ấy [2].</p>
+<p>Nhưng câu nói nổi tiếng thì có một vấn đề nhỏ. Không ai tìm thấy nó trong bất kỳ bài viết nào của Jacobi. Nguồn in sớm nhất mà các nhà sử học tìm được là một bài diễn văn năm 1916 của nhà toán học Mỹ Edward Van Vleck, tức 65 năm sau khi Jacobi qua đời. Và Van Vleck cũng chỉ viết rằng Jacobi <em>"được cho là"</em> đã dạy học trò câu ấy, bằng tiếng Đức: <em>man muss immer umkehren</em>, "phải luôn luôn lật ngược lại" [2]. Một chuyên mục chuyên truy gốc các câu trích dẫn toán học của Hội Toán học Mỹ cũng kết luận rằng chưa ai tìm thấy nguồn nào sớm hơn [3].</p>
+<p>Vậy câu này nên được hiểu là một giai thoại: rất có thể đúng với tinh thần làm toán của Jacobi, nhưng không có bằng chứng ông từng nói đúng như thế. Munger nhắc lại nó như một câu nói ai cũng biết. Nhiều bài viết về sau trích lại từ Munger, và chữ "được cho là" thường rơi mất dọc đường.</p>
+<p>Điều này không làm Munger sai. Trong bài năm 1986, ông không nói mình đã đọc thấy câu ấy trong sách của Jacobi. Ông chỉ dùng một câu chuyện mà giới toán học kể cho nhau nghe từ đầu thế kỷ 20, để dẫn vào điều ông thật sự muốn nói. Nhưng nó cho thấy một câu nói có thể đi xa đến đâu khi nó nghe đúng, và khi nó gắn với một cái tên lớn.</p>
+<p>Chính chuyện này cũng là một bài tập tư duy ngược nho nhỏ. Thay vì hỏi "câu này hay không", hãy hỏi "nếu câu này là bịa, thì dấu vết của việc bịa sẽ trông như thế nào?". Câu trả lời thường là: không có nguồn gốc, chỉ có chuỗi người trích lại người. Phần sau của sách sẽ gặp khá nhiều câu chuyện như vậy, và mỗi lần gặp, sách sẽ nói thẳng.</p>
+<p>Còn ý tưởng thì vẫn đứng vững dù câu nói chưa rõ gốc. Bài phát biểu năm 1986 của Munger có thật và có bản ghi đầy đủ. Chương 5 sẽ đọc kỹ những gì ông đã nói hôm đó.</p>
+<h3 class="sec">Ai lấy que diêm cuối cùng</h3>
+<p><em>Câu đố</em></p>
+<p>Trên bàn có 21 que diêm. Hai người chơi lần lượt bốc, mỗi lượt được bốc 1, 2 hoặc 3 que, không được bỏ lượt. Ai bốc que cuối cùng thì thắng.</p>
+<p>Bạn được đi trước.</p>
+<p>Trò này người ta hay bày ở quán nước, ở sân trường, ở bàn nhậu khi chờ món. Người mới chơi gần như luôn làm giống nhau: lượt đầu bốc đại 2 que hay 3 que, rồi cứ thế đánh theo cảm giác, chờ đến khi trên bàn còn chừng năm sáu que mới bắt đầu tính. Lúc đó thường đã muộn. Người chơi lâu năm thì rất bình thản, có khi vừa bốc vừa nói chuyện khác, và cuối ván lần nào que cuối cũng nằm trong tay họ.</p>
+<p>Ở một quán nước chè đầu cầu Long Biên, có một bác xe ôm tên Hùng nổi tiếng vì chưa thua ván nào. Người ta kể bác thắng cả một cậu sinh viên trường Bách khoa ngồi tính trên điện thoại, thắng cả mấy anh khách quen đã chơi với bác hàng trăm ván. Có người cược bác một chai bia, rồi hai chai, rồi bỏ. Hỏi bác bí quyết, bác chỉ cười, bảo "tôi đếm ngược".</p>
+<p>Họ không giỏi tính nhẩm hơn bạn. Họ chỉ bắt đầu tính từ một chỗ khác.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Trước khi đọc tiếp, hãy thử nghĩ: lượt đầu tiên bạn nên bốc mấy que? Gợi ý duy nhất: đừng nghĩ từ 21 que đi xuống. Hãy nghĩ từ cuối ván đi lên. Khi trên bàn còn bao nhiêu que thì người phải bốc chắc chắn thua?</p></blockquote>
+<p>Nếu bạn đã thử, hãy giữ câu trả lời của mình. Đáp án nằm ở cuối chương. Điều đáng để ý lúc này là cảm giác khi bạn đổi hướng câu hỏi: từ "bây giờ tôi nên làm gì" sang "đến cuối, tôi cần mọi thứ trông như thế nào". Câu hỏi thứ nhất mở ra quá nhiều ngả. Câu hỏi thứ hai thường chỉ để lại một hai ngả.</p>
+<p>Các nhà toán học có một cách gọi riêng cho lối nghĩ này: lập luận lùi, đi từ trạng thái cuối cùng về trạng thái đầu. Máy tính chơi cờ cũng dùng một phiên bản của nó. Nhưng bác Hùng không cần biết cái tên ấy. Bác chỉ biết ván nào rồi cũng đến lúc trên bàn còn bốn que, và bác muốn lúc ấy đến lượt người kia bốc.</p>
+<h3 class="sec">Căn phòng của Bảo</h3>
+<p><em>Chuyện đời thường (hư cấu minh họa)</em></p>
+<p>Chị Phạm Thu Hà, 38 tuổi, làm kế toán cho một công ty vận tải ở phường Lê Chân, Hải Phòng. Hai năm liền, tối thứ Sáu nào chị cũng nói với con trai một câu y hệt:</p>
+<p class="dialogue">– Bảo, dọn phòng đi con.</p>
+<p>Trần Gia Bảo mười tuổi, học lớp Năm. Cậu luôn trả lời "vâng", luôn đi vào phòng, và mười lăm phút sau phòng vẫn như cũ, chỉ thêm một chồng truyện tranh được dồn từ giường sang ghế. Chị Hà đã thử gần như mọi cách mà các nhóm phụ huynh trên mạng bày: bảng dán sao, thưởng tiền, phạt không cho xem điện thoại, dọn cùng con, dọn thay con rồi giận cả buổi tối. Mỗi cách chạy được một tuần.</p>
+<p>Tối thứ Sáu đầu tháng Chín, chị đứng ở cửa phòng con, tay cầm một chiếc tất đã cứng lại vì nằm dưới gầm giường quá lâu, và chị thấy mình sắp nói câu cũ lần thứ một trăm.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Nếu bạn là chị Hà, tối nay bạn sẽ nói gì với Bảo? Hãy nghĩ một câu trước khi đọc tiếp.</p></blockquote>
+<p>Chị Hà không nói câu cũ. Chị ngồi xuống mép giường, đưa cho con tờ giấy và cây bút.</p>
+<p class="dialogue">– Mẹ đố con. Giả sử con muốn phòng này bừa nhất có thể, bừa đến mức mẹ không bước vào được. Con sẽ làm những gì? Viết ra đi, càng nhiều càng tốt.</p>
+<p>Bảo nhìn mẹ như nhìn người lạ. Rồi cậu cười toe và bắt đầu viết, nhanh hơn mọi bài tập làm văn trong năm. Mười phút sau tờ giấy có mười hai dòng, chữ xiêu vẹo:</p>
+<p><em>Cởi tất ra thì đá xuống gầm giường. Ăn bim bim trên giường. Không có chỗ treo cặp thì quăng cặp xuống đất. Đọc truyện xong để đâu cũng được. Áo mặc rồi vắt lên ghế. Giấy kiểm tra nhét vào ngăn bàn...</em></p>
+<p>Chị Hà đọc to từng dòng. Bảo cười lăn ra giường. Đến dòng thứ mười hai, chị hỏi:</p>
+<p class="dialogue">– Thế trong mười hai cái này, con đang làm mấy cái?</p>
+<p>Bảo đếm. Cậu đếm hai lần, rồi nói nhỏ:</p>
+<p class="dialogue">– Chín ạ.</p>
+<p class="dialogue">– Ba cái con chưa làm là gì?</p>
+<p class="dialogue">– Ăn bim bim trên giường, vì mẹ cấm rồi. Đổ nước ra sàn. Nuôi chuột.</p>
+<p>Bảo còn nói thêm, mắt sáng lên như vừa được phát hiện một bí mật: cái giỏ đồ bẩn ở xa quá, cái cặp không có chỗ treo, cái ngăn bàn thì đầy giấy kiểm tra cũ từ lớp Ba. Không phải con lười, mẹ ạ, chỉ là đồ không có chỗ để.</p>
+<p>Hai mẹ con cùng cười, đến mức chồng chị từ phòng khách phải gọi vọng vào hỏi có chuyện gì. Chị Hà cầm tờ giấy đọc lại lần nữa, lần này không cười. Hai năm, chị chưa từng hỏi con một câu nào bắt đầu bằng chữ "vì sao".</p>
+<p>Rồi chị Hà làm một việc mà hai năm trước chị chưa từng làm: chị không bảo con dọn phòng. Chị hỏi con trong chín cái đang làm, cái nào dễ bỏ nhất. Bảo chọn ba cái. Chuyện quăng cặp xuống đất là vì phòng không có móc treo cặp, chị Hà mua một cái móc dán tường giá ba mươi nghìn đồng. Chuyện tất dưới gầm giường là vì giỏ đồ bẩn để tận ngoài nhà tắm, chị đặt một cái giỏ nhựa ngay chân giường. Chuyện giấy kiểm tra thì Bảo tự đề nghị một cái kẹp giấy to dán sau cửa.</p>
+<p>Thứ Năm tuần sau, phòng của Bảo vẫn bừa. Áo vẫn vắt lên ghế, truyện vẫn nằm trên gối. Nhưng gầm giường không còn chiếc tất nào, cái cặp treo trên móc, và trên cánh cửa có bảy tờ giấy kiểm tra kẹp ngay ngắn, trong đó có một bài Toán chín điểm mà chị Hà không biết là có.</p>
+<p>Tối thứ Sáu, chị Hà đứng ở cửa phòng con lần nữa. Bảo nhìn lên trước khi mẹ kịp mở miệng.</p>
+<p class="dialogue">– Mẹ ơi, hôm nay mẹ đố con cái gì?</p>
+<h3 class="sec">Rút gọn</h3>
+<p>Tư duy ngược là đổi hướng câu hỏi khi đường thẳng bị tắc. Thay vì hỏi "làm sao để được điều mình muốn", ta hỏi "làm sao để chắc chắn hỏng", rồi tránh những điều đó. Hoặc thay vì đi từ chỗ đang đứng, ta đứng ở đích và nhìn ngược về.</p>
+<p>Cuốn sách này đi qua sáu công cụ, mỗi phần một công cụ:</p>
+<ol><li><strong>Đảo mục tiêu:</strong> hỏi cách chắc chắn thất bại, rồi kiểm tra xem mình đang làm bao nhiêu cách trong số đó.</li><li><strong>Khám nghiệm trước:</strong> giả sử việc đã hỏng rồi, ngồi viết lý do vì sao nó hỏng.</li><li><strong>Đảo giả định:</strong> lấy điều ai cũng tin, hỏi "nếu nó sai thì sao?".</li><li><strong>Đi ngược từ đích:</strong> tả ngày cuối trông như thế nào, rồi lần ngược từng bước.</li><li><strong>Bớt đi:</strong> hỏi "bỏ cái gì thì mọi thứ tốt lên?", thay vì "thêm cái gì".</li><li><strong>Nhìn từ phía bên kia:</strong> đứng vào chỗ người kia, hỏi họ thấy gì mà mình không thấy.</li></ol>
+<p>Phần cuối sách dành cho câu hỏi khó nhất: khi nào chính tư duy ngược làm hại ta.</p>
+<p>Vì sao câu hỏi ngược lại hay hơn câu hỏi xuôi? Có ba lý do. Thứ nhất, não người kể ra cái sai cụ thể dễ hơn cái đúng chung chung. Hỏi "làm sao để là người mẹ tốt" thì ta nghĩ ra những chữ to như yêu thương, kiên nhẫn. Hỏi "làm sao để con phát chán mẹ" thì ta nghĩ ngay ra những việc rất cụ thể, và rất quen. Thứ hai, câu hỏi ngược làm ta bớt phòng thủ. Không ai thích bị chê, nhưng ai cũng thích chơi trò liệt kê cách phá hỏng. Bảo cười khi viết danh sách của mình, và chính vì cười nên cậu chịu đếm. Thứ ba, đứng ở cuối nhìn về đầu giúp ta loại bớt các ngả đường, như trò bốc que diêm.</p>
+<p>Bạn sẽ thấy mỗi chương của sách có cùng một nhịp: một đoạn ở ngõ Đội Cấn, vài câu chuyện ngắn, có thật lẫn đời thường, những ô "Bạn sẽ làm gì?" để bạn dừng lại tự nghĩ, rồi phần rút gọn và một bài tập. Đừng bỏ qua các ô dừng. Đọc lời giải trước khi tự nghĩ cũng giống như xem đáp án câu đố que diêm trước khi chơi: bạn biết thêm một mẹo, nhưng không luyện được gì.</p>
+<p><strong>Khi nào nó sai.</strong> Câu hỏi ngược cho ta danh sách những thứ cần tránh, và danh sách đó thường rất có ích. Nhưng tránh được hết những cách thua chưa có nghĩa là thắng. Căn phòng của Bảo vẫn bừa vào thứ Năm. Tư duy ngược dọn đường, còn bước đi vẫn phải là của bạn.</p>
+<h3 class="sec">Lật thử</h3>
+<p>Chọn một việc bạn đang muốn làm tốt hơn, việc nhỏ cũng được: dậy sớm, tiết kiệm, nói chuyện với con, bán thêm hàng. Viết câu hỏi xuôi của bạn ra, rồi lật nó lại.</p>
+<p><strong>Ví dụ mẫu:</strong></p>
+<ul><li>Câu hỏi xuôi: <em>Làm sao để tháng này tiết kiệm được ba triệu?</em></li><li>Câu hỏi ngược: <em>Làm sao để chắc chắn cuối tháng không còn đồng nào?</em></li><li>Danh sách trả lời câu ngược: nhận lương xong mua ngay món đã để trong giỏ hàng; mỗi trưa đặt đồ ăn qua ứng dụng; không ghi chi tiêu; đi siêu thị lúc đói; giữ sẵn thẻ trong ứng dụng mua sắm.</li><li>Đánh dấu những cái bạn đang làm: ba trong năm.</li><li>Chọn một cái dễ bỏ nhất để bỏ trong tuần này.</li></ul>
+<p>Bây giờ đến lượt bạn. Viết câu hỏi xuôi. Lật nó lại. Liệt kê ít nhất mười cách để chắc chắn thất bại, càng cụ thể càng tốt, càng buồn cười càng tốt. Rồi đếm xem bạn đang làm mấy cách. Đừng sửa hết một lúc. Chọn một cái thôi.</p>
+<p>Nếu bạn thấy khó viết quá năm dòng, hãy thử làm việc này cùng một người khác, như chị Hà làm với Bảo. Người ngoài thường liệt kê cách bạn thất bại nhanh hơn chính bạn, và họ cũng ít nể nang hơn. Giữ tờ giấy lại. Đến cuối Phần I, bạn sẽ đọc lại nó.</p>
+<h3 class="sec">Đáp án câu đố</h3>
+<p>Đi ngược từ cuối ván. Nếu đến lượt bạn mà trên bàn còn 4 que, bạn thua chắc: bốc 1, 2 hay 3 thì đối thủ cũng bốc phần còn lại. Vậy 4 là con số "chết" của người phải bốc. Tương tự, 8, 12, 16, 20 cũng là con số chết, vì từ đó đối thủ luôn đưa bạn về con số chết tiếp theo bằng cách bốc sao cho tổng hai lượt bằng 4.</p>
+<p>Có 21 que. Lượt đầu bạn bốc 1 que, để lại 20 cho đối thủ. Từ đó, đối thủ bốc bao nhiêu thì bạn bốc phần bù cho đủ 4. Que cuối cùng sẽ là của bạn.</p>
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] Charlie Munger, bài phát biểu tại lễ tốt nghiệp Harvard School, Los Angeles, 13/6/1986, bản chép lại: <a href="https://fs.blog/great-talks/guarantee-life-misery-charlie-munger/" rel="noopener">https://fs.blog/great-talks/guarantee-life-misery-charlie-munger/</a> và <a href="https://jamesclear.com/great-speeches/how-to-guarantee-a-life-of-misery-by-charlie-munger" rel="noopener">https://jamesclear.com/great-speeches/how-to-guarantee-a-life-of-misery-by-charlie-munger</a>. Nguyên văn: "…known for his constant repetition of one phrase: 'Invert, always invert.'" và "many hard problems are best solved only when they are addressed backward."</p>
+<p class="src">[2] Wikipedia, "Carl Gustav Jacob Jacobi" (dẫn bài của Edward B. Van Vleck, "Current Tendencies of Mathematical Research", <em>Bulletin of the American Mathematical Society</em> 23(1), 1916): <a href="https://en.wikipedia.org/wiki/Carl_Gustav_Jacob_Jacobi" rel="noopener">https://en.wikipedia.org/wiki/Carl_Gustav_Jacob_Jacobi</a>. Nguyên văn Van Vleck: "the great mathematician Jacobi is said to have inculcated upon his students the dictum: Man muss immer umkehren."</p>
+<p class="src">[3] Michael Molinsky, "Quotations in Context: Jacobi", <em>Convergence</em>, Hội Toán học Mỹ (MAA), 2024: <a href="https://old.maa.org/press/periodicals/convergence/quotations-in-context-jacobi" rel="noopener">https://old.maa.org/press/periodicals/convergence/quotations-in-context-jacobi</a> (trang lỗi khi truy cập ngày 25/11/2026; nội dung đối chiếu qua trích đoạn).</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch02">
+<p class="eyebrow">Chương 02 · Phần I: Đảo mục tiêu</p>
+<h2 class="ch-title">Làm Sao Để Khách Không Bao Giờ Quay Lại</h2>
+<p><em>Còn 90 ngày · Tiền mặt của quán: 74 triệu đồng</em></p>
+<h3 class="sec">Ở ngõ Đội Cấn</h3>
+<p class="dialogue">– Ông hỏi thật ạ?</p>
+<p class="dialogue">– Tôi đứng đây làm gì nếu hỏi đùa.</p>
+<p>Vũ lật cuốn sổ sang một trang trắng. Câu hỏi của ông Khiêm nghe ngớ ngẩn đến mức anh thấy trả lời cũng chẳng mất gì. Hai năm qua anh đã đọc không biết bao nhiêu bài viết về cách giữ chân khách hàng, đã nghe ba khóa học trực tuyến về kinh doanh đồ uống, đã lưu cả trăm video của những chủ quán thành công. Chưa ai bảo anh làm ngược lại.</p>
+<p>Anh viết số 1, rồi ngẩng lên.</p>
+<p class="dialogue">– Muốn khách không quay lại thì... cho họ ngồi ghế cứng. Ngồi hai mươi phút là đau lưng.</p>
+<p class="dialogue">– Rồi.</p>
+<p class="dialogue">– Mở nhạc thật to, để hai người ngồi đối diện phải hét vào mặt nhau.</p>
+<p class="dialogue">– Rồi.</p>
+<p>Số 3 là nhà vệ sinh bẩn. Số 4 là nhân viên cáu kỉnh. Đến số 5 thì Vũ bắt đầu thấy vui. Đưa cho khách một cái menu dày như cuốn từ điển để họ đứng trước quầy chọn mãi không xong. Bắt khách phải hỏi mật khẩu wifi, mà nhân viên thì đang bận. Cho khách chờ món mười lăm phút. Để nhân viên cúi mặt vào điện thoại khi khách bước vào. Đổi giá liên tục theo khuyến mãi, hôm qua mua một tặng một, hôm nay không, để khách quen thấy mình bị lừa. Đồ uống dở. Tính tiền sai.</p>
+<p>Mười một dòng. Vũ đưa cuốn sổ cho ông Khiêm. Ông không cầm, chỉ nghiêng người đọc dưới ánh đèn đường.</p>
+<p class="dialogue">– Thế quán cậu đang làm mấy cái?</p>
+<p>Vũ định nói "không cái nào", rồi anh nhìn lại dòng đầu tiên. Ghế gỗ trong quán là ghế anh tự chọn, mua ở một xưởng đồ cũ ở Chương Mỹ, chụp ảnh lên rất đẹp. Anh chưa bao giờ ngồi trên đó quá năm phút. Nhạc thì Tú bật, Tú thích nhạc to. Menu bốn mươi sáu món in trên những tấm vé tàu, khách nào cũng khen đẹp, khách nào cũng đứng trước quầy lâu. Mật khẩu wifi anh không dán vì sợ người ngoài ngõ dùng ké. Chờ món thì mười lăm phút là chuyện thường ngày vào giờ trưa, vì bốn mươi sáu món cần bốn mươi sáu thứ nguyên liệu khác nhau. Còn khuyến mãi thì tuần nào cũng có một chương trình mới, do chính anh nghĩ ra lúc nửa đêm.</p>
+<p>Anh lấy bút đánh dấu. Một, hai, năm, sáu, bảy, tám, chín. Mỗi lần đặt bút anh lại thấy mặt nóng lên, như hồi đi học bị cô giáo gọi lên bảng chữa bài mà bài mình sai.</p>
+<p>Ông Khiêm vẫn đứng đó. Ông không có vẻ gì là hả hê, cũng không có vẻ gì là thương hại. Ông nhìn cuốn sổ như nhìn một bộ máy đồng hồ vừa tháo nắp, trong đó có mấy cái bánh răng đã mòn.</p>
+<p class="dialogue">– Bảy cái.</p>
+<p class="dialogue">– Bốn cái kia thì sao?</p>
+<p class="dialogue">– Nhà vệ sinh sạch. Nhân viên không cáu. Đồ uống ngon. Tính tiền đúng.</p>
+<p class="dialogue">– Bốn cái đó cậu làm tốt vì cậu nghĩ tới chúng.</p>
+<p class="dialogue">– Ghế cháu cũng nghĩ kỹ lắm chứ ông. Cháu chọn cả tháng trời.</p>
+<p class="dialogue">– Thì cậu nghĩ cho cái ảnh. Có nghĩ cho cái lưng đâu.</p>
+<p>Vũ định cãi tiếp về chuyện mật khẩu wifi, rằng anh giấu nó có lý do, rồi thôi. Lý do của anh là sợ hàng xóm dùng ké, còn cái giá thì khách của anh trả.</p>
+<p>Vũ định cãi rằng nước uống mới là thứ quan trọng nhất, rằng quán anh pha ngon hơn nửa số quán trong phố. Nhưng anh nhớ ra chính anh cũng từng bỏ một quán cà phê rất ngon ở phố Hàng Bông chỉ vì lần nào đến cũng phải đứng chờ mười phút mà không ai nhìn mình.</p>
+<p>Ông Khiêm đứng thẳng lên, xốc lại cái túi vải đựng đồ nghề.</p>
+<p class="dialogue">– Thế thì bỏ bảy cái đó đi.</p>
+<p>Rồi ông đi về phía đầu ngõ, không chào. Vũ ngồi lại trên bậc thềm với cuốn sổ mở. Ở trang trước là mười hai ý tưởng anh viết tuần trước để cứu quán: thêm đêm nhạc cuối tuần, thẻ tích điểm, món mới theo mùa, chụp ảnh với áo dài, góc sách cũ... Mười hai việc phải làm thêm. Ở trang này là bảy việc phải bỏ.</p>
+<p>Có một điều làm anh khó chịu hơn cả con số bảy. Mười hai ý tưởng ở trang trước, cái nào cũng tốn tiền, tốn sức, tốn thêm người. Bảy việc ở trang này, cái nào cũng gần như không tốn gì. Thay ghế thì tốn, nhưng sáu việc còn lại chỉ cần anh quyết là xong: vặn nhỏ nhạc, dán mật khẩu wifi lên tường, cấm nhân viên dùng điện thoại sau quầy, thôi đổi khuyến mãi, cắt bớt menu. Anh đã tốn hai năm để nghĩ cách làm thêm, trong khi những việc nên bỏ thì nằm sẵn đó, rẻ hơn nhiều.</p>
+<p>Anh ngồi đó đến lúc chị Hằng đầu ngõ ra kéo cửa cuốn để chuẩn bị nồi nước dùng cho buổi sáng. Lúc đó là bốn giờ kém mười lăm.</p>
+<p class="dialogue">– Ngồi gì đấy, mất ngủ à?</p>
+<p class="dialogue">– Em đang đếm xem quán em đuổi khách bằng mấy cách, chị ạ.</p>
+<p>Chị Hằng nhìn anh như nhìn một người say, lắc đầu, rồi quay vào nhóm bếp than.</p>
+<h3 class="sec">Hai nghìn đô la và một con hươu cao cổ</h3>
+<p><em>Chuyện có thật</em></p>
+<p>Chuỗi khách sạn Ritz-Carlton nổi tiếng trong giới kinh doanh dịch vụ vì một con số: hai nghìn đô la. Năm 2009, ông Simon Cooper, khi đó là chủ tịch của chuỗi, nói với tạp chí Forbes rằng họ tin giao cho từng nhân viên quyền chi tới 2.000 đô la để xử lý vấn đề của khách, mà không cần quản lý khách sạn duyệt [1]. Nhân viên ấy có thể là lễ tân, nhân viên dọn phòng hay anh bảo vệ.</p>
+<p>Con số này được các sách và bài giảng về chăm sóc khách hàng lặp lại rất nhiều lần, và mỗi nơi kể một kiểu. Có nơi chỉ nêu con số mà không nói tính theo khách, theo ngày hay theo sự cố [2]. Trung tâm đào tạo lãnh đạo của chính Ritz-Carlton thì chỉ viết rằng mỗi nhân viên được chi "một khoản định sẵn" cho mỗi khách, mỗi sự cố, không nêu con số, và nói thêm rằng số tiền thực sự được chi trung bình thường thấp hơn rất nhiều [3]. Đến năm 2026, một trang chuyên về du lịch còn bày tỏ nghi ngờ chính sách ấy vẫn còn được áp dụng [4]. Vậy nên cách nói chính xác là: đây là con số do lãnh đạo Ritz-Carlton nêu ra và báo chí lặp lại, không phải một quy định công khai mà ai cũng kiểm tra được.</p>
+<p>Điều đáng học không nằm ở con số. Hãy thử nghĩ ngược: muốn một vị khách đang phàn nàn tức giận hơn và không bao giờ quay lại, khách sạn nên làm gì? Câu trả lời ai làm dịch vụ cũng biết: bắt khách chờ. "Để em hỏi quản lý." "Anh chị vui lòng điền vào mẫu này." "Bộ phận ấy sáng mai mới làm việc." Mỗi lần chuyển tay là một lần khách kể lại câu chuyện của mình, và một lần cơn giận tăng lên. Trao quyền cho người đang đứng trước mặt khách là cách cắt thẳng vào cái cách đuổi khách hiệu quả nhất ấy.</p>
+<p>Có một câu chuyện thường được kể cùng con số 2.000 đô la. Tháng Năm năm 2012, một doanh nhân Mỹ tên Chris Hurn viết trên trang HuffPost về chú hươu cao cổ nhồi bông tên Joshie của con trai mình [5]. Gia đình anh vừa nghỉ ở khách sạn Ritz-Carlton Amelia Island tại bang Florida. Về đến nhà mới biết cậu bé để quên Joshie. Người bố đành nói dối rằng Joshie chỉ đang ở lại khách sạn nghỉ thêm vài ngày.</p>
+<p>Khách sạn gọi điện báo: nhân viên đã tìm thấy Joshie trong đồ giặt. Hurn kể thật lời nói dối của mình và nhờ họ, nếu có thể, chụp giúp một tấm ảnh Joshie nằm bên hồ bơi, để cậu bé tin. Vài ngày sau, Joshie về đến nhà trong một gói bưu phẩm, kèm theo một cuốn album: Joshie nằm phơi nắng bên hồ bơi, Joshie ở khu spa, Joshie lái chiếc xe điện chở khách quanh sân golf [5]. Nhiều bài viết kể chuyện Joshie như một ví dụ về quỹ 2.000 đô la. Không nguồn nào cho thấy nhân viên đã dùng khoản tiền đó, hay ai đã duyệt việc làm cuốn album.</p>
+<p>Người được nhắc tên trong câu chuyện là Aaron, một nhân viên an ninh của khách sạn [6].</p>
+<h3 class="sec">Những tấm biển của ông Tạo</h3>
+<p><em>Ngụ ngôn</em></p>
+<p>Ông Tạo bán bánh đa cua ở một góc chợ. Bánh của ông ngon, nước dùng trong, chả cua dày, nên những năm đầu lúc nào cũng đông.</p>
+<p>Rồi có những khách làm ông phiền. Có người mặc cả. Ông viết một tấm biển: <em>Không mặc cả</em>. Có người ngồi cả buổi chỉ gọi một bát. Ông viết thêm: <em>Ăn xong vui lòng nhường chỗ</em>. Có người đòi thêm rau, thêm chả. Thêm tấm nữa: <em>Thêm rau tính tiền</em>. Có người mang đồ ăn từ hàng khác vào. <em>Không mang đồ ăn ngoài</em>. Có người gửi xe trước cửa. <em>Không để xe</em>. Có người trả tiền bằng tờ to. <em>Không đổi tiền lẻ</em>.</p>
+<p>Tấm biển nào cũng có lý. Mỗi tấm biển ra đời từ một vị khách thật đã làm ông bực thật.</p>
+<p>Năm năm sau, quầy bánh đa của ông Tạo có mười một tấm biển và bốn cái ghế trống. Ông bảo chợ dạo này vắng, người ta lên mạng đặt đồ ăn hết rồi. Hàng bún bên cạnh vẫn đông.</p>
+<p>Một hôm, đứa cháu nội học lớp hai ra chợ chơi với ông. Con bé đang tập đọc, nên nó đứng trước quầy, đánh vần to từng tấm biển một, từ trái sang phải, chậm rãi, cả mười một tấm. Mấy người đi chợ dừng lại nghe, có người bật cười. Đọc xong, con bé quay sang hỏi ông:</p>
+<p class="dialogue">– Thế ở đây cái gì thì được ạ?</p>
+<p>Ông Tạo đứng nhìn các tấm biển một lúc lâu. Tối hôm đó ông gỡ xuống chín tấm. Ông giữ lại tấm <em>Không để xe</em> vì ban quản lý chợ bắt thế, và tấm <em>Thêm rau tính tiền</em> vì rau dạo ấy đắt thật. Đứa cháu xin tấm <em>Không mặc cả</em> mang về làm bảng chơi bán hàng.</p>
+<h3 class="sec">Bảng đen của lớp 9A</h3>
+<p><em>Chuyện đời thường (hư cấu minh họa)</em></p>
+<p>Còn bốn tháng nữa là thi vào lớp 10. Cô Đặng Thị Thu, 44 tuổi, dạy Văn và chủ nhiệm lớp 9A ở một trường trung học cơ sở thuộc vùng Thái Bình cũ, nay đã sáp nhập về Hưng Yên. Lớp cô có 38 em. Năm trước, lớp cô chủ nhiệm khóa trên có 11 em trượt nguyện vọng một, và cô vẫn nhớ mặt từng em. Cô đã làm đủ những gì một giáo viên chủ nhiệm hay làm: họp phụ huynh ba lần, dán bảng thi đua, gọi điện cho từng nhà có con lười. Cô cũng đã nói câu "các em phải cố gắng lên" nhiều đến mức cô biết chắc không em nào còn nghe thấy nó nữa.</p>
+<p>Đầu năm nay, cô ngồi tổng kết lại danh sách 11 em trượt năm trước, và nhận ra cô không biết vì sao các em trượt. Cô chỉ biết các em "không cố gắng".</p>
+<p>Sáng thứ Hai đầu tháng Hai, cô bước vào lớp, không mở giáo án. Cô viết lên bảng một câu bằng phấn trắng:</p>
+<p><em>Làm sao để cả lớp mình trượt cấp 3?</em></p>
+<p>Cả lớp im một giây, rồi cười ồ. Cô Thu đưa phấn cho lớp trưởng.</p>
+<p class="dialogue">– Các em nói, bạn ấy viết. Càng nhiều càng tốt. Không ai bị ghi tên, không ai bị phạt.</p>
+<p>Lúc đầu chỉ có mấy đứa nghịch nhất lớp giơ tay. Thức đến hai giờ sáng chơi game. Đi thi muộn. Quên thẻ dự thi. Rồi những câu trả lời bắt đầu thật hơn. Chỉ học môn mình thích. Học tủ, đoán đề. Chép bài tập của bạn cho xong. Đọc đề không hết câu đã làm. Gặp câu khó thì bỏ trống luôn. Học thuộc văn mẫu, không tự viết đoạn nào. Đêm trước ngày thi cố học thêm cho chắc. Sợ hỏi thầy cô vì sợ bị coi là kém.</p>
+<p>Mười phút sau, bảng đen kín chữ, từ mép trái sang mép phải, có cả những dòng viết chen chéo lên góc. Hai mươi sáu dòng. Cả lớp đọc lại và cười, nhưng tiếng cười lúc này đã khác lúc đầu.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Bảng đen đã đầy hai mươi sáu cách để trượt, và cả lớp đang chờ xem cô sẽ làm gì với nó. Nếu bạn là cô Thu, bước tiếp theo bạn làm gì để danh sách này không chỉ là một trò vui đầu tuần?</p></blockquote>
+<p>Cô Thu phát cho mỗi em một mảnh giấy nhỏ, không ghi tên. Mỗi em chép số thứ tự những dòng trên bảng mà mình đang làm. Lớp trưởng thu lại, cô đếm ngay tại lớp và ghi bên cạnh mỗi dòng một con số.</p>
+<p>"Học tủ, đoán đề": 29 em. "Gặp câu khó thì bỏ trống": 24 em. "Sợ hỏi thầy cô": 31 em. "Thức đến hai giờ chơi game": 9 em, ít hơn nhiều so với cái cách cả lớp đã cười khi dòng đó được viết lên.</p>
+<p>Cô Thu nhìn những con số và thấy thứ cô chưa bao giờ thấy trong ba lần họp phụ huynh. Chuyện thức khuya chơi game, thứ mà phụ huynh nào cũng lo, hóa ra chỉ là chuyện của chín em. Chuyện sợ hỏi thầy cô, thứ mà chưa phụ huynh nào nhắc tới, là chuyện của ba mươi mốt em. Ba mươi mốt em ngồi trong lớp cô mỗi ngày, không hiểu bài, và không hỏi.</p>
+<p>Cô không giảng thêm câu nào. Cô bảo mỗi em chọn đúng hai dòng mình sẽ bỏ, chỉ hai, viết vào một mảnh giấy khác, gấp lại, kẹp vào bìa vở Văn. Hai mươi sáu dòng trên bảng được lớp trưởng chép lại lên một tờ giấy khổ to, dán ở cuối lớp, ngay trên kệ để mũ bảo hiểm.</p>
+<p>Có một em, cậu bé ngồi bàn cuối hay bị gọi tên nhất lớp, viết lên mảnh giấy của mình hai dòng: "Gặp câu khó thì bỏ trống" và "Sợ hỏi thầy cô". Cô Thu không biết đó là em nào. Cô chỉ biết đến cuối tháng Ba, có một mảnh giấy nhỏ không ghi tên được nhét vào ngăn bàn giáo viên, hỏi cách phân tích một câu thơ trong đề thi năm trước.</p>
+<p>Tờ giấy ở đó suốt bốn tháng. Thỉnh thoảng có đứa lấy bút gạch một dòng, rồi bị bạn cãi vì "cả lớp chưa ai bỏ được cái đó". Đến tháng Năm, dòng "Sợ hỏi thầy cô" bị gạch, vì thầy dạy Toán than rằng chưa năm nào bị hỏi bài nhiều đến thế, giờ ra chơi cũng không yên.</p>
+<p>Ngày cuối cùng của năm học, khi lớp dọn phòng, một cậu học trò đứng lên ghế để gỡ tờ giấy. Cô Thu bảo cứ để đấy.</p>
+<p class="dialogue">– Để cho lớp 9A năm sau, cô nói. Chúng nó sẽ tự viết thêm.</p>
+<h3 class="sec">Bài thi điểm không</h3>
+<p><em>Câu đố</em></p>
+<p>Một bài thi trắc nghiệm có 40 câu, mỗi câu 4 đáp án, chỉ một đáp án đúng. Thầy giáo ra một thử thách lạ: ai làm được đúng 0 điểm, nghĩa là sai cả 40 câu, sẽ được thưởng.</p>
+<p>Một bạn trong lớp nghĩ: dễ thôi, mình chẳng học gì cả, cứ tô bừa là được điểm không. Bạn ngồi bàn bên cạnh còn tự tin hơn: bạn ấy định tô toàn bộ đáp án A, vì "chẳng có đề nào mà đáp án đúng toàn là A cả".</p>
+<p>Thầy giáo nghe hai bạn bàn với nhau, chỉ cười, và nói rằng năm nào thầy cũng ra thử thách này, chưa năm nào có ai nhận được thưởng.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Bạn này có chắc được điểm không không? Nếu muốn chắc chắn sai cả 40 câu, bạn cần biết những gì?</p></blockquote>
+<p>Hãy giữ câu trả lời của bạn. Đáp án ở cuối chương. Câu đố này nghe như một trò đùa của thầy giáo, nhưng nó chứa lý do sâu nhất vì sao công cụ đầu tiên của cuốn sách hoạt động được.</p>
+<h3 class="sec">Rút gọn</h3>
+<p><strong>Đảo mục tiêu</strong> là công cụ dễ dùng nhất trong sách, và cũng là công cụ người ta hay bỏ qua nhất, vì nó nghe như trò đùa.</p>
+<ol><li><strong>Viết mục tiêu xuôi</strong> thật cụ thể: "khách quay lại lần hai", "cả lớp đỗ cấp 3".</li><li><strong>Lật nó lại:</strong> "làm sao để chắc chắn khách không quay lại?", "làm sao để cả lớp trượt?".</li><li><strong>Liệt kê thật nhiều</strong>, ít nhất mười dòng. Cho phép mình buồn cười. Những câu trả lời thật thường đến sau mấy câu đùa đầu tiên.</li><li><strong>Đánh dấu những gì đang xảy ra.</strong> Bước này là bước làm người ta đau, và cũng là bước có giá trị nhất. Vũ đánh dấu bảy trên mười một. Lớp 9A có 31 em sợ hỏi thầy cô.</li><li><strong>Chọn ít thôi để bỏ.</strong> Hai dòng, ba dòng. Bỏ được thật rồi mới chọn tiếp.</li></ol>
+<p>Có một mẹo nhỏ khi làm bước 3: đừng dừng lại ở những câu trả lời chung chung như "phục vụ kém" hay "lười học". Hỏi tiếp "cụ thể là thế nào?" cho đến khi câu trả lời là một việc nhìn thấy được, đếm được. "Phục vụ kém" chưa dùng được. "Nhân viên cúi mặt vào điện thoại khi khách bước vào" thì dùng được ngay sáng mai.</p>
+<p>Chuyện của ông Tạo cho thấy một biến thể khó nhận ra của bước 4: nhiều cách đuổi khách không nằm trong lỗi, mà nằm trong những quy định ta đặt ra cho có lý. Mỗi tấm biển là một lần ông tự bảo vệ mình trước một vị khách khó chịu, và cái giá của nó do mọi vị khách dễ chịu trả. Khi đánh dấu danh sách, hãy hỏi thêm: quy định nào của mình đang làm phiền chín người tử tế để chặn một người khó chịu?</p>
+<p><strong>Khi nào nó sai.</strong> Danh sách cách thua chỉ chứa những gì bạn nghĩ ra được. Nếu bạn không hiểu khách hàng, không hiểu học trò, danh sách sẽ đầy những thứ bạn tưởng tượng và thiếu những thứ thật. Hãy để chính người trong cuộc viết cùng, như cô Thu để học trò cầm phấn.</p>
+<h3 class="sec">Lật thử</h3>
+<p>Chọn một "khách hàng" của bạn. Có thể là khách hàng thật, cũng có thể là sếp, con cái, người yêu, hay chính bạn của năm năm sau.</p>
+<p><strong>Ví dụ mẫu:</strong></p>
+<ul><li>Mục tiêu xuôi: <em>Sếp tin giao cho mình dự án lớn hơn.</em></li><li>Câu hỏi ngược: <em>Làm sao để sếp không bao giờ dám giao việc quan trọng cho mình?</em></li><li>Một phần danh sách: nộp việc đúng hạn nhưng không báo trước khi có vấn đề; trả lời tin nhắn sau nửa ngày; nhận việc nào cũng "dạ được ạ" rồi trễ; khi bị góp ý thì giải thích thay vì sửa; không bao giờ tự đề xuất gì.</li><li>Đánh dấu: hai dòng đầu đang xảy ra.</li><li>Bỏ tuần này: mỗi khi thấy một việc có nguy cơ trễ, báo sếp ngay trong ngày, kèm hướng xử lý.</li></ul>
+<p>Viết danh sách của bạn. Mười dòng trở lên. Hãy để ý những dòng giống các tấm biển của ông Tạo: những quy định bạn đặt ra để bảo vệ mình, cái nào cũng có lý, nhưng gộp lại thì khiến người kia không muốn đến gần. Nhờ một người bạn tin đọc giúp và đánh dấu những gì họ thấy bạn đang làm. Kết quả thường khác với những gì bạn tự đánh dấu.</p>
+<p>Một lưu ý nhỏ: nếu danh sách của bạn chỉ toàn lỗi của người khác ("sếp không rõ ràng", "khách khó tính", "đồng nghiệp lười"), hãy viết lại. Danh sách này là về những gì chính bạn có thể làm để thất bại. Phần của người khác để dành cho Phần VI của sách.</p>
+<h3 class="sec">Đáp án câu đố</h3>
+<p>Bạn tô bừa gần như chắc chắn không được điểm không. Với 4 đáp án mỗi câu, tô bừa thì trung bình bạn đúng khoảng một phần tư, tức chừng 10 câu. Xác suất sai cả 40 câu khi tô bừa là (3/4) mũ 40, khoảng 1 phần 100.000. Bạn tô toàn đáp án A cũng vậy: chỉ cần đề có chừng một phần tư số câu đáp án đúng là A, bạn đã có khoảng 10 điểm.</p>
+<p>Muốn chắc chắn được điểm không, bạn phải biết đáp án đúng của cả 40 câu, rồi cố tình né nó. Người làm được điểm không một cách chắc chắn cũng chính là người làm được điểm tuyệt đối.</p>
+<p>Đó là lý do câu hỏi ngược có ích: để trả lời được "làm sao cho chắc chắn hỏng", bạn buộc phải hiểu rõ cái gì làm cho việc ấy thành.</p>
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] Kevin Meyer, "Ritz-Carlton's Focus on the Customer", 2/11/2009, trích phỏng vấn Simon Cooper trên Forbes: <a href="https://kevinmeyer.com/blog/2009/11/ritzcarltons-focus-on-the-customer.html" rel="noopener">https://kevinmeyer.com/blog/2009/11/ritzcarltons-focus-on-the-customer.html</a>. Nguyên văn: "We entrust every single Ritz-Carlton staff member, without approval from their general manager, to spend up to $2,000".</p>
+<p class="src">[2] Shep Hyken, "An Empowerment Lesson From The Ritz-Carlton": <a href="https://hyken.com/customer-experience/an-empowerment-lesson-from-the-ritz-carlton/" rel="noopener">https://hyken.com/customer-experience/an-empowerment-lesson-from-the-ritz-carlton/</a></p>
+<p class="src">[3] Ritz-Carlton Leadership Center, "The Power of Empowerment": <a href="https://ritzcarltonleadershipcenter.com/?p=1089" rel="noopener">https://ritzcarltonleadershipcenter.com/?p=1089</a> (trang lỗi khi truy cập ngày 25/11/2026; nội dung đối chiếu qua trích đoạn: "a dedicated amount per guest, per incident").</p>
+<p class="src">[4] Ben Schlappig, One Mile at a Time, 27/5/2026: <a href="https://onemileatatime.com/news/ritz-carlton-manager-not-authorized-service-failure-compensation/" rel="noopener">https://onemileatatime.com/news/ritz-carlton-manager-not-authorized-service-failure-compensation/</a></p>
+<p class="src">[5] Chris Hurn, "Stuffed Giraffe Shows What Customer Service Is All About", HuffPost, 17/5/2012: <a href="https://www.huffpost.com/entry/stuffed-giraffe-shows-wha_b_1524038" rel="noopener">https://www.huffpost.com/entry/stuffed-giraffe-shows-wha_b_1524038</a>. Nguyên văn: "He's just taking an extra long vacation at the resort."</p>
+<p class="src">[6] Joseph Michelli, "Giraffes Are Essential to Your Customer Experience": <a href="https://josephmichelli.com/blog/giraffes-are-essential-to-your-customer-experience" rel="noopener">https://josephmichelli.com/blog/giraffes-are-essential-to-your-customer-experience</a></p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch03">
+<p class="eyebrow">Chương 03 · Phần I: Đảo mục tiêu</p>
+<h2 class="ch-title">Làm Sao Để Nghèo Mãi</h2>
+<p><em>Còn 87 ngày · Tiền mặt của quán: 71 triệu đồng</em></p>
+<h3 class="sec">Ở ngõ Đội Cấn</h3>
+<p>Đến sáng thứ Sáu, quán "Ga Cũ" đã bỏ được ba trong bảy cách đuổi khách. Mật khẩu wifi được viết bằng phấn lên tấm bảng đen cạnh cửa. Nhạc vặn nhỏ đi một nửa, Tú cằn nhằn suốt buổi sáng thứ Tư rồi thôi. Hai nhân viên phục vụ phải để điện thoại trong ngăn kéo sau quầy, chỉ được lấy ra lúc nghỉ. Ba việc ấy không tốn của Vũ đồng nào.</p>
+<p>Bốn việc còn lại thì khó hơn. Ghế phải thay, menu phải cắt, thời gian chờ món phải rút, khuyến mãi phải dừng, mà chương trình mua một tặng một của tháng Chín đã in tờ rơi, đã đăng lên trang của quán. Vũ quyết định để bốn việc ấy sang tuần sau.</p>
+<p>Tối thứ Sáu, anh mang cuốn sổ chi tiêu sang sạp đồng hồ. Ông Khiêm đang cúi xuống một chiếc đồng hồ đeo tay vỏ mạ vàng đã tróc, kính lúp kẹp ở mắt phải.</p>
+<p class="dialogue">– Cháu thử hỏi ngược với cái sổ này, Vũ nói. Làm sao để quán chắc chắn cháy túi. Cháu viết được chín cách.</p>
+<p>Ông Khiêm không ngẩng lên.</p>
+<p class="dialogue">– Đang làm mấy cách?</p>
+<p class="dialogue">– Bốn.</p>
+<p>Vũ đọc to. Cái máy pha cà phê thứ hai, anh thuê từ tháng Ba với giá bốn triệu một tháng để phục vụ "giờ cao điểm", mà quán chưa từng có giờ cao điểm nào cần đến nó; nó đứng ở góc quầy, phủ một tấm khăn. Chương trình mua một tặng một, mỗi cặp ly bán ra thu bốn mươi lăm nghìn mà riêng tiền nguyên liệu đã hết ba mươi sáu nghìn, chưa tính điện, tính người. Đêm nhạc thứ Ba, trả ca sĩ một triệu rưỡi mỗi đêm, bốn đêm mỗi tháng, trong khi doanh thu các tối ấy chưa bao giờ vượt quá ba triệu. Và nguyên liệu hỏng: bốn mươi sáu món cần hàng chục loại siro, bột, trái cây, sữa hạt; tháng trước anh đổ đi gần năm triệu tiền đồ hết hạn.</p>
+<p class="dialogue">– Cộng lại thì sao?</p>
+<p>Vũ đã cộng. Chừng mười tám triệu mỗi tháng. Gần một nửa số lỗ.</p>
+<p>Anh nói thêm, như để tự bào chữa, rằng mỗi khoản ấy lúc bắt đầu đều có lý do. Cái máy pha thứ hai là để không bao giờ bắt khách chờ. Mua một tặng một là để kéo khách mới. Đêm nhạc là để quán có "chất". Bốn mươi sáu món là để ai bước vào cũng tìm được thứ mình thích. Mỗi quyết định riêng lẻ, nếu đem ra hỏi một người bạn, đều được gật đầu.</p>
+<p>Ông Khiêm nghe hết, gật gù như người nghe dự báo thời tiết.</p>
+<p>Ông Khiêm đặt chiếc đồng hồ xuống tấm dạ xanh, gỡ kính lúp ra.</p>
+<p class="dialogue">– Cậu biết tôi làm gì với cái đồng hồ này không?</p>
+<p class="dialogue">– Ông sửa nó.</p>
+<p class="dialogue">– Tôi tìm xem cái gì làm nó chết. Người ta mang đồng hồ đến, ai cũng hỏi tôi "ông làm cho nó chạy được không". Tôi không tìm cái làm nó chạy. Một chiếc đồng hồ có cả trăm thứ làm nó chạy. Cái làm nó chết thì thường chỉ có một hai thứ.</p>
+<p>Ông chỉ vào một bánh răng nhỏ bằng đầu tăm, răng của nó bị mòn vẹt một bên.</p>
+<p class="dialogue">– Thay cái này thì chạy.</p>
+<p>Vũ cúi sát xuống nhìn. Cái bánh răng bé đến mức anh phải nheo mắt, vậy mà chỉ một bên răng mòn của nó đã làm cả chiếc đồng hồ đứng im.</p>
+<p class="dialogue">– Sao ông biết là nó? anh hỏi.</p>
+<p class="dialogue">– Tôi thử từng cái. Thay cái nào mà nó vẫn chết như cũ thì không phải cái ấy. Mất nửa buổi chiều.</p>
+<p>Vũ nhìn cái bánh răng rồi nhìn cuốn sổ. Anh muốn nói rằng cái quán phức tạp hơn một chiếc đồng hồ, nhưng anh nhớ lại con số mười tám triệu và thôi.</p>
+<p>Sáng thứ Bảy, nhóm năm cô giáo về hưu đến quán như mọi tuần, ngồi bàn tròn cạnh cửa sổ. Cô Nhàn, người lớn tuổi nhất, gọi như mọi tuần: năm miếng bánh bông lan trứng muối, một ấm trà nóng. Họ ngồi từ tám giờ đến mười giờ rưỡi, nói chuyện về học trò cũ và giá rau, trả tổng cộng một trăm sáu mươi nghìn.</p>
+<p>Vũ đứng sau quầy, nhìn bàn ấy và tính nhẩm theo thói quen mới: hai tiếng rưỡi, một bàn năm chỗ, một trăm sáu mươi nghìn. Bàn ấy mà bán cà phê cho dân văn phòng thì được gấp đôi. Anh ghi vào cuối trang sổ một dòng nhỏ: <em>bàn sáng thứ Bảy, lời ít</em>.</p>
+<p>Chủ nhật, Vũ làm ba việc trong sổ. Anh gọi cho công ty cho thuê máy pha, báo trả máy từ đầu tháng Mười, đúng hạn báo trước một tháng ghi trong hợp đồng. Anh xin lỗi ca sĩ đêm nhạc thứ Ba, nói quán tạm dừng chương trình đến hết tháng. Anh ngồi với Tú cả buổi chiều để đếm xem trong bốn mươi sáu món, món nào cần nguyên liệu mà không món nào khác dùng chung. Có mười một món như thế.</p>
+<p>Mai đi học thêm về, đứng sau lưng anh đọc trộm cuốn sổ, rồi lấy ngón tay gõ lên dòng chữ nhỏ ở cuối trang.</p>
+<p class="dialogue">– Bàn các cô giáo lời ít à? Thế anh có biết các cô đến đây vì cái gì không?</p>
+<p class="dialogue">– Vì bánh của mẹ.</p>
+<p class="dialogue">– Thế thì sao?</p>
+<p>Vũ không trả lời. Anh không gạch dưới dòng đó. Nhưng anh cũng không xóa nó đi.</p>
+<h3 class="sec">Trúng số rồi phá sản</h3>
+<p><em>Chuyện có thật</em></p>
+<p>Có lẽ bạn đã từng đọc câu này ở đâu đó: <em>"70% người trúng xổ số phá sản chỉ sau vài năm."</em> Câu ấy xuất hiện trong sách dạy làm giàu, trong video về tài chính cá nhân, trong cả những bài báo đứng đắn. Hầu hết đều ghi nguồn là Quỹ Quốc gia về Giáo dục Tài chính của Mỹ (NEFE).</p>
+<p>Ngày 12/1/2018, chính NEFE ra thông báo: con số này không dựa trên nghiên cứu nào của họ, và họ không thể xác nhận nó [1]. Theo NEFE, nhiều khả năng nó bắt nguồn từ lời phát biểu của một người tham dự buổi hội thảo chuyên gia do quỹ tổ chức năm 2001. Đó là ý kiến riêng của một người, chưa từng được kiểm chứng [1]. Một câu nói trong phòng họp đã đi vòng quanh thế giới suốt gần hai mươi năm, mang theo tên một tổ chức không hề đứng sau nó.</p>
+<p>Vậy chuyện thật là gì? Có một nghiên cứu nghiêm túc về câu hỏi này, của ba nhà kinh tế Scott Hankins, Mark Hoekstra và Paige Marta Skiba, đăng năm 2011 trên tạp chí <em>The Review of Economics and Statistics</em> [2]. Họ lấy dữ liệu của gần 35.000 người trúng một trò xổ số tên Fantasy 5 ở bang Florida từ năm 1993 đến 2002, rồi đối chiếu với hồ sơ phá sản công khai [2][3].</p>
+<p>Cách họ làm khá thông minh. Ai trúng nhiều, ai trúng ít trong trò này gần như do may rủi. Vậy nên có thể so sánh người trúng lớn, từ 50.000 đến 150.000 đô la, với người trúng nhỏ, dưới 10.000 đô la, như hai nhóm trong một thí nghiệm [3].</p>
+<p>Kết quả: trong hai năm đầu, người trúng lớn ít phá sản hơn khoảng một nửa so với người trúng nhỏ. Nhưng từ năm thứ ba đến năm thứ năm, tỉ lệ phá sản của nhóm trúng lớn tăng lên, và sau năm năm thì hai nhóm ngang nhau [2][3]. Các tác giả tóm lại: những khoản tiền như vậy chỉ hoãn được phá sản, chứ không ngăn được nó [2]. Một trong ba tác giả, bà Skiba, nói rằng trúng số dường như chẳng giúp được mấy cho người trúng trả bớt nợ [4].</p>
+<p>Cũng phải đọc kỹ con số. Đây không phải những người trúng hàng chục triệu đô la như trên phim. Và tỉ lệ phá sản tuyệt đối không cao: theo bản nháp của nghiên cứu, 1.934 người trong mẫu nộp hồ sơ phá sản trong vòng năm năm sau khi trúng, mỗi năm dưới 1% [3]. Nghiên cứu không nói rằng phần lớn người trúng số phá sản. Nó chỉ nói rằng, sau năm năm, người trúng lớn và người trúng nhỏ phá sản nhiều như nhau.</p>
+<h3 class="sec">Ba khoản nhỏ của nhà Thắng</h3>
+<p><em>Chuyện đời thường (hư cấu minh họa)</em></p>
+<p>Anh Nguyễn Đức Thắng, 31 tuổi, kỹ sư cầu đường. Chị Hà Phương Thảo, 29 tuổi, nhân viên chăm sóc khách hàng của một ngân hàng. Hai người cưới nhau được ba năm, thuê một căn hộ hai phòng ngủ ở Long Biên, giá chín triệu một tháng, cửa sổ nhìn ra sông Hồng. Tổng thu nhập của hai vợ chồng là bốn mươi hai triệu một tháng. Họ có một mục tiêu duy nhất cho năm năm tới: mua được một căn hộ nhỏ, không cần nhìn ra sông.</p>
+<p>Ba năm qua, họ để dành được một trăm mười triệu. Đêm giao thừa năm ngoái, Thắng ngồi tính lại và thấy với tốc độ này, năm năm nữa họ có chưa tới ba trăm triệu, chưa đủ một phần năm căn hộ rẻ nhất trong khu.</p>
+<p>Họ đã thử những cách mà ai cũng thử. Tải ứng dụng ghi chép chi tiêu, dùng được ba tuần. Chia tiền vào sáu cái phong bì theo một phương pháp trên mạng, đến tháng thứ hai thì phong bì "giải trí" vay phong bì "tiết kiệm". Thề không đi du lịch trong năm, rồi tháng Tư bạn thân của Thảo cưới ở Phú Quốc.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Nếu bạn là Thắng và Thảo, bạn sẽ ngồi xuống với nhau và hỏi câu gì? Ghi ra một câu hỏi trước khi đọc tiếp.</p></blockquote>
+<p>Một tối thứ Bảy, Thảo đọc được trên mạng một bài về tư duy ngược. Chị lấy một tờ giấy A4, kẻ đôi, đưa cho chồng một nửa.</p>
+<p class="dialogue">– Mình chơi trò này. Làm sao để năm năm nữa chắc chắn không mua nổi nhà? Mỗi người viết riêng, xong mới so.</p>
+<p>Thắng viết mười bốn dòng, Thảo viết mười một. Có những dòng trùng nhau: thuê nhà đắt, đổi điện thoại mỗi năm, mua xe trả góp, đầu tư theo lời rủ rê trong nhóm chat. Có những dòng làm người kia bật cười: Thắng viết "vợ mua quần áo khi buồn", Thảo viết "chồng mua đồ câu cá khi vui".</p>
+<p>Rồi họ đánh dấu những dòng đang xảy ra, và cộng tiền cho từng dòng. Những khoản to thì họ đã biết từ trước: tiền thuê nhà, tiền xe. Thứ làm họ ngạc nhiên là ba khoản nhỏ mà cả hai đều viết, gần như bằng cùng một câu.</p>
+<p>Khoản thứ nhất: mỗi sáng hai ly cà phê mang đi trên đường đi làm, bốn mươi lăm nghìn một ly, hai mươi hai ngày làm việc. Gần hai triệu một tháng. Khoản thứ hai: sáu gói đăng ký trả tiền hằng tháng, xem phim, nghe nhạc, lưu ảnh, học tiếng Anh, một ứng dụng tập thể dục chưa mở lần nào từ tháng Hai, và một gói mà cả hai đều không nhớ là gì. Sáu trăm nghìn một tháng. Khoản thứ ba: ba tối mỗi tuần mệt quá không nấu, gọi đồ ăn qua ứng dụng, mỗi lần chừng một trăm năm mươi nghìn kể cả phí giao. Một triệu tám mỗi tháng.</p>
+<p>Cộng ba khoản: gần bốn triệu rưỡi mỗi tháng, năm mươi ba triệu mỗi năm, hơn hai trăm sáu mươi triệu trong năm năm. Gần bằng toàn bộ số tiền họ định để dành.</p>
+<p>Thảo ngồi im một lúc rồi nói:</p>
+<p class="dialogue">– Em không bỏ cà phê đâu.</p>
+<p class="dialogue">– Anh cũng không bảo em bỏ.</p>
+<p>Cuối cùng họ hủy năm trong sáu gói đăng ký ngay tối hôm đó, mất mười lăm phút, và phát hiện ra gói không ai nhớ là một dịch vụ lưu trữ ảnh đã tính tiền họ suốt hai mươi tháng. Trước khi bấm hủy gói ấy, Thảo đăng nhập vào xem nó lưu gì. Trong đó có một nghìn bốn trăm tấm ảnh đám cưới của hai vợ chồng, bản gốc từ thợ chụp, thứ mà cả hai đều tưởng đã nằm an toàn trong một chiếc ổ cứng ở nhà bố mẹ Thắng. Hai vợ chồng ngồi tải ảnh về đến gần một giờ sáng, cãi nhau nhỏ về tấm nào nên in ra treo tường, rồi mới hủy gói. Hai mươi tháng tiền rò, cuối cùng cũng mua được một đêm ngồi xem lại ảnh cưới.</p>
+<p>Họ đặt luật: tối thứ Hai và thứ Năm nấu cơm, kể cả chỉ là mì trứng. Còn cà phê thì Thảo giữ một ly mỗi sáng, Thắng mang bình giữ nhiệt từ nhà.</p>
+<p>Có một việc khó hơn họ tưởng. Tuần đầu, tối thứ Năm, Thắng về nhà lúc chín giờ, mệt rã, mở tủ lạnh thấy chỉ còn hai quả trứng và nửa bó rau muống đã héo. Anh cầm điện thoại, mở ứng dụng đặt đồ ăn, ngón tay đã chạm vào nút đặt hàng. Thảo đứng ở cửa bếp, không nói gì, chỉ giơ tờ giấy A4 vẫn dán trên cửa tủ lạnh. Dòng thứ mười hai của Thắng: "mệt thì gọi đồ ăn, tối nào cũng mệt".</p>
+<p>Tối đó họ ăn mì trứng với rau muống xào tỏi. Thắng nói đó là bát mì ngon nhất tháng, chủ yếu để vợ khỏi cười.</p>
+<p>Ba tháng sau, Thảo mở tài khoản tiết kiệm và nhìn con số. Rồi chị nhắn cho chồng một tin ngắn: <em>"Tháng này mình để dành được nhiều hơn tháng lương thứ mười ba của anh."</em></p>
+<h3 class="sec">Người gánh nước</h3>
+<p><em>Ngụ ngôn</em></p>
+<p>Ở một làng nọ có hai anh em làm nghề gánh nước thuê. Mỗi sáng hai người xuống giếng cuối làng, gánh nước lên cho các nhà trên đồi, mỗi chuyến được một đồng.</p>
+<p>Người anh khỏe, chạy nhanh, ngày nào cũng gánh được hai mươi chuyến. Người em chậm hơn, ngày chỉ được mười lăm chuyến. Vậy mà cuối năm, người em để dành được nhiều tiền hơn.</p>
+<p>Người anh lấy làm lạ, bèn đi theo em một ngày. Anh thấy em gánh chậm, mỗi chuyến lại dừng ở chân dốc một lúc. Anh đến gần mới thấy em đang lấy sáp ong trét vào một vết nứt nhỏ dưới đáy thùng.</p>
+<p class="dialogue">– Thùng của anh cũng nứt từ đầu năm, người anh nói. Nhưng anh chạy nhanh, đến nơi vẫn còn được gần đầy.</p>
+<p class="dialogue">– Gần đầy là bao nhiêu? người em hỏi.</p>
+<p>Người anh không biết. Hai anh em bèn đổ một thùng nước của anh vào cái thùng không nứt của em, rồi đánh dấu mực nước. Thùng của anh mỗi chuyến chỉ còn hai phần ba. Hai mươi chuyến của anh, đến nơi, chỉ bằng hơn mười ba chuyến của em. Mà nhà nào cũng trả tiền theo thùng đầy, nên mỗi ngày anh còn bị bớt tiền vì nước thiếu.</p>
+<p>Người anh đỏ mặt, cúi xuống nhìn cái đáy thùng ướt sũng của mình.</p>
+<p class="dialogue">– Sao em không bảo anh sớm? anh hỏi.</p>
+<p class="dialogue">– Em tưởng anh biết, người em đáp. Ngày nào anh cũng thấy nước nhỏ giọt sau lưng mà.</p>
+<p>Người anh về nhà, ngồi trét sáp vào đáy thùng suốt buổi tối. Sáng hôm sau anh dậy muộn hơn mọi ngày, gánh mười tám chuyến. Đến cuối tháng, lần đầu tiên anh không phải vay tiền em.</p>
+<h3 class="sec">Hai lời mời làm việc</h3>
+<p><em>Câu đố</em></p>
+<p>Hai công ty cùng mời bạn về làm, cùng mức lương khởi điểm 120 triệu đồng mỗi năm, trả làm hai kỳ, mỗi nửa năm một lần.</p>
+<p>Công ty A hứa: mỗi năm, tổng lương cả năm sẽ tăng thêm 12 triệu đồng.</p>
+<p>Công ty B hứa: mỗi nửa năm, khoản lương của kỳ sẽ tăng thêm 3 triệu đồng.</p>
+<p>Đọc qua thì A hào phóng hơn hẳn: 12 triệu một năm so với 3 triệu nửa năm. Hầu hết mọi người chọn A trong vòng vài giây.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Đừng tính theo mức tăng. Hãy hỏi ngược: sau ba năm, tổng số tiền bạn thực sự cầm về từ mỗi công ty là bao nhiêu? Viết ra từng kỳ lương.</p></blockquote>
+<p>Đáp án ở cuối chương.</p>
+<h3 class="sec">Rút gọn</h3>
+<p>Khi áp <strong>đảo mục tiêu</strong> vào tiền bạc, câu hỏi đổi từ "làm sao kiếm thêm" sang "làm sao để chắc chắn không bao giờ dư dả". Câu hỏi thứ hai thường tìm ra những chỗ rò mà câu hỏi thứ nhất bỏ qua.</p>
+<ol><li><strong>Viết câu hỏi ngược</strong> cho cái túi tiền cụ thể: của quán, của gia đình, của riêng bạn.</li><li><strong>Liệt kê các cách chắc chắn nghèo</strong>, cả to lẫn nhỏ. Đừng bỏ qua những khoản bạn thấy "có đáng là bao".</li><li><strong>Gắn một con số tiền cho mỗi dòng đang xảy ra</strong>, tính theo tháng rồi nhân lên theo năm. Con số năm năm thường làm người ta tỉnh hơn con số một ngày.</li><li><strong>Tìm khoản rò</strong>, và tính xem bạn đã trả cho nó bao lâu rồi. Cái gói lưu ảnh của nhà Thắng chỉ hai mươi chín nghìn mỗi tháng, nhưng nó đã lấy của họ gần sáu trăm nghìn trước khi ai đó để ý. Khoản rò nào cũng nhỏ khi nhìn theo ngày. Khoản rò ở đây là những thứ tốn tiền đều đặn mà không đem lại thứ bạn thật sự muốn: cái máy pha không ai dùng, gói đăng ký không ai mở, đêm nhạc chỉ có bạn của ca sĩ ngồi nghe.</li><li><strong>Bịt khoản rò trước, rồi mới tính chuyện kiếm thêm.</strong> Đổ thêm nước vào thùng thủng chỉ làm người gánh mệt hơn.</li></ol>
+<p><strong>Khi nào nó sai.</strong> Không phải khoản chi nhỏ nào cũng là khoản rò. Ly cà phê buổi sáng của Thảo tốn tiền thật, nhưng nó mua được một thứ chị cần. Nếu bạn cắt sạch mọi niềm vui nhỏ, kế hoạch tiết kiệm sẽ sụp sau ba tuần, như cái ứng dụng ghi chép. Câu hỏi đúng là "khoản này có đem lại thứ mình muốn không". Câu "khoản này có nhỏ không" thì gần như vô dụng.</p>
+<p>Một điều nữa: đảo mục tiêu tìm ra chỗ rò, nhưng nó không cho bạn biết nên dùng số tiền tiết kiệm được vào việc gì. Nhà Thắng có hai trăm sáu mươi triệu "trên giấy" sau năm năm. Biến nó thành một căn nhà là một bài toán khác, cần những công cụ khác trong sách.</p>
+<h3 class="sec">Lật thử</h3>
+<p>Lấy sao kê tài khoản hoặc lịch sử ví điện tử của bạn trong ba mươi ngày gần nhất.</p>
+<p><strong>Ví dụ mẫu:</strong></p>
+<ul><li>Câu hỏi ngược: <em>Làm sao để cuối năm nay tôi vẫn không có đồng tiết kiệm nào?</em></li><li>Năm dòng đang xảy ra, kèm tiền mỗi tháng: trà sữa buổi chiều, 600.000 đồng; ba gói xem phim trùng nhau, 330.000 đồng; phí trả chậm thẻ tín dụng, 250.000 đồng; mua hàng giảm giá giữa đêm, khoảng 1.200.000 đồng; ăn sáng ở quán gần công ty dù đã ăn ở nhà, 400.000 đồng.</li><li>Tổng: 2.780.000 đồng mỗi tháng, khoảng 33 triệu đồng mỗi năm.</li><li>Đánh dấu khoản rò, tức khoản không đem lại thứ mình muốn: phí trả chậm, gói phim trùng, đồ giảm giá giữa đêm.</li><li>Giữ lại: trà sữa buổi chiều, vì đó là lúc duy nhất trong ngày được ngồi với đồng nghiệp thân.</li><li>Việc làm ngay hôm nay: hủy gói phim trùng, cài nhắc hạn thanh toán thẻ trước ba ngày, xóa ứng dụng mua sắm khỏi màn hình chính.</li><li>Kiểm tra lại: cuối tháng sau, mở sao kê, so con số với tháng này.</li></ul>
+<p>Làm bảng của bạn. Nếu bạn không có thói quen xem sao kê, chỉ riêng việc mở nó ra đã là một nửa bài tập.</p>
+<p>Sau đó, hãy làm thêm một bước mà nhà Thắng đã làm: dán danh sách lên chỗ bạn hay nhìn thấy vào đúng lúc dễ chi tiêu nhất. Cửa tủ lạnh, màn hình khóa điện thoại, mặt trong ví. Danh sách nằm trong ngăn kéo thì không ngăn được ngón tay bấm nút đặt hàng lúc chín giờ tối.</p>
+<h3 class="sec">Đáp án câu đố</h3>
+<p>Tính từng kỳ lương nửa năm.</p>
+<p>Công ty A: năm đầu 60 + 60, năm hai 66 + 66, năm ba 72 + 72. Tổng ba năm: 396 triệu đồng.</p>
+<p>Công ty B: các kỳ lần lượt là 60, 63, 66, 69, 72, 75. Tổng ba năm: 405 triệu đồng.</p>
+<p>Mỗi năm B trả hơn A đúng 3 triệu, cộng dồn thành 9 triệu sau ba năm. Tính ra tổng mức tăng mỗi năm của hai bên như nhau: B tăng mỗi kỳ 3 triệu, hai kỳ là 6 triệu cho khoản lương nửa năm, tức 12 triệu cho cả năm. Chỉ khác là tiền tăng của B đến sớm hơn nửa năm. Con số "3 triệu" nghe nhỏ vì nó được nói theo kỳ, còn "12 triệu" nghe to vì được nói theo năm.</p>
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] NEFE, "Research Statistic on Financial Windfalls and Bankruptcy", 12/1/2018: <a href="https://nefe.org/news/2018/01/research-statistic-on-financial-windfalls-and-bankruptcy.aspx" rel="noopener">https://nefe.org/news/2018/01/research-statistic-on-financial-windfalls-and-bankruptcy.aspx</a>. Nguyên văn: "This statistic is not backed by research from NEFE, nor can it be confirmed by the organization."</p>
+<p class="src">[2] Scott Hankins, Mark Hoekstra, Paige Marta Skiba, "The Ticket to Easy Street? The Financial Consequences of Winning the Lottery", <em>The Review of Economics and Statistics</em> 93(3), 2011, tr. 961–969: <a href="https://ideas.repec.org/a/tpr/restat/v93y2011i3p961-969.html" rel="noopener">https://ideas.repec.org/a/tpr/restat/v93y2011i3p961-969.html</a>. Nguyên văn: "such transfers only postpone bankruptcy rather than prevent it".</p>
+<p class="src">[3] Bản nháp nghiên cứu, 21/12/2008 (số liệu chi tiết; bản xuất bản có thể khác chút ít): <a href="https://www.aeaweb.org/conference/2009/retrieve.php?pdfid=158" rel="noopener">https://www.aeaweb.org/conference/2009/retrieve.php?pdfid=158</a></p>
+<p class="src">[4] Đại học Vanderbilt, "Lotteries: from big bucks to bankruptcy", 7/2009: <a href="https://news.vanderbilt.edu/2009/07/lotteries-from-big-bucks-to-bankruptcy-83864/" rel="noopener">https://news.vanderbilt.edu/2009/07/lotteries-from-big-bucks-to-bankruptcy-83864/</a>. Nguyên văn: "Winning the lottery seemed to do little to help lottery winners ease their debt".</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch04">
+<p class="eyebrow">Chương 04 · Phần I: Đảo mục tiêu</p>
+<h2 class="ch-title">Làm Sao Để Bị Ghét Ở Công Ty</h2>
+<p><em>Còn 84 ngày · Tiền mặt của quán: 68 triệu đồng</em></p>
+<h3 class="sec">Ở ngõ Đội Cấn</h3>
+<p>Anh Huy là khách quen của "Ga Cũ" từ ngày quán mới mở. Anh ba mươi tư tuổi, làm trưởng phòng vận hành ở một công ty giao nhận hàng hóa có văn phòng trên phố Liễu Giai, chiều nào cũng mang laptop xuống quán ngồi từ năm giờ đến bảy giờ, gọi một ly bạc xỉu ít đá, không bao giờ đổi món. Tuần trước, thấy mật khẩu wifi bỗng hiện trên tấm bảng đen và nhạc nhỏ hẳn đi, anh hỏi Vũ có chuyện gì. Vũ kể cho anh nghe về câu hỏi của ông Khiêm và bảy cách đuổi khách.</p>
+<p>Tối thứ Hai, anh vào quán, chưa gọi đồ đã kéo ghế ngồi trước quầy.</p>
+<p class="dialogue">– Tôi đem cái trò của ông cụ vào họp, anh nói. Sáng nay.</p>
+<p>Vũ đặt ly bạc xỉu xuống trước mặt anh.</p>
+<p class="dialogue">– Trò gì ạ?</p>
+<p class="dialogue">– Hỏi ngược. Phòng tôi có mười hai người. Quý này bị giao chỉ tiêu giảm mười lăm phần trăm đơn giao trễ. Họp mãi không ra. Sáng nay tôi viết lên bảng trắng: "Làm sao để nhân viên ghét sếp nhất?" Cho mọi người viết giấy, không ghi tên, bỏ vào cái hộp.</p>
+<p class="dialogue">– Rồi sao ạ?</p>
+<p>Huy rút điện thoại, mở tấm ảnh chụp bảng trắng. Hai mươi mốt dòng chữ, nét của Huy chép lại từ những mảnh giấy. Phần lớn là những thứ chung chung ai cũng viết được: giao việc không rõ, nhận công về mình, đổ lỗi cho cấp dưới. Nhưng có ba dòng được khoanh đỏ.</p>
+<p><em>Nhắn việc lúc mười một giờ đêm. Đổi ưu tiên giữa tuần không báo lý do. Họp xong mới hỏi ý kiến, mà quyết rồi.</em></p>
+<p class="dialogue">– Ba cái này là tôi, Huy nói. Không ai ghi tên, nhưng tôi biết là tôi.</p>
+<p>Anh uống một ngụm bạc xỉu, rồi cười, nụ cười của người vừa bị điểm trúng huyệt.</p>
+<p class="dialogue">– Mà hay ở chỗ, đơn trễ của phòng tôi phần lớn rơi vào thứ Năm, thứ Sáu. Đúng những tuần tôi đổi ưu tiên giữa chừng.</p>
+<p class="dialogue">– Anh định làm gì?</p>
+<p class="dialogue">– Tôi hứa với cả phòng là từ giờ, ưu tiên của tuần chốt vào sáng thứ Hai, giữa tuần có đổi thì tôi phải giải thích trước cả phòng. Tin nhắn sau chín giờ tối thì để hẹn giờ gửi sáng hôm sau.</p>
+<p>Huy ngừng một chút, xoay cái ly trên mặt quầy.</p>
+<p class="dialogue">– Sếp tôi mà biết tôi để nhân viên viết giấy chê mình thì chắc ông ấy bảo tôi điên. Ông ấy tin là trưởng phòng phải luôn đúng.</p>
+<p>Huy về rồi, Vũ đứng sau quầy nhìn bốn nhân viên của mình đang dọn quán. Tú lau máy pha. Diệp, cô sinh viên năm hai làm ca tối, xếp ghế. Quân kéo rèm. Chị Hồng ở bếp sau rửa khuôn bánh. Bốn người không ai nói với ai câu nào.</p>
+<p>Anh cắt bốn mảnh giấy, đưa cho mỗi người một mảnh và một cái bút.</p>
+<p class="dialogue">– Mọi người viết giúp anh. Làm sao để nhân viên ghét chủ quán nhất. Không ghi tên. Viết xong bỏ vào cái lọ đường kia.</p>
+<p>Diệp nhìn Quân. Quân nhìn Tú. Tú nhún vai, viết trước, viết rất nhanh.</p>
+<p>Nửa tiếng sau Vũ ngồi một mình đọc bốn mảnh giấy. Có những dòng anh đoán trước được: lương trả muộn hai ngày tháng Bảy, bắt ở lại dọn quán sau giờ không tính thêm. Có những dòng anh không ngờ: <em>đổi lịch ca bằng tin nhắn lúc khuya</em>, xuất hiện ở ba trong bốn mảnh giấy. Và một dòng chỉ có trên một mảnh, nét chữ nghiêng mạnh về bên phải mà anh biết là của ai:</p>
+<p><em>Đổi công thức món mỗi tuần, không ghi lại, em pha theo trí nhớ, sai thì anh trách em trước mặt khách.</em></p>
+<p>Vũ nhớ lại tuần trước, chuyện ly cà phê muối của một vị khách bị chê mặn. Anh đã nói với Tú, trước quầy, giọng đủ to để khách nghe: "Em pha kiểu gì thế?" Công thức muối anh đã đổi hôm thứ Hai, nói miệng với Tú đúng một lần, trong lúc Tú đang làm bốn ly khác.</p>
+<p>Anh gấp mảnh giấy lại, cho vào túi áo, và ngồi im một lúc lâu dưới cái quạt trần đã tắt.</p>
+<p>Sáng hôm sau, Tú đến quán thì thấy trên tường cạnh máy pha có hai tờ giấy mới, dán bằng băng dính. Tờ thứ nhất là lịch ca của hai tuần tới, tên từng người, từng ca, kèm một dòng chữ in hoa: <em>đổi ca phải báo trước 48 tiếng, cả chủ quán</em>. Tờ thứ hai là công thức của mười món bán chạy nhất, ghi theo gam, theo mililit, ngày sửa gần nhất ghi ở góc.</p>
+<p>Vũ đứng sau quầy, giả vờ đang đếm tiền lẻ.</p>
+<p class="dialogue">– Hôm trước cái ly muối ấy, anh nói, không nhìn lên. Lỗi anh. Anh đổi công thức mà không ghi.</p>
+<p>Tú đọc tờ công thức một lượt, lấy bút sửa một con số ở dòng thứ tư.</p>
+<p class="dialogue">– Đường đen là mười lăm gam chứ anh, không phải mười hai. Anh nếm lại xem.</p>
+<p>Rồi Tú đi thay tạp dề, không nói gì thêm. Vũ nếm lại. Tú đúng.</p>
+<p>Luật mới cắn ngay chính người viết ra nó. Chiều thứ Tư, Vũ muốn đổi ca của Diệp sang tối thứ Năm để anh đi gặp một nhà cung cấp sữa. Diệp chỉ vào tờ giấy trên tường, dòng chữ in hoa, rồi nhìn anh. Còn chưa tới bốn mươi tám tiếng. Vũ đành dời buổi gặp nhà cung cấp sang tuần sau, mất suất giá ưu đãi của tháng, chừng tám trăm nghìn đồng tiền sữa. Quân đứng lau bàn gần đó, cười không thành tiếng.</p>
+<p>Buổi chiều, ông Khiêm đi ngang, liếc qua hai tờ giấy trên tường, gật đầu một cái rất khẽ rồi đi tiếp. Vũ không chắc ông gật vì hai tờ giấy hay vì có người chào ông ở đầu ngõ.</p>
+<h3 class="sec">Một trăm tám mươi đội của Google</h3>
+<p><em>Chuyện có thật</em></p>
+<p>Năm 2012, Google bắt đầu một dự án nghiên cứu nội bộ với câu hỏi tưởng đơn giản: điều gì làm nên một đội làm việc hiệu quả? Họ đặt tên cho dự án theo một câu được gán cho triết gia Hy Lạp Aristotle, rằng tổng thể lớn hơn tổng các phần cộng lại. Dự án Aristotle [1][2].</p>
+<p>Google là nơi có thể trả lời câu hỏi đó bằng dữ liệu hơn hầu hết mọi công ty trên đời. Nhóm nghiên cứu xem xét 180 đội trong công ty, gồm 115 đội dự án kỹ thuật và 65 nhóm bán hàng, phỏng vấn hàng trăm người quản lý, dùng hơn 250 câu hỏi khảo sát [1]. Một trong những người phụ trách nói với tờ <em>New York Times</em>: họ đã xem xét 180 đội từ khắp công ty [3].</p>
+<p>Các đội được nghiên cứu có đủ cỡ, từ 3 người đến 50 người, đội ở giữa có 9 người [1]. &gt; <strong>Bạn sẽ làm gì?</strong> Nếu bạn ở trong nhóm nghiên cứu, bạn đoán điều gì quan trọng nhất để một đội làm việc tốt? Trình độ của từng người? Người trưởng nhóm giỏi? Mọi người hợp tính nhau? Hãy chọn một đáp án trước khi đọc tiếp.</p>
+<p>Giả thuyết ban đầu nghe rất hợp lý. Gom những người giỏi nhất lại với nhau thì sẽ có đội giỏi nhất. Hay đội gồm những người có tính cách hợp nhau, cùng sở thích, cùng ngồi một văn phòng. Những thứ mà người ta hay nghĩ là quan trọng, như ngồi gần nhau, ra quyết định theo đồng thuận, tính hướng ngoại của các thành viên, thành tích cá nhân, thâm niên hay quy mô đội, đều không cho thấy tác động đáng kể [1].</p>
+<p>Cuối năm 2014, nhóm nghiên cứu bắt đầu chia sẻ kết quả trong nội bộ, khi Google có khoảng 51.000 nhân viên [3]. Kết luận mà Google công bố khiến nhiều người bất ngờ: điều quan trọng không nằm ở việc ai ở trong đội, mà ở cách các thành viên làm việc với nhau [1]. Họ tìm ra năm yếu tố, và xếp yếu tố thứ nhất là quan trọng nhất, là nền cho bốn yếu tố kia [1]:</p>
+<ol><li>An toàn tâm lý.</li><li>Sự đáng tin cậy: mọi người làm xong việc đúng hạn, đúng chất lượng.</li><li>Cấu trúc và sự rõ ràng: ai làm gì, mục tiêu là gì, kế hoạch ra sao.</li><li>Ý nghĩa: công việc có ý nghĩa với từng người.</li><li>Tác động: mọi người tin việc mình làm tạo ra khác biệt.</li></ol>
+<p>Khái niệm "an toàn tâm lý" không do Google nghĩ ra. Nó đến từ nhà nghiên cứu Amy Edmondson của Trường Kinh doanh Harvard, người định nghĩa nó từ năm 1999 là niềm tin chung của các thành viên rằng ở trong đội này, người ta có thể chấp nhận rủi ro khi cư xử với nhau [1]. Nói nôm na: tôi có thể hỏi một câu ngớ ngẩn, nhận một lỗi, nêu một ý ngược chiều, mà không bị cười, bị trù, bị ghi sổ.</p>
+<p>Hướng dẫn của Google đề xuất một câu để đo điều đó, mà ai cũng có thể tự hỏi về đội của mình: <em>"Nếu tôi mắc lỗi trong đội này, lỗi đó không bị dùng để chống lại tôi"</em> [1]. Bạn đồng ý với câu ấy đến mức nào?</p>
+<p>Bây giờ hãy lật ngược kết quả nghiên cứu. Nếu một người quản lý muốn đội mình làm việc tệ nhất có thể, cách hiệu quả nhất là gì? Không cần tuyển người dở. Chỉ cần làm cho mọi người sợ nói ra. Mắng người báo lỗi. Cười câu hỏi ngớ ngẩn. Quyết xong rồi mới hỏi ý kiến. Một đội toàn người giỏi mà ai cũng sợ nói thì sẽ giấu lỗi, giấu rủi ro, và chỉ phát hiện ra vấn đề khi nó đã quá to để giấu.</p>
+<p>Cũng cần đọc kết quả này cho đúng mức. Đây là phân tích trên dữ liệu nội bộ của một công ty công nghệ rất đặc thù. Nó không chứng minh rằng an toàn tâm lý là bí quyết duy nhất.</p>
+<h3 class="sec">Danh sách của Quỳnh</h3>
+<p><em>Chuyện đời thường (hư cấu minh họa)</em></p>
+<p>Đoàn Ngọc Quỳnh, 22 tuổi, tốt nghiệp ngành truyền thông, thực tập ba tháng ở một công ty quảng cáo tại trung tâm Thành phố Hồ Chí Minh. Hết ba tháng, công ty sẽ chọn hai trong năm thực tập sinh để ký hợp đồng chính thức. Còn ba tuần nữa là hết hạn.</p>
+<p>Ngày đầu tiên, chị trưởng nhóm dặn cả năm bạn thực tập một câu mà Quỳnh ghi vào sổ: "Ở đây không có câu hỏi nào ngu, chỉ có câu hỏi hỏi muộn." Quỳnh ghi lại, gạch chân, và trong hơn hai tháng sau đó chưa hỏi một câu nào. Cô nghĩ câu ấy là câu mà trưởng nhóm nào cũng nói cho có.</p>
+<p>Quỳnh nghĩ mình làm khá. Cô đến sớm, về muộn, nộp việc đúng hạn, chưa từng bị mắng. Vậy mà tuần trước, trong buổi họp đánh giá giữa kỳ, chị trưởng nhóm chỉ nói một câu về cô: "Quỳnh chăm, nhưng chị chưa thấy Quỳnh lắm." Quỳnh về nhà, nằm nhìn trần nhà, không hiểu "chưa thấy" là thấy cái gì.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Nếu bạn là Quỳnh, còn ba tuần, bạn sẽ làm gì với câu nhận xét "chị chưa thấy Quỳnh lắm"?</p></blockquote>
+<p>Cô bạn cùng phòng, làm nhân sự ở một công ty khác, bảo Quỳnh thử viết ra: <em>làm sao để chắc chắn không được nhận chính thức?</em> Quỳnh ngồi viết đến gần mười hai giờ đêm. Những dòng đầu là những thứ hiển nhiên: đi muộn, nộp trễ, làm sai chính tả trong bài gửi khách. Cô không làm cái nào trong số đó. Rồi cô viết tiếp, và những dòng sau bắt đầu chậm hơn.</p>
+<p><em>Ngồi im suốt các buổi họp. Có ý tưởng thì để dành, chờ khi chắc chắn hay mới nói. Không hỏi khi chưa hiểu đề bài, tự mày mò cho xong. Làm xong việc mới báo, giữa chừng không cập nhật. Ăn trưa một mình với điện thoại. Không biết tên người ở phòng khác.</em></p>
+<p>Cô đánh dấu. Sáu trên sáu.</p>
+<p>Quỳnh ngồi nhìn tờ giấy rất lâu. Hơn hai tháng qua cô đã dự mười chín buổi họp. Cô mở sổ ghi chép ra đếm. Số lần cô lên tiếng mà không phải vì được gọi tên: một lần, để hỏi phòng họp có máy chiếu không.</p>
+<p>Cô cũng nhớ lại câu chị trưởng nhóm dặn ngày đầu tiên, câu cô đã gạch chân. Có thể chị nói thật. Cũng có thể không. Nhưng hơn hai tháng qua, cô chưa một lần thử xem nó có thật không.</p>
+<p>Ba tuần cuối, cô thử bỏ hai dòng. Trong buổi họp lên ý tưởng cho một chiến dịch nước giải khát, cô nói ra một ý mà cô thấy còn non. Ý ấy không được chọn, chị trưởng nhóm bảo "hơi bị giống chiến dịch năm ngoái của đối thủ". Quỳnh đỏ mặt suốt buổi chiều. Nhưng sáng hôm sau, một anh thiết kế ở phòng bên nhắn tin hỏi cô ý ấy lấy cảm hứng từ đâu, và rủ cô ăn trưa. Cô cũng bắt đầu hỏi ngay khi chưa hiểu đề bài, lần đầu phải gõ đi gõ lại tin nhắn bốn lần mới dám gửi. Câu trả lời của chị trưởng nhóm đến sau hai phút, dài ba dòng, kèm một đường dẫn đến tập tài liệu mà cả nhóm vẫn dùng, thứ mà suốt ba tháng Quỳnh không biết là có tồn tại. Cô đã tự làm lại từ đầu hai bộ tài liệu có sẵn trong đó.</p>
+<p>Ở buổi họp thứ hai, cô hỏi một câu mà cô nghĩ là ngớ ngẩn nhất: vì sao khách hàng lại muốn nhắm vào học sinh cấp ba trong khi sản phẩm bán ở cây xăng. Cả phòng im. Rồi anh phụ trách khách hàng bảo câu đó anh cũng muốn hỏi khách từ tuần trước.</p>
+<p>Ngày cuối thực tập, công ty chọn hai bạn khác. Chị trưởng nhóm gọi Quỳnh vào phòng họp nhỏ.</p>
+<p class="dialogue">– Đợt này chị không giữ được em. Nhưng ba tuần vừa rồi chị mới bắt đầu thấy em. Tháng Hai năm sau nhóm chị mở thêm một vị trí. Em gửi lại hồ sơ cho chị nhé, gửi thẳng cho chị.</p>
+<h3 class="sec">Con quạ báo tin</h3>
+<p><em>Ngụ ngôn</em></p>
+<p>Trên cây gạo đầu làng có một đàn quạ. Quạ đầu đàn già và khôn, nhưng nóng tính.</p>
+<p>Một sáng, con quạ non nhất đàn bay về hốt hoảng kêu có diều hâu ở bìa rừng. Cả đàn nháo nhác bay lên. Chờ mãi chẳng thấy diều hâu đâu, chỉ có một cái bóng mây. Quạ đầu đàn mổ cho con quạ non một cái đau điếng trước mặt cả đàn: "Mày làm cả đàn mất bữa sáng."</p>
+<p>Tháng sau, một con quạ khác thấy cái bóng lạ trên cánh đồng. Nó nghĩ đến cú mổ, nghĩ đến cả đàn nhìn nó, và nó chờ cho chắc. Cái bóng lớn dần. Đến khi nó chắc chắn đó là diều hâu thì đã quá gần để kêu.</p>
+<p>Những con quạ khác cũng đã thấy cái bóng ấy, từ những cành khác nhau. Không con nào kêu trước.</p>
+<p>Đàn quạ mất hai con hôm ấy. Quạ đầu đàn đứng trên cành cao nhất, tức giận hỏi vì sao không ai báo. Không con nào trả lời. Con quạ non hôm nọ đứng ở cành thấp nhất, rỉa lông, không nhìn lên.</p>
+<p>Mùa sau, quạ đầu đàn già hơn, chậm hơn. Một buổi sáng, một con quạ nhỏ mới nở năm ấy bay về kêu có diều hâu, rồi hóa ra lại chỉ là bóng mây. Cả đàn quay sang nhìn quạ đầu đàn. Lão đứng im rất lâu, rồi nói: "Lần sau thấy bóng mây cũng cứ kêu." Rồi lão bay đi kiếm ăn một mình.</p>
+<h3 class="sec">Rút gọn</h3>
+<p>Áp <strong>đảo mục tiêu</strong> vào con người và nhóm làm việc, câu hỏi thường là: <em>làm sao để người khác ghét làm việc với mình nhất?</em> Câu hỏi này khó trả lời một mình, vì ta luôn nhìn mình tử tế hơn người khác nhìn ta.</p>
+<ol><li><strong>Để người trong cuộc viết</strong>, không ghi tên. Huy dùng cái hộp, Vũ dùng cái lọ đường. Không có ẩn danh, bạn sẽ chỉ nhận được những câu lịch sự.</li><li><strong>Tìm dòng lặp lại.</strong> Một dòng xuất hiện ở ba trên bốn mảnh giấy thì không còn là ý kiến riêng của một người.</li><li><strong>Nối danh sách với kết quả thật.</strong> Huy thấy đơn trễ rơi đúng vào những tuần anh đổi ưu tiên. Khi một thói quen của bạn khớp với một con số xấu, đó là chỗ nên sửa đầu tiên.</li><li><strong>Đừng giải thích, đừng thanh minh</strong> khi đọc danh sách trước mặt mọi người. Một lần thanh minh là đủ để lần sau không ai viết thật nữa, như con quạ đứng ở cành thấp nhất.</li><li><strong>Sửa một việc, và nói rõ bạn đang sửa việc đó.</strong> Người viết cần thấy mảnh giấy của họ đã được đọc.</li></ol>
+<p>Kết quả của Google và câu chuyện con quạ nói cùng một điều theo hai cách: người ta im lặng dù biết rõ, vì nói ra từng phải trả giá. Nếu bạn là người dẫn dắt nhóm, phản ứng của bạn với lần báo sai đầu tiên quyết định có lần báo đúng thứ hai hay không.</p>
+<p><strong>Khi nào nó sai.</strong> Câu hỏi "làm sao để bị ghét" có thể biến thành một buổi trút giận, nếu không khí trong nhóm đã quá căng. Khi đó, người viết sẽ nhắm vào người khác hơn là vào cách làm việc. Nó cũng không thay được những thứ cứng như lương, như khối lượng việc. Nếu lương của nhân viên trả muộn, không danh sách nào bù lại được.</p>
+<h3 class="sec">Lật thử</h3>
+<p>Chọn một nhóm bạn đang ở trong đó: phòng ban, đội dự án, gia đình, nhóm bạn.</p>
+<p><strong>Ví dụ mẫu:</strong></p>
+<ul><li>Câu hỏi ngược: <em>Làm sao để các thành viên trong gia đình tôi không bao giờ muốn kể chuyện của họ với tôi?</em></li><li>Danh sách: nghe được nửa câu đã khuyên; kể lại chuyện riêng của người này cho người kia; hỏi "sao không nói sớm"; vừa nghe vừa nhìn điện thoại; nhắc lại lỗi cũ mỗi khi có lỗi mới.</li><li>Nhờ hai người trong nhà đánh dấu, mỗi người một bản, không bàn với nhau.</li><li>Kết quả: cả hai cùng đánh dấu "nghe nửa câu đã khuyên".</li><li>Việc của tuần này: khi ai đó kể chuyện, hỏi "con muốn bố nghe hay muốn bố góp ý?" trước khi nói gì khác.</li><li>Sau hai tuần: hỏi lại hai người ấy, vẫn ẩn danh, xem dòng đó còn đúng không. Nếu họ bảo "đỡ hơn rồi", chọn dòng tiếp theo trong danh sách. Nếu họ bảo "vẫn thế", đừng chọn dòng mới, làm lại dòng cũ cho đến khi họ thấy.</li></ul>
+<p>Nếu bạn là người quản lý, hãy thử câu đo của Google với đội mình, ẩn danh: <em>"Nếu tôi mắc lỗi trong đội này, lỗi đó không bị dùng để chống lại tôi."</em> Cho mỗi người chấm từ 1 đến 5. Con số trung bình ít quan trọng hơn khoảng cách giữa người chấm cao nhất và người chấm thấp nhất. Nếu có người chấm 5 và có người chấm 1 trong cùng một đội, đội đó đang có hai trải nghiệm rất khác nhau dưới cùng một người quản lý, và người chấm 1 gần như chắc chắn sẽ không nói với bạn vì sao.</p>
+<p>Làm lại bài đo này sau ba tháng. Nếu khoảng cách hẹp lại, bạn đang đi đúng hướng.</p>
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] Google re:Work, "Guide: Understand team effectiveness": <a href="https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness" rel="noopener">https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness</a>. Nguyên văn câu đo: "If I make a mistake on our team, it is not held against me." Định nghĩa của Amy Edmondson: "a shared belief held by members of a team that the team is safe for interpersonal risk taking."</p>
+<p class="src">[2] Đại học California Berkeley, trích đoạn bài của Charles Duhigg: <a href="https://hr.berkeley.edu/node/6500" rel="noopener">https://hr.berkeley.edu/node/6500</a></p>
+<p class="src">[3] Charles Duhigg, "What Google Learned From Its Quest to Build the Perfect Team", <em>The New York Times Magazine</em>, 25/2/2016: <a href="https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html" rel="noopener">https://www.nytimes.com/2016/02/28/magazine/what-google-learned-from-its-quest-to-build-the-perfect-team.html</a> (bản sao đọc tại https://www.iths.org/wp-content/uploads/Project-Aristotle-Google-Article.pdf). Nguyên văn: "We looked at 180 teams from all over the company"; "Google's data indicated that psychological safety, more than anything else, was critical to making a team work."</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+<article class="chapter" id="ch05">
+<p class="eyebrow">Chương 05 · Phần I: Đảo mục tiêu</p>
+<h2 class="ch-title">Làm Sao Để Sống Khổ</h2>
+<p><em>Còn 80 ngày · Tiền mặt của quán: 64 triệu đồng</em></p>
+<h3 class="sec">Ở ngõ Đội Cấn</h3>
+<p>Mai ngồi thử chiếc đệm vải mới trên ghế gỗ, nhún lên nhún xuống ba lần, rồi phán:</p>
+<p class="dialogue">– Đỡ đau đít được một nửa.</p>
+<p>Đó là cái đệm thứ bốn mươi, cái cuối cùng. Mười ngày sau đêm ông Khiêm hỏi câu đầu tiên, sáu trong bảy cách đuổi khách đã được bỏ. Nhạc vặn nhỏ. Mật khẩu wifi viết trên bảng. Điện thoại của nhân viên nằm trong ngăn kéo. Chương trình mua một tặng một dừng giữa chừng, Vũ dán một tờ giấy xin lỗi khách lên cửa và tặng mỗi người cầm tờ rơi cũ một ly trà đá. Thời gian chờ món giờ trưa giảm từ mười lăm phút xuống còn chín phút, nhờ Tú và chị Hồng chuẩn bị sẵn những thứ dùng nhiều nhất từ sáng. Ghế gỗ thì chưa thay được, vì một bộ ghế mới tốn ba mươi triệu, nên Vũ đặt may bốn mươi cái đệm vải dày, hết hai triệu bốn.</p>
+<p>Còn cái menu bốn mươi sáu món thì anh chưa dám động vào. Mỗi món trong đó là một buổi tối anh ngồi pha thử.</p>
+<p>Khách đã khác. Anh Huy dẫn hai đồng nghiệp đến ngồi họp buổi chiều. Hai cô gái hay ngồi bàn cửa sổ, tuần trước chỉ uống một ly rồi đi, tuần này ngồi đến tối. Trên trang của quán, có người viết một nhận xét năm sao, câu đầu tiên là "quán giờ yên tĩnh hẳn".</p>
+<p>Tối thứ Sáu, Vũ ngồi cộng sổ và thấy con số anh không muốn thấy. Doanh thu mười ngày qua tăng chừng mười phần trăm so với cùng kỳ tháng trước. Đã báo trả máy pha thuê, đã dừng đêm nhạc, dừng khuyến mãi lỗ. Vậy mà nếu cứ thế này, tháng Chín vẫn lỗ chừng ba mươi triệu.</p>
+<p>Anh mang cuốn sổ sang sạp đồng hồ, giọng gắt hơn anh định.</p>
+<p class="dialogue">– Cháu bỏ gần hết rồi đấy ông. Né hết lỗi rồi, sao vẫn lỗ?</p>
+<p>Ông Khiêm đang lắp lại mặt kính cho một chiếc đồng hồ treo tường. Ông đặt cái tua vít xuống, nhìn con số Vũ chỉ vào.</p>
+<p class="dialogue">– Thì nó lỗ ít đi.</p>
+<p class="dialogue">– Ít đi thì vẫn là lỗ ạ. Đến cuối tháng Mười Một cháu cần ba trăm sáu mươi triệu, ông ạ.</p>
+<p>Ông Khiêm im một lúc. Rồi ông nói một câu mà Vũ không ngờ được nghe từ ông.</p>
+<p class="dialogue">– Cậu nói đúng. Cái danh sách né lỗi nó không bán được ly cà phê nào. Nó chỉ thôi không đuổi khách đi.</p>
+<p class="dialogue">– Thế cháu phải làm gì?</p>
+<p class="dialogue">– Tôi không biết.</p>
+<p>Ông nói câu ấy rất bình thản, như nói giờ trên mặt đồng hồ. Vũ đứng đó, không biết nên giận hay nên cười.</p>
+<p>Chị Hằng từ đầu ngõ đi vào, tay xách hai túi nilon đựng xương ống cho nồi nước dùng ngày mai. Chị nghe được nửa câu cuối, dừng lại.</p>
+<p class="dialogue">– Cậu cứ hỏi ông ấy làm gì. Sáng nào hàng chị cũng kín bàn từ sáu giờ, người ta ăn phở xong đứng ngoài ngõ hỏi nhau đi đâu uống cà phê. Quán cậu tám giờ mới mở cửa, lúc ấy người ta đi làm hết rồi. Mở sớm ra mà bán.</p>
+<p class="dialogue">– Sáng sớm ai uống cà phê ở cái quán như của em hả chị. Khách của em là dân văn phòng, sinh viên, buổi chiều với buổi tối.</p>
+<p class="dialogue">– Thì cậu cứ ngồi đấy mà chờ buổi chiều.</p>
+<p>Chị Hằng đi tiếp, không ngoái lại. Vũ quay sang ông Khiêm, chờ ông nói gì đó về chuyện mở cửa sớm. Ông đã cúi xuống chiếc đồng hồ treo tường, kính lúp kẹp vào mắt.</p>
+<p>Đêm đó Vũ không ngủ được. Anh nằm trên tấm nệm trải ở góc kho, nghe tiếng Mai lật sách trên gác xép, và tính đi tính lại. Bỏ sáu lỗi, lỗ còn ba mươi triệu. Bỏ nốt lỗi thứ bảy, cắt menu, trả máy pha, có khi lỗ còn mười lăm. Vẫn là lỗ. Với tốc độ ấy, chưa đến ba mươi tháng Mười Một quán đã hết sạch tiền mặt, chưa nói đến ba trăm sáu mươi triệu của Trang.</p>
+<p>Anh nhớ lại câu nói của chị Hằng, rồi gạt đi lần nữa. Quán "Ga Cũ" được thiết kế cho buổi chiều: ánh nắng xiên qua cửa sổ tầng hai, đèn vàng lúc năm giờ, những bức ảnh nhà ga cũ trên tường. Bán cà phê cho người ăn phở xong lúc sáu giờ sáng thì quán anh khác gì một cái quán cóc vỉa hè.</p>
+<p>Gần hai giờ sáng, Mai thò đầu xuống từ gác xép.</p>
+<p class="dialogue">– Anh còn thức à? Anh đang đếm cái gì đấy?</p>
+<p class="dialogue">– Đếm xem còn bao nhiêu ngày.</p>
+<p class="dialogue">– Bảy mươi chín, Mai nói. Qua mười hai giờ rồi. Em đếm từ hôm chị Trang đến. Ngủ đi.</p>
+<h3 class="sec">Bảy đơn thuốc cho một cuộc đời khổ sở</h3>
+<p><em>Chuyện có thật</em></p>
+<p>Ngày 13 tháng 6 năm 1986, Harvard School, một trường trung học tư thục ở Los Angeles, tổ chức lễ tốt nghiệp. Người phát biểu là Charlie Munger, thành viên hội đồng quản trị lâu năm của trường [1][2]. Trường ấy ngày nay mang tên Harvard-Westlake, và nhiều bản kể sau này nhầm thành một bài phát biểu ở Đại học Harvard [3].</p>
+<p>Munger mở đầu bằng một lời thú nhận: ông đã nghe khoảng hai mươi bài diễn văn tốt nghiệp ở chính ngôi trường này, và chỉ nhớ được đúng một bài. Đó là bài của Johnny Carson, người dẫn chương trình truyền hình nổi tiếng của Mỹ. Carson nói rằng ông không thể chỉ cho học trò cách để hạnh phúc, nhưng ông có thể chỉ cách để chắc chắn khổ sở [1].</p>
+<p>Carson đưa ra ba đơn thuốc. Thứ nhất, dùng các chất làm thay đổi tâm trạng và nhận thức. Thứ hai, ghen tị. Thứ ba, oán hận [1]. Munger nói ông sẽ nhắc lại bài của Carson theo một cách mở rộng hơn, rồi thêm bốn đơn thuốc của riêng mình [1].</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Trước khi đọc bốn đơn thuốc của Munger, hãy thử viết thêm vào danh sách của Carson. Nếu bạn phải đứng trước một lớp học trò sắp ra đời, bạn sẽ thêm những cách nào để chắc chắn sống khổ? Viết ra ít nhất hai cách.</p></blockquote>
+<p>Đơn thứ nhất của Munger: hãy là người không đáng tin. Đừng làm đến nơi đến chốn những gì mình đã nhận làm. Ông nói chỉ cần thành thạo thói quen này thôi, bạn sẽ thừa sức xóa sạch tác dụng của mọi đức tính khác cộng lại [1].</p>
+<p>Đơn thứ hai: chỉ học từ kinh nghiệm của chính mình, và học càng ít càng tốt từ kinh nghiệm tốt hay xấu của người khác, dù là người đang sống hay người đã khuất [1].</p>
+<p>Đơn thứ ba: khi đời quật ngã bạn lần đầu, lần hai, lần ba, hãy nằm luôn xuống đó, đừng đứng dậy [1].</p>
+<p>Đơn thứ tư là đơn ông dành nhiều lời nhất. Ông kể chuyện một anh nông dân nói rằng: <em>"Giá mà tôi biết mình sẽ chết ở đâu, thì tôi sẽ không bao giờ đến chỗ đó."</em> Munger khuyên học trò, nếu muốn khổ, thì hãy phớt lờ câu nói quê mùa ấy [1].</p>
+<p>Rồi ông giải thích vì sao ông nói ngược như vậy. Đây là đoạn ông nhắc đến nhà toán học Jacobi và câu "đảo ngược, luôn luôn đảo ngược" mà chương 1 đã kể, kèm lời bình rằng nhiều bài toán khó chỉ được giải tốt nhất khi ta tiếp cận chúng từ phía ngược lại [1].</p>
+<p>Có hai điều nên để ý khi đọc lại bài này hôm nay. Thứ nhất, bảy đơn thuốc gồm ba của Carson và bốn của Munger. Báo chí kể lại thường gộp cả vào tên Munger, có bài rút lại còn năm điều [3]. Munger thì nói rõ ông mượn của Carson. Thứ hai, câu kết của bài. Munger chúc lớp học trò: mong mỗi người các em sẽ vươn cao, bằng cách mỗi ngày trong một đời dài đều nhắm thấp [1].</p>
+<h3 class="sec">Con ốc sên dưới đáy giếng</h3>
+<p><em>Câu đố</em></p>
+<p>Một con ốc sên nằm dưới đáy một cái giếng sâu 10 mét. Ban ngày nó bò lên được 3 mét. Ban đêm nó ngủ, và bị trượt xuống 2 mét. Hỏi sau bao nhiêu ngày thì con ốc ra khỏi miệng giếng?</p>
+<p>Câu trả lời đến nhanh nhất trong đầu hầu hết mọi người là 10 ngày: mỗi ngày đêm lên được 1 mét, giếng sâu 10 mét.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Đừng tính từ đáy giếng đi lên. Hãy đứng ở miệng giếng và hỏi ngược: vào buổi sáng của ngày cuối cùng, con ốc phải đang ở độ cao bao nhiêu để trong ngày hôm ấy nó bò ra được?</p></blockquote>
+<p>Đáp án ở cuối chương.</p>
+<h3 class="sec">Lá thư về một thành phố cháy trong một đêm</h3>
+<p><em>Chuyện có thật</em></p>
+<p>Gần hai nghìn năm trước Munger, một người La Mã đã viết về cùng một ý.</p>
+<p>Khoảng giữa thập niên 60 sau Công nguyên, thành phố Lugdunum ở xứ Gaul, tức thành phố Lyon của nước Pháp ngày nay, bị một đám cháy lớn thiêu rụi [4][5]. Một người bạn của nhà triết học khắc kỷ Seneca, tên là Liberalis, sinh ra ở thành phố ấy. Ông ta suy sụp khi nghe tin. Seneca viết cho một người bạn khác là Lucilius một lá thư, sau này được đánh số là Thư 91, kể về nỗi đau của Liberalis và rút ra từ đó một bài học [4].</p>
+<p>Điều làm Seneca ám ảnh là tốc độ. Bao nhiêu công trình đẹp, mỗi công trình đủ làm rạng danh cả một thành phố, chỉ một đêm là đổ sập. Giữa một thành phố ở thời huy hoàng nhất và một thành phố không còn tồn tại, theo lời Seneca, chỉ cách nhau một đêm [4][5].</p>
+<p>Từ đó Seneca khuyên: vì vậy, không có điều gì được phép là bất ngờ đối với chúng ta [4][5]. Hãy để tâm trí đi trước đến mọi chuyện có thể xảy ra, không chỉ những chuyện thường xảy ra. Ông liệt kê những điều nên ngẫm trước: lưu đày, nỗi đau bệnh tật, chiến tranh, đắm tàu [4].</p>
+<p>Lời khuyên này nghe u ám. Nhưng trong lá thư, điều Seneca nhắm tới là để tâm trí không bị đánh vào chỗ không ngờ [4].</p>
+<p>Người đời sau đặt cho cách luyện tập này một cái tên Latin là <em>praemeditatio malorum</em>, "suy tính trước điều xấu". Cần nói rõ: Seneca không dùng đúng cụm từ ấy trong lá thư. Đó là cái tên mà hậu thế đặt ra; nhiều tài liệu cho rằng nó gần với một cụm từ trong tác phẩm của Cicero, nhưng điểm này sách chưa đối chiếu được với bản gốc.</p>
+<p>Ngay cả năm xảy ra vụ cháy cũng không thống nhất giữa các nguồn: có nơi ghi năm 64, có nơi ghi năm 65 hoặc 66 [5]. Một thành phố cháy trong một đêm, mà gần hai nghìn năm sau người ta vẫn chưa chắc đó là đêm của năm nào.</p>
+<h3 class="sec">Danh sách của bác Hòa</h3>
+<p><em>Chuyện đời thường (hư cấu minh họa)</em></p>
+<p>Bác Lương Văn Hòa, 68 tuổi, ba mươi hai năm làm công nhân nhà máy dệt ở Nam Định, nghỉ hưu đã sáu năm. Hai con trai một đứa làm ở khu công nghiệp vùng Bình Dương cũ, nay thuộc Thành phố Hồ Chí Minh, một đứa ở Hà Nội, tết mới về. Vợ bác đi bán hàng nước ở cổng chợ từ sáng đến trưa. Bác ở nhà một mình, tivi bật từ bảy giờ sáng.</p>
+<p>Đứa cháu nội đầu lòng, học năm cuối đại học sư phạm, về chơi dịp nghỉ lễ Quốc khánh. Con bé thấy ông nội ngồi trước tivi suốt ba ngày, mỗi ngày chỉ đứng dậy để ăn cơm và tưới mấy chậu lan. Hôm thứ ba, con bé tắt tivi.</p>
+<p class="dialogue">– Ông ơi, cháu đố ông. Giả sử ông muốn mấy năm cuối đời buồn nhất có thể, ông sẽ làm gì?</p>
+<p>Bác Hòa nhìn cháu như nhìn đứa trẻ hỗn. Rồi bác bật cười, vì nghe câu hỏi ấy giống những câu đố mẹo mà các bạn tổ dệt hồi xưa vẫn đố nhau giờ nghỉ ca.</p>
+<blockquote><p><strong>Bạn sẽ làm gì?</strong> Nếu một người bạn thương đang sống những năm tháng như bác Hòa, bạn sẽ hỏi câu gì để họ chịu nói thật?</p></blockquote>
+<p>Bác bảo cháu cầm bút, bác đọc. Ngồi xem tivi cả ngày. Không ra khỏi nhà nếu không có việc. Giận thằng con cả vì ba tháng không gọi điện, nên cũng không gọi cho nó. Cãi với bà nhà về chuyện từ năm tám mươi mấy. Không đi khám dù đau đầu gối. Không đến đám giỗ ông Tường, bạn cùng tổ, vì ngại gặp lại mọi người khi mình đã già. Thấy cái gì mới cũng bảo "thời bọn tao không có".</p>
+<p>Bảy dòng. Đứa cháu đọc lại từng dòng, chậm rãi. Bác Hòa ngồi im, hai tay đặt trên đầu gối. Ngoài sân, bà Hòa vừa đi chợ về, đứng ở cửa nghe được dòng thứ tư, đặt làn xuống, rồi đi thẳng xuống bếp, không nói gì.</p>
+<p class="dialogue">– Cái nào ông đang làm ạ?</p>
+<p class="dialogue">– Cả bảy.</p>
+<p>Con bé không bảo ông bỏ hết. Nó học sư phạm, và nó đã thấy đủ nhiều đứa trẻ bị bắt sửa mười lỗi một lúc rồi không sửa được lỗi nào. Nó hỏi ông cái nào dễ nhất. Bác Hòa chọn hai cái. Bác bảo cái đầu gối thì để tháng sau, khi nào trời mát. Đứa cháu ghi chú bên lề: "đầu gối: tháng 10", rồi gấp tờ giấy làm tư, nhét vào khe cái khung ảnh cưới của ông bà treo trên tường, chỗ ông ngồi xem tivi nào cũng phải nhìn thấy.</p>
+<p>Chủ nhật tuần đó, bác Hòa cầm điện thoại từ tám giờ sáng, bấm số rồi tắt, bấm lại rồi tắt. Đến lần thứ ba bác mới để máy đổ chuông, rồi đứng dậy ra ngồi ngoài hiên cho đỡ ngượng với đứa cháu. Bác gọi cho con trai cả trước, lần đầu tiên trong năm. Cuộc gọi kéo dài mười một phút, hai bố con nói chủ yếu về giá phân bón và trận bóng tối hôm trước. Cuối cuộc gọi, anh con trai bảo hôm nào bố khỏe thì vào Bình Dương chơi, con mua vé máy bay cho.</p>
+<p>Còn tối thứ Ba, bác đến hội cầu lông của phường, chỗ mấy ông bạn cùng tổ dệt cũ vẫn chơi ở sân trường tiểu học từ năm giờ chiều. Bác không chơi, vì đầu gối. Bác ngồi ghế đá, cầm bình trà, xem và chê. Ông Thành, tổ trưởng tổ dệt ngày xưa, ném cho bác một quả cầu.</p>
+<p class="dialogue">– Ông Hòa đấy à? Sáu năm nay ông chết ở đâu?</p>
+<p class="dialogue">– Ở nhà xem tivi, bác đáp.</p>
+<p>Cả sân cười. Tối hôm ấy bác về nhà lúc tám giờ, bà nhà đã dọn cơm. Bà hỏi đi đâu mà về muộn thế. Bác bảo đi xem người ta đánh cầu, rồi kể một mạch đến hết bữa cơm. Bà ngồi nghe, không cãi câu nào. Đến cuối bữa, bà hỏi tờ giấy dắt ở khung ảnh viết cái gì mà sáng nay bà thấy ông đứng đọc mãi. Bác Hòa bảo không có gì, giấy của con bé. Bà nhìn bác một lúc, rồi gắp cho bác miếng cá cuối cùng trong đĩa.</p>
+<p>Đến giữa tháng Mười, bác đi khám đầu gối.</p>
+<h3 class="sec">Rút gọn</h3>
+<p>Chương này khép lại Phần I. Đây là lúc nhìn lại toàn bộ công cụ <strong>đảo mục tiêu</strong>.</p>
+<ol><li><strong>Lật câu hỏi:</strong> đổi "làm sao để được X" thành "làm sao để chắc chắn mất X".</li><li><strong>Liệt kê thật nhiều, thật cụ thể</strong>, cho phép mình cười. Carson và Munger làm điều đó trước cả một lớp học trò đang chờ lời chúc.</li><li><strong>Đánh dấu những gì đang xảy ra</strong>, tốt nhất là nhờ người khác đánh dấu giúp.</li><li><strong>Chọn ít thôi để bỏ</strong>, và bắt đầu từ cái dễ nhất. Bác Hòa chọn cuộc điện thoại, chưa chọn cái đầu gối.</li><li><strong>Kiểm tra lại kết quả bằng con số hoặc bằng việc thật</strong>, như Vũ cộng sổ.</li></ol>
+<p>Có một biến thể là cách của Seneca: thay vì hỏi "làm sao để hỏng", hỏi "nếu điều tệ nhất xảy ra đêm nay thì sao". Hỏi như vậy không làm điều tệ nhất bớt xảy ra. Nó làm bạn bớt ngã khi điều đó đến.</p>
+<p><strong>Khi nào nó sai.</strong> Đây là giới hạn lớn nhất của đảo mục tiêu, và quán "Ga Cũ" vừa chạm vào nó. Né được mọi cách thua không tự động biến thành thắng. Danh sách né lỗi giúp bạn ngừng tự làm hại mình, nhưng nó không chỉ cho bạn khách hàng đang ở đâu, cơ hội đang nằm ở giờ nào. Để tìm những thứ ấy, bạn cần những công cụ khác, và đôi khi cần một người bán phở nói thẳng với bạn điều bạn không muốn nghe.</p>
+<p>Hãy để ý một điều chung trong các câu chuyện của Phần I. Vũ, lớp 9A, nhà Thắng, bác Hòa: phần lớn những điều họ viết ra, họ đã lờ mờ biết từ trước, chỉ chưa bao giờ đặt chúng lên giấy và đánh dấu. Những thứ thật sự mới, như ba mươi mốt em sợ hỏi thầy cô hay cái gói lưu ảnh không ai nhớ, chỉ hiện ra khi đã viết hết những thứ quen. Đó là sức mạnh của đảo mục tiêu: nó biến những gì ta đã lờ mờ biết thành một danh sách không thể lờ đi được nữa.</p>
+<p>Một giới hạn nữa: danh sách sống khổ của Munger là danh sách của ông. Nó hay, nhưng không thay được danh sách của bạn. Đọc danh sách của người khác dễ chịu hơn nhiều so với tự viết, vì không ai bắt ta đánh dấu.</p>
+<h3 class="sec">Lật thử</h3>
+<p>Đây là bài tập lớn nhất của Phần I. Hãy dành cho nó ba mươi phút yên tĩnh, và lấy lại tờ giấy bạn viết ở chương 1.</p>
+<p><strong>Ví dụ mẫu:</strong></p>
+<ul><li>Câu hỏi ngược: <em>Làm sao để mười năm nữa tôi chắc chắn sống khổ?</em></li><li>Một phần danh sách: làm một công việc mình ghét chỉ vì sợ đổi; không ngủ đủ, nghĩ là bù được vào cuối tuần; giữ những người bạn làm mình mệt; giận bố mẹ mà không nói; tiêu hết tiền mỗi tháng; không bao giờ học thêm cái gì mới; hứa nhiều hơn làm.</li><li>Đánh dấu những dòng đang xảy ra: bốn trên bảy.</li><li>Nhờ người thân nhất đánh dấu: họ đánh năm, thêm dòng "hứa nhiều hơn làm" mà mình đã bỏ qua.</li><li>Chọn một dòng dễ nhất: tối nay đi ngủ trước mười hai giờ, ba tối liền.</li><li>Viết ra cái giá nếu không đổi gì: mười năm nữa, những gì sẽ còn y nguyên?</li></ul>
+<p>Rồi làm thêm phần của Seneca: chọn một điều quan trọng nhất trong đời bạn lúc này, công việc, sức khỏe của bố mẹ, một mối quan hệ, và viết ba dòng: <em>nếu nó thay đổi chỉ sau một đêm, tôi sẽ cần những gì? Tôi có những gì rồi? Tôi có thể chuẩn bị gì ngay từ tuần này?</em></p>
+<p>Một lời khuyên khi làm bài này: đừng làm vào buổi tối muộn, khi bạn đang mệt. Danh sách sống khổ viết lúc mười một giờ đêm thường chỉ toàn những lời tự trách, nặng nề và chung chung. Viết vào buổi sáng, sau khi đã ăn, đã uống một ly gì đó, bạn sẽ viết được những dòng cụ thể hơn, và có sức hơn để đánh dấu.</p>
+<p>Đặt hai tờ giấy mới cạnh tờ giấy ở chương 1. Nếu có một dòng xuất hiện ở cả ba tờ, dưới những cách nói khác nhau, đó là chỗ nên bắt đầu.</p>
+<h3 class="sec">Đáp án câu đố</h3>
+<p>Đứng ở miệng giếng mà nhìn xuống. Ngày cuối cùng, con ốc chỉ cần bắt đầu từ độ cao 7 mét: bò thêm 3 mét là ra khỏi giếng, không còn đêm nào để trượt xuống. Mỗi ngày đêm trước đó nó lên được 1 mét, nên nó cần 7 ngày đêm để lên tới 7 mét. Sáng ngày thứ 8 nó bắt đầu ở 7 mét, và ra khỏi giếng trong ngày hôm ấy.</p>
+<p>Đáp án là 8 ngày. Con số 10 sai vì nó coi ngày cuối giống mọi ngày khác.</p>
+<h3 class="sec">Nguồn</h3>
+<p class="src">[1] Charlie Munger, bài phát biểu tại lễ tốt nghiệp Harvard School, Los Angeles, 13/6/1986, bản chép lại: <a href="https://fs.blog/great-talks/guarantee-life-misery-charlie-munger/" rel="noopener">https://fs.blog/great-talks/guarantee-life-misery-charlie-munger/</a> và <a href="https://jamesclear.com/great-speeches/how-to-guarantee-a-life-of-misery-by-charlie-munger" rel="noopener">https://jamesclear.com/great-speeches/how-to-guarantee-a-life-of-misery-by-charlie-munger</a>. Nguyên văn: "First, be unreliable. Do not faithfully do what you have engaged to do."; "I wish I knew where I was going to die, and then I'd never go there."; "Master this one habit and you will more than counterbalance the combined effect of all your virtues, however great."; "Gentlemen, may each of you rise high by spending each day of a long life aiming low."</p>
+<p class="src">[2] Như [1], phần giới thiệu của bản chép lại.</p>
+<p class="src">[3] CNBC, "Charlie Munger: Avoid these 5 things that guarantee a miserable life", 19/4/2018: <a href="https://www.cnbc.com/2018/04/19/charlie-munger-avoid-these-5-things-that-guarantee-a-miserable-life.html" rel="noopener">https://www.cnbc.com/2018/04/19/charlie-munger-avoid-these-5-things-that-guarantee-a-miserable-life.html</a></p>
+<p class="src">[4] Seneca, <em>Thư gửi Lucilius</em>, Thư 91, bản dịch tiếng Anh của Richard M. Gummere: <a href="https://standardebooks.org/ebooks/seneca/moral-letters-to-lucilius/richard-m-gummere/text/letter-91" rel="noopener">https://standardebooks.org/ebooks/seneca/moral-letters-to-lucilius/richard-m-gummere/text/letter-91</a>. Nguyên văn: "Therefore, nothing ought to be unexpected by us."; "only a single night elapsed between the city at its greatest and the city nonexistent."; "Exile, the torture of disease, wars, shipwreck—we must think on these."</p>
+<p class="src">[5] Jacques Bailly, bình chú Thư 91 (bản Latin), Đại học Vermont: <a href="https://www.uvm.edu/~jbailly/commentaries/letters/seneca91.html" rel="noopener">https://www.uvm.edu/~jbailly/commentaries/letters/seneca91.html</a>. Nguyên văn Latin: "Ideo nihil nobis inprovisum esse debet."</p>
+<div class="ch-foot"><a class="totop" href="#top">↑ Về đầu trang</a></div>
+</article>
+    </div>
+    <footer class="page-footer">
+      <div class="fin">
+        <p class="fbrand">Muốn Thắng, Hãy Hỏi Cách Thua</p>
+        <p>Sách tư duy ứng dụng — tư duy ngược qua những câu chuyện ngắn. 5 chương · ~18k từ (18.316 từ). Đang tiếp tục.</p>
+        <p class="fmeta">© 2026 Sách tư duy ứng dụng.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  // theme toggle (mặc định sáng, lưu localStorage)
+  var THEME_KEY='novel-theme';
+  var root=document.documentElement;
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'){root.setAttribute('data-theme','dark');}
+    else{root.removeAttribute('data-theme');}
+  }
+  var saved=null;
+  try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  applyTheme(saved==='dark'?'dark':'light');
+  if(themeBtn){
+    themeBtn.addEventListener('click',function(){
+      var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+      applyTheme(next);
+      try{localStorage.setItem(THEME_KEY,next);}catch(e){}
+    });
+  }
+
+  var bar=document.getElementById('progress');
+  var doc=document.documentElement;
+  function onScroll(){
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(doc.scrollTop||document.body.scrollTop)/h*100:0;
+    bar.style.width=p+'%';
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  onScroll();
+
+  // mobile toc toggle
+  var btn=document.getElementById('menuBtn');
+  var panel=document.getElementById('tocMobile');
+  if(btn&&panel){
+    btn.addEventListener('click',function(){panel.classList.toggle('show');});
+    panel.addEventListener('click',function(e){
+      if(e.target.closest('a')){panel.classList.remove('show');}
+    });
+  }
+
+  // active chapter highlight in side nav
+  var links=[].slice.call(document.querySelectorAll('.side-nav .toc-list a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var arts=[].slice.call(document.querySelectorAll('article.chapter'));
+  if('IntersectionObserver' in window && links.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if(en.isIntersecting){
+          links.forEach(function(a){a.classList.remove('active');});
+          var a=map[en.target.id];
+          if(a){a.classList.add('active');
+            a.scrollIntoView({block:'nearest'});}
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px',threshold:0});
+    arts.forEach(function(a){io.observe(a);});
+  }
+})();
+
+</script>
+</body>
+</html>
