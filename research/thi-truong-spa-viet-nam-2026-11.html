@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Báo cáo thị trường spa & thẩm mỹ Việt Nam — 26/11/2026</title>
+<style>
+  :root{
+    --bg:#f5f5f7; --card:#ffffff; --ink:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+    --blue:#0071e3; --blue-soft:#e8f2fd; --green:#248a3d; --green-soft:#e9f6ec;
+    --orange:#b25000; --orange-soft:#fff4e5; --red:#d70015; --red-soft:#fdecee;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:-.022em}
+  .wrap{max-width:980px;margin:0 auto;padding:56px 22px 96px}
+  header.cover{text-align:center;padding:40px 10px 48px}
+  header.cover .kicker{font-size:14px;font-weight:600;color:var(--blue);letter-spacing:0;margin-bottom:10px}
+  header.cover h1{margin:0 0 14px;font-size:56px;line-height:1.07;font-weight:700;letter-spacing:-.015em;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  header.cover p{margin:0 auto;max-width:640px;font-size:21px;line-height:1.38;color:var(--muted);letter-spacing:.011em}
+  .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:26px;font-size:13px}
+  .meta span{background:var(--card);border-radius:980px;padding:6px 14px;color:var(--ink)}
+  nav.toc{background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-radius:18px;padding:20px 28px;margin-bottom:28px;position:sticky;top:12px;z-index:5;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  nav.toc strong{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  nav.toc ol{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px}
+  nav.toc a{color:var(--blue);text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  section{background:var(--card);border-radius:18px;padding:40px 44px;margin-bottom:24px}
+  h2{margin:0 0 18px;font-size:32px;line-height:1.125;font-weight:700;letter-spacing:.004em;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  h3{margin:30px 0 10px;font-size:21px;font-weight:600;letter-spacing:.011em}
+  p{margin:10px 0}
+  table{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0 8px;letter-spacing:-.01em}
+  th,td{text-align:left;vertical-align:top;padding:12px 12px;border-bottom:1px solid #e8e8ed}
+  th{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  td.num{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:500}
+  .tbl{overflow-x:auto}
+  .callout{border-radius:14px;padding:18px 22px;margin:18px 0;font-size:16px}
+  .callout.key{background:var(--blue-soft)}
+  .callout.warn{background:var(--orange-soft)}
+  .callout.bad{background:var(--red-soft)}
+  .callout.good{background:var(--green-soft)}
+  .callout strong:first-child{color:inherit}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:980px;white-space:nowrap;letter-spacing:0}
+  .t-high{background:var(--green-soft);color:var(--green)}
+  .t-mid{background:var(--orange-soft);color:var(--orange)}
+  .t-low{background:var(--red-soft);color:var(--red)}
+  .verdict{font-weight:600}
+  .v-go{color:var(--green)} .v-mid{color:var(--orange)} .v-no{color:var(--red)}
+  ul,ol{padding-left:22px} li{margin:6px 0}
+  .muted{color:var(--muted);font-size:14px}
+  code{font-family:"SF Mono",SFMono-Regular,Menlo,monospace;font-size:13px;background:var(--bg);padding:2px 6px;border-radius:6px}
+  .sources{font-size:13px;word-break:break-all;color:var(--muted)}
+  .sources li{margin:4px 0}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+  @media (max-width:734px){
+    header.cover h1{font-size:36px} header.cover p{font-size:18px}
+    section{padding:28px 20px;border-radius:14px} h2{font-size:26px}
+    nav.toc{position:static}
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#000;--card:#1d1d1f;--ink:#f5f5f7;--muted:#a1a1a6;--line:#424245;
+      --blue:#2997ff;--blue-soft:#0a2540;--green:#30d158;--green-soft:#0f2e17;--orange:#ff9f0a;--orange-soft:#33240a;--red:#ff453a;--red-soft:#3a1414}
+    th,td{border-bottom-color:#333336}
+    nav.toc{background:rgba(29,29,31,.72)}
+    .meta span{background:var(--card)}
+  }
+  @media print{body{background:#fff} nav.toc{position:static} section{break-inside:avoid;padding:20px 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">ai-mkt-team · Báo cáo nghiên cứu thị trường</div>
+  <h1>Ngành spa &amp; thẩm mỹ tại Việt Nam</h1>
+  <p>Đánh giá cơ hội và so sánh 3 thị trường Việt Nam, Campuchia, Philippines: quy mô, cấu trúc ngành, đối thủ, hành vi khách, kênh, pháp lý, giá.</p>
+  <div class="meta">
+    <span>📅 26/11/2026</span>
+    <span>🔭 Nghiên cứu: Henry</span>
+    <span>🧠 Đánh giá: Zidane</span>
+    <span>💱 25.800 VND/USD (VCB 11/11/2026)</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <strong>Mục lục</strong>
+  <ol>
+    <li><a href="#tomtat">1. Tóm tắt</a></li>
+    <li><a href="#vimo">2. Vĩ mô &amp; quy mô</a></li>
+    <li><a href="#cautruc">3. Cấu trúc ngành</a></li>
+    <li><a href="#doithu">4. Đối thủ</a></li>
+    <li><a href="#khach">5. Hành vi khách</a></li>
+    <li><a href="#kenh">6. Kênh</a></li>
+    <li><a href="#phaply">7. Pháp lý &amp; rủi ro</a></li>
+    <li><a href="#gia">8. Giá</a></li>
+    <li><a href="#danhgia">9. Đánh giá cơ hội</a></li>
+    <li><a href="#sosanh">10. So sánh 3 nước</a></li>
+    <li><a href="#quyetdinh">11. Quyết định</a></li>
+    <li><a href="#nguon">12. Nguồn</a></li>
+  </ol>
+</nav>
+
+<section id="tomtat">
+  <h2>1. Tóm tắt điều hành</h2>
+  <div class="callout key">
+    <strong>Kết luận:</strong> Việt Nam có <strong>vĩ mô mạnh nhất</strong> trong 3 nước, ngành <strong>rất phân mảnh</strong> và đang <strong>khủng hoảng niềm tin</strong>. Đây vừa là rủi ro, vừa là khoảng trống cho một thương hiệu minh bạch. Sếp đã chốt phân khúc lõi là <strong>spa chăm da không xâm lấn</strong> và áp dụng <strong>danh sách cấm</strong> ngay từ đầu. Zidane khuyến nghị thứ tự thị trường <strong>Việt Nam → Campuchia → Philippines</strong>; sếp chưa chốt.
+  </div>
+  <ul>
+    <li><strong>Vĩ mô:</strong> 102,3 triệu dân, GDP/người 5.026 USD (2025). GDP tăng 8,02% năm 2025 và 9,01% trong 9 tháng 2026.</li>
+    <li><strong>Wellness (GWI 2024):</strong> 27,3 tỉ USD, hạng 31, tăng 14,2%, nhanh gần gấp đôi Philippines.</li>
+    <li><strong>Phân mảnh:</strong> khoảng 10.000 cơ sở trên cả nước; chuỗi lớn nhất chỉ 41–100 điểm. Chưa có thương vụ quỹ đầu tư lớn nào.</li>
+    <li><strong>Khủng hoảng niềm tin:</strong> chủ chuỗi Mailisa bị khởi tố tội buôn lậu (11/2025). Hospital SW hút mỡ chui cho hơn 500 khách và người làm marketing cũng bị khởi tố. Bệnh viện Da liễu Trung ương nhận 1–3 ca biến chứng mỗi ngày.</li>
+    <li><strong>Pháp lý siết mạnh năm 2026:</strong> Nghị định 58/2026 đưa tiêm và chiếu tia vào ngành nghề có điều kiện; Luật Quảng cáo sửa đổi quy định trách nhiệm KOL/KOC; Nghị định 87 và 90/2026 thay khung xử phạt.</li>
+    <li><strong>Kênh:</strong> Facebook 79 triệu, Zalo 78,3 triệu, TikTok 76,1 triệu. TikTok Shop chiếm khoảng 50% doanh số beauty trên sàn.</li>
+  </ul>
+</section>
+
+<section id="vimo">
+  <h2>2. Vĩ mô &amp; quy mô thị trường</h2>
+  <div class="tbl"><table>
+    <tr><th>Chỉ số</th><th>Giá trị</th><th>Năm · nguồn</th><th>Tin cậy</th></tr>
+    <tr><td>Dân số</td><td class="num">102,3 triệu · tuổi trung vị 33,4</td><td>2025 · NSO, DataReportal</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tỉ lệ đô thị</td><td class="num">38,2% (NSO) · 41,1% (UN)</td><td>2024–2025</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>TP.HCM (sau sáp nhập)</td><td class="num">≈14 triệu</td><td>2025</td><td><span class="tag t-mid">TB–cao</span></td></tr>
+    <tr><td>Đà Nẵng (sau hợp nhất)</td><td class="num">3,07 triệu</td><td>2025</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>GDP/người</td><td class="num">4.700 (2024) · 5.026 USD (2025)</td><td>NSO, VCCI</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tăng trưởng GDP</td><td class="num">7,09% (2024) · 8,02% (2025) · 9,01% (9 tháng 2026)</td><td>NSO</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Thu nhập hộ/tháng</td><td class="num">21,9 triệu · TP.HCM 27,5 · Hà Nội 25,9 triệu đ</td><td>2026 · Q&amp;Me</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Khách quốc tế</td><td class="num">21,2 triệu (+20,4%) · Hàn 4,3 triệu</td><td>2025</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td><strong>Kinh tế wellness</strong></td><td class="num"><strong>27,29 tỉ USD · hạng 31 · +14,2%</strong></td><td>2024 · GWI</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Spa (GlobalData)</td><td class="num">1,63 tỉ USD · CAGR 13,9%</td><td>2024</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Beauty &amp; personal care (sản phẩm)</td><td class="num">≈2,63–2,74 tỉ USD</td><td>2025 · Euromonitor/Statista</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Mỹ phẩm bán trên sàn TMĐT</td><td class="num">≈74,5 nghìn tỉ đ (≈2,9 tỉ USD), ngành hàng số 1</td><td>2025 · Metric</td><td><span class="tag t-mid">TB–cao</span></td></tr>
+    <tr><td>Phẫu thuật thẩm mỹ</td><td class="num">355,6 triệu USD</td><td>2024 · IMARC</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Medical spa</td><td class="num">107,3 triệu USD</td><td>2025 · IMARC</td><td><span class="tag t-low">Thấp</span></td></tr>
+  </table></div>
+  <p class="muted">GWI không làm báo cáo riêng cho Việt Nam, nên chưa có số spa đáng tin như Philippines.</p>
+</section>
+
+<section id="cautruc">
+  <h2>3. Cấu trúc ngành</h2>
+  <h3>Số cơ sở tại TP.HCM (Sở Y tế, 08/2024, địa giới cũ)</h3>
+  <div class="tbl"><table>
+    <tr><th>Loại cơ sở</th><th>Số lượng</th></tr>
+    <tr><td>Bệnh viện chuyên khoa thẩm mỹ</td><td class="num">37</td></tr>
+    <tr><td>Khoa thẩm mỹ trong bệnh viện</td><td class="num">31</td></tr>
+    <tr><td>Phòng khám chuyên khoa thẩm mỹ</td><td class="num">290</td></tr>
+    <tr><td>Phòng khám chuyên khoa da liễu</td><td class="num">414</td></tr>
+    <tr><td>Cơ sở thẩm mỹ không thuộc ngành y (spa, chăm sóc da…)</td><td class="num">3.890+</td></tr>
+  </table></div>
+  <p>Toàn quốc ước khoảng <strong>10.000 cơ sở</strong>, trong đó hơn 85% chỉ có giấy phép kinh doanh cấp quận (tin cậy thấp).</p>
+  <h3>Phân khúc quan sát được</h3>
+  <div class="tbl"><table>
+    <tr><th>Phân khúc</th><th>Ví dụ</th><th>Ghi chú</th></tr>
+    <tr><td>Gội đầu dưỡng sinh, massage</td><td>Dưỡng sinh Cô Ba, Queen Spa, Midori</td><td>99.000–500.000 đ</td></tr>
+    <tr><td>Spa chăm da tiện lợi</td><td>a.SENSE, Hasaki Clinic &amp; Spa</td><td>Đặt ở tầng trệt chung cư, khu dân cư</td></tr>
+    <tr><td>Chuỗi thẩm mỹ viện mạnh ở tỉnh</td><td>SeoulSpa, Diva, Ngọc Dung, Mailisa</td><td>Phun xăm, trị nám, trắng da; có nhượng quyền</td></tr>
+    <tr><td>Phòng khám da liễu / thẩm mỹ</td><td>O2 Skin, Wedo, Dr. Choice</td><td>Trị mụn, nám, laser, tiêm</td></tr>
+    <tr><td>Bệnh viện thẩm mỹ</td><td>Thu Cúc, Kangnam, JW, Gangwhoo</td><td>Phẫu thuật thẩm mỹ</td></tr>
+    <tr><td>Khoa da liễu bệnh viện tư</td><td>Tâm Anh, Vinmec</td><td>Định vị y khoa</td></tr>
+    <tr><td>Spa khách sạn</td><td>InterContinental, Lotte, New World</td><td>1,45–2,05 triệu đ</td></tr>
+  </table></div>
+</section>
+
+<section id="doithu">
+  <h2>4. Đối thủ chính</h2>
+  <div class="tbl"><table>
+    <tr><th>Tên</th><th>Phân khúc</th><th>Chi nhánh</th><th>Giá công khai</th><th>Ghi chú</th></tr>
+    <tr><td><strong>SeoulSpa / SeoulCenter</strong></td><td>Spa + phòng khám da liễu + phòng khám thẩm mỹ</td><td class="num">41 (34 spa)</td><td>Không công bố</td><td>Mạnh ở tỉnh miền Nam, miền Trung; có nhượng quyền</td></tr>
+    <tr><td><strong>a.SENSE</strong></td><td>Chăm da tiện lợi gần nhà</td><td class="num">100 (sau 2 năm)</td><td>—</td><td>Mục tiêu 2.000 điểm chạm; app thành viên</td></tr>
+    <tr><td><strong>Ngọc Dung</strong></td><td>Thẩm mỹ viện, từ 1998</td><td class="num">16</td><td>Trị nám/mụn từ 390.000 đ; ưu đãi kéo khách 168.000 đ</td><td>Tự nhận hơn 20.000 khách/năm</td></tr>
+    <tr><td><strong>Diva</strong></td><td>Chuỗi spa / thẩm mỹ viện</td><td class="num">30+ (số cũ)</td><td>—</td><td>Mạnh ở miền Tây</td></tr>
+    <tr><td><strong>Mailisa</strong></td><td>Thẩm mỹ viện + mỹ phẩm</td><td class="num">17</td><td>—</td><td>Doanh thu 215 tỉ đ, biên gộp 86–89%; chủ chuỗi bị khởi tố 21/11/2025</td></tr>
+    <tr><td><strong>O2 Skin</strong></td><td>Phòng khám trị mụn</td><td class="num">4 (TP.HCM)</td><td>Trị mụn 0,4–3 triệu đ/lượt</td><td>Đóng chi nhánh Cần Thơ ngày 30/11/2026</td></tr>
+    <tr><td><strong>Kangnam</strong></td><td>Bệnh viện thẩm mỹ</td><td class="num">≈9 tỉnh/thành</td><td>Nâng mũi 28,8 triệu; nâng ngực 51–84 triệu</td><td>Tên Hàn</td></tr>
+    <tr><td><strong>Thu Cúc</strong></td><td>Bệnh viện thẩm mỹ</td><td class="num">—</td><td>Không hiện giá</td><td>Bệnh viện ở TP.HCM rộng hơn 6.000 m²</td></tr>
+    <tr><td><strong>JW Hàn Quốc</strong></td><td>Bệnh viện thẩm mỹ</td><td class="num">—</td><td>—</td><td>Từng bị Thanh tra Bộ Y tế xử phạt vì quảng cáo</td></tr>
+    <tr><td><strong>Hasaki Clinic &amp; Spa</strong></td><td>Spa gắn chuỗi bán lẻ mỹ phẩm</td><td class="num">≈17</td><td>—</td><td>Có nhà đầu tư nước ngoài</td></tr>
+    <tr><td><strong>Wedo Skin Clinic</strong></td><td>Phòng khám da liễu có phép</td><td class="num">2</td><td>—</td><td>Nhắm khách quốc tế</td></tr>
+    <tr><td>SPA InterContinental</td><td>Spa khách sạn 5 sao</td><td class="num">1</td><td>1,45 triệu đ/60 phút</td><td>Khách thu nhập cao</td></tr>
+  </table></div>
+  <p class="muted">Chưa xác minh được: Gangwhoo, Emer, Mega Gangnam, Eva, Doctor Laser, Á Âu, Medic, Ohara, Fob. Tên Hàn rất phổ biến nhưng chủ yếu do doanh nghiệp Việt vận hành.</p>
+</section>
+
+<section id="khach">
+  <h2>5. Hành vi khách hàng</h2>
+  <ul>
+    <li><strong>Khách chính là nữ.</strong> Nam giới cũng làm đẹp trước Tết. Việt kiều về ăn Tết là nhóm khách chi lớn.</li>
+    <li><strong>Mùa Tết:</strong> tiệm phun xăm tăng gấp đôi khách, salon tăng 2–3 lần, giá tăng khoảng 20%. Ý định chi nhiều hơn cho làm đẹp dịp Tết giảm khoảng 7 điểm so với 2023 (Cốc Cốc).</li>
+    <li><strong>Dịch vụ nổi bật trong menu:</strong> trị mụn, trị nám, phun xăm và điêu khắc, triệt lông, filler, botox gọn hàm, căng chỉ, hút mỡ, giảm béo.</li>
+    <li><strong>K-beauty:</strong> tên Hàn rất phổ biến. Hàn Quốc đón 2,01 triệu bệnh nhân nước ngoài năm 2025, Việt Nam nằm trong nhóm dẫn đầu (chưa có số riêng).</li>
+    <li><strong>Khách quốc tế đến làm đẹp:</strong> TP.HCM đang được quảng bá là điểm đến; khách wellness tăng khoảng 12%/năm (2017–2024).</li>
+    <li><strong>Chi mỹ phẩm:</strong> phần đông hài lòng với mức 200.000–500.000 đ; 31% mua online.</li>
+  </ul>
+</section>
+
+<section id="kenh">
+  <h2>6. Kênh marketing &amp; thanh toán</h2>
+  <div class="tbl"><table>
+    <tr><th>Kênh</th><th>Quy mô</th><th>Ghi chú</th></tr>
+    <tr><td>Internet</td><td class="num">85,6 triệu (84,2%)</td><td>DataReportal cuối 2025</td></tr>
+    <tr><td><strong>Facebook</strong></td><td class="num">79,0 triệu (+7,2%)</td><td>Trục thu lead</td></tr>
+    <tr><td><strong>Zalo</strong></td><td class="num">78,3 triệu người dùng/tháng</td><td>Nhắc lịch, chăm sóc khách, ZNS</td></tr>
+    <tr><td>Messenger</td><td class="num">57,8 triệu</td><td>—</td></tr>
+    <tr><td><strong>TikTok</strong> (18+)</td><td class="num">76,1 triệu</td><td>Có thể bị phóng đại</td></tr>
+    <tr><td>YouTube</td><td class="num">62,1 triệu</td><td>—</td></tr>
+    <tr><td>Instagram</td><td class="num">11,7 triệu</td><td>Nhỏ hơn nhiều so với Philippines</td></tr>
+    <tr><td>TikTok Shop (beauty)</td><td class="num">≈50% doanh số beauty trên sàn</td><td>Q4/2025, tăng từ 40%</td></tr>
+    <tr><td>Thanh toán QR</td><td class="num">+124% về giá trị</td><td>2025</td></tr>
+    <tr><td>Trả góp</td><td>Chưa thấy chương trình công khai cho spa/thẩm mỹ</td><td>—</td></tr>
+  </table></div>
+  <p>Đối thủ thu lead chủ yếu qua <strong>hotline cộng ưu đãi giá thấp</strong> (Ngọc Dung 168.000 đ). Vụ Hospital SW cho thấy kiểu <strong>quảng cáo mạng xã hội cộng video khách giả</strong> đã bị xử lý hình sự.</p>
+</section>
+
+<section id="phaply">
+  <h2>7. Pháp lý &amp; rủi ro</h2>
+  <div class="tbl"><table>
+    <tr><th>Văn bản / hạng mục</th><th>Nội dung chính</th><th>Tin cậy</th></tr>
+    <tr><td>Luật Khám bệnh chữa bệnh 2023</td><td>Chỉ bệnh viện, khoa thẩm mỹ và phòng khám chuyên khoa thẩm mỹ được làm thẩm mỹ y khoa</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Nghị định 96/2023</td><td>Spa không dùng thuốc tê dạng tiêm thì không cần giấy phép y tế. Bản sửa (mọi can thiệp xâm lấn phải làm tại cơ sở khám chữa bệnh) <strong>chưa ban hành</strong></td><td><span class="tag t-mid">TB, cần luật sư</span></td></tr>
+    <tr><td><strong>Nghị định 58/2026</strong> (15/03/2026)</td><td>Tiêm, chích, <strong>chiếu tia, sóng, đốt</strong>, phun xăm, hút mỡ, giảm béo thành ngành nghề kinh doanh có điều kiện an ninh trật tự</td><td><span class="tag t-mid">TB–cao</span></td></tr>
+    <tr><td>Luật Quảng cáo sửa đổi 75/2025 (01/01/2026)</td><td>KOL/KOC là “người chuyển tải sản phẩm quảng cáo”, phải gắn nhãn quảng cáo và xác minh bên thuê</td><td><span class="tag t-mid">TB–cao</span></td></tr>
+    <tr><td>Nghị định 87/2026 (thay Nghị định 38/2021)</td><td>Phạt quảng cáo; bổ sung mức phạt khi quảng cáo mỹ phẩm dùng hình ảnh bác sĩ</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Nghị định 90/2026 (15/05/2026)</td><td>Xử phạt hành chính trong lĩnh vực y tế, thay một phần Nghị định 117/2020</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Sở hữu nước ngoài</td><td>Phòng khám không giới hạn tỉ lệ vốn ngoại; vốn tối thiểu cho cơ sở chuyên khoa ≈200.000 USD (có thể đã cũ)</td><td><span class="tag t-low">Thấp–TB</span></td></tr>
+  </table></div>
+  <div class="callout bad">
+    <strong>Các vụ việc gần đây:</strong>
+    <ul>
+      <li>TP.HCM 8 tháng/2024: phạt hơn 7 tỉ đ; <strong>24,7%</strong> cơ sở được kiểm tra có vi phạm.</li>
+      <li>01/2025: salon tóc dùng laser và tiêm; spa tiêm “thải độc gan” khiến khách sốc phản vệ; căng chỉ khi chưa có phép.</li>
+      <li><strong>Hospital SW (2025):</strong> hút mỡ chui cho hơn 500 khách, thu gần 10 tỉ đ; 3 người bị khởi tố, trong đó có người làm marketing.</li>
+      <li><strong>Mailisa (11/2025):</strong> vợ chồng chủ chuỗi bị khởi tố tội buôn lậu; phát hiện 163 sản phẩm không rõ nguồn gốc.</li>
+      <li>Bệnh viện Da liễu Trung ương nhận 1–3 ca biến chứng làm đẹp phải nhập viện mỗi ngày.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="gia">
+  <h2>8. Giá tham khảo</h2>
+  <div class="tbl"><table>
+    <tr><th>Dịch vụ</th><th>VND</th><th>USD</th></tr>
+    <tr><td>Gội đầu dưỡng sinh</td><td class="num">99.000–400.000</td><td class="num">3,8–15,5</td></tr>
+    <tr><td>Massage 60 phút (day spa)</td><td class="num">299.000–500.000</td><td class="num">11,6–19,4</td></tr>
+    <tr><td>Spa khách sạn 5 sao</td><td class="num">1,45–2,05 triệu</td><td class="num">56–79</td></tr>
+    <tr><td>Facial</td><td class="num">0,5–10 triệu</td><td class="num">19–388</td></tr>
+    <tr><td>Trị mụn</td><td class="num">0,4–3 triệu</td><td class="num">15,5–116</td></tr>
+    <tr><td>Trị nám / laser</td><td class="num">390.000–4,4 triệu</td><td class="num">15–171</td></tr>
+    <tr><td>Triệt lông nách (gói)</td><td class="num">0,3–1,5 triệu</td><td class="num">11,6–58</td></tr>
+    <tr><td>Triệt lông toàn thân</td><td class="num">5–25 triệu</td><td class="num">194–969</td></tr>
+    <tr><td>Phun xăm / điêu khắc</td><td class="num">0,59–8 triệu</td><td class="num">23–310</td></tr>
+    <tr><td>Botox gọn hàm</td><td class="num">4,5–9 triệu</td><td class="num">174–349</td></tr>
+    <tr><td>Filler</td><td class="num">3–10 triệu/cc</td><td class="num">116–388</td></tr>
+    <tr><td>Nâng mũi</td><td class="num">28,8–80 triệu</td><td class="num">1.116–3.101</td></tr>
+    <tr><td>Cắt mí</td><td class="num">7,2–35 triệu</td><td class="num">279–1.357</td></tr>
+    <tr><td>Nâng ngực</td><td class="num">51–150 triệu</td><td class="num">1.977–5.814</td></tr>
+    <tr><td>Hút mỡ</td><td class="num">33,75–90 triệu</td><td class="num">1.308–3.488</td></tr>
+    <tr><td>Căng chỉ</td><td colspan="2"><em>Chưa có nguồn</em></td></tr>
+  </table></div>
+  <p class="muted">Giá phẫu thuật chủ yếu lấy từ blog Finhay và bài của chuỗi nhà thuốc, không phải bảng giá chính thức; tin cậy thấp–trung bình. Giá O2 Skin lấy từ web chính thức.</p>
+</section>
+
+<section id="danhgia">
+  <h2>9. Đánh giá cơ hội (Zidane)</h2>
+  <div class="tbl"><table>
+    <tr><th>Phân khúc</th><th>Cạnh tranh</th><th>Rủi ro pháp lý</th><th>Kết luận</th></tr>
+    <tr><td>Gội đầu / massage</td><td>Rất dày</td><td>Thấp</td><td class="verdict v-mid">Chỉ làm dịch vụ phụ</td></tr>
+    <tr><td>Day spa</td><td>Dày</td><td>Thấp</td><td class="verdict v-mid">Không ưu tiên</td></tr>
+    <tr><td><strong>Spa chăm da không xâm lấn</strong></td><td>a.SENSE 100 điểm, Hasaki khoảng 17</td><td>Trung bình (laser/IPL đang là vùng xám theo Nghị định 58/2026)</td><td class="verdict v-go">Vào, mức 1 (sếp đã chốt)</td></tr>
+    <tr><td><strong>Phòng khám da liễu có phép</strong></td><td>414 phòng khám ở TP.HCM</td><td>Cần giấy phép khám chữa bệnh và bác sĩ có chứng chỉ</td><td class="verdict v-go">Vào, mức 2</td></tr>
+    <tr><td>Phòng khám thẩm mỹ (filler, botox, căng chỉ)</td><td>290 phòng khám</td><td>Cao</td><td class="verdict v-mid">Để sau</td></tr>
+    <tr><td>Phẫu thuật thẩm mỹ</td><td>37 bệnh viện</td><td>Rất cao (tử vong, khởi tố)</td><td class="verdict v-no">Tránh</td></tr>
+  </table></div>
+
+  <h3>Rủi ro xếp hạng</h3>
+  <ol>
+    <li><strong>Ranh giới pháp lý chưa ổn định</strong>: chưa rõ dịch vụ nào spa được phép làm.</li>
+    <li><strong>Rủi ro hình sự với người làm marketing</strong> (vụ Hospital SW, Luật Quảng cáo sửa đổi về KOL).</li>
+    <li><strong>Khủng hoảng niềm tin cả ngành</strong> làm chi phí có khách tăng.</li>
+    <li><strong>Nguồn gốc mỹ phẩm và vật tư</strong> (bài học Mailisa).</li>
+    <li><strong>Cạnh tranh giá</strong> và chuỗi phủ dày.</li>
+  </ol>
+
+  <h3>Định vị đề xuất</h3>
+  <div class="callout good"><strong>“Chăm da chuẩn bác sĩ, minh bạch 100%”</strong>: công khai giấy phép, chứng chỉ hành nghề của bác sĩ, hóa đơn nguồn gốc sản phẩm; không dùng ảnh trước–sau dàn dựng. Đây là đối trọng trực tiếp với kiểu làm của Mailisa và Hospital SW.</div>
+
+  <h3>Kênh &amp; mô hình</h3>
+  <ul>
+    <li><strong>Lead:</strong> Facebook và Zalo → lead form hoặc Messenger → telesale gọi → Zalo OA/ZNS nhắc lịch và chăm sóc sau liệu trình.</li>
+    <li><strong>Nhận biết:</strong> TikTok, nội dung giáo dục về da; clip có KOC phải gắn nhãn quảng cáo. TikTok Shop để sau, khi đã có dòng sản phẩm riêng.</li>
+    <li><strong>Mô hình:</strong> 1 cơ sở flagship ở TP.HCM, chứng minh hiệu quả kinh doanh trong 12–18 tháng, sau đó lên chuỗi 3–5 điểm. <strong>Không nhượng quyền năm đầu.</strong></li>
+  </ul>
+</section>
+
+<section id="sosanh">
+  <h2>10. So sánh 3 thị trường</h2>
+  <div class="tbl"><table>
+    <tr><th>Tiêu chí</th><th>🇻🇳 Việt Nam</th><th>🇰🇭 Campuchia</th><th>🇵🇭 Philippines</th></tr>
+    <tr><td>Dân số</td><td>102,3 triệu</td><td>17,85 triệu</td><td>112,7 triệu (NCR 14 triệu)</td></tr>
+    <tr><td>GDP/người</td><td>5.026 USD</td><td>≈2.948 USD</td><td>≈4.321 USD</td></tr>
+    <tr><td>Tăng trưởng GDP</td><td><strong>8,02% · 9,01% (9 tháng 2026)</strong></td><td>4,8% · 4,3% (dự báo)</td><td>4,4% · 2,8% (Q1/2026)</td></tr>
+    <tr><td>Wellness (GWI 2024)</td><td>27,3 tỉ USD · hạng 31 · +14,2%</td><td>3,24 tỉ USD · hạng 81</td><td>47,3 tỉ USD · hạng 23 · +7,3%</td></tr>
+    <tr><td>Quy mô spa</td><td>GWI không tách số; ≈1,63 tỉ USD (GlobalData)</td><td>Chưa có số</td><td>805 triệu USD, 2.070 cơ sở</td></tr>
+    <tr><td>Cạnh tranh</td><td>Rất phân mảnh (≈10.000 cơ sở)</td><td>Thưa, ít chuỗi</td><td>Chuỗi trong mall rất mạnh</td></tr>
+    <tr><td>Rào cản với nhà đầu tư Việt</td><td>Không vướng sở hữu; luật đang siết</td><td>Người đứng tên phải quốc tịch Khmer</td><td>Hành nghề y chỉ dành cho công dân Philippines; bác sĩ ngoại cần STP</td></tr>
+    <tr><td>Kênh</td><td>FB 79 triệu · Zalo 78,3 triệu · TikTok 76 triệu</td><td>FB 14 triệu · TikTok 11,3 triệu · Telegram</td><td>FB 95,8 triệu · TikTok 64 triệu · IG 26,9 triệu</td></tr>
+    <tr><td>Lợi thế cho người Việt</td><td><span class="tag t-high">Sân nhà</span></td><td><span class="tag t-mid">Gần, có tín hiệu tốt</span></td><td><span class="tag t-low">Bất lợi</span></td></tr>
+    <tr><td>Rủi ro chính</td><td>Pháp lý thay đổi, khủng hoảng niềm tin</td><td>Dữ liệu mỏng, du lịch giảm</td><td>Vĩ mô chậm, hình ảnh người Việt xấu</td></tr>
+  </table></div>
+  <div class="callout key">
+    <strong>Xếp hạng Zidane đề xuất: 🇻🇳 Việt Nam → 🇰🇭 Campuchia → 🇵🇭 Philippines.</strong> Việt Nam là sân nhà để chứng minh mô hình, chuẩn hóa quy trình tuân thủ và đo CAC/LTV trước khi mang playbook ra nước ngoài. Campuchia có thêm phương án ít vốn: đón khách Campuchia sang cơ sở ở Việt Nam (cần số liệu kiểm chứng). Philippines bắt buộc phải liên doanh. <em>Sếp chưa chốt thứ tự này.</em>
+  </div>
+  <p class="muted">Báo cáo chi tiết: <a href="thi-truong-spa-campuchia-2026-11.html">Campuchia</a> · <a href="thi-truong-spa-philippines-2026-11.html">Philippines</a></p>
+</section>
+
+<section id="quyetdinh">
+  <h2>11. Quyết định &amp; việc còn mở</h2>
+  <div class="tbl"><table>
+    <tr><th>Mục</th><th>Kết quả</th></tr>
+    <tr><td>Phân khúc lõi tại Việt Nam</td><td><span class="tag t-high">Đã chốt: spa chăm da không xâm lấn</span></td></tr>
+    <tr><td>Danh sách cấm: không tiêm, không IV, không căng chỉ, không phẫu thuật tại spa; không ảnh trước–sau dàn dựng; KOL/KOC gắn nhãn quảng cáo</td><td><span class="tag t-high">Đã chốt: áp dụng</span></td></tr>
+    <tr><td>Thứ tự 3 thị trường</td><td><span class="tag t-mid">Chưa chốt</span></td></tr>
+  </table></div>
+  <h3>Việc cần xác minh (đề xuất, chưa giao)</h3>
+  <ul>
+    <li>Luật sư Việt Nam đọc nguyên văn Nghị định 58/2026, Điều 40 Nghị định 96/2023 và dự thảo sửa, Nghị định 87/2026, 90/2026. Đầu ra cần có: <strong>danh sách thiết bị spa được dùng khi không có giấy phép khám chữa bệnh</strong> (laser, IPL, RF, HIFU?).</li>
+    <li>Hỏi giá ẩn danh qua Zalo/Messenger: Seoul Spa, Thu Cúc, Diva, a.SENSE.</li>
+    <li>Meta Ad Library Việt Nam, điểm Google Maps, hiện trạng chuỗi Mailisa (khoảng trống khách hàng họ để lại).</li>
+    <li>Giá thuê tầng trệt ở trung tâm TP.HCM, vốn đầu tư ban đầu cho 1 cơ sở, chi phí mỗi lead (CPL) ngành beauty, tỉ lệ khách đến.</li>
+  </ul>
+  <h3>Câu hỏi cho @sếp</h3>
+  <ul>
+    <li>Chủ đầu tư đã có cơ sở hoặc đội ngũ ở Việt Nam chưa? Đã có bác sĩ da liễu đối tác chưa?</li>
+    <li>Ngân sách cho cơ sở đầu tiên? Mục tiêu là dòng tiền, mở chuỗi hay thoái vốn?</li>
+  </ul>
+</section>
+
+<section id="nguon">
+  <h2>12. Hạn chế dữ liệu &amp; nguồn</h2>
+  <div class="callout warn"><strong>Độ tin cậy:</strong> vĩ mô, digital, số wellness tổng của GWI, các vụ xử phạt và khởi tố, cấu trúc cơ sở ở TP.HCM là <strong>cao</strong>. Đối thủ có web chính thức là <strong>trung bình–cao</strong>. Giá, quy mô thẩm mỹ, hành vi khách và sở hữu nước ngoài là <strong>thấp–trung bình</strong>. Chưa đọc được nguyên văn các nghị định (thuvienphapluat trả lỗi 403). Mọi nguồn là web công khai, truy cập ngày 26/11/2026.</div>
+  <ul class="sources">
+    <li>GWI Country Rankings 2026 — https://globalwellnessinstitute.org/wp-content/uploads/2026/02/2026_GWI-Country-Rankings_020326-DIGITAL.pdf</li>
+    <li>GDP 2025 — https://www.vcci.com.vn/tin-tuc/gdp-nam-2025-tang-truong-8-02-binh-quan-dau-nguoi-dat-5026-usd</li>
+    <li>GDP 9 tháng 2026 — https://vtcnews.vn/gdp-quy-iii-2026-tang-9-95-9-thang-tang-9-01-ar1043199.html</li>
+    <li>Thu nhập hộ (Q&amp;Me) — https://theinvestor.vn/vietnams-middle-class-solidifies-as-monthly-household-incomes-climb-to-831-d18770.html</li>
+    <li>DataReportal Digital 2026 Vietnam — https://datareportal.com/reports/digital-2026-vietnam</li>
+    <li>Mỹ phẩm trên sàn (Metric) — https://vietnamnews.vn/economy/1778206/vietnamese-spend-nearly-3-billion-on-beauty-products-via-e-commerce-in-2025.html</li>
+    <li>Cơ sở thẩm mỹ TP.HCM và xử phạt 2024 — https://tuoitre.vn/saigontimes/tphcm-phat-hon-7-ti-dong-doi-voi-co-so-tham-my-sai-pham-trong-8-thang/</li>
+    <li>Truy quét 01/2025 — https://tuoitre.vn/saigontimes/nhieu-co-so-tham-my-hoat-dong-khong-phep/</li>
+    <li>Bộ Y tế về cơ sở không phép — https://vietnamnet.vn/en/many-beauty-service-facilities-in-vietnam-are-unlicensed-ministry-2384815.html</li>
+    <li>Nghị định 58/2026 — https://luatvietnam.vn/tin-van-ban-moi/tu-ngay-15-3-2026-dich-vu-tiem-filer-phun-xam-hut-mo-phai-dam-bao-dieu-kien-ve-an-ninh-trat-tu-186-107587-article.html</li>
+    <li>Luật Quảng cáo sửa đổi 2025 — https://luatvietnam.vn/linh-vuc-khac/diem-moi-cua-luat-quang-cao-sua-doi-2025-883-102813-article.html</li>
+    <li>Nghị định 90/2026 — https://tapchitoaan.vn/index.php/mot-so-diem-moi-tai-nghi-dinh-902026nd-cp-ve-quy-dinh-xu-phat-vi-pham-hanh-chinh-trong-linh-vuc-y-te15488.html</li>
+    <li>Vụ Hospital SW — https://vtcnews.vn/tham-my-vien-chui-hut-mo-bung-cho-500-khach-trong-nua-nam-thu-gan-10-ty-dong-ar963982.html</li>
+    <li>Vụ Mailisa — https://www.sggp.org.vn/khoi-to-vo-chong-chu-tham-my-vien-mailisa-vi-buon-lau-post824754.html</li>
+    <li>SeoulSpa — https://seoulspa.vn · Ngọc Dung — https://thammyvienngocdung.com · O2 Skin — https://o2skin.vn</li>
+    <li>a.SENSE 100 trung tâm — https://tienphong.vn/tu-1-den-100-trung-tam-sau-2-nam-asense-tai-dinh-nghia-thoi-quen-cham-da-post1865683.tpo</li>
+    <li>Allens — M&amp;A y tế Việt Nam 2026 — https://www.allens.com.au/globalassets/pdfs/2026/healthcare-and-pharma-sectors-ma-in-vietnam.pdf</li>
+  </ul>
+  <p class="muted">Bản đầy đủ có mọi URL: <code>mkt/vn-spa/data/snapshots/2026-11-26-henry-vietnam-spa-market.md</code></p>
+</section>
+
+<footer>ai-mkt-team · vn-spa (tạm) · Báo cáo 26/11/2026 · Nội dung từ nguồn công khai, không thay thế tư vấn pháp lý.</footer>
+</div>
+</body>
+</html>
