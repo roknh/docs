@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Báo cáo thị trường spa & thẩm mỹ Campuchia — 26/11/2026</title>
+<style>
+  :root{
+    --bg:#f5f5f7; --card:#ffffff; --ink:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+    --blue:#0071e3; --blue-soft:#e8f2fd; --green:#248a3d; --green-soft:#e9f6ec;
+    --orange:#b25000; --orange-soft:#fff4e5; --red:#d70015; --red-soft:#fdecee;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:-.022em}
+  .wrap{max-width:980px;margin:0 auto;padding:56px 22px 96px}
+  header.cover{text-align:center;padding:40px 10px 48px}
+  header.cover .kicker{font-size:14px;font-weight:600;color:var(--blue);letter-spacing:0;margin-bottom:10px}
+  header.cover h1{margin:0 0 14px;font-size:56px;line-height:1.07;font-weight:700;letter-spacing:-.015em;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  header.cover p{margin:0 auto;max-width:640px;font-size:21px;line-height:1.38;color:var(--muted);letter-spacing:.011em}
+  .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:26px;font-size:13px}
+  .meta span{background:var(--card);border-radius:980px;padding:6px 14px;color:var(--ink)}
+  nav.toc{background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-radius:18px;padding:20px 28px;margin-bottom:28px;position:sticky;top:12px;z-index:5;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  nav.toc strong{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  nav.toc ol{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px}
+  nav.toc a{color:var(--blue);text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  section{background:var(--card);border-radius:18px;padding:40px 44px;margin-bottom:24px}
+  h2{margin:0 0 18px;font-size:32px;line-height:1.125;font-weight:700;letter-spacing:.004em;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  h3{margin:30px 0 10px;font-size:21px;font-weight:600;letter-spacing:.011em}
+  p{margin:10px 0}
+  table{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0 8px;letter-spacing:-.01em}
+  th,td{text-align:left;vertical-align:top;padding:12px 12px;border-bottom:1px solid #e8e8ed}
+  th{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  td.num{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:500}
+  .tbl{overflow-x:auto}
+  .callout{border-radius:14px;padding:18px 22px;margin:18px 0;font-size:16px}
+  .callout.key{background:var(--blue-soft)}
+  .callout.warn{background:var(--orange-soft)}
+  .callout.bad{background:var(--red-soft)}
+  .callout.good{background:var(--green-soft)}
+  .callout strong:first-child{color:inherit}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:980px;white-space:nowrap;letter-spacing:0}
+  .t-high{background:var(--green-soft);color:var(--green)}
+  .t-mid{background:var(--orange-soft);color:var(--orange)}
+  .t-low{background:var(--red-soft);color:var(--red)}
+  .verdict{font-weight:600}
+  .v-go{color:var(--green)} .v-mid{color:var(--orange)} .v-no{color:var(--red)}
+  ul,ol{padding-left:22px} li{margin:6px 0}
+  .muted{color:var(--muted);font-size:14px}
+  code{font-family:"SF Mono",SFMono-Regular,Menlo,monospace;font-size:13px;background:var(--bg);padding:2px 6px;border-radius:6px}
+  .sources{font-size:13px;word-break:break-all;color:var(--muted)}
+  .sources li{margin:4px 0}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+  @media (max-width:734px){
+    header.cover h1{font-size:36px} header.cover p{font-size:18px}
+    section{padding:28px 20px;border-radius:14px} h2{font-size:26px}
+    nav.toc{position:static}
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#000;--card:#1d1d1f;--ink:#f5f5f7;--muted:#a1a1a6;--line:#424245;
+      --blue:#2997ff;--blue-soft:#0a2540;--green:#30d158;--green-soft:#0f2e17;--orange:#ff9f0a;--orange-soft:#33240a;--red:#ff453a;--red-soft:#3a1414}
+    th,td{border-bottom-color:#333336}
+    nav.toc{background:rgba(29,29,31,.72)}
+    .meta span{background:var(--card)}
+  }
+  @media print{body{background:#fff} nav.toc{position:static} section{break-inside:avoid;padding:20px 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">ai-mkt-team · Báo cáo nghiên cứu thị trường</div>
+  <h1>Ngành spa &amp; thẩm mỹ tại Campuchia</h1>
+  <p>Đánh giá cơ hội gia nhập: quy mô, cấu trúc ngành, đối thủ, hành vi khách, kênh, pháp lý và giá.</p>
+  <div class="meta">
+    <span>📅 26/11/2026</span>
+    <span>🔭 Nghiên cứu: Henry (Market Intelligence)</span>
+    <span>🧠 Đánh giá: Zidane (Marketing Leader)</span>
+    <span>✅ Chốt: @sếp</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <strong>Mục lục</strong>
+  <ol>
+    <li><a href="#tomtat">Tóm tắt điều hành</a></li>
+    <li><a href="#vimo">Quy mô &amp; vĩ mô</a></li>
+    <li><a href="#cautruc">Cấu trúc ngành</a></li>
+    <li><a href="#doithu">Đối thủ</a></li>
+    <li><a href="#khach">Hành vi khách hàng</a></li>
+    <li><a href="#kenh">Kênh marketing</a></li>
+    <li><a href="#phaply">Pháp lý &amp; rủi ro</a></li>
+    <li><a href="#gia">Giá tham khảo</a></li>
+    <li><a href="#danhgia">Đánh giá cơ hội</a></li>
+    <li><a href="#quyetdinh">Quyết định &amp; việc còn mở</a></li>
+    <li><a href="#nguon">Hạn chế dữ liệu &amp; nguồn</a></li>
+  </ol>
+</nav>
+
+<section id="tomtat">
+  <h2>1. Tóm tắt điều hành</h2>
+  <div class="callout key">
+    <strong>Kết luận:</strong> nếu vào thị trường, hướng hợp lý nhất là <strong>beauty care center</strong> (facial, trị mụn, trắng da, laser nhẹ) cho khách nội địa ở Phnom Penh, định vị <strong>“An toàn – có giấy phép – minh bạch”</strong>. Nên tránh phẫu thuật thẩm mỹ ở giai đoạn đầu. Spa thuần chỉ nên làm dịch vụ đi kèm.
+  </div>
+  <ul>
+    <li><strong>Pháp lý là rào cản số 1.</strong> Theo Prakas 008/2010 của Bộ Y tế, người đứng tên cơ sở thẩm mỹ phải có <strong>quốc tịch Khmer</strong>, và mỗi người chỉ đứng tên <strong>1 cơ sở</strong>. Cơ sở chưa có phép thì <strong>không được quảng cáo</strong>.</li>
+    <li><strong>Bộ Y tế đang siết.</strong> Chuỗi S88 Beauty bị đóng 11/13 điểm. Từ 10/2023 có đợt đóng phòng khám tư và cấm quảng cáo phóng đại công dụng trắng da.</li>
+    <li><strong>Mảng du lịch đang yếu.</strong> Khách quốc tế 2025 đạt 5,57 triệu, giảm 16,9%; khách ASEAN giảm 34,5%. Spa phục vụ du khách vì vậy kém hấp dẫn.</li>
+    <li><strong>Nhu cầu nội địa bền:</strong> nhu cầu trắng da và trị mụn lặp lại trong mọi nguồn từ 2013 đến nay. Khoảng 50% khách của một clinic da là nam.</li>
+    <li><strong>Phủ digital cao:</strong> Facebook 14 triệu người dùng (77,9% dân số), TikTok 11,3 triệu (57,5% nam), Telegram là app nhắn tin phổ biến nhất.</li>
+    <li><strong>Khoảng trống:</strong> chưa thấy chuỗi da/laser lớn nào được xác minh còn hoạt động. Định vị “Hàn” ở mảng phẫu thuật đã có Seoul Center và K-Top.</li>
+    <li><strong>Chưa có số quy mô thị trường</strong> spa/thẩm mỹ. Giá dịch vụ thẩm mỹ có độ tin cậy thấp.</li>
+  </ul>
+  <div class="callout warn">
+    <strong>Điểm cần luật sư xác minh trước mọi quyết định đầu tư:</strong> yêu cầu người đứng tên quốc tịch Khmer trong Prakas 008 đang mâu thuẫn với Luật Đầu tư 2021, vốn cho phép đến 100% vốn nước ngoài.
+  </div>
+</section>
+
+<section id="vimo">
+  <h2>2. Quy mô thị trường &amp; vĩ mô</h2>
+  <div class="tbl"><table>
+    <tr><th>Chỉ số</th><th>Giá trị</th><th>Năm · nguồn</th><th>Tin cậy</th></tr>
+    <tr><td>Dân số</td><td class="num">17,85 triệu</td><td>2025 · UN</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tỉ lệ đô thị</td><td class="num">25,6–26,5%</td><td>2023–2025 · CIA, Worldometer</td><td><span class="tag t-mid">Trung bình</span></td></tr>
+    <tr><td>Phnom Penh</td><td class="num">2,28 triệu</td><td>Tổng điều tra 2019 · NIS</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tỉnh Siem Reap / Battambang / Preah Sihanouk</td><td class="num">1,01 / 0,997 / 0,31 triệu</td><td>2019 · cấp tỉnh</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>GDP/người</td><td class="num">2.477 USD</td><td>2023 · IMF</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>GDP/người (ước tính)</td><td class="num">≈2.948 USD danh nghĩa · 8.677 USD PPP</td><td>2025</td><td><span class="tag t-mid">Trung bình</span></td></tr>
+    <tr><td>Tăng trưởng GDP</td><td class="num">6% (2024) · 4,8% (2025 dự báo) · 4,3% (2026 dự báo)</td><td>World Bank 12/2025</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Khách quốc tế</td><td class="num">5,57 triệu (−16,9%); ASEAN −34,5%</td><td>2025 · Bộ Du lịch</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tầng lớp trung lưu</td><td>Chỉ có số rất cũ (2,3% dân số, dữ liệu 2005)</td><td>ADB 2008 · EAF 2018</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Thị trường beauty &amp; personal care</td><td>Không có số dùng được; Euromonitor ghi phân khúc premium +8% (2025)</td><td>2025</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Quy mô spa / thẩm mỹ / phẫu thuật</td><td><em>Chưa có nguồn</em></td><td>—</td><td>—</td></tr>
+  </table></div>
+  <p class="muted">Nhận xét: sức mua bình quân thấp, và nhóm khách trả được 20–40 USD mỗi lượt nhiều khả năng tập trung ở Phnom Penh.</p>
+</section>
+
+<section id="cautruc">
+  <h2>3. Cấu trúc ngành</h2>
+  <h3>Phân loại theo luật (Prakas 008/2010, Bộ Y tế)</h3>
+  <div class="tbl"><table>
+    <tr><th>Loại cơ sở</th><th>Người đứng tên</th><th>Được làm</th></tr>
+    <tr><td><strong>Beauty treatment center</strong></td><td>Bác sĩ quốc tịch Khmer</td><td>Nâng mũi, mắt/mày, môi, xóa sẹo, xăm/xóa xăm, trồng tóc, xóa nhăn, laser</td></tr>
+    <tr><td><strong>Beauty care center</strong></td><td>Quốc tịch Khmer, chứng chỉ đào tạo ≥3 tháng</td><td>Massage mặt/body, facial, dưỡng trắng, mài da, trị mụn, soi da, waxing, laser “không thay đổi hình dạng”</td></tr>
+    <tr><td>Massage / day spa thuần</td><td colspan="2"><em>Chưa xác minh cơ quan cấp phép (có thể là Bộ Du lịch hoặc chính quyền địa phương)</em></td></tr>
+  </table></div>
+  <h3>Phân khúc quan sát được</h3>
+  <div class="tbl"><table>
+    <tr><th>Phân khúc</th><th>Ví dụ</th><th>Ghi chú</th></tr>
+    <tr><td>Massage bình dân</td><td>Blue 7, massage người khiếm thị</td><td>3–8 USD/giờ</td></tr>
+    <tr><td>Day spa tầm trung–cao</td><td>Bodia, Samatha, Cholsa, Frangipani</td><td>16–55 USD/60 phút; du khách, expat, khách nội địa có thu nhập</td></tr>
+    <tr><td>Spa khách sạn</td><td>Shangri-La, Rosewood, Park Hyatt, Anantara</td><td>Giá USD, cộng 7% phí dịch vụ và 10% VAT</td></tr>
+    <tr><td>Clinic da / laser</td><td>Wuttisak (Thái), Faceline</td><td>Trắng da, chống lão hóa, trị mụn bằng laser</td></tr>
+    <tr><td>Phẫu thuật thẩm mỹ</td><td>Seoul Center, K-Top</td><td>Định vị “Hàn”</td></tr>
+    <tr><td>Chuỗi không phép</td><td>S88 Beauty</td><td>Tiêm trắng; bị đóng 11/13 điểm</td></tr>
+  </table></div>
+  <p class="muted">Không có dữ liệu thị phần hay số cơ sở được cấp phép, nên chưa đánh giá được mức độ tập trung.</p>
+</section>
+
+<section id="doithu">
+  <h2>4. Đối thủ đã ghi nhận</h2>
+  <div class="tbl"><table>
+    <tr><th>Tên</th><th>Phân khúc</th><th>Chi nhánh</th><th>Giá công khai</th><th>Ghi chú</th><th>Tin cậy</th></tr>
+    <tr><td><strong>Seoul Center</strong></td><td>Phẫu thuật, định vị Hàn</td><td>1 · Phnom Penh</td><td>Nâng ngực ≈2.800–3.500 USD; mắt ≈2.350–3.300 USD</td><td>Tự khai 51.900 bệnh nhân; 4,9 điểm/986 đánh giá</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td><strong>K-Top Clinic</strong></td><td>Phẫu thuật, đội ngũ Hàn</td><td>1 · Phnom Penh</td><td>Không công bố</td><td>Tư vấn miễn phí; tiếng Anh/Thái/Hàn</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td><strong>Wuttisak</strong></td><td>Clinic da/laser, Thái</td><td>3 (năm 2013), hiện trạng chưa rõ</td><td>—</td><td>Khoảng 50% khách là nam</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td><strong>Faceline</strong></td><td>Da liễu không xâm lấn</td><td>1 · BKK1</td><td>—</td><td>Hồ sơ công khai rất ít</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td><strong>Bodia Spa</strong></td><td>Day spa cao cấp, thương hiệu Khmer</td><td>Phnom Penh + Siem Reap</td><td>≈37 USD/60 phút</td><td>Bán qua OTA (Klook, AAA)</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td><strong>Samatha Spa</strong></td><td>Day spa</td><td>2 · Phnom Penh</td><td>Từ 32,6 USD</td><td>OTA</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td><strong>Cholsa Spa</strong></td><td>Day spa tầm trung</td><td>Phnom Penh</td><td>16–25 USD/60 phút</td><td>Giá minh bạch, đã gồm VAT; làm SEO</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td><strong>Shangri-La The Spa</strong></td><td>Spa khách sạn 5 sao</td><td>1</td><td>Từ 38 USD net/60 phút (khuyến mãi)</td><td>Khách lưu trú, expat</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td><strong>Frangipani</strong></td><td>Day spa</td><td>Siem Reap</td><td>19–25 USD/giờ</td><td>Du khách</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td><strong>S88 Beauty</strong> (đã bị đóng)</td><td>Chuỗi beauty center nội địa</td><td>13 điểm, bị đóng 11</td><td>—</td><td>Không phép; khách cấp cứu sau tiêm trắng</td><td><span class="tag t-mid">TB</span></td></tr>
+  </table></div>
+  <ul>
+    <li>Không tìm thấy chuỗi thẩm mỹ <strong>Việt Nam</strong> nào đang hoạt động mà xác minh được. Một bài báo năm 2017 nhắc đến “một clinic Việt Nam ở Phnom Penh” nhưng không nêu tên.</li>
+    <li>Chưa tìm bằng tiếng Khmer, nên <strong>đối thủ nội địa vừa và nhỏ</strong> (thường chỉ có Facebook/TikTok) hầu như chưa được ghi nhận.</li>
+  </ul>
+</section>
+
+<section id="khach">
+  <h2>5. Hành vi khách hàng</h2>
+  <ul>
+    <li><strong>Trắng da</strong> là nhu cầu phổ biến ở cả nam và nữ, kể cả người trẻ. Kem bán lẻ từ 3 đến 30 USD, thường có nguồn gốc Thái hoặc Việt Nam (VOA, 2015).</li>
+    <li><strong>Nam giới</strong> tham gia điều trị da: khoảng 50% khách của Wuttisak ở Phnom Penh là nam. Nam trẻ thành thị chi nhiều hơn cho salon.</li>
+    <li><strong>Phẫu thuật thẩm mỹ</strong> được mô tả là “tăng gấp đôi, gấp ba trong vài năm” (2017, định tính).</li>
+    <li><strong>Ra nước ngoài khám chữa bệnh:</strong> khoảng 200–250 nghìn người năm 2023 (y tế nói chung). Điểm đến: Thái → Singapore → Malaysia → Việt Nam.</li>
+    <li>Có tín hiệu khách <strong>chuyển từ Thái sang Việt Nam</strong> sau xung đột biên giới <span class="tag t-low">tin cậy thấp</span>.</li>
+    <li>Chưa có dữ liệu về khách sang Hàn làm đẹp, mức ảnh hưởng của K-beauty, hay phân khúc tuổi, thu nhập, tần suất chi.</li>
+  </ul>
+</section>
+
+<section id="kenh">
+  <h2>6. Kênh marketing</h2>
+  <div class="tbl"><table>
+    <tr><th>Kênh</th><th>Quy mô</th><th>Ghi chú</th></tr>
+    <tr><td>Internet</td><td class="num">12,0 triệu (67,3%)</td><td>DataReportal, cuối 2025</td></tr>
+    <tr><td><strong>Facebook</strong></td><td class="num">14,0 triệu (77,9%)</td><td>Kênh phủ rộng nhất; 43% SME bán online dùng Facebook để liên hệ khách</td></tr>
+    <tr><td><strong>Messenger</strong></td><td class="num">8,9 triệu (49,7%)</td><td>Kênh tư vấn, đặt lịch</td></tr>
+    <tr><td><strong>TikTok</strong> (18+)</td><td class="num">11,3 triệu</td><td>57,5% là nam</td></tr>
+    <tr><td>Instagram</td><td class="num">1,85 triệu (10,3%)</td><td>Kênh duy nhất nữ nhiều hơn nam (53,9%)</td></tr>
+    <tr><td>Telegram</td><td>Phổ biến nhất (định tính, 2023)</td><td>Chính phủ dùng nhiều; hợp làm CSKH, nhắc lịch</td></tr>
+    <tr><td>KOL skincare</td><td>17 KOL trên Instagram</td><td>Lớn nhất: Pich Pisey, khoảng 485 nghìn follower</td></tr>
+  </table></div>
+  <ul>
+    <li><strong>Meta Ad Library</strong> chưa xem được (bị chặn truy cập tự động), cần người mở thủ công.</li>
+    <li>Spa cho du khách bán qua OTA: Klook, AAA TripCanvas, Pelago, Fresha.</li>
+    <li>Website và listing chủ yếu viết tiếng Anh, giá ghi bằng USD hoặc riel.</li>
+  </ul>
+</section>
+
+<section id="phaply">
+  <h2>7. Pháp lý &amp; rủi ro</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Rủi ro</th><th>Căn cứ</th><th>Mức</th></tr>
+    <tr><td>1</td><td>Người đứng tên phải <strong>quốc tịch Khmer</strong>, mâu thuẫn với Luật Đầu tư 2021 (cho phép 100% vốn ngoại). Dùng người đứng tên hộ dễ mất kiểm soát hoặc vi phạm</td><td>Prakas 008; Chambers, Tilleke</td><td><span class="tag t-low">Rất cao</span></td></tr>
+    <tr><td>2</td><td><strong>Cấm quảng cáo khi chưa có phép.</strong> Quảng cáo dịch vụ y tế phải được Bộ và hội đồng nghề nghiệp duyệt; cấm phóng đại công dụng trắng da</td><td>Prakas 008 Điều 17; Thông báo 4/2023; Tilleke 10/2023</td><td><span class="tag t-low">Rất cao</span></td></tr>
+    <tr><td>3</td><td>Mỗi người chỉ đứng tên 1 cơ sở; mở thêm điểm khi chỉ có 1 giấy phép sẽ bị đóng hàng loạt</td><td>Vụ S88: 11/13 điểm bị đóng</td><td><span class="tag t-low">Cao</span></td></tr>
+    <tr><td>4</td><td>Mỹ phẩm phải có số notification của Bộ Y tế</td><td>Sub-decree 122/2008</td><td><span class="tag t-mid">TB–cao</span></td></tr>
+    <tr><td>5</td><td>Du lịch giảm (chỉ ảnh hưởng nếu làm spa cho du khách)</td><td>Khách quốc tế −16,9% năm 2025</td><td><span class="tag t-mid">Trung bình</span></td></tr>
+    <tr><td>6</td><td>Văn bản gốc từ 2010, chưa rõ đã có văn bản thay thế hay chưa</td><td>—</td><td><span class="tag t-mid">Chưa rõ</span></td></tr>
+  </table></div>
+  <h3>Các điểm khác</h3>
+  <ul>
+    <li><strong>Giấy phép:</strong> hiệu lực 2 năm; Bộ Y tế trả lời trong 20 ngày làm việc; phải khai trương trong 3 tháng. Có tiêu chuẩn diện tích (phòng chờ 24 m², phòng tư vấn 16 m²) và phải báo cáo mỗi quý.</li>
+    <li><strong>Nhân sự nước ngoài</strong> (ví dụ kỹ thuật viên Việt) phải tuân Sub-decree 94/2002.</li>
+    <li><strong>Đợt siết từ 12/10/2023:</strong> nhiều phòng khám tư bị đóng, treo hoặc thu hồi giấy phép.</li>
+    <li><strong>Bê bối:</strong> S88 (khách cấp cứu sau khi tiêm trắng), Borin Esthetic bị đóng, kem trắng da nhiễm thủy ngân (nghiên cứu 2015 có mẫu cao gấp 35.000 lần chuẩn ASEAN).</li>
+    <li><strong>Thanh toán:</strong> kinh tế đô la hóa cao. Bakong xử lý khoảng 1,33 tỉ giao dịch năm 2025, riel chiếm khoảng 58% số giao dịch. Nên hỗ trợ KHQR và niêm yết giá cả USD lẫn riel.</li>
+  </ul>
+</section>
+
+<section id="gia">
+  <h2>8. Giá tham khảo (USD)</h2>
+  <div class="tbl"><table>
+    <tr><th>Dịch vụ</th><th>Dải giá</th><th>Tin cậy</th></tr>
+    <tr><td>Massage bình dân</td><td class="num">3–8 / giờ</td><td><span class="tag t-mid">Thấp–TB</span></td></tr>
+    <tr><td>Day spa tầm trung</td><td class="num">16–25 / 60 phút</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Day spa cao cấp</td><td class="num">30–55 / 60 phút</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Spa khách sạn 5 sao</td><td class="num">từ 38 / 60 phút</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Facial, laser, trị nám/mụn</td><td><em>Chưa có nguồn</em></td><td>—</td></tr>
+    <tr><td>Botox</td><td class="num">150–300</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Filler (tham chiếu châu Á)</td><td class="num">120–384 / cc</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Nâng mũi</td><td class="num">700 (2017) · 1.800–4.800</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Cắt mí</td><td class="num">≈330–3.300</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Nâng ngực</td><td class="num">≈2.800–3.500</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Kem trắng da (bán lẻ)</td><td class="num">3–30</td><td><span class="tag t-mid">TB (2015)</span></td></tr>
+  </table></div>
+  <p class="muted">Giá quy đổi từ riel theo tỉ giá giả định khoảng 4.050 riel/USD, chưa dùng tỉ giá chính thức của NBC.</p>
+</section>
+
+<section id="danhgia">
+  <h2>9. Đánh giá cơ hội (Zidane)</h2>
+  <div class="tbl"><table>
+    <tr><th>Phân khúc</th><th>Điểm cộng</th><th>Điểm trừ</th><th>Kết luận</th></tr>
+    <tr><td><strong>Spa thuần / massage</strong></td><td>Pháp lý có thể nhẹ hơn; giá có 3 tầng rõ ràng</td><td>Phụ thuộc du khách đang giảm; Bodia, Cholsa, Samatha đã giữ OTA và SEO; biên mỏng</td><td class="verdict v-mid">Chỉ làm dịch vụ đi kèm</td></tr>
+    <tr><td><strong>Beauty care center</strong></td><td>Không bắt buộc bác sĩ; nhu cầu trắng da và trị mụn bền; khoảng 50% khách là nam; chưa thấy chuỗi da/laser lớn còn hoạt động</td><td>Mỗi người chỉ đứng tên 1 cơ sở; phải có phép mới được quảng cáo; chưa có giá facial/laser</td><td class="verdict v-go">Nên vào</td></tr>
+    <tr><td><strong>Treatment / phẫu thuật</strong></td><td>Giá mỗi ca cao (2.350–3.500 USD)</td><td>Cần bác sĩ quốc tịch Khmer; Bộ Y tế đang siết; định vị “Hàn” đã có người chiếm; rủi ro y khoa nặng</td><td class="verdict v-no">Tránh ở giai đoạn 1</td></tr>
+  </table></div>
+
+  <h3>Định vị đề xuất</h3>
+  <div class="callout good">
+    <strong>“An toàn – có giấy phép – minh bạch”.</strong> Sau vụ S88, đợt siết 2023 và các vụ kem nhiễm thủy ngân, đây là khoảng trống rõ nhất. Có thể biến giấy phép thành tài sản truyền thông: công khai số giấy phép, niêm yết giá rõ ràng. Nhãn “chuẩn Việt” hay “chuẩn Hàn” chỉ là lớp phụ và cần test với khách trước.
+  </div>
+
+  <h3>Kênh ưu tiên (sau khi có giấy phép quảng cáo)</h3>
+  <ol>
+    <li><strong>Facebook + Messenger:</strong> phủ rộng nhất, kênh chốt lịch hẹn.</li>
+    <li><strong>TikTok:</strong> 57,5% người dùng là nam, khớp với nhóm nam chăm sóc da.</li>
+    <li><strong>Telegram:</strong> CSKH, nhắc lịch.</li>
+    <li><strong>KOL/KOC:</strong> nội dung phải qua kiểm tra pháp lý.</li>
+    <li><strong>Instagram:</strong> ngách cao cấp.</li>
+  </ol>
+
+  <h3>Kế hoạch xác minh 4 tuần Zidane đề xuất <span class="muted">(chưa triển khai, @sếp chọn dừng)</span></h3>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>Việc</th><th>Đầu ra</th></tr>
+    <tr><td>1</td><td>Hỏi ý kiến luật sư địa phương: Prakas 008 còn hiệu lực không, cơ cấu FDI và người đứng tên, xin phép quảng cáo, giấy phép lao động cho kỹ thuật viên Việt</td><td>Ý kiến pháp lý bằng văn bản</td></tr>
+    <tr><td>2</td><td>Mở Meta Ad Library thủ công</td><td>Top 20 nhà quảng cáo</td></tr>
+    <tr><td>3</td><td>Mystery shopping 15–20 cơ sở</td><td>Bảng giá facial/laser và cách tư vấn</td></tr>
+    <tr><td>4</td><td>Thu điểm Google Maps của đối thủ</td><td>Bảng xếp hạng đối thủ</td></tr>
+    <tr><td>5</td><td>Khảo sát thực địa Phnom Penh 3–5 ngày</td><td>Báo cáo thực địa, giá thuê mặt bằng</td></tr>
+    <tr><td>6</td><td>Test định vị với 20–30 người</td><td>Định vị nào thắng</td></tr>
+  </table></div>
+</section>
+
+<section id="quyetdinh">
+  <h2>10. Quyết định &amp; việc còn mở</h2>
+  <div class="callout key">
+    <strong>M-001 (26/11/2026, @sếp chốt):</strong> nếu vào thị trường thì hướng chính là <strong>beauty care center</strong>, mở 1 cơ sở ở Phnom Penh. <strong>Dừng ở mức hiểu biết ngành</strong>, chưa triển khai kế hoạch xác minh, chưa giao task.
+  </div>
+  <h3>Câu hỏi còn mở cho @sếp</h3>
+  <ul>
+    <li>Chủ đầu tư là ai? Đã có chuỗi spa hoặc clinic ở Việt Nam chưa? Có bác sĩ hoặc kỹ thuật viên chuyển sang được không?</li>
+    <li>Ngân sách đầu tư, kỳ vọng hoàn vốn? Muốn mở 1 điểm hay chuỗi? Thời hạn mong muốn?</li>
+    <li>Đã có pháp nhân hoặc đối tác ở Campuchia chưa?</li>
+  </ul>
+</section>
+
+<section id="nguon">
+  <h2>11. Hạn chế dữ liệu &amp; nguồn</h2>
+  <div class="callout warn">
+    <strong>Độ tin cậy:</strong> vĩ mô, digital và quy định cấp phép là <strong>cao</strong>. Đối thủ, hành vi khách và giá là <strong>thấp đến trung bình</strong>, vì dựa nhiều vào danh bạ tự khai, dữ liệu cũ (2013–2017) và đoạn trích báo. Toàn bộ nguồn là web công khai, truy cập ngày 26/11/2026.
+  </div>
+  <h3>Chưa có nguồn</h3>
+  <ul>
+    <li>Quy mô thị trường spa/thẩm mỹ: cần mua Euromonitor hoặc Statista, hoặc khảo sát thực địa.</li>
+    <li>Danh sách cơ sở được cấp phép: cần hỏi Bộ Y tế.</li>
+    <li>Meta Ad Library, điểm Google Maps của đối thủ, đối thủ nội địa nói tiếng Khmer.</li>
+    <li>Giá facial, laser, filler ở Phnom Penh.</li>
+    <li>Quy định cấp phép spa thuần; quy định sở hữu nước ngoài với cơ sở thẩm mỹ.</li>
+  </ul>
+  <h3>Nguồn chính</h3>
+  <ul class="sources">
+    <li>UN Data — https://data.un.org/en/iso/KH.html</li>
+    <li>NIS Census 2019 — https://nis.gov.kh/wp-content/uploads/2025/09/Final-Leaflet-Census-Report-2019-Eng.pdf</li>
+    <li>IMF Article IV 2025 — https://www.imf.org/-/media/files/publications/cr/2025/english/1khmea2025002-source-pdf.pdf</li>
+    <li>World Bank 12/2025 — https://www.worldbank.org/en/news/press-release/2025/12/11/strong-buffers-and-targeted-reforms-can-help-cambodia-withstand-economic-pressures-says-world-bank</li>
+    <li>The Star (du lịch 2025) — https://www.thestar.com.my/aseanplus/aseanplus-news/2026/01/27/the-price-of-war---cambodia-records-557-million-international-tourists-in-2025-down-169-from-2024</li>
+    <li>DataReportal Digital 2026 Cambodia — https://datareportal.com/reports/digital-2026-cambodia</li>
+    <li>Prakas 008/2010 (bản dịch JICA) — https://niph.org.kh/niph/uploads/library/pdf/LD081_Formalities_and_Technical_Condition_for_Beauty_Eng.pdf</li>
+    <li>Tilleke &amp; Gibbins (siết quảng cáo 10/2023) — https://www.tilleke.com/insights/healthcare-in-cambodia-crackdown-on-illegal-advertising-and-noncompliant-services/</li>
+    <li>Chambers — Investing in 2026: Cambodia — https://chambers.com/practice-guides/guides/investing-in-2026/cambodia/law-and-practice</li>
+    <li>Sub-decree 122/2008 (mỹ phẩm) — https://lib.ncdd.gov.kh/storage/app/public/library_backend/CAT_16767_1/2008-122-Cosmetic%20Product-en.pdf</li>
+    <li>The Diplomat (khám chữa bệnh ở nước ngoài) — https://thediplomat.com/2025/02/why-so-many-cambodians-travel-abroad-for-medical-care</li>
+    <li>VOA Khmer (kem trắng da, 2015) — https://khmer.voanews.com/a/whitening-cream-warnings-compete-with-cultural-desire-for-lighter-skin/3061868.html</li>
+    <li>Phnom Penh Post (S88) — https://phnompenhpost.com/national/authorities-target-unlicensed-beauty-centres</li>
+    <li>WhatClinic (Seoul Center, K-Top, Faceline) — https://www.whatclinic.com/cosmetic-plastic-surgery/cambodia</li>
+    <li>Cholsa Spa (giá massage 2026) — https://www.cholsaspa.com/post/massage-prices-phnom-penh-2026-a-complete-guide</li>
+    <li>Modash (KOL skincare) — https://www.modash.io/find-influencers/cambodia/skincare</li>
+  </ul>
+  <p class="muted">Bản đầy đủ có mọi URL: <code>mkt/khmer-spa/data/snapshots/2026-11-26-henry-cambodia-spa-market.md</code></p>
+</section>
+
+<footer>ai-mkt-team · khmer-spa (tạm) · Báo cáo 26/11/2026 · Nội dung từ nguồn công khai, không thay thế tư vấn pháp lý.</footer>
+</div>
+</body>
+</html>
