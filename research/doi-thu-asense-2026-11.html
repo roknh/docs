@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hồ sơ đối thủ: a.SENSE Everyday Beauty — 26/11/2026</title>
+<style>
+  :root{
+    --bg:#f5f5f7; --card:#ffffff; --ink:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+    --blue:#0071e3; --blue-soft:#e8f2fd; --green:#248a3d; --green-soft:#e9f6ec;
+    --orange:#b25000; --orange-soft:#fff4e5; --red:#d70015; --red-soft:#fdecee;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:-.022em}
+  .wrap{max-width:980px;margin:0 auto;padding:56px 22px 96px}
+  header.cover{text-align:center;padding:40px 10px 48px}
+  header.cover .kicker{font-size:14px;font-weight:600;color:var(--blue);letter-spacing:0;margin-bottom:10px}
+  header.cover h1{margin:0 0 14px;font-size:56px;line-height:1.07;font-weight:700;letter-spacing:-.015em;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  header.cover p{margin:0 auto;max-width:640px;font-size:21px;line-height:1.38;color:var(--muted);letter-spacing:.011em}
+  .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:26px;font-size:13px}
+  .meta span{background:var(--card);border-radius:980px;padding:6px 14px;color:var(--ink)}
+  nav.toc{background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-radius:18px;padding:20px 28px;margin-bottom:28px;position:sticky;top:12px;z-index:5;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  nav.toc strong{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  nav.toc ol{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px}
+  nav.toc a{color:var(--blue);text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  section{background:var(--card);border-radius:18px;padding:40px 44px;margin-bottom:24px}
+  h2{margin:0 0 18px;font-size:32px;line-height:1.125;font-weight:700;letter-spacing:.004em;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  h3{margin:30px 0 10px;font-size:21px;font-weight:600;letter-spacing:.011em}
+  p{margin:10px 0}
+  table{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0 8px;letter-spacing:-.01em}
+  th,td{text-align:left;vertical-align:top;padding:12px 12px;border-bottom:1px solid #e8e8ed}
+  th{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  td.num{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:500}
+  .tbl{overflow-x:auto}
+  .callout{border-radius:14px;padding:18px 22px;margin:18px 0;font-size:16px}
+  .callout.key{background:var(--blue-soft)}
+  .callout.warn{background:var(--orange-soft)}
+  .callout.bad{background:var(--red-soft)}
+  .callout.good{background:var(--green-soft)}
+  .callout strong:first-child{color:inherit}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:980px;white-space:nowrap;letter-spacing:0}
+  .t-high{background:var(--green-soft);color:var(--green)}
+  .t-mid{background:var(--orange-soft);color:var(--orange)}
+  .t-low{background:var(--red-soft);color:var(--red)}
+  .verdict{font-weight:600}
+  .v-go{color:var(--green)} .v-mid{color:var(--orange)} .v-no{color:var(--red)}
+  ul,ol{padding-left:22px} li{margin:6px 0}
+  .muted{color:var(--muted);font-size:14px}
+  code{font-family:"SF Mono",SFMono-Regular,Menlo,monospace;font-size:13px;background:var(--bg);padding:2px 6px;border-radius:6px}
+  .sources{font-size:13px;word-break:break-all;color:var(--muted)}
+  .sources li{margin:4px 0}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+  @media (max-width:734px){
+    header.cover h1{font-size:36px} header.cover p{font-size:18px}
+    section{padding:28px 20px;border-radius:14px} h2{font-size:26px}
+    nav.toc{position:static}
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#000;--card:#1d1d1f;--ink:#f5f5f7;--muted:#a1a1a6;--line:#424245;
+      --blue:#2997ff;--blue-soft:#0a2540;--green:#30d158;--green-soft:#0f2e17;--orange:#ff9f0a;--orange-soft:#33240a;--red:#ff453a;--red-soft:#3a1414}
+    th,td{border-bottom-color:#333336}
+    nav.toc{background:rgba(29,29,31,.72)}
+    .meta span{background:var(--card)}
+  }
+  @media print{body{background:#fff} nav.toc{position:static} section{break-inside:avoid;padding:20px 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">ai-mkt-team · Hồ sơ đối thủ</div>
+  <h1>a.SENSE Everyday Beauty</h1>
+  <p>Chuỗi “làm đẹp tiện ích” ở tầng trệt chung cư: từ 1 lên hơn 100 trung tâm trong khoảng 20 tháng. Đây là đối thủ trực tiếp nhất của phân khúc spa chăm da không xâm lấn.</p>
+  <div class="meta">
+    <span>📅 26/11/2026</span>
+    <span>🔭 Nghiên cứu: Henry</span>
+    <span>🌐 Nguồn: asense.vn + báo chí công khai</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <strong>Mục lục</strong>
+  <ol>
+    <li><a href="#tomtat">1. Tóm tắt</a></li>
+    <li><a href="#doanhnghiep">2. Doanh nghiệp</a></li>
+    <li><a href="#mohinh">3. Mô hình</a></li>
+    <li><a href="#mangluoi">4. Mạng lưới</a></li>
+    <li><a href="#gia">5. Menu &amp; giá</a></li>
+    <li><a href="#sanpham">6. Sản phẩm</a></li>
+    <li><a href="#loyalty">7. Thành viên &amp; app</a></li>
+    <li><a href="#marketing">8. Marketing</a></li>
+    <li><a href="#nhansu">9. Nhân sự</a></li>
+    <li><a href="#phaply">10. Pháp lý</a></li>
+    <li><a href="#review">11. Phản hồi khách</a></li>
+    <li><a href="#danhgia">12. Mạnh / yếu &amp; so sánh</a></li>
+    <li><a href="#nguon">13. Khoảng trống &amp; nguồn</a></li>
+  </ol>
+</nav>
+
+<section id="tomtat">
+  <h2>1. Tóm tắt</h2>
+  <div class="callout warn">
+    <strong>Điểm quan trọng nhất:</strong> menu của a.SENSE <strong>không hoàn toàn “không xâm lấn”</strong>. Dòng chuyên sâu có <strong>vi kim (microneedling)</strong> và <strong>peel acid lactic 30–45%</strong>; triệt lông dùng <strong>SHR/IPL</strong>. Tất cả do kỹ thuật viên làm, và không thấy chỗ nào nhắc bác sĩ hay giấy phép y tế. Đây là điểm cần đối chiếu với Nghị định 58/2026 và Nghị định 96/2023.
+  </div>
+  <ul>
+    <li><strong>Tốc độ:</strong> 1 trung tâm (11/2024) lên hơn 100 (7/2026), ở Hà Nội, Hưng Yên, TP.HCM. Số do a.SENSE tự công bố.</li>
+    <li><strong>Mô hình:</strong> “Everyday Beauty”: tầng trệt chung cư và khu đô thị lớn, phòng riêng, mở 9:30–22:00, đặt lịch 30 giây, dùng xong mới trả tiền.</li>
+    <li><strong>Giá vào cửa thấp:</strong> gội đầu 110.000–250.000 đ (khuyến mãi 0–59.000 đ), facial cơ bản 590.000–670.000 đ.</li>
+    <li><strong>Hạ tầng giữ chân khách:</strong> app đặt lịch theo slot, check-in QR, 4 hạng thành viên tích 3–10%, thưởng điểm khi đặt giờ thấp điểm và khi đến từ 2 lần/tuần.</li>
+    <li><strong>Điểm yếu:</strong> rất ít review độc lập; mục tiêu mở điểm nhiều lần bị lùi; không công khai pháp nhân mẹ (có dấu hiệu liên quan chuỗi <strong>Venesa</strong>).</li>
+  </ul>
+</section>
+
+<section id="doanhnghiep">
+  <h2>2. Doanh nghiệp</h2>
+  <div class="tbl"><table>
+    <tr><th>Hạng mục</th><th>Thông tin</th><th>Tin cậy</th></tr>
+    <tr><td>Pháp nhân</td><td>Công ty TNHH Dịch vụ A.SENSE (A.SENSE SERVICE COMPANY LIMITED)</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Địa chỉ</td><td>19–21 Yên Lãng, Đống Đa, Hà Nội (theo trang tuyển dụng)</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Bắt đầu</td><td>Thử mô hình từ 06/2024; trung tâm đầu tiên ở Hà Nội tháng 11/2024</td><td><span class="tag t-mid">TB–cao</span></td></tr>
+    <tr><td>Lãnh đạo</td><td>Bà Hương Nguyễn, Tổng giám đốc hệ thống (theo bài PR)</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Công ty mẹ</td><td>App trên App Store ghi bản quyền <strong>“Venesa Company Limited”</strong>. Venesa là chuỗi chăm da không xâm lấn ở Hà Nội, có từ 2014, khoảng 12 trung tâm (2022). <em>Chưa có nguồn nào nói thẳng a.SENSE thuộc Venesa.</em></td><td><span class="tag t-low">Thấp–TB</span></td></tr>
+    <tr><td>Mã số thuế, cổ đông, nhà đầu tư</td><td><em>Chưa có nguồn</em></td><td>—</td></tr>
+  </table></div>
+</section>
+
+<section id="mohinh">
+  <h2>3. Mô hình kinh doanh</h2>
+  <div class="tbl"><table>
+    <tr><th>Hạng mục</th><th>Thông tin</th></tr>
+    <tr><td>Định vị</td><td>“Everyday Beauty”, làm đẹp tiện ích. Slogan: “Chuẩn đẹp mới cho cuộc sống hiện đại”, “Ghé là tiện. Đều là ích.”</td></tr>
+    <tr><td>Vị trí</td><td>Tầng trệt chung cư và đại đô thị: Times City, Masteri và Imperia Smart City, Royal City, Vinhomes Ocean Park, New Horizon Lĩnh Nam, The Miami (Hà Nội); Hado Centrosa Q.10 (TP.HCM)</td></tr>
+    <tr><td>Concept</td><td>Phòng riêng cho từng dịch vụ, không gian tối giản, ít phải chờ. Nhân sự, sản phẩm và quy trình chuẩn hóa toàn hệ thống</td></tr>
+    <tr><td>Vận hành</td><td>Không thấy trang nhượng quyền, có vẻ là tự vận hành (chưa xác nhận)</td></tr>
+    <tr><td>Giờ mở</td><td>09:30–22:00, tất cả các ngày</td></tr>
+    <tr><td>Đặt lịch / thanh toán</td><td>“Đặt lịch giữ chỗ chỉ 30 giây”; “Chỉ dùng dịch vụ mới trả tiền”</td></tr>
+  </table></div>
+  <p>Thông điệp lặp lại: <strong>chăm da đều đặn quan trọng hơn thỉnh thoảng làm chuyên sâu</strong>. Mô hình được thiết kế cho tần suất cao, giá thấp, gần nhà.</p>
+</section>
+
+<section id="mangluoi">
+  <h2>4. Mạng lưới &amp; tốc độ mở</h2>
+  <div class="tbl"><table>
+    <tr><th>Mốc</th><th>Số trung tâm</th><th>Ghi chú</th></tr>
+    <tr><td>06/2024</td><td class="num">—</td><td>Thử mô hình</td></tr>
+    <tr><td>11/2024</td><td class="num">1</td><td>Hà Nội</td></tr>
+    <tr><td>12/2024</td><td class="num">4 → 5</td><td>Imperia Smart City; vào TP.HCM (Hado Centrosa)</td></tr>
+    <tr><td>04/2025</td><td class="num">6</td><td>Royal City; đặt mục tiêu 100 cơ sở cuối 2025</td></tr>
+    <tr><td>03/2026</td><td class="num">50</td><td>Mục tiêu 200 cơ sở trong 2026</td></tr>
+    <tr><td>06/2026</td><td class="num">80</td><td>The Miami GS6</td></tr>
+    <tr><td>07/2026</td><td class="num">100</td><td>Mục tiêu dài hạn 2.000 điểm chạm</td></tr>
+    <tr><td>26/11/2026</td><td class="num">“hơn 100”</td><td>Hà Nội, Hưng Yên, TP.HCM</td></tr>
+  </table></div>
+  <ul>
+    <li>Tốc độ tự tính: khoảng 4 cơ sở/tháng (4/2025–3/2026), lên khoảng 10/tháng (3–6/2026), rồi 20 cơ sở trong khoảng 1 tháng (6–7/2026).</li>
+    <li><strong>Mục tiêu bị lùi:</strong> 100 cơ sở dự kiến cuối 2025, thực tế đến 7/2026 mới đạt. Mục tiêu 200 cuối 2026 chưa thấy mốc mới sau 7/2026.</li>
+    <li>Phần lớn cơ sở ở Hà Nội. Chưa đếm được số theo từng tỉnh vì trang tìm cơ sở chạy bằng JS.</li>
+  </ul>
+</section>
+
+<section id="gia">
+  <h2>5. Menu dịch vụ &amp; giá</h2>
+  <p class="muted">Giá niêm yết trên asense.vn ngày 26/11/2026 (đã giảm 5% so với giá gạch).</p>
+  <div class="tbl"><table>
+    <tr><th>Nhóm</th><th>Dịch vụ</th><th>Giá</th><th>Thời lượng / công nghệ</th></tr>
+    <tr><td rowspan="4">Tóc &amp; da đầu</td><td>Gội thanh lọc sâu</td><td class="num">110.000 đ</td><td>—</td></tr>
+    <tr><td>Gội a.SENSE Signature</td><td class="num">250.000 đ</td><td>70 phút, 14 bước</td></tr>
+    <tr><td>Gội thanh lọc kim loại</td><td class="num">360.000 đ</td><td>—</td></tr>
+    <tr><td>Tái cân bằng da đầu</td><td class="num">495.000 đ</td><td>—</td></tr>
+    <tr><td rowspan="3">Da mặt cơ bản</td><td>Sạch sâu</td><td class="num">590.000 đ</td><td>—</td></tr>
+    <tr><td>Tăng sáng</td><td class="num">600.000 đ</td><td>—</td></tr>
+    <tr><td>Da tươi mọng nước</td><td class="num">670.000 đ</td><td>50 phút, máy Booster Pro</td></tr>
+    <tr><td rowspan="3">Da mặt chuyên sâu</td><td>COLLAGEN vùng mắt</td><td class="num">2.070.000 đ</td><td>75 phút, LED, <strong>nano microneedling</strong></td></tr>
+    <tr><td>NANO</td><td class="num">2.670.000 đ</td><td>65 phút, <strong>đầu nano tạo vi kênh</strong>; web ghi “không xâm lấn”</td></tr>
+    <tr><td>EXOSOME</td><td class="num">3.600.000 đ</td><td>60 phút, <strong>peel lactic acid 30–45%, vi kim</strong>; có ghi tác dụng phụ và chống chỉ định</td></tr>
+    <tr><td>Cơ thể</td><td>Cổ vai gáy · chân · tay · detox body</td><td class="num">330.000–690.000 đ</td><td>—</td></tr>
+    <tr><td>Triệt lông (10 buổi)</td><td>Mép → toàn thân</td><td class="num">660.000–11.690.000 đ</td><td><strong>SHR/IPL</strong></td></tr>
+    <tr><td>Nails</td><td>Phá móng, thiết kế, chà gót</td><td class="num">15.000–265.000 đ</td><td>—</td></tr>
+  </table></div>
+  <h3>Khuyến mãi tháng 11/2026</h3>
+  <ul>
+    <li>Gội Signature <strong>59.000 đ</strong> (giá gốc 250.000 đ); gội thanh lọc sâu <strong>0 đ</strong>.</li>
+    <li>Combo Thanh lọc 419.000 đ (giá gốc 830.000 đ); combo Thư giãn và combo Sạch khỏe 349.000 đ (trang ghi lệch 319.000/349.000 đ).</li>
+    <li>Không ghi điều kiện, không ghi ngày hết hạn.</li>
+  </ul>
+  <p><strong>Chính sách gói:</strong> đổi gói trong 30 ngày nếu đã dùng không quá 3 buổi; chuyển buổi còn lại cho người khác; hoàn tiền trong 5–7 ngày làm việc (hiệu lực 15/10/2026). Review có nhắc “gói 10+10”. Chưa có bảng giá thẻ trả trước.</p>
+</section>
+
+<section id="sanpham">
+  <h2>6. Sản phẩm</h2>
+  <ul>
+    <li>Mỹ phẩm chăm da <strong>Sonwa</strong> (“kiểm soát thành phần”), chưa rõ xuất xứ.</li>
+    <li>Dòng EXOSOME và dầu gội quảng cáo là “nhập khẩu từ Ý”; logo đối tác trên web có <strong>Napura</strong> và <strong>Revivre</strong>.</li>
+    <li>Không thấy thương hiệu riêng; không thấy bán trên TikTok Shop hay Shopee. Điểm thành viên đổi được sản phẩm, tức có bán lẻ tại điểm.</li>
+  </ul>
+</section>
+
+<section id="loyalty">
+  <h2>7. Chương trình thành viên &amp; app</h2>
+  <div class="tbl"><table>
+    <tr><th>Hạng</th><th>Chi tiêu 6 tháng</th><th>Tích điểm</th></tr>
+    <tr><td>Member</td><td class="num">dưới 350.000 đ</td><td class="num">3%</td></tr>
+    <tr><td>Silver</td><td class="num">350.000–599.999 đ</td><td class="num">5%</td></tr>
+    <tr><td>Gold</td><td class="num">600.000–999.999 đ</td><td class="num">7%</td></tr>
+    <tr><td>Platinum</td><td class="num">từ 1.000.000 đ</td><td class="num">10%</td></tr>
+  </table></div>
+  <ul>
+    <li>1 điểm = 1 đ; điểm hết hạn sau 12 tháng và <strong>chuyển được cho người khác</strong>.</li>
+    <li>Thưởng điểm khi: tải app lần đầu (50.000 điểm), đặt lịch qua app, <strong>đặt giờ thấp điểm</strong>, <strong>đến từ 2 lần/tuần</strong>, quay lại sau 30 ngày vắng.</li>
+    <li>Không hoạt động 12 tháng thì về hạng Member.</li>
+  </ul>
+  <div class="callout key">
+    <strong>App iOS “a.SENSE: Everyday Beauty”:</strong> ra mắt 17/01/2025, bản 1.1.6 (16/11), <strong>4,5/5 từ 15 lượt đánh giá</strong>. Có đặt lịch theo slot thời gian thực, check-in QR, quản lý combo, loyalty, và chấm công cho kỹ thuật viên. Chưa tìm thấy bản Android trên Google Play.
+  </div>
+  <p class="muted">Thiết kế loyalty nhắm 2 mục tiêu vận hành: lấp giờ thấp điểm và tăng tần suất đến. Hai mục tiêu này khớp với mô hình giá thấp, lượng khách lớn.</p>
+</section>
+
+<section id="marketing">
+  <h2>8. Marketing &amp; kênh</h2>
+  <div class="tbl"><table>
+    <tr><th>Kênh</th><th>Quan sát</th></tr>
+    <tr><td>Facebook, TikTok @asensevn, Instagram, YouTube</td><td>Có tài khoản; chưa đọc được số follower</td></tr>
+    <tr><td>Zalo OA, hotline 1800 646425</td><td>Có</td></tr>
+    <tr><td>SEO</td><td>Blog local kiểu “Top 8 spa Quận 4”, “Địa chỉ gội đầu dưỡng sinh Đống Đa”</td></tr>
+    <tr><td>PR báo chí</td><td>Theo từng mốc mở cơ sở: VnExpress (4/2025, gắn nhãn tài trợ), Dân Trí (6/2025), Znews (3/2026), Eva (7/2026), Tiền Phong (8/2026)</td></tr>
+    <tr><td>KOL / đại sứ</td><td>Không thấy; web chỉ có lời chứng thực của khách</td></tr>
+    <tr><td>Mồi giá</td><td>Gội 0–59.000 đ; combo 349.000–419.000 đ</td></tr>
+    <tr><td>Quảng cáo đang chạy</td><td><em>Chưa có nguồn (cần mở Meta Ad Library)</em></td></tr>
+  </table></div>
+  <p><strong>Thông điệp lặp lại:</strong> tiện, gần nhà, đều đặn, riêng tư, chuẩn hóa, đặt lịch 30 giây, dùng xong mới trả tiền, khách nam đang tăng.</p>
+</section>
+
+<section id="nhansu">
+  <h2>9. Nhân sự &amp; vận hành</h2>
+  <ul>
+    <li><strong>Kỹ thuật viên ở TP.HCM:</strong> 10–15 triệu đ/tháng, không cần kinh nghiệm, được đào tạo, thử việc hưởng 100% lương.</li>
+    <li><strong>Chuyên viên nhân sự:</strong> 11–14 triệu đ/tháng.</li>
+    <li><strong>Đào tạo (tự công bố):</strong> có trung tâm đào tạo riêng, hub thực hành tại chi nhánh, liên kết với trường đại học và cao đẳng.</li>
+    <li>Chưa có số liệu về quy mô nhân sự, diện tích mỗi điểm, vốn đầu tư mỗi điểm.</li>
+  </ul>
+</section>
+
+<section id="phaply">
+  <h2>10. Pháp lý &amp; tuân thủ</h2>
+  <div class="tbl"><table>
+    <tr><th>Hạng mục</th><th>Quan sát</th></tr>
+    <tr><td>Giấy phép y tế / bác sĩ</td><td><strong>Không thấy nhắc.</strong> Mọi dịch vụ do kỹ thuật viên làm</td></tr>
+    <tr><td>Thủ thuật cần đối chiếu</td><td>Vi kim, peel acid 30–45%, triệt lông SHR/IPL. Chưa rõ các thủ thuật này có cần giấy phép khám chữa bệnh hay không</td></tr>
+    <tr><td>Tuyên bố an toàn</td><td>NANO và COLLAGEN ghi “không xâm lấn”. EXOSOME có ghi tác dụng phụ, chống chỉ định, yêu cầu soi da trước, “không cam kết” kết quả</td></tr>
+    <tr><td>Phạt / khiếu nại</td><td>Không tìm thấy trên báo chí đến 26/11/2026. Không tìm thấy chưa có nghĩa là không có</td></tr>
+  </table></div>
+</section>
+
+<section id="review">
+  <h2>11. Phản hồi khách hàng</h2>
+  <div class="tbl"><table>
+    <tr><th>Nguồn</th><th>Điểm</th><th>Nội dung</th></tr>
+    <tr><td>App Store</td><td class="num">4,5/5 (15 lượt)</td><td><strong>Khen:</strong> tích điểm rõ, đặt lịch tiện, “gói 10+10” đáng tiền. <strong>Chê:</strong> thời lượng ngắn hơn quảng cáo, kỹ thuật viên trẻ và hiểu sai yêu cầu, lực massage yếu, giường nằm sấp khó thở</td></tr>
+    <tr><td>asense.vn</td><td class="num">Gội Signature 4.712 lượt; NANO 4,97</td><td>Chỉ có khen; hệ thống đánh giá do thương hiệu tự vận hành</td></tr>
+    <tr><td>Google Maps, diễn đàn</td><td>—</td><td><em>Chưa có nguồn</em> (kết quả tìm kiếm bị lẫn với “Sense Spa” khác)</td></tr>
+  </table></div>
+</section>
+
+<section id="danhgia">
+  <h2>12. Điểm mạnh, điểm yếu &amp; so sánh</h2>
+  <div class="tbl"><table>
+    <tr><th>💪 Mạnh</th><th>⚠️ Yếu / rủi ro</th></tr>
+    <tr>
+      <td><ul>
+        <li>Mở cơ sở nhanh nhất trong các chuỗi đã khảo sát (hơn 100 trong khoảng 20 tháng)</li>
+        <li>Giá vào cửa thấp, công khai từng dịch vụ</li>
+        <li>App, đặt lịch theo slot, loyalty có thưởng đặt giờ thấp điểm và đến thường xuyên</li>
+        <li>Chính sách đổi gói, chuyển buổi, hoàn tiền rõ ràng</li>
+        <li>Mở cửa đến 22:00 mọi ngày, menu rộng</li>
+      </ul></td>
+      <td><ul>
+        <li>Review độc lập rất ít; PR chủ yếu là bài tài trợ</li>
+        <li>Khách chê thời lượng thiếu, kỹ thuật viên trẻ; khớp với việc tuyển người không cần kinh nghiệm</li>
+        <li>Mục tiêu mở điểm liên tục bị lùi</li>
+        <li>Web còn lỗi (trang tìm cơ sở hiện 0, giá lệch)</li>
+        <li>Không công khai pháp nhân mẹ</li>
+        <li>Vi kim, peel acid, IPL do kỹ thuật viên làm, không thấy bác sĩ</li>
+      </ul></td>
+    </tr>
+  </table></div>
+
+  <h3>So với đối thủ gần</h3>
+  <div class="tbl"><table>
+    <tr><th>Tiêu chí</th><th>a.SENSE</th><th>Hasaki Clinic &amp; Spa</th><th>SeoulSpa / SeoulCenter</th><th>Ngọc Dung</th></tr>
+    <tr><td>Quy mô</td><td>hơn 100, 3 tỉnh/thành</td><td>≈17 clinic, gắn khoảng 200 cửa hàng bán lẻ</td><td>41 (34 spa, 6 phòng khám da liễu, 1 phòng khám thẩm mỹ)</td><td>16</td></tr>
+    <tr><td>Vị trí</td><td>Tầng trệt chung cư</td><td>Trong hoặc cạnh cửa hàng</td><td>Mặt phố, các tỉnh</td><td>Mặt phố, thành phố lớn</td></tr>
+    <tr><td>Yếu tố y khoa</td><td>Không thấy bác sĩ</td><td>Có clinic da liễu</td><td>Có phòng khám da liễu và thẩm mỹ</td><td>Thẩm mỹ viện, phun xăm</td></tr>
+    <tr><td>Giá vào cửa</td><td>Gội 59.000–250.000 đ; facial 590.000–670.000 đ</td><td>—</td><td>—</td><td>Ưu đãi 168.000 đ; trị mụn/nám từ 390.000 đ</td></tr>
+    <tr><td>Thâm niên</td><td>Từ 2024</td><td>Bán lẻ từ 2016</td><td>—</td><td>Từ 1998</td></tr>
+    <tr><td>Kênh nổi bật</td><td>App, loyalty, PR theo mốc mở</td><td>Bán lẻ, TMĐT</td><td>Web, nhượng quyền</td><td>Hotline, web</td></tr>
+    <tr><td>Nhượng quyền</td><td>Không thấy</td><td>—</td><td>Có</td><td>—</td></tr>
+  </table></div>
+  <p class="muted">Phần này chỉ ghi dữ kiện, chưa có khuyến nghị chiến lược. Tham khảo thêm <a href="thi-truong-spa-viet-nam-2026-11.html">báo cáo thị trường Việt Nam</a>.</p>
+</section>
+
+<section id="nguon">
+  <h2>13. Khoảng trống dữ liệu &amp; nguồn</h2>
+  <div class="callout warn">
+    <strong>Độ tin cậy:</strong> menu, giá, loyalty và app iOS là <strong>cao</strong> (đọc trực tiếp trên web chính thức). Các mốc mạng lưới và mục tiêu là <strong>trung bình</strong> (tự công bố). Pháp nhân mẹ, nhượng quyền, sản phẩm và phản hồi khách là <strong>thấp</strong>. Mọi URL truy cập ngày 26/11/2026.
+  </div>
+  <h3>Chưa có nguồn</h3>
+  <ul>
+    <li>Mã số thuế, người đại diện pháp luật, cổ đông, nhà đầu tư: cần tra Cổng đăng ký doanh nghiệp quốc gia.</li>
+    <li>Số cơ sở theo từng tỉnh; điểm Google Maps từng chi nhánh.</li>
+    <li>Số follower mạng xã hội; quảng cáo đang chạy (Meta Ad Library, TikTok Creative Center).</li>
+    <li>Diện tích, vốn đầu tư và số nhân sự mỗi điểm; bảng giá thẻ trả trước; app Android.</li>
+    <li>Vi kim, peel acid, IPL có cần giấy phép khám chữa bệnh không: cần luật sư.</li>
+  </ul>
+  <h3>Nguồn chính</h3>
+  <ul class="sources">
+    <li>Giới thiệu — https://asense.vn/about-us</li>
+    <li>Dịch vụ &amp; giá — https://asense.vn/dich-vu</li>
+    <li>Ưu đãi tháng 11 — https://asense.vn/uu-dai</li>
+    <li>Chính sách bán hàng — https://asense.vn/tin-tuc/chinh-sach/chinh-sach-ban-hang</li>
+    <li>Chương trình thành viên — https://loyalty.asense.vn/chuong-trinh-loyalty</li>
+    <li>App Store — https://apps.apple.com/vn/app/a-sense-everyday-beauty/id6739933416</li>
+    <li>Tiền Phong (100 trung tâm, 8/2026) — https://tienphong.vn/tu-1-den-100-trung-tam-sau-2-nam-asense-tai-dinh-nghia-thoi-quen-cham-da-post1865683.tpo</li>
+    <li>Eva (80 trung tâm, 7/2026) — https://eva.vn/bi-quyet-lam-dep/cham-moc-80-trung-tam-asense-cung-co-vi-the-trong-linh-vuc-lam-dep-tien-ich-c280a675474.html</li>
+    <li>Znews (50 trung tâm, 3/2026) — https://znews.vn/tang-toc-trong-cuoc-dua-lam-dep-asense-cham-moc-50-trung-tam-post1637422.html</li>
+    <li>VnExpress (tài trợ, 4/2025) — https://vnexpress.net/he-thong-a-sense-beauty-spa-khai-truong-co-so-moi-tai-royal-city-4873924.html</li>
+    <li>Dân Trí (6/2025) — https://dantri.com.vn/suc-khoe/asense-beauty-spa-ra-mat-chi-nhanh-moi-tai-vinhomes-ocean-park-20250603104635487.htm</li>
+    <li>Venesa (Báo Đầu tư) — https://baodautu.vn/venesa-cham-moc-12-trung-tam-cham-soc-sac-dep-tren-toan-quoc-d164879.html</li>
+    <li>Tuyển dụng — https://vn.joboko.com/cong-ty-tnhh-dich-vu-a-sense-xci930651</li>
+  </ul>
+  <p class="muted">Bản đầy đủ: <code>mkt/vn-spa/data/snapshots/2026-11-26-henry-asense-profile.md</code></p>
+</section>
+
+<footer>ai-mkt-team · vn-spa (tạm) · Hồ sơ đối thủ 26/11/2026 · Chỉ dùng nguồn công khai; số do doanh nghiệp tự công bố đã ghi rõ.</footer>
+</div>
+</body>
+</html>
