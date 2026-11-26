@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Báo cáo thị trường spa & thẩm mỹ Philippines — 26/11/2026</title>
+<style>
+  :root{
+    --bg:#f5f5f7; --card:#ffffff; --ink:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+    --blue:#0071e3; --blue-soft:#e8f2fd; --green:#248a3d; --green-soft:#e9f6ec;
+    --orange:#b25000; --orange-soft:#fff4e5; --red:#d70015; --red-soft:#fdecee;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:-.022em}
+  .wrap{max-width:980px;margin:0 auto;padding:56px 22px 96px}
+  header.cover{text-align:center;padding:40px 10px 48px}
+  header.cover .kicker{font-size:14px;font-weight:600;color:var(--blue);letter-spacing:0;margin-bottom:10px}
+  header.cover h1{margin:0 0 14px;font-size:56px;line-height:1.07;font-weight:700;letter-spacing:-.015em;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  header.cover p{margin:0 auto;max-width:640px;font-size:21px;line-height:1.38;color:var(--muted);letter-spacing:.011em}
+  .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:26px;font-size:13px}
+  .meta span{background:var(--card);border-radius:980px;padding:6px 14px;color:var(--ink)}
+  nav.toc{background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-radius:18px;padding:20px 28px;margin-bottom:28px;position:sticky;top:12px;z-index:5;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+  nav.toc strong{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  nav.toc ol{margin:8px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px}
+  nav.toc a{color:var(--blue);text-decoration:none}
+  nav.toc a:hover{text-decoration:underline}
+  section{background:var(--card);border-radius:18px;padding:40px 44px;margin-bottom:24px}
+  h2{margin:0 0 18px;font-size:32px;line-height:1.125;font-weight:700;letter-spacing:.004em;color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif}
+  h3{margin:30px 0 10px;font-size:21px;font-weight:600;letter-spacing:.011em}
+  p{margin:10px 0}
+  table{width:100%;border-collapse:collapse;font-size:15px;margin:12px 0 8px;letter-spacing:-.01em}
+  th,td{text-align:left;vertical-align:top;padding:12px 12px;border-bottom:1px solid #e8e8ed}
+  th{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  td.num{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:500}
+  .tbl{overflow-x:auto}
+  .callout{border-radius:14px;padding:18px 22px;margin:18px 0;font-size:16px}
+  .callout.key{background:var(--blue-soft)}
+  .callout.warn{background:var(--orange-soft)}
+  .callout.bad{background:var(--red-soft)}
+  .callout.good{background:var(--green-soft)}
+  .callout strong:first-child{color:inherit}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:980px;white-space:nowrap;letter-spacing:0}
+  .t-high{background:var(--green-soft);color:var(--green)}
+  .t-mid{background:var(--orange-soft);color:var(--orange)}
+  .t-low{background:var(--red-soft);color:var(--red)}
+  .verdict{font-weight:600}
+  .v-go{color:var(--green)} .v-mid{color:var(--orange)} .v-no{color:var(--red)}
+  ul,ol{padding-left:22px} li{margin:6px 0}
+  .muted{color:var(--muted);font-size:14px}
+  code{font-family:"SF Mono",SFMono-Regular,Menlo,monospace;font-size:13px;background:var(--bg);padding:2px 6px;border-radius:6px}
+  .sources{font-size:13px;word-break:break-all;color:var(--muted)}
+  .sources li{margin:4px 0}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+  @media (max-width:734px){
+    header.cover h1{font-size:36px} header.cover p{font-size:18px}
+    section{padding:28px 20px;border-radius:14px} h2{font-size:26px}
+    nav.toc{position:static}
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#000;--card:#1d1d1f;--ink:#f5f5f7;--muted:#a1a1a6;--line:#424245;
+      --blue:#2997ff;--blue-soft:#0a2540;--green:#30d158;--green-soft:#0f2e17;--orange:#ff9f0a;--orange-soft:#33240a;--red:#ff453a;--red-soft:#3a1414}
+    th,td{border-bottom-color:#333336}
+    nav.toc{background:rgba(29,29,31,.72)}
+    .meta span{background:var(--card)}
+  }
+  @media print{body{background:#fff} nav.toc{position:static} section{break-inside:avoid;padding:20px 0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <div class="kicker">ai-mkt-team · Báo cáo nghiên cứu thị trường</div>
+  <h1>Ngành spa &amp; thẩm mỹ tại Philippines</h1>
+  <p>Đánh giá cơ hội gia nhập và so sánh với Campuchia: quy mô, cấu trúc ngành, đối thủ, hành vi khách, kênh, pháp lý, giá.</p>
+  <div class="meta">
+    <span>📅 26/11/2026</span>
+    <span>🔭 Nghiên cứu: Henry</span>
+    <span>🧠 Đánh giá: Zidane</span>
+    <span>💱 63,8 PHP/USD (BSP 16/11/2026)</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <strong>Mục lục</strong>
+  <ol>
+    <li><a href="#tomtat">1. Tóm tắt</a></li>
+    <li><a href="#vimo">2. Vĩ mô &amp; quy mô</a></li>
+    <li><a href="#cautruc">3. Cấu trúc ngành</a></li>
+    <li><a href="#doithu">4. Đối thủ</a></li>
+    <li><a href="#khach">5. Hành vi khách</a></li>
+    <li><a href="#kenh">6. Kênh</a></li>
+    <li><a href="#phaply">7. Pháp lý &amp; rủi ro</a></li>
+    <li><a href="#gia">8. Giá</a></li>
+    <li><a href="#danhgia">9. Đánh giá cơ hội</a></li>
+    <li><a href="#sosanh">10. So sánh Campuchia</a></li>
+    <li><a href="#quyetdinh">11. Quyết định</a></li>
+    <li><a href="#nguon">12. Nguồn</a></li>
+  </ol>
+</nav>
+
+<section id="tomtat">
+  <h2>1. Tóm tắt điều hành</h2>
+  <div class="callout key">
+    <strong>Kết luận:</strong> Philippines là thị trường <strong>lớn và đã trưởng thành</strong>. Cầu không thiếu, nhưng mall đã bị các chuỗi nội địa chiếm. Nếu vào, hướng khả thi là <strong>clinic da / thẩm mỹ không xâm lấn tầm trung</strong>, do bác sĩ Philippines có giấy phép đứng chuyên môn, đi qua <strong>liên doanh hoặc mua lại</strong>. Zidane khuyến nghị <strong>Campuchia đi trước, Philippines là giai đoạn 2</strong>.
+  </div>
+  <ul>
+    <li><strong>Quy mô lớn:</strong> 112,7 triệu dân, Metro Manila 14 triệu (gấp khoảng 6 lần Phnom Penh). GDP/người 3.985 USD. Kiều hối kỷ lục 35,6 tỉ USD.</li>
+    <li><strong>Có số liệu ngành (GWI 2024):</strong> spa 805 triệu USD (+18,6%), 2.070 cơ sở. <strong>Medical spa tăng nhanh nhất</strong> (+27,7%).</li>
+    <li><strong>Cạnh tranh dày:</strong> SkinStation hơn 100 điểm, Lay Bare 182+, Nuat Thai 100+, Bioessence 34, Belo 16 điểm (quỹ Ares Management đã mua đa số).</li>
+    <li><strong>Pháp lý:</strong> hành nghề y chỉ dành cho công dân Philippines. Bác sĩ nước ngoài cần giấy phép tạm thời STP và nước họ phải đối xử tương ứng.</li>
+    <li><strong>Glutathione tiêm</strong> chưa được FDA duyệt để làm trắng, nhưng vẫn bán đại trà từ 699 PHP. Năm 2024 có ca tử vong.</li>
+    <li><strong>Hình ảnh người Việt đang bất lợi:</strong> năm 2025 có ít nhất 4 vụ bắt người Việt hoặc người nước ngoài hành nghề thẩm mỹ trái phép.</li>
+    <li><strong>Phủ digital rất cao:</strong> Facebook 95,8 triệu, TikTok 64 triệu, Instagram 26,9 triệu (+24,6%). Beauty chiếm 28% GMV của TikTok Shop.</li>
+  </ul>
+</section>
+
+<section id="vimo">
+  <h2>2. Vĩ mô &amp; quy mô thị trường</h2>
+  <div class="tbl"><table>
+    <tr><th>Chỉ số</th><th>Giá trị</th><th>Năm · nguồn</th><th>Tin cậy</th></tr>
+    <tr><td>Dân số</td><td class="num">112,73 triệu · tuổi trung vị 26,1</td><td>2024 · PSA</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tỉ lệ đô thị</td><td class="num">54,0%</td><td>2020 · PSA</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Metro Manila (NCR)</td><td class="num">14,0 triệu</td><td>2024</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Davao City / Cebu City</td><td class="num">1,85 triệu / ≈965 nghìn</td><td>2024</td><td><span class="tag t-mid">Cao / thấp</span></td></tr>
+    <tr><td>GDP/người</td><td class="num">3.985 USD (WB 2024) · ≈4.321 USD (IMF 2025)</td><td>WB, IMF</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tăng trưởng GDP</td><td class="num">5,7% (2024) · 4,4% (2025) · 2,8% (Q1/2026)</td><td>PSA, Trading Economics</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Tầng lớp trung lưu</td><td class="num">≈40% dân số</td><td>2021 · PIDS</td><td><span class="tag t-mid">Trung bình</span></td></tr>
+    <tr><td>Kiều hối OFW</td><td class="num">35,63 tỉ USD (7,3% GDP)</td><td>2025 · BSP</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Khách quốc tế</td><td class="num">6,48 triệu (chưa về mức ≈8 triệu trước Covid)</td><td>2025 · DOT</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Kinh tế wellness</td><td class="num">47,3 tỉ USD · hạng 23 thế giới</td><td>2024 · GWI</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Personal care &amp; beauty (định nghĩa rộng)</td><td class="num">27,9 tỉ USD · hạng 12 thế giới</td><td>2024 · GWI</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td><strong>Spa</strong></td><td class="num"><strong>805 triệu USD (+18,6%) · 2.070 cơ sở</strong></td><td>2024 · GWI</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Beauty &amp; personal care (chỉ sản phẩm)</td><td class="num">6,49–6,7 tỉ USD</td><td>Statista 2024, IMARC 2025</td><td><span class="tag t-mid">Trung bình</span></td></tr>
+    <tr><td>Thẩm mỹ y khoa / medical spa</td><td class="num">128 triệu – 1,32 tỉ USD (lệch 10 lần)</td><td>Báo cáo trả phí</td><td><span class="tag t-low">Thấp</span></td></tr>
+    <tr><td>Thu nhập hộ NCR so với cả nước</td><td class="num">≈9.990 so với 7.150 USD/năm</td><td>Ken Research</td><td><span class="tag t-low">Thấp–TB</span></td></tr>
+  </table></div>
+  <div class="callout warn">Kinh tế đang chậm lại: GDP 2025 chỉ tăng 4,4%, Q1/2026 còn 2,8%, BSP vừa tăng lãi suất lên 5,5%. Bù lại, kiều hối kỷ lục giữ sức mua cho mùa lễ.</div>
+</section>
+
+<section id="cautruc">
+  <h2>3. Cấu trúc ngành</h2>
+  <h3>Spa theo GWI (2024)</h3>
+  <div class="tbl"><table>
+    <tr><th>Loại spa</th><th>Doanh thu</th><th>Tăng</th><th>Số cơ sở</th></tr>
+    <tr><td>Spa khách sạn / resort</td><td class="num">617 triệu USD (76,6%)</td><td class="num">+21,1%</td><td class="num">1.383</td></tr>
+    <tr><td>Day / club / salon spa</td><td class="num">108 triệu USD</td><td class="num">+8,7%</td><td class="num">524</td></tr>
+    <tr><td><strong>Medical spa</strong></td><td class="num">40 triệu USD</td><td class="num"><strong>+27,7%</strong></td><td class="num">42</td></tr>
+    <tr><td>Destination spa</td><td class="num">21 triệu USD</td><td class="num">+1,1%</td><td class="num">9</td></tr>
+    <tr><td>Khác + thermal</td><td class="num">19 triệu USD</td><td class="num">—</td><td class="num">112</td></tr>
+    <tr><td><strong>Tổng</strong></td><td class="num"><strong>805 triệu USD</strong></td><td class="num"><strong>+18,6%</strong></td><td class="num"><strong>2.070</strong></td></tr>
+  </table></div>
+  <p class="muted">Định nghĩa của GWI không tính massage bình dân, chuỗi foot spa hay clinic da liễu, nên phần lớn thị trường clinic nằm ngoài con số này.</p>
+  <h3>Phân khúc quan sát được</h3>
+  <div class="tbl"><table>
+    <tr><th>Phân khúc</th><th>Ví dụ</th><th>Giá / ghi chú</th></tr>
+    <tr><td>Massage bình dân, foot spa nhượng quyền</td><td>Nuat Thai, tiệm hilot</td><td>300–800 PHP/giờ</td></tr>
+    <tr><td>Day spa tầm trung</td><td>The Spa, Wensha</td><td>900–3.500 PHP</td></tr>
+    <tr><td>Spa khách sạn</td><td>Shangri-La, Peninsula, Mandarin Oriental</td><td>3.800–8.500 PHP</td></tr>
+    <tr><td>Clinic da bình dân trong mall</td><td>SkinStation, Flawless, Bioessence, Dermclinic</td><td>Dưới 3.000 PHP/lượt; có bán gluta drip</td></tr>
+    <tr><td>Clinic thẩm mỹ y khoa cao cấp</td><td>Belo, Aivee, Luminisce</td><td>8.000–15.000+ PHP/lượt</td></tr>
+    <tr><td>Clinic định vị “Korean”</td><td>SeoulSkin, Hernel, O2 Skin Lab</td><td>K-beauty</td></tr>
+    <tr><td>Waxing chuyên biệt</td><td>Lay Bare (182+ điểm)</td><td>Nhượng quyền</td></tr>
+    <tr><td>Phẫu thuật thẩm mỹ</td><td>Clinic tư, bệnh viện, Belo</td><td>Cần giấy phép DOH cho clinic phẫu thuật trong ngày</td></tr>
+  </table></div>
+  <p>Mô hình chủ đạo là <strong>chuỗi trong mall</strong> (SM, Ayala, Robinsons) và <strong>nhượng quyền</strong>. Có giao dịch quỹ đầu tư lớn: Ares Management mua Belo với định giá dưới 20 tỉ PHP. Chưa có số thị phần.</p>
+</section>
+
+<section id="doithu">
+  <h2>4. Đối thủ chính</h2>
+  <div class="tbl"><table>
+    <tr><th>Tên</th><th>Phân khúc</th><th>Chi nhánh</th><th>Giá công khai</th><th>Định vị / ghi chú</th></tr>
+    <tr><td><strong>Belo Medical Group</strong></td><td>Thẩm mỹ y khoa cao cấp</td><td class="num">16 (13 ở Metro Manila)</td><td>Botox 525 PHP/đơn vị; HydraFacial 12.500–13.500</td><td>Bác sĩ nổi tiếng; Ares sở hữu đa số; 9/2026 mở clinic longevity</td></tr>
+    <tr><td><strong>SkinStation</strong></td><td>Clinic da bình dân</td><td class="num">100+</td><td>Facial 500–1.500; HydraFacial 4.500–6.000</td><td>Tự nhận “Số 1 triệt lông diode”; có app; bán IV gluta</td></tr>
+    <tr><td><strong>Lay Bare</strong></td><td>Waxing</td><td class="num">182+</td><td>—</td><td>Nhượng quyền, phục vụ cả nam và nữ</td></tr>
+    <tr><td><strong>Nuat Thai</strong></td><td>Massage kiểu Thái</td><td class="num">100+</td><td>500–950 PHP/giờ</td><td>Nhượng quyền, gốc Cebu</td></tr>
+    <tr><td><strong>Bioessence</strong></td><td>Facial, giảm béo</td><td class="num">34</td><td>—</td><td>Thermawave, chỉ, filler</td></tr>
+    <tr><td><strong>Flawless</strong></td><td>Clinic da bình dân</td><td class="num">32 (số năm 2011)</td><td>Facial 800–1.500</td><td>Nhượng quyền</td></tr>
+    <tr><td><strong>Dermclinic</strong></td><td>Clinic da lâu đời</td><td class="num">21 (số năm 2011)</td><td>Gluta drip từ 3.700</td><td>Phủ ra các tỉnh</td></tr>
+    <tr><td><strong>Aivee</strong></td><td>Thẩm mỹ y khoa cao cấp</td><td class="num">4 ở PH + 1 ở Singapore</td><td>Laser facial 5.000–15.000+</td><td>Trả góp 0% qua Metrobank</td></tr>
+    <tr><td><strong>SeoulSkin</strong></td><td>Định vị “Korean”, vốn nội địa</td><td class="num">≥6 (trong SM City)</td><td>—</td><td>Hợp tác Opus Clinic Gangnam</td></tr>
+    <tr><td><strong>The Spa</strong></td><td>Day spa</td><td class="num">7</td><td>Từ 1.350/60 phút</td><td>Có villa ở BGC; bán qua Klook</td></tr>
+    <tr><td><strong>Hernel</strong></td><td>Clinic thẩm mỹ, bác sĩ Hàn</td><td class="num">1 (BGC)</td><td>—</td><td>Hạng sang</td></tr>
+    <tr><td><strong>Lift Aesthetic</strong></td><td>Tập trung khách nam</td><td class="num">—</td><td>—</td><td>Tự công bố 55–60% khách là nam</td></tr>
+    <tr><td>Spa khách sạn 5 sao</td><td>Spa khách sạn</td><td class="num">—</td><td>3.800–8.500</td><td>Shangri-La, Peninsula</td></tr>
+  </table></div>
+  <ul>
+    <li><strong>Hàn / Thái:</strong> chưa có chuỗi clinic lớn. Clinic “Hàn” chủ yếu là định vị của chủ Philippines.</li>
+    <li><strong>Việt Nam:</strong> không có thương hiệu hợp pháp nào có tên tuổi. Chỉ thấy các vụ bắt giữ hành nghề trái phép (mục 7).</li>
+  </ul>
+</section>
+
+<section id="khach">
+  <h2>5. Hành vi khách hàng</h2>
+  <ul>
+    <li><strong>Trắng da:</strong> khoảng một nửa phụ nữ dùng sản phẩm làm sáng da (nghiên cứu 2014, mẫu nhỏ). Gluta drip bán đại trà trong mall theo gói 3–12 lượt.</li>
+    <li><strong>Dịch vụ nổi bật trong menu các chuỗi:</strong> triệt lông diode, laser (Pico, CO₂), trị mụn và sẹo, HydraFacial, Botox và filler, chỉ, HIFU, giảm béo.</li>
+    <li><strong>Mùa vụ:</strong> “ber months” (tháng 9–12) và lễ Giáng sinh, khi kiều bào về nước. Kiều hối tháng 12 cao nhất năm (3,52 tỉ USD).</li>
+    <li><strong>Nam giới:</strong> chưa có số đại diện. Lift tự công bố 55–60% khách là nam, nguồn khác nói rất ít.</li>
+    <li><strong>K-beauty:</strong> nhiều clinic dùng định vị “Korean”, chưa có khảo sát người tiêu dùng.</li>
+    <li><strong>Du lịch wellness đến Philippines:</strong> 1,0 triệu chuyến, chi 1,1 tỉ USD (2024), thấp hơn năm 2019.</li>
+    <li><strong>Địa lý:</strong> Belo đặt 13/16 điểm ở Metro Manila. Thu nhập hộ ở NCR cao hơn trung bình cả nước khoảng 40%.</li>
+  </ul>
+</section>
+
+<section id="kenh">
+  <h2>6. Kênh marketing &amp; thanh toán</h2>
+  <div class="tbl"><table>
+    <tr><th>Kênh</th><th>Quy mô</th><th>Ghi chú</th></tr>
+    <tr><td>Internet</td><td class="num">98,0 triệu (83,8%)</td><td>DataReportal 10/2025</td></tr>
+    <tr><td><strong>Facebook</strong></td><td class="num">95,8 triệu (+10,3%)</td><td>Nữ 52%</td></tr>
+    <tr><td><strong>Messenger</strong></td><td class="num">65,8 triệu</td><td>Kênh tư vấn, đặt lịch</td></tr>
+    <tr><td><strong>TikTok</strong> (18+)</td><td class="num">64,0 triệu</td><td>Nữ 55,3%</td></tr>
+    <tr><td>YouTube</td><td class="num">59,6 triệu</td><td>—</td></tr>
+    <tr><td><strong>Instagram</strong></td><td class="num">26,9 triệu (+24,6%)</td><td>Nữ 58,8%, tỉ lệ nữ cao nhất</td></tr>
+    <tr><td>TikTok Shop</td><td class="num">GMV 6 tỉ USD (+53%)</td><td><strong>Beauty chiếm 28%</strong>, ngành hàng số 1</td></tr>
+    <tr><td>Shopee / Lazada</td><td class="num">12 tỉ / 3 tỉ USD</td><td>Beauty chiếm 14% trên Shopee</td></tr>
+    <tr><td>GCash</td><td class="num">≈94–95 triệu tài khoản · 41,5 triệu người dùng/tháng</td><td>Thanh toán số chiếm 64,7% giao dịch bán lẻ</td></tr>
+    <tr><td>Trả góp</td><td>0% qua Metrobank, BDO, BPI; BillEase</td><td>Phổ biến ở clinic</td></tr>
+    <tr><td>KOL beauty</td><td>LOURD 18,3 triệu (TikTok); Barbie Imperial 26,1 triệu</td><td>Bảng xếp hạng lệch nhau</td></tr>
+  </table></div>
+  <p><strong>Ngôn ngữ:</strong> Taglish là chuẩn; website clinic chủ yếu bằng tiếng Anh. <strong>Booking:</strong> Klook, Booky, Fresha, ClassPass. Meta Ad Library chưa xem được, cần người mở thủ công.</p>
+</section>
+
+<section id="phaply">
+  <h2>7. Pháp lý &amp; rủi ro</h2>
+  <div class="tbl"><table>
+    <tr><th>Hạng mục</th><th>Phát hiện</th><th>Tin cậy</th></tr>
+    <tr><td>Hành nghề y</td><td>Hiến pháp 1987 và Medical Act 1959: <strong>chỉ công dân Philippines</strong> được hành nghề. Mô hình phổ biến: vốn ngoại góp vốn, công nghệ, quản lý; bác sĩ Philippines làm chuyên môn. Có Luật chống đứng tên hộ</td><td><span class="tag t-mid">TB, cần luật sư</span></td></tr>
+    <tr><td>Bác sĩ nước ngoài</td><td>Cần giấy phép tạm thời STP của PRC, chỉ cấp nếu nước họ đối xử tương ứng với bác sĩ Philippines. Chưa rõ Việt Nam có đủ điều kiện không</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Sở hữu nước ngoài</td><td>Danh mục hạn chế đầu tư FINL 13 (EO 113/2026, hiệu lực 05/2026). Cơ sở không sở hữu đất có thể 100% vốn ngoại; công ty sở hữu đất tối đa 40%</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Bán lẻ có vốn ngoại</td><td>RA 11595: vốn tối thiểu 25 triệu PHP (≈392 nghìn USD)</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Cấp phép DOH</td><td>Clinic phẫu thuật trong ngày theo AO 183/2004. Chưa tìm thấy văn bản riêng cho medical spa không phẫu thuật</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td><strong>Glutathione tiêm</strong></td><td>FDA <strong>chưa duyệt để làm trắng da</strong> (Circular 2019-182). DOH nhắc lại năm 2024, Hội Da liễu nhắc lại 01/2025</td><td><span class="tag t-high">Cao</span></td></tr>
+    <tr><td>Quảng cáo</td><td>Ad Standards Council: ảnh trước–sau phải trung thực. Mức phạt 100.000–200.000 PHP lấy từ tài liệu cũ</td><td><span class="tag t-mid">TB</span></td></tr>
+    <tr><td>Mỹ phẩm</td><td>IPEN: 11/12 sản phẩm trắng da được thử có thủy ngân vượt giới hạn</td><td><span class="tag t-mid">TB</span></td></tr>
+  </table></div>
+  <div class="callout bad">
+    <strong>Sự cố an toàn và truy quét:</strong>
+    <ul>
+      <li>01/2024: một phụ nữ 39 tuổi tử vong sau khi truyền stem cell và glutathione tại Quezon City.</li>
+      <li>2025: các vụ bắt người Việt hành nghề thẩm mỹ không phép ở Mandaluyong (01), Cebu (07), Makati (08), cộng 2 người nước ngoài ở Parañaque (08).</li>
+      <li>05/2026: NBI và FDA đóng các điểm truyền IV trái phép.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="gia">
+  <h2>8. Giá tham khảo</h2>
+  <div class="tbl"><table>
+    <tr><th>Dịch vụ</th><th>PHP</th><th>USD</th></tr>
+    <tr><td>Massage bình dân</td><td class="num">300–600/giờ</td><td class="num">4,7–9,4</td></tr>
+    <tr><td>Nuat Thai</td><td class="num">500–800/giờ</td><td class="num">7,8–12,5</td></tr>
+    <tr><td>Day spa tầm trung</td><td class="num">900–3.500</td><td class="num">14–55</td></tr>
+    <tr><td>Spa khách sạn 5 sao</td><td class="num">3.800–8.500</td><td class="num">60–133</td></tr>
+    <tr><td>Facial cơ bản</td><td class="num">500–1.500</td><td class="num">7,8–23,5</td></tr>
+    <tr><td>Facial trị mụn</td><td class="num">1.000–3.000</td><td class="num">15,7–47</td></tr>
+    <tr><td>Chemical peel</td><td class="num">1.500–6.000</td><td class="num">23,5–94</td></tr>
+    <tr><td>Laser facial</td><td class="num">3.000–8.500</td><td class="num">47–133</td></tr>
+    <tr><td>HydraFacial</td><td class="num">4.500–13.500</td><td class="num">70–212</td></tr>
+    <tr><td>Triệt lông laser</td><td class="num">1.500–15.000/lượt</td><td class="num">23,5–235</td></tr>
+    <tr><td>Gluta drip (FDA chưa duyệt)</td><td class="num">699–10.800</td><td class="num">11–169</td></tr>
+    <tr><td>Botox</td><td class="num">350–525/đơn vị</td><td class="num">5,5–8,2</td></tr>
+    <tr><td>Filler</td><td class="num">20.000–50.000/syringe</td><td class="num">313–784</td></tr>
+    <tr><td>Nâng mũi</td><td class="num">25.000–400.000</td><td class="num">392–6.270</td></tr>
+    <tr><td>Cắt mí</td><td class="num">30.000–150.000</td><td class="num">470–2.351</td></tr>
+    <tr><td>Hút mỡ</td><td class="num">50.000–250.000</td><td class="num">784–3.919</td></tr>
+  </table></div>
+  <p class="muted">Phần lớn giá lấy từ danh bạ ClinicFinderPH (2026) và Booky, tin cậy trung bình. Giá chính thức chỉ có ở Belo (Botox) và Nuat Thai.</p>
+</section>
+
+<section id="danhgia">
+  <h2>9. Đánh giá cơ hội (Zidane)</h2>
+  <div class="tbl"><table>
+    <tr><th>Phân khúc</th><th>Số chính</th><th>Đánh giá</th><th>Kết luận</th></tr>
+    <tr><td><strong>Massage / day spa</strong></td><td>Day spa 108 triệu USD, chỉ +8,7%</td><td>Bình dân bị chuỗi nhượng quyền chiếm; cao cấp nằm trong khách sạn</td><td class="verdict v-mid">Không làm lõi</td></tr>
+    <tr><td><strong>Clinic da / thẩm mỹ không xâm lấn</strong></td><td>Medical spa +27,7%, mới 42 cơ sở</td><td>Có thể có khoảng trống tầm trung giữa SkinStation (dưới 3.000 PHP) và Belo (8.000+ PHP), chưa kiểm chứng</td><td class="verdict v-go">Nếu vào thì vào đây</td></tr>
+    <tr><td><strong>IV / glutathione</strong></td><td>Từ 699 PHP, bán đại trà</td><td>Chưa được duyệt, đã có ca tử vong, đang bị truy quét</td><td class="verdict v-no">Loại hẳn</td></tr>
+    <tr><td><strong>Phẫu thuật thẩm mỹ</strong></td><td>Cần giấy phép DOH</td><td>Vốn lớn, trách nhiệm y khoa nặng, bác sĩ Việt cần STP</td><td class="verdict v-no">Tránh ở giai đoạn 1</td></tr>
+  </table></div>
+
+  <h3>Rủi ro xếp hạng</h3>
+  <ol>
+    <li><strong>Pháp lý sở hữu và hành nghề</strong>: chỉ công dân Philippines được hành nghề y; cấu trúc vốn chưa được luật sư xác nhận.</li>
+    <li><strong>Uy tín “clinic người Việt”</strong> sau 4 vụ bắt giữ năm 2025.</li>
+    <li><strong>Cạnh tranh chuỗi trong mall</strong>: 100+ điểm, có app, trả góp 0%, vốn quỹ đầu tư.</li>
+    <li><strong>Vĩ mô chững lại</strong>: Q1/2026 tăng 2,8%, lãi suất 5,5%.</li>
+    <li><strong>Quy định quảng cáo</strong> về ảnh trước–sau.</li>
+    <li><strong>Số liệu quy mô</strong> thẩm mỹ y khoa lệch nhau 10 lần.</li>
+  </ol>
+
+  <h3>Định vị đề xuất (giả thuyết cần test)</h3>
+  <div class="callout good"><strong>“Bác sĩ da liễu Philippines có giấy phép, giá minh bạch, không bán gluta IV”</strong>, tầm trung, nhắm nữ thu nhập khá ở Metro Manila. <strong>Không</strong> dùng xuất xứ Việt làm thông điệp chính.</div>
+
+  <h3>Mô hình gia nhập</h3>
+  <div class="tbl"><table>
+    <tr><th>Mô hình</th><th>Ưu</th><th>Nhược</th><th>Đánh giá</th></tr>
+    <tr><td>Tự mở 100%</td><td>Kiểm soát toàn bộ</td><td>Vướng luật hành nghề y, dễ bị coi là đứng tên hộ</td><td class="verdict v-no">Không</td></tr>
+    <tr><td>Nhượng quyền ngược</td><td>Ít vốn</td><td>Thương hiệu Việt chưa có tên tuổi ở Philippines</td><td class="verdict v-no">Chưa</td></tr>
+    <tr><td><strong>Liên doanh với bác sĩ / nhóm clinic Philippines</strong></td><td>Đúng luật, có sẵn bác sĩ</td><td>Phải chia quyền, cần thẩm định đối tác</td><td class="verdict v-go">Ưu tiên 1</td></tr>
+    <tr><td>Mua lại 1 clinic nhỏ có phép</td><td>Nhanh, có sẵn giấy phép</td><td>Có thể kéo theo vấn đề pháp lý cũ (nhiều clinic đang bán gluta)</td><td class="verdict v-mid">Ưu tiên 2</td></tr>
+    <tr><td>Đặt trong mall</td><td>Lượng khách sẵn có, là chuẩn của ngành</td><td>Chưa có số tiền thuê</td><td>Là địa điểm, kết hợp với 1 trong 2 mô hình trên</td></tr>
+  </table></div>
+
+  <h3>Kênh ưu tiên</h3>
+  <ol>
+    <li>Facebook + Messenger</li>
+    <li>Instagram (nữ 58,8%, hợp nhóm tầm trung)</li>
+    <li>TikTok</li>
+    <li>KOC tầm trung thay cho KOL top</li>
+    <li>Trả góp 0% qua ngân hàng và GCash</li>
+    <li>Booky, Klook, Fresha</li>
+  </ol>
+  <p>Nội dung viết bằng Taglish.</p>
+</section>
+
+<section id="sosanh">
+  <h2>10. So sánh Philippines – Campuchia</h2>
+  <div class="tbl"><table>
+    <tr><th>Tiêu chí</th><th>🇵🇭 Philippines</th><th>🇰🇭 Campuchia</th></tr>
+    <tr><td>Dân số</td><td>112,7 triệu · NCR 14,0 triệu</td><td>17,85 triệu · Phnom Penh 2,28 triệu</td></tr>
+    <tr><td>Sức mua (GDP/người)</td><td>3.985 USD</td><td>2.477–2.948 USD</td></tr>
+    <tr><td>Tăng trưởng</td><td>4,4% (2025) · 2,8% (Q1/2026)</td><td>4,8% (2025 dự báo) · 4,3% (2026)</td></tr>
+    <tr><td>Số liệu ngành</td><td>Spa 805 triệu USD; medical spa 40 triệu USD (GWI)</td><td>Không có số công khai</td></tr>
+    <tr><td>Giá facial</td><td>7,8–23,5 USD</td><td>Chưa có số</td></tr>
+    <tr><td>Cạnh tranh</td><td>Dày, chuỗi 100+ điểm, có vốn quỹ đầu tư</td><td>Phân mảnh, chưa thấy chuỗi lớn</td></tr>
+    <tr><td>Rào cản pháp lý</td><td>Hành nghề y chỉ dành cho công dân Philippines; bác sĩ ngoại cần STP</td><td>Người đứng tên phải quốc tịch Khmer; mỗi người 1 cơ sở; quảng cáo cần phép</td></tr>
+    <tr><td>Kênh</td><td>FB 95,8 triệu · TikTok 64 triệu · IG 26,9 triệu</td><td>FB 14 triệu · TikTok 11,3 triệu · Telegram</td></tr>
+    <tr><td>Thanh toán</td><td>GCash, trả góp 0%</td><td>Đô la hóa, KHQR/Bakong</td></tr>
+    <tr><td>Hình ảnh người Việt</td><td><span class="tag t-low">Bất lợi</span> (4 vụ bắt giữ năm 2025)</td><td><span class="tag t-high">Có lợi</span> (khách chuyển sang Việt Nam khám chữa bệnh, tin cậy thấp)</td></tr>
+    <tr><td>Rủi ro chính</td><td>Cạnh tranh, pháp lý hành nghề, uy tín</td><td>Thiếu dữ liệu, đợt siết từ 2023, du lịch giảm</td></tr>
+  </table></div>
+  <div class="callout key">
+    <strong>Nhận định của Zidane:</strong> với nhà đầu tư chưa rõ năng lực và mục tiêu 1 cơ sở, <strong>Campuchia nên đi trước</strong> vì cạnh tranh mỏng hơn, hình ảnh người Việt có lợi và vốn thử nhỏ hơn. <strong>Philippines là giai đoạn 2</strong>, đi qua liên doanh hoặc mua lại. Nhận định này <strong>đảo ngược</strong> nếu chủ đầu tư đã có chuỗi lớn và vốn mạnh.
+  </div>
+</section>
+
+<section id="quyetdinh">
+  <h2>11. Quyết định &amp; việc còn mở</h2>
+  <div class="tbl"><table>
+    <tr><th>Mục</th><th>Kết quả</th></tr>
+    <tr><td>Loại gluta IV khỏi menu nếu vào Philippines</td><td><span class="tag t-high">Đã chốt: loại hẳn</span></td></tr>
+    <tr><td>Thứ tự thị trường Philippines và Campuchia</td><td><span class="tag t-mid">Chưa chốt</span></td></tr>
+  </table></div>
+  <h3>Việc cần xác minh (đề xuất, chưa giao)</h3>
+  <ul>
+    <li>Luật sư Philippines: nguyên văn FINL 13 về nghề y, cấu trúc vốn cho clinic thẩm mỹ, Việt Nam có đủ điều kiện xin STP không, giấy phép DOH/FDA cho medical spa.</li>
+    <li>Mystery shopping giá tầm trung (Pico laser, trị mụn) ở SkinStation, Flawless, Bioessence, Aivee.</li>
+    <li>Meta Ad Library Philippines, điểm Google Maps, store locator các chuỗi.</li>
+    <li>Danh sách ứng viên liên doanh và clinic nhỏ đang rao bán.</li>
+    <li>Giá thuê và chi phí fit-out mall; unit economics 1 cơ sở.</li>
+  </ul>
+  <h3>Câu hỏi cho @sếp</h3>
+  <ul>
+    <li>Chủ đầu tư là ai, đã có chuỗi thẩm mỹ ở Việt Nam chưa?</li>
+    <li>Ngân sách thị trường đầu tiên; muốn 1 cơ sở hay chuỗi?</li>
+    <li>Đã quen bác sĩ hoặc đối tác nào ở Philippines chưa?</li>
+  </ul>
+</section>
+
+<section id="nguon">
+  <h2>12. Hạn chế dữ liệu &amp; nguồn</h2>
+  <div class="callout warn"><strong>Độ tin cậy:</strong> vĩ mô, digital, số spa của GWI, cảnh báo FDA/DOH và các vụ bắt giữ là <strong>cao</strong>. Đối thủ và giá là <strong>trung bình</strong>. Quy mô thẩm mỹ y khoa và hành vi khách là <strong>thấp đến trung bình</strong>. Chưa có thị phần, Ad Library, Google Maps; chưa tìm bằng tiếng Filipino/Cebuano. Mọi nguồn là web công khai, truy cập ngày 26/11/2026.</div>
+  <ul class="sources">
+    <li>GWI Global Wellness Economy — Philippines 2026 — https://globalwellnessinstitute.org/wp-content/uploads/2026/02/2026_GOW-Philippines_final.pdf</li>
+    <li>PSA (dân số 2024) — https://www.philstar.com/headlines/2025/07/18/2458844/philippines-population-reached-1127-million-2024-psa</li>
+    <li>World Bank Philippines — https://data.worldbank.org/region/philippines</li>
+    <li>GDP 2025 — https://www.philstar.com/business/2026/01/30/2504386/gdp-growth-slows-44-2025</li>
+    <li>PIDS (trung lưu) — https://pidswebs.pids.gov.ph/CDN/document/pidsdps2410.pdf</li>
+    <li>Kiều hối 2025 — https://www.bworldonline.com/top-stories/2026/02/16/730762/ofw-remittances-soar-to-all-time-high-35-63-billion-in-2025/</li>
+    <li>Du lịch 2025 — https://www.abs-cbn.com/news/business/2026/1/21/philippines-logs-6-48-million-tourists-in-2025-dot-targets-more-for-2026-1409</li>
+    <li>DataReportal Digital 2026 Philippines — https://datareportal.com/reports/digital-2026-philippines</li>
+    <li>Cube Asia (TikTok Shop, Shopee) — https://cube.asia/e-commerce-in-philippines/</li>
+    <li>Belo clinics — https://belomed.com/clinics</li>
+    <li>Ares mua Belo — https://insiderph.com/insider-info-celebrity-doctor-vicki-belo-cashes-in-with-sale-of-beauty-clinic-empire-to-global-fund</li>
+    <li>SkinStation — https://skinstation.ph/</li>
+    <li>ClinicFinderPH (giá) — https://www.clinicfinderph.com/blog/facial-treatment-cost-philippines</li>
+    <li>FDA glutathione — https://www.fda.gov.ph/?p=2129</li>
+    <li>Ca tử vong 01/2024 — https://philstar.com/headlines/2024/01/17/2326510/herbosa-clinic-under-probe-after-skin-treatments-linked-womans-death</li>
+    <li>Bắt giữ Cebu 07/2025 — https://mb.com.ph/2025/07/21/vietnamese-11-filipinos-arrested-in-illegal-beauty-clinic-in-cebu-city</li>
+    <li>Bắt giữ Makati 08/2025 — https://mb.com.ph/2025/08/08/foreigner-couple-posing-as-doctors-nabbed-in-makati</li>
+    <li>PRC Special Temporary Permit — https://prc.gov.ph/special-temporary-permits</li>
+    <li>Sở hữu nước ngoài trong y tế — https://www.respicio.ph/commentaries/foreign-ownership-restrictions-on-healthcare-facilities-in-the-philippines</li>
+    <li>FINL 13 (EO 113) — https://www.divinalaw.com/wp-content/uploads/2026/05/Office-of-the-President-Executive-Order-No.-113.pdf</li>
+    <li>RA 11595 — https://www.dfdl.com/insights/legal-and-tax-updates/philippines-republic-act-no-11595-reduces-the-required-paid-up-capital-for-foreign-retail-enterprises-to-twenty-five-million-philippine-pesos</li>
+    <li>Ad Standards Council — https://asc.com.ph/our-standards/code-of-ethics/fair-advertising/</li>
+  </ul>
+  <p class="muted">Bản đầy đủ có mọi URL: <code>mkt/ph-spa/data/snapshots/2026-11-26-henry-philippines-spa-market.md</code> · Báo cáo Campuchia: <a href="thi-truong-spa-campuchia-2026-11.html">thi-truong-spa-campuchia-2026-11.html</a></p>
+</section>
+
+<footer>ai-mkt-team · ph-spa (tạm) · Báo cáo 26/11/2026 · Nội dung từ nguồn công khai, không thay thế tư vấn pháp lý.</footer>
+</div>
+</body>
+</html>
